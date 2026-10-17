@@ -16581,6 +16581,25 @@
         "p1_formally_remaining": 266,
         "status": "CODE_WIRED_TO_CANDIDATE_PG_OWNER; active ingress row remains open pending exact source parity and authorized PG append/readback.",
         "next": "Migrate daily executor identity preflight against the publication-bound identity mapping; preserve explicit source identity semantics and continue remaining Owner IDs."
+      },
+      {
+        "batch_id": "R21-R4-contract-registry-schema-compatibility-r12",
+        "files": [
+          "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R12.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The contract registry migration now uses the PostgreSQL built-in sha256(bytea) already used by canonical migration 023; it no longer requires extension-install privileges.",
+          "Added compatibility assertions against canonical foundation/alignment migrations 001 and 003 for revision_no, model_namespace_id, accepted_at and namespace lookup assumptions.",
+          "Approval/revocation SQL chronology is checked against accepted_at and database recorded_at, with deterministic event ordering and exact source digest requirements."
+        ],
+        "verification": "68 focused contract registry, publication candidate and candidate BFF tests passed. No live catalog check, migration execution, PG read or write was performed; pglast was not available in this runtime.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "SQL_SCHEMA_COMPATIBILITY_CHECKED_AGAINST_REPOSITORY_MIGRATION_CHAIN; LIVE_CATALOG_AND_APPROVAL_LIFECYCLE_ACCEPTANCE_OPEN.",
+        "next": "Continue real daily Owner/Head call chains and remaining exact business consumers; retain all 266 formal P1 items until live readback and inventory reconciliation."
       }
     ]
   }

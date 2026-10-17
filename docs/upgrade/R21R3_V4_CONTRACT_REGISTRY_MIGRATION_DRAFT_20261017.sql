@@ -4,8 +4,6 @@
 -- This migration creates no parallel Head and does not rewrite existing Heads,
 -- accepted publication identities, or source digests.
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 -- Contract bytes are immutable. Approval state is represented independently
 -- by append-only events so DRAFT -> APPROVED -> REVOKED does not mutate bytes.
 CREATE TABLE v4.contract_versions (
@@ -20,7 +18,10 @@ CREATE TABLE v4.contract_versions (
     recorded_at timestamptz NOT NULL DEFAULT clock_timestamp(),
     PRIMARY KEY (contract_id, version),
     UNIQUE (contract_id, version, raw_sha256),
-    CHECK (encode(digest(raw_content, 'sha256'), 'hex') = raw_sha256)
+    -- PostgreSQL's built-in SHA-256 avoids requiring extension-install rights
+    -- from the migration role. The canonical V4 migration chain already uses
+    -- sha256(bytea) for content identity.
+    CHECK (encode(sha256(raw_content), 'hex') = raw_sha256)
 );
 
 CREATE FUNCTION v4.reject_contract_version_mutation() RETURNS trigger

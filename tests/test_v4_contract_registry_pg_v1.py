@@ -92,6 +92,46 @@ def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance(
     assert "BEFORE TRUNCATE ON v4.contract_versions" in sql
     assert "BEFORE TRUNCATE ON v4.contract_approval_events" in sql
     assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in sql
+    assert "CREATE EXTENSION" not in sql
+    assert "encode(sha256(raw_content), 'hex') = raw_sha256" in sql
+
+
+def test_registry_sql_matches_canonical_publication_schema_after_phase0_alignment():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    foundation = (root / "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql").read_text(encoding="utf-8")
+    alignment = (root / "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql").read_text(encoding="utf-8")
+    registry = (root / "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql").read_text(encoding="utf-8")
+
+    # This draft is applied after the canonical alignment migration, which
+    # renames publications.revision and adds the fields it relies on.
+    assert "CREATE TABLE IF NOT EXISTS v4.publications" in foundation
+    assert "revision integer NOT NULL" in foundation
+    assert "RENAME COLUMN revision TO revision_no" in alignment
+    assert "ADD COLUMN publication_lineage_id text NOT NULL" in alignment
+    assert "ADD COLUMN same_day_revision_parent_id text" in alignment
+    assert "p.revision_no" not in registry
+    assert "NEW.revision_no" not in registry
+    assert "NEW.model_namespace_id" in registry
+    assert "NEW.accepted_at" in registry
+    assert "v4.model_namespaces" in registry
+    assert "CREATE EXTENSION" not in registry
+
+
+def test_approval_event_selection_is_historical_and_revocation_aware():
+    from pathlib import Path
+
+    migration = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql").read_text(encoding="utf-8")
+    reader = (Path(__file__).resolve().parents[1] / "src/workbench_analysis/contract_registry_pg_v1.py").read_text(encoding="utf-8")
+    assert "e.occurred_at <= NEW.accepted_at" in migration
+    assert "e.recorded_at <= NEW.accepted_at" in migration
+    assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in migration
+    assert "e.occurred_at <= %s" in reader
+    assert "e.recorded_at <= %s" in reader
+    assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in reader
+    assert "IF NOT FOUND OR approval.action <> 'APPROVED'" in migration
+    assert 'action != "APPROVED"' in reader
 
 
 def test_registry_rollback_refuses_to_discard_history_or_bound_publications():

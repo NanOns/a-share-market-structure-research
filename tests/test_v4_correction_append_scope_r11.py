@@ -6,12 +6,14 @@ from workbench_db import v4_profile_semantic_corrections_pg_v1 as module
 def sample(tmp_path,monkeypatch):
     monkeypatch.setattr(module,'checked',lambda root,binding:root/binding['path'])
     old={'2026-10-12':{'profile':{'path':'profile12'}}}
-    binding={'path':'authority.json'}
+    binding={'path':'data/v4/operational_owner_pg_closeout_r1/authority_manifest/manifest.pg.json',
+             'sha256':'a'*64,'bytes':1,'pg_descriptor':{'kind':'authority_manifest'}}
     prior=dict(owners=old,accepted_trade_date='2026-10-12',**{module.KEY:binding})
     (tmp_path/'prior.json').write_text(json.dumps(prior))
     candidate=dict(owners=dict(old,**{'2026-10-13':{'profile':{'path':'profile13'}}}),accepted_trade_date='2026-10-13',predecessor={'path':'prior.json'},**{module.KEY:binding})
-    authority=dict(contract_id=module.CONTRACT,source_profiles={'2026-10-12':old['2026-10-12']['profile']},dates={'2026-10-12':{'original_profile':old['2026-10-12']['profile'],'security_ids':[]}},PIT_ELIGIBLE=False,AS_RECORDED=False)
-    (tmp_path/'authority.json').write_text(json.dumps(authority))
+    authority=dict(contract_id=module.CONTRACT,source_profiles={'2026-10-12':old['2026-10-12']['profile']},dates={'2026-10-12':{'original_profile':old['2026-10-12']['profile'],'security_ids':[],'descriptor':{'path':'data/v4/operational_owner_pg_closeout_r1/reference_profile_semantic_corrections/fact.pg.json','sha256':'b'*64,'bytes':1,'pg_descriptor':{'kind':'reference_profile_semantic_corrections','fact_key':'fact','payload_sha256':'c'*64}},'fact_token':'d'*64,'source':{'path':'source'}}},PIT_ELIGIBLE=False,AS_RECORDED=False)
+    monkeypatch.setattr(module,'read_authority_manifest',lambda root,binding:authority)
+    monkeypatch.setattr(module,'descriptor_metadata',lambda root,binding:binding['pg_descriptor'])
     return tmp_path,candidate
 
 

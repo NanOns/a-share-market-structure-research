@@ -256,20 +256,31 @@ def _stream_download(url: str, destination: Path, *, max_bytes: int, timeout: in
         response.close()
 
 
-def _existing_downloader_package(target_date: str, package_url: str, *, max_bytes: int) -> tuple[Path, dict[str, Any]]:
+def _existing_downloader_package(target_date: str, package_url: str, *, max_bytes: int,
+                                 project_root: Path | None = None) -> tuple[Path, dict[str, Any]]:
     """Delegate challenge handling to the already accepted R3 downloader.
 
     A recent receipt can be shared only after a fresh caller publication check;
     byte and date bindings are verified again rather than trusting its pointer.
     """
-    root = Path(__file__).resolve().parents[2]
-    pointer = root / 'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json'
+    root = Path(project_root).resolve() if project_root is not None else Path(__file__).resolve().parents[2]
+    result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
+                             str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')],
+                            cwd=root, capture_output=True, timeout=480, text=True, encoding='utf-8')
+    if result.returncode:
+        raise TDXSourceError('TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED')
+    try:
+        output = json.loads(result.stdout.strip().splitlines()[-1])
+        ref = output['capture_receipt']
+    except (IndexError, KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise TDXSourceError('TDX_EXISTING_DOWNLOADER_RECEIPT_UNAVAILABLE') from exc
+    if output.get('status') != 'PASS' or not isinstance(ref, dict):
+        raise TDXSourceError('TDX_EXISTING_DOWNLOADER_NOT_READY')
 
-    def verified() -> tuple[Path, dict[str, Any]]:
-        ref = json.loads(pointer.read_bytes())['capture_receipt']
-        receipt_path = (root / ref['path']).resolve()
+    def verified(receipt_ref: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
+        receipt_path = (root / receipt_ref['path']).resolve()
         receipt_path.relative_to(root / 'data/v4/source_evidence/dm01_a01_r3/tdx')
-        if sha256_file(receipt_path) != ref['sha256']:
+        if sha256_file(receipt_path) != receipt_ref['sha256']:
             raise TDXSourceError('TDX_EXISTING_RECEIPT_DIGEST_MISMATCH')
         receipt = json.loads(receipt_path.read_bytes())
         age = (datetime.now(timezone.utc) - datetime.fromisoformat(receipt['observed_at'])).total_seconds()
@@ -286,26 +297,29 @@ def _existing_downloader_package(target_date: str, package_url: str, *, max_byte
         if (package.stat().st_size != binding['bytes'] or binding['bytes'] > max_bytes
                 or sha256_file(package) != binding['sha256']):
             raise TDXSourceError('TDX_EXISTING_PACKAGE_BINDING_MISMATCH')
-        return package, {'capture_receipt': ref, 'package': binding,
+        return package, {'capture_receipt': receipt_ref, 'package': binding,
                          'adapter_contract': 'TDX_EXISTING_R3_DOWNLOADER_ADAPTER_V1',
                          'knowledge_lineage': receipt['knowledge_lineage']}
 
     try:
-        return verified()
-    except (OSError, KeyError, ValueError, StopIteration):
-        result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
-                                 str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')],
-                                cwd=root, capture_output=True, timeout=480)
-        if result.returncode:
-            raise TDXSourceError('TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED')
-        return verified()
+        return verified(ref)
+    except (OSError, KeyError, ValueError, StopIteration) as exc:
+        raise TDXSourceError('TDX_EXISTING_DOWNLOADER_RECEIPT_INVALID') from exc
+
+
+def _tdx_root_or_configured(tdx_root: Path | None) -> Path:
+    if tdx_root is not None:
+        return Path(tdx_root)
+    from common.paths import resolve_tdx_root
+    return resolve_tdx_root(Path(__file__).resolve().parents[2])
 
 
 def capture_tdx_official_daily_package(
     *,
     target_date: str,
-    snapshot_root: Path,
-    tdx_root: Path = Path("D:/new_tdx"),
+    snapshot_root: Path | None = None,
+    daily_download_root: Path | None = None,
+    tdx_root: Path | None = None,
     timeout: int = 30,
     max_page_bytes: int = DEFAULT_MAX_PAGE_BYTES,
     max_info_bytes: int = DEFAULT_MAX_INFO_BYTES,
@@ -316,6 +330,19 @@ def capture_tdx_official_daily_package(
         date.fromisoformat(target_date)
     except ValueError as exc:
         raise TDXSourceError("TARGET_DATE_INVALID") from exc
+    root = Path(__file__).resolve().parents[2]
+    from common.paths import configured_path_source
+    path_sources = {
+        "source_root": configured_path_source(root, "tdx.source_root", explicit=tdx_root),
+        "snapshot_root": configured_path_source(root, "tdx.snapshot_root", explicit=snapshot_root),
+        "daily_download_root": configured_path_source(root, "tdx.daily_download_root", explicit=daily_download_root),
+    }
+    tdx_root = _tdx_root_or_configured(tdx_root)
+    from common.paths import resolve_tdx_snapshot_root, resolve_configured_path
+    snapshot_root = resolve_tdx_snapshot_root(root, snapshot_root)
+    configured_download = resolve_configured_path(root, "tdx.daily_download_root",
+                                                   explicit=daily_download_root, required=False)
+    package_root = configured_download or snapshot_root
     ensure_outside_tdx(snapshot_root, tdx_root)
     observed_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     response = _request(PAGE_URL, timeout=timeout)
@@ -369,6 +396,12 @@ def capture_tdx_official_daily_package(
         "zip_validation": None,
         "snapshot_id": None,
         "tdx_root_write_count": 0,
+        "path_configuration": {
+            "source_root": path_sources["source_root"],
+            "snapshot_root": path_sources["snapshot_root"],
+            "daily_download_root": path_sources["daily_download_root"]
+                if configured_download else "FALLBACK_TO_CONFIGURED_SNAPSHOT_ROOT",
+        },
     }
     if update_date == target_date:
         temporary_archive = capture_dir / "download.part"
@@ -412,7 +445,7 @@ def capture_tdx_official_daily_package(
             receipt.pop('error_type', None)
         package_sha = download_headers.pop("sha256")
         snapshot_id = f"sha256-{package_sha}"
-        package_dir = snapshot_root / "tdx" / target_date.replace("-", "") / snapshot_id
+        package_dir = package_root / "tdx" / target_date.replace("-", "") / snapshot_id
         ensure_outside_tdx(package_dir, tdx_root)
         package_dir.mkdir(parents=True, exist_ok=True)
         archive_path = package_dir / "hsjday.zip"
@@ -429,7 +462,7 @@ def capture_tdx_official_daily_package(
             if not candidate.exists():
                 _atomic_write(candidate, source.read_bytes(), tdx_root=tdx_root)
         prior_revisions = [
-            path for path in (snapshot_root / "tdx" / target_date.replace("-", "")).glob("sha256-*")
+            path for path in (package_root / "tdx" / target_date.replace("-", "")).glob("sha256-*")
             if path != package_dir and (path / "hsjday.zip").is_file()
         ]
         prior_receipt = package_dir / "capture_receipt.json"

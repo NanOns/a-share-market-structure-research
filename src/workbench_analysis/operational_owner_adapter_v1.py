@@ -7,6 +7,7 @@ The adapter is an explicit versioned producer, not dynamic plugin discovery.
 from pathlib import Path
 from types import FunctionType,SimpleNamespace,ModuleType
 import builtins
+from common.paths import resolve_tdx_root
 from . import r43_owner_replay as core
 from . import r43_structure_replay as structure
 from . import r43_daily_price_limits as limits
@@ -40,13 +41,17 @@ PROFILE_LIFECYCLE_CONSERVATION_CONTRACT = "DYNAMIC_PROFILE_LIFECYCLE_CONSERVATIO
 
 def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,lifecycle_binding=None,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False,predecessor=None,progress=None):
     root=Path(root).resolve();folder=Path(folder).resolve()
+    tdx_root=resolve_tdx_root(root)
     if exact_daily_policy:
         from .operational_daily_exact_policy_v2 import verify
         verify(root,exact_daily_policy,candidate_only=candidate_only_exact)
         if not exact_adjustment:raise ValueError('EXACT_DAILY_KERNEL_REQUIRED')
     elif exact_adjustment:
         import os
-        if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not root.is_relative_to(Path('G:/codex_tmp').resolve()):
+        isolation_root=os.environ.get('V4_R4_ISOLATION_ROOT')
+        if (os.environ.get('R4_NATIVE_ISOLATION')!='1' or not isolation_root
+                or Path(isolation_root).resolve().drive.upper()!='G:'
+                or not root.is_relative_to(Path(isolation_root).resolve())):
             raise ValueError('ISOLATED_EXACT_CORE_CANDIDATE_REQUIRED')
     def immutable_source_write(path,blob,**kwargs):
         path=Path(path)
@@ -75,7 +80,7 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
             import hashlib
             destination=folder/'executed_sources'/hashlib.sha256(blob).hexdigest()/origins[target]
             destination.parent.mkdir(parents=True,exist_ok=True)
-            immutable_source_write(destination,blob,tdx_root=Path('D:/new_tdx'))
+            immutable_source_write(destination,blob,tdx_root=tdx_root)
             return core.ref(base,destination)
         return core.ref(base,target)
     output=(folder/'owner_v3').relative_to(root).as_posix()

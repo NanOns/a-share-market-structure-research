@@ -1,0 +1,69 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "clone",
+        "--no-checkout",
+        "--single-branch",
+        "--branch",
+        "codex/v4-system-reform",
+        "https://github.com/NanOns/a-share-market-structure-research.git",
+        "C:\\Users\\lps\\AppData\\Local\\Temp\\v402-r3-remote-pvbalfai\\checkout"
+      ],
+      "exit_code": 0,
+      "stderr_tail": "Cloning into 'C:\\Users\\lps\\AppData\\Local\\Temp\\v402-r3-remote-pvbalfai\\checkout'...\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\Users\\lps\\AppData\\Local\\Temp\\v402-r3-remote-pvbalfai\\checkout",
+        "checkout",
+        "0f66e88052b33b90ab76ec39bfeb115386f8bca2",
+        "--",
+        ".gitattributes",
+        "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip"
+      ],
+      "exit_code": 0,
+      "stderr_tail": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\Users\\lps\\AppData\\Local\\Temp\\v402-r3-remote-pvbalfai\\checkout",
+        "lfs",
+        "fetch",
+        "origin",
+        "0f66e88052b33b90ab76ec39bfeb115386f8bca2",
+        "--include=data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+        "--exclude="
+      ],
+      "exit_code": 0,
+      "stderr_tail": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\Users\\lps\\AppData\\Local\\Temp\\v402-r3-remote-pvbalfai\\checkout",
+        "lfs",
+        "checkout",
+        "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip"
+      ],
+      "exit_code": 0,
+      "stderr_tail": ""
+    }
+  ],
+  "commit": "0f66e88052b33b90ab76ec39bfeb115386f8bca2",
+  "contract_id": "V4_02_GO_FORWARD_REMOTE_LFS_RESTORE_R3",
+  "elapsed_seconds": 339.622,
+  "finished_at_utc": "2026-09-29T08:21:21+00:00",
+  "path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+  "remote": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "restored_bytes": 551001603,
+  "restored_sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+  "started_at_utc": "2026-09-29T08:15:42+00:00",
+  "status": "PASS"
+}

@@ -34,7 +34,11 @@ def _refresh_existing_downloader():
     if result.returncode:raise ValueError('TDX_REVISED_PACKAGE_FRESH_ADAPTER_FAILED')
 
 
-def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30, force_refresh=False):
+def capture_latest_tdx_package(*, snapshot_root=None, tdx_root=None, timeout=30, force_refresh=False):
+    from common.paths import resolve_tdx_snapshot_root
+    project_root=Path(__file__).resolve().parents[2]
+    snapshot_root=resolve_tdx_snapshot_root(project_root,snapshot_root)
+    tdx_root=old._tdx_root_or_configured(tdx_root)
     # Probe current metadata first. V1 rechecks it before downloading, so a
     # provider revision race becomes WAIT rather than mislabeled bytes.
     response=old._request(old.PAGE_URL, timeout=timeout)
@@ -78,8 +82,12 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
     return result
 
 
-def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root,
-                                tdx_root=Path('D:/new_tdx')):
+def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root=None,
+                                tdx_root=None):
+    from common.paths import resolve_tdx_snapshot_root
+    project_root=Path(__file__).resolve().parents[2]
+    snapshot_root=resolve_tdx_snapshot_root(project_root,snapshot_root)
+    tdx_root=old._tdx_root_or_configured(tdx_root)
     date.fromisoformat(trade_date)
     source=latest_package_ref['download']; package=Path(source['path'])
     if package.stat().st_size!=source['bytes'] or old.sha256_file(package)!=source['sha256']:

@@ -16,6 +16,7 @@ from workbench_analysis.tdx_snapshot_delta import (  # noqa: E402
     build_tdx_package_delta,
     build_tdx_session_delta_view,
 )
+from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root, resolve_configured_path  # noqa: E402
 
 
 def sha256(path: Path) -> str:
@@ -38,12 +39,18 @@ def main() -> int:
     parser.add_argument("--current-snapshot-id", required=True)
     parser.add_argument("--parent-zip", type=Path, default=ROOT / "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip")
     parser.add_argument("--parent-snapshot-id", default="sha256-b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f")
-    parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
-    parser.add_argument("--tdx-root", type=Path, default=Path("D:/new_tdx"))
+    parser.add_argument("--snapshot-root", type=Path, default=None)
+    parser.add_argument("--daily-download-root", type=Path, default=None)
+    parser.add_argument("--tdx-root", type=Path, default=None)
     args = parser.parse_args()
+    snapshot_root = resolve_tdx_snapshot_root(ROOT, args.snapshot_root)
+    tdx_root = resolve_tdx_root(ROOT, args.tdx_root)
+    configured_download_root = resolve_configured_path(
+        ROOT, "tdx.daily_download_root", explicit=args.daily_download_root, required=False)
+    package_root = configured_download_root or snapshot_root
     if not args.current_snapshot_id.startswith("sha256-"):
         raise SystemExit("CURRENT_SNAPSHOT_ID_MUST_BE_CONTENT_ADDRESSED")
-    current_zip = args.snapshot_root / "tdx" / args.target_date.replace("-", "") / args.current_snapshot_id / "hsjday.zip"
+    current_zip = package_root / "tdx" / args.target_date.replace("-", "") / args.current_snapshot_id / "hsjday.zip"
     expected_current_sha = args.current_snapshot_id.removeprefix("sha256-")
     expected_parent_sha = args.parent_snapshot_id.removeprefix("sha256-")
     if not current_zip.is_file() or sha256(current_zip) != expected_current_sha:
@@ -59,7 +66,7 @@ def main() -> int:
     )
     delta_dir = current_zip.parent / "delta" / args.target_date.replace("-", "")
     delta_path = delta_dir / f"TDX_PACKAGE_DELTA_{args.target_date.replace('-', '')}.json"
-    delta_sha = write_json_atomic(delta_path, delta, tdx_root=args.tdx_root)
+    delta_sha = write_json_atomic(delta_path, delta, tdx_root=tdx_root)
     session_dates = args.session_dates or [args.target_date]
     for session_date in session_dates:
         try:
@@ -73,7 +80,7 @@ def main() -> int:
         view = build_tdx_session_delta_view(delta, session_date)
         session_dir = delta_dir / session_date.replace("-", "")
         view_path = session_dir / f"TDX_SESSION_DELTA_VIEW_{session_date.replace('-', '')}.json"
-        view_sha = write_json_atomic(view_path, view, tdx_root=args.tdx_root)
+        view_sha = write_json_atomic(view_path, view, tdx_root=tdx_root)
         view_for_builder = {
             **view,
             # The daily increment gate binds the source family to the complete
@@ -88,7 +95,7 @@ def main() -> int:
                 source_snapshot_id=args.current_snapshot_id,
                 delta=view_for_builder,
                 output_path=raw_path,
-                tdx_root=args.tdx_root,
+                tdx_root=tdx_root,
             )
         session_receipts.append({
             "trade_date": session_date,
@@ -113,7 +120,7 @@ def main() -> int:
         "tdx_root_write_count": 0,
     }
     receipt_path = delta_dir / "tdx_delta_build_receipt.json"
-    receipt_sha = write_json_atomic(receipt_path, summary, tdx_root=args.tdx_root)
+    receipt_sha = write_json_atomic(receipt_path, summary, tdx_root=tdx_root)
     print(json.dumps({"status": summary["status"], "target_bar_count": delta["target_bar_count"],
                       "revision_events": len(delta["revision_events"]), "delta_path": str(delta_path),
                       "delta_sha256": delta_sha, "session_view_count": len(session_receipts),

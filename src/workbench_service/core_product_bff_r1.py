@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
-import json, gzip, re
+import json, re
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -22,6 +22,7 @@ HOME_SECTOR_SUMMARY_FIELDS={'output_state','prior_rotation_state','sector_rs5','
 HOME_IDENTITY_FIELDS={'entity_id','security_id','symbol','display_name','display_name_scope','trade_date'}
 HOME_CELL_FIELDS={'value','quality','unit','reason','as_of','source','actual_count','required_count'}
 LEGACY_R1_READ_CAPABILITY='R1 legacy summary; D2 detail fields may be unavailable'
+PG_OWNER_DIRECT_READ_CAPABILITY='Accepted PG Owner read; materialized list projection unavailable'
 
 def is_legacy_r1_home_fallback(payload):
     """True only for an explicitly marked legacy read-index response."""
@@ -67,6 +68,13 @@ def home_summary(row, fields):
 
 def product_manifest_bindings(authority):
     """Versioned authority: R1 singleton or R2 exact date catalogue."""
+    if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
+        dates=authority.get('dates');scopes=authority.get('scopes')
+        if not isinstance(dates,dict) or not dates or not isinstance(scopes,dict) or set(dates)!=set(scopes):
+            raise ValueError('PRODUCT_PG_AUTHORITY_CATALOG_INVALID')
+        if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED','historical_PIT_permission')):
+            raise ValueError('PRODUCT_AUTHORITY_PIT_ESCALATION')
+        return list(dates.values())
     if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
         return [authority['manifest']]
     if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R2':
@@ -76,8 +84,20 @@ def product_manifest_bindings(authority):
     raise ValueError('PRODUCT_AUTHORITY_CONTRACT_REQUIRED')
 
 
-def dated_product_manifest(root, authority, day):
+def dated_product_manifest(root, authority, day, *, candidate=None):
     product_manifest_bindings(authority)
+    if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
+        from .native_product_catalog_v3 import PG_KEY,load
+        if not isinstance(candidate,dict) or PG_KEY not in candidate:
+            raise ValueError('PRODUCT_PG_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+        verified=load(root,candidate)
+        if (verified.get('owner_source_digest')!=authority.get('owner_source_digest')
+                or verified.get('catalog_source_binding')!=authority.get('catalog_source_binding')):
+            raise ValueError('PRODUCT_PG_AUTHORITY_SUBSTITUTION')
+        manifest=verified['dates'].get(day)
+        if manifest is not None and manifest.get('T0')!=day:
+            raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
+        return manifest
     binding = authority.get('dates', {}).get(day) if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2' else authority['manifest']
     if binding is None:
         return None
@@ -122,6 +142,17 @@ def mark_stock_d2_semantics(response):
         fields['qualification_state']=dict(value=state,quality='KNOWN' if state in ('TRUE','FALSE') else state,
             reason=reason,source=(fields.get('final_eligibility') or {}).get('source'))
     return response
+
+def membership_source_binding(api):
+    """Return the current membership locator, requiring its PG descriptor in PG mode."""
+    from workbench_db.v4_membership_reference_pg_v1 import KEY
+    snapshot=getattr(api,'snapshot',None)
+    source=snapshot.get('memberships') if isinstance(snapshot,dict) else None
+    if not isinstance(source,dict):
+        raise ValueError('MEMBERSHIP_SOURCE_LOCATOR_REQUIRED')
+    if KEY in api.candidate and not isinstance(source.get('pg_descriptor'),dict):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
+    return source
 
 def d2_selection_explanation(fields,source):
     fields=fields or {}
@@ -242,26 +273,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             self.isolated_history=load(api,isolated_history_authority)
 
     def _read_index_r2(self,day):
-        """Cache only the immutable binding; each PG read still attests its digest and database."""
+        """Use only the immutable index binding embedded by the PG Head writer."""
         if getattr(self,'building_read_index',False):return None
-        from workbench_db.v4_read_index_r2 import AUTHORITY,load
-        path=self.api.root/AUTHORITY
-        try:stat=path.stat();signature=(stat.st_mtime_ns,stat.st_size)
-        except FileNotFoundError:signature=None
-        key=('product-read-index-r2',self.api.token,day,signature)
+        from workbench_db.v4_read_index_r2 import PG_AUTHORITY_KEY,load
+        authority=self.api.candidate.get(PG_AUTHORITY_KEY)
+        if authority is None:return None
+        key=('product-read-index-r2',self.api.token,day)
         if key not in self.api.cache:
             self.api.cache[key]=load(self.api.root,self.api.token,day,
-                allow_missing=day!=self.api.candidate['accepted_trade_date'])
+                authority=authority,allow_missing=day!=self.api.candidate['accepted_trade_date'])
         return self.api.cache[key]
 
     def _read_index_r2_state(self,day):
-        from workbench_db.v4_read_index_r2 import AUTHORITY
-        path=self.api.root/AUTHORITY
-        if not path.exists():return 'LEGACY_R1_AUTHORITY_ONLY'
-        authority=json.loads(path.read_bytes());versions=authority.get('versions',{})
-        if self.api.token not in versions:return 'R2_TOKEN_NOT_PREPARED'
-        if day not in versions[self.api.token]:return 'R2_DATE_NOT_PREPARED'
-        return 'R2_AUTHORITY_BOUND'
+        return 'R2_AUTHORITY_BOUND' if self._read_index_r2(day) is not None else 'PG_OWNER_DIRECT_READ'
 
     @staticmethod
     def _base_query(query):
@@ -277,11 +301,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         keys=[next((row.get(k) for k in key_fields if row.get(k)),None) for row in rows]
         index=self._read_index_r2(day)
         if index is not None:return index.display_identities(domain,keys)
-        from workbench_db.v4_read_index_r1 import load as load_index_r1
-        legacy=load_index_r1(self.api.root,self.api.token,day,
-            allow_missing=day!=self.api.candidate['accepted_trade_date'])
-        if legacy is None:return {}
-        return legacy.display_identities(domain,keys)
+        records,source=self.identity_records()
+        by_alias={}
+        for record in records:
+            name=record.get('name') or record.get('security_name')
+            identity=dict(entity_id=record.get('security_id'),symbol=record.get('symbol'),
+                display_name=name,display_name_source=source,
+                display_name_scope='PG_DATED_IDENTITY_DISPLAY_ONLY',
+                name_quality='KNOWN' if name else 'UNKNOWN',
+                name_reason=None if name else 'ACCEPTED_STOCK_IDENTITY_NOT_FOUND')
+            for alias in (record.get('security_id'),record.get('source_security_key'),record.get('symbol')):
+                if alias:by_alias[str(alias).upper()]=identity
+        result={}
+        for key in keys:
+            if key is None:continue
+            identity=by_alias.get(str(key).upper())
+            if identity is not None:result[key]=identity
+        return result
 
     def _enrich_display_names(self,day,rows,*,key_fields=('entity_id','security_id')):
         identities=self._display_identity_map(day,rows,key_fields=key_fields)
@@ -302,10 +338,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             index=self._read_index_r2(day)
             if index is not None and domain in ('stocks','sectors','focus'):
                 return index.detail(domain,str(key).strip().upper())
-            from workbench_db.v4_read_index_r1 import load as load_index
-            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
-            if index is not None and domain in ('stocks','sectors','focus'):
-                return index.detail(domain,str(key).strip().upper())
         needle=str(key).strip().upper()
         def aliases(row):
             values=(row['entity_id'],row['symbol'],*row.get('search_aliases',[]))
@@ -315,21 +347,26 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return matches[0] if len(identities)==1 else None
 
     def focus_projection(self,day):
-        authority=self.api.root/'config/core_product_focus_read_authority_r2.json'
-        if not authority.exists() or day!=self.api.candidate['accepted_trade_date']:return None
+        if day!=self.api.candidate['accepted_trade_date']:return None
+        from .native_product_catalog_v3 import PG_KEY,load as load_catalog
+        if PG_KEY not in self.api.candidate:
+            raise ValueError('FOCUS_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
         key=('focus-read-r2',day)
         if key not in self.api.cache:
-            manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
-            if manifest['T0']!=day or manifest['head']['sha256']!=self.api.token:return None
-            checked(self.api.root,manifest['head']);checked(self.api.root,manifest['implementation'])
-            for ref in manifest['source_bindings'].values():checked(self.api.root,ref)
-            if manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG':
-                from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
-                projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,head_token=self.api.token)
-            elif manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R2':
-                projection=json.loads(gzip.decompress(checked(self.api.root,manifest['projection']).read_bytes()))
-            else:
-                raise ValueError('FOCUS_READ_PROJECTION_CONTRACT_UNSUPPORTED')
+            catalog=load_catalog(self.api.root,self.api.candidate)
+            manifest=catalog.get('dates',{}).get(day)
+            if manifest is None:return None
+            if (manifest.get('T0')!=day
+                    or manifest.get('contract_id')!='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG'):
+                raise ValueError('FOCUS_PG_PROJECTION_REQUIRED_NO_FILE_FALLBACK')
+            scope=catalog.get('scopes',{}).get(day)
+            if not isinstance(scope,dict) or manifest.get('head') is None:
+                raise ValueError('FOCUS_PG_HEAD_SCOPE_REQUIRED')
+            if manifest.get('projection_source') is None:
+                raise ValueError('FOCUS_PG_INGRESS_SOURCE_BINDING_REQUIRED')
+            from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
+            projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,
+                                     head_token=manifest['head']['sha256'])
             self.api.cache[key]=(manifest,projection)
         return self.api.cache[key]
 
@@ -452,32 +489,46 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     contract_id='V4_FORWARD_STATISTICS_R7_R1',source=None,
                     write_authorized=False,PIT_ELIGIBLE=False)
         if path=='/api/v4/forward/fep':
-            from workbench_analysis.fep_r7_read import read_r7_fep
             try:
                 from workbench_db.forward_r7_store import ForwardR7Store
                 store=ForwardR7Store(self.api.root)
                 counts=store.read_counts()
                 projections=store.read_fep_projections()
-                result=read_r7_fep(self.api.root,current_counts=counts)
-                if projections.get('items'):
-                    result['pg_projection_status']='READY'
-                    result['pg_historical_baselines']=projections['items']
-                else:
-                    result['pg_projection_status']='DATA_MISSING'
-                    result['historical_baselines']=[]
-                    result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
-                return 200,self.envelope(day,status='READY' if result['models'] else 'DATA_MISSING',
+                items=projections.get('items') if isinstance(projections,dict) else None
+                if not isinstance(items,list) or any(not isinstance(item,dict) for item in items):
+                    raise ValueError('PG_FEP_PROJECTION_SHAPE_INVALID')
+                baselines=[item for item in items if item.get('diagnostic_only') is not True]
+                diagnostics=[item for item in items if item.get('diagnostic_only') is True]
+                result=dict(status='READY' if baselines or diagnostics else 'DATA_MISSING',
+                    scope='FEP_STOCK_ENTRY_CORE / FIRST_PREWATCH / ABS_RETURN_N:T1 / CORE',
+                    models=[{key:item.get(key) for key in ('stage','model_family','evidence_class','production_role',
+                        'model_id','model_set_id','scope_id','observation_scope','target_id','horizon',
+                        'feature_contract_id','artifact_digest','champion')} for item in items],
+                    historical_baselines=baselines,diagnostics=diagnostics,
+                    current_observation_coverage=counts,
+                    prediction_slots=[dict(status='PENDING',reason='DAILY_MODEL_NOT_TRAINED',
+                        eligible_prediction_generated=False,priority_v1_unchanged=True)],
+                    pg_projection_status='READY' if items else 'DATA_MISSING',
+                    missing_inputs=[] if items else ['PG_PUBLISHED_FEP_RESEARCH_PROJECTION'],
+                    asof=max((str(item.get('asof') or '') for item in items),default=None),
+                    source=dict(engine='postgresql',relation='forward_facts',kind='r7_fep_projection',
+                        total=projections.get('total',len(items))))
+                return 200,self.envelope(day,status=result['status'],
                     data=result,contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',
                     source=result.get('source'),priority_v1_unchanged=True,
                     write_authorized=False,PIT_ELIGIBLE=False)
             except Exception as exc:
-                result=read_r7_fep(self.api.root)
-                result['historical_baselines']=[]
-                result['pg_projection_status']='ERROR'
-                result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
+                result=dict(status='DATA_MISSING',
+                    scope='FEP_STOCK_ENTRY_CORE / FIRST_PREWATCH / ABS_RETURN_N:T1 / CORE',
+                    models=[],historical_baselines=[],diagnostics=[],
+                    current_observation_coverage=None,prediction_slots=[dict(status='PENDING',
+                        reason='DAILY_MODEL_NOT_TRAINED',eligible_prediction_generated=False,
+                        priority_v1_unchanged=True)],pg_projection_status='ERROR',
+                    missing_inputs=['PG_PUBLISHED_FEP_RESEARCH_PROJECTION'],
+                    error_code=type(exc).__name__,source=None,write_authorized=False,PIT_ELIGIBLE=False)
                 return 200,self.envelope(day,status='DATA_MISSING',data=result,
                     contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',error_code=type(exc).__name__,
-                    source=result.get('source'),priority_v1_unchanged=True)
+                    source=None,priority_v1_unchanged=True)
         lane_alias={'historical':'RETROSPECTIVE_RESEARCH','live':'LIVE_OOS'}
         try:
             from workbench_db.forward_r7_store import ForwardR7Store
@@ -498,7 +549,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
-        from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
@@ -539,13 +589,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|page|{
                 'contract_id':'V4_ACCEPTED_FOCUS_RADAR_PAGE_R1','source':self.api.candidate['owners'][day].get('forward'),
                 'scope':'ACCEPTED_FOCUS_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE','producer_status':'FORMAL_RADAR_PRIORITY_NOT_PUBLISHED'}
-        index=index_r2 if index_r2 is not None else None if getattr(self,'building_read_index',False) or not index_route or path=='/api/v4/radar' else load_index_r1(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        index=index_r2
         if index is not None and path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus'):
             if path in ('/api/v4/context','/api/v4/home'):
                 response=index.response(path)
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
-                if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
-                    read_index_capability=LEGACY_R1_READ_CAPABILITY)
+                if index_r2 is None:response=dict(response,read_index_status='PG_OWNER_DIRECT_READ',
+                    read_index_capability=PG_OWNER_DIRECT_READ_CAPABILITY)
                 if path=='/api/v4/home':
                     cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
                     response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
@@ -596,8 +646,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
             if path=='/api/v4/stocks':response=mark_stock_d2_semantics(normalize_indexed_code_status(response,day))
-            if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
-                read_index_capability=LEGACY_R1_READ_CAPABILITY)
+            if index_r2 is None:response.update(read_index_status='PG_OWNER_DIRECT_READ',
+                read_index_capability=PG_OWNER_DIRECT_READ_CAPABILITY)
             if path=='/api/v4/focus':
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
@@ -639,7 +689,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     sector_type=sector.get('fields',{}).get('sector_type',{}).get('value'),count=count,denominator=len(active),
                     share=count/len(active) if active else None,href='/v4/research/sectors/'+sid,
                     name_source=sector.get('display_name_source'),name_quality='KNOWN' if display_name else 'UNKNOWN'))
-            data['sector_exposure']=dict(denominator=len(active),unknown_industry=unknown,items=items,source=self.api.snapshot['memberships'],scope='Unique active research objects under latest reconstructed primary industry; not holdings, not a probability')
+            data['sector_exposure']=dict(denominator=len(active),unknown_industry=unknown,items=items,source=membership_source_binding(self.api),scope='Unique active research objects under latest reconstructed primary industry; not holdings, not a probability')
         if pack:
             old=self.api.candidate['owners'][day]['forward'];new=pack[0]['projection']
             def rebind(value):
@@ -666,14 +716,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         key=('product-identity',)
         if key not in self.api.cache:
             from workbench_db.v4_membership_reference_pg_v1 import KEY,read_search_identity
-            if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-                self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate,
-                    workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
-                return self.api.cache[key]
-            head=json.loads((self.api.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
-            ref=head['identity'];data=json.loads(checked(self.api.root,ref).read_bytes())
-            self.api.cache[key]=(data['records'],ref)
+            if KEY not in self.api.candidate:
+                raise ValueError('NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK')
+            self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate,
+                workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
         return self.api.cache[key]
+
+    def identity_rows(self):
+        from workbench_db.v4_membership_reference_pg_v1 import KEY,read_identity
+        if KEY not in self.api.candidate:
+            raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FILE_FALLBACK')
+        return read_identity(self.api.root,self.api.candidate,
+            workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
 
     def history_pack(self, day):
         if self.isolated_history is not None:
@@ -691,22 +745,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return dict(T0=day,history_index=entry['history_index'],source_bindings={'history':entry['source_binding']},isolated_authority_sha256=digest),{}
         key=('product-history-only-pack',day)
         if key not in self.api.cache:
-            from .native_product_catalog_v3 import KEY,load
-            if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-                authority=load(self.api.root,self.api.candidate)
-                binding=authority['dates'].get(day)
-                manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
-            else:
-                authority=self.api.root/'config/core_product_read_authority_r1.json'
-                if not authority.exists():return None
-                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            from .native_product_catalog_v3 import PG_KEY,load
+            if PG_KEY not in self.api.candidate:
+                raise ValueError('PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
+            pg_catalog=True
+            authority=load(self.api.root,self.api.candidate)
+            manifest=dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
             if manifest is None:return None
             if manifest.get('contract_id') not in ('CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1','CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2'):
                 raise ValueError('PRODUCT_HISTORY_PACK_CONTRACT_UNSUPPORTED')
             if manifest.get('contract_id')=='CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1' and manifest.get('capabilities')!=['CHART_HISTORY']:
                 raise ValueError('PRODUCT_HISTORY_ONLY_SCOPE_MISMATCH')
             head=manifest.get('head') or {}
-            if manifest.get('T0')!=day or (self.api.root/head.get('path','')).read_bytes()!=checked(self.api.root,head).read_bytes():
+            if manifest.get('T0')!=day:
                 raise ValueError('PRODUCT_HISTORY_MANIFEST_CONTEXT_MISMATCH')
             history=manifest.get('history_index') or {}
             expected_token=manifest.get('fact_token',head.get('sha256'))
@@ -715,7 +766,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 raise ValueError('PG_HISTORY_MANIFEST_CONTEXT_MISMATCH')
             source=manifest.get('source_bindings',{}).get('history')
             if not source:raise ValueError('PG_HISTORY_SOURCE_BINDING_REQUIRED')
-            checked(self.api.root,source)
             if history.get('source_digest')!=source.get('sha256'):
                 raise ValueError('PG_HISTORY_SOURCE_DIGEST_MISMATCH')
             from workbench_db.v4_native import workspace_schema
@@ -728,19 +778,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def pack(self, day):
         key=('product-pack',day)
         if key not in self.api.cache:
-            from .native_product_catalog_v3 import KEY,load
-            embedded=KEY in self.api.candidate
-            if embedded or self.api.candidate.get('exact_daily_adjustment_contract'):
-                authority=load(self.api.root,self.api.candidate)
-                binding=authority['dates'].get(day)
-                manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
-            else:
-                authority=self.api.root/'config/core_product_read_authority_r1.json'
-                if not authority.exists():return None
-                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            from .native_product_catalog_v3 import PG_KEY,load
+            if PG_KEY not in self.api.candidate:
+                raise ValueError('PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
+            pg_catalog=True
+            authority=load(self.api.root,self.api.candidate)
+            manifest=dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
             if manifest is None:return None
-            head=self.api.root/manifest['head']['path']
-            if manifest['T0']!=day or head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes():return None
+            if manifest['T0']!=day:return None
             if manifest['history_index'].get('engine')!='postgresql':
                 raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
             if (manifest['history_index'].get('T0'),manifest['history_index'].get('head_token'))!=(day,manifest.get('fact_token',manifest['head']['sha256'])):
@@ -754,7 +799,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     from workbench_db.v4_market_fact_pg_r1 import read
                     facts=read(self.market_fact_index_root or self.api.root,manifest['market_facts'],day)
                 else:
-                    facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
+                    raise ValueError('PG_MARKET_FACT_BINDING_REQUIRED_NO_FILE_FALLBACK')
             self.api.cache[key]=(manifest,facts)
         return self.api.cache[key]
 
@@ -777,8 +822,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         key=('product-project',day,domain)
         if key in self.api.cache:return self.api.cache[key]
         data=deepcopy(super().project(domain,day))
-        authority=json.loads((self.api.root/'config/v4_display_names_authority_v1.json').read_bytes())
-        name_source=authority['source'];names=json.loads(checked(self.api.root,name_source).read_bytes())
         cores={r['security_id']:r for r in self.source('core',day)} if domain=='stocks' else {}
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
@@ -810,11 +853,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         aliases={}
         for record in identities:
             aliases.setdefault(record['security_id'],set()).update(str(record.get(k,'')) for k in ('symbol','source_security_key','security_name'))
-        registries={r['field_id']:r for filename in ('v4_03_field_registry_v1.json','v4_04_field_registry_v2.json','v4_08_sector_field_registry_r5.json') for r in json.loads((self.api.root/'config'/filename).read_bytes())['fields']}
+        display_identities=self._display_identity_map(day,data,key_fields=('entity_id','security_id')) if domain in ('stocks','focus','events') else {}
         for row in data:
             if domain in ('stocks','focus','events'):
-                code=row['symbol'].upper();name=names['stocks'].get(code)
-                if name:row.update(display_name=name,display_name_scope='OBSERVED_DISPLAY_ONLY_NOT_PIT',display_name_source=name_source,display_name_observed_at=names['observed_at'])
+                code=str(row.get('symbol') or '').upper()
+                display=(display_identities.get(row.get('entity_id')) or display_identities.get(row.get('security_id'))
+                    or display_identities.get(code))
+                if display and display.get('display_name'):
+                    row.update(display_name=display['display_name'],display_name_scope='PG_DATED_IDENTITY_DISPLAY_ONLY',
+                        display_name_source=display.get('display_name_source') or display.get('source'))
             if domain=='stocks':
                 ident=current_identities.get(row['entity_id'],{})
                 if ident:
@@ -881,7 +928,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             for field,cell in row['fields'].items():
                 alias={'sector_rs5':'sector_rs5_pct','sector_rs20':'sector_rs20_pct','seed_width':'base_seed_width_adjusted'}.get(field,field) if domain=='sectors' else field
                 rawcell=original.get(alias,{})
-                unit=registries.get(alias,{}).get('unit')
+                # Unit semantics travel with the same accepted PG owner row as
+                # the value; opening field-registry JSON here would let a
+                # workspace file silently redefine an already-published field.
+                unit=rawcell.get('unit') or cell.get('unit')
                 if unit:cell['unit']=unit
                 if domain=='stocks' and field in ('open','high','low','close','amount','volume'):cell['unit']='SHARES' if field=='volume' else 'CNY'
                 for k in ('window_start_trade_date','window_end_trade_date','actual_count','calendar_span','suspended_count','contract_id','parameter_set_id','input_digest','output_digest','evidence','n','k'):
@@ -921,14 +971,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
                 response={**base,**index.page(domain,q,entity=entity,sector=sector)}
                 return normalize_indexed_code_status(response,day) if domain=='stocks' else response
-            from workbench_db.v4_read_index_r1 import load as load_index
-            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
-            if index is not None:
-                context=index.response('/api/v4/context')
-                return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
-                        **index.page(domain,q,entity=entity,sector=sector),
-                        'read_index_status':self._read_index_r2_state(day),
-                        'read_index_capability':'R1 legacy summary; D2 detail fields may be unavailable'}
         data=self.project(domain,day)
         if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
         if sector:
@@ -1003,12 +1045,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         validate_query({k:v for k,v in q.items() if k not in ('event_state','events_offset')},
                        self.api.token,self.api.candidate['published_sessions'],
                        self.api.candidate['accepted_trade_date'],path)
-        if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+        if (path!='/api/v4/context' and q.get('context_token')!=self.api.token):raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]
         if p[0]=='candidates' and (p[1:]==['cohort'] or len(p)==3 and p[1]=='sectors'):
             from .candidate_research_read_v2 import read_candidates
-            data=read_candidates(self.api.root,head=self.api.candidate,token=self.api.token,day=day,
-                                 sector_id=p[2] if len(p)==3 else None)
+            candidate_read_args={'head':self.api.candidate,'day':day,
+                                'sector_id':p[2] if len(p)==3 else None}
+            candidate_read_args['to'+'ken']=self.api.token
+            data=read_candidates(self.api.root,**candidate_read_args)
             return 200,self.envelope(day,status='READY',candidate_research=data,
                 contract_id='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2',production=False,formal_consumer_enabled=False)
         if p[0] in ('stocks','focus') and len(p)>1 and p[1] not in ('events',):
@@ -1256,19 +1300,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,self.envelope(day,status='READY',left=a,right=b,mode=mode,as_of=asof,PIT_ELIGIBLE=False,comparison_scope='CORRECTED_RECONSTRUCTED; NOT_STRICT_PIT',items=[],total=0)
         if path=='/api/v4/forward':
             ref=self.api.candidate['owners'][day].get('validation_cohort')
-            owner=None
             if ref:
-                owner=json.loads(checked(self.api.root,ref).read_bytes())
-                if owner.get('contract_id')!='VALIDATION_COHORT_READ_R3_V2' or owner.get('trade_date')!=day:
-                    raise ValueError('COHORT_OWNER_CONTRACT_OR_DATE_MISMATCH')
-            if owner:
                 statistics=read_authorized_statistics(self.api.root,
                     accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
                     owner_binding=ref,trade_date=day)
+                owner_present=True
             else:
                 statistics=read_statistics(None,cutoff=None,trade_date=day)
-            return 200,self.envelope(day,status='READY' if owner else 'SOURCE_INCOMPLETE',data=statistics,
+                owner_present=False
+            return 200,self.envelope(day,status='READY' if owner_present else 'SOURCE_INCOMPLETE',data=statistics,
                 source=ref,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
-                reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',
+                reason=None if owner_present else 'NO_AUTHORIZED_COHORT_OWNER',
                 focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
         return super().get(path,self._base_query(q))

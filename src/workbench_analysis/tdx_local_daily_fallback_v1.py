@@ -9,10 +9,14 @@ from datetime import datetime,timezone
 import hashlib,json,os,struct,tempfile,zipfile
 from .tdx_official_daily_source import sha256_file,_atomic_write,_json_bytes
 from .tdx_latest_daily_source_v2 import extract_target_session_bars
+from common.paths import configured_path_source,resolve_tdx_root
 
 
-def fallback(latest,extraction,trade_date,daily_rows,*,snapshot_root,tdx_root=Path('D:/new_tdx')):
-    root=Path(snapshot_root);tdx_root=Path(tdx_root).resolve()
+def fallback(latest,extraction,trade_date,daily_rows,*,snapshot_root,tdx_root=None):
+    project_root=Path(__file__).resolve().parents[2]
+    root=Path(snapshot_root)
+    source_configuration=configured_path_source(project_root,'tdx.source_root',explicit=tdx_root)
+    tdx_root=resolve_tdx_root(project_root,tdx_root)
     if root.resolve().is_relative_to(tdx_root):raise ValueError('FALLBACK_OUTPUT_INSIDE_TDX')
     target=int(trade_date.replace('-',''))
     if not daily_rows or any(r['date']!=trade_date for r in daily_rows):raise ValueError('FALLBACK_DATED_BAOSTOCK_REQUIRED')
@@ -76,6 +80,7 @@ def fallback(latest,extraction,trade_date,daily_rows,*,snapshot_root,tdx_root=Pa
     receipt=dict(contract_id='TDX_LOCAL_DATED_FALLBACK_V1',target_session=trade_date,official=latest['download'],
         official_target_evidence=extraction['artifact'],local_sources=sources,AS_RECORDED=False,PIT_ELIGIBLE=False,
         composite=dict(path=str(final.resolve()),sha256=sha256_file(final),bytes=final.stat().st_size),
+        tdx_source_root=str(tdx_root),tdx_root_configuration_source=source_configuration,
         provenance='DERIVED_OFFICIAL_PLUS_READ_ONLY_LOCAL_NATIVE_SNAPSHOT; NOT_AN_OFFICIAL_DOWNLOAD')
     receipt_path=final.parent/'FALLBACK_RECEIPT.json'
     if not receipt_path.exists():_atomic_write(receipt_path,_json_bytes(receipt),tdx_root=tdx_root)

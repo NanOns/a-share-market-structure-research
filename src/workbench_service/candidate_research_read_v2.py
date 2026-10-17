@@ -1,7 +1,6 @@
 """Optional, head-bound candidate display. No formal fields or counts change."""
 import json
 import hashlib
-import re
 from pathlib import Path
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
@@ -89,36 +88,58 @@ def first_capture_readiness(head, day, sessions, *, evaluated_at=None, session_c
 
 
 def capture_calendar_contract(root):
-    """Return the accepted close-time contract identity without guessing a cutoff."""
-    path=Path(root)/'config/v4_dm01_bridge_calendar_v1.json'
-    raw=path.read_bytes();document=json.loads(raw)
+    """Load the approved calendar cutoff contract only from its PG registry entry."""
+    import os
+    contract_id='V4_DM01_OFFICIAL_CALENDAR_BRIDGE_V1';version='1.0.0'
+    source=os.environ.get('V4_DAILY_CONTRACT_SOURCE','PG')
+    if source!='PG':raise ValueError('DAILY_RUNTIME_CONTRACT_PG_ONLY')
+    namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+    try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
+    if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
+    from workbench_analysis.contract_registry_pg_v1 import (
+        ContractRegistryError,
+        load_current_approved_contract,
+    )
+    from workbench_db.v4_publication_reader import readonly_connection
+    try:
+        with readonly_connection() as pg:
+            registered=load_current_approved_contract(pg,contract_id,version,namespace,
+                expected_database_identity=identity)
+    except ContractRegistryError as exc:
+        raise ValueError(str(exc)) from exc
+    document=registered.parsed_json
+    raw=registered.raw_content
     runtime=document.get('runtime',{})
-    if document.get('contract_id')!='V4_DM01_OFFICIAL_CALENDAR_BRIDGE_V1' or runtime.get('timezone')!='Asia/Shanghai' or not runtime.get('market_close_local'):
+    if (document.get('contract_id')!=contract_id
+            or document.get('version')!=version
+            or runtime.get('timezone')!='Asia/Shanghai'
+            or not runtime.get('market_close_local')):
         raise ValueError('SESSION_CUTOFF_CONTRACT_INVALID')
-    return runtime['market_close_local'],dict(path=path.relative_to(root).as_posix(),sha256=hashlib.sha256(raw).hexdigest(),
-        contract_id=document['contract_id'],timezone=runtime['timezone'])
+    binding={'source':'PG_APPROVED_REGISTRY',
+        'sha256':hashlib.sha256(raw).hexdigest(),'contract_id':document['contract_id'],
+        'version':document['version'],'timezone':runtime['timezone']}
+    return runtime['market_close_local'],binding
 
 
 def checked_dependency(root,binding):
-    """Verify original computation bytes after a source-code revision.
-
-    Only model/config dependencies can use this content-addressed archive.
-    Owner/source data and the accepted release chain never fall back here.
-    """
+    """Resolve frozen code/config bytes; data inputs retain their original binding."""
+    from pathlib import Path
+    root=Path(root).resolve()
     relative=Path(binding['path'])
-    if relative.is_absolute() or '..' in relative.parts or not relative.parts or relative.parts[0] not in ('src','config'):
-        return checked(root,binding)
-    try:
-        return checked(root,binding)
-    except (ValueError,OSError):
-        sha=binding['sha256']
-        if not isinstance(sha,str) or not re.fullmatch('[0-9a-f]{64}',sha):
-            raise ValueError('FROZEN_DEPENDENCY_SHA_REQUIRED')
-        archive='docs/evidence/producer_dependency_archive_v1/'+sha+'.bin'
+    if relative.is_absolute() or '..' in relative.parts:
+        raise ValueError('DEPENDENCY_PATH_ESCAPE')
+    if relative.parts and relative.parts[0] in ('src','config'):
+        archive=root/'data/v4/artifact_store/producer_dependency_archive_v1'/(binding['sha256']+'.bin')
         try:
-            return checked(root,dict(binding,path=archive))
-        except (ValueError,OSError) as exc:
+            raw=archive.read_bytes()
+        except OSError as exc:
             raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
+        import hashlib
+        if hashlib.sha256(raw).hexdigest()!=binding['sha256']:
+            raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED')
+        return archive
+    return checked(root,binding)
 
 
 def accepted_candidate_head(root, current, token, binding, day):
@@ -132,12 +153,10 @@ def accepted_candidate_head(root, current, token, binding, day):
         raise ValueError('OLD_TOKEN')
     cutoff=current.get('accepted_trade_date')
     if not cutoff or day>cutoff:raise ValueError('FUTURE_DATE')
-    if current.get('exact_daily_adjustment_contract'):
-        from workbench_db.v4_membership_reference_pg_v1 import research_authority
-        research=research_authority(root,current,day)
-        if research['input_candidate']!=binding:raise ValueError('NATIVE_RESEARCH_INPUT_HEAD_MISMATCH')
+    if current.get('exact_daily_adjustment_contract') and day==cutoff:
+        from workbench_db.v4_membership_reference_pg_v1 import read_research_input_candidate
         # Input-owner conservation never accepts the pending producer Head.
-        return json.loads(checked(root,binding).read_bytes())
+        return read_research_input_candidate(root,current,day,binding)
     candidate=current;seen=set()
     for _ in range(4096):
         identity=digest(candidate)
@@ -186,15 +205,25 @@ def read_candidates(root, *, head, token, day, sector_id=None):
             raise ValueError('OLD_TOKEN')
         if not head.get('accepted_trade_date') or day>head['accepted_trade_date']:
             raise ValueError('FUTURE_DATE')
-        index_path=root/'data/v4/producer_candidate_index_v2.json'
-        if not index_path.exists():return dict(result,reason='CANDIDATE_INDEX_NOT_CREATED')
-        index=json.loads(index_path.read_bytes());entry=index.get('sessions',{}).get(day)
-        if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
-        if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
-            raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
+        if (head.get('exact_daily_adjustment_contract')
+                and day==head.get('accepted_trade_date')):
+            from workbench_db.v4_membership_reference_pg_v1 import research_authority
+            research=research_authority(root,head,day)
+            entry=research.get('index_entry')
+            if research.get('index_contract')!='PRODUCER_CANDIDATE_INDEX_V2' or not isinstance(entry,dict):
+                raise ValueError('NATIVE_RESEARCH_INDEX_PG_AUTHORITY_REQUIRED_NO_FALLBACK')
+            if entry.get('production') is not False:raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
+        else:
+            index_path=root/'data/v4/producer_candidate_index_v2.json'
+            if not index_path.exists():return dict(result,reason='CANDIDATE_INDEX_NOT_CREATED')
+            index=json.loads(index_path.read_bytes());entry=index.get('sessions',{}).get(day)
+            if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
+            if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
+                raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
         current=head;head=accepted_candidate_head(root,head,token,entry['head'],day)
         def read_document(binding):
-            if current.get('exact_daily_adjustment_contract'):
+            if (current.get('exact_daily_adjustment_contract')
+                    and day==current.get('accepted_trade_date')):
                 from workbench_db.v4_membership_reference_pg_v1 import read_research
                 return read_research(root,current,day,binding)
             return json.loads(checked(root,binding).read_bytes())

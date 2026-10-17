@@ -18,6 +18,11 @@ def authorize_descriptor(root,args,descriptor):
     head['owners'][args['trade_date']]['validation_cohort']=descriptor
     return dict(args,accepted_head=write(root,'pg_head_fixture.json',head),owner_binding=descriptor)
 
+def test_runtime_cohort_owner_rejects_source_json_fallback(tmp_path):
+    args=setup(tmp_path)
+    with pytest.raises(ValueError,match='PG_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK'):
+        load_owner(tmp_path,args['owner_binding'])
+
 def test_pg_exact_owner_read_requires_same_accepted_grant(tmp_path):
     args=setup(tmp_path)
     before=(tmp_path/'head.json').read_bytes()

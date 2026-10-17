@@ -12,17 +12,18 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
 from workbench_analysis.daily_source_manifests import build_current_lifecycle_snapshot  # noqa: E402
 from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
-    load_runtime_acceptance_manifest,
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
+from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
+    _daily_runtime_contract, _load_pg_runtime_acceptance,
+)
+from common.paths import resolve_baostock_cache_root  # noqa: E402
 
 
 SHANGHAI = ZoneInfo("Asia/Shanghai")
-TDX_ROOT = Path("D:/new_tdx")
 
 
 def sha256(path: Path) -> str:
@@ -65,7 +66,7 @@ def accepted_parent_rows(path: Path, baseline_date: str) -> list[dict]:
 
 
 def select_baostock_snapshot(target_date: str, snapshot_id: str | None) -> tuple[dict, Path]:
-    folder = ROOT / "data/v4/source_snapshots/baostock" / target_date.replace("-", "")
+    folder = resolve_baostock_cache_root(ROOT) / "baostock" / target_date.replace("-", "")
     matches = []
     for path in folder.glob("sha256-*/daily_update.json") if folder.is_dir() else []:
         try:
@@ -96,8 +97,6 @@ def main() -> int:
     from workbench_analysis.dm01_runtime_r4 import session_gate
     gate = session_gate(args.target_date, now.isoformat())
     local = now.astimezone(SHANGHAI)
-    output = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
-    receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot_receipt.json"
     if gate['status'] == 'WAIT_MARKET_CLOSE':
         result = {"contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1", "status": "WAIT_MARKET_CLOSE",
                   "trade_date": args.target_date, "observed_at": now.isoformat(), "tdx_root_write_count": 0}
@@ -119,10 +118,13 @@ def main() -> int:
             calendar = dict(status='PASS', latest_completed_official_session=baseline_date, official_sessions_after_base_cutoff=[d for d in cal['session_dates'] if d > baseline_date])
             bootstrap_path = ROOT / head['accepted_chain']['path']
             bao, bao_path = select_baostock_snapshot(args.target_date, args.baostock_snapshot_id)
-            config = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))
+            config = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+                                             "config/baostock_supplemental_contract_v1.json")
             runtime_template = config["dm01_daily_updates"]["runtime_acceptance_manifest_template"]
             runtime_path = ROOT / runtime_template.replace("{YYYYMMDD}", args.target_date.replace("-", ""))
-            runtime = load_runtime_acceptance_manifest(runtime_path, project_root=ROOT, tdx_root=TDX_ROOT)
+            runtime_bundle = _load_pg_runtime_acceptance(ROOT, args.target_date)
+            runtime = runtime_bundle["manifest"]
+            runtime_path = runtime_bundle["manifest_path"]
             runtime_error = runtime_acceptance_error(runtime, sdk=package_metadata(), auth_mode=str(runtime.get("auth_mode") or ""))
             if runtime_error or runtime.get("live_smoke", {}).get("target_date") != args.target_date:
                 raise ValueError("LIFECYCLE_BAOSTOCK_RUNTIME_NOT_ACCEPTED:" + str(runtime_error or "TARGET_DATE_MISMATCH"))
@@ -154,14 +156,11 @@ def main() -> int:
                 source_evidence=source_evidence,
                 observed_at=now.isoformat(),
             )
-            artifact_sha = write_json_atomic(output, manifest, tdx_root=TDX_ROOT)
             result = {
                 "contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1",
                 "status": manifest["status"],
                 "trade_date": args.target_date,
                 "event_status": manifest["event_status"],
-                "artifact_path": str(output),
-                "artifact_sha256": artifact_sha,
                 "unknown_source_key_count": len(manifest["unknown_source_keys"]),
                 "identity_candidate_count": manifest["identity_detector"]["candidate_count"],
                 "tdx_root_write_count": 0,
@@ -170,8 +169,10 @@ def main() -> int:
             result = {"contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1", "status": "WAIT_INPUTS_OR_BLOCKED",
                       "trade_date": args.target_date, "reason": str(exc)[:240],
                       "observed_at": now.isoformat(), "tdx_root_write_count": 0}
-    receipt_sha = write_json_atomic(receipt_path, result, tdx_root=TDX_ROOT)
-    print(json.dumps({**result, "receipt_path": str(receipt_path), "receipt_sha256": receipt_sha}, ensure_ascii=False))
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage
+    stage_payload = manifest if "manifest" in locals() else result
+    stage_binding = append_stage(ROOT, args.target_date, "lifecycle_snapshot", stage_payload)
+    print(json.dumps({**result, "pg_stage_state": stage_binding}, ensure_ascii=False))
     return 0 if result["status"] in {"READY", "DEGRADED_PASS", "WAIT_MARKET_CLOSE"} else 2
 
 

@@ -1,6 +1,7 @@
 """Explicit exact daily successor admission, separate from historical V1.1."""
 from pathlib import Path
 from .r43_owner_replay import checked,load,ref
+from common.paths import resolve_tdx_root
 
 CONTRACT='V4_OPERATIONAL_DAILY_EXACT_RELEASE_POLICY_V2'
 PATH='config/operational_daily_exact_release_policy_v2.json'
@@ -54,13 +55,13 @@ def immutable_policy_binding(root,binding=None):
     """Retain exact policy bytes; accepted Heads never depend on a mutable file."""
     import hashlib
     from .tdx_official_daily_source import _atomic_write
-    root=Path(root).resolve();binding=binding or ref(root,root/PATH)
+    root=Path(root).resolve();tdx_root=resolve_tdx_root(root);binding=binding or ref(root,root/PATH)
     path=checked(root,binding).resolve()
     if path==root/PATH:
         raw=path.read_bytes();archive=root/ARCHIVE/hashlib.sha256(raw).hexdigest()/'POLICY.json'
         if archive.exists():
             if archive.read_bytes()!=raw:raise ValueError('EXACT_V2_IMMUTABLE_POLICY_CONFLICT')
-        else:_atomic_write(archive,raw,tdx_root=Path('D:/new_tdx'))
+        else:_atomic_write(archive,raw,tdx_root=tdx_root)
         return ref(root,archive)
     expected=root/ARCHIVE/binding['sha256']/'POLICY.json'
     if path!=expected:raise ValueError('EXACT_V2_DAILY_POLICY_PATH_REQUIRED')

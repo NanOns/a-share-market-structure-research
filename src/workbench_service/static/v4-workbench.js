@@ -2,6 +2,8 @@
 (() => {
   const modules=['summary','radar','entity','sector','cohort','settlement','health'];
   const labels={effective_event:'状态变化',primary_scenario:'场景',counterevidence:'证据 / 风险',trade_date:'来源交易日',entity_id:'对象',signal_type:'信号类别',eligibility_state:'资格',priority_bucket:'优先级',source_security_key:'股票代码',close:'收盘价',open:'开盘价',high:'最高价',low:'最低价',list_date:'上市日期',scenario:'场景',scenario_status:'场景状态',state:'研究状态',final_eligibility:'最终资格',state_freshness:'状态时效',health:'健康',maturity:'成熟度',sector_id:'板块编码',sector_name:'板块',member_count:'已接受成员数',algorithm_state:'板块算法状态',T0:'冻结 T0',cohort_namespace:'样本命名空间',enrollment_id:'入组身份',evidence_class:'证据类型',horizon:'期限',outcome_status:'观察结果',due_date:'到期日',outcome_revision:'结果修订',component:'数据组件',row_count:'记录数',quality:'来源质量'};
+  const routeParams=new URLSearchParams(location.search);
+  const candidateMode=routeParams.get('source')==='pg_candidate';
   let context=null,generation=0;
   const node=(tag,text,cls)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;};
   const fmt=value=>value===null?'无 / 不适用':typeof value==='object'?JSON.stringify(value):String(value);
@@ -10,6 +12,16 @@
     const payload=await response.json();if(!response.ok)throw Error(payload.code+' · '+(payload.reason||''));return payload;
   }
   function render(module,payload){
+    if(candidateMode){
+      if(payload.context?.context_token!==context.context_token)throw Error('PG 候选上下文已变更，请刷新页面');
+      const target=document.querySelector('#'+module+' .content');target.replaceChildren();
+      target.append(node('span','PG candidate · '+payload.business_result_state,'badge mode'));
+      const states=payload.field_data_states||{};
+      const stateList=node('ul');for(const [field,state] of Object.entries(states))stateList.append(node('li',`${labels[field]||field}: ${state} · ${payload.field_coverage?.[field]?.missing_reason||'字段由当前 Publication 验证'}`));
+      target.append(stateList);
+      const details=node('details');details.open=true;details.append(node('summary','同一 PG Publication 的字段与 Owner 读回证据'),node('pre',JSON.stringify({workspace_identity:payload.workspace_identity,context:payload.context,payload:payload.payload,parsed_business_fields:payload.parsed_business_fields,uncovered_reasons:payload.uncovered_reasons},null,2)));target.append(details);
+      return;
+    }
     if(payload.context_token!==context.context_token)throw Error('上下文已变更，请刷新页面');
     const target=document.querySelector('#'+module+' .content');target.replaceChildren();
     target.append(node('span',payload.source_mode,'badge mode'),node('span',' '+payload.module_status+' · '+payload.total+' 条','badge'));
@@ -37,12 +49,21 @@
     const currentGeneration=generation;
     const q=document.querySelector('[data-query="'+module+'"]')?.value||'';
     const state=document.querySelector('[data-state="'+module+'"]')?.value||'';
-    try{const payload=await fetchModule(module,{context_token:context.context_token,q,state,limit:module==='health'?'30':'6'});if(currentGeneration===generation)render(module,payload);}
+    try{const params=candidateMode?{source:'pg_candidate',trade_date:routeParams.get('trade_date'),model_namespace_id:routeParams.get('model_namespace_id'),context_token:routeParams.get('context_token')}:{context_token:context.context_token,q,state,limit:module==='health'?'30':'6'};const payload=await fetchModule(module,params);if(currentGeneration===generation)render(module,payload);}
     catch(error){if(currentGeneration===generation)document.querySelector('#'+module+' .content').replaceChildren(node('p','SOURCE_INVALID · '+error.message,'error'));}
   }
   async function refresh(){
     generation++;const banner=document.querySelector('#status');
     try{
+      if(candidateMode){
+        const tradeDate=routeParams.get('trade_date'),namespace=routeParams.get('model_namespace_id'),token=routeParams.get('context_token');
+        if(!tradeDate||!namespace||!token)throw Error('PG_CANDIDATE_CONTEXT_REQUIRED · 需提供 trade_date、model_namespace_id、context_token');
+        context={context_token:token,accepted_trade_date:tradeDate,model_namespace_id:namespace};
+        banner.replaceChildren(node('strong','显式 PG candidate 模式 · '+tradeDate),node('p','七个页面使用同一 namespace、T0 和 context token；此模式不回退或混读文件 Head。'));
+        const identity=node('div',undefined,'identity');for(const [label,value] of [['模型命名空间',namespace],['候选交易日',tradeDate],['上下文令牌',token.slice(-16)],['页面读取数','7']]){const block=node('div');block.append(node('span',label,'muted'),node('strong',value));identity.append(block);}banner.append(identity);
+        document.querySelector('#token').textContent='PG candidate · '+token.slice(-16);
+        await Promise.all(modules.map(load));window.V4Context=context;return;
+      }
       context=await fetchModule('context');const c=context.context;banner.replaceChildren(node('strong','当前展示：'+c.accepted_trade_date+' 已接受 V4 状态'),node('p',context.status+' · '+c.freshness_state));
       const identity=node('div',undefined,'identity');for(const [label,value] of [['当前阶段',c.stage],['数据更新时间',c.data_updated_at],['Data head',c.data_head_digest.slice(0,16)],['Stage head',c.stage_head_digest.slice(0,16)]]){const block=node('div');block.append(node('span',label,'muted'),node('strong',value));identity.append(block);}banner.append(identity);
       document.querySelector('#token').textContent='固定上下文 '+context.context_token.slice(-16);

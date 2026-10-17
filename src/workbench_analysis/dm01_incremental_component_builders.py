@@ -33,7 +33,10 @@ from workbench_analysis.special_price_phases import SpecialPhaseEventStore, Phas
 
 ROOT=Path(__file__).resolve().parents[2]
 CONTRACT_PATH='config/dm01_incremental_builders_contract_r1.json'
-TDX_ROOT=Path('D:/new_tdx')
+from common.paths import resolve_tdx_root
+
+def _tdx_root():
+    return resolve_tdx_root(ROOT)
 
 class ComponentBuildError(ValueError):
     pass
@@ -65,11 +68,11 @@ def load(ref):
     return json.loads(bound_path(ref).read_text(encoding='utf8'))
 
 def _write_immutable(path,value,tdx_roots=()):
-    for root in (TDX_ROOT,*tdx_roots):ensure_outside_tdx(path,Path(root))
+    for root in (_tdx_root(),*tdx_roots):ensure_outside_tdx(path,Path(root))
     data=canonical(value)+b'\n'
     if path.exists():
         if path.read_bytes()!=data:raise ComponentBuildError('IMMUTABLE_CANDIDATE_COLLISION')
-    else:_atomic_bytes(path,data,tdx_root=TDX_ROOT)
+    else:_atomic_bytes(path,data,tdx_root=_tdx_root())
     return hashlib.sha256(data).hexdigest()
 
 def resolve_target_session(parent_date,calendar_binding,observed_at,requested_target=None):
@@ -124,7 +127,7 @@ def _context(cap,target,parent,freeze,calendar,identity,staging):
     if identity['publication_id']!=freeze.get('identity_publication_id') or calendar['publication_id']!=freeze.get('calendar_publication_id'):
         raise ComponentBuildError('PUBLICATION_MISMATCH')
     stage=Path(staging).resolve()
-    for root in (TDX_ROOT,*freeze.get('tdx_roots',[])):ensure_outside_tdx(stage,Path(root))
+    for root in (_tdx_root(),*freeze.get('tdx_roots',[])):ensure_outside_tdx(stage,Path(root))
     try:stage.relative_to((ROOT/'data/v4/artifact_store').resolve())
     except ValueError:pass
     else:raise ComponentBuildError('CANDIDATE_IN_ACCEPTED_NAMESPACE')

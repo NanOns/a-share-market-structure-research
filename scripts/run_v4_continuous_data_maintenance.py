@@ -22,31 +22,24 @@ from workbench_analysis.continuous_data_maintenance import (  # noqa: E402
 from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness  # noqa: E402
 from workbench_analysis.daily_source_freeze import source_freeze_complete_v2  # noqa: E402
 from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
-    load_runtime_acceptance_manifest,
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
 from workbench_analysis.daily_data_head import (  # noqa: E402
-    CAPABILITIES,
-    build_data_head,
-    canonical_digest,
-    read_json,
     write_json_atomic,
 )
 from workbench_analysis.dm01_accepted_builder_registry import validate_registry  # noqa: E402
+from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract  # noqa: E402
+from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baostock_runtime_pg  # noqa: E402
+from workbench_db.v4_forward_pg_r1 import canonical, digest as pg_digest  # noqa: E402
 from tdx.day_reader import read_edge_records  # noqa: E402
+from common.paths import resolve_baostock_cache_root, resolve_tdx_root, resolve_tdx_snapshot_root  # noqa: E402
 
 CONTRACT = Path("config/v4_continuous_data_maintenance_v1.json")
 DAILY_CONTRACT = Path("config/v4_continuous_data_maintenance_v2.json")
 SOURCE_FREEZE_CONTRACT = Path("config/v4_daily_source_freeze_v2.json")
-HEAD_CONTRACT = Path("config/v4_data_accepted_head_v1.json")
+HEAD_CONTRACT = Path("config/v4_data_accepted_head_v2.json")
 BRIDGE_CONTRACT = Path("config/v4_dm01_bridge_calendar_v1.json")
-PHASE0_RECEIPT = Path("reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json")
-R8_STAGE_RECEIPT = Path("reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json")
-R8_POSTCHECK = Path("reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json")
-R8_EVENT = Path("reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_1.json")
-V402_HEAD = Path("data/v4/V4_02_ACCEPTED_HEAD.json")
-V402_MANIFEST = Path("reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json")
 CALENDAR_CONTRACT = Path("config/v4_official_exchange_calendar_v2.json")
 CLOSURES_CONTRACT = Path("config/v4_official_exchange_calendar_expected_closures_v2.json")
 AMENDMENTS_CONTRACT = Path("config/v4_official_calendar_amendments_2026_v1.json")
@@ -58,14 +51,10 @@ UNIVERSE_R7 = Path("data/v4/artifact_store/v4_01/v4_01_historical_universe_requi
 TDX_ARCHIVE = Path(
     "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip"
 )
-STAGE_HEAD = Path("data/v4/V4_STAGE_ACCEPTED_HEAD.json")
-DATA_HEAD = Path("data/v4/V4_DATA_ACCEPTED_HEAD.json")
-DEV_HEAD = Path("data/v4/V4_DEV_BASELINE_HEAD.json")
-BOOTSTRAP_MANIFEST = Path("data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json")
 SHANGHAI = ZoneInfo("Asia/Shanghai")
 BASE_CUTOFF = "2026-09-24"
 INPUT_HEAD = "8941119dba4fb8c75d98699f8fa92c3406de9811"
-TDX_ROOT = Path("D:/new_tdx")
+TDX_ROOT = resolve_tdx_root(ROOT)
 TDX_ARCHIVE_SHA256 = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 
 
@@ -126,7 +115,7 @@ def discover_local_tdx_coverage() -> dict:
 
 def discover_official_tdx_capture(trade_date: str) -> dict | None:
     """Resolve the newest immutable official page/package capture for a session."""
-    folder = ROOT / "data/v4/source_snapshots/tdx" / trade_date.replace("-", "")
+    folder = resolve_tdx_snapshot_root(ROOT) / "tdx" / trade_date.replace("-", "")
     candidates = []
     if not folder.is_dir():
         return None
@@ -157,7 +146,7 @@ def discover_official_tdx_capture(trade_date: str) -> dict | None:
 
 def discover_baostock_daily_capture(trade_date: str) -> dict | None:
     """Resolve a frozen date-level batch snapshot; no row-wise fallback is allowed."""
-    folder = ROOT / "data/v4/source_snapshots/baostock" / trade_date.replace("-", "")
+    folder = resolve_baostock_cache_root(ROOT) / "baostock" / trade_date.replace("-", "")
     if not folder.is_dir():
         return None
     candidates = []
@@ -175,14 +164,14 @@ def discover_baostock_daily_capture(trade_date: str) -> dict | None:
 
 def discover_baostock_runtime_acceptance(trade_date: str) -> tuple[dict | None, str | None]:
     """Accept only an exact-date live smoke receipt bound to this installed SDK/auth mode."""
-    contract = read(Path("config/baostock_supplemental_contract_v1.json"))
+    contract = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+                                       "config/baostock_supplemental_contract_v1.json")
     settings = contract.get("dm01_daily_updates", {})
     template = settings.get("runtime_acceptance_manifest_template")
     if settings.get("runtime_acceptance_contract") != "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1" or not template:
         return None, "RUNTIME_ACCEPTANCE_CONTRACT_INVALID"
-    path = ROOT / str(template).replace("{YYYYMMDD}", trade_date.replace("-", ""))
     try:
-        manifest = load_runtime_acceptance_manifest(path, project_root=ROOT)
+        manifest = load_baostock_runtime_pg(ROOT, trade_date, sdk=package_metadata())["manifest"]
     except ValueError as exc:
         return None, str(exc)
     auth_mode = str(manifest.get("auth_mode") or "")
@@ -195,10 +184,10 @@ def discover_baostock_runtime_acceptance(trade_date: str) -> tuple[dict | None, 
 
 
 def discover_accepted_gbbq_snapshot(trade_date: str) -> dict | None:
-    probe_path = ROOT / "reports/v4_dm01" / trade_date / "gbbq_revision_probe_receipt_v1.json"
     try:
-        probe = json.loads(probe_path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_unique_stage
+        probe = read_unique_stage(ROOT, trade_date=trade_date, stage="gbbq_revision_probe")
+    except (OSError, RuntimeError, ValueError):
         return None
     if probe.get("trade_date") != trade_date or probe.get("status") != "REUSE_ACCEPTED_GBBQ_SNAPSHOT":
         return probe
@@ -215,40 +204,33 @@ def discover_accepted_gbbq_snapshot(trade_date: str) -> dict | None:
 
 
 def discover_lifecycle_snapshot(trade_date: str) -> dict | None:
-    artifact = ROOT / "reports/v4_dm01" / trade_date / "current_lifecycle_snapshot.json"
-    receipt_path = ROOT / "reports/v4_dm01" / trade_date / "current_lifecycle_snapshot_receipt.json"
     try:
-        data = read(artifact)
-        receipt = read(receipt_path)
-    except (OSError, ValueError):
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_unique_stage
+        data = read_unique_stage(ROOT, trade_date=trade_date, stage="lifecycle_snapshot")
+    except (OSError, RuntimeError, ValueError):
         return None
     if (data.get("trade_date") != trade_date or data.get("contract_id") != "CURRENT_LIFECYCLE_SNAPSHOT_V1"
-            or data.get("status") not in {"READY", "DEGRADED_PASS"}
-            or receipt.get("artifact_sha256") != sha(artifact)):
+            or data.get("status") not in {"READY", "DEGRADED_PASS"}):
         return None
     return data
 
 
 def discover_special_phase_snapshot(trade_date: str) -> dict | None:
-    receipt_path = ROOT / "reports/v4_dm01" / trade_date / "special_phase_source_manifest_receipt_v1.json"
     try:
-        receipt = read(receipt_path)
-        artifact = Path(str(receipt.get("manifest_path") or ""))
-        data = read(artifact)
-    except (OSError, ValueError):
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_unique_stage
+        data = read_unique_stage(ROOT, trade_date=trade_date, stage="special_phase_manifest")
+    except (OSError, RuntimeError, ValueError):
         return None
-    if (receipt.get("trade_date") != trade_date or receipt.get("status") not in {"READY", "DEGRADED_PASS"}
-            or data.get("trade_date") != trade_date or data.get("status") not in {"READY", "DEGRADED_PASS"}
-            or sha(artifact) != receipt.get("manifest_sha256")):
+    if data.get("trade_date") != trade_date or data.get("status") not in {"READY", "DEGRADED_PASS"}:
         return None
     return data
 
 
 def discover_source_freeze(trade_date: str) -> dict | None:
-    path = ROOT / "reports/v4_dm01" / trade_date / "daily_source_freeze_v2.json"
     try:
-        manifest = read(path)
-    except (OSError, ValueError):
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_unique_stage
+        manifest = read_unique_stage(ROOT, trade_date=trade_date, stage="daily_source_freeze")
+    except (OSError, RuntimeError, ValueError):
         return None
     if manifest.get("trade_date") != trade_date or not source_freeze_complete_v2(manifest):
         return None
@@ -372,28 +354,40 @@ def component_permissions() -> dict:
 
 
 def accepted_stage_bindings() -> dict:
-    phase0 = read(PHASE0_RECEIPT)
-    r8_stage = read(R8_STAGE_RECEIPT)
-    r8_post = read(R8_POSTCHECK)
-    v402_head = read(V402_HEAD)
+    from workbench_db.v4_dm01_stage_state_pg_r1 import read_unique_stage
+
+    facts = {
+        stage: read_unique_stage(ROOT, trade_date=BASE_CUTOFF, stage=stage)
+        for stage in ("phase0_acceptance", "v401_acceptance", "v401_postcheck", "v402_acceptance")
+    }
+    phase0 = facts["phase0_acceptance"]
+    r8_stage = facts["v401_acceptance"]
+    r8_post = facts["v401_postcheck"]
+    v402 = facts["v402_acceptance"]
     if phase0.get("phase0_status") != "FULL_PASS":
         raise SystemExit("DM01_PHASE0_BASELINE_NOT_FULL_PASS")
     if r8_stage.get("required_scope_status") != "PASS" or r8_post.get("status") != "PASS":
         raise SystemExit("DM01_R8_1_BASELINE_NOT_PASS")
-    if v402_head.get("external_acceptance") != "EXTERNALLY_ACCEPTED":
+    if (v402.get("external_acceptance") != "EXTERNALLY_ACCEPTED"
+            or v402.get("required_scope_result") != "PASS"):
         raise SystemExit("DM01_V4_02_BASELINE_NOT_EXTERNALLY_ACCEPTED")
     archive_sha256 = sha(TDX_ARCHIVE)
     if archive_sha256 != TDX_ARCHIVE_SHA256:
         raise SystemExit("DM01_ACCEPTED_TDX_PACKAGE_HASH_MISMATCH")
     return {
-        "phase0": {"path": PHASE0_RECEIPT.as_posix(), "sha256": sha(PHASE0_RECEIPT)},
-        "v4_01_r8_1": {"path": R8_STAGE_RECEIPT.as_posix(), "sha256": sha(R8_STAGE_RECEIPT),
-                       "external_acceptance": "PENDING_EXTERNAL_REVIEW"},
-        "v4_01_r8_1_postcheck": {"path": R8_POSTCHECK.as_posix(), "sha256": sha(R8_POSTCHECK)},
+        "accepted_stage_facts": {
+            stage: {"trade_date": BASE_CUTOFF, "authority": "PG_FORWARD_FACT",
+                    "payload_sha256": pg_digest(canonical(payload)), "payload": payload}
+            for stage, payload in facts.items()
+        },
+        "phase0": {"authority": "PG_FORWARD_FACT", "payload_sha256": pg_digest(canonical(phase0))},
+        "v4_01_r8_1": {"authority": "PG_FORWARD_FACT", "payload_sha256": pg_digest(canonical(r8_stage)),
+                       "external_acceptance": r8_stage.get("external_acceptance", "PENDING_EXTERNAL_REVIEW")},
+        "v4_01_r8_1_postcheck": {"authority": "PG_FORWARD_FACT", "payload_sha256": pg_digest(canonical(r8_post))},
         "v4_01_identity_map": {"path": IDENTITY_R7.as_posix(), "sha256": sha(IDENTITY_R7)},
         "v4_01_universe": {"path": UNIVERSE_R7.as_posix(), "sha256": sha(UNIVERSE_R7)},
-        "v4_02_accepted_head": {"path": V402_HEAD.as_posix(), "sha256": sha(V402_HEAD)},
-        "v4_02_manifest": {"path": V402_MANIFEST.as_posix(), "sha256": sha(V402_MANIFEST)},
+        "v4_02_accepted_head": {"authority": "PG_FORWARD_FACT", "payload_sha256": pg_digest(canonical(v402)),
+                                "external_acceptance": v402["external_acceptance"]},
         "tdx_archive": {"path": TDX_ARCHIVE.as_posix(),
                         "sha256": archive_sha256,
                         "cutoff": BASE_CUTOFF},
@@ -401,83 +395,31 @@ def accepted_stage_bindings() -> dict:
 
 
 def initialize_bootstrap(bindings: dict) -> dict:
-    present = [path.exists() for path in (STAGE_HEAD, DEV_HEAD, DATA_HEAD, BOOTSTRAP_MANIFEST)]
-    if any(present):
-        if all(present):
-            data = read(DATA_HEAD)
-            return {"status": "ALREADY_BOOTSTRAPPED", "accepted_trade_date": data.get("accepted_trade_date"),
-                    "data_head_sha256": sha(DATA_HEAD), "stage_head_sha256": sha(STAGE_HEAD),
-                    "dev_baseline_sha256": sha(DEV_HEAD), "bootstrap_manifest_sha256": sha(BOOTSTRAP_MANIFEST)}
-        raise SystemExit("DM01_PARTIAL_BOOTSTRAP_POINTERS_FAIL_CLOSED")
-
-    r8 = read(R8_STAGE_RECEIPT)
-    r6 = read(Path("reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json"))
-    phase0 = read(PHASE0_RECEIPT)
-    stage_payload = {
-        "contract_id": "V4_STAGE_ACCEPTED_HEAD_V1",
-        "version": "1.0.0",
-        "status": "READY_FOR_EXTERNAL_REVIEW",
-        "technical_baseline": "DA-MSR-V4.2.2-CODEX-REV2",
-        "phase0_status": phase0["phase0_status"],
-        "v4_01_status": r8["status"],
-        "v4_01_external_acceptance": r8.get("external_acceptance", "PENDING_EXTERNAL_REVIEW"),
-        "v4_02_status": (
-            "PASS" if r6.get("acceptance_result", {}).get("external_acceptance") == "EXTERNALLY_ACCEPTED"
-            and r6.get("stage_contract", {}).get("required_scope_result") == "PASS" else "BLOCKED"
-        ),
-        "v4_02_external_acceptance": "EXTERNALLY_ACCEPTED",
-        "source_cutoffs": {"V4-01": BASE_CUTOFF, "V4-02": BASE_CUTOFF},
-        "bindings": bindings,
-        "data_head_must_not_move_this_pointer": True,
-        "dev_baseline_input_head": INPUT_HEAD,
+    """Resolve the current data authority from PG; local bootstrap JSON is never read."""
+    del bindings  # Baseline facts were already selected from PG by the caller.
+    try:
+        from workbench_db.v4_dm01_stage_state_pg_r1 import (
+            decode_data_head_import_payload,
+            read_latest_stage,
+        )
+        imported = read_latest_stage(ROOT, stage="data_head")
+        data, source_binding = decode_data_head_import_payload(imported)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise SystemExit("DM01_PG_DATA_HEAD_MIGRATION_REQUIRED:" + str(exc)) from exc
+    if (data.get("contract_id") != "V4_DATA_ACCEPTED_HEAD_V2"
+            or data.get("version") != "2.0.0"
+            or data.get("accepted_trade_date") is None
+            or data.get("PIT_ELIGIBLE") is True
+            or data.get("AS_RECORDED") is True):
+        raise SystemExit("DM01_PG_DATA_HEAD_INVALID")
+    return {
+        "status": "PG_DATA_HEAD_READY",
+        "accepted_trade_date": data["accepted_trade_date"],
+        "data_head": data,
+        "data_head_sha256": source_binding["sha256"],
+        "data_head_source_binding": source_binding,
+        "authority": "PG_FORWARD_FACT",
     }
-    stage_sha = atomic(STAGE_HEAD, stage_payload)
-    bootstrap_payload = {
-        "contract_id": "V4_DM01_BOOTSTRAP_MANIFEST_R1",
-        "version": "1.0.0",
-        "status": "CANDIDATE_MANIFEST_READY",
-        "bootstrap_cutoff": BASE_CUTOFF,
-        "stage_accepted_head": {"path": STAGE_HEAD.as_posix(), "sha256": stage_sha},
-        "parent_artifacts": bindings,
-        "component_cutoffs": {name: BASE_CUTOFF for name in CAPABILITIES},
-        "large_historical_files_copied": False,
-        "writes": ["manifest and pointer metadata only"],
-        "stage_00_01_02_modified": False,
-        "v4_03_implementation_started": False,
-        "tdx_root_write_count": 0,
-    }
-    bootstrap_sha = atomic(BOOTSTRAP_MANIFEST, bootstrap_payload)
-    dev_payload = {
-        "contract_id": "V4_DEV_BASELINE_HEAD_V1",
-        "version": "1.0.0",
-        "baseline_id": "V4_DEV_BASELINE_R1_20260928",
-        "created_from_input_commit": INPUT_HEAD,
-        "accepted_data_cutoff": BASE_CUTOFF,
-        "bootstrap_manifest": {"path": BOOTSTRAP_MANIFEST.as_posix(), "sha256": bootstrap_sha},
-        "stage_accepted_head_sha256": stage_sha,
-        "immutable_after_initialization": True,
-        "data_head_updates_move_this_pointer": False,
-    }
-    dev_sha = atomic(DEV_HEAD, dev_payload)
-    source_revision = canonical_digest({
-        "contract_sha256": sha(CONTRACT), "bootstrap_manifest_sha256": bootstrap_sha,
-        "stage_accepted_head_sha256": stage_sha,
-    })
-    candidate = build_data_head(
-        trade_date=BASE_CUTOFF,
-        source_revision=source_revision,
-        canonical_data_revision=source_revision,
-        manifest_path=BOOTSTRAP_MANIFEST.as_posix(),
-        manifest_sha256=bootstrap_sha,
-        parent_head_sha256=None,
-        stage_accepted_head_sha256=stage_sha,
-        dev_baseline_sha256=dev_sha,
-        component_permissions=component_permissions(),
-    )
-    data_sha = atomic(DATA_HEAD, candidate)
-    return {"status": "BOOTSTRAPPED", "accepted_trade_date": BASE_CUTOFF,
-            "data_head_sha256": data_sha, "stage_head_sha256": stage_sha,
-            "dev_baseline_sha256": dev_sha, "bootstrap_manifest_sha256": bootstrap_sha}
 
 
 def main() -> int:
@@ -486,7 +428,7 @@ def main() -> int:
     calendar_receipt, official_sessions = build_calendar_bridge(now)
     bindings = accepted_stage_bindings()
     bootstrap_result = initialize_bootstrap(bindings)
-    current_head = read(DATA_HEAD)
+    current_head = bootstrap_result["data_head"]
     last_accepted = str(current_head.get("accepted_trade_date") or "")
     latest_complete = calendar_receipt.get("latest_completed_official_session")
     if latest_complete is None:
@@ -554,7 +496,7 @@ def main() -> int:
             plan["blocked_sessions"] = blocked
 
     run_date = datetime.now(SHANGHAI).date().isoformat()
-    run_dir = Path(f"reports/v4_dm01/{run_date}")
+    run_dir = Path(f"runtime/v4_dm01/{run_date}")
     calendar_path = run_dir / "calendar_bridge_receipt.json"
     calendar_sha = atomic(calendar_path, calendar_receipt)
     bootstrap_path = run_dir / "bootstrap_receipt.json"
@@ -564,10 +506,11 @@ def main() -> int:
         "status": bootstrap_result["status"],
         "bootstrap_cutoff": BASE_CUTOFF,
         "parent_bindings": bindings,
-        "bootstrap_manifest": {"path": BOOTSTRAP_MANIFEST.as_posix(), "sha256": sha(BOOTSTRAP_MANIFEST)},
-        "stage_head": {"path": STAGE_HEAD.as_posix(), "sha256": sha(STAGE_HEAD)},
-        "dev_baseline_head": {"path": DEV_HEAD.as_posix(), "sha256": sha(DEV_HEAD)},
-        "data_head": {"path": DATA_HEAD.as_posix(), "sha256": sha(DATA_HEAD)},
+        "head_authority": bootstrap_result["authority"],
+        "data_head_sha256": bootstrap_result["data_head_sha256"],
+        "stage_accepted_head_sha256": current_head.get("stage_accepted_head_sha256"),
+        "dev_baseline_sha256": current_head.get("dev_baseline_sha256"),
+        "bootstrap_manifest_sha256": current_head.get("manifest_sha256"),
         "large_historical_files_copied": False,
         "tdx_root_write_count": 0,
     }
@@ -611,8 +554,12 @@ def main() -> int:
                   "PASS_NOOP_ALREADY_ACCEPTED")
     source_freeze_receipts = []
     if source_freeze is not None:
-        source_freeze_path = ROOT / "reports/v4_dm01" / target / "daily_source_freeze_v2.json"
-        source_freeze_receipts.append({"path": source_freeze_path.as_posix(), "sha256": sha(source_freeze_path)})
+        source_freeze_receipts.append({
+            "stage": "daily_source_freeze",
+            "trade_date": target,
+            "payload_sha256": pg_digest(canonical(source_freeze)),
+            "authority": "PG_FORWARD_FACT",
+        })
     tdx_delta_receipt = None
     if official_tdx_capture and official_tdx_capture.get("snapshot_id"):
         package_path = Path(str((official_tdx_capture.get("download") or {}).get("path") or ""))
@@ -633,7 +580,7 @@ def main() -> int:
         "period_impact_receipt": {"path": period_path.as_posix(), "sha256": period_sha},
         "bootstrap_receipt": {"path": bootstrap_path.as_posix(), "sha256": bootstrap_receipt_sha},
         "session_discovery_receipt": {"path": session_path.as_posix(), "sha256": session_sha},
-        "data_head_sha256": sha(DATA_HEAD),
+        "data_head_sha256": bootstrap_result["data_head_sha256"],
         "data_head_moved_after_bootstrap": bool(ready),
         "source_readiness": source_readiness_result,
         "official_tdx_package_capture": official_tdx_capture,

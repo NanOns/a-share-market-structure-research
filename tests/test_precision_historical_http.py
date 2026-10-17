@@ -69,6 +69,9 @@ def test_versioned_dependency_archive_restores_original_bytes_only(tmp_path):
     from workbench_service.candidate_research_read_v2 import checked_dependency
     from workbench_analysis.r43_owner_replay import ref
     root=tmp_path
+    (root/'config').mkdir()
+    (root/'config/paths.yaml').write_text(
+        f'tdx:\n  source_root: "{(root / "readonly-tdx").as_posix()}"\n',encoding='utf-8')
     source=root/'src/original.py';source.parent.mkdir();source.write_bytes(b'original implementation\n')
     binding=ref(root,source)
     frozen=freeze_dependencies(root,[binding])
@@ -80,7 +83,7 @@ def test_versioned_dependency_archive_restores_original_bytes_only(tmp_path):
     source.write_bytes(b'new implementation\n')
     with pytest.raises(ValueError,match='HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED'):
         checked_dependency(root,binding)
-    archive=root/'docs/evidence/producer_dependency_archive_v1'/ (binding['sha256']+'.bin')
+    archive=root/'data/v4/artifact_store/producer_dependency_archive_v1'/ (binding['sha256']+'.bin')
     archive.parent.mkdir(parents=True,exist_ok=True);archive.write_bytes(b'original implementation\n')
     assert checked_dependency(root,binding).read_bytes()==b'original implementation\n'
     archive.write_bytes(b'mutated')

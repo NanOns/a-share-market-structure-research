@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -333,6 +334,40 @@ def test_package_never_writes_client_vipdoc(monkeypatch, tmp_path):
     assert result["tdx_root_write_count"] == 0
     assert not client_root.exists()
     assert Path(result["download"]["path"]).is_relative_to(tmp_path / "snapshots")
+
+
+def test_tdx_root_uses_configured_resolver_when_omitted(monkeypatch,tmp_path):
+    from common import paths
+    resolved=tmp_path/'configured-tdx-root'
+    observed=[]
+    monkeypatch.setattr(paths,'resolve_tdx_root',lambda root:(observed.append(root) or resolved))
+    assert tdx_source._tdx_root_or_configured(None)==resolved
+    assert observed==[Path(tdx_source.__file__).resolve().parents[2]]
+
+
+def test_existing_downloader_uses_structured_stdout_receipt_without_report_pointer(monkeypatch,tmp_path):
+    url='https://data.tdx.com.cn/vipdoc/hsjday.zip'
+    capture_root=tmp_path/'data/v4/source_evidence/dm01_a01_r3/tdx/run'
+    package=capture_root/'sha256-package'/'hsjday.zip'
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b'zip-payload')
+    package_binding={'path':package.relative_to(tmp_path).as_posix(),'bytes':package.stat().st_size,
+                     'sha256':tdx_source.sha256_file(package)}
+    receipt={'status':'PASS_OFFICIAL_ZIP','observed_at':datetime.now(timezone.utc).isoformat(),
+             'official_publication_date':TARGET,'attempts':[{'ZIP_valid':True,'url':url}],
+             'request_count':3,'request_limit':5,'package':package_binding,
+             'knowledge_lineage':'RECONSTRUCTED_CORRECTED'}
+    receipt_path=capture_root/'request_receipt.json'
+    receipt_path.write_bytes(tdx_source._json_bytes(receipt))
+    reference={'path':receipt_path.relative_to(tmp_path).as_posix(),
+               'sha256':tdx_source.sha256_file(receipt_path)}
+    output=json.dumps({'status':'PASS','capture_receipt':reference})
+    monkeypatch.setattr(tdx_source.subprocess,'run',lambda *args,**kwargs:type('Result',(),{'returncode':0,'stdout':output})())
+    resolved,metadata=tdx_source._existing_downloader_package(
+        TARGET,url,max_bytes=1024,project_root=tmp_path)
+    assert resolved==package
+    assert metadata['capture_receipt']==reference
+    assert metadata['package']==package_binding
 
 
 class FakeSDK:
@@ -789,6 +824,10 @@ def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
         "source_revision": "lifecycle-r1",
         "active_security_ids": [],
     }
+    (tmp_path / "config").mkdir(exist_ok=True)
+    (tmp_path / "config/paths.yaml").write_text(
+        f"tdx:\n  source_root: {tmp_path / 'tdx-read-only'}\n", encoding="utf-8"
+    )
     result = build_special_phase_source_manifest(
         trade_date=TARGET,
         project_root=tmp_path,
@@ -798,12 +837,35 @@ def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
         policy_path=policy_path,
         lifecycle_snapshot=lifecycle,
         observed_at="2026-09-28T07:00:00+00:00",
-        tdx_root=tmp_path / "tdx-read-only",
     )
     assert result["status"] == "READY"
     assert result["event_status"] == "NO_NEW_SPECIAL_PHASE_EVENT"
     assert result["active_event_count"] == 0
     assert len(result["manifest_sha256"]) == 64
+
+    v402_binding = {"contract_id": "V4_DM01_V402_ACCEPTANCE_INGRESS_R1", "trade_date": TARGET,
+                    "stage_manifest_source_sha256": hashlib.sha256(stage_manifest_bytes).hexdigest(),
+                    "acceptance_source_sha256": "b" * 64, "descriptor_sha256": "c" * 64}
+    pg_lifecycle = {key: value for key, value in lifecycle.items() if key != "artifact_path"}
+    pg_lifecycle.pop("artifact_sha256")
+    pg_result = build_special_phase_source_manifest(
+        trade_date=TARGET,
+        project_root=tmp_path,
+        v402_external_acceptance_path=acceptance_path,
+        v402_stage_manifest_path=stage_manifest_path,
+        event_store_path=event_path,
+        policy_path=policy_path,
+        lifecycle_snapshot=pg_lifecycle,
+        observed_at="2026-09-28T07:00:00+00:00",
+        v402_external_acceptance=json.loads(acceptance_path.read_text(encoding="utf-8")),
+        v402_stage_manifest=stage_manifest,
+        v402_pg_binding=v402_binding,
+        lifecycle_pg_binding={"contract_id": "V4_DM01_STAGE_STATE_PG_R1", "trade_date": TARGET,
+                              "stage": "lifecycle_snapshot", "binding": {"sha256": "d" * 64}},
+    )
+    assert pg_result["status"] == "READY"
+    assert pg_result["accepted_v402_stage_manifest"]["pg_stage"] == "v402_acceptance"
+    assert pg_result["lifecycle_snapshot"]["pg_stage"] == "lifecycle_snapshot"
 
 
 def test_no_identity_event_still_produces_valid_lifecycle_snapshot():

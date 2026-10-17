@@ -12,6 +12,9 @@ def test_live_smoke_uses_requested_or_observed_stock_identity(tmp_path,monkeypat
     """Explicit provider fixture; no network call or real-source acceptance."""
     import json
     import workbench_analysis.market_source_acquisition as m
+    source_root=tmp_path/'tdx-source';source_root.mkdir()
+    monkeypatch.setenv('TDX_ROOT',str(source_root))
+    monkeypatch.setenv('BAOSTOCK_CACHE_ROOT',str(tmp_path/'baostock-cache'))
     (tmp_path/'config').mkdir()
     for name,value in [('v4_market_source_fallback_policy_v1.json',dict(contract_id=m.CONTRACT,production_admission=False)),
                        ('dm01_go_forward_runtime_contract_r4.json',dict(read_only_tdx_roots=[]))]:
@@ -42,10 +45,19 @@ def test_calendar_holiday_and_exact_predecessors():
     assert not is_stock_code('sz.399001') and is_stock_code('sz.300010')
     assert not is_stock_code('bj.899050') and not is_stock_code('bj.899601')
     assert is_stock_code('bj.920001') and is_stock_code('bj.830001')
-    dates = official_sessions(Path(__file__).resolve().parents[1])
+    class Reader:
+        def sessions(self):
+            return ['2026-09-24','2026-09-29','2026-09-30','2026-10-08']
+    dates = official_sessions(Path(__file__).resolve().parents[1],pg_reader=Reader(),source_mode='PG')
     assert dates[dates.index('2026-10-08')-1]=='2026-09-30'
-    assert dates[dates.index('2026-09-30')-3]=='2026-09-24'
     assert not any(f'2026-10-{i:02}' in dates for i in range(1,8))
+
+
+def test_official_sessions_reject_file_authority_mode(tmp_path):
+    (tmp_path/'data/v4').mkdir(parents=True)
+    (tmp_path/'data/v4/V4_DATA_ACCEPTED_HEAD.json').write_text('{}',encoding='utf-8')
+    with pytest.raises(ValueError,match='MARKET_CALENDAR_PG_ONLY'):
+        official_sessions(tmp_path,source_mode='FILE')
 
 
 def test_day_target_not_stale_tail_or_wrong_unit():
@@ -70,6 +82,9 @@ def test_candidate_gates_and_coordinate_never_mix():
 def test_official_failure_does_not_skip_bao_and_errors_are_not_empty(tmp_path,monkeypatch):
     import json
     import workbench_analysis.market_source_acquisition as m
+    source_root=tmp_path/'tdx-source';source_root.mkdir()
+    monkeypatch.setenv('TDX_ROOT',str(source_root))
+    monkeypatch.setenv('BAOSTOCK_CACHE_ROOT',str(tmp_path/'baostock-cache'))
     (tmp_path/'config').mkdir()
     for name,value in [('v4_market_source_fallback_policy_v1.json',dict(contract_id=m.CONTRACT,production_admission=False)),
                        ('dm01_go_forward_runtime_contract_r4.json',dict(read_only_tdx_roots=[]))]:

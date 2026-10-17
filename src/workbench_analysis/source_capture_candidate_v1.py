@@ -38,8 +38,17 @@ def capture(root, *, trade_date, sessions, calendar_binding, sources,
         raise ValueError('COMPLETE_SCOPE_REQUIRED')
     if len(set(sector_ids)) != len(sector_ids):
         raise ValueError('DUPLICATE_SECTOR_SCOPE')
-    # Bind calendar and computation identities without treating them as grants.
-    for binding in (calendar_binding, model_binding, config_binding):
+    # A canonical PG calendar contract is already a typed publication fact;
+    # only code/config artifacts are opened as files at this boundary.
+    if isinstance(calendar_binding,dict) and calendar_binding.get('source')=='PG_ACCEPTED_PUBLICATION_HEAD':
+        required=('publication_id','publication_revision','market_calendar_id','calendar_digest',
+                  'contract_id','contract_version','contract_sha256')
+        if any(calendar_binding.get(key) in (None,'') for key in required):
+            raise ValueError('PG_CALENDAR_PUBLICATION_BINDING_INVALID')
+    else:
+        from .r43_owner_replay import checked
+        checked(root,calendar_binding)
+    for binding in (model_binding, config_binding):
         from .r43_owner_replay import checked
         checked(root, binding)
     observations = []

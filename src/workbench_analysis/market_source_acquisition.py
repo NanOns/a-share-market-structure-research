@@ -30,22 +30,28 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def write(path, value):
+def write(path, value, *, tdx_root=None, project_root=None):
     raw=(json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode()
+    if tdx_root is None:
+        from common.paths import resolve_tdx_root
+        tdx_root=resolve_tdx_root(project_root or Path(__file__).resolve().parents[2])
     for attempt in range(4):
         try:
-            _atomic_write(Path(path), raw, tdx_root=Path('D:/new_tdx'))
+            _atomic_write(Path(path), raw, tdx_root=Path(tdx_root))
             return
         except PermissionError:
             if attempt==3:raise
             time.sleep(0.1)
 
 
-def official_sessions(root):
-    from .dm01_runtime_r4 import calendar
-    head = json.loads((root / 'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
-    historical = json.loads((root / head['calendar']['path']).read_bytes())
-    return sorted(set(historical['session_dates']) | set(calendar(root)['session_dates']))
+def official_sessions(root, *, pg_reader=None, source_mode=None):
+    import os
+    selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
+    if selected_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+    if pg_reader is None:
+        from workbench_db.v4_market_calendar_reader_r1 import from_environment
+        pg_reader=from_environment()
+    return pg_reader.sessions()
 
 
 def read_day_bytes(data, dates):
@@ -131,7 +137,9 @@ def acquire(root, dates, folder, gap_codes=()):
     root, folder = Path(root), Path(folder)
     if not dates or any(d not in official_sessions(root) for d in dates):
         raise ValueError('OFFICIAL_SESSION_REQUIRED')
-    ensure_outside_tdx(folder, Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root, resolve_baostock_cache_root
+    tdx_root=resolve_tdx_root(root)
+    ensure_outside_tdx(folder, tdx_root)
     policy = json.loads((root / 'config/v4_market_source_fallback_policy_v1.json').read_bytes())
     if policy['contract_id'] != CONTRACT or policy['production_admission']:
         raise ValueError('ACQUISITION_STAGING_POLICY_REQUIRED')
@@ -146,7 +154,7 @@ def acquire(root, dates, folder, gap_codes=()):
         write(folder / 'acquisition.json', receipt)
     checkpoint()
     # Every configured TDX root is a read-only input.
-    roots = json.loads((root / 'config/dm01_go_forward_runtime_contract_r4.json').read_bytes())['read_only_tdx_roots']
+    roots = [str(tdx_root)]
     receipt['membership'] = freeze_membership_observation(root, folder, dates, roots)
     for source_root in roots:
         for market in ('sh', 'sz', 'bj'):
@@ -167,7 +175,7 @@ def acquire(root, dates, folder, gap_codes=()):
         for attempt in range(2):
             started = now()
             try:
-                result = capture_tdx_official_daily_package(target_date=day, snapshot_root=folder / 'official', timeout=30)
+                result = capture_tdx_official_daily_package(target_date=day, snapshot_root=folder / 'official', tdx_root=tdx_root, timeout=30)
                 receipt['official'].setdefault(day, []).append(dict(requested_at=started, received_at=now(), attempt=attempt, result=result))
                 break
             except Exception as exc:
@@ -175,7 +183,7 @@ def acquire(root, dates, folder, gap_codes=()):
                     status='PROVIDER_CALL_ERROR', error=BaoStockClient._safe_message(f'{type(exc).__name__}:{exc}')))
             checkpoint()
         checkpoint()
-    budget = RequestBudget(root / 'reports/v4_baostock/request_ledger.json')
+    budget = RequestBudget(resolve_baostock_cache_root(root) / 'request_ledger.json')
     def budget_total():
         if not budget.path.exists():return 0
         return sum(row['count'] for row in json.loads(budget.path.read_bytes())['by_shanghai_date'].values())

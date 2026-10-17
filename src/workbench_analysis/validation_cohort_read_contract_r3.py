@@ -36,7 +36,8 @@ def validate_frozen(row,*,cutoff,trade_date):
     if row.get('cohort_enrollment_id') not in (None,identity):raise ValueError('ENROLLMENT_IDENTITY_MISMATCH')
     return identity
 
-def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date):
+def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date,
+                               accepted_head_data=None, owner_reader=None):
     """Read only an Owner and explicit read grant anchored in an accepted Head.
 
     The caller supplies the accepted Head binding from its verified API context,
@@ -46,14 +47,20 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
     from pathlib import Path
     from .r43_owner_replay import checked
     root=Path(root)
-    head=json.loads(checked(root,accepted_head).read_bytes())
+    head=accepted_head_data if accepted_head_data is not None else json.loads(checked(root,accepted_head).read_bytes())
+    if not isinstance(head,dict):raise ValueError('COHORT_ACCEPTED_HEAD_REQUIRED')
+    if accepted_head_data is not None:
+        from .r43_operational_publication import digest as candidate_digest
+        if not isinstance(accepted_head,dict) or accepted_head.get('sha256')!=candidate_digest(head):
+            raise ValueError('COHORT_ACCEPTED_HEAD_DIGEST_MISMATCH')
     if head.get('owners',{}).get(trade_date,{}).get('validation_cohort')!=owner_binding:
         raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
     grant_ref=head.get('cohort_read_grants',{}).get(trade_date)
     if not grant_ref:raise ValueError('COHORT_READ_GRANT_MISSING')
     grant=json.loads(checked(root,grant_ref).read_bytes())
     from workbench_db.v4_cohort_pg_r1 import load_owner
-    owner=load_owner(root,owner_binding)
+    owner=owner_reader(owner_binding) if owner_reader is not None else load_owner(root,owner_binding)
+    if not isinstance(owner,dict):raise ValueError('COHORT_PG_OWNER_PAYLOAD_REQUIRED')
     if (grant.get('contract_id')!='VALIDATION_COHORT_READ_GRANT_R4_V1' or
         grant.get('capability')!='READ_STATISTICS' or grant.get('authorized') is not True or
         grant.get('owner')!=owner_binding or grant.get('trade_date')!=trade_date or

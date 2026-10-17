@@ -187,8 +187,8 @@ def capture_baostock_daily_update(
     *,
     trade_date: str,
     client: BaoStockClient,
-    snapshot_root: Path,
-    tdx_root: Path = Path("D:/new_tdx"),
+    snapshot_root: Path | None = None,
+    tdx_root: Path | None = None,
     observed_at: str | None = None,
     runtime_acceptance_manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -197,6 +197,12 @@ def capture_baostock_daily_update(
         date.fromisoformat(trade_date)
     except ValueError as exc:
         raise BaoStockDailyUpdateError("TARGET_DATE_INVALID") from exc
+    project_root = Path(__file__).resolve().parents[2]
+    from common.paths import resolve_baostock_cache_root, resolve_tdx_root, configured_path_source
+    cache_path_source = configured_path_source(project_root, "baostock.cache_root", explicit=snapshot_root)
+    tdx_path_source = configured_path_source(project_root, "tdx.source_root", explicit=tdx_root)
+    snapshot_root = resolve_baostock_cache_root(project_root, snapshot_root)
+    tdx_root = resolve_tdx_root(project_root, tdx_root)
     ensure_outside_tdx(snapshot_root, tdx_root)
     if not client.logged_in or client.sdk is None:
         raise BaoStockDailyUpdateError("BAOSTOCK_SESSION_NOT_READY")
@@ -297,6 +303,7 @@ def capture_baostock_daily_update(
         "request_count": 2,
         "date_level_query_count": 2,
         "tdx_root_write_count": 0,
+        "path_configuration": {"cache_root": cache_path_source, "tdx_source_root": tdx_path_source},
     }
     if not existing.is_file():
         _atomic_json(existing, payload, tdx_root=tdx_root)

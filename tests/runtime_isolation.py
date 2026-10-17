@@ -11,7 +11,7 @@ def protected_roots():
     import re
     # This project file has one explicitly quoted TDX root. Unsupported shapes fail closed.
     text = (REPOSITORY / 'config/paths.yaml').read_text(encoding='utf8')
-    configured = re.findall(r'^  root: ("[^"\n]+")\s*$', text, re.MULTILINE)
+    configured = re.findall(r'^  (?:root|source_root): ("[^"\n]+")\s*$', text, re.MULTILINE)
     if len(configured) != 1 or not text.startswith('tdx:'):
         raise ValueError('CONFIGURED_TDX_ROOT_UNREADABLE')
     roots = [REPOSITORY, Path('D:/new_tdx'), Path(json.loads(configured[0]))]

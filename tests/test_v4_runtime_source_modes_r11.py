@@ -26,15 +26,25 @@ def test_current_joint_reader_retains_strict_default_for_producer(monkeypatch,tm
 
 
 def test_worker_activation_verifies_manifest_without_workspace_lease(monkeypatch,tmp_path):
+    import hashlib
     from workbench_desktop import storage
     from workbench_desktop import closeout_runtime_sources_r1 as source
+    from workbench_analysis import operational_daily_exact_policy_v2 as exact_policy
     import sys
     monkeypatch.setattr(sys,'frozen',True,raising=False)
     require=Mock(side_effect=AssertionError('worker must not claim desktop lease'))
     monkeypatch.setattr(storage,'require_owned',require)
-    check=Mock(return_value={'resources':[],'module_locations':[]})
+    policy_path=tmp_path/exact_policy.PATH
+    policy_path.parent.mkdir(parents=True)
+    policy_bytes=b'isolated exact policy fixture'
+    policy_path.write_bytes(policy_bytes)
+    policy_sha=hashlib.sha256(policy_bytes).hexdigest()
+    check=Mock(return_value={'resources':[{'path':exact_policy.PATH,'sha256':policy_sha}],
+                             'module_locations':[]})
     monkeypatch.setattr(storage,'verify_resources',check)
     monkeypatch.setattr(storage,'g_path',lambda p:p)
     monkeypatch.setattr(source,'admitted',lambda p:{})
+    monkeypatch.setattr(exact_policy,'verify',lambda *args,**kwargs:
+        ({'accepted_algorithm_bindings':[]},{'path':exact_policy.PATH,'sha256':policy_sha}))
     storage.activate_workspace_sources(tmp_path,producer_worker=True)
     check.assert_called_once();require.assert_not_called()

@@ -16,15 +16,20 @@ def fixture(root):
     path=root/'catalog.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
     return candidate,authority,path
 
-def test_catalog_reuses_facts_across_current_head_metadata_changes(tmp_path):
-    candidate,authority,_=fixture(tmp_path);candidate['current_head_metadata']='NEXT'
-    assert load(tmp_path,candidate)==authority
+def test_legacy_catalog_is_not_a_runtime_file_fallback(tmp_path,monkeypatch):
+    candidate,_,_=fixture(tmp_path)
+    monkeypatch.setattr('workbench_service.native_product_catalog_v3.checked',
+                        lambda *_: pytest.fail('runtime reopened the local product catalogue'))
+    with pytest.raises(ValueError,match='EMBEDDED_PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
+        load(tmp_path,candidate)
 
 def test_catalog_rejects_other_owner_source_even_when_ui_date_matches(tmp_path):
     candidate,_,_=fixture(tmp_path);candidate=deepcopy(candidate)
     candidate['owners']['2026-10-12']['raw']['sha256']='b'*64
-    with pytest.raises(ValueError,match='CATALOG_SOURCE_MISMATCH'):load(tmp_path,candidate)
+    with pytest.raises(ValueError,match='EMBEDDED_PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
+        load(tmp_path,candidate)
 
 def test_catalog_rejects_missing_date_from_complete_head_denominator(tmp_path):
     candidate,authority,path=fixture(tmp_path);authority['dates']={};atomic_json(tmp_path,path,authority);candidate[KEY]=ref(tmp_path,path)
-    with pytest.raises(ValueError,match='DATE_DENOMINATOR'):load(tmp_path,candidate)
+    with pytest.raises(ValueError,match='EMBEDDED_PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
+        load(tmp_path,candidate)

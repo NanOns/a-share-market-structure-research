@@ -15,7 +15,7 @@ def test_current_daily_jobs_require_sqlite_before_postgres_only_guard(monkeypatc
     # and require missing native authority to fail before legacy fallback.
     monkeypatch.delenv('V4_NATIVE_PG_DSN',raising=False)
     monkeypatch.delenv('WORKBENCH_PG_DSN',raising=False)
-    with pytest.raises(RuntimeError,match='V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK'):
+    with pytest.raises(RuntimeError,match='WORKBENCH_PG_DSN_REQUIRED'):
         DailyJobs(tmp_path)
     assert attempted==[]
     assert not (tmp_path/'runtime/dynamic_daily/jobs.sqlite3').exists()

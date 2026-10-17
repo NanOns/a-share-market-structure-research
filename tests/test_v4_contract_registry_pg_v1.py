@@ -47,6 +47,57 @@ def test_reads_exact_approved_bytes_pinned_by_publication():
         ("2026-10-17T00:00:00Z", "2026-10-17T00:00:00Z", "RULE", "1.2.0", digest)]
 
 
+def test_reads_current_contract_only_after_registry_approval_and_identity_attestation():
+    from workbench_analysis.contract_registry_pg_v1 import load_current_approved_contract
+    raw=b'{"contract_id":"RUNTIME","contract_version":"1.1.0"}'
+    sha=hashlib.sha256(raw).hexdigest()
+    identity={"database":"market_research","database_oid":1,"host":"127.0.0.1","port":5432}
+    row=(raw,sha,"JSON","1","PRODUCTION","source-r7","APPROVED","owner",
+        "approval-r7","2026-10-17T00:00:00Z","source-r7",sha,"2026-10-17T00:00:01Z")
+
+    class Result:
+        def __init__(self,value):self.value=value
+        def fetchone(self):return self.value
+    class ReadSnapshot:
+        def execute(self,query,params=()):
+            if "current_database()" in query and "transaction_isolation" in query:
+                return Result(("market_research","v4_reader","repeatable read","on"))
+            if "inet_server_addr()" in query:return Result(("market_research",1,"127.0.0.1",5432))
+            if "FROM pg_roles" in query:return Result(("v4_reader",)+tuple(False for _ in range(14)))
+            if "FROM v4.contract_versions" in query:
+                assert params==("RUNTIME","1.1.0","PRODUCTION")
+                return Result(row)
+            raise AssertionError(query)
+
+    contract=load_current_approved_contract(ReadSnapshot(),"RUNTIME","1.1.0","PRODUCTION",
+        expected_database_identity=identity)
+    assert contract.raw_content==raw and contract.parsed_json["contract_version"]=="1.1.0"
+    assert contract.publication_id==""
+    assert contract.approved_by=="owner" and contract.approval_ref=="approval-r7"
+
+
+@pytest.mark.parametrize("action,approval_sha",[("REVOKED","a"*64),("APPROVED","0"*64)])
+def test_current_contract_reader_rejects_revocation_and_changed_source(action,approval_sha):
+    from workbench_analysis.contract_registry_pg_v1 import load_current_approved_contract
+    raw=b'{}';sha=hashlib.sha256(raw).hexdigest()
+    row=(raw,sha,"JSON","1","PRODUCTION","source-r7",action,"owner",
+        "approval-r7","2026-10-17T00:00:00Z","source-r7",approval_sha,"2026-10-17T00:00:01Z")
+    identity={"database":"market_research","database_oid":1,"host":"127.0.0.1","port":5432}
+    class Result:
+        def __init__(self,value):self.value=value
+        def fetchone(self):return self.value
+    class ReadSnapshot:
+        def execute(self,query,params=()):
+            if "current_database()" in query and "transaction_isolation" in query:return Result(("market_research","v4_reader","repeatable read","on"))
+            if "inet_server_addr()" in query:return Result(("market_research",1,"127.0.0.1",5432))
+            if "FROM pg_roles" in query:return Result(("v4_reader",)+tuple(False for _ in range(14)))
+            if "FROM v4.contract_versions" in query:return Result(row)
+            raise AssertionError(query)
+    with pytest.raises(ContractRegistryError,match="APPROVAL_OR_DIGEST_INVALID"):
+        load_current_approved_contract(ReadSnapshot(),"RUNTIME","1.1.0","PRODUCTION",
+            expected_database_identity=identity)
+
+
 @pytest.mark.parametrize("binding,row,code", [
     ({}, None, "V4_PUBLICATION_CONTRACT_NOT_BOUND"),
     ({"RULE": {"version": "1.2.0", "raw_sha256": "0" * 64}},

@@ -12,6 +12,30 @@ from .baostock_dm01_sdk_schema_v2 import normalize_response
 from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_rows_digest
 from .source_readiness_v2 import source_readiness
 
+
+def _daily_runtime_contract(project_root, contract_id, version, relative_path):
+    """Resolve a daily runtime contract through the approved PG registry by default."""
+    mode=os.environ.get('V4_DAILY_CONTRACT_SOURCE','PG')
+    repository_root=Path(__file__).resolve().parents[2]
+    if mode=='FILE':
+        contract=json.loads((repository_root/relative_path).read_bytes())
+    elif mode=='PG':
+        namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+        try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+        except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
+        if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
+        from .contract_registry_pg_v1 import load_current_approved_contract
+        from workbench_db.v4_publication_reader import readonly_connection
+        with readonly_connection() as pg:
+            registered=load_current_approved_contract(pg,contract_id,version,namespace,
+                expected_database_identity=identity)
+        contract=registered.parsed_json
+    else:
+        raise ValueError('DAILY_CONTRACT_SOURCE_UNSUPPORTED')
+    if not isinstance(contract,dict) or contract.get('contract_id')!=contract_id or contract.get('contract_version')!=version:
+        raise ValueError('DAILY_RUNTIME_CONTRACT_IDENTITY_INVALID')
+    return contract
+
 def readiness_binding_revision(source_revision_id,source_freeze,dependencies):
     return tdx.sha256_bytes(tdx._json_bytes(dict(
         contract_id='DYNAMIC_DAILY_READY_BINDING_IDENTITY_R3',
@@ -21,8 +45,8 @@ def readiness_binding_revision(source_revision_id,source_freeze,dependencies):
 
 def _runtime_acceptance_manifest_path(root, day):
     """Resolve the versioned path contract for the active runtime receipt."""
-    contract_path = Path(__file__).resolve().parents[2] / 'config/v4_daily_runtime_acceptance_path_v1.json'
-    contract = json.loads(contract_path.read_bytes())
+    contract = _daily_runtime_contract(root,'V4_DAILY_RUNTIME_ACCEPTANCE_PATH_R1','1.0.0',
+        'config/v4_daily_runtime_acceptance_path_v1.json')
     if (contract.get('contract_id') != 'V4_DAILY_RUNTIME_ACCEPTANCE_PATH_R1'
             or contract.get('contract_version') != '1.0.0'):
         raise ValueError('DAILY_RUNTIME_ACCEPTANCE_PATH_CONTRACT_INVALID')
@@ -41,8 +65,8 @@ def _tdx_gbbq_source_path(project_root=None):
     """Load the configured, read-only TDX source input path."""
     repository_root = Path(__file__).resolve().parents[2]
     project_root = Path(project_root or repository_root).resolve()
-    contract_path = repository_root / 'config/v4_daily_tdx_readonly_source_v1.json'
-    contract = json.loads(contract_path.read_bytes())
+    contract = _daily_runtime_contract(project_root,'V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0',
+        'config/v4_daily_tdx_readonly_source_v1.json')
     if (contract.get('contract_id') != 'V4_DAILY_TDX_READONLY_SOURCE_R1'
             or contract.get('contract_version') != '1.1.0'
             or contract.get('source_mode') != 'READ_ONLY_INPUT'):

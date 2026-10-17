@@ -15523,17 +15523,18 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
+      "blocker": "The active accepted Head has no native_product_read_authority_pg binding; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.chart_history_pack",
       "migration_evidence": {
-        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
-        "document": "manifest",
-        "implemented_code": "CoreProductBFFR1.chart_history_pack reads the Head-bound native_product_read_authority_pg manifest through the read-only PG Owner fact reader; this branch does not reopen the local manifest file.",
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "implemented_code": "CoreProductBFFR1.chart_history_pack now requires native_product_read_authority_pg on the exact active candidate and resolves its manifest/scope only through the PG Owner fact reader; no config/local manifest or scope fallback is used.",
         "test_evidence": [
           "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
-          "test_pg_product_catalog_rejects_owner_binding_substitution"
+          "test_pg_product_catalog_rejects_owner_binding_substitution",
+          "test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog"
         ],
-        "formal_status": "OPEN"
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
       },
       "reference_evidence": [
         {
@@ -15598,17 +15599,18 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
+      "blocker": "The active accepted Head has no native_product_read_authority_pg binding; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.chart_history_pack",
       "migration_evidence": {
-        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
-        "document": "scope",
-        "implemented_code": "CoreProductBFFR1.chart_history_pack validates the fact-bound scope from PG and skips local Head-scope file reads when native_product_read_authority_pg is embedded.",
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "implemented_code": "CoreProductBFFR1.chart_history_pack now requires native_product_read_authority_pg on the exact active candidate and resolves its manifest/scope only through the PG Owner fact reader; no config/local manifest or scope fallback is used.",
         "test_evidence": [
           "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
-          "test_pg_product_catalog_rejects_owner_binding_substitution"
+          "test_pg_product_catalog_rejects_owner_binding_substitution",
+          "test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog"
         ],
-        "formal_status": "OPEN"
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
       },
       "reference_evidence": [
         {
@@ -15673,17 +15675,18 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
+      "blocker": "The active accepted Head has no native_product_read_authority_pg binding; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.pack",
       "migration_evidence": {
-        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
-        "document": "manifest",
-        "implemented_code": "CoreProductBFFR1.pack resolves date manifests from the Head-bound native_product_read_authority_pg catalogue through read-only PG Owner facts; no local manifest fallback occurs in this branch.",
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "implemented_code": "CoreProductBFFR1.pack now requires native_product_read_authority_pg on the exact active candidate and resolves its manifest/scope only through the PG Owner fact reader; no config/local manifest or scope fallback is used.",
         "test_evidence": [
           "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
-          "test_pg_product_catalog_rejects_owner_binding_substitution"
+          "test_pg_product_catalog_rejects_owner_binding_substitution",
+          "test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog"
         ],
-        "formal_status": "OPEN"
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
       },
       "reference_evidence": [
         {
@@ -15747,17 +15750,18 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
+      "blocker": "The active accepted Head has no native_product_read_authority_pg binding; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.pack",
       "migration_evidence": {
-        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
-        "document": "scope",
-        "implemented_code": "CoreProductBFFR1.pack validates its PG-bound product scope and does not reopen the local Head-scope artifact when the embedded PG catalogue is present.",
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "implemented_code": "CoreProductBFFR1.pack now requires native_product_read_authority_pg on the exact active candidate and resolves its manifest/scope only through the PG Owner fact reader; no config/local manifest or scope fallback is used.",
         "test_evidence": [
           "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
-          "test_pg_product_catalog_rejects_owner_binding_substitution"
+          "test_pg_product_catalog_rejects_owner_binding_substitution",
+          "test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog"
         ],
-        "formal_status": "OPEN"
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
       },
       "reference_evidence": [
         {
@@ -15809,9 +15813,19 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": "New R21 targeted test assertions; current R20 inventory has not been regenerated. Live PG readback remains unavailable.",
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The active accepted Head has no native_product_read_authority_pg binding; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.pack",
-      "migration_evidence": "The runtime/authority consumer no longer opens the business payload; its typed PostgreSQL binding is validated and read in a read-only transaction.",
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "implemented_code": "CoreProductBFFR1.pack now requires native_product_read_authority_pg on the exact active candidate and resolves its manifest/scope only through the PG Owner fact reader; no config/local manifest or scope fallback is used.",
+        "test_evidence": [
+          "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
+          "test_pg_product_catalog_rejects_owner_binding_substitution",
+          "test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog"
+        ],
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160835",
@@ -17435,6 +17449,35 @@
         "p1_formally_remaining": 266,
         "status": "FIVE_DAILY_QA_EVIDENCE_CALLSITES_HAVE_HEAD_BOUND_PG_READ_CODE_PENDING_LIVE_RECONCILIATION; no formal row closed.",
         "next": "Continue period source and predecessor authority reads; require approved same-T0 PG readback before formal closure."
+      },
+      {
+        "batch_id": "R21-R4-product-catalog-pg-only-consumers-r52",
+        "files": [
+          "src/workbench_service/core_product_bff_r1.py",
+          "tests/test_v4_product_catalog_pg_r48.py"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-307c5804fa4ff4c75780",
+          "V4-BCA-R2-5d0aba48b88b7ddd66aa",
+          "V4-BCA-R2-995651e4037bff37d345",
+          "V4-BCA-R2-cbc36584956420f6eec8",
+          "V4-BCA-R2-feeb0e7325d36faebd5a"
+        ],
+        "evidence": [
+          "CoreProductBFFR1.pack and chart_history_pack require the active candidate to embed native_product_read_authority_pg, then reload the exact dated manifest and scope through PostgreSQL Owner facts.",
+          "Removed current runtime branches that reopened config/core_product_read_authority_r1.json, local manifests or local scope artifacts when the PG catalog was absent.",
+          "Missing Head PG catalog now fails closed with PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK."
+        ],
+        "verification": "9 focused product-catalog/Focus tests passed; compileall and git diff --check passed. Test doubles only; no live PG readback.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "matrix_status_counts_unchanged": {
+          "OPEN": 219,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 39
+        },
+        "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "next": "Continue exact-mapped Owner and other-business callsites; keep formal closure at zero pending live accepted same-T0 reconciliation."
       }
     ]
   }

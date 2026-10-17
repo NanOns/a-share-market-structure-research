@@ -730,24 +730,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return dict(T0=day,history_index=entry['history_index'],source_bindings={'history':entry['source_binding']},isolated_authority_sha256=digest),{}
         key=('product-history-only-pack',day)
         if key not in self.api.cache:
-            from .native_product_catalog_v3 import KEY,PG_KEY,load
-            pg_catalog=PG_KEY in self.api.candidate
-            if pg_catalog or KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-                authority=load(self.api.root,self.api.candidate)
-                entry=authority['dates'].get(day)
-                manifest=(dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
-                    if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None)
-            else:
-                authority=self.api.root/'config/core_product_read_authority_r1.json'
-                if not authority.exists():return None
-                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            from .native_product_catalog_v3 import PG_KEY,load
+            if PG_KEY not in self.api.candidate:
+                raise ValueError('PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
+            pg_catalog=True
+            authority=load(self.api.root,self.api.candidate)
+            manifest=dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
             if manifest is None:return None
             if manifest.get('contract_id') not in ('CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1','CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2'):
                 raise ValueError('PRODUCT_HISTORY_PACK_CONTRACT_UNSUPPORTED')
             if manifest.get('contract_id')=='CORE_PRODUCT_DATED_HISTORY_ONLY_PACK_R1' and manifest.get('capabilities')!=['CHART_HISTORY']:
                 raise ValueError('PRODUCT_HISTORY_ONLY_SCOPE_MISMATCH')
             head=manifest.get('head') or {}
-            if manifest.get('T0')!=day or (not pg_catalog and (self.api.root/head.get('path','')).read_bytes()!=checked(self.api.root,head).read_bytes()):
+            if manifest.get('T0')!=day:
                 raise ValueError('PRODUCT_HISTORY_MANIFEST_CONTEXT_MISMATCH')
             history=manifest.get('history_index') or {}
             expected_token=manifest.get('fact_token',head.get('sha256'))
@@ -756,7 +751,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 raise ValueError('PG_HISTORY_MANIFEST_CONTEXT_MISMATCH')
             source=manifest.get('source_bindings',{}).get('history')
             if not source:raise ValueError('PG_HISTORY_SOURCE_BINDING_REQUIRED')
-            if not pg_catalog:checked(self.api.root,source)
             if history.get('source_digest')!=source.get('sha256'):
                 raise ValueError('PG_HISTORY_SOURCE_DIGEST_MISMATCH')
             from workbench_db.v4_native import workspace_schema
@@ -769,21 +763,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def pack(self, day):
         key=('product-pack',day)
         if key not in self.api.cache:
-            from .native_product_catalog_v3 import KEY,PG_KEY,load
-            pg_catalog=PG_KEY in self.api.candidate
-            embedded=KEY in self.api.candidate
-            if pg_catalog or embedded or self.api.candidate.get('exact_daily_adjustment_contract'):
-                authority=load(self.api.root,self.api.candidate)
-                entry=authority['dates'].get(day)
-                manifest=(dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
-                    if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None)
-            else:
-                authority=self.api.root/'config/core_product_read_authority_r1.json'
-                if not authority.exists():return None
-                manifest=dated_product_manifest(self.api.root,json.loads(authority.read_bytes()),day)
+            from .native_product_catalog_v3 import PG_KEY,load
+            if PG_KEY not in self.api.candidate:
+                raise ValueError('PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
+            pg_catalog=True
+            authority=load(self.api.root,self.api.candidate)
+            manifest=dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
             if manifest is None:return None
-            head=self.api.root/manifest['head']['path']
-            if manifest['T0']!=day or (not pg_catalog and head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes()):return None
+            if manifest['T0']!=day:return None
             if manifest['history_index'].get('engine')!='postgresql':
                 raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
             if (manifest['history_index'].get('T0'),manifest['history_index'].get('head_token'))!=(day,manifest.get('fact_token',manifest['head']['sha256'])):

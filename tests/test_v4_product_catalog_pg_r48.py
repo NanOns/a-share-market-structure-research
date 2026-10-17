@@ -78,6 +78,20 @@ def test_pg_product_catalog_rejects_owner_binding_substitution(tmp_path, monkeyp
         catalog.load(tmp_path, candidate)
 
 
+def test_current_bff_pack_routes_fail_closed_without_head_bound_pg_catalog(tmp_path, monkeypatch):
+    candidate, _, _ = _fixture(tmp_path, monkeypatch)
+    candidate.pop(catalog.PG_KEY)
+    monkeypatch.setattr(catalog, 'checked', lambda *_: pytest.fail('BFF opened local product authority'))
+    bff = object.__new__(CoreProductBFFR1)
+    bff.api = SimpleNamespace(root=tmp_path, candidate=candidate, cache={})
+    bff.isolated_history = None
+
+    with pytest.raises(ValueError, match='PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
+        bff.pack('2026-10-17')
+    with pytest.raises(ValueError, match='PRODUCT_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
+        bff.chart_history_pack('2026-10-17')
+
+
 def test_bff_focus_reads_head_bound_catalog_and_postgresql_fact_without_config_fallback(tmp_path,monkeypatch):
     from workbench_service import core_product_bff_r1 as bff_module
     from workbench_db import v4_focus_projection_pg_closeout as focus_pg

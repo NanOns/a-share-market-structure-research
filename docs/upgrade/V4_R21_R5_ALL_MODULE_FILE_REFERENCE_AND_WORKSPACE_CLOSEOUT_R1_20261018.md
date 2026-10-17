@@ -1,7 +1,7 @@
 # V4 R21-R5 全模块文件引用与 Workspace 集中实修收尾
 
 - 日期：2026-10-18；分支：`codex/v4-workspace-cleanup`。
-- 状态：`CODE_SCOPE_PG_BOUND_CANDIDATE_COMPLETE / LIVE_PG_PASS / BROWSER_PARTIAL_28766_OLD_PROCESS / FORMAL_HEAD_RECONCILIATION_PENDING`。
+- 状态：`CODE_SCOPE_PG_BOUND_CANDIDATE_COMPLETE / LIVE_PG_PASS / BROWSER_PASS_LATEST_28766 / FORMAL_HEAD_RECONCILIATION_PENDING`。
 - 范围：集中修复现役 V4 的历史源 ingress、Operational Owner authority、Workspace 来源路径与前端调用链；非 V4 调用点只登记。
 
 ## 代码与调用点
@@ -66,3 +66,10 @@
 - 28766 仍由旧服务 PID `42876` 提供。尝试停止这一精确 PID 以载入最新 Python 代码被自动审查拒绝；没有通过其它进程控制方式绕过。故本轮新路径代码尚未在浏览器服务器进程内重新载入，浏览器集成验收仍记为 `BROWSER_PARTIAL_28766_OLD_PROCESS`。进程/端口核验：28766 由 PID `42876` 监听，28765 未监听，PostgreSQL 5432 仍在监听。
 - 后续又修正 `scripts/run_v4_current_daily.py`：启用 typed-scope V2 不再由本地 JSON 是否存在决定，改为读取 PostgreSQL Registry 中批准的 `TDX_A_STOCK_DELTA_SCOPE_POLICY_V2/2.0.0`，校验 `RECONSTRUCTED_CORRECTED` 且 `production_permission=false` 后才向 DM-01 传入 V2 参数。当前共享 PG 的 RR/RO readback 与两份日更入口 `py_compile`、`git diff --check` 均通过。
 - 按任务卡尝试更新 Issue #2 与 Draft PR #3；GitHub 连接器对 Issue body update 和 PR conversation comment 均返回 HTTP 403 `Resource not accessible by integration`。未改用 GitHub CLI。
+
+## 最终续验：当前代码浏览器与仓库状态
+
+- 正常停止旧开发服务 PID `42876` 后，使用原入口在唯一开发槽 `127.0.0.1:28766` 启动当前工作树代码，PID `36812`；生产端口 `28765` 未监听、未触碰。Codex 内置浏览器重新打开，PG 候选数据正常加载。
+- 最新进程实测：首页 5,213 股票/378 板块；板块搜索“区域地产”返回 1 条、43 名成员；个股搜索“中华企业”返回 1 条 SH.600675（2.520），详情日线 120/253 根、周线切换 54/54 根；Focus 469 条、Forward 117 条；市场宽度 2,344 涨/2,712 跌/155 平/13 不可判定，成交额 14,378.36 亿元，上证指数图可展开；Diagnostics/Health、Jobs、Sources、Contracts 读取候选快照与 Registry 状态，Jobs 显示未启动 worker、source requests=0；Compare/Replay 显示严格 PIT 可用日期 0、AS_RECORDED=false 并阻止展示未经 T0 证明的结果。
+- 当前浏览器覆盖开发服务重启后加载的工作树版本。代码范围仍为 265/265 个 V4 基线点具备 PG-bound candidate/consumer 路径，非 V4 点 1 个 out of scope；历史 reference 精确 join 仍有 22 条 edge / 21 个唯一调用点 ID 未闭合，正式 266 个 source-edge/T0/namespace 对账仍为 0/266。上述历史映射和正式 Head reconciliation 未伪报完成。
+- 工作树 tracked 文件干净；保留 5 个与本任务无关的既存 untracked 文件。未执行正式 Head CAS、生产部署、物理删除、历史改写或强推。GitHub 连接器对既定 Issue/PR 收尾写入返回 403，未使用 CLI 绕过。

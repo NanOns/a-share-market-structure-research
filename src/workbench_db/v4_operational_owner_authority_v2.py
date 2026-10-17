@@ -12,6 +12,7 @@ from .v4_operational_owner_pg_closeout import prepare as append,read as read_fac
 
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
+LEGACY_OWNER_CONTRACTS={OWNER,'V4_DATED_OPERATIONAL_RECONSTRUCTED_OWNER_V1'}
 
 def _rows_from_source_ingress(root,binding):
     """Ingest an explicitly Head-bound source once, then parse bytes read from PG."""
@@ -68,11 +69,18 @@ def prepare_successor(root,candidate,*,predecessor_authority_binding=None):
     binding,receipt=prepare(root,candidate,prior)
     candidate[KEY]=binding
     if KEY not in predecessor:
-        receipt["legacy_authority_ingress"] = dict(
-            path=predecessor_authority_binding["path"],
-            sha256=predecessor_authority_binding["sha256"],
-            disposition="EXACT_BOUND_ONE_TIME_INGRESS_THEN_PG_MANIFEST",
-        )
+        if isinstance(legacy_owners,dict) and legacy_owners:
+            receipt["legacy_owner_ingress"] = dict(
+                predecessor_head_binding=candidate['predecessor'],
+                source_owner_digest=digest(canonical(legacy_owners)),
+                disposition="EXACT_OWNER_BINDINGS_INGRESSED_THEN_PG_MANIFEST",
+            )
+        else:
+            receipt["legacy_authority_ingress"] = dict(
+                path=predecessor_authority_binding["path"],
+                sha256=predecessor_authority_binding["sha256"],
+                disposition="EXACT_BOUND_ONE_TIME_INGRESS_THEN_PG_MANIFEST",
+            )
     return receipt
 
 def validate(candidate,authority):
@@ -120,14 +128,16 @@ def attest(root,authority,day,domain,source_binding,*,workspace_root=None):
 
 def prepare(root,candidate,predecessor=None):
     root=Path(root).resolve();owners={};counts=dict(reused=0,created=0)
-    if predecessor and predecessor.get('contract_id') not in (CONTRACT,OWNER):
+    if predecessor and predecessor.get('contract_id') not in (CONTRACT,*LEGACY_OWNER_CONTRACTS):
         raise ValueError('PG_OWNER_PREDECESSOR_CONTRACT_REQUIRED')
+    predecessor_source_owners=(predecessor.get('source_owners',predecessor.get('owners',{}))
+                               if predecessor else {})
     for day,domains in candidate['owners'].items():
         owners[day]={}
         for domain,binding in domains.items():
-            if predecessor and predecessor['source_owners'].get(day,{}).get(domain)==binding:
+            if predecessor and predecessor_source_owners.get(day,{}).get(domain)==binding:
                 old=predecessor['owners'][day][domain]
-                if predecessor['contract_id']==OWNER and isinstance(old,dict) and set(old)=={'path','sha256','bytes'}:
+                if predecessor['contract_id'] in LEGACY_OWNER_CONTRACTS and isinstance(old,dict) and set(old)=={'path','sha256','bytes'}:
                     # Import legacy Head-bound rows into immutable PG facts;
                     # never treat the old workspace payload as a live Owner.
                     from .v4_operational_owner_pg_closeout import validate_source_binding
@@ -166,3 +176,45 @@ def prepare(root,candidate,predecessor=None):
     manifest_binding=ForwardFactStore(root,FOLDER).append('authority_manifest',manifest_key,authority)
     manifest_binding=inline_descriptor(root,manifest_binding)
     return manifest_binding,dict(contract_id=CONTRACT,scope='FULL_OWNER_PAYLOAD_READBACK_ONLY',counts=counts,publication=False)
+
+def prepare_legacy_candidate(root,candidate_binding):
+    """Convert exact historical operational Head/Owner bindings into PG facts.
+
+    This is an explicit one-time source-ingress route. It creates a PG-backed
+    candidate and Owner authority manifest only; it never accepts or switches
+    an operational Head.
+    """
+    from .v4_historical_source_ingress_pg_r1 import admit_bound
+    root=Path(root).resolve()
+    candidate_source=admit_bound(root,candidate_binding)
+    try:candidate=json.loads(candidate_source['raw'])
+    except (TypeError,ValueError) as exc:raise ValueError('PG_OWNER_LEGACY_CANDIDATE_JSON_INVALID') from exc
+    if candidate.get('contract_id')!='V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OWNER_LEGACY_CANDIDATE_CONTRACT_REQUIRED')
+    predecessor_binding=candidate.get('predecessor')
+    if not isinstance(predecessor_binding,dict) or predecessor_binding.get('path','').startswith('pg://'):
+        raise ValueError('PG_OWNER_LEGACY_PREDECESSOR_SOURCE_BINDING_REQUIRED')
+    predecessor_source=admit_bound(root,predecessor_binding)
+    try:predecessor=json.loads(predecessor_source['raw'])
+    except (TypeError,ValueError) as exc:raise ValueError('PG_OWNER_LEGACY_PREDECESSOR_JSON_INVALID') from exc
+    if predecessor.get('contract_id') not in LEGACY_OWNER_CONTRACTS or not isinstance(predecessor.get('owners'),dict):
+        raise ValueError('PG_OWNER_LEGACY_PREDECESSOR_CONTRACT_REQUIRED')
+    if candidate.get('accepted_trade_date','')<=predecessor.get('accepted_trade_date',''):
+        raise ValueError('PG_OWNER_LEGACY_PREDECESSOR_DATE_ORDER_INVALID')
+    owner_binding,receipt=prepare(root,candidate,predecessor)
+    candidate[KEY]=owner_binding
+    authority=load(root,candidate)
+    from .v4_forward_pg_r1 import ForwardFactStore
+    candidate_key=digest(canonical(dict(contract_id='V4_OPERATIONAL_OWNER_CANDIDATE_PG_R1',
+        source_path=candidate_binding['path'],source_sha256=candidate_binding['sha256'],
+        owner_manifest_sha256=owner_binding['sha256'])))
+    candidate_store=ForwardFactStore(root,FOLDER)
+    stored=candidate_store.append('successor_candidate',candidate_key,candidate,migration_timeout_seconds=120)
+    readback=candidate_store.read(stored)
+    if canonical(readback)!=canonical(candidate):raise ValueError('PG_OWNER_LEGACY_CANDIDATE_READBACK_MISMATCH')
+    return dict(contract_id='V4_OPERATIONAL_OWNER_CANDIDATE_PG_R1',scope='OWNER_AND_CANDIDATE_CANDIDATE_ONLY',
+        candidate_source=dict(path=candidate_binding['path'],sha256=candidate_binding['sha256'],bytes=len(candidate_source['raw'])),
+        predecessor_source=dict(path=predecessor_binding['path'],sha256=predecessor_binding['sha256'],bytes=len(predecessor_source['raw'])),
+        owner_authority=owner_binding,owner_domains=sum(len(domains) for domains in candidate['owners'].values()),
+        owner_receipt=receipt,candidate_descriptor=stored,publication=False,accepted_head_changed=False,
+        authority_contract=authority['contract_id'])

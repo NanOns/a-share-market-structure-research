@@ -60,6 +60,27 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
         raise ValueError("HISTORICAL_SOURCE_INGRESS_PATH_INVALID")
     relative = path.relative_to(project).as_posix()
     raw = path.read_bytes()
+    if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
+        # Git LFS keeps some historical evidence as a small pointer in the
+        # checkout. At a source-ingress boundary only, resolve the exact LFS
+        # object from Git's local object cache; never ingest the pointer bytes
+        # or let a downstream PG reader consult the workspace.
+        try:
+            pointer = raw.decode("ascii").splitlines()
+        except UnicodeDecodeError:
+            pointer = []
+        oid = next((line.removeprefix("oid sha256:") for line in pointer
+                    if line.startswith("oid sha256:")), None)
+        declared_size = next((int(line.removeprefix("size ")) for line in pointer
+                              if line.startswith("size ") and line.removeprefix("size ").isdigit()), None)
+        if (not pointer or oid != expected_sha256 or declared_size is None):
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_DIGEST_MISMATCH")
+        object_path = project / ".git" / "lfs" / "objects" / oid[:2] / oid[2:4] / oid
+        if not object_path.is_file():
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_UNAVAILABLE")
+        raw = object_path.read_bytes()
+        if len(raw) != declared_size or hashlib.sha256(raw).hexdigest() != expected_sha256:
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_IDENTITY_MISMATCH")
     sha = hashlib.sha256(raw).hexdigest()
     if expected_sha256 is not None and sha != expected_sha256:
         raise ValueError("HISTORICAL_SOURCE_INGRESS_DIGEST_MISMATCH")

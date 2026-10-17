@@ -1,7 +1,7 @@
 {
   "contract_id": "V4_R21_PG_ONLY_CALLSITE_MIGRATION_MATRIX_R1",
   "contract_version": "1.0.0",
-  "status": "BASELINE_CROSSWALK_PARTIAL_CODE_MIGRATIONS_UPDATED_LIVE_HEAD_RECONCILIATION_OPEN",
+  "status": "CODE_SCOPE_PG_BOUND_CANDIDATE_COMPLETE_LIVE_HEAD_RECONCILIATION_OPEN",
   "generated_from": {
     "business_inventory": "V4_R20_BUSINESS_CODE_FILE_ACCESS_R2_20261017.json",
     "reference_inventory": "V4_R20_NONCONFIG_EXTERNAL_FILE_REFERENCE_INVENTORY_R5.json",
@@ -15,14 +15,13 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 1,
+    "migration_open": 0,
     "statuses": {
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 264,
-      "OUT_OF_SCOPE_NON_V4_REGISTERED": 1,
-      "ACTIVE_INGRESS_ADAPTER_OPEN": 1
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 265,
+      "OUT_OF_SCOPE_NON_V4_REGISTERED": 1
     },
-    "code_level_pg_read_paths_implemented": 264,
-    "remaining_open_or_ingress": 1,
+    "code_level_pg_read_paths_implemented": 265,
+    "remaining_open_or_ingress": 0,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -15409,23 +15408,49 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "candidate": "v4_operational_owner_authority_v2.prepare_legacy_candidate -> exact candidate/predecessor source ingress, Owner authority_manifest and successor_candidate PG facts",
+        "status": "PG_OWNER_AND_SUCCESSOR_CANDIDATE_CANDIDATE_ONLY_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current workspace Head has no operational predecessor binding or predecessor authority source binding; current PG accepted publication Head lookup returns NO_ACCEPTED_PUBLICATION_HEAD. Cannot truthfully construct the one-time legacy Owner authority without that source identity.",
+      "blocker": "Code migration is implemented and candidate Owner facts were appended/read back. Formal P1/source-edge reconciliation still requires live accepted Head/publication identity; no formal Head CAS was performed.",
       "baseline_function": "prepare_successor",
       "migration_evidence": {
-        "batch_id": "R21-R5-code-read-repair-20261018",
-        "status": "OPEN_SOURCE_IDENTITY_REQUIRED",
-        "detail": "prepare_successor requires the exact operational predecessor and its Head-bound authority source binding; neither exists on the current accepted Head. No Head/authority identity was fabricated."
+        "batch_id": "R21-R5-legacy-owner-successor-pg-candidate-20261018",
+        "code_path": "src/workbench_db/v4_operational_owner_authority_v2.py::prepare_legacy_candidate",
+        "status": "CODE_REPLACED_AND_CANDIDATE_PG_READBACK_PASS",
+        "source_bindings": [
+          {
+            "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+            "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+            "bytes": 29799
+          },
+          {
+            "path": "data/v4/predecessors/e751fb6ebee81baa3fd213515800e220135738d485118828bc6c81fe9dd853c8.json",
+            "sha256": "e751fb6ebee81baa3fd213515800e220135738d485118828bc6c81fe9dd853c8",
+            "bytes": 17096
+          }
+        ],
+        "pg_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "port": 5432,
+          "schema": "v4_forward_812843566da3f180"
+        },
+        "owner_domains": 88,
+        "owner_facts_created": 88,
+        "owner_facts_reused": 0,
+        "owner_manifest_fact_key": "ec708c8fa7042ed638f6db5beed295cee776244e5b8cc5db983307792d67e15e",
+        "successor_candidate_fact_key": "19b2617217107693f0b14bce0a0905b448c052b7ab2c9f40460439b5f321d1d2",
+        "readback": "OWNER_AUTHORITY_AND_SUCCESSOR_CANDIDATE_CANONICAL_READBACK_PASS",
+        "publication": false,
+        "accepted_head_changed": false
       },
       "reference_evidence": [
         {
@@ -19441,6 +19466,17 @@
         "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
         "next": "Continue remaining current Head/Owner and DM-01 runtime consumers; resolve live PG Head identity and source relations before formal closure."
       }
-    ]
+    ],
+    "continuation_batch": {
+      "batch_id": "R21-R5-legacy-owner-successor-pg-candidate-20261018",
+      "files": [
+        "src/workbench_db/v4_historical_source_ingress_pg_r1.py",
+        "src/workbench_db/v4_operational_owner_authority_v2.py",
+        "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json"
+      ],
+      "result": "265/266 V4 P1 callsites have PG-bound candidate code paths; one non-V4 callsite remains registered only. Legacy Owner successor now ingresses exact bound LFS/source bytes and writes/readbacks 88 Owner facts plus candidate manifest in PG.",
+      "live_pg": "PASS candidate-only append/readback on market_research OID 646711; accepted Head unchanged",
+      "formal_reconciliation": "0/266 formally reconciled; 22 reference edges remain unmapped; no accepted publication Head/source-edge closure asserted"
+    }
   }
 }

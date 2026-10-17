@@ -29,7 +29,7 @@
 - 板块：读出 378 条；展示成员数、20/5 会话强度、上涨宽度和来源状态。
 - Focus/Forward：Focus 469 条、Forward 117 条、期限计划 585、已发布期限状态 5；展开区域显示未接入字段与候选权限缺口。
 - 市场与事件：显示 5,224 分母、5,213 实际行情、14,378.36 亿元成交额及指数/涨跌停统计。
-- Diagnostics Jobs：显示 T0 `2026-09-30`、PG 候选快照、source requests 0、next complete session 未记录、未启动 daily worker；缺口含 11 个 profile identity 及 Focus 写入 admission。
+- Diagnostics Health：个股 5,213、板块 378、Focus 469、Forward 117、市场 1；分别显示 85/34/6/0/0 个不可判定字段。Sources/Contracts 页及来源详情抽屉可展开，并显示候选 Head、source contract、database identity 和 gaps。Jobs：T0 `2026-09-30`、source requests 0、next complete session 未记录、未启动 daily worker；缺口含 11 个 profile identity 及 Focus 写入 admission。
 - 数据页均明确标识 `PG 候选快照 · 不代表正式 Head`。页面真实渲染与交互通过，但因 PID 42876 未能重启，以上不能证明本次新后端代码已被 28766 加载，故整体仍为 `BROWSER_PARTIAL`。此前已交互的主页、Compare/Replay 与数据更新页记录见旧版升级报告。
 
 ## 尚未完成且原因明确
@@ -43,4 +43,4 @@
 
 - 只运行最小语法编译、`git diff --check`、强制 staged repository policy 和实际浏览器交互；未运行完整测试、GitHub CLI workflow 或 Actions。
 - 提交前保留了已有的 5 个无关 untracked 用户文件，未暂存。
-- 最终 commit/push 状态记录于提交完成后追加。
+- 本批代码与收尾报告已正常提交并推送：`e52406ed6`（`codex/v4-workspace-cleanup`）。该 SHA 是本报告之外的代码提交；收尾报告再以独立提交记录验收结果。

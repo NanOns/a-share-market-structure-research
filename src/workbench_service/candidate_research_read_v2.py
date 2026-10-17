@@ -1,7 +1,6 @@
 """Optional, head-bound candidate display. No formal fields or counts change."""
 import json
 import hashlib
-import re
 from pathlib import Path
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
@@ -100,25 +99,8 @@ def capture_calendar_contract(root):
 
 
 def checked_dependency(root,binding):
-    """Verify original computation bytes after a source-code revision.
-
-    Only model/config dependencies can use this content-addressed archive.
-    Owner/source data and the accepted release chain never fall back here.
-    """
-    relative=Path(binding['path'])
-    if relative.is_absolute() or '..' in relative.parts or not relative.parts or relative.parts[0] not in ('src','config'):
-        return checked(root,binding)
-    try:
-        return checked(root,binding)
-    except (ValueError,OSError):
-        sha=binding['sha256']
-        if not isinstance(sha,str) or not re.fullmatch('[0-9a-f]{64}',sha):
-            raise ValueError('FROZEN_DEPENDENCY_SHA_REQUIRED')
-        archive='docs/evidence/producer_dependency_archive_v1/'+sha+'.bin'
-        try:
-            return checked(root,dict(binding,path=archive))
-        except (ValueError,OSError) as exc:
-            raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
+    """Verify frozen computation bytes at their exact configured source binding."""
+    return checked(root,binding)
 
 
 def accepted_candidate_head(root, current, token, binding, day):
@@ -132,12 +114,10 @@ def accepted_candidate_head(root, current, token, binding, day):
         raise ValueError('OLD_TOKEN')
     cutoff=current.get('accepted_trade_date')
     if not cutoff or day>cutoff:raise ValueError('FUTURE_DATE')
-    if current.get('exact_daily_adjustment_contract'):
-        from workbench_db.v4_membership_reference_pg_v1 import research_authority
-        research=research_authority(root,current,day)
-        if research['input_candidate']!=binding:raise ValueError('NATIVE_RESEARCH_INPUT_HEAD_MISMATCH')
+    if current.get('exact_daily_adjustment_contract') and day==cutoff:
+        from workbench_db.v4_membership_reference_pg_v1 import read_research_input_candidate
         # Input-owner conservation never accepts the pending producer Head.
-        return json.loads(checked(root,binding).read_bytes())
+        return read_research_input_candidate(root,current,day,binding)
     candidate=current;seen=set()
     for _ in range(4096):
         identity=digest(candidate)
@@ -186,15 +166,25 @@ def read_candidates(root, *, head, token, day, sector_id=None):
             raise ValueError('OLD_TOKEN')
         if not head.get('accepted_trade_date') or day>head['accepted_trade_date']:
             raise ValueError('FUTURE_DATE')
-        index_path=root/'data/v4/producer_candidate_index_v2.json'
-        if not index_path.exists():return dict(result,reason='CANDIDATE_INDEX_NOT_CREATED')
-        index=json.loads(index_path.read_bytes());entry=index.get('sessions',{}).get(day)
-        if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
-        if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
-            raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
+        if (head.get('exact_daily_adjustment_contract')
+                and day==head.get('accepted_trade_date')):
+            from workbench_db.v4_membership_reference_pg_v1 import research_authority
+            research=research_authority(root,head,day)
+            entry=research.get('index_entry')
+            if research.get('index_contract')!='PRODUCER_CANDIDATE_INDEX_V2' or not isinstance(entry,dict):
+                raise ValueError('NATIVE_RESEARCH_INDEX_PG_AUTHORITY_REQUIRED_NO_FALLBACK')
+            if entry.get('production') is not False:raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
+        else:
+            index_path=root/'data/v4/producer_candidate_index_v2.json'
+            if not index_path.exists():return dict(result,reason='CANDIDATE_INDEX_NOT_CREATED')
+            index=json.loads(index_path.read_bytes());entry=index.get('sessions',{}).get(day)
+            if not entry:return dict(result,reason='HISTORICAL_CANDIDATE_SOURCE_NOT_CAPTURED')
+            if index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or entry.get('production') is not False:
+                raise ValueError('CANDIDATE_INDEX_SCOPE_REQUIRED')
         current=head;head=accepted_candidate_head(root,head,token,entry['head'],day)
         def read_document(binding):
-            if current.get('exact_daily_adjustment_contract'):
+            if (current.get('exact_daily_adjustment_contract')
+                    and day==current.get('accepted_trade_date')):
                 from workbench_db.v4_membership_reference_pg_v1 import read_research
                 return read_research(root,current,day,binding)
             return json.loads(checked(root,binding).read_bytes())

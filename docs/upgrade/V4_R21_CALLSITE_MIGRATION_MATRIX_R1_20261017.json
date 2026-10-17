@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 227,
+    "migration_open": 220,
     "statuses": {
-      "OPEN": 219,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 39,
+      "OPEN": 212,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 46,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 39,
-    "remaining_open_or_ingress": 227,
+    "code_level_pg_read_paths_implemented": 46,
+    "remaining_open_or_ingress": 220,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -14772,20 +14772,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "accepted_candidate_head",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160783",
@@ -14838,20 +14845,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "accepted_candidate_head",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160791",
@@ -14903,20 +14917,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "accepted_candidate_head",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160787",
@@ -14955,20 +14976,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "accepted_candidate_head",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160788",
@@ -15008,20 +15036,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "read_document",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160790",
@@ -15074,20 +15109,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "read_candidates",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160795",
@@ -15945,20 +15987,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_membership_reference research authority; exact dated index entry and accepted input-candidate Owner fact",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_HEAD_AND_T0_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current live Head/T0 authority and approved PG Reader readback are not verified; legacy non-exact daily candidates retain their separate file-backed path.",
       "baseline_function": "CoreProductBFFR1._get_product",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "implemented_code": "For exact-daily Head at its accepted T0, prepare_research stores the exact dated producer-index entry and accepted input-candidate Head as append-only PG Owner facts under the membership-reference authority. Candidate BFF reads that entry, Head and research sidecars from PG; removing local index and input-candidate JSON still permits the latest-T0 display. Historical/non-exact requests retain the legacy chain and are not included as PG-migrated paths.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "LIVE_HEAD_T0_NOT_RECONCILED",
+        "verification": "Targeted PG-boundary tests pass with controlled fakes, including BFF route after deleting exact-T0 local index and candidate Head. No live PG write/readback or accepted Head update."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160826",
@@ -17503,6 +17552,37 @@
         },
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "next": "Continue migrating exact-mapped business and Owner callers; reconcile current Head/PG identity and live same-T0 evidence before formal closure."
+      },
+      {
+        "batch_id": "R21-R4-candidate-index-and-input-head-pg-read-r55",
+        "files": [
+          "src/workbench_db/v4_membership_reference_pg_v1.py",
+          "src/workbench_service/candidate_research_read_v2.py",
+          "tests/test_v4_native_research_reference.py"
+        ],
+        "evidence": [
+          "Exact-daily candidate preparation now appends the full accepted input-candidate Head and exact dated producer-index entry into the existing membership-reference PG authority, with same-scope PG fact readback checks.",
+          "Exact-daily candidate display reads the index entry, input-candidate Head, and research sidecars via PG authority. A test removes the source index and candidate JSON before reading and still verifies the candidate display result. Frozen computation dependencies now require their exact source bindings and fail closed instead of reading historical evidence archives."
+        ],
+        "verification": "10 focused PG-boundary tests passed; no live PG write/readback or accepted Head update.",
+        "baseline_callsite_ids": [
+          "V4-BCA-R2-699ac09d36a2633dd137",
+          "V4-BCA-R2-70e3443406d32e3119b5",
+          "V4-BCA-R2-7e3b1dcfbe74f92ddb2b",
+          "V4-BCA-R2-a4ed5a8bf413c28fe56f",
+          "V4-BCA-R2-a8f12c16b7c1eac9400d",
+          "V4-BCA-R2-c73ff812cac591af9e7c",
+          "V4-BCA-R2-ffe318c673ab2c11acf8"
+        ],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts": {
+          "OPEN": 212,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 46,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8
+        },
+        "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "next": "Continue exact-mapped daily and Owner consumers; reconcile live Head/authority identity and same-T0 PG readback before formal closure."
       }
     ]
   }

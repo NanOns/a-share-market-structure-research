@@ -87,6 +87,8 @@ jobs:
           tests/test_r19_a_historical_static_bindings.py
           tests/test_v4_business_code_file_access_r1.py
           tests/test_v4_nonconfig_external_file_references_r1.py
+          tests/test_v4_native_research_reference.py
+          tests/test_v4_membership_reference_pg_only_r2.py
 
       - name: Current V4 business-code file-access audit
         env:

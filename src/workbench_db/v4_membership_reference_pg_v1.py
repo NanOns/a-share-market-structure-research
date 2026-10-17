@@ -211,10 +211,17 @@ def prepare_research(root,candidate,input_candidate,index):
     """Store already frozen research sidecars; never recalculate their facts."""
     root=Path(root);authority=_load_authority(root,candidate);day=candidate['accepted_trade_date']
     entry=index.get('sessions',{}).get(day)
-    if not entry or entry['head']!=input_candidate or entry.get('production') is not False:raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_REQUIRED')
+    if (index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or not entry
+            or entry['head']!=input_candidate or entry.get('production') is not False):
+        raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_REQUIRED')
     original=json.loads(checked(root,input_candidate).read_bytes())
     for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot'):
         if original.get(name)!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
+    input_candidate_key=digest(canonical(dict(contract_id=CONTRACT,domain='research_input_candidate',T0=day,source=input_candidate)))
+    input_candidate_descriptor=append(root,input_candidate_key,day,'reference_research_input_candidate',input_candidate,[original])
+    if canonical(read_fact(root,input_candidate_descriptor,input_candidate_key,day,
+            'reference_research_input_candidate',input_candidate))!=canonical([original]):
+        raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_FULL_PG_PAYLOAD_DIFFERENCE')
     documents={}
     for name in ('sector','full_state','strict_source','source_capture'):
         source=entry.get(name)
@@ -225,7 +232,9 @@ def prepare_research(root,candidate,input_candidate,index):
         descriptor=append(root,fact_key,day,'reference_research_'+name,source,content)
         if canonical(read_fact(root,descriptor,fact_key,day,'reference_research_'+name,source))!=canonical(content):raise ValueError('NATIVE_RESEARCH_FULL_PAYLOAD_DIFFERENCE')
         documents[name]=dict(source=source,descriptor=descriptor,fact_token=fact_key)
-    authority['research']=dict(input_candidate=input_candidate,T0=day,documents=documents,
+    authority['research']=dict(input_candidate=input_candidate,T0=day,
+        input_candidate_pg=dict(descriptor=input_candidate_descriptor,fact_token=input_candidate_key),
+        index_contract=index.get('contract_id'),index_entry=entry,documents=documents,
         source_owner_bindings={name:candidate.get(name) for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot')})
     candidate[KEY]=_persist_authority(root,authority)
     return dict(documents=sorted(documents),numeric_producers_reexecuted=False,publication=False)
@@ -240,6 +249,22 @@ def research_authority(root,candidate,day):
     for name,value in research.get('source_owner_bindings',{}).items():
         if value!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
     return research
+
+def read_research_input_candidate(root,candidate,day,binding=None):
+    """Read the exact research input candidate from the Head-bound PG Owner fact."""
+    research=research_authority(root,candidate,day)
+    source=research.get('input_candidate')
+    if binding is not None and source!=binding:raise ValueError('NATIVE_RESEARCH_INPUT_HEAD_MISMATCH')
+    pg=research.get('input_candidate_pg')
+    if not isinstance(pg,dict):raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_PG_REQUIRED_NO_FALLBACK')
+    content=read_fact(root,pg['descriptor'],pg['fact_token'],day,
+        'reference_research_input_candidate',source)
+    if not isinstance(content,list) or len(content)!=1 or not isinstance(content[0],dict):
+        raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_PG_PAYLOAD_INVALID')
+    original=content[0]
+    for name,expected in research['source_owner_bindings'].items():
+        if original.get(name)!=expected:raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
+    return original
 
 def read_research(root,candidate,day,source):
     research=research_authority(root,candidate,day)

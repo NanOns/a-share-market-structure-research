@@ -16708,6 +16708,28 @@
         "p1_formally_remaining": 266,
         "status": "PG_CANDIDATE_BFF_REQUIRES_PUBLICATION_BOUND_CONTRACT_PROOF_OFFLINE; formal baseline unchanged.",
         "next": "Continue exact DM-01 and business/Owner callsites, then verify the connected BFF against a real accepted PG publication."
+      },
+      {
+        "batch_id": "R21-R4-contract-approval-time-proof-r19",
+        "files": [
+          "src/workbench_analysis/contract_registry_pg_v1.py",
+          "src/workbench_db/v4_publication_reader.py",
+          "src/workbench_service/v4_server.py",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "tests/test_v4_pg_publication_candidate.py",
+          "tests/test_v4_server_pg_candidate_mode.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R19.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Contract registry results now retain approval occurred_at, database recorded_at and source_sha256; the publication reader includes those values in the shared context token.",
+          "The PG candidate BFF checks source_sha256 equals raw_sha256 and both approval timestamps are timezone-aware and no later than publication accepted_at."
+        ],
+        "verification": "Focused registry, PG publication candidate, candidate BFF and membership Owner suites passed; no live PG approval event or BFF readback.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "APPROVAL_EVENT_TIME_AND_SOURCE_PROOF_REACHES_BFF_OFFLINE; actual approval lifecycle remains unverified.",
+        "next": "Continue real Owner/business code migrations and run publication/approval readback after the compliant Reader identity is configured."
       }
     ]
   }

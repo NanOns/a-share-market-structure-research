@@ -2,6 +2,7 @@
 import json
 import hashlib
 import threading
+from datetime import datetime
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -31,9 +32,20 @@ def _require_candidate_contract_proofs(context):
                 or proof.get('publication_id')!=publication_id
                 or proof.get('trade_date')!=trade_date
                 or proof.get('namespace')!=namespace
+                or proof.get('approval_source_sha256')!=digest
                 or not proof.get('version') or not proof.get('schema_version')
                 or not proof.get('accepted_at') or not proof.get('approved_by')
-                or not proof.get('approval_ref') or not proof.get('approval_source_revision')):
+                or not proof.get('approval_ref') or not proof.get('approval_source_revision')
+                or not proof.get('approval_occurred_at') or not proof.get('approval_recorded_at')):
+            raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
+        try:
+            accepted=datetime.fromisoformat(str(proof['accepted_at']).replace('Z','+00:00'))
+            occurred=datetime.fromisoformat(str(proof['approval_occurred_at']).replace('Z','+00:00'))
+            recorded=datetime.fromisoformat(str(proof['approval_recorded_at']).replace('Z','+00:00'))
+        except (TypeError,ValueError) as error:
+            raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID') from error
+        if (accepted.tzinfo is None or occurred.tzinfo is None or recorded.tzinfo is None
+                or occurred>accepted or recorded>accepted):
             raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
 
 

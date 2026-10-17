@@ -34,6 +34,9 @@ class RegisteredContract:
     approved_by: str = ""
     approval_ref: str = ""
     approval_source_revision: str = ""
+    approval_occurred_at: Any = None
+    approval_recorded_at: Any = None
+    approval_source_sha256: str = ""
 
 
 def _mapping(value: Any, code: str) -> dict[str, Any]:
@@ -171,7 +174,8 @@ def load_publication_contract(
                               namespace, raw, parsed_json, publication_id,
                               str(publication[4]), publication[3],
                               (str(session[0]), str(session[1])), str(approved_by),
-                              str(approval_ref), str(approval_source_revision))
+                              str(approval_ref), str(approval_source_revision),
+                              approved_at, approval_recorded_at, str(approval_source_digest))
 
 
 def load_publication_contracts(

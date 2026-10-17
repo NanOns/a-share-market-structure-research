@@ -44,6 +44,9 @@ class _Adapter:
                 "publication_id": "pub-20261016-r1", "trade_date": "2026-10-16",
                 "accepted_at": "2026-10-16T16:00:00+00:00", "approved_by": "reviewer",
                 "approval_ref": "approval-1", "approval_source_revision": "approval-source-r1",
+                "approval_occurred_at": "2026-10-16T15:59:00+00:00",
+                "approval_recorded_at": "2026-10-16T15:59:01+00:00",
+                "approval_source_sha256": "a" * 64,
             }},
             "database_identity": {"database": "market_research", "database_oid": 16384,
                                   "host": "127.0.0.1", "port": 5432},
@@ -126,6 +129,7 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
             assert proof["publication_id"] == body["context"]["publication_id"]
             assert proof["trade_date"] == body["context"]["trade_date"]
             assert proof["approval_ref"] == "approval-1"
+            assert proof["approval_recorded_at"] == "2026-10-16T15:59:01+00:00"
             assert str(tmp_path) not in json.dumps(body["workspace_identity"])
         assert [call[0] for call in adapter.calls] == [f"/api/v4/current/{page}" for page in pages]
         assert all(call[1] == {
@@ -145,6 +149,8 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
                    'publication_id':'pub-20261016-r1','trade_date':'2026-10-16',
                    'accepted_at':'2026-10-16T16:00:00+00:00','approved_by':'reviewer',
                    'approval_ref':'approval-1','approval_source_revision':'approval-source-r1',
+                   'approval_occurred_at':'2026-10-16T15:59:00+00:00',
+                   'approval_recorded_at':'2026-10-16T15:59:01+00:00','approval_source_sha256':'a'*64,
                }},
                'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
                'module_results':{}},
@@ -217,3 +223,16 @@ def test_candidate_bff_rejects_missing_contract_approval_proof():
         v4_server._require_candidate_contract_proofs({
             "publication_id": "pub-1", "trade_date": "2026-10-16", "model_namespace_id": "workspace-main",
         })
+
+
+def test_candidate_bff_rejects_approval_recorded_after_publication_acceptance():
+    from workbench_db.v4_publication_reader import PublicationReadError
+
+    proof={"version":"r1","raw_sha256":"a"*64,"schema_version":"1","namespace":"workspace-main",
+           "publication_id":"pub-1","trade_date":"2026-10-16","accepted_at":"2026-10-16T16:00:00+00:00",
+           "approved_by":"reviewer","approval_ref":"approval-1","approval_source_revision":"source-r1",
+           "approval_occurred_at":"2026-10-16T15:59:00+00:00","approval_recorded_at":"2026-10-16T16:00:01+00:00",
+           "approval_source_sha256":"a"*64}
+    with pytest.raises(PublicationReadError, match="PG_CANDIDATE_CONTRACT_PROOF_INVALID"):
+        v4_server._require_candidate_contract_proofs({"publication_id":"pub-1","trade_date":"2026-10-16",
+            "model_namespace_id":"workspace-main","contracts":{"RULE":proof}})

@@ -266,6 +266,11 @@ class PgPublicationReader:
                         "approved_by": contract.approved_by,
                         "approval_ref": contract.approval_ref,
                         "approval_source_revision": contract.approval_source_revision,
+                        "approval_occurred_at": contract.approval_occurred_at.isoformat()
+                        if hasattr(contract.approval_occurred_at, "isoformat") else str(contract.approval_occurred_at),
+                        "approval_recorded_at": contract.approval_recorded_at.isoformat()
+                        if hasattr(contract.approval_recorded_at, "isoformat") else str(contract.approval_recorded_at),
+                        "approval_source_sha256": contract.approval_source_sha256,
                     }
                     for contract_id, contract in sorted(registered_contracts.items())
                 },

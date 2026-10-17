@@ -39,6 +39,9 @@ def test_reads_exact_approved_bytes_pinned_by_publication():
     assert contract.database_identity == ("market_research", "v4_reader")
     assert contract.approved_by == "approver"
     assert contract.approval_ref == "approval-1"
+    assert contract.approval_occurred_at == "2026-10-17T00:00:00Z"
+    assert contract.approval_recorded_at == "2026-10-17T00:00:00Z"
+    assert contract.approval_source_sha256 == digest
     assert [call[1] for call in cursor.calls] == [(), ("publication-1",),
         ("2026-10-17T00:00:00Z", "2026-10-17T00:00:00Z", "RULE", "1.2.0", digest)]
 

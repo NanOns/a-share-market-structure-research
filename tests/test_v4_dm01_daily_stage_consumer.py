@@ -131,3 +131,31 @@ def test_continuous_bootstrap_does_not_fallback_when_baseline_stage_fact_is_miss
     monkeypatch.setattr("workbench_db.v4_dm01_stage_state_pg_r1.read_unique_stage", read_stage)
     with pytest.raises(ValueError, match="DM01_STAGE_STATE_NOT_UNIQUE"):
         maintenance.accepted_stage_bindings()
+
+
+def test_continuous_data_head_bootstrap_uses_pg_without_local_head_fallback(monkeypatch, tmp_path):
+    import json
+    import pytest
+    from scripts import run_v4_continuous_data_maintenance as maintenance
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    payload = {"contract_id": "V4_DATA_ACCEPTED_HEAD_V1", "accepted_trade_date": "2026-10-16",
+               "manifest_sha256": "a" * 64, "stage_accepted_head_sha256": "b" * 64,
+               "dev_baseline_sha256": "c" * 64, "PIT_ELIGIBLE": False, "AS_RECORDED": False}
+    monkeypatch.setattr(maintenance, "ROOT", tmp_path)
+    monkeypatch.setattr(state, "read_latest_stage", lambda root, *, stage: payload)
+    monkeypatch.setattr(maintenance, "read", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("LOCAL_HEAD_READ_FORBIDDEN")))
+    monkeypatch.setattr(maintenance, "atomic", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("LOCAL_HEAD_WRITE_FORBIDDEN")))
+
+    result = maintenance.initialize_bootstrap({})
+
+    assert result["status"] == "PG_DATA_HEAD_READY"
+    assert result["data_head"] == payload
+    assert result["authority"] == "PG_FORWARD_FACT"
+
+    monkeypatch.setattr(state, "read_latest_stage", lambda *_a, **_k: (_ for _ in ()).throw(ValueError("DM01_STAGE_STATE_NOT_FOUND")))
+    local_pointer = tmp_path / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    local_pointer.parent.mkdir(parents=True)
+    local_pointer.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(SystemExit, match="DM01_PG_DATA_HEAD_MIGRATION_REQUIRED:DM01_STAGE_STATE_NOT_FOUND"):
+        maintenance.initialize_bootstrap({})

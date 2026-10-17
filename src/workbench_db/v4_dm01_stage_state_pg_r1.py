@@ -24,6 +24,10 @@ STAGES = frozenset({
     "daily_source_freeze",
     "source_readiness",
     "v402_acceptance",
+    "data_head",
+    "stage_head",
+    "dev_baseline_head",
+    "bootstrap_manifest",
 })
 
 
@@ -114,7 +118,8 @@ def append_stage(root, trade_date: str, stage: str, payload: dict) -> dict:
         raise ValueError("DM01_STAGE_STATE_STAGE_INVALID")
     if not isinstance(payload, dict) or not isinstance(payload.get("contract_id"), str):
         raise ValueError("DM01_STAGE_STATE_PAYLOAD_CONTRACT_REQUIRED")
-    if payload.get("trade_date", payload.get("target_date")) != day:
+    payload_day = payload.get("trade_date", payload.get("target_date", payload.get("accepted_trade_date")))
+    if payload_day != day:
         raise ValueError("DM01_STAGE_STATE_PAYLOAD_DATE_MISMATCH")
     record = {
         "contract_id": CONTRACT,
@@ -193,5 +198,47 @@ def read_unique_stage(root, *, trade_date: str, stage: str) -> dict:
     if (record.get("contract_id") != CONTRACT or record.get("contract_version") != VERSION
             or record.get("trade_date") != day or record.get("stage") != stage
             or not isinstance(payload, dict) or digest(canonical(payload)) != record.get("payload_sha256")):
+        raise ValueError("DM01_STAGE_STATE_BINDING_MISMATCH")
+    return payload
+
+
+def read_latest_stage(root, *, stage: str) -> dict:
+    """Read the unique fact at the latest dated stage; no local Head fallback."""
+    if stage not in STAGES:
+        raise ValueError("DM01_STAGE_STATE_STAGE_INVALID")
+    project_root = Path(root).resolve()
+    folder = (project_root / FOLDER).resolve()
+    if project_root.drive.upper() != "G:" or not folder.is_relative_to(project_root):
+        raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
+    schema = v4_native.workspace_schema(folder, "forward")
+    expected = _expected_identity()
+    with v4_native.connection(schema, read_only=True, dsn=v4_native.configured_reader_dsn()) as pg:
+        if ForwardFactStore._database_identity(pg) != expected:
+            raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
+        rows = pg.execute(
+            """SELECT payload,payload_sha256 FROM forward_facts
+                 WHERE kind=%s AND payload::jsonb->>'stage'=%s
+                 ORDER BY payload::jsonb->>'trade_date' DESC, fact_key COLLATE \"C\"
+                 LIMIT 2""",
+            (KIND, stage),
+        ).fetchall()
+    if not rows:
+        raise ValueError("DM01_STAGE_STATE_NOT_FOUND")
+    if len(rows) > 1:
+        first = json.loads(rows[0][0])
+        second = json.loads(rows[1][0])
+        if first.get("trade_date") == second.get("trade_date"):
+            raise ValueError("DM01_STAGE_STATE_NOT_UNIQUE")
+    raw, expected_sha = rows[0]
+    if digest(raw.encode("utf-8")) != expected_sha:
+        raise ValueError("DM01_STAGE_STATE_PG_PAYLOAD_DIGEST_MISMATCH")
+    record = json.loads(raw)
+    payload = record.get("payload") if isinstance(record, dict) else None
+    day = record.get("trade_date") if isinstance(record, dict) else None
+    payload_day = (payload.get("trade_date", payload.get("target_date", payload.get("accepted_trade_date")))
+                   if isinstance(payload, dict) else None)
+    if (not isinstance(record, dict) or record.get("contract_id") != CONTRACT or record.get("contract_version") != VERSION
+            or record.get("stage") != stage or not isinstance(payload, dict)
+            or _day(day) != day or payload_day != day or digest(canonical(payload)) != record.get("payload_sha256")):
         raise ValueError("DM01_STAGE_STATE_BINDING_MISMATCH")
     return payload

@@ -199,6 +199,49 @@ def test_stage_fact_reader_uses_readonly_dsn_and_verifies_pg_payload(tmp_path, m
     assert calls[-1][1] == (state.KIND, key)
 
 
+def test_latest_data_head_is_selected_from_pg_and_rejects_same_day_duplicates(monkeypatch, tmp_path):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+
+    identity = MemoryFactStore.database_identity
+
+    def fact(day):
+        payload = {"contract_id": "V4_DATA_ACCEPTED_HEAD_V1", "accepted_trade_date": day,
+                   "manifest_sha256": digest(day.encode())}
+        record = {"contract_id": state.CONTRACT, "contract_version": state.VERSION,
+                  "trade_date": day, "stage": "data_head",
+                  "payload_sha256": digest(canonical(payload)), "payload": payload}
+        raw = canonical(record).decode("utf-8")
+        return raw, digest(raw.encode("utf-8"))
+
+    class Result:
+        def __init__(self, row=None, rows=None): self.row, self.rows = row, rows or []
+        def fetchone(self): return self.row
+        def fetchall(self): return self.rows
+
+    rows = [fact("2026-10-16"), fact("2026-10-15")]
+
+    class PG:
+        def execute(self, statement, params=()):
+            if "current_database()" in statement:
+                return Result((identity["database"], identity["database_oid"], identity["host"], identity["port"]))
+            assert params == (state.KIND, "data_head")
+            return Result(rows=rows)
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield PG()
+
+    monkeypatch.setattr(state.v4_native, "configured_reader_dsn", lambda: "reader-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    assert state.read_latest_stage(tmp_path, stage="data_head")["accepted_trade_date"] == "2026-10-16"
+
+    rows.insert(1, fact("2026-10-16"))
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_NOT_UNIQUE"):
+        state.read_latest_stage(tmp_path, stage="data_head")
+
+
 def test_gbbq_probe_entrypoint_appends_exact_result_to_pg_stage(monkeypatch, tmp_path, capsys):
     import sys
     from scripts import probe_v4_dm01_gbbq_revision as probe

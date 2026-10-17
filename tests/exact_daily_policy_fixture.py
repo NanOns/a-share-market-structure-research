@@ -38,6 +38,9 @@ def install_pending(root):
     from workbench_analysis.operational_daily_exact_policy_v2 import CONTRACT,KERNEL,REQUIRED_SOURCES
     from workbench_analysis.r43_owner_replay import ref
     root=Path(root).resolve()
+    paths=root/'config/paths.yaml';paths.parent.mkdir(parents=True,exist_ok=True)
+    if not paths.exists():
+        paths.write_text(f'tdx:\n  source_root: "{(root / "readonly-tdx").as_posix()}"\n',encoding='utf8')
     repository=Path(__file__).resolve().parents[1]
     sources=REQUIRED_SOURCES|{'config/read_only_operational_daily_release_policy_v1_1.json','docs/upgrade/V4_AUTO_EXACT_DAILY_CONTINUATION_R1_20261013.md'}
     for name in sources:

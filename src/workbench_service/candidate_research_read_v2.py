@@ -123,7 +123,22 @@ def capture_calendar_contract(root):
 
 
 def checked_dependency(root,binding):
-    """Verify frozen computation bytes at their exact configured source binding."""
+    """Resolve frozen code/config bytes; data inputs retain their original binding."""
+    from pathlib import Path
+    root=Path(root).resolve()
+    relative=Path(binding['path'])
+    if relative.is_absolute() or '..' in relative.parts:
+        raise ValueError('DEPENDENCY_PATH_ESCAPE')
+    if relative.parts and relative.parts[0] in ('src','config'):
+        archive=root/'data/v4/artifact_store/producer_dependency_archive_v1'/(binding['sha256']+'.bin')
+        try:
+            raw=archive.read_bytes()
+        except OSError as exc:
+            raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
+        import hashlib
+        if hashlib.sha256(raw).hexdigest()!=binding['sha256']:
+            raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED')
+        return archive
     return checked(root,binding)
 
 

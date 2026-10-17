@@ -345,19 +345,26 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return matches[0] if len(identities)==1 else None
 
     def focus_projection(self,day):
-        authority=self.api.root/'config/core_product_focus_read_authority_r2.json'
-        if not authority.exists() or day!=self.api.candidate['accepted_trade_date']:return None
+        if day!=self.api.candidate['accepted_trade_date']:return None
+        from .native_product_catalog_v3 import PG_KEY,load as load_catalog
+        if PG_KEY not in self.api.candidate:
+            raise ValueError('FOCUS_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK')
         key=('focus-read-r2',day)
         if key not in self.api.cache:
-            manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
-            if (manifest['T0']!=day or manifest['head']['sha256']!=self.api.token):return None
-            checked(self.api.root,manifest['head']);checked(self.api.root,manifest['implementation'])
-            for ref in manifest['source_bindings'].values():checked(self.api.root,ref)
-            if manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG':
-                from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
-                projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,head_token=self.api.token)
-            else:
+            catalog=load_catalog(self.api.root,self.api.candidate)
+            manifest=catalog.get('dates',{}).get(day)
+            if manifest is None:return None
+            if (manifest.get('T0')!=day
+                    or manifest.get('contract_id')!='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG'):
                 raise ValueError('FOCUS_PG_PROJECTION_REQUIRED_NO_FILE_FALLBACK')
+            scope=catalog.get('scopes',{}).get(day)
+            if not isinstance(scope,dict) or manifest.get('head') is None:
+                raise ValueError('FOCUS_PG_HEAD_SCOPE_REQUIRED')
+            if manifest.get('projection_source') is None:
+                raise ValueError('FOCUS_PG_INGRESS_SOURCE_BINDING_REQUIRED')
+            from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
+            projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,
+                                     head_token=manifest['head']['sha256'])
             self.api.cache[key]=(manifest,projection)
         return self.api.cache[key]
 

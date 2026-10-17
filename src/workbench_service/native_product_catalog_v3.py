@@ -30,6 +30,24 @@ def prepare_pg(root, candidate, authority):
     for day,binding in authority['dates'].items():
         manifest=json.loads(checked(root,binding).read_bytes())
         if manifest.get('T0')!=day:raise ValueError('PRODUCT_CATALOG_MANIFEST_DATE_MISMATCH')
+        # The legacy Focus projection was produced into a local snapshot even
+        # though its contract called it PG. Re-ingest that exact, digest-bound
+        # source once into the operational Owner relation before the manifest
+        # itself is sealed into the Head-bound catalogue.
+        if manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R2':
+            from workbench_db.v4_focus_projection_pg_closeout import build as build_focus_pg
+            projection_binding=manifest.get('projection')
+            scope_binding=manifest.get('head')
+            if not isinstance(scope_binding,dict) or not isinstance(scope_binding.get('sha256'),str):
+                raise ValueError('FOCUS_PG_PROJECTION_HEAD_SCOPE_REQUIRED')
+            focus_binding,focus_receipt=build_focus_pg(
+                root,projection_binding,t0=day,head_token=scope_binding['sha256'])
+            if focus_receipt.get('whole_payload_difference')!=0:
+                raise ValueError('FOCUS_PG_PROJECTION_FULL_READBACK_REQUIRED')
+            manifest=dict(manifest,contract_id='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG',
+                          projection=focus_binding,
+                          projection_source=projection_binding,
+                          projection_pg_receipt=focus_receipt)
         for name,source in manifest.get('source_bindings',{}).items():
             if name in candidate['owners'][day] and source!=candidate['owners'][day][name]:
                 raise ValueError('PRODUCT_CATALOG_MANIFEST_OWNER_MISMATCH')

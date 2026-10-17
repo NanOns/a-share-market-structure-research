@@ -165,6 +165,9 @@ class UXR3RouteTests(unittest.TestCase):
             self.bff.get('/api/v4/radar', {'context_token': TOKEN, 'event': 'BOGUS'})
 
     def test_focus_events_empty_event_new_persistent_validity_and_paging(self):
+        # This route fixture tests filtering/paging only; PG projection authority
+        # selection is covered by test_v4_product_catalog_pg_r48.
+        self.bff.focus_projection = lambda day: None
         forward = {'events': [
             {'entity_id': 'SEC-1', 'event': 'NEW', 'validity': 'VALID', 'trade_date': DAY},
             {'entity_id': 'SEC-2', 'event': 'PERSISTENT', 'validity': 'UNKNOWN', 'trade_date': DAY},
@@ -292,6 +295,9 @@ class UXR3RouteTests(unittest.TestCase):
         self.assertEqual(index.detail_calls, [('sectors', 'INDUSTRY:T0101')])
 
     def test_focus_entity_route_attaches_full_r2_detail(self):
+        # This route fixture tests entity detail composition only; its read
+        # source is deliberately injected independently of PG authority setup.
+        self.bff.focus_projection = lambda day: None
         detail = {'entity_id': 'SEC-2', 'fields': {'validity': {'value': 'UNKNOWN', 'quality': 'SOURCE_INCOMPLETE',
             'reason': 'NO_DATED_VALIDITY_OWNER'}}}
         index = FakeR2(detail)
@@ -337,7 +343,7 @@ class UXR3RouteTests(unittest.TestCase):
             'implementation':{},'source_bindings':{}}),encoding='utf-8')
         authority_path.write_text(json.dumps({'manifest':{'path':'manifest.json','sha256':'c'*64}}),encoding='utf-8')
         with patch.object(module,'checked',return_value=manifest_path):
-            with self.assertRaisesRegex(ValueError,'FOCUS_PG_PROJECTION_REQUIRED_NO_FILE_FALLBACK'):
+            with self.assertRaisesRegex(ValueError,'FOCUS_PG_CATALOG_REQUIRED_NO_FILE_FALLBACK'):
                 self.bff.focus_projection(DAY)
 
     def test_r2_authority_missing_token_and_schema_are_distinguished(self):

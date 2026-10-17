@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 228,
+    "migration_open": 227,
     "statuses": {
-      "OPEN": 220,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 38,
+      "OPEN": 219,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 39,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 38,
-    "remaining_open_or_ingress": 228,
+    "code_level_pg_read_paths_implemented": 39,
+    "remaining_open_or_ingress": 227,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -15215,20 +15215,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "Head-bound native product catalog manifest plus v4.focus_projection Owner fact",
+        "status": "PG_WRITE_AND_READBACK_CODE_WIRED_PENDING_LIVE_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head has no native PG catalog; actual PG write/readback, live authority reconciliation and full Focus business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.focus_projection",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-focus-projection-postgresql-owner-r51",
+        "implemented_code": "prepare_pg upgrades the exact Head-scoped legacy projection manifest by appending the decompressed complete projection to the native PostgreSQL operational Owner relation and recording a full readback receipt. The BFF obtains the manifest from native_product_read_authority_pg and reads the inline PG descriptor with no local Authority/manifest/payload fallback.",
+        "test_evidence": [
+          "test_complete_projection_roundtrip_uses_postgresql_owner_fact",
+          "test_bff_focus_reads_head_bound_catalog_and_postgresql_fact_without_config_fallback",
+          "test_pg_product_catalog_upgrades_legacy_focus_projection_into_owner_fact",
+          "test_focus_projection_rejects_legacy_file_payload_contract"
+        ],
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160814",

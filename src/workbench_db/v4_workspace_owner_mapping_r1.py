@@ -32,12 +32,32 @@ def resolve_workspace_owner_mapping(
         raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_TRADE_DATE_NONCANONICAL")
     if not isinstance(selected_model_namespace_id, str) or not selected_model_namespace_id.strip():
         raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_NAMESPACE_REQUIRED")
-    identity = workspace_namespace_identity(root, "publication")
     path = Path(registry_path) if registry_path is not None else REGISTRY_PATH
     try:
         registry = json.loads(path.read_bytes())
     except (OSError, ValueError) as exc:
         raise WorkspaceOwnerMappingError("WORKSPACE_OWNER_MAPPING_REGISTRY_UNAVAILABLE") from exc
+    return resolve_workspace_owner_mapping_document(
+        root=root, trade_date=trade_date,
+        selected_model_namespace_id=selected_model_namespace_id,
+        registry=registry,
+    )
+
+
+def resolve_workspace_owner_mapping_document(
+    *, root: str | Path, trade_date: str, selected_model_namespace_id: str,
+    registry: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Resolve a mapping document already read from the accepted PG contract."""
+    try:
+        target = date.fromisoformat(trade_date)
+    except (TypeError, ValueError) as exc:
+        raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_TRADE_DATE_INVALID") from exc
+    if target.isoformat() != trade_date:
+        raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_TRADE_DATE_NONCANONICAL")
+    if not isinstance(selected_model_namespace_id, str) or not selected_model_namespace_id.strip():
+        raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_NAMESPACE_REQUIRED")
+    identity = workspace_namespace_identity(root, "publication")
     if (not isinstance(registry, Mapping)
             or registry.get("contract_id") != "V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1"
             or registry.get("contract_version") != "1.0.0"):

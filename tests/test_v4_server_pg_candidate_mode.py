@@ -51,6 +51,17 @@ class _Adapter:
             }},
             "database_identity": {"database": "market_research", "database_oid": 16384,
                                   "host": "127.0.0.1", "port": 5432},
+            "workspace_owner_mapping": {
+                "contract_id": "V4_PG_WORKSPACE_OWNER_MAPPING_R1",
+                "model_namespace_id": "workspace-main",
+                "database_identity": {"database": "market_research", "database_oid": 16384,
+                                      "host": "127.0.0.1", "port": 5432},
+                "owner_schemas": {
+                    "research_priority": "v4_research_priority_aaaaaaaaaaaaaaaa",
+                    "operational_risk": "v4_operational_risk_aaaaaaaaaaaaaaaa",
+                    "sector_lifecycle": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa",
+                },
+            },
             "module_results": {
                 "research_priority": {"owner_schema": "v4_research_priority_aaaaaaaaaaaaaaaa"},
                 "operational_risk": {"owner_schema": "v4_operational_risk_aaaaaaaaaaaaaaaa"},
@@ -92,23 +103,8 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
     monkeypatch.setattr(v4_server, "ResearchBFF", _Bff)
     adapter = _Adapter()
     from workbench_db.v4_native import workspace_namespace_identity
-    identity=workspace_namespace_identity(tmp_path,'publication')
-    registry=tmp_path/'workspace-mapping.json'
-    registry.write_text(json.dumps({
-        'contract_id':'V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1','contract_version':'1.0.0',
-        'status':'TEST_FIXTURE_ONLY','mappings':[{
-            'status':'APPROVED','root_identity_sha256':identity['root_identity_sha256'],
-            'model_namespace_id':'workspace-main','valid_from':'2026-10-01','valid_to':None,
-            'authorized_by':'TEST_FIXTURE_ONLY','authorization_reference':'TEST_ONLY_NO_PRODUCTION_AUTHORITY',
-            'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
-            'owner_schemas':{'research_priority':'v4_research_priority_aaaaaaaaaaaaaaaa',
-                             'operational_risk':'v4_operational_risk_aaaaaaaaaaaaaaaa',
-                             'sector_lifecycle':'v4_sector_lifecycle_aaaaaaaaaaaaaaaa'},
-        }],
-    }),encoding='utf-8')
     handler = v4_server.make_v4_handler(
         tmp_path, adapter, allow_pg_candidate=True,
-        workspace_mapping_registry_path=registry,
     )
     server = ThreadingHTTPServer(("127.0.0.1", 28766), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
@@ -155,6 +151,10 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
                    'approval_recorded_at':'2026-10-16T15:59:01+00:00','approval_source_sha256':'a'*64,
                }},
                'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
+               'workspace_owner_mapping':{'contract_id':'V4_PG_WORKSPACE_OWNER_MAPPING_R1',
+                   'model_namespace_id':'workspace-main',
+                   'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
+                   'owner_schemas':{}},
                'module_results':{}},
         }
         status,body=_request('/api/v4/current/entity?source=pg_candidate&trade_date=2026-10-16&model_namespace_id=workspace-main&context_token=token-1')

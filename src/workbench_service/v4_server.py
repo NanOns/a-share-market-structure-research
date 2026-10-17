@@ -51,7 +51,7 @@ def _require_candidate_contract_proofs(context):
             raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
 
 
-def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, workspace_mapping_registry_path=None):
+def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
     recover(root)
@@ -189,14 +189,6 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                     if any(not query.get(key) for key in required):
                         return self.send(400,dict(status='BLOCKED',code='PG_CANDIDATE_CONTEXT_REQUIRED',required=list(required)))
                     try:
-                        from workbench_db.v4_workspace_owner_mapping_r1 import (
-                            WorkspaceOwnerMappingError, resolve_workspace_owner_mapping,
-                        )
-                        workspace_mapping=resolve_workspace_owner_mapping(
-                            root=root, trade_date=query['trade_date'],
-                            selected_model_namespace_id=query['model_namespace_id'],
-                            registry_path=workspace_mapping_registry_path,
-                        )
                         payload=pg_current_adapter.read_endpoint(
                             parsed.path,trade_date=query['trade_date'],
                             model_namespace_id=query['model_namespace_id'],
@@ -205,13 +197,16 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                         context=payload.get('context') if isinstance(payload,dict) else None
                         if isinstance(context,dict):
                             _require_candidate_contract_proofs(context)
+                            workspace_mapping=context.get('workspace_owner_mapping')
+                            if not isinstance(workspace_mapping,dict):
+                                raise ValueError('WORKSPACE_OWNER_MAPPING_NOT_BOUND_TO_PUBLICATION')
                             if context.get('model_namespace_id') != workspace_mapping['model_namespace_id']:
-                                raise WorkspaceOwnerMappingError('WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH')
+                                raise ValueError('WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH')
                             if context.get('database_identity') != workspace_mapping['database_identity']:
-                                raise WorkspaceOwnerMappingError('WORKSPACE_DATABASE_IDENTITY_MISMATCH')
+                                raise ValueError('WORKSPACE_DATABASE_IDENTITY_MISMATCH')
                             for family,binding in context.get('module_results',{}).items():
                                 if binding.get('owner_schema') != workspace_mapping['owner_schemas'].get(family):
-                                    raise WorkspaceOwnerMappingError('WORKSPACE_OWNER_SCHEMA_MISMATCH:'+str(family))
+                                    raise ValueError('WORKSPACE_OWNER_SCHEMA_MISMATCH:'+str(family))
                         from workbench_db.v4_native import workspace_namespace_identity
                         payload['workspace_identity']=workspace_namespace_identity(root,'publication')
                         payload['workspace_mapping']=workspace_mapping
@@ -219,9 +214,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                         # PG candidate reads are isolated from the file reader. A missing
                         # Head, Owner or read privilege is returned as a candidate error.
                         from workbench_db.v4_publication_reader import PublicationReadError
-                        if isinstance(error, WorkspaceOwnerMappingError):
-                            reason=str(error)
-                        elif isinstance(error, PublicationReadError):
+                        if isinstance(error, (PublicationReadError, ValueError)):
                             reason=str(error)
                         else:
                             reason=type(error).__name__
@@ -264,7 +257,7 @@ def serve_v4(root,host='127.0.0.1',port=28765):
     ThreadingHTTPServer((host,port),make_v4_handler(root)).serve_forever()
 
 
-def pg_candidate_adapter_from_environment(environ=None):
+def pg_candidate_adapter_from_environment(environ=None, *, workspace_root=None):
     """Build the read-only candidate adapter from explicit, non-secret DB identity config."""
     import os
     env = os.environ if environ is None else environ
@@ -286,13 +279,16 @@ def pg_candidate_adapter_from_environment(environ=None):
         raise RuntimeError('V4_PG_EXPECTED_DATABASE_IDENTITY_INVALID')
     from workbench_db.v4_publication_reader import PgPublicationReader
     from .v4_pg_current_adapter import PgV4CurrentAdapter
-    return PgV4CurrentAdapter(PgPublicationReader(expected_database_identity=identity))
+    return PgV4CurrentAdapter(PgPublicationReader(
+        expected_database_identity=identity,
+        workspace_root=str(Path(workspace_root).resolve()) if workspace_root is not None else None,
+    ))
 
 
 def serve_v4_candidate(root, pg_current_adapter=None):
     """Explicit candidate-only BFF on the one development port; never production."""
     if pg_current_adapter is None:
-        pg_current_adapter = pg_candidate_adapter_from_environment()
+        pg_current_adapter = pg_candidate_adapter_from_environment(workspace_root=root)
     ThreadingHTTPServer(
         ('127.0.0.1',28766),
         make_v4_handler(root,pg_current_adapter,allow_pg_candidate=True),

@@ -105,9 +105,11 @@ class PgPublicationReader:
         connection_factory: Callable[[], Any] | None = None,
         expected_database_identity: Mapping[str, Any] | None = None,
         owner_readers: Mapping[str, Callable[[Any, Mapping[str, Any]], Any]] | None = None,
+        workspace_root: str | None = None,
     ):
         self.connection_factory = connection_factory or readonly_connection
         self.expected_database_identity = dict(expected_database_identity or {})
+        self.workspace_root = workspace_root
         if owner_readers is None:
             from .v4_publication_owners import default_owner_readers
             owner_readers = default_owner_readers()
@@ -211,6 +213,20 @@ class PgPublicationReader:
             except ContractRegistryError as exc:
                 raise PublicationReadError(str(exc)) from exc
 
+            workspace_owner_mapping = None
+            if self.workspace_root is not None:
+                mapping_contract = registered_contracts.get("V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1")
+                if mapping_contract is not None:
+                    try:
+                        from .v4_workspace_owner_mapping_r1 import resolve_workspace_owner_mapping_document
+                        workspace_owner_mapping = resolve_workspace_owner_mapping_document(
+                            root=self.workspace_root, trade_date=target_date,
+                            selected_model_namespace_id=model_namespace_id,
+                            registry=mapping_contract.parsed_json,
+                        )
+                    except ValueError as exc:
+                        raise PublicationReadError(str(exc)) from exc
+
             parent = self._read_same_day_parent(pg, publication)
             sources = self._read_sources(pg, publication)
             manifest_status, recomputed_manifest_digest = self._verify_source_manifest(publication, sources)
@@ -274,6 +290,7 @@ class PgPublicationReader:
                     }
                     for contract_id, contract in sorted(registered_contracts.items())
                 },
+                "workspace_owner_mapping": workspace_owner_mapping,
                 "publication_status": publication["status"],
                 "accepted_at": publication["accepted_at"].isoformat()
                 if hasattr(publication["accepted_at"], "isoformat") else str(publication["accepted_at"]),

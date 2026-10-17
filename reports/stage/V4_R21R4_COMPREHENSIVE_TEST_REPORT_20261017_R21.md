@@ -1,28 +1,23 @@
 ---
-stage_id: V4_R21R4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R64_20261017
-code_sha: 88fdaced9
-test_scope: Runtime acceptance PG adapter, BaoStock capture wiring, contract registry and daily executor selected V4 PG/consumer workflow suite
-scope: Date-bound BaoStock V1 runtime acceptance record and active daily capture reader
-conclusion: PG-only-by-default runtime acceptance consumer is wired; full operational daily consumer chain remains incomplete
-approval_status: No live PG access or PG write attempted; no business acceptance claimed
+stage_id: V4_R21R4_BFF_CONTRACT_ACCEPTED_AT_BINDING_R21_20261017
+code_sha: b4874514f
+test_scope: contract proof/Head acceptance binding through PG candidate BFF, publication reader and registry suites
+conclusion: BFF requires exact contract proof accepted_at to match Head context; live response remains unverified
+approval_status: no PG connection or live BFF request was attempted
 ---
 
 # V4 R21-R4 R21 综合阶段报告
 
 ## 范围与结果
 
-R64 为 BaoStock DailyUpdates V1 验收清单建立按交易日唯一键的 append-only PG 事实；采集入口默认从只读 PG 连接读取，并校验数据库身份、事实/清单摘要、烟测回执绑定、目标日、SDK 指纹、认证模式和方法集合。生产入口默认不回退本地验收清单。验收生产器仅在显式 `V4_NATIVE_PG_DSN` 下写入，本轮没有连接写库。
-
-实现覆盖 V1 非零复权因子采集子路径。执行器的 V2 零变化证明、原始响应、source freeze 和实际 accepted Head 仍需另批迁移；这批代码不替代其完整调用链。
+PG candidate BFF 除核验审批 occurred/recorded 时间不晚于合同绑定 publication 的 accepted_at 外，还要求合同证明的 accepted_at 与选中 Head context 的 accepted_at 完全一致。这样合同版本/审批证明不能从同日期的另一 publication acceptance 搬用。
 
 ## 验证与计数
 
-- 聚焦回归 **8 passed**；仓库 CI 当前选定的 V4 PG/消费者完整回归 **305 passed**，含受控 PG-shaped Reader、身份/摘要拒绝、入口接线及执行器回归。
-- 业务源码文件读取审计及校验 PASS：扫描 **1,430** 个调用点，仍有 **176** 个 Owner 文件读取、**238** 个 P1 发现待迁移；审计 JSON 保存在 G 盘临时目录，不进入 Git。
-- 无 live PG catalog/read/write、BaoStock 采集、烟测、Head CAS 或端到端业务验收。
-- 原 266 项完成 **0/266**，剩余 **266/266**；矩阵计数保持 OPEN **210**、PG 代码待实时核对 **48**、Ingress **8**、Open 或 Ingress **218**、未映射引用边 **22**。本批没有独立匹配的原基线 ID，未据单元测试减少正式计数。
-- 前批 R63 Push CI `39023921836`、PR CI `39023924531` 均成功；R64 CI 待推送后记录。
+- BFF candidate、publication reader、registry 聚焦测试：**72 passed**；compile、diff、矩阵 JSON 和暂存区策略通过。
+- 新测试覆盖 proof acceptance 时间戳与 Head 时间不一致时拒绝。使用 fixture，无实时 PG/BFF 证据。
+- 原 266 项正式 P1 完成 0、剩余 266；矩阵 OPEN 237、ACTIVE_INGRESS_ADAPTER_OPEN 8、IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION 21；未映射引用边 22。
 
 ## 下一阶段
 
-接入执行器的 V2 零变化证明与原始响应 PG Owner，随后推进运行 Head、source freeze 与剩余 Owner/其他业务读取；逐 ID 对账之前保持所有正式基线项未关闭。
+继续 DM-01 完整状态与 Head/source 接线以及更多精确 Owner/业务消费者迁移。实时验证依赖正确 Reader 权限和已接受的 publication 数据。

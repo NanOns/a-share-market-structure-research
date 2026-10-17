@@ -17656,7 +17656,7 @@
         "evidence": [
           "Added a PostgreSQL grammar parser check for the R21-R3 contract registry forward draft, R21-R4 rollback draft, and read-only catalog preflight. This catches SQL grammar compatibility regressions in CI; it does not execute DDL or confirm target-server catalogs/functions."
         ],
-        "verification": "22 passed across SQL parser and contract registry behavior tests; PostgreSQL grammar parser accepted forward (16 statements), rollback (19), and read-only preflight (7). No database connection or writes.",
+        "verification": "22 passed across SQL parser and contract registry behavior tests; PostgreSQL grammar parser accepted forward (16 statements), rollback (19), and read-only preflight (7). Push CI `39023559420` and PR CI `39023562326` both succeeded. No database connection or writes.",
         "baseline_callsite_ids": [],
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,

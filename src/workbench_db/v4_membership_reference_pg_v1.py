@@ -53,9 +53,13 @@ def prepare(root,candidate):
     from workbench_analysis.r43_operational_publication import rows
     content=rows(root,source);descriptor=append(root,fact_key,day,'reference_memberships',source,content)
     if canonical(read_fact(root,descriptor,fact_key,day,'reference_memberships',source))!=canonical(content):raise ValueError('MEMBERSHIP_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
+    metadata_fields=('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
+        'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
+        'production_eligible_scope','survivorship_bias_risk')
+    snapshot_metadata={key:snapshot[key] for key in metadata_fields}
     authority=dict(contract_id=CONTRACT,T0=day,membership_snapshot=candidate['membership_snapshot'],source=source,
         identity_source=snapshot.get('identity_source'),membership_snapshot_id=snapshot.get('membership_snapshot_id'),
-        descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
+        snapshot_metadata=snapshot_metadata,descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
     candidate[KEY]=_persist_authority(root,authority)
     return dict(contract_id=CONTRACT,T0=day,rows=len(content),publication=False)
 
@@ -68,6 +72,26 @@ def read(root,candidate,*,workspace_root=None):
         workspace_root=workspace_root)
     if len(content)!=authority['rows']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_ROW_DENOMINATOR')
     return content
+
+
+def context_metadata(root,candidate):
+    """Return dated membership context metadata from the Head-bound PG authority."""
+    authority=_load_authority(root,candidate)
+    if (authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date']
+            or authority.get('membership_snapshot')!=candidate['membership_snapshot']
+            or authority.get('membership_snapshot_id')!=candidate.get('membership_snapshot_id')):
+        raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_SCOPE_MISMATCH')
+    metadata=authority.get('snapshot_metadata')
+    required={'membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
+        'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
+        'production_eligible_scope','survivorship_bias_risk'}
+    if not isinstance(metadata,dict) or set(metadata)!=required:
+        raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_METADATA_REQUIRED')
+    if (metadata.get('membership_snapshot_id')!=candidate.get('membership_snapshot_id')
+            or metadata.get('AS_RECORDED') is not False or metadata.get('PIT_ELIGIBLE') is not False
+            or authority.get('AS_RECORDED') is not False or authority.get('PIT_ELIGIBLE') is not False):
+        raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_LINEAGE_MISMATCH')
+    return metadata
 
 
 def current_identity_binding(root,candidate):

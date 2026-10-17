@@ -17016,7 +17016,7 @@
           "The BaoStock runtime-acceptance adapter now uses resolve_tdx_root for all output guards and uses the shared configured request-ledger resolver; its previous D:/new_tdx path guard is removed.",
           "The test adapter path contract runs offline only. The acceptance adapter was not run, and the code path is not an exact row in the 266-callsite baseline."
         ],
-        "verification": "52 focused new-listing, configured source-path and source-readiness tests passed; Python compilation and diff check passed. No external provider, PG or worker activity.",
+        "verification": "52 focused new-listing, configured source-path and source-readiness tests passed; Python compilation and diff check passed. No external provider, PG or worker activity. GitHub Actions runs 39014501437, 39014498583 passed, including repository content policy and current business-code file-access audit.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "status": "BAOSTOCK_RUNTIME_ACCEPTANCE_PATHS_USE_CONFIGURED_ROOTS; no baseline row reconciled.",
@@ -17037,11 +17037,32 @@
           "The Reader-only status client rejects set_settings. Handler-level regression verifies one Writer mutation followed by one Reader readback.",
           "No baseline row is formally reconciled; this does not assert an accepted daily business state."
         ],
-        "verification": "13 focused HTTP route and DM-01 state tests passed; Python compilation and diff check passed. No live PG or service.",
+        "verification": "13 focused HTTP route and DM-01 state tests passed; Python compilation and diff check passed. No live PG or service. GitHub Actions runs 39014614549 passed, including repository content policy and current business-code file-access audit.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "status": "DM01_HTTP_SETTINGS_WRITE_AND_READBACK_SEPARATED; no baseline row reconciled.",
         "next": "Continue actual daily Head/Authority/descriptor and Owner/BFF call chains; retain 266 formal remaining pending approved live readback."
+      },
+      {
+        "batch_id": "R21-R4-owner-membership-context-pg-wiring-r34",
+        "files": [
+          "src/workbench_db/v4_membership_reference_pg_v1.py",
+          "src/workbench_analysis/operational_successor_v1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "tests/test_v4_native_membership_reference.py",
+          "docs/upgrade/V4_R21_R4_OWNER_MEMBERSHIP_CONTEXT_PG_WIRING_R34_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "PG membership preparation now binds context metadata to the membership authority manifest; a Reader validates exact T0, snapshot binding, snapshot ID, metadata shape and non-PIT flags.",
+          "OperationalSuccessorReaderV1 uses PG authority metadata for HTTP context when native_membership_reference is embedded; this path does not reopen the membership snapshot from context().",
+          "Startup candidate validation remains file-bound, and the current operational Head has neither native_pg_owner_authority nor native_membership_reference. No live callsite is formally reconciled."
+        ],
+        "verification": "Four focused metadata-preparation/context-routing/Owner validation tests passed; Python compilation and diff check passed. No compliant PG connection, service or live business readback.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PG_MEMBERSHIP_CONTEXT_METADATA_WIRED_BUT_CURRENT_OPERATIONAL_HEAD_NOT_MAPPED; no baseline row closed.",
+        "next": "Continue accepted Head and Owner descriptor runtime wiring; retain all 266 formal items until approved live readback and exact per-ID reconciliation."
       }
     ]
   }

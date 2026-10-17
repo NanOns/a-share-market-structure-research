@@ -93,6 +93,30 @@ def test_runtime_owner_validation_uses_pg_authority_without_opening_owner_files(
     validate_pg(candidate,authority)
 
 
+def test_successor_http_context_uses_head_bound_pg_membership_metadata_without_file_fallback(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_v1 as module
+    from workbench_db import v4_membership_reference_pg_v1 as membership
+    data=candidate(tmp_path)
+    data.update(accepted_trade_date='2026-10-12',data_cutoff_date='2026-10-12',
+        membership_snapshot_id='SNAP-PG',observed_at='2026-10-12T19:00:00+08:00',published_sessions=['2026-10-12'])
+    data[membership.KEY]={'contract_id':membership.PG_AUTHORITY_CONTRACT}
+    metadata={key:False for key in ('AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN','production_eligible_scope','survivorship_bias_risk')}
+    metadata.update(membership_mode='CURRENT',taxonomy='TDX',membership_snapshot_id='SNAP-PG',
+        membership_observed_at='2026-10-12T18:00:00+08:00',member_set_asof='2026-10-12',knowledge_lineage='CURRENT_DAY')
+    monkeypatch.setattr(module,'validate',lambda root,data,**kwargs:True)
+    monkeypatch.setattr('workbench_db.v4_operational_owner_authority_v2.load',lambda root,data:{})
+    monkeypatch.setattr(membership,'context_metadata',lambda root,candidate:metadata)
+    monkeypatch.setattr(module,'checked',lambda *args,**kwargs:(_ for _ in ()).throw(AssertionError('MEMBERSHIP_FILE_OPENED')))
+
+    reader=module.OperationalSuccessorReaderV1(tmp_path,data)
+    context=reader.context()
+
+    assert context['membership_snapshot_id']=='SNAP-PG'
+    assert context['taxonomy']=='TDX'
+    assert context['PIT_ELIGIBLE'] is False
+    assert context['membership_snapshot']==data['membership_snapshot']
+
+
 def test_candidate_preparation_owner_validation_keeps_exact_file_binding_check(tmp_path,monkeypatch):
     from workbench_analysis import operational_successor_v1 as module
     binding={'path':'owner.json','sha256':'a'*64}

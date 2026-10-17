@@ -221,6 +221,17 @@ def test_dm01_component_artifact_guard_uses_central_tdx_root(tmp_path, monkeypat
     assert not output.resolve().is_relative_to(tdx.resolve())
 
 
+def test_operational_owner_writer_uses_configured_tdx_root(tmp_path, monkeypatch):
+    from workbench_analysis import operational_owner_adapter_v1 as adapter
+    from workbench_analysis import operational_daily_exact_policy_v2 as policy
+
+    configured = tmp_path / "configured-tdx"
+    monkeypatch.setenv("TDX_ROOT", str(configured))
+    assert resolve_tdx_root(tmp_path) == configured.resolve()
+    assert "D:/new_tdx" not in Path(adapter.__file__).read_text(encoding="utf-8")
+    assert "D:/new_tdx" not in Path(policy.__file__).read_text(encoding="utf-8")
+
+
 def test_dm01_baostock_runtime_acceptance_uses_pg_calendar_and_configured_ledger(tmp_path):
     from scripts.accept_v4_dm01_baostock_runtime import _target_is_official_session
     assert _target_is_official_session(

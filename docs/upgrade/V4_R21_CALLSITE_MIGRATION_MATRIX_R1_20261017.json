@@ -15419,7 +15419,7 @@
         "status": "PG_OWNER_AND_SUCCESSOR_CANDIDATE_CANDIDATE_ONLY_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "Code migration is implemented and candidate Owner facts were appended/read back. Formal P1/source-edge reconciliation still requires live accepted Head/publication identity; no formal Head CAS was performed.",
+      "blocker": "The code path is implemented and full prepare_successor plus PG authority readback passed. Formal P1/source-edge reconciliation still requires accepted publication Head/source-edge identity; no Head CAS was performed.",
       "baseline_function": "prepare_successor",
       "migration_evidence": {
         "batch_id": "R21-R5-legacy-owner-successor-pg-candidate-20261018",
@@ -15450,7 +15450,22 @@
         "successor_candidate_fact_key": "19b2617217107693f0b14bce0a0905b448c052b7ab2c9f40460439b5f321d1d2",
         "readback": "OWNER_AUTHORITY_AND_SUCCESSOR_CANDIDATE_CANONICAL_READBACK_PASS",
         "publication": false,
-        "accepted_head_changed": false
+        "accepted_head_changed": false,
+        "prepare_successor_full_path": {
+          "status": "PASS",
+          "entrypoint": "v4_operational_owner_authority_v2.prepare_successor",
+          "predecessor_ingress": "EXACT_LEGACY_CANDIDATE_INGRESS_TO_PG_FACT_THEN_READBACK",
+          "owner_authority": "V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2",
+          "owner_domains": 88,
+          "receipt": {
+            "scope": "FULL_OWNER_PAYLOAD_READBACK_ONLY",
+            "created": 88,
+            "reused": 0,
+            "publication": false
+          },
+          "authority_load": "PASS",
+          "accepted_head_changed": false
+        }
       },
       "reference_evidence": [
         {
@@ -19472,9 +19487,10 @@
       "files": [
         "src/workbench_db/v4_historical_source_ingress_pg_r1.py",
         "src/workbench_db/v4_operational_owner_authority_v2.py",
-        "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json"
+        "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+        "src/workbench_db/v4_operational_predecessor_pg_v1.py"
       ],
-      "result": "265/266 V4 P1 callsites have PG-bound candidate code paths; one non-V4 callsite remains registered only. Legacy Owner successor now ingresses exact bound LFS/source bytes and writes/readbacks 88 Owner facts plus candidate manifest in PG.",
+      "result": "265/266 V4 P1 callsites have PG-bound candidate code paths; one non-V4 callsite remains registered only. Legacy Owner successor now ingresses exact bound LFS/source bytes and writes/readbacks 88 Owner facts plus candidate manifest in PG. Direct prepare_successor invocation also passed against the exact legacy predecessor, with all 88 Owner domains validated and no accepted Head change.",
       "live_pg": "PASS candidate-only append/readback on market_research OID 646711; accepted Head unchanged",
       "formal_reconciliation": "0/266 formally reconciled; 22 reference edges remain unmapped; no accepted publication Head/source-edge closure asserted"
     }

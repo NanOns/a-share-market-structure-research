@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 244,
+    "migration_open": 243,
     "statuses": {
-      "OPEN": 236,
+      "OPEN": 235,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 22
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 23
     },
-    "code_level_pg_read_paths_implemented": 22,
-    "remaining_open_or_ingress": 244,
+    "code_level_pg_read_paths_implemented": 23,
+    "remaining_open_or_ingress": 243,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -3078,38 +3078,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_market_calendar_reader_r1 exact accepted-publication Head and approved contract reader",
+        "status": "IMPLEMENTED_PG_PATH_PENDING_PUBLICATION_AND_LIVE_READBACK_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "PG mode is explicit opt-in (V4_MARKET_CALENDAR_SOURCE=PG); default remains the legacy file calendar until runtime selector and exact live publication are reconciled. No compliant live PG reader DSN.",
+      "blocker": "PG calendar code path is selected explicitly, but no compliant live Reader identity/readback or caller-level accepted publication mapping is available.",
       "baseline_function": "official_sessions",
       "migration_evidence": {
-        "batch": "R21-R4-publication-contract-dm01-status-r3",
-        "code_path": "src/workbench_analysis/market_source_acquisition.py::official_sessions(source_mode=PG) -> v4_market_calendar_reader_r1.PgMarketCalendarReader.sessions",
-        "pg_relations": [
-          "v4.publication_heads",
-          "v4.publications",
-          "v4.model_namespaces",
-          "v4.contract_versions",
-          "v4.contract_approval_events",
-          "v4.market_calendar_sessions"
+        "batch_id": "R21-R4-market-source-sessions-pg-callsite-r41",
+        "implemented_code": "market_source_acquisition.official_sessions selects v4_market_calendar_reader_r1 only under explicit source_mode=PG or V4_MARKET_CALENDAR_SOURCE=PG, returns sessions pinned to the accepted publication Head/revision/calendar contract and fails closed on unsupported mode or PG errors. It does not fall back from PG mode to files.",
+        "test_evidence": [
+          "tests/test_v4_r21_pg_market_calendar.py",
+          "tests/test_market_source_acquisition_r4.py"
         ],
-        "checks": [
-          "read-only repeatable-read",
-          "expected database identity",
-          "reader role capability",
-          "accepted publication Head",
-          "exact approved contract bindings",
-          "calendar session sequence/date/digest"
-        ]
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "accepted_publication_mapping": "PENDING"
       },
       "reference_evidence": [
         {
@@ -17210,6 +17201,29 @@
         "p1_formally_remaining": 266,
         "status": "VALIDATION_COHORT_BFF_USES_EMBEDDED_PG_OWNER_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION; no baseline row formally closed.",
         "next": "Continue exact-mapped Owner/BFF migrations; retain all 266 formal P1 items until approved same-T0 readback and full source evidence."
+      },
+      {
+        "batch_id": "R21-R4-market-source-sessions-pg-callsite-r41",
+        "files": [
+          "src/workbench_analysis/market_source_acquisition.py",
+          "src/workbench_db/v4_market_calendar_reader_r1.py",
+          "tests/test_v4_r21_pg_market_calendar.py",
+          "tests/test_market_source_acquisition_r4.py",
+          "docs/upgrade/V4_R21_R4_MARKET_SOURCE_SESSIONS_PG_CALLSITE_R41_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-66c06ef7f4ecead04533"
+        ],
+        "evidence": [
+          "The exact official_sessions callsite now has explicit PG path evidence tied to the accepted publication Head, revision and registered calendar contract.",
+          "PG mode is fail-closed and has no file fallback; unknown source modes fail closed.",
+          "The current runtime has no compliant live PG Reader identity or readback, so the row remains formally open."
+        ],
+        "verification": "15 tests passed in the PG calendar/source-acquisition selection. Controlled reader boundaries only; no live PG, acquisition network call, service or Head mutation.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "OFFICIAL_MARKET_SESSION_CALLSITE_HAS_EXPLICIT_PG_READER_PATH_PENDING_LIVE_PUBLICATION_RECONCILIATION; no baseline row formally closed.",
+        "next": "Continue exact mapped reader migrations and maintain formal counts until authorized same-T0 readback."
       }
     ]
   }

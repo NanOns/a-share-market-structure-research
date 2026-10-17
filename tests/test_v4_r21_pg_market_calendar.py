@@ -93,6 +93,16 @@ def test_market_source_acquisition_calendar_entry_can_be_pinned_to_pg():
     assert official_sessions("unused", pg_reader=reader, source_mode="PG") == ["2026-10-15", "2026-10-16"]
 
 
+def test_official_session_consumers_select_pg_calendar_from_runtime_mode(monkeypatch):
+    class Reader:
+        def sessions(self):
+            return ["2026-10-15", "2026-10-16"]
+
+    monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE", "PG")
+    monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment", lambda: Reader())
+    assert official_sessions("no-file-head-here") == ["2026-10-15", "2026-10-16"]
+
+
 def test_pg_calendar_configuration_is_required_and_does_not_fall_back():
     with pytest.raises(MarketCalendarReadError, match="PG_MARKET_CALENDAR_IDENTITY_REQUIRED"):
         from_environment({})

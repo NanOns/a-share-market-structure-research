@@ -53,6 +53,11 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
     assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
 
 
+def test_dm01_published_receipt_poll_has_partial_index():
+    assert "update_job_days_published_trade_date" in daily_pg.DDL
+    assert "WHERE state='PUBLISHED'" in daily_pg.DDL
+
+
 def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, tmp_path):
     pg = ReadConnection(None, {"last_published_trade_date": None})
 

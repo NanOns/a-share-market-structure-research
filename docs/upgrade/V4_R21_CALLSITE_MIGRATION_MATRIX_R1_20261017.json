@@ -16406,6 +16406,22 @@
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "next": "Continue active daily accepted Head/source migration and mapped Owner/other-business consumer batches."
+      },
+      {
+        "batch_id": "R21-R4-dm01-progress-calendar-wiring-r5",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "src/workbench_analysis/market_source_acquisition.py",
+          "src/workbench_db/v4_market_calendar_reader_r1.py"
+        ],
+        "evidence": [
+          "Daily progress selects MAX(PUBLISHED trade_date) from PG job-day receipts and uses a partial index over published receipts.",
+          "The shared official_sessions entry now has a runtime-selected PG route; that route requires configured namespace/database identity and does not inspect or fall back to the filesystem Head."
+        ],
+        "verification": "110 focused offline tests passed; PG branches tested with fakes; no live PG read.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "remaining": "Default calendar selection and the broader daily execution/accepted Head/source artifact flow remain file-backed pending exact relation mapping and live readback."
       }
     ]
   }

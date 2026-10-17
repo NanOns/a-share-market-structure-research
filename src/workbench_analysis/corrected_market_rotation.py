@@ -37,7 +37,8 @@ def materialize_market_rotation(root):
             ar=f['fields']['amount_ratio20']['value']
             if ar is not None:amounts.append(ar)
         # Endpoint membership is explicitly intersected with the saved historic owner.
-        historical=load(root/'config/v4_market_operational_authority_v1.json')['market']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        historical=read_path(root,'config/v4_market_operational_authority_v1.json')['value']['market']
         market=load(checked(root,historical));membership=market['sources']['historical_universe']
         members=defaultdict(set)
         for r in gzrows(checked(root,membership)):
@@ -64,10 +65,11 @@ def materialize_market_rotation(root):
         axes=market_axis_primitives(breadth=breadth,participation=median(amounts) if amounts else None,
               limit_coverage=None,stress_ratio=None,prior_stress_ratio=None,stress_change_current_ratio=None,
               stress_change_current_provided=True,**identity)
-        prefixpath=root/'reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz'
+        prefix_binding=market['sources']['prior_market_path']
+        prefixpath=checked(root,prefix_binding)
         prefix=[r for r in gzrows(prefixpath) if r['trade_date']<=day]
         levels=[r['level'] for r in prefix];level=levels[-1];bridge=[]
-        policy=load(root/'config/v4_market_path_successor_contract_v1.json')
+        policy=load(checked(root,market['sources']['path_contract']))
         for d in sessions[sessions.index(prefix[-1]['trade_date'])+1:sessions.index(day)+1]:
             prev=sessions[sessions.index(d)-1];start=members.get(prev,set());returns=[]
             for sid in sorted(start):
@@ -84,7 +86,7 @@ def materialize_market_rotation(root):
         regime=asdict(project([row])[day])
         write(folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
               breadth_common_count=len(common),breadth_evaluable=len(comparisons),comparison_trade_date=prior3,
-              input_bindings=[owner['core'],owner['history'],membership,ref(root,prefixpath)],AS_RECORDED=False,accepted=False,
+              input_bindings=[owner['core'],owner['history'],membership,prefix_binding],AS_RECORDED=False,accepted=False,
               index_successor_bridge=bridge,trend_blocker=None if level is not None else 'INCOMPLETE_DATED_INDEX_BRIDGE',stress_blocker='TARGET_PRICE_LIMIT_OWNER_NOT_BOUND'))
         native=gzrows(checked(root,sector['native']));seed={r['security_id']:r['base_seed_state']=='TRUE' if r['base_seed_state']!='UNKNOWN' else None for r in gzrows(checked(root,sector['seed']))}
         current={sid:dict(trade_date=day,price_basis_id=f['price_basis_id'],fields={k:dict(value=v['value'],quality='ACCEPTED' if v['value'] is not None else 'UNKNOWN',max_source_date=day) for k,v in f['fields'].items()}) for sid,f in factors.items()}

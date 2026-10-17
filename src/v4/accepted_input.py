@@ -40,6 +40,34 @@ def _json(root: Path, relative: str, digest: str | None = None) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _find_bound_document(root: Path, bindings: dict, contract_id: str) -> tuple[dict, dict]:
+    """Resolve one receipt by its typed PG-ingressed identity, never by a report path."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    matches = []
+    for binding in bindings.values():
+        if not isinstance(binding, dict) or not binding.get("path") or not binding.get("sha256"):
+            continue
+        try:
+            raw = read_bound(root, binding["path"], binding["sha256"])["raw"]
+            value = json.loads(raw)
+        except (OSError, UnicodeDecodeError, ValueError, TypeError):
+            continue
+        if isinstance(value, dict) and value.get("contract_id") == contract_id:
+            matches.append((binding, value))
+    if len(matches) != 1:
+        raise ValueError("ACCEPTED_TYPED_EVIDENCE_NOT_UNIQUE:" + contract_id)
+    return matches[0]
+
+
+def _artifact_binding(artifacts: dict, filename: str) -> dict:
+    matches = [(path, digest) for path, digest in artifacts.items()
+               if Path(path).name == filename]
+    if len(matches) != 1:
+        raise ValueError("ACCEPTED_ARTIFACT_NOT_UNIQUE:" + filename)
+    path, digest = matches[0]
+    return {"path": path, "sha256": digest}
+
+
 def resolve(root: Path) -> dict[str, AcceptedInput]:
     """Resolve only paths named by accepted heads and their hash-bound receipts."""
     root = root.resolve()
@@ -71,8 +99,8 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
     r4_receipt = _json(root, receipt_ref["path"], receipt_ref["sha256"])
     r4_manifest_ref = r4_receipt["evidence"]["manifest"]
     r4_manifest = _json(root, r4_manifest_ref["path"], r4_manifest_ref["sha256"])
-    v403_receipt_ref = v403["evidence_bindings"]["reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json"]
-    v403_receipt = _json(root, v403_receipt_ref["path"], v403_receipt_ref["sha256"])
+    v403_receipt_ref, v403_receipt = _find_bound_document(
+        root, v403["evidence_bindings"], "V4_03_FINAL_STAGE_RECEIPT_R1")
     if v403_receipt["capabilities"]["STOCK_CORE"] != "PASS":
         raise ValueError("V4-03 stock core not accepted")
     items = {
@@ -84,9 +112,9 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
         "trading_status": (r4_manifest["components"]["DATED_TRADING_STATUS_R7"], "V4_02_TRADING_STATUS"),
         "universe": (bindings["v4_01_universe"], "V4_01_HISTORICAL_UNIVERSE"),
     }
-    full_path = "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz"
-    items["factors"] = ({"path": full_path, "sha256": v403_receipt["hashes"]["artifacts"][full_path]}, "V4_03_STOCK_CORE")
-    regime_path = "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"
-    items["market_regime"] = ({"path": regime_path, "sha256": v403_receipt["hashes"]["artifacts"][regime_path]}, "MARKET_REGIME_V1_PRIMITIVES")
+    items["factors"] = (_artifact_binding(v403_receipt["hashes"]["artifacts"],
+        "V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz"), "V4_03_STOCK_CORE")
+    items["market_regime"] = (_artifact_binding(v403_receipt["hashes"]["artifacts"],
+        "V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"), "MARKET_REGIME_V1_PRIMITIVES")
     return {name: AcceptedInput(_verify(root, ref["path"], ref["sha256"]), ref["sha256"], contract)
             for name, (ref, contract) in items.items()}

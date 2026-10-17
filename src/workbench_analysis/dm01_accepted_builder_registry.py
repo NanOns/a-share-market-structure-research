@@ -82,6 +82,13 @@ def _read_json(root: Path, relative: str) -> dict[str, Any]:
     return value
 
 
+def _read_source_json(root: Path, source_id: str) -> dict[str, Any]:
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    value=read_source(root,source_id)["value"]
+    if not isinstance(value,dict):raise ValueError("ACCEPTED_BUILDER_EVIDENCE_SHAPE_INVALID")
+    return value
+
+
 def _top_level_symbols(path: Path) -> set[str]:
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     return {
@@ -145,7 +152,7 @@ def validate_registry(
         else:
             try:
                 receipt = _read_json(root, str(accepted.get("path") or ""))
-                actual_sha = sha256_file(root / str(accepted["path"]))
+                actual_sha = sha256_file(_pg_path(root, str(accepted["path"])))
                 if actual_sha != accepted.get("sha256"):
                     errors.append("ACCEPTED_SOURCE_RECEIPT_DIGEST_MISMATCH:" + capability)
                 expected_status = str(accepted.get("status") or "")
@@ -167,7 +174,7 @@ def validate_registry(
             if not isinstance(runtime, Mapping) or not runtime.get("path") or not runtime.get("sha256"):
                 errors.append("ACCEPTED_RUNTIME_BINDING_INVALID:" + capability)
                 continue
-            runtime_path = root / str(runtime["path"])
+            runtime_path = _pg_path(root, str(runtime["path"]))
             try:
                 if sha256_file(runtime_path) != runtime.get("sha256"):
                     errors.append("ACCEPTED_RUNTIME_DIGEST_MISMATCH:" + capability + ":" + str(runtime["path"]))
@@ -207,16 +214,16 @@ def validate_registry(
             if relative is None and expected is None:
                 continue
             try:
-                if not relative or sha256_file(root / str(relative)) != expected:
+                if not relative or sha256_file(_pg_path(root, str(relative))) != expected:
                     errors.append("STAGE_ACCEPTANCE_BINDING_DIGEST_MISMATCH:" + str(stage) + ":" + path_key)
             except OSError:
                 errors.append("STAGE_ACCEPTANCE_BINDING_MISSING:" + str(stage) + ":" + path_key)
 
     try:
         v402_head = _read_json(root, "data/v4/V4_02_ACCEPTED_HEAD.json")
-        v402_receipt = _read_json(root, "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json")
-        v402_external = _read_json(root, "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json")
-        cross_stage = _read_json(root, "reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json")
+        v402_receipt = _read_source_json(root, "2f881da6245f8deebe0ed6f97cd88913dd11476fdba07312ee82d72701ab21fb")
+        v402_external = _read_source_json(root, "56c7b651981895ae533dc1d50924a0b915c55a1543180a0d34460546b72c0adb")
+        cross_stage = _read_source_json(root, "e58bc7b66e61ee00f3fae4814a4caa7c6a9467746c8e38400e784e4035988b14")
         if (v402_head.get("status") != "PASS_WITH_BSE_SCOPE_DEGRADED"
                 or v402_head.get("external_acceptance") != "EXTERNALLY_ACCEPTED"):
             errors.append("V4_02_ACCEPTED_HEAD_NOT_EXTERNAL_PASS")
@@ -229,14 +236,14 @@ def validate_registry(
     except (OSError, TypeError, ValueError):
         errors.append("V4_02_ACCEPTANCE_EVIDENCE_UNREADABLE")
 
-    stage_path = root / "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
-    data_path = root / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
-    dev_path = root / "data/v4/V4_DEV_BASELINE_HEAD.json"
+    stage_relative = "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+    data_relative = "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    dev_relative = "data/v4/V4_DEV_BASELINE_HEAD.json"
     try:
-        stage_head = json.loads(stage_path.read_text(encoding="utf-8"))
-        data_head = json.loads(data_path.read_text(encoding="utf-8"))
-        dev_head = json.loads(dev_path.read_text(encoding="utf-8"))
-        if hashlib.sha256(stage_path.read_bytes()).hexdigest() != data_head.get("stage_accepted_head_sha256"):
+        stage_head = _read_json(root, stage_relative)
+        data_head = _read_json(root, data_relative)
+        dev_head = _read_json(root, dev_relative)
+        if hashlib.sha256(_pg_path(root, stage_relative).read_bytes()).hexdigest() != data_head.get("stage_accepted_head_sha256"):
             errors.append("DATA_HEAD_STAGE_HEAD_BINDING_MISMATCH")
         if data_head.get("accepted_trade_date") != "2026-09-24" or dev_head.get("accepted_data_cutoff") != "2026-09-24":
             errors.append("ACCEPTED_PARENT_CUTOFF_CHANGED")

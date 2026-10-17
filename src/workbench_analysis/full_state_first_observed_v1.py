@@ -22,8 +22,8 @@ def quarantine_publisher(root, *, publisher_binding, candidate_directory):
     """
     import gzip
     directory = Path(candidate_directory)
-    if directory.is_absolute() or '..' in directory.parts or directory.parts[:2] != ('docs', 'evidence'):
-        raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
+    if directory.is_absolute() or '..' in directory.parts or directory.parts[:3] != ('data', 'v4', 'candidate_stores'):
+        raise ValueError('ISOLATED_CANDIDATE_STORE_REQUIRED')
     raw = checked(root, publisher_binding).read_bytes()
     state = json.loads(gzip.decompress(raw))
     if state['contract_id'] != 'FULL_MARKET_STATE_PRODUCER_OUTPUT_V1':
@@ -51,8 +51,8 @@ def freeze_first_observed(root, *, state_binding, membership_binding, model_bind
     Head CAS or writer grant occurs. Injectable clock is for synthetic tests.
     """
     directory = Path(candidate_directory)
-    if directory.is_absolute() or '..' in directory.parts or directory.parts[:2] != ('docs', 'evidence'):
-        raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
+    if directory.is_absolute() or '..' in directory.parts or directory.parts[:3] != ('data', 'v4', 'candidate_stores'):
+        raise ValueError('ISOLATED_CANDIDATE_STORE_REQUIRED')
     if not state_binding:
         return dict(status='SOURCE_INCOMPLETE', formal_status='BLOCKED', production_write_authorized=False)
     state, membership, model = [json.loads(checked(root, b).read_bytes())

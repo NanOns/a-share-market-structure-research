@@ -96,17 +96,17 @@ class CandidateReadV2:
     """Same-token candidate read API; no fallback to different-date production fields."""
     def __init__(self,root,candidate):
         self.root=Path(root);self.candidate=candidate;validate(root,candidate)
-        self.token=digest(candidate);self.cache={};self.snapshot=json.loads(read_source_bytes(root,candidate['membership_snapshot']))
+        self.context_signature=digest(candidate);self.cache={};self.snapshot=json.loads(read_source_bytes(root,candidate['membership_snapshot']))
     def context(self):
         rotation_state=('INDEPENDENTLY_ACCEPTED_FULL_ROTATION' if getattr(self,'domain_disposition',{}).get('rotation')=='ACCEPTED' else 'VALIDATION_ONGOING') if self.candidate.get('external_review_contract') else 'ENGINEERING_REPORTED_NOT_EXTERNAL_FULL_VALIDATION'
-        return dict(metadata(self.snapshot,'2026-10-08'),contract_id='V4_CURRENT_ACCEPTED_READ_V2',context_token=self.token,publication_id=self.token,accepted_trade_date='2026-10-08',available_trade_dates=DATES,read_scope='OPERATIONAL_CANDIDATE_NOT_LIVE',membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,member_label='通达信最新成员回算；非历史当日成员',field_lineage='RECONSTRUCTED_LATEST_MEMBERSHIP',external_domain_disposition=getattr(self,'domain_disposition',{}),rotation_validation_state=rotation_state)
-    def read(self,domain,day,token):
-        if token!=self.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+        return {**metadata(self.snapshot,'2026-10-08'),'contract_id':'V4_CURRENT_ACCEPTED_READ_V2','context_token':self.context_signature,'publication_id':self.context_signature,'accepted_trade_date':'2026-10-08','available_trade_dates':DATES,'read_scope':'OPERATIONAL_CANDIDATE_NOT_LIVE','membership_snapshot':self.candidate['membership_snapshot'],'historical_PIT_permission':False,'member_label':'通达信最新成员回算；非历史当日成员','field_lineage':'RECONSTRUCTED_LATEST_MEMBERSHIP','external_domain_disposition':getattr(self,'domain_disposition',{}),'rotation_validation_state':rotation_state}
+    def read(self,domain,day,context_signature):
+        if context_signature!=self.context_signature:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         if day not in DATES:raise ValueError('TARGET_DATE_NOT_GRANTED')
         if hasattr(self,'domain_disposition') and self.domain_disposition.get(domain)!='ACCEPTED' and not getattr(self,'user_authorized_cutover',False):
-            return dict(metadata(self.snapshot,day),context_token=token,publication_id=token,domain=domain,status='SOURCE_INCOMPLETE',validation_state=self.domain_disposition.get(domain,'NOT_VERIFIABLE'),reason='DOMAIN_NOT_INDEPENDENTLY_ACCEPTED',rows=[],total=0)
+            return {**metadata(self.snapshot,day),'context_token':context_signature,'publication_id':context_signature,'domain':domain,'status':'SOURCE_INCOMPLETE','validation_state':self.domain_disposition.get(domain,'NOT_VERIFIABLE'),'reason':'DOMAIN_NOT_INDEPENDENTLY_ACCEPTED','rows':[],'total':0}
         binding=self.candidate['owners'][day].get(domain)
-        if binding is None:return dict(metadata(self.snapshot,day),context_token=token,publication_id=token,domain=domain,status='UNKNOWN',reason='NO_ACCEPTED_OPERATIONAL_OWNER_FOR_DOMAIN')
+        if binding is None:return {**metadata(self.snapshot,day),'context_token':context_signature,'publication_id':context_signature,'domain':domain,'status':'UNKNOWN','reason':'NO_ACCEPTED_OPERATIONAL_OWNER_FOR_DOMAIN'}
         key=(day,domain)
         if key not in self.cache:self.cache[key]=rows(self.root,binding)
         content=self.cache[key]
@@ -126,7 +126,7 @@ class CandidateReadV2:
                 episodes.append(dict(x,observations=observations,anchors=[a for a in x.get('anchors',[]) if a.get('trade_date','9999')<=day],outcomes=[o for o in x.get('outcomes',[]) if o.get('trade_date','9999')<=day],end_date=x.get('end_date') if x.get('end_date') and x['end_date']<=day else None,membership=observations[-1].get('membership') if observations else None))
             content['episodes']=episodes
         if isinstance(content,list):content=[r for r in content if not r.get('trade_date') or r['trade_date']==day]
-        return dict(metadata(self.snapshot,day),context_token=token,publication_id=token,domain=domain,status='READY',validation_state=getattr(self,'domain_disposition',{}).get(domain,'ENGINEERING_REPORTED'),independent_external_acceptance=getattr(self,'independent_external_acceptance',False),lineage='RECONSTRUCTED_LATEST_MEMBERSHIP' if domain in ['sector','relative_sector','rotation'] else 'RECONSTRUCTED_CORRECTED',membership_snapshot=self.candidate['membership_snapshot'],rows=content)
+        return {**metadata(self.snapshot,day),'context_token':context_signature,'publication_id':context_signature,'domain':domain,'status':'READY','validation_state':getattr(self,'domain_disposition',{}).get(domain,'ENGINEERING_REPORTED'),'independent_external_acceptance':getattr(self,'independent_external_acceptance',False),'lineage':'RECONSTRUCTED_LATEST_MEMBERSHIP' if domain in ['sector','relative_sector','rotation'] else 'RECONSTRUCTED_CORRECTED','membership_snapshot':self.candidate['membership_snapshot'],'rows':content}
     def dispatch(self,url,context_signature=None):
         from urllib.parse import urlparse,parse_qs
         parsed=urlparse(url);params=parse_qs(parsed.query,keep_blank_values=True)
@@ -144,14 +144,14 @@ class CandidateReadV2:
                 rs=[r for r in rs if r.get('security_id',r.get('sector_id'))==parts[1]]
             offset=int(params.get('offset',['0'])[0]);limit=int(params.get('limit',['100'])[0])
             if offset<0 or not 1<=limit<=500:raise ValueError('PAGINATION_BOUND')
-            response.update(items=rs[offset:offset+limit],total=len(rs),count=len(rs[offset:offset+limit]),offset=offset,limit=limit,has_next=offset+limit<len(rs))
+            response={**response,'items':rs[offset:offset+limit],'total':len(rs),'count':len(rs[offset:offset+limit]),'offset':offset,'limit':limit,'has_next':offset+limit<len(rs)}
             response['rows']=response['items']
         elif isinstance(response.get('rows'),dict):
             content=response['rows'];bounded={};counts={}
             for key,value in content.items():
                 if isinstance(value,list):counts[key]=len(value);bounded[key]=value[offset:offset+limit]
                 else:bounded[key]=value
-            response.update(rows=bounded,total_by_collection=counts,offset=offset,limit=limit)
+            response={**response,'rows':bounded,'total_by_collection':counts,'offset':offset,'limit':limit}
         return response
 
 def accepted_api(root):

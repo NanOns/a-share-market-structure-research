@@ -18,8 +18,9 @@ def _pg_path(relative_path, *, sha256=None):
     return materialize_path(ROOT, relative_path, expected_sha256=sha256)
 
 def load_package():
-    freeze_path=_pg_path('reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json')
-    freeze=json.loads(freeze_path.read_text(encoding='utf8'))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    freeze=read_source(ROOT,'39b975c38b361e25c395a5812da9768a6b42f48e8b803e30c508fc234b8bb822')['value']
+    if not isinstance(freeze,dict):raise ValueError('STATE_FREEZE_NOT_REGISTERED_IN_PG')
     if freeze['status']!='PASS_R1_2_AUTHORITY_FREEZE' or freeze['contract_id']!='V4_10_R1_2_CONTRACT_FREEZE':
         raise ValueError('STATE_FREEZE_IDENTITY_MISMATCH')
     for binding in freeze['bindings'].values():
@@ -194,9 +195,9 @@ def reduce_state(inputs, *, ledger=None):
             reasons.append('SAME_SESSION_REENTRY_FORBIDDEN')
         elif not episode or exited:
             parent=episode if exited else None
-            result.update(episode_id='EP:'+digest([x['entity_id'],x['entity_type'],x['session_index'],CONTRACT,PARAMETERS,x['input_publication_ids']]),
-                parent_episode_id=parent,tracking='ACTIVE',exit_session_index=None,market_age=0,
-                invalidation_contract_id=x['episode_invalidation_contract_id'])
+            result={**result,'episode_id':'EP:'+digest([x['entity_id'],x['entity_type'],x['session_index'],CONTRACT,PARAMETERS,x['input_publication_ids']]),
+                'parent_episode_id':parent,'tracking':'ACTIVE','exit_session_index':None,'market_age':0,
+                'invalidation_contract_id':x['episode_invalidation_contract_id']}
             reasons.append('REENTERED' if parent else 'ENROLLED')
             if parent: result['preserved_followup_episode_ids'].append(parent)
         else: result['tracking']='ACTIVE'

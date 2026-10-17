@@ -99,8 +99,11 @@ def _validate_frozen_package(root: Path) -> tuple[dict[str, Any], dict[str, Any]
     params_path = _repo_path(root, "config/v4_07_parameter_set_v1.json")
     fields_path = _repo_path(root, "config/v4_07_field_registry_v1.json")
     vectors_path = _repo_path(root, "config/v4_07_machine_vectors_v1.json")
-    receipt_path = _repo_path(root, "reports/v4_07/V4_07_CONTRACT_FREEZE_RECEIPT.json")
-    contract, params, fields, vectors, receipt = map(_read_json, (contract_path, params_path, fields_path, vectors_path, receipt_path))
+    contract, params, fields, vectors = map(_read_json, (contract_path, params_path, fields_path, vectors_path))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    receipt = read_source(root, "631a7da9bdcfedb003ab4c15f0465046a95f96bb93629181456289537bcfef10")["value"]
+    if not isinstance(receipt, dict):
+        raise ValueError("BASE_SEED_FREEZE_RECEIPT_NOT_REGISTERED_IN_PG")
     if receipt.get("status") != "PASS_CONTRACT_FREEZE_CANDIDATE":
         raise ValueError("BASE_SEED_V1 contract freeze receipt is not PASS")
     if receipt.get("starting_head") != "0f13e1b55d86ee74dfc489a48e95a766111a617a":

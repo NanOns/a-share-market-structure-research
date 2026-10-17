@@ -77,7 +77,7 @@ def build(root, *, candidate, candidate_binding, trade_date, revision,
         if not observation['receipts'] or set(r['source'] for r in observation['receipts']) != set(expected):
             raise ValueError('INDEPENDENT_SOURCE_RECEIPTS_REQUIRED')
     available = max((instant(r['first_available']) for r in observation['receipts']), default=None) if observation else None
-    model = publish(root, 'docs/evidence/state_publisher_models_v1/' + digest(dependencies) + '/model.json',
+    model = publish(root, 'data/v4/candidate_stores/state_publisher_models_v1/' + digest(dependencies) + '/model.json',
         dict(model_contract_id=contract['contract_id'], parameters_sha256=dependencies['parameters']['sha256'],
              window_version='TARGET_FACT_R4_27_SESSION_WITH_BOUND_UPSTREAM_WINDOWS',
              scenarios=machine['scenario_priority'], dependencies=dependencies))
@@ -120,7 +120,7 @@ def build(root, *, candidate, candidate_binding, trade_date, revision,
         adapter_gap='INDEPENDENT_ADMISSION_REQUIRED; EPISODE_EVENT_BENCHMARK_REQUIRED',
         next_gate='INDEPENDENT_STATE_SOURCE_OWNER_ADMISSION')
     slot = digest([candidate, model, observation_binding, revision])
-    path = 'docs/evidence/state_publisher_outputs_v1/' + slot + '/output.json.gz'
+    path = 'data/v4/candidate_stores/state_publisher_outputs_v1/' + slot + '/output.json.gz'
     # Retry preserves the original actual clock and exact bytes.
     if (Path(root) / path).exists():
         old = json.loads(gzip.decompress((Path(root) / path).read_bytes()))

@@ -10,7 +10,8 @@ PATH='config/v4_12_frozen_snapshot_contract_v2.json'
 def load_contract(c):
     ref=file_ref(c.root,PATH)
     from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-    gate=read_path(c.root,'reports/v4_12_runtime_r12/R12A_CONTRACT_LOCAL_GATE.json')['value']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    gate=read_source(c.root,'e39d3db57fceef3d4749aeb9a5a4ad7a0915416b71de11d48f1042357f16ef5b')['value']
     if gate['status']!='PASS' or gate['contract']['sha256']!=ref['sha256']:raise ValueError('R12A_CONTRACT_GATE_REQUIRED')
     contract=exact_json(c.root,ref)
     if contract['selector']['active_anchor_sort']!=c.config['output_schema']['active_anchor_sort']:raise ValueError('SELECTOR_CONTRACT_MISMATCH')

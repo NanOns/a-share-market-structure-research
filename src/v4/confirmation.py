@@ -28,12 +28,15 @@ def _bound_bytes(ref):
 def bound(ref):return json.loads(_bound_bytes(ref))
 def read_active_producer_set(root,relative_path):
     """Resolve a sealed producer set only through the current PG-bound V4-11 Head."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import source_id_for_path
     from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
     authority=CurrentStageAuthority(root)
     v411=json.loads(authority.read(authority.owners['v4_11']))
-    binding=v411.get('evidence_bindings',{}).get(relative_path)
-    if not isinstance(binding,dict) or binding.get('path')!=relative_path:
+    matches=[binding for binding in v411.get('evidence_bindings',{}).values()
+             if isinstance(binding,dict) and source_id_for_path(binding.get('path',''))==relative_path]
+    if len(matches)!=1:
         raise ConfirmationError('SEALED_PRODUCER_SET_NOT_BOUND_TO_CURRENT_PG_HEAD:'+relative_path)
+    binding=matches[0]
     return json.loads(authority.read(binding))
 @lru_cache(maxsize=1)
 def package():

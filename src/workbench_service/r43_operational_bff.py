@@ -33,16 +33,16 @@ class OperationalResearchBFF:
     def envelope(self,day,**payload):
         c=self.api.context();publication=self.api.candidate.get('publication_binding') or {}
         c.update(trade_date=day,accepted_trade_date=self.api.candidate['accepted_trade_date'],
-            release_id=self.api.token,model_namespace=publication.get('namespace','OPERATIONAL_RESEARCH_HEAD'),
+            release_id=self.api.context_signature,model_namespace=publication.get('namespace','OPERATIONAL_RESEARCH_HEAD'),
             data_updated_at=self.api.candidate.get('observed_at'),scoped_release=False,
             operational_release_scope=self.api.candidate.get('production_eligible_scope',[]),
             domain_readiness={'focus':{'earliest_valid_date':self.api.candidate['published_sessions'][0]}},
             read_source_label='Head-bound PostgreSQL Owner / membership facts',bff_contract_id=CONTRACT)
-        return dict(context=c,context_token=self.api.token,production_accepted=c.get('production_accepted',False),**payload)
+        return dict(context=c,context_token=self.api.context_signature,production_accepted=c.get('production_accepted',False),**payload)
     def counts(self,day):
         admitted=getattr(self.api,'domain_disposition',None)
         return {d:(None if admitted is not None and admitted.get({'stocks':'profile','sectors':'sector','focus':'forward'}[d])!='ACCEPTED' and not getattr(self.api,'user_authorized_cutover',False) else len(self.project(d,day))) for d in ('stocks','sectors','focus')}
-    def source(self,domain,day):return self.api.read(domain,day,self.api.token).get('rows')
+    def source(self,domain,day):return self.api.read(domain,day,self.api.context_signature).get('rows')
     def missing(self,day,path,reason='NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE'):
         return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason=reason,code=reason,domain=path,gap=dict(domain=path,state='SOURCE_INCOMPLETE',reason=reason),items=[],total=0,offset=0,limit=30,has_next=False,legacy_diagnostic='/api/v4/original-0930/'+path,legacy_trade_date='2026-09-30',mixed_date_fallback=False)
     def project(self,domain,day):
@@ -81,11 +81,11 @@ class OperationalResearchBFF:
             field_paths={k:'fields.'+k for k in fs}
             if domain=='stocks':
                 fs.update(r.get('derived_fields',{}));fs.update(r.get('states',{}));fs.update({k:v for k,v in quote.get(identity,{}).items() if k in ('open','high','low','close','amount','volume')})
-                field_paths.update({k:'derived_fields.'+k for k in r.get('derived_fields',{})})
-                field_paths.update({k:'states.'+k for k in r.get('states',{})})
+                field_paths=field_paths|{k:'derived_fields.'+k for k in r.get('derived_fields',{})}
+                field_paths=field_paths|{k:'states.'+k for k in r.get('states',{})}
                 if identity in correction_ids:
                     field_refs.update({k:correction for k in ('core_extension_risk','severe_extension')})
-                    field_paths.update({k:'replacement.states.'+k for k in ('core_extension_risk','severe_extension')})
+                    field_paths=field_paths|{k:'replacement.states.'+k for k in ('core_extension_risk','severe_extension')}
                 fs.update({k:d2.get(identity,{}).get(k,'UNKNOWN') for k in ('scenario','final_eligibility','maturity','health','validity','tracking')})
                 fs['relative_sector_state']=r.get('relative_sector_state',r.get('states',{}).get('relative_sector_state'))
                 leaves=leaf_by_security.get(identity,[])
@@ -135,10 +135,10 @@ class OperationalResearchBFF:
     def get(self,path,q):
         parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p];day=q.get('trade_date','2026-10-08')
         if day not in self.api.candidate['dates']:raise ValueError('TARGET_DATE_NOT_GRANTED')
-        if parts not in (['context'],['current','context']) and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+        if parts not in (['context'],['current','context']) and q.get('context_token')!=self.api.context_signature:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace','type','maturity','health','rotation','quality','eligibility','period','price_basis','as_of','view','left','right','mode','snapshot_token','followup'}
         if set(q)-allowed:raise ValueError('UNKNOWN_PARAMETER')
-        for k,v in [('release_id',self.api.token),('model_namespace','TDX_INDUSTRY_CONCEPT')]:
+        for k,v in [('release_id',self.api.context_signature),('model_namespace','TDX_INDUSTRY_CONCEPT')]:
             if k in q and q[k]!=v:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         name=parts[0] if parts else ''
         admission=getattr(self.api,'domain_disposition',None)
@@ -197,7 +197,7 @@ class OperationalResearchBFF:
                 page['item']=page['items'][0]
             return 200,page
         if name in ('raw','core','profile','relative_sector','rotation','lifecycle','special_phase','sector','forward','market','diagnostic','prewatch','seed') and len(parts)==1:
-            payload=self.api.dispatch('/api/v4/'+name+'?trade_date='+day+'&context_token='+self.api.token+'&limit='+q.get('limit','100')+'&offset='+q.get('offset','0'))
+            payload=self.api.dispatch('/api/v4/'+name+'?trade_date='+day+'&context_token='+self.api.context_signature+'&limit='+q.get('limit','100')+'&offset='+q.get('offset','0'))
             return 200,self.envelope(day,**{k:v for k,v in payload.items() if k not in ('context_token','context')})
         return self.missing(day,'/'.join(parts))
 

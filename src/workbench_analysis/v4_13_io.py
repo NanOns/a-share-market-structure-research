@@ -18,7 +18,8 @@ def digest(value):
 
 
 def file_ref(root, path):
-    payload=(Path(root)/path).read_bytes()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    payload=read_path(Path(root).resolve(),path)['raw']
     return dict(path=path, sha256=hashlib.sha256(payload).hexdigest(), bytes=len(payload))
 
 
@@ -68,14 +69,16 @@ def atomic(root,path,payload,append_only=False):
 class FrozenContracts:
     def __init__(self, root):
         self.root=Path(root)
-        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-        self.refs=read_path(self.root,'reports/v4_13_r1_1/V4_13_CONTRACT_AMENDMENT_R1_1.json')['value']['contracts']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+        package=read_source(self.root,'a3f1c1082580e1a2cdda395ef10089f5bc93c4b1bd8c9259de1ec30232b9bfb3')['value']
+        if not isinstance(package,dict):raise ValueError('V4_13_CONTRACT_PACKAGE_NOT_REGISTERED_IN_PG')
+        self.refs=package['contracts']
         self.config={}
         for r in self.refs:
             name=Path(r['path']).stem.removeprefix('v4_13_').removesuffix('_v1_1')
             self.config[name]=json.loads(exact(self.root,r))
         try:
-            decision=read_path(self.root,'reports/v4_13_runtime_r16r1/contract_amendment_decision.json')['value']
+            decision=read_source(self.root,'68655f6ef966294ab81f470cd39ca56d909d6cde67fced202e72734e929b8b13')['value']
         except ValueError as error:
             if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
             decision=None

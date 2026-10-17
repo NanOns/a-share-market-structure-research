@@ -37,7 +37,7 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff, cand
         try:
             result['first_capture_extraction'] = extract_candidate(
                 root, candidate_binding=candidate_binding, candidate=candidate, trade_date=trade_date,
-                cutoff=cutoff, candidate_directory='docs/evidence/cohort_first_capture_candidates_r1')
+                cutoff=cutoff, candidate_directory='data/v4/candidate_stores/cohort_first_capture_candidates_r1')
         except (ValueError, KeyError, TypeError, OSError, AttributeError, IndexError) as exc:
             result['first_capture_extraction'] = dict(status='CAPTURE_PRODUCER_REJECTED',
                 reason=str(exc), observed_count=None, production_write_authorized=False)

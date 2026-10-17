@@ -166,6 +166,10 @@ def read_source(root: str | Path, source_id: str) -> dict[str, Any]:
 def materialize_bound(root: str | Path, binding: dict[str, Any]) -> Path:
     """Materialize an exact PG-ingressed source into the G-drive temp area for parsers."""
     source = read_bound(root, str(binding.get("path") or ""), str(binding.get("sha256") or ""))
+    return _materialize_pg_source(root, source)
+
+
+def _materialize_pg_source(root: str | Path, source: dict[str, Any]) -> Path:
     project = _root(root)
     from common.paths import resolve_ingest_temp_root
     temp_root = resolve_ingest_temp_root(project)
@@ -228,17 +232,8 @@ def ingress_path(root: str | Path, source_path: str, *, expected_sha256: str | N
 
 
 def materialize_path(root: str | Path, source_path: str, *, expected_sha256: str | None = None) -> Path:
-    source = ingress_path(root, source_path, expected_sha256=expected_sha256)
+    """Materialize only an existing PG-ingressed revision; never auto-ingest on read."""
     project = _root(root)
-    temp_root = __import__("common.paths", fromlist=["resolve_ingest_temp_root"]).resolve_ingest_temp_root(project)
-    target = (temp_root / "v4_historical_source_ingress" / source["record"]["source_sha256"] /
-              Path(source["record"]["source_path"]).name)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    if target.is_file():
-        if target.read_bytes() != source["raw"]:
-            raise ValueError("HISTORICAL_SOURCE_TEMP_MATERIALIZATION_CONFLICT")
-    else:
-        temporary = target.with_name(target.name + ".tmp")
-        temporary.write_bytes(source["raw"])
-        temporary.replace(target)
-    return target
+    source = (read_bound(project, source_path, expected_sha256)
+              if expected_sha256 is not None else read_path(project, source_path))
+    return _materialize_pg_source(project, source)

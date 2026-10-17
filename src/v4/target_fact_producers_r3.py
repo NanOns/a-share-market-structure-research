@@ -84,7 +84,7 @@ def validate(publication,root,*,expected_sources=None):
     if seal(publication)!=publication:raise ValueError('PUBLICATION_DIGEST_MISMATCH')
     if expected_sources is None:
         import gzip
-        active=read_active_producer_set(root,'reports/v4_11_r3a/R3A_SEALED_PRODUCER_SET_R2.json')
+        active=read_active_producer_set(root,'5d0508a1be77e1c832d80ffead83e5d018912e78b4bd0d69cc7f28f70e265cf4')
         ref=active['publications'].get(publication['trade_date'])
         if ref is None or json.loads(gzip.decompress(exact(ref).read_bytes()))!=publication:raise ValueError('NOT_IN_SEALED_PRODUCER_SET')
     return publication

@@ -124,7 +124,7 @@ def produce_first_observed_state(root, day, candidate_binding):
         raise ValueError('FIRST_OBSERVED_STATE_VERSIONED_INPUTS_REQUIRED')
     from .full_state_first_observed_v1 import freeze_first_observed
     return freeze_first_observed(root,state_binding=inputs['state'],membership_binding=inputs['membership'],
-        model_binding=inputs['model'],candidate_directory='data/v4/full_state_first_observed_candidates_v1')
+            model_binding=inputs['model'],candidate_directory='data/v4/candidate_stores/full_state_first_observed_candidates_v1')
 
 
 def produce_daily_sector(root, day, candidate_binding):

@@ -9,6 +9,7 @@ from scripts.v4_production_cutover_evidence import ROOT, REPORT, write
 from workbench_service.current_v4_context import digest
 from workbench_service.v4_daily_refresh import AUTHORITY, publish_accepted_view, refresh_status
 from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
+from workbench_db.dm01_data_accepted_head_pg_r1 import read_current as read_data_head
 
 
 def can_publish_increment(child, returncode, accepted_date, target_date):
@@ -41,7 +42,7 @@ def main():
             except (ValueError,KeyError,IndexError,OSError):
                 status['source_requests']=None
                 status['source_request_count_scope']='UNVERIFIED;INSPECT_CHILD_RECEIPT'
-            actual_head=json.loads((ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+            actual_head=read_data_head(ROOT)['candidate']
             if can_publish_increment(child,process.returncode,actual_head['accepted_trade_date'],status['next_completed_session']):
                 build=subprocess.run([sys.executable,'-m','scripts.build_v4_current_read_contract'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
                 status['owner_view_build_exit_code']=build.returncode

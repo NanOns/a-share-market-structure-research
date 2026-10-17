@@ -1,6 +1,7 @@
 ---
 stage_id: V4_R21_R4_CONTRACT_AND_OWNER_BATCH_20261017_R1
 baseline_sha: 49478ecd6fc0a0da2d3aca259ece0ce27bad4297
+code_sha: c46900336a03d4f3e1bedad60375fe8b07e4b658
 branch: codex/v4-workspace-cleanup
 status: R21_R4_CODE_PARTIAL_CONTRACT_AND_OWNER_AUTHORITY
 p1_business_reads_baseline: 266
@@ -39,7 +40,7 @@ The registry reader has not yet been wired into the active runtime contract/Head
 - Focused offline tests: **31 passed** (`test_v4_contract_registry_pg_v1.py`, `test_v4_r21_owner_manifest_pg_binding.py`, `test_v4_native_reader_dsn.py`), using `--confcutdir=tests` because the repository-wide legacy isolation plugin currently cannot initialize under the installed Python 3.13 environment (`psycopg` has no compatible PQ wrapper; the runtime package set also lacks `cryptography`). These are mocked PG-shaped positive and negative tests, not live-PG acceptance.
 - `compileall` passed for modified Python files; `git diff --check` passed.
 - The broader daily-executor/Owner selection did not collect: it is blocked by the incompatible local dependency environment, not reported as passing.
-- GitHub CI and PR checks are pending the authorized commit/push of this batch.
+- GitHub push and PR CI passed on code SHA `c46900336a03d4f3e1bedad60375fe8b07e4b658`: [push run](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39008742821) and [PR run](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39008744775). Both `admission` and `v4-pg-publication-candidate` jobs passed. These checks do not establish live PG acceptance or close P1 callsites.
 
 ## Next stage
 

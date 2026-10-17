@@ -95,3 +95,28 @@ def test_capture_entrypoint_uses_pg_runtime_authority_by_default(monkeypatch):
     monkeypatch.setattr(pg_acceptance, "load", load)
     assert capture.load_runtime_acceptance("G:/repo", "2026-10-16", "ignored.json") == expected
     assert called["day"] == "2026-10-16"
+
+
+def test_zero_change_pg_bundle_requires_every_exact_universe_response():
+    day = "2026-10-16"
+    runtime = {"package": "baostock", "version": "0.9.0", "installed_python_sources_sha256": "a" * 64}
+    ref = {"path": "data/v4/no_change/proof.json", "sha256": "1" * 64, "bytes": 10}
+    response_ref = {"path": "data/v4/no_change/600000.json", "sha256": "2" * 64, "bytes": 20}
+    manifest = {"runtime": runtime, "live_smoke": {"target_date": day,
+                "adjustment_factor": {"no_change_proof": ref}}}
+    payload = {"code": "sh.600000", "rows": [],
+               "params": {"code": "sh.600000", "start_date": day, "end_date": day},
+               "metadata": {"error_code": "0"}, "sdk": runtime}
+    evidence = {"proof_binding": ref,
+                "proof": {"acceptance": "VERIFIED_ALL_TARGET_UNIVERSE_NO_CHANGE",
+                          "target_session": day, "target_universe_codes": ["sh.600000"],
+                          "queried_codes": ["sh.600000"], "responses": [response_ref]},
+                "responses": [{"source_binding": response_ref, "payload": payload}]}
+    pg_acceptance._validate_zero_change_evidence(manifest, evidence)
+    evidence["responses"][0]["payload"] = {**payload, "rows": [{"date": day}]}
+    try:
+        pg_acceptance._validate_zero_change_evidence(manifest, evidence)
+    except ValueError as exc:
+        assert str(exc) == "BAOSTOCK_PG_ZERO_CHANGE_RESPONSE_INVALID"
+    else:
+        raise AssertionError("nonempty response rows were accepted as zero-change proof")

@@ -35,7 +35,8 @@ def _expected_identity() -> Mapping[str, Any]:
     return value
 
 
-def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes) -> dict[str, Any]:
+def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes,
+            zero_change_evidence: Mapping[str, Any] | None = None) -> dict[str, Any]:
     receipt = json.loads(receipt_raw.decode("utf-8"))
     manifest_raw = canonical(dict(manifest))
     if hashlib.sha256(receipt_raw).hexdigest() != manifest.get("smoke_receipt", {}).get("sha256"):
@@ -62,7 +63,9 @@ def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes) -> dict[s
                               auth_mode=str(manifest.get("auth_mode", "")))
     if error:
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_INVALID:" + error)
-    return {
+    if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
+        _validate_zero_change_evidence(manifest, zero_change_evidence)
+    record = {
         "contract_id": CONTRACT,
         "contract_version": "1.0.0",
         "trade_date": day,
@@ -71,6 +74,61 @@ def _record(day: str, manifest: Mapping[str, Any], receipt_raw: bytes) -> dict[s
         "manifest_sha256": hashlib.sha256(manifest_raw).hexdigest(),
         "smoke_receipt_sha256": hashlib.sha256(receipt_raw).hexdigest(),
     }
+    if zero_change_evidence is not None:
+        record["zero_change_evidence"] = dict(zero_change_evidence)
+    return record
+
+
+def _zero_change_evidence(root: Path, manifest: Mapping[str, Any]) -> dict[str, Any]:
+    from workbench_analysis.r43_owner_replay import checked
+    proof_ref = manifest["live_smoke"]["adjustment_factor"]["no_change_proof"]
+    proof = json.loads(checked(root, proof_ref).read_bytes())
+    responses = []
+    for binding in proof.get("responses", []):
+        payload = json.loads(checked(root, binding).read_bytes())
+        responses.append({"source_binding": dict(binding), "payload": payload})
+    return {"proof_binding": dict(proof_ref), "proof": proof, "responses": responses}
+
+
+def _validate_zero_change_evidence(manifest: Mapping[str, Any], evidence: Mapping[str, Any] | None) -> None:
+    if not isinstance(evidence, Mapping):
+        raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_EVIDENCE_REQUIRED")
+    smoke = manifest["live_smoke"]
+    proof_ref = smoke["adjustment_factor"].get("no_change_proof")
+    proof = evidence.get("proof")
+    if (evidence.get("proof_binding") != proof_ref or not isinstance(proof, Mapping)
+            or proof.get("acceptance") != "VERIFIED_ALL_TARGET_UNIVERSE_NO_CHANGE"
+            or proof.get("target_session") != smoke.get("target_date")):
+        raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_PROOF_BINDING_INVALID")
+    universe = proof.get("target_universe_codes")
+    queried = proof.get("queried_codes")
+    source_responses = proof.get("responses")
+    accepted = evidence.get("responses")
+    if (not isinstance(universe, list) or not universe or not all(isinstance(code, str) for code in universe)
+            or not isinstance(queried, list) or not all(isinstance(code, str) for code in queried)
+            or set(universe) != set(queried)
+            or not isinstance(source_responses, list) or not isinstance(accepted, list)
+            or len(source_responses) != len(accepted)):
+        raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_COVERAGE_INVALID")
+    response_codes = []
+    runtime = manifest.get("runtime", {})
+    target = smoke["target_date"]
+    for binding, item in zip(source_responses, accepted, strict=True):
+        if not isinstance(item, Mapping) or item.get("source_binding") != binding:
+            raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_RESPONSE_BINDING_INVALID")
+        payload = item.get("payload")
+        if not isinstance(payload, Mapping) or not isinstance(payload.get("metadata"), Mapping) or not isinstance(payload.get("sdk"), Mapping):
+            raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_RESPONSE_PAYLOAD_INVALID")
+        code = payload.get("code")
+        if (not isinstance(code, str) or payload.get("rows")
+                or payload.get("params") != {"code": code, "start_date": target, "end_date": target}
+                or payload.get("metadata", {}).get("error_code") != "0"
+                or any(payload.get("sdk", {}).get(k) != runtime.get(k)
+                       for k in ("package", "version", "installed_python_sources_sha256"))):
+            raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_RESPONSE_INVALID")
+        response_codes.append(code)
+    if len(response_codes) != len(set(response_codes)) or set(response_codes) != set(universe):
+        raise ValueError("BAOSTOCK_PG_ZERO_CHANGE_UNIVERSE_COVERAGE_INVALID")
 
 
 def _acceptance_error(manifest: Mapping[str, Any], *, sdk: Mapping[str, Any], auth_mode: str) -> str | None:
@@ -95,7 +153,10 @@ def append_from_files(root: Path, day: str, manifest_path: Path) -> dict[str, An
         receipt_path.relative_to(root)
     except ValueError as exc:
         raise ValueError("BAOSTOCK_PG_SMOKE_RECEIPT_PATH_ESCAPE") from exc
-    record = _record(_key(day), manifest, receipt_path.read_bytes())
+    evidence = None
+    if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
+        evidence = _zero_change_evidence(root, manifest)
+    record = _record(_key(day), manifest, receipt_path.read_bytes(), evidence)
     store = ForwardFactStore(root, FOLDER)
     binding = store.append(KIND, _key(day), record, migration_timeout_seconds=120)
     return {"contract_id": CONTRACT, "trade_date": _key(day), "binding": binding,
@@ -142,6 +203,8 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
             or receipt.get("auth_mode") != manifest.get("auth_mode")
             or receipt.get("live_smoke") != smoke):
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_BINDING_INVALID")
+    if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
+        _validate_zero_change_evidence(manifest, record.get("zero_change_evidence"))
     selected_auth = auth_mode or str(manifest.get("auth_mode", ""))
     error = _acceptance_error(manifest, sdk=sdk, auth_mode=selected_auth)
     if error:

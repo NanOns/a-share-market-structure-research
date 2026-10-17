@@ -25,9 +25,21 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
                 raise ValueError('CONTEXT_TOKEN_MISMATCH')
             from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics, maturity_schedule, enrollment_identity
             owner=self.api.candidate['owners'][day].get('validation_cohort')
-            stats=read_authorized_statistics(self.api.root,
-                accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
-                owner_binding=owner,trade_date=day) if owner else read_statistics(None,cutoff=None,trade_date=day)
+            if owner and getattr(self.api,'embedded_pg_owner_authority',False):
+                def read_pg_cohort(binding):
+                    if binding!=owner:raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
+                    payload=self.api.read('validation_cohort',day,self.api.token)
+                    if payload.get('status')!='READY' or not isinstance(payload.get('rows'),dict):
+                        raise ValueError('COHORT_PG_OWNER_READ_REQUIRED')
+                    return payload['rows']
+                stats=read_authorized_statistics(self.api.root,
+                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
+                    owner_binding=owner,trade_date=day,accepted_head_data=self.api.candidate,
+                    owner_reader=read_pg_cohort)
+            else:
+                stats=read_authorized_statistics(self.api.root,
+                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
+                    owner_binding=owner,trade_date=day) if owner else read_statistics(None,cutoff=None,trade_date=day)
             rows=stats['items']
             count=stats['observed_count']
             plans=[dict(enrollment_id=enrollment_identity(r),T0=r['T0'],horizons=maturity_schedule(r['T0'],self.api.candidate['published_sessions'],day,horizons=(1,3,5,10,20))) for r in rows]

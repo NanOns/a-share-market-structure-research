@@ -16392,9 +16392,18 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": "New R21 targeted test assertions; current R20 inventory has not been regenerated. Live PG readback remains unavailable.",
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head has no embedded PG Owner/cohort grant evidence; live same-T0 readback and source-receipt reconciliation remain open.",
       "baseline_function": "OperationalSuccessorBFFV1.get",
-      "migration_evidence": "The runtime/authority consumer no longer opens the business payload; its typed PostgreSQL binding is validated and read in a read-only transaction.",
+      "migration_evidence": {
+        "batch_id": "R21-R4-validation-cohort-bff-pg-owner-r40",
+        "implemented_code": "In the embedded native PG Owner branch, OperationalSuccessorBFFV1 forwards the already verified api.candidate and reads validation_cohort through OperationalSuccessorReader.read. The injected payload then passes the existing exact grant, owner/T0, frozen-cohort, benchmark and source-receipt validators. Candidate digest must match the accepted Reader token; this branch does not call v4_cohort_pg_r1.load_owner or reopen the accepted Head.",
+        "test_evidence": [
+          "test_successor_bff_reads_validation_cohort_owner_through_embedded_pg_authority"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_EMBEDDED_PG_OWNER_OR_COHORT_GRANT_EVIDENCE"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160932",
@@ -17179,6 +17188,28 @@
         "p1_formally_remaining": 266,
         "status": "HEAD_BOUND_OPERATIONAL_REGISTRY_PG_READ_PATH_IMPLEMENTED_PENDING_LIVE_HEAD_RECONCILIATION; one baseline row remains formally open.",
         "next": "Continue exact-mapped Owner and other-business PG consumers; no formal closure before permitted same-T0 readback."
+      },
+      {
+        "batch_id": "R21-R4-validation-cohort-bff-pg-owner-r40",
+        "files": [
+          "src/workbench_analysis/validation_cohort_read_contract_r3.py",
+          "src/workbench_service/operational_successor_bff_v1.py",
+          "tests/test_validation_cohort_pg_reader_integration.py",
+          "docs/upgrade/V4_R21_R4_VALIDATION_COHORT_BFF_PG_OWNER_R40_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-eb65b592463a23c11d8b"
+        ],
+        "evidence": [
+          "The validation-cohort BFF uses the embedded OperationalSuccessorReader PG Owner for validation_cohort and no longer reopens the accepted Head in that branch.",
+          "Injected Head is accepted only if its canonical digest matches the Reader context token; existing grant, Owner/T0, frozen event and source receipt checks remain active.",
+          "Current Head lacks embedded PG Owner and cohort grant evidence. This is code-level migration only, with no formal P1 closure."
+        ],
+        "verification": "Focused selection: 12 passed across cohort BFF routing, registry PG reader and embedded Owner integration. Controlled reader-boundary tests only; no live PG, service or Head mutation.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "VALIDATION_COHORT_BFF_USES_EMBEDDED_PG_OWNER_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION; no baseline row formally closed.",
+        "next": "Continue exact-mapped Owner/BFF migrations; retain all 266 formal P1 items until approved same-T0 readback and full source evidence."
       }
     ]
   }

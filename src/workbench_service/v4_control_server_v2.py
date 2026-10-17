@@ -34,30 +34,18 @@ def make_v4_handler(root, *, static_root=None):
     operational_cache={};operational_lock=threading.RLock()
 
     def operational_reader():
-        from workbench_analysis.r43_operational_publication import accepted_api
-        head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        authority=root/('data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if head.exists() and json.loads(head.read_bytes()).get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
-        if not head.exists():
-            operational_cache.clear();return None
-        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')).hexdigest()
+        from workbench_analysis.operational_successor_v1 import accepted_api
+        from workbench_db.v4_operational_live_head_pg_r1 import read_current
+        current=read_current(root)
+        signature=(current['head_sha256'],current['generation'],current['database_identity']['database_oid'])
         with operational_lock:
             cached=operational_cache.get('reader')
-            signatures=operational_cache.get('sources',{})
-            changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in signatures.items())
-            if cached is None or signature!=operational_cache.get('signature') or changed:
+            if cached is None or signature!=operational_cache.get('signature'):
                 operational_cache.clear()
-                cached=accepted_api(root)
-                registry=json.loads((root/cached.candidate['registry']['path']).read_bytes())
-                bindings=[]
-                def collect(value):
-                    if isinstance(value,dict):
-                        if value.get('path') and value.get('sha256'):bindings.append(value)
-                        for child in value.values():collect(child)
-                    elif isinstance(value,list):
-                        for child in value:collect(child)
-                collect(registry);collect(cached.candidate);collect(cached.snapshot)
-                paths={root/b['path'] for b in bindings}
-                operational_cache.update(reader=cached,signature=signature,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+                cached=accepted_api(root,head_snapshot=current)
+                from workbench_db.v4_operational_registry_pg_v1 import read_registry
+                registry=read_registry(root,cached.candidate)
+                operational_cache.update(reader=cached,signature=signature,registry=registry)
             return cached
 
     class Handler(base):
@@ -71,13 +59,12 @@ def make_v4_handler(root, *, static_root=None):
                 code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
-                from workbench_analysis.r43_operational_publication import accepted_api
                 try:
                     operational=operational_reader()
                 except (ValueError,KeyError,OSError) as error:
                     return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                 if operational is not None:
-                    from .operational_gap_bff_v2 import OperationalGapBFFV2 as OperationalResearchBFF
+                    from .operational_successor_bff_v1 import OperationalSuccessorBFFV1 as OperationalResearchBFF
                     try:
                         values=parse_qs(parsed.query,keep_blank_values=True)
                         if any(len(v)!=1 for v in values.values()):raise ValueError('DUPLICATE_PARAMETER')
@@ -111,7 +98,8 @@ def make_v4_handler(root, *, static_root=None):
                     except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                     if operational is not None:
                         relative='src/workbench_service/static/r43-compat/'+name
-                        registry=json.loads((root/operational.candidate['registry']['path']).read_bytes())
+                        from workbench_db.v4_operational_registry_pg_v1 import read_registry
+                        registry=read_registry(root,operational.candidate)
                         binding=next((b for b in registry['bindings'] if b['path']==relative),None)
                         if binding is None:return self.send(503,dict(code='OPERATIONAL_UI_COMPATIBILITY_ASSET_NOT_BOUND'))
                         from workbench_analysis.r43_operational_sources import checked
@@ -138,7 +126,7 @@ def make_v4_handler(root, *, static_root=None):
                 control=control_status(payload)
                 if operational is not None:
                     context=operational.context()
-                    control=control_status(payload,context,operational.token)
+                    control=control_status(payload,context,operational.context_digest)
                     research.update(research_snapshot_state='OPERATIONAL_SCOPED_READY',legacy_research_release_id=research.get('research_release_id'),research_release_id=context['context_token'],legacy_research_counts=research.pop('research_counts',None))
                 return self.send(200,dict(service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',service_control_contract=CONTRACT,product_version='V4',default_ui='V4',
                     current_accepted_reader=True,shadow_diagnostics=True,legacy_v3_default=False,read_only_ui=True,

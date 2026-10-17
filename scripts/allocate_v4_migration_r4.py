@@ -18,7 +18,7 @@ def allocate(requestor):
         for item in registry['allocations']:
             if item['requestor']==requestor:return item
         numbers=[int(p.name[:3]) for p in (ROOT/'src/workbench_db/migrations/v4_postgres').glob('[0-9][0-9][0-9]_*.sql')]
-        if sorted(numbers)!=list(range(1,max(numbers)+1)):raise ValueError('MIGRATION_ALLOCATION_GAP')
+        if sorted(set(numbers))!=list(range(1,max(numbers)+1)):raise ValueError('MIGRATION_ALLOCATION_GAP')
         for name in ('config/v4_migration_allocation_registry_r3.json','config/v4_migration_allocation_registry_fep_e1_v1.json'):
             previous=json.loads((ROOT/name).read_bytes())
             numbers += [a['number'] for a in previous.get('allocations',[]) if 'number' in a]

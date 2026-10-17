@@ -68,34 +68,21 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
 
     def operational_reader():
         from workbench_analysis.operational_successor_v1 import CONTRACT as DAILY_CONTRACT, accepted_api
-        head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        if not head.exists():
-            operational_cache.clear();return None
-        candidate=json.loads(head.read_bytes())
-        # Daily successors have their own exact policy admission; the frozen
-        # four-session reader's external attestation cannot admit that contract.
-        authority=root/('config/read_only_operational_daily_release_policy_v1_1.json' if candidate.get('contract_id')==DAILY_CONTRACT else 'data/v4/R43_OPERATIONAL_USER_AUTHORIZATION.json' if candidate.get('authority_mode')=='USER_AUTHORIZED_SCOPED_OPERATIONAL_V1' else 'data/v4/R43_OPERATIONAL_EXTERNAL_ACCEPTANCE.json')
-        owner_authority=root/'config/v4_operational_owner_pg_closeout_r1.json'
-        signature=hashlib.sha256(head.read_bytes()+(authority.read_bytes() if authority.exists() else b'')+(owner_authority.read_bytes() if owner_authority.exists() else b'')).hexdigest()
+        from workbench_db.v4_operational_live_head_pg_r1 import read_current
+        current=read_current(root)
+        candidate=current['candidate']
+        # Runtime contract bytes are loaded from the approved PG Registry by
+        # verify_policy; no workspace policy or Owner authority file selects it.
+        signature=(current['head_sha256'],current['generation'],
+                   current['database_identity']['database_oid'])
         with operational_lock:
             cached=operational_cache.get('reader')
-            signatures=operational_cache.get('sources',{})
-            changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in signatures.items())
-            if cached is None or signature!=operational_cache.get('signature') or changed:
+            if cached is None or signature!=operational_cache.get('signature'):
                 operational_cache.clear()
-                cached=accepted_api(root)
-                registry=json.loads((root/cached.candidate['registry']['path']).read_bytes())
-                bindings=[]
-                def collect(value):
-                    if isinstance(value,dict):
-                        if value.get('path') and value.get('sha256'):bindings.append(value)
-                        for child in value.values():collect(child)
-                    elif isinstance(value,list):
-                        for child in value:collect(child)
-                collect(registry);collect(cached.candidate);collect(cached.snapshot)
-                if owner_authority.exists():collect(json.loads(owner_authority.read_bytes()))
-                paths={root/b['path'] for b in bindings}
-                operational_cache.update(reader=cached,signature=signature,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+                cached=accepted_api(root,head_snapshot=current)
+                from workbench_db.v4_operational_registry_pg_v1 import read_registry
+                registry=read_registry(root,cached.candidate)
+                operational_cache.update(reader=cached,signature=signature,registry=registry)
             return cached
 
     class Handler(base):

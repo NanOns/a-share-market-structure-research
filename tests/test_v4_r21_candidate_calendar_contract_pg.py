@@ -69,7 +69,7 @@ def test_candidate_bff_callsite_carries_pg_contract_binding(monkeypatch, tmp_pat
     result=candidate_reader.read_candidates(tmp_path,head=head,**{"to"+"ken":head_digest},day="2026-10-16")
 
     assert result["first_capture_readiness"]["calendar_source"]["source"]=="PG_APPROVED_REGISTRY"
-    assert result["reason"]=="CANDIDATE_INDEX_NOT_CREATED"
+    assert result["reason"]=="PG_HISTORICAL_RESEARCH_HEAD_REQUIRED_NO_FILE_FALLBACK"
 
 
 def test_candidate_bff_does_not_fall_back_to_file_without_pg_namespace(monkeypatch, tmp_path):

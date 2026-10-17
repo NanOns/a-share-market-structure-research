@@ -56,7 +56,8 @@ def verify(root,candidate,policy=None):
         payload=dict(market[name]);claimed=payload.pop('output_digest')
         if hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':'),default=str).encode()).hexdigest()!=claimed:raise ValueError('MARKET_OUTPUT_DIGEST_RECOMPUTATION_FAILED')
     for binding in market['input_bindings']:checked(root,binding)
-    prior=json.loads(checked(root,original['predecessor']).read_bytes())
+    from workbench_db.v4_operational_predecessor_pg_v1 import read_predecessor
+    prior=read_predecessor(root,original)
     if result['predecessor_market_bindings']!={d:o['market'] for d,o in prior['owners'].items()}:raise ValueError('MARKET_ACCEPTED_PREDECESSOR_CHANGED')
     for binding in g3['parameter_bindings'].values():checked(root,binding)
     for key in ('producer','current_limit','accepted_prior_limit'):checked(root,g3[key])

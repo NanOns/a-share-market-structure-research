@@ -37,19 +37,42 @@ def _yaml_path_values(path: Path) -> dict[str, str]:
         return {}
     values: dict[str, str] = {}
     section: str | None = None
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
-        if not line.startswith((" ", "\t")) and line.rstrip().endswith(":"):
-            section = line.rstrip()[:-1].strip()
+        if not line.startswith((" ", "\t")):
+            header = line.strip()
+            if not header.endswith(":") or not re.fullmatch(r"[A-Za-z0-9_]+:", header):
+                raise ValueError(f"PATH_CONFIG_INVALID_SECTION_LINE:{line_number}")
+            section = header[:-1]
             continue
         match = re.match(r"^\s+([A-Za-z0-9_]+):\s*(.*?)\s*$", line)
         if not match or section is None:
-            continue
-        raw = match.group(2).split(" #", 1)[0].strip()
+            raise ValueError(f"PATH_CONFIG_INVALID_SETTING_LINE:{line_number}")
+        raw = match.group(2).strip()
+        # Strip only unquoted YAML comments; a # inside a quoted path is data.
+        quote: str | None = None
+        escaped = False
+        for index, char in enumerate(raw):
+            if escaped:
+                escaped = False
+            elif char == "\\" and quote == '"':
+                escaped = True
+            elif quote and char == quote:
+                quote = None
+            elif not quote and char in "\"'":
+                quote = char
+            elif not quote and char == "#" and (index == 0 or raw[index - 1].isspace()):
+                raw = raw[:index].rstrip()
+                break
         if len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "\"'":
             raw = raw[1:-1]
-        values[f"{section}.{match.group(1)}"] = raw
+        key = f"{section}.{match.group(1)}"
+        if not raw or raw.casefold() in {"null", "~"}:
+            continue
+        if key in values:
+            raise ValueError(f"PATH_CONFIG_DUPLICATE_SETTING:{key}")
+        values[key] = raw
     # Keep the historic key as a read-only compatibility alias.
     if values.get("tdx.root") and not values.get("tdx.source_root"):
         values["tdx.source_root"] = values["tdx.root"]

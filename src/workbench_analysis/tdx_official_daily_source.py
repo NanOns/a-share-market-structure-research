@@ -264,9 +264,16 @@ def _existing_downloader_package(target_date: str, package_url: str, *, max_byte
     byte and date bindings are verified again rather than trusting its pointer.
     """
     root = Path(project_root).resolve() if project_root is not None else Path(__file__).resolve().parents[2]
+    child_env = os.environ.copy()
+    from common.paths import resolve_ingest_temp_root
+    temp_root = resolve_ingest_temp_root(root)
+    temp_root.mkdir(parents=True, exist_ok=True)
+    for key in ('TMP', 'TEMP', 'TMPDIR'):
+        child_env[key] = str(temp_root)
     result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
                              str(root / 'scripts/capture_dm01_a01_r3_tdx_package.py')],
-                            cwd=root, capture_output=True, timeout=480, text=True, encoding='utf-8')
+                            cwd=root, env=child_env, capture_output=True, timeout=480,
+                            text=True, encoding='utf-8')
     if result.returncode:
         raise TDXSourceError('TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED')
     try:
@@ -308,10 +315,8 @@ def _existing_downloader_package(target_date: str, package_url: str, *, max_byte
 
 
 def _tdx_root_or_configured(tdx_root: Path | None) -> Path:
-    if tdx_root is not None:
-        return Path(tdx_root)
     from common.paths import resolve_tdx_root
-    return resolve_tdx_root(Path(__file__).resolve().parents[2])
+    return resolve_tdx_root(Path(__file__).resolve().parents[2], tdx_root)
 
 
 def capture_tdx_official_daily_package(

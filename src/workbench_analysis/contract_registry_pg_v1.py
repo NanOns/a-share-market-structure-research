@@ -337,3 +337,29 @@ def load_current_approved_contract(
         namespace, raw, parsed_json, "", "", None, (str(session[0]), str(session[1])),
         str(approved_by), str(approval_ref), str(approval_source_revision),
         approved_at, approval_recorded_at, str(approval_source_digest))
+
+
+def load_current_approved_contract_by_digest(
+    cursor: Any, contract_id: str, raw_sha256: str, namespace: str, *,
+    expected_database_identity: dict[str, Any],
+) -> RegisteredContract:
+    """Resolve an approved version pinned by an exact Head-bound raw digest."""
+    if not isinstance(raw_sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", raw_sha256):
+        raise ContractRegistryError("V4_PG_CONTRACT_DIGEST_REQUIRED")
+    try:
+        rows = cursor.execute(
+            "SELECT version FROM v4.contract_versions "
+            "WHERE contract_id=%s AND raw_sha256=%s AND namespace=%s",
+            (contract_id, raw_sha256, namespace),
+        ).fetchall()
+    except Exception as exc:
+        raise ContractRegistryError("V4_PG_CONTRACT_REGISTRY_UNAVAILABLE") from exc
+    if len(rows) != 1:
+        raise ContractRegistryError("V4_PG_CONTRACT_DIGEST_VERSION_NOT_UNIQUE")
+    registered = load_current_approved_contract(
+        cursor, contract_id, str(rows[0][0]), namespace,
+        expected_database_identity=expected_database_identity,
+    )
+    if registered.raw_sha256 != raw_sha256:
+        raise ContractRegistryError("V4_PG_CONTRACT_DIGEST_MISMATCH")
+    return registered

@@ -29,10 +29,12 @@ def ref(root,path):
     p=Path(path).resolve();return dict(path=p.relative_to(Path(root).resolve()).as_posix(),sha256=sha(p),bytes=p.stat().st_size)
 
 def checked(root,binding):
-    p=(Path(root)/binding['path']).resolve()
-    if not p.is_relative_to(Path(root).resolve()) or not p.is_file() or sha(p)!=binding['sha256']:
-        raise ValueError('R43_SOURCE_DIGEST_MISMATCH:'+binding['path'])
-    return p
+    """Materialize the exact V4 source binding from PG SourceIngress."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    try:
+        return materialize_path(root,binding['path'],expected_sha256=binding['sha256'])
+    except ValueError as exc:
+        raise ValueError('R43_PG_SOURCE_INGRESS_UNAVAILABLE:'+binding['path']) from exc
 
 def run_sources(root,out):
     root=Path(root);out=Path(out);out.mkdir(parents=True,exist_ok=True)

@@ -537,61 +537,65 @@ def verify_source_gate(root,day,artifact,result,now=None):
     if any(r.get('trade_date')!=day for r in native):sources['tdx']['status']='UNVERIFIED'
     dependencies={}
     identity_preflight=None
-    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    if head_path.is_file():
-        from .r43_owner_replay import checked,ref
-        from .r43_operational_sources import date_valid_identity
-        head=json.loads(head_path.read_bytes())
-        life_binding=head['owners'][head['accepted_trade_date']]['lifecycle']
-        life=json.loads(checked(root,life_binding).read_bytes())
-        identity=json.loads(checked(root,life['identity']).read_bytes())['rows']
-        expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
-        actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
-        from .operational_new_listing_r1 import classify_codes
-        code_changes=classify_codes(expected_codes,daily,native,day)
-        from .native_source_reconciliation_r3 import reconcile
-        policy_path=root/'config/tdx_a_stock_delta_scope_policy_v2.json'
-        scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
-        scoped_reconciliation['scope_policy']=ref(root,policy_path)
-        scoped_reconciliation['dated_identity']=life['identity']
-        # Provider arithmetic agreement and canonical identity admission are
-        # distinct gates. A correctly reconciled new/delisted roster still
-        # waits for dated identity authority below; it is not a bad price source.
-        provider_reconciliation=reconcile(native,daily,actual_codes,json.loads(policy_path.read_bytes()),day)
-        reconciled=provider_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
-        scoped_reconciliation['provider_facts']=provider_reconciliation
-        for family in ('baostock_daily','baostock_factor'):
-            sources[family]['identity_reconciliation_passed']=reconciled
-            sources[family]['scope_reconciliation']=scoped_reconciliation
-        # Provider validation and the protected old identity gate are separate.
-        # A new roster never obtains authority merely by matching native bars.
-        scope_matches=actual_codes==expected_codes
-        sources['dated_identity_authority']=dict(
-            contract_id='DATED_IDENTITY_GATE_REASON_R2',target_session=day,
-            status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
-            scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
-            new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
-        gbbq=_tdx_gbbq_source_path(root)
-        before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
-        if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
-        dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],
-            accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
-            accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
-            code_changes=code_changes,new_codes=code_changes['new_codes'],absent_codes=code_changes['absent_codes'],invalid_codes=code_changes['invalid_codes'],active_universe=code_changes['valid_codes'],
-            gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
-        from .next_t0_identity_preflight_v1 import diagnose
-        transport=raw.get('source_transport_v2',{})
-        identity_preflight=diagnose(trade_date=day,previous_date=head['accepted_trade_date'],
-            expected_codes=expected_codes,actual_codes=actual_codes,
-            source_binding=artifact['native_baostock'],parent_head=dependencies['parent_head'],
-            identity_binding=life['identity'],membership_binding=head['membership_snapshot'],
-            native_reconciled=reconciled,
-            requested_at=raw.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at'),
-            received_at=raw.get('received_at') or transport.get('daily',{}).get('received_at') or observed,
-            first_available_at=observed)
-        # Dependency revisions belong to the source gate identity, so a changed
-        # pool or action source cannot borrow a previously ready revision.
-        sources['baostock_daily']['dependency_bindings']=dependencies
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    head=read_current(root)['candidate']
+    from .r43_owner_replay import ref
+    from .r43_operational_sources import date_valid_identity
+    from workbench_db.v4_operational_owner_authority_v2 import load as load_owner,read as read_owner
+    from workbench_db.v4_membership_reference_pg_v1 import identity_source,read_identity
+    owner_authority=load_owner(root,head)
+    life_binding=head['owners'][head['accepted_trade_date']]['lifecycle']
+    life=read_owner(root,owner_authority,head['accepted_trade_date'],'lifecycle',life_binding)
+    identity_binding=identity_source(root,head)
+    identity=read_identity(root,head)
+    expected_codes={r['source_security_key'].upper() for r in identity if r.get('board_scope') in {'SH_MAIN','SZ_MAIN','CHINEXT','STAR'} and date_valid_identity(r,day)}
+    actual_codes={code for code in codes if code.startswith(('SH.','SZ.'))}
+    from .operational_new_listing_r1 import classify_codes
+    code_changes=classify_codes(expected_codes,daily,native,day)
+    from .native_source_reconciliation_r3 import reconcile
+    policy_path=root/'config/tdx_a_stock_delta_scope_policy_v2.json'
+    scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
+    scoped_reconciliation['scope_policy']=ref(root,policy_path)
+    scoped_reconciliation['dated_identity']=life['identity']
+    # Provider arithmetic agreement and canonical identity admission are
+    # distinct gates. A correctly reconciled new/delisted roster still waits
+    # for dated identity authority below; it is not a bad price source.
+    provider_reconciliation=reconcile(native,daily,actual_codes,json.loads(policy_path.read_bytes()),day)
+    reconciled=provider_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
+    scoped_reconciliation['provider_facts']=provider_reconciliation
+    for family in ('baostock_daily','baostock_factor'):
+        sources[family]['identity_reconciliation_passed']=reconciled
+        sources[family]['scope_reconciliation']=scoped_reconciliation
+    # Provider validation and the protected old identity gate are separate.
+    # A new roster never obtains authority merely by matching native bars.
+    scope_matches=actual_codes==expected_codes
+    sources['dated_identity_authority']=dict(
+        contract_id='DATED_IDENTITY_GATE_REASON_R2',target_session=day,
+        status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
+        scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
+        new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
+    gbbq=_tdx_gbbq_source_path(root)
+    before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
+    if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
+    parent_binding='pg://v4/operational_research_heads/current'
+    dependencies=dict(parent_head=parent_binding,lifecycle=life_binding,identity=identity_binding,
+        accepted_pool_sha256=tdx.sha256_bytes(tdx._json_bytes(sorted(expected_codes))),
+        accepted_pool_count=len(expected_codes),missing_codes=sorted(expected_codes-actual_codes),unknown_codes=sorted(actual_codes-expected_codes),
+        code_changes=code_changes,new_codes=code_changes['new_codes'],absent_codes=code_changes['absent_codes'],invalid_codes=code_changes['invalid_codes'],active_universe=code_changes['valid_codes'],
+        gbbq=dict(path=str(gbbq),sha256=gbbq_sha,bytes=before.st_size),membership_snapshot=head['membership_snapshot'])
+    from .next_t0_identity_preflight_v1 import diagnose
+    transport=raw.get('source_transport_v2',{})
+    identity_preflight=diagnose(trade_date=day,previous_date=head['accepted_trade_date'],
+        expected_codes=expected_codes,actual_codes=actual_codes,
+        source_binding=artifact['native_baostock'],parent_head=parent_binding,
+        identity_binding=identity_binding,membership_binding=head['membership_snapshot'],
+        native_reconciled=reconciled,
+        requested_at=raw.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at'),
+        received_at=raw.get('received_at') or transport.get('daily',{}).get('received_at') or observed,
+        first_available_at=observed)
+    # Dependency revisions belong to the source gate identity, so a changed
+    # pool or action source cannot borrow a previously ready revision.
+    sources['baostock_daily']['dependency_bindings']=dependencies
     readiness=source_readiness(day,now or datetime.now(timezone.utc),sources)
     readiness.update(source_freeze=result['source_freeze'],dependency_bindings=dependencies,AS_RECORDED=False,PIT_ELIGIBLE=False)
     readiness['native_provider_facts']=dict(

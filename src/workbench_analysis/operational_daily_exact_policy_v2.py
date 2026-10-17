@@ -67,18 +67,24 @@ def immutable_policy_binding(root,binding=None):
     if path!=expected:raise ValueError('EXACT_V2_DAILY_POLICY_PATH_REQUIRED')
     return binding
 
-def verify(root,binding=None,*,candidate_only=False,verify_loaded=True):
+def verify(root,binding=None,*,candidate_only=False,verify_loaded=True,registered_policy=None):
     root=Path(root).resolve()
-    binding=immutable_policy_binding(root,binding)
-    path=checked(root,binding)
-    policy=load(path)
+    if registered_policy is None:
+        binding=immutable_policy_binding(root,binding)
+        path=checked(root,binding)
+        policy=load(path)
+    else:
+        if (not isinstance(binding,dict) or registered_policy.get('contract_id')!=CONTRACT
+                or registered_policy.get('raw_sha256')!=binding.get('sha256')):
+            raise ValueError('EXACT_V2_REGISTERED_POLICY_BINDING_MISMATCH')
+        policy=registered_policy['parsed_json']
     if policy.get('contract_id')!=CONTRACT or policy.get('adjustment_contract')!=KERNEL:
         raise ValueError('EXACT_V2_DAILY_CONTRACT_REQUIRED')
     if any(policy.get(key) for key in ('historical_PIT_permission','automated_trading_permission','probability_claims')):
         raise ValueError('EXACT_V2_DAILY_SCOPE_ESCALATION')
     checked(root,policy['task_contract'])
-    predecessor=checked(root,policy['predecessor_policy'])
-    if predecessor.resolve()!=root/'config/read_only_operational_daily_release_policy_v1_1.json':
+    checked(root,policy['predecessor_policy'])
+    if policy['predecessor_policy'].get('path')!='config/read_only_operational_daily_release_policy_v1_1.json':
         raise ValueError('EXACT_V2_DAILY_PREDECESSOR_REQUIRED')
     bindings=policy['accepted_algorithm_bindings']
     paths=[b.get('module_path',b['path']) for b in bindings]
@@ -100,7 +106,8 @@ def verify(root,binding=None,*,candidate_only=False,verify_loaded=True):
         if 'admission_evidence' not in policy:raise ValueError('EXACT_V2_DAILY_ACCEPTANCE_EVIDENCE_REQUIRED')
         # Existing historical Owner identities retain their original namespace.
         # Current executable versions reside in separate immutable archives.
-        for original in load(predecessor)['accepted_algorithm_bindings']:checked(root,original)
+        predecessor_policy=load(checked(root,policy['predecessor_policy']))
+        for original in predecessor_policy['accepted_algorithm_bindings']:checked(root,original)
         if verify_loaded:verify_loaded_versions(bindings+policy.get('component_source_bindings',[]))
         evidence=load(checked(root,policy['admission_evidence']))
         if policy.get('runtime_repair_contract')=='V4_RUNTIME_REPAIR_ACCEPTANCE_R1_1':

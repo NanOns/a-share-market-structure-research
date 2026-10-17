@@ -73,15 +73,8 @@ class DailyJobs(StateMachine):
         self.dsn=configured_dsn();self.schema=workspace_schema(self.root,'jobs')
         self.lock_key=int.from_bytes(hashlib.sha256(self.schema.encode()).digest()[:8],'big',signed=True)
         calendar_mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
-        if calendar_mode not in {'FILE','PG'}:raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
-        head_path=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        if (calendar_mode=='PG' or (calendar_mode=='FILE' and head_path.is_file())):
-            policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
-            policy=json.loads(policy_path.read_bytes())
-            if policy.get('contract_id')!='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1' or any(policy.get(k) is not False for k in ('historical_PIT_permission','automated_trading_permission','algorithm_upgrade_permission')): raise ValueError('DAILY_POLICY_SCOPE_INVALID')
-            task=(self.root/policy['task_contract']['path']).resolve()
-            if not task.is_relative_to(self.root) or hashlib.sha256(task.read_bytes()).hexdigest()!=policy['task_contract']['sha256']: raise ValueError('DAILY_POLICY_TASK_BINDING_INVALID')
-            self.policy_binding=dict(path=policy_path.relative_to(self.root).as_posix(),sha256=hashlib.sha256(policy_path.read_bytes()).hexdigest())
+        if calendar_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+        self._load_approved_policy()
         with psycopg.connect(self.dsn,connect_timeout=5) as pg:
             create_schema(pg,self.schema)
         with connection(self.schema,dsn=self.dsn) as pg:
@@ -203,14 +196,39 @@ class DailyJobs(StateMachine):
             self.set_settings(enabled)
         with self.read_connect() as db:
             row=dict(db.execute('SELECT * FROM scheduler_policy WHERE id=1').fetchone())
+        policy,policy_binding=self._load_approved_policy()
         return dict(contract_id='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1',
             auto_enabled=bool(row['enabled']),revision=row['revision'],updated_at=row['updated_at'],
             first_check='18:35',timezone='Asia/Shanghai',retry_times=RETRY_TIMES,
             service_alive=self.thread is not None and self.thread.is_alive(),
             operational_mode='AUTO_ON' if row['enabled'] else 'AUTO_PAUSED_BY_USER',
             permission_scope='READ_ONLY_OPERATIONAL_RESEARCH',
-            publication_ready=(json.loads((self.root/self.policy_binding['path']).read_bytes()).get('publication_ready',False) if self.policy_binding else False),
-            policy_binding=self.policy_binding)
+            publication_ready=policy.get('publication_ready',False),
+            policy_binding=policy_binding)
+
+    def _load_approved_policy(self):
+        """Load the exact runtime policy from the shared approved PG Registry."""
+        namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+        from workbench_db.v4_publication_reader import readonly_connection,PgPublicationReader
+        from .contract_registry_pg_v1 import load_current_approved_contract
+        contract_id='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1';version='1.1.0'
+        with readonly_connection() as pg:
+            identity=PgPublicationReader._read_database_identity(pg)
+            if not namespace:
+                namespaces=pg.execute('SELECT namespace FROM v4.contract_versions WHERE contract_id=%s AND version=%s',
+                    (contract_id,version)).fetchall()
+                if len(namespaces)!=1:raise ValueError('PG_DAILY_CONTRACT_NAMESPACE_NOT_UNIQUE')
+                namespace=str(namespaces[0][0])
+            registered=load_current_approved_contract(pg,contract_id,version,namespace,
+                expected_database_identity=identity)
+        policy=registered.parsed_json
+        if (not isinstance(policy,dict) or policy.get('contract_id')!=contract_id
+                or policy.get('version')!=version
+                or any(policy.get(k) is not False for k in ('historical_PIT_permission','automated_trading_permission','algorithm_upgrade_permission'))):
+            raise ValueError('PG_DAILY_POLICY_SCOPE_INVALID')
+        binding=dict(contract_id=registered.contract_id,version=registered.version,
+            namespace=registered.namespace,raw_sha256=registered.raw_sha256)
+        return policy,binding
 
     def set_settings(self,enabled):
         """Apply the setting mutation only; HTTP callers read it back via Reader."""

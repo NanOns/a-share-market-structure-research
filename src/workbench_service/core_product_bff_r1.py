@@ -9,7 +9,7 @@ from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
 from .domain_views import CHANGE_EVENTS, RISK_EVENTS, ROTATIONS
 from workbench_analysis.r43_owner_replay import checked
-from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics
+from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics
 from .research_hypotheses_r3 import competing_explanations
 from .operational_risk_v1 import build_stock_family,build_sector_family,build_market_family
 
@@ -86,6 +86,10 @@ def product_manifest_bindings(authority):
 
 def dated_product_manifest(root, authority, day, *, candidate=None):
     product_manifest_bindings(authority)
+    if candidate is not None:
+        from .native_product_catalog_v3 import PG_KEY
+        if PG_KEY in candidate and authority.get('contract_id') != 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
+            raise ValueError('PRODUCT_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
     if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
         from .native_product_catalog_v3 import PG_KEY,load
         if not isinstance(candidate,dict) or PG_KEY not in candidate:
@@ -1283,11 +1287,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if self.legacy is None or not hasattr(self.legacy,'status'):return self.missing(day,'/'.join(p),'RUNTIME_OPERATIONS_STATUS_PROVIDER_NOT_BOUND')
             return 200,self.envelope(day,status='READY',operations=self.legacy.status(),source='/api/operations/status',scope='REQUEST_TIME_RUNTIME_STATUS; NOT_DATED_FACTOR_OWNER',items=[])
         if p==['diagnostics','legacy']:
-            policy=json.loads((self.api.root/'config/v4_legacy_release_scope_v1.json').read_bytes())
-            return 200,self.envelope(day,status='READY',items=[dict(legacy='旧版研究摘要',current='独立历史入口，保留原日期',href='/v4/legacy-summary'),dict(legacy='旧版 V4 历史读域',current='2026-09-30 独立上下文',href='/api/v4/original-0930/context')],scope='NAVIGATION_CATALOG_ONLY; NOT_CURRENT_FACTS',policy=policy,source='config/v4_legacy_release_scope_v1.json')
+            return 200,self.envelope(day,status='READY',items=[dict(legacy='旧版研究摘要',current='独立历史入口，保留原日期',href='/v4/legacy-summary'),dict(legacy='旧版 V4 历史读域',current='独立历史上下文',href='/api/v4/original-0930/context')],scope='NAVIGATION_CATALOG_ONLY; NOT_CURRENT_FACTS',contract_source='STATIC_ROUTE_METADATA; NOT_BUSINESS_AUTHORITY')
         if p==['diagnostics','shadow']:
-            policy=json.loads((self.api.root/'config/v4_17_shadow_ui_source_v1.json').read_bytes())
-            return 200,self.envelope(day,status='READY',capability_status=policy['status'],items=[],policy=policy,source='config/v4_17_shadow_ui_source_v1.json',href='/v4/shadow',scope='CAPABILITY_DIAGNOSTIC_ONLY; NO_REAL_SHADOW_DATA')
+            return 200,self.envelope(day,status='CONTRACT_REGISTRY_REQUIRED',capability_status='PG_APPROVED_SHADOW_CONTRACT_NOT_BOUND',items=[],href='/v4/shadow',scope='CAPABILITY_DIAGNOSTIC_ONLY; NO_REAL_SHADOW_DATA',reason='No Head-bound approved shadow contract is available in the current PG publication.')
         if p[0] in ('replay','compare'):
             if p[0]=='replay':return self.missing(day,'replay','STRICT_PIT_FIRST_AVAILABLE_EVIDENCE_NOT_PRESENT')
             mode=q.get('mode','');left=q.get('left');right=q.get('right');asof=q.get('as_of',day)
@@ -1301,9 +1303,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if path=='/api/v4/forward':
             ref=self.api.candidate['owners'][day].get('validation_cohort')
             if ref:
-                statistics=read_authorized_statistics(self.api.root,
-                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
-                    owner_binding=ref,trade_date=day)
+                from .operational_successor_bff_v1 import read_pg_validation_cohort_statistics
+                statistics=read_pg_validation_cohort_statistics(self.api,ref,day)
                 owner_present=True
             else:
                 statistics=read_statistics(None,cutoff=None,trade_date=day)

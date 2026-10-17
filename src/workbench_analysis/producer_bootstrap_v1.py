@@ -44,7 +44,7 @@ def capture_daily_sources(root, day, freeze_binding, *, pg_head_candidate=None, 
     native_time = native_doc['observed_at']
     transport=native_doc.get('source_transport_v2',{})
     native_requested = native_doc.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at')
-    target_doc=json.loads(Path(artifact['tdx']['path']).read_bytes())
+    target_doc=json.loads(checked(root,artifact['tdx']).read_bytes())
     sources = [dict(name='daily_freeze', path=freeze_binding['path'], sha256=freeze_binding['sha256'],
                     trade_date=day, requested_at=native_requested, received_at=artifact['observed_at']),
                dict(name='native_baostock', path=native['path'], sha256=native['sha256'], trade_date=day,

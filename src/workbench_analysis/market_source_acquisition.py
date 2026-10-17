@@ -137,7 +137,7 @@ def acquire(root, dates, folder, gap_codes=()):
     root, folder = Path(root), Path(folder)
     if not dates or any(d not in official_sessions(root) for d in dates):
         raise ValueError('OFFICIAL_SESSION_REQUIRED')
-    from common.paths import resolve_tdx_root, resolve_baostock_cache_root
+    from common.paths import resolve_tdx_root, resolve_baostock_request_ledger
     tdx_root=resolve_tdx_root(root)
     ensure_outside_tdx(folder, tdx_root)
     policy = json.loads((root / 'config/v4_market_source_fallback_policy_v1.json').read_bytes())
@@ -183,7 +183,7 @@ def acquire(root, dates, folder, gap_codes=()):
                     status='PROVIDER_CALL_ERROR', error=BaoStockClient._safe_message(f'{type(exc).__name__}:{exc}')))
             checkpoint()
         checkpoint()
-    budget = RequestBudget(resolve_baostock_cache_root(root) / 'request_ledger.json')
+    budget = RequestBudget(resolve_baostock_request_ledger(root))
     def budget_total():
         if not budget.path.exists():return 0
         return sum(row['count'] for row in json.loads(budget.path.read_bytes())['by_shanghai_date'].values())

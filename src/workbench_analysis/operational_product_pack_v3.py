@@ -12,7 +12,9 @@ from workbench_service.native_product_catalog_v3 import KEY,CONTRACT,load as loa
 
 def canonical_history_rows(path,logical):
     """Order immutable source rows on G disk without holding full history in RAM."""
-    temporary=Path('G:/codex_tmp');temporary.mkdir(parents=True,exist_ok=True)
+    from common.paths import resolve_ingest_temp_root
+    temporary=resolve_ingest_temp_root(Path(__file__).resolve().parents[2])
+    temporary.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='v4-history-order-',dir=temporary) as folder:
         with closing(sqlite3.connect(str(Path(folder)/'rows.sqlite'))) as db:
             db.execute('CREATE TABLE rows(security TEXT PRIMARY KEY,payload BLOB NOT NULL)')
@@ -24,13 +26,15 @@ def canonical_history_rows(path,logical):
                     except sqlite3.IntegrityError as error:raise ValueError('PRODUCT_HISTORY_DUPLICATE_SECURITY') from error
             db.commit()
             for (payload,) in db.execute('SELECT payload FROM rows ORDER BY security'):
-                logical.update(payload+b'\n');yield json.loads(payload)
+                logical.update(payload)
+                logical.update(b'\n')
+                yield json.loads(payload)
 
 def market_facts(root,candidate,day,owner):
     bindings=dict(history=owner['history'],package=owner['sources']['package'],**{name:candidate['owners'][day][name] for name in ('raw','core','market')})
     market=rows(root,bindings['market']);limitrefs=[b for b in market['input_bindings'] if 'daily_price_limits' in b['path']]
     if not limitrefs:raise ValueError('DATED_MARKET_LIMITS_REQUIRED')
-    bindings.update({'limits_'+str(i):b for i,b in enumerate(limitrefs)})
+    bindings |= {f'limits_{i}':binding for i,binding in enumerate(limitrefs)}
     raw={r['security_id']:r for r in rows(root,bindings['raw'])};core=rows(root,bindings['core']);breadth=Counter(up=0,down=0,flat=0,unknown=0)
     for row in core:
         value=row['fields']['ret1']['value'] if row['security_id'] in raw else None
@@ -63,7 +67,9 @@ def market_facts(root,candidate,day,owner):
     return facts,bindings
 
 def prepare(root,candidate,owner,*,historical_indices=None):
-    root=Path(root).resolve();predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes());day=candidate['accepted_trade_date']
+    root=Path(root).resolve()
+    from workbench_db.v4_operational_predecessor_pg_v1 import read_predecessor
+    predecessor=read_predecessor(root,candidate);day=candidate['accepted_trade_date']
     if owner['trade_date']!=day:raise ValueError('PRODUCT_PACK_DATED_OWNER_REQUIRED')
     if KEY in predecessor:previous=load_catalog(root,predecessor)['dates']
     else:

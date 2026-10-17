@@ -185,11 +185,13 @@ def reader_for(connection, **kwargs):
     )
 
 
-def test_reader_dsn_never_falls_back_to_writer():
+def test_reader_uses_the_shared_project_database_identity():
     with pytest.raises(PublicationReadError, match="PG_READ_ENV_UNAVAILABLE"):
-        reader_dsn({"V4_NATIVE_PG_DSN": "writer-secret"})
+        reader_dsn({"V4_NATIVE_PG_DSN": "native-db"})
     assert reader_dsn({"WORKBENCH_PG_DSN": "reader"}) == "reader"
-    assert reader_dsn({"V4_NATIVE_PG_READER_DSN": "reader-role", "WORKBENCH_PG_DSN": "other"}) == "reader-role"
+    assert reader_dsn({"V4_NATIVE_PG_READER_DSN": "ignored", "WORKBENCH_PG_DSN": "project-db"}) == "project-db"
+    with pytest.raises(PublicationReadError, match="PG_READ_ENV_UNAVAILABLE"):
+        reader_dsn({})
 
 
 def test_contract_maps_real_owner_families_and_does_not_infer_daily_requiredness():

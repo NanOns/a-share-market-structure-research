@@ -43,8 +43,29 @@ def path(root, binding):
         require(p.stat().st_size == binding['bytes'], 'INPUT_SIZE_MISMATCH')
     return p
 
+def ingress_bytes(root, binding):
+    """Read exact source bytes from the immutable PG ingress fact.
+
+    Historical/local artifacts are permitted as one-time source ingress. Once
+    ingressed, the path and digest identify the immutable fact; consumers no
+    longer reopen the workspace copy as a second source of business state.
+    """
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+
+    source = ingress_path(root, binding['path'], expected_sha256=binding['sha256'])
+    raw = source['raw']
+    if len(raw) != binding.get('bytes', len(raw)):
+        raise ValueError('DM01_PG_SOURCE_INGRESS_SIZE_MISMATCH')
+    return raw
+
+
 def read(root, binding):
-    return json.loads(path(root, binding).read_bytes())
+    """Decode an exact JSON business input from PG SourceIngress."""
+    raw = ingress_bytes(root, binding)
+    try:
+        return json.loads(raw)
+    except (UnicodeDecodeError, ValueError) as error:
+        raise ValueError('DM01_PG_SOURCE_INGRESS_JSON_INVALID') from error
 
 def ref(root, p):
     p = Path(p).resolve()
@@ -71,11 +92,11 @@ def accepted_envelope(root):
     """One externally accepted envelope; no caller-supplied acceptance booleans."""
     p = Path(root) / ACCEPTANCE
     require(p.is_file(), 'BLOCKED_PENDING_DM01_R4_EXTERNAL_ACCEPTANCE')
-    a = json.loads(p.read_bytes())
+    a = read(root, ref(root, p))
     require(a.get('status') == 'EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME', 'R4_ENVELOPE_NOT_ACCEPTED')
     for name, key in ((CONTRACT, 'runtime_contract'), (POLICY, 'promotion_policy'), (CALENDAR, 'calendar_head')):
         require(a[key] == ref(root, Path(root) / name), 'R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH')
-    document = path(root, a['independent_external_authority']).read_text(encoding='utf8')
+    document = ingress_bytes(root, a['independent_external_authority']).decode('utf8')
     require(a.get('external_verdict') == 'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' and
             'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' in document and
             a['runtime_contract']['sha256'] in document and
@@ -85,7 +106,8 @@ def accepted_envelope(root):
     return a
 
 def calendar(root=ROOT):
-    head = json.loads((Path(root) / CALENDAR).read_bytes())
+    head_source = read(root, ref(root, Path(root) / CALENDAR))
+    head = head_source
     require(head.get('contract_id') == 'DM01_R4_CALENDAR_HEAD_V1' and head.get('status') in ('ACCEPTED', 'LOCAL_READY_FOR_EXTERNAL_AUDIT'), 'CALENDAR_HEAD_NOT_ACCEPTED_OR_AUDIT_CANDIDATE')
     cal = read(root, head['calendar'])
     require(cal['agreement'] is True and cal['exchanges'] == ['SSE', 'SZSE'], 'CALENDAR_EXCHANGE_DISAGREEMENT')
@@ -103,7 +125,13 @@ def calendar(root=ROOT):
     return dict(cal, head_binding=ref(root, Path(root) / CALENDAR), binding=head['calendar'], publication_id=head['calendar']['sha256'], payload_digest=digest(cal), status='ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE')
 
 def current_parent(root=ROOT):
-    root = Path(root); binding = ref(root, root / HEAD); head = read(root, binding)
+    root = Path(root)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+    source = ingress_path(root, HEAD)
+    binding = dict(path=source['record']['source_path'],
+                   sha256=source['record']['source_sha256'],
+                   bytes=source['record']['source_bytes'])
+    head = read(root, binding)
     schema = json.loads((ROOT / 'config/v4_data_accepted_head_v2.json').read_bytes())
     require(head.get('contract_id') == 'V4_DATA_ACCEPTED_HEAD_V2', 'V1_PARENT_HISTORY_ONLY')
     require(set(schema['required_fields']) <= set(head), 'V2_PARENT_SCHEMA_INCOMPLETE')
@@ -232,7 +260,7 @@ def _finish(c, rows, extra=None):
     artifact = atomic(c['root'], c['staging']/c['cap']/'artifact.json', payload, immutable=True)
     unknown = Counter(str(r['unknown_reason']) for r in rows if r.get('unknown_reason'))
     receipt = dict(component_id=c['cap'], contract_id='DM01_'+c['cap']+'_INCREMENT_R4', version='4.0.0', status='DEGRADED_PASS' if unknown else 'FULL_PASS', target_trade_date=c['target'], trade_date=c['target'], parent_data_head_digest=c['parent']['binding']['sha256'], source_revision=c['freeze']['manifest_sha256'], calendar_publication_id=c['calendar']['publication_id'], identity_publication_id=c['identity']['publication_id'], runtime_bindings=c['contract']['capabilities'][c['cap']]['runtime_bindings'], accepted_owner_stage=c['contract']['capabilities'][c['cap']]['owner_stage'], accepted_algorithm_contract=c['contract']['capabilities'][c['cap']]['accepted_algorithm_contract'], artifact_path=str((c['root']/artifact['path']).resolve()), artifact_sha256=artifact['sha256'], artifact_bytes=artifact['bytes'], logical_digest=digest(rows), row_count=len(rows), quality_counts=dict(Counter(str(r.get('quality') or r.get('status') or 'READY') for r in rows)), unknown_reason_counts=dict(unknown), candidate_only=True, knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else 'MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT', AS_RECORDED=False, first_available_at_target_proven=False)
-    receipt.update(contract_id='DM01_'+c['cap']+'_INCREMENT_R4R1',version='4.1.0',lineage_composition=comp,
+    receipt |= dict(contract_id=f"DM01_{c['cap']}_INCREMENT_R4R1",version='4.1.0',lineage_composition=comp,
         target_identity_unknown_count=sum(r.get('security_id') is None for r in rows),
         knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else
             ('MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT' if comp['contains_inherited_parent_state'] else 'PIT_OBSERVED'),

@@ -2,6 +2,22 @@
 from .operational_gap_bff_v2 import OperationalGapBFFV2
 
 
+def read_pg_validation_cohort_statistics(api, owner_binding, trade_date):
+    """Read the Head-bound cohort payload from PG and retain the existing grant gate."""
+    from workbench_analysis.validation_cohort_read_contract_r3 import read_authorized_statistics
+    from workbench_db.v4_cohort_pg_r1 import load_owner
+
+    owner = load_owner(api.root, owner_binding)
+    return read_authorized_statistics(
+        api.root,
+        accepted_head={'path': 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json', 'sha256': api.token},
+        owner_binding=owner_binding,
+        trade_date=trade_date,
+        accepted_head_data=api.candidate,
+        owner_reader=lambda binding: owner if binding == owner_binding else None,
+    )
+
+
 class OperationalSuccessorBFFV1(OperationalGapBFFV2):
     def envelope(self,day,**payload):
         response=super().envelope(day,**payload)
@@ -23,23 +39,12 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
         if path in ('/api/v4/forward/statistics','/api/v4/forward/plans'):
             if (query.get('context_token')!=self.api.token):
                 raise ValueError('CONTEXT_TOKEN_MISMATCH')
-            from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics, maturity_schedule, enrollment_identity
+            from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, maturity_schedule, enrollment_identity
             owner=self.api.candidate['owners'][day].get('validation_cohort')
-            if owner and getattr(self.api,'embedded_pg_owner_authority',False):
-                def read_pg_cohort(binding):
-                    if binding!=owner:raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
-                    payload=self.api.read('validation_cohort',day,self.api.token)
-                    if payload.get('status')!='READY' or not isinstance(payload.get('rows'),dict):
-                        raise ValueError('COHORT_PG_OWNER_READ_REQUIRED')
-                    return payload['rows']
-                stats=read_authorized_statistics(self.api.root,
-                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
-                    owner_binding=owner,trade_date=day,accepted_head_data=self.api.candidate,
-                    owner_reader=read_pg_cohort)
+            if owner:
+                stats=read_pg_validation_cohort_statistics(self.api,owner,day)
             else:
-                stats=read_authorized_statistics(self.api.root,
-                    accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
-                    owner_binding=owner,trade_date=day) if owner else read_statistics(None,cutoff=None,trade_date=day)
+                stats=read_statistics(None,cutoff=None,trade_date=day)
             rows=stats['items']
             count=stats['observed_count']
             plans=[dict(enrollment_id=enrollment_identity(r),T0=r['T0'],horizons=maturity_schedule(r['T0'],self.api.candidate['published_sessions'],day,horizons=(1,3,5,10,20))) for r in rows]

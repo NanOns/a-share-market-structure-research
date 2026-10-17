@@ -229,19 +229,28 @@ def ready_build(root,freeze_binding,**kwargs):
     from .operational_owner_adapter_v1 import replay
     gate=load(checked(root,kwargs['source_readiness']));identity=gate['dependency_bindings'].get('new_listing_identity')
     if not identity:return ready.build(root,freeze_binding,**kwargs)
-    root=Path(root).resolve();parent=load(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json')
-    life=parent['owners'][parent['accepted_trade_date']]['lifecycle'];life_path=checked(root,life)
+    root=Path(root).resolve()
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    from workbench_db.v4_operational_owner_authority_v2 import load as load_owner_authority,read as read_owner
+    parent=read_current(root)['candidate']
+    authority=load_owner_authority(root,parent)
+    life=parent['owners'][parent['accepted_trade_date']]['lifecycle']
+    lifecycle=read_owner(root,authority,parent['accepted_trade_date'],'lifecycle',life)
+    life_path=(root/life['path']).resolve()
+    from workbench_db.v4_dm01_stage_state_pg_r1 import read_latest_stage,decode_data_head_import_payload
+    data_payload=read_latest_stage(root,stage='data_head')
+    data_head,data_binding=decode_data_head_import_payload(data_payload)
     overlay=root/'data/v4/dynamic_daily_sources/new_listing_r1'/load(checked(root,freeze_binding))['target_session']/'overlays'/identity['sha256']
-    atomic_json(root,overlay/'LIFECYCLE.json',dict(load(life_path),identity=identity))
-    data_head=load(root/'data/v4/V4_DATA_ACCEPTED_HEAD.json')
-    data_head['component_artifacts']['IDENTITY_UNIVERSE']=identity
-    atomic_json(root,overlay/'DATA_HEAD.json',data_head)
+    atomic_json(root,overlay/'LIFECYCLE.json',dict(lifecycle,identity=identity))
+    candidate_data_head=dict(data_head)
+    candidate_data_head['component_artifacts']=dict(data_head['component_artifacts'],IDENTITY_UNIVERSE=identity)
+    atomic_json(root,overlay/'DATA_HEAD.json',candidate_data_head)
     def mapped_load(path):
         return load(overlay/'LIFECYCLE.json') if Path(path).resolve()==life_path.resolve() else load(path)
     prepared=private_scope(owner,dict(load=mapped_load))['prepare']
     def prepare(*args,**kw):
         context=prepared(*args,**kw)
-        context['mappings'][str((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').resolve())]=str(overlay/'DATA_HEAD.json')
+        context['mappings'][str((root/data_binding['path']).resolve())]=str(overlay/'DATA_HEAD.json')
         # Identity is date-bounded: replay excludes this listing before IPO day.
         return context
     proxy=SimpleNamespace(**vars(owner));proxy.prepare=prepare

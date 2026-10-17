@@ -12,6 +12,21 @@ from workbench_analysis.operational_daily_executor_v1 import execute_sources
 PREFIX='/api/v4/operations/daily-update'
 
 
+def _local_successor_source_paths(root,candidate):
+    """Extract bounded local source paths for diagnostics, never cache authority."""
+    root=Path(root).resolve();paths=set()
+    def visit(value):
+        if isinstance(value,dict):
+            if value.get('path') and value.get('sha256') and not value.get('pg_descriptor'):
+                path=(root/value['path']).resolve()
+                if path.is_relative_to(root):paths.add(path)
+            for child in value.values():visit(child)
+        elif isinstance(value,list):
+            for child in value:visit(child)
+    visit(candidate)
+    return paths
+
+
 def successor_control(api,legacy):
     from .operational_control_status import control_status
     current=api.context();current['authorization_mode']='DIRECT_HUMAN_USER'
@@ -43,31 +58,27 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
         def do_GET(self):
             parsed=urlparse(self.path);path=parsed.path
             if (path.startswith('/api/v4/') and not path.startswith(PREFIX) and not path.startswith('/api/v4/original-0930/')) or path=='/api/operations/status':
-                from workbench_analysis.operational_successor_v1 import CONTRACT,accepted_api
-                head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-                transport=json.loads(head_path.read_bytes()) if head_path.is_file() else {}
-                if transport.get('contract_id')==CONTRACT:
-                    try:
-                        with successor_lock:
-                            api=successor_reader()
-                            params=parse_qs(parsed.query,keep_blank_values=True)
-                            if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
-                            if path=='/api/operations/status':
-                                request_context=params.get('context_token',[api.context_digest])[0]
-                                if request_context!=api.context_digest:raise ValueError('CONTEXT_TOKEN_MISMATCH')
-                                code,legacy=strict_reader.read('context')
-                                if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
-                                from .operational_control_status import CONTRACT as CONTROL_CONTRACT
-                                return self.send(200,dict(successor_control(api,legacy),service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',
-                                    service_control_contract=CONTROL_CONTRACT,product_version='V4',default_ui='V4',
-                                    daily_update=status_reader.status()))
-                            from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
-                            from .research_bff import ResearchBFF
-                            code,payload=OperationalSuccessorBFFV1(api,ResearchBFF(root)).get(path,{k:v[0] for k,v in params.items()})
-                        return self.send(code,payload)
-                    except (ValueError,KeyError,OSError) as exc:
-                        return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503,dict(code='SUCCESSOR_READ_FAILED',reason=str(exc)[:180]))
-                return super().do_GET()
+                from workbench_analysis.operational_successor_v1 import accepted_api
+                try:
+                    with successor_lock:
+                        api=successor_reader()
+                        params=parse_qs(parsed.query,keep_blank_values=True)
+                        if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
+                        if path=='/api/operations/status':
+                            request_context=params.get('context_token',[api.context_digest])[0]
+                            if request_context!=api.context_digest:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+                            code,legacy=strict_reader.read('context')
+                            if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
+                            from .operational_control_status import CONTRACT as CONTROL_CONTRACT
+                            return self.send(200,dict(successor_control(api,legacy),service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',
+                                service_control_contract=CONTROL_CONTRACT,product_version='V4',default_ui='V4',
+                                daily_update=status_reader.status()))
+                        from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
+                        from .research_bff import ResearchBFF
+                        code,payload=OperationalSuccessorBFFV1(api,ResearchBFF(root)).get(path,{k:v[0] for k,v in params.items()})
+                    return self.send(code,payload)
+                except (ValueError,KeyError,OSError) as exc:
+                    return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503,dict(code='SUCCESSOR_READ_FAILED',reason=str(exc)[:180]))
             if path=='/v4/research/data-update':
                 return self.send(200,(static/'daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
             if path=='/v4/daily-update.js':
@@ -82,17 +93,17 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
                 from workbench_analysis.operational_successor_v1 import CONTRACT
                 from workbench_analysis.r43_owner_replay import checked
                 from workbench_db.v4_operational_registry_pg_v1 import read_registry
-                head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+                head=accepted_api(root).candidate
                 if head.get('contract_id')==CONTRACT:
                     registry=read_registry(root,head)
                     relative='src/workbench_service/static/r43-compat/'+path.rsplit('/',1)[1]
                     binding=next(b for b in registry['bindings'] if b['path']==relative)
                     return self.send(200,checked(root,binding).read_bytes(),'application/javascript; charset=utf-8')
             if path==PREFIX+'/releases':
-                from workbench_analysis.r43_owner_replay import ref
-                head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-                archives=sorted((head.parent/'predecessors').glob('*.json'),key=lambda p:p.stat().st_mtime_ns,reverse=True)
-                return self.send(200,dict(current=ref(root,head),predecessors=[ref(root,p) for p in archives[:100]]))
+                from workbench_db.v4_operational_live_head_pg_r1 import read_current
+                current=read_current(root)
+                return self.send(200,dict(current=dict(sha256=current['head_sha256'],generation=current['generation'],
+                    database_identity=current['database_identity']),predecessors=[]))
             if path.startswith(PREFIX):
                 try:
                     tail=path.removeprefix(PREFIX).strip('/').split('/')

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import date
-import json
 from pathlib import Path
 import re
 from typing import Any, Mapping
@@ -11,7 +10,6 @@ from .v4_native import workspace_namespace_identity
 
 CONTRACT_ID = "V4_PG_WORKSPACE_OWNER_MAPPING_R1"
 CONTRACT_VERSION = "1.0.0"
-REGISTRY_PATH = Path(__file__).resolve().parents[2] / "config" / "v4_pg_workspace_owner_authority_r1.json"
 _SCHEMA = re.compile(r"^v4_[a-z0-9_]{1,56}$")
 
 
@@ -23,7 +21,7 @@ def resolve_workspace_owner_mapping(
     *, root: str | Path, trade_date: str, selected_model_namespace_id: str,
     registry_path: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Resolve only an explicitly authorized historical workspace mapping."""
+    """Resolve the currently approved Workspace mapping from the PG registry."""
     try:
         target = date.fromisoformat(trade_date)
     except (TypeError, ValueError) as exc:
@@ -32,11 +30,23 @@ def resolve_workspace_owner_mapping(
         raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_TRADE_DATE_NONCANONICAL")
     if not isinstance(selected_model_namespace_id, str) or not selected_model_namespace_id.strip():
         raise WorkspaceOwnerMappingError("WORKSPACE_MAPPING_NAMESPACE_REQUIRED")
-    path = Path(registry_path) if registry_path is not None else REGISTRY_PATH
+    if registry_path is not None:
+        raise WorkspaceOwnerMappingError("WORKSPACE_OWNER_MAPPING_FILE_REGISTRY_FORBIDDEN")
     try:
-        registry = json.loads(path.read_bytes())
-    except (OSError, ValueError) as exc:
-        raise WorkspaceOwnerMappingError("WORKSPACE_OWNER_MAPPING_REGISTRY_UNAVAILABLE") from exc
+        from workbench_analysis.contract_registry_pg_v1 import (
+            ContractRegistryError, load_current_approved_contract,
+        )
+        from .v4_publication_reader import PgPublicationReader, readonly_connection
+        with readonly_connection() as pg:
+            identity = PgPublicationReader._read_database_identity(pg)
+            registered = load_current_approved_contract(
+                pg, "V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1", "1.0.0",
+                selected_model_namespace_id, expected_database_identity=identity,
+            )
+        registry = registered.parsed_json
+    except Exception as exc:
+        code = getattr(exc, "code", None) or str(exc)
+        raise WorkspaceOwnerMappingError(str(code or "WORKSPACE_OWNER_MAPPING_REGISTRY_UNAVAILABLE")) from exc
     return resolve_workspace_owner_mapping_document(
         root=root, trade_date=trade_date,
         selected_model_namespace_id=selected_model_namespace_id,

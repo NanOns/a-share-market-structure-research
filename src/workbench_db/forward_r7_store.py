@@ -77,7 +77,8 @@ class ForwardR7Store:
         if candidate_binding.is_file():
             binding=json.loads(candidate_binding.read_bytes())
             expected=workspace_schema(self.root,'r8_forward')
-            if (not self.root.is_relative_to(Path('G:/codex_tmp').resolve())
+            from common.paths import resolve_ingest_temp_root
+            if (not self.root.is_relative_to(resolve_ingest_temp_root(Path(__file__).resolve().parents[2]))
                     or binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
                     or binding.get('scope')!='CANDIDATE_ONLY'
                     or Path(binding.get('candidate_root','')).resolve()!=self.root
@@ -95,14 +96,10 @@ class ForwardR7Store:
                 present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
             if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
             return expected
-        target_date = None;head_document={}
-        head_path = self.root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
-        if head_path.is_file():
-            try:
-                head_document=json.loads(head_path.read_bytes())
-                target_date = head_document.get("accepted_trade_date")
-            except (OSError, ValueError, TypeError):
-                target_date = None
+        from workbench_db.v4_operational_live_head_pg_r1 import read_current
+        current_head=read_current(self.root)
+        head_document=current_head["candidate"]
+        target_date=head_document.get("accepted_trade_date")
         with psycopg.connect(self.dsn, connect_timeout=5) as pg:
             candidates = pg.execute("""SELECT s.schema_name
                 FROM information_schema.schemata s

@@ -20,21 +20,22 @@ def selected(root,day,mode):
 
 def verify(root,manifest):
     root=Path(root);candidate=load(checked(root,manifest['candidate']))
-    day=manifest['target_session'];head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    current=load(head)
+    day=manifest['target_session']
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    current_head=read_current(root);current=current_head['candidate']
     if current['accepted_trade_date']>=day:return None
-    if candidate['accepted_trade_date']!=day or candidate['predecessor']!=manifest['predecessor'] or sha256_file(head)!=manifest['predecessor']['sha256']:raise ValueError('SEALED_RESUME_PARENT_CHANGED')
+    if candidate['accepted_trade_date']!=day or candidate['predecessor']!=manifest['predecessor'] or current_head['head_sha256']!=manifest['predecessor']['sha256']:raise ValueError('SEALED_RESUME_PARENT_CHANGED')
     generation=load(checked(root,manifest['generation']))
     if candidate['exact_daily_generation_scope']!=manifest['generation'] or generation['parent_head']!=manifest['predecessor']['sha256']:raise ValueError('SEALED_RESUME_GENERATION_CHANGED')
     freeze=load(checked(root,manifest['source_freeze']))
     if freeze['target_session']!=day or generation['source_freeze']!=manifest['source_freeze']['sha256']:raise ValueError('SEALED_RESUME_FREEZE_CHANGED')
     gate=load(checked(root,manifest['source_readiness']))
     gate_parent=gate['dependency_bindings']['parent_head']
-    expected_parent=checked(root,manifest['predecessor'])
-    actual_parent=checked(root,gate_parent)
+    from workbench_db.v4_operational_live_head_pg_r1 import canonical as head_canonical
+    current_parent_bytes=head_canonical(current)
     if (not gate.get('source_ready') or gate['source_freeze']!=manifest['source_freeze'] or
-            gate_parent['sha256']!=manifest['predecessor']['sha256'] or actual_parent.read_bytes()!=expected_parent.read_bytes() or
-            load(actual_parent)['accepted_trade_date']!=current['accepted_trade_date']):raise ValueError('SEALED_RESUME_SOURCE_NOT_READY')
+            gate_parent.get('sha256')!=manifest['predecessor']['sha256'] or
+            sha256_bytes(current_parent_bytes)!=manifest['predecessor']['sha256']):raise ValueError('SEALED_RESUME_SOURCE_NOT_READY')
     checked(root,freeze['native_baostock']);native=Path(freeze['tdx']['path'])
     if not native.is_absolute():native=root/native
     if sha256_file(native)!=freeze['tdx']['sha256']:raise ValueError('SEALED_RESUME_NATIVE_CHANGED')

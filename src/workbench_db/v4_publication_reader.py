@@ -39,9 +39,9 @@ class PublicationReadError(ValueError):
 
 
 def reader_dsn(environ: Mapping[str, str] | None = None) -> str:
-    """Return a configured read DSN without ever falling back to a writer DSN."""
+    """Reuse the project's existing read configuration; reads are transaction-RO."""
     env = os.environ if environ is None else environ
-    value = env.get("V4_NATIVE_PG_READER_DSN") or env.get("WORKBENCH_PG_DSN")
+    value = env.get("WORKBENCH_PG_DSN")
     if not value:
         raise PublicationReadError("PG_READ_ENV_UNAVAILABLE")
     return value
@@ -49,7 +49,7 @@ def reader_dsn(environ: Mapping[str, str] | None = None) -> str:
 
 @contextmanager
 def readonly_connection(*, dsn: str | None = None):
-    """Open a bounded transaction; read-only account privileges are attested separately."""
+    """Open a bounded repeatable-read transaction enforced read-only by PostgreSQL."""
     resolved = dsn or reader_dsn()
     try:
         import psycopg

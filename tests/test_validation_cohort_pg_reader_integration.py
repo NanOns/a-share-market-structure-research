@@ -6,10 +6,13 @@ def _binding(path, payload):
     return {'path':path,'sha256':hashlib.sha256(payload).hexdigest(),'bytes':len(payload)}
 
 
-def test_successor_bff_reads_validation_cohort_owner_through_embedded_pg_authority(tmp_path,monkeypatch):
+def test_successor_bff_reads_cohort_owner_and_grant_from_pg(tmp_path,monkeypatch):
     from workbench_service import operational_successor_bff_v1 as bff_module
     from workbench_db import v4_cohort_pg_r1 as cohort_pg
     from workbench_analysis.r43_operational_publication import digest
+    from workbench_analysis import contract_registry_pg_v1 as registry
+    from contextlib import nullcontext
+    from types import SimpleNamespace
 
     day='2026-10-12'
     owner_binding={'path':'cohort/owner.json','sha256':'a'*64,'bytes':13}
@@ -39,13 +42,25 @@ def test_successor_bff_reads_validation_cohort_owner_through_embedded_pg_authori
     api=Api()
     monkeypatch.setattr(bff_module.OperationalSuccessorBFFV1,'envelope',
         lambda self,day,**payload:dict(day=day,**payload))
-    monkeypatch.setattr(cohort_pg,'load_owner',lambda *args,**kwargs:(_ for _ in ()).throw(
-        AssertionError('LEGACY_COHORT_OWNER_FILE_READ')))
+    monkeypatch.setattr(cohort_pg,'load_owner',lambda *args,**kwargs:owner)
+    monkeypatch.setattr('workbench_db.v4_publication_reader.readonly_connection',
+        lambda: nullcontext(object()))
+    monkeypatch.setenv('V4_PG_MODEL_NAMESPACE_ID','cohort-test')
+    identity={'database':'market_research','database_oid':646711,'host':'127.0.0.1','port':5432}
+    monkeypatch.setenv('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON',json.dumps(identity))
+    def load_grant(cursor,contract_id,raw_sha256,namespace,*,expected_database_identity):
+        assert contract_id=='VALIDATION_COHORT_READ_GRANT_R4_V1'
+        assert raw_sha256==grant_binding['sha256']
+        assert namespace=='cohort-test'
+        assert expected_database_identity==identity
+        return SimpleNamespace(contract_id=contract_id,raw_sha256=raw_sha256,
+            namespace=namespace,content_format='JSON',parsed_json=grant)
+    monkeypatch.setattr(registry,'load_current_approved_contract_by_digest',load_grant)
 
     status,payload=bff_module.OperationalSuccessorBFFV1(api,None).get(
         '/api/v4/forward/statistics',{'context_token':api.token})
 
     assert status==200
-    assert api.calls==[('validation_cohort',day,api.token)]
+    assert api.calls==[]
     assert payload['data']['status']=='READY'
     assert payload['data']['observed_count']==0

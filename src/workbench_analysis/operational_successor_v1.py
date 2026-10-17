@@ -199,17 +199,17 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         return super().dispatch(parsed.path+'?'+urlencode(q,doseq=True),context_token)
 
 
-def accepted_api(root):
-    root=Path(root);head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    if not head.is_file():
-        raise ValueError('PG_ACCEPTED_PUBLICATION_REQUIRED_NO_HEAD_FILE_FALLBACK')
-    candidate=json.loads(head.read_bytes())
+def accepted_api(root,*,head_snapshot=None):
+    root=Path(root)
+    if head_snapshot is None:
+        from workbench_db.v4_operational_live_head_pg_r1 import read_current
+        head_snapshot=read_current(root)
+    candidate=head_snapshot['candidate']
     if candidate.get('contract_id')!=CONTRACT:
         raise ValueError('PG_ACCEPTED_PUBLICATION_REQUIRED_NO_FROZEN_FILE_FALLBACK')
-    # The file may be retained as an immutable candidate transport during the
-    # transition, but it cannot confer authority. Every runtime Owner,
-    # predecessor, membership and daily-evidence binding must resolve through
-    # the same database identity before this API can be constructed.
+    # Every runtime Owner, predecessor, membership and daily-evidence binding
+    # must resolve through the same database identity before constructing the
+    # API; the selected Head is the exact row returned by this PG snapshot.
     from workbench_db.v4_operational_owner_authority_v2 import KEY as OWNER_KEY
     from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY
     from workbench_db.v4_operational_predecessor_pg_v1 import KEY as PREDECESSOR_KEY

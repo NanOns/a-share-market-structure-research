@@ -5,6 +5,52 @@ R3 engineering boundary for future legal Owners. Focus is never substituted.
 from datetime import datetime, date, timezone, timedelta
 from hashlib import sha256
 import json
+import os
+
+_COHORT_GRANT_CONTRACT_ID='VALIDATION_COHORT_READ_GRANT_R4_V1'
+
+
+def _read_accepted_grant(root, grant_ref, *, pg_only):
+    """Resolve an exact Head-bound grant; PG candidates never fall back to files."""
+    if not pg_only:
+        from .r43_owner_replay import checked
+        return json.loads(checked(root,grant_ref).read_bytes())
+    if not isinstance(grant_ref,dict) or not isinstance(grant_ref.get('sha256'),str):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_BINDING_REQUIRED')
+    namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+    try:
+        identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    except (TypeError,ValueError) as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_CONFIGURATION_REQUIRED') from exc
+    if (not namespace or not isinstance(identity,dict) or
+            set(identity)!={'database','database_oid','host','port'} or
+            not isinstance(identity.get('database'),str) or
+            isinstance(identity.get('database_oid'),bool) or
+            not isinstance(identity.get('database_oid'),int) or
+            not isinstance(identity.get('host'),str) or
+            isinstance(identity.get('port'),bool) or
+            not isinstance(identity.get('port'),int)):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_CONFIGURATION_REQUIRED')
+    from .contract_registry_pg_v1 import (
+        ContractRegistryError, load_current_approved_contract_by_digest,
+    )
+    from workbench_db.v4_publication_reader import readonly_connection
+    try:
+        with readonly_connection() as pg:
+            registered=load_current_approved_contract_by_digest(
+                pg,_COHORT_GRANT_CONTRACT_ID,grant_ref['sha256'],namespace,
+                expected_database_identity=identity)
+    except ContractRegistryError as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK') from exc
+    except Exception as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK') from exc
+    grant=registered.parsed_json
+    if (registered.contract_id!=_COHORT_GRANT_CONTRACT_ID or
+            registered.raw_sha256!=grant_ref['sha256'] or
+            registered.namespace!=namespace or registered.content_format!='JSON' or
+            not isinstance(grant,dict)):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_BINDING_MISMATCH')
+    return grant
 CONTRACT='VALIDATION_COHORT_READ_R3_V2'
 KEY=('model_contract_id','state_lineage_id','entity_type','entity_id','episode_id','event_type','T0')
 REQUIRED=KEY+('publication_id','frozen_signal_version','frozen_at_T0','eligible_at_T0','asof_first_available','benchmark','no_lookahead','evidence_class','cohort_namespace')
@@ -57,7 +103,8 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
         raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
     grant_ref=head.get('cohort_read_grants',{}).get(trade_date)
     if not grant_ref:raise ValueError('COHORT_READ_GRANT_MISSING')
-    grant=json.loads(checked(root,grant_ref).read_bytes())
+    grant=_read_accepted_grant(root,grant_ref,
+        pg_only=accepted_head_data is not None)
     from workbench_db.v4_cohort_pg_r1 import load_owner
     owner=owner_reader(owner_binding) if owner_reader is not None else load_owner(root,owner_binding)
     if not isinstance(owner,dict):raise ValueError('COHORT_PG_OWNER_PAYLOAD_REQUIRED')

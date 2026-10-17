@@ -54,12 +54,12 @@ def _migration_inventory() -> list[dict]:
 
 
 def _configured_reader_dsn() -> str:
-    value = os.environ.get("V4_NATIVE_PG_READER_DSN") or os.environ.get("WORKBENCH_PG_DSN")
+    value = os.environ.get("WORKBENCH_PG_DSN")
     if value:
         return value
     # The existing project security file may own the read DSN. Only this
-    # explicitly read-only variable is recognized; the writer key is never
-    # read as fallback and no value is emitted to stdout or evidence files.
+    # existing project read key is recognized; the native writer key is never
+    # used for reads and no value is emitted to stdout or evidence files.
     env_file = ROOT / "config/.env"
     if env_file.is_file():
         for raw in env_file.read_text("utf-8-sig").splitlines():
@@ -68,7 +68,7 @@ def _configured_reader_dsn() -> str:
                 value = val.strip().strip('"').strip("'")
                 if value:
                     return value
-    raise RuntimeError("V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK")
+    raise RuntimeError("WORKBENCH_PG_DSN_REQUIRED")
 
 
 def _read_catalog() -> dict:

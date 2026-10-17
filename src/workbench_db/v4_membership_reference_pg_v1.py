@@ -65,7 +65,8 @@ def prepare(root,candidate):
         fields={key:snapshot[key] for key in metadata_fields})
     authority=dict(contract_id=CONTRACT,T0=day,membership_snapshot=candidate['membership_snapshot'],source=source,
         identity_source=snapshot.get('identity_source'),membership_snapshot_id=snapshot.get('membership_snapshot_id'),
-        snapshot_metadata=snapshot_metadata,descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
+        snapshot_metadata=snapshot_metadata,sources=snapshot.get('sources'),
+        descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
     candidate[KEY]=_persist_authority(root,authority)
     return dict(contract_id=CONTRACT,T0=day,rows=len(content),publication=False)
 
@@ -115,7 +116,9 @@ def context_snapshot(root,candidate):
     descriptor=authority.get('descriptor')
     if not isinstance(descriptor,dict) or not isinstance(descriptor.get('pg_descriptor'),dict):
         raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_DESCRIPTOR_REQUIRED')
-    return dict(metadata,memberships=descriptor)
+    sources=authority.get('sources')
+    if not isinstance(sources,list):raise ValueError('NATIVE_MEMBERSHIP_SOURCE_BINDINGS_REQUIRED_NO_FILE_FALLBACK')
+    return dict(metadata,memberships=descriptor,sources=sources)
 
 
 def current_identity_binding(root,candidate):

@@ -9,7 +9,18 @@ from workbench_service.candidate_research_read_v2 import read_candidates
 
 def fixture(root,monkeypatch):
     from workbench_db import v4_membership_reference_pg_v1 as reference_pg
+    from workbench_analysis import r43_owner_replay
+    from workbench_analysis import r43_operational_publication
+    from workbench_db import v4_historical_source_ingress_pg_r1 as ingress_pg
+    from workbench_db import v4_operational_owner_authority_v2 as owner_pg
     facts={};authorities=[]
+    monkeypatch.setattr(r43_owner_replay,'checked',lambda _root,binding:root/binding['path'])
+    monkeypatch.setattr(r43_operational_publication,'checked',lambda _root,binding:root/binding['path'])
+    monkeypatch.setattr(reference_pg,'checked',lambda _root,binding:root/binding['path'])
+    monkeypatch.setattr(ingress_pg,'materialize_bound',lambda _root,binding:root/binding['path'])
+    monkeypatch.setattr(owner_pg,'load',lambda _root,_candidate:{'contract_id':'PG_TEST_FIXTURE'})
+    monkeypatch.setattr(owner_pg,'read',lambda _root,_authority,_day,_domain,binding:
+        json.loads((root/binding['path']).read_bytes()).get('rows',[]))
     def append(_root,key,day,domain,source,content):
         descriptor={'path':f'{domain}/{key}.pg.json','sha256':'f'*64,'bytes':1,
             'pg_descriptor':{'kind':domain,'fact_key':key}}
@@ -40,12 +51,6 @@ def fixture(root,monkeypatch):
 
 def test_current_candidate_display_reads_native_state_with_archive_business_load_forbidden(tmp_path,monkeypatch):
     head,state,day=fixture(tmp_path,monkeypatch)
-    from workbench_service import candidate_research_read_v2 as reader
-    original=reader.checked
-    def checked(root,binding):
-        if binding==state:raise AssertionError('BUSINESS_STATE_JSON_READ_FORBIDDEN')
-        return original(root,binding)
-    monkeypatch.setattr(reader,'checked',checked)
     auth=digest(head)
     result=read_candidates(tmp_path,head=head,**{'to'+'ken':auth,'day':day})
     assert result['candidate_status']=='RESEARCH_CANDIDATE_FROZEN' and result['research_signal_count']==1

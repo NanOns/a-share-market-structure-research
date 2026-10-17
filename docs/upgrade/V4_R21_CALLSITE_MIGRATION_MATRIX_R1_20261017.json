@@ -18095,6 +18095,45 @@
         "reference_edges_unmapped": 22,
         "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
         "next": "Provide an approved V4-02 PG ingress source, migrate the separate continuous-maintenance reader and lifecycle/source inputs, then continue exact mapped Owner/BFF consumers."
+      },
+      {
+        "batch_id": "R21-R4-baostock-ledger-configured-path-r73",
+        "files": [
+          "config/paths.yaml",
+          "docs/upgrade/V4_R21_R4_BAOSTOCK_LEDGER_PATH_CONFIG_R73_20261017.md",
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "src/common/paths.py",
+          "tests/r4_repair/test_configured_tdx_path.py",
+          "tests/test_operational_new_listing_r1.py"
+        ],
+        "evidence": [
+          "BaoStock request-budget ledger selection now uses explicit argument, BAOSTOCK_REQUEST_LEDGER, then baostock.request_ledger in config/paths.yaml. The project config explicitly retains the existing ledger path in place; no implicit fallback, move, copy, or rewrite occurs.",
+          "Missing ledger configuration fails closed even when a legacy report-path file exists. This is a source-path/configuration change outside the original 266 stable P1 callsite inventory."
+        ],
+        "verification": "52 focused configured-path, TDX path, BaoStock request-budget, and BaoStock client tests passed; no live provider request or PG read/write.",
+        "baseline_callsite_ids_observed": [],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 208,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 50
+        },
+        "owner_subcount_after_batch": {
+          "total": 200,
+          "code_paths_pending_live_reconciliation": 46,
+          "OPEN": 147,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 7
+        },
+        "other_business_subcount_after_batch": {
+          "total": 28,
+          "code_paths_pending_live_reconciliation": 4,
+          "OPEN": 23,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 1
+        },
+        "reference_edges_unmapped": 22,
+        "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
+        "next": "Continue PG stage consumption in continuous-maintenance orchestration, resolve its accepted Head mapping, and continue mapped Owner/BFF migrations."
       }
     ]
   }

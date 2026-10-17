@@ -201,17 +201,19 @@ def test_index_cannot_pass_two_source_new_code_admission():
 def test_new_listing_request_budget_uses_configured_baostock_cache_when_no_legacy_ledger(tmp_path,monkeypatch):
     from workbench_analysis.operational_new_listing_r1 import request_ledger_path
     configured=tmp_path/'configured-cache'
-    monkeypatch.setattr('common.paths.resolve_baostock_cache_root',lambda root:configured)
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'baostock:\n  request_ledger: "{(configured / "request_ledger.json").as_posix()}"\n',encoding='utf-8')
     assert request_ledger_path(tmp_path)==configured/'request_ledger.json'
 
 
-def test_new_listing_request_budget_preserves_existing_ledger_without_copying(tmp_path,monkeypatch):
+def test_new_listing_request_budget_does_not_implicitly_select_legacy_ledger(tmp_path,monkeypatch):
+    import pytest
     from workbench_analysis.operational_new_listing_r1 import request_ledger_path
     configured=tmp_path/'configured-cache'
     monkeypatch.setattr('common.paths.resolve_baostock_cache_root',lambda root:configured)
     legacy=tmp_path/'reports/v4_baostock/request_ledger.json'
     legacy.parent.mkdir(parents=True);legacy.write_text('{"by_shanghai_date":{}}',encoding='utf-8')
-    assert request_ledger_path(tmp_path)==legacy
     assert legacy.read_text(encoding='utf-8')=='{"by_shanghai_date":{}}'
     assert not (configured/'request_ledger.json').exists()
 
@@ -219,10 +221,9 @@ def test_new_listing_request_budget_preserves_existing_ledger_without_copying(tm
 def test_new_listing_request_budget_refuses_two_ledgers(tmp_path,monkeypatch):
     from workbench_analysis.operational_new_listing_r1 import request_ledger_path
     import pytest
-    configured=tmp_path/'configured-cache'
-    monkeypatch.setattr('common.paths.resolve_baostock_cache_root',lambda root:configured)
     legacy=tmp_path/'reports/v4_baostock/request_ledger.json'
     legacy.parent.mkdir(parents=True);legacy.write_text('{}',encoding='utf-8')
-    configured.mkdir();(configured/'request_ledger.json').write_text('{}',encoding='utf-8')
-    with pytest.raises(ValueError,match='BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT'):
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text('baostock:\n  cache_root: "cache"\n',encoding='utf-8')
+    with pytest.raises(FileNotFoundError,match='BAOSTOCK_REQUEST_LEDGER_NOT_CONFIGURED'):
         request_ledger_path(tmp_path)

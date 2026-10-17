@@ -86,11 +86,11 @@ def test_baostock_request_ledger_uses_configured_cache_without_legacy_history(tm
     configured=tmp_path/'cache-root'
     (tmp_path/'config').mkdir()
     (tmp_path/'config/paths.yaml').write_text(
-        f'baostock:\n  cache_root: "{configured.as_posix()}"\n',encoding='utf-8')
+        f'baostock:\n  cache_root: "{configured.as_posix()}"\n  request_ledger: "{(configured / "request_ledger.json").as_posix()}"\n',encoding='utf-8')
     assert resolve_baostock_request_ledger(tmp_path)==configured.resolve()/'request_ledger.json'
 
 
-def test_baostock_request_ledger_preserves_legacy_or_rejects_conflict(tmp_path):
+def test_baostock_request_ledger_requires_explicit_config_and_preserves_legacy(tmp_path):
     import pytest
     configured=tmp_path/'cache-root'
     (tmp_path/'config').mkdir()
@@ -98,10 +98,9 @@ def test_baostock_request_ledger_preserves_legacy_or_rejects_conflict(tmp_path):
         f'baostock:\n  cache_root: "{configured.as_posix()}"\n',encoding='utf-8')
     legacy=tmp_path/'reports/v4_baostock/request_ledger.json'
     legacy.parent.mkdir(parents=True);legacy.write_text('{}',encoding='utf-8')
-    assert resolve_baostock_request_ledger(tmp_path)==legacy
-    configured.mkdir();(configured/'request_ledger.json').write_text('{}',encoding='utf-8')
-    with pytest.raises(ValueError,match='BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT'):
+    with pytest.raises(FileNotFoundError,match='BAOSTOCK_REQUEST_LEDGER_NOT_CONFIGURED'):
         resolve_baostock_request_ledger(tmp_path)
+    assert legacy.read_text(encoding='utf-8')=='{}'
 
 
 def test_live_baostock_acceptance_adapter_uses_resolved_roots():

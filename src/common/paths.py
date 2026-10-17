@@ -17,6 +17,7 @@ PATH_SETTINGS: dict[str, tuple[str, str]] = {
     "tdx.snapshot_root": ("tdx", "snapshot_root"),
     "baostock.download_root": ("baostock", "download_root"),
     "baostock.cache_root": ("baostock", "cache_root"),
+    "baostock.request_ledger": ("baostock", "request_ledger"),
     "ingest.temp_root": ("ingest", "temp_root"),
 }
 PATH_ENV: dict[str, str] = {
@@ -25,6 +26,7 @@ PATH_ENV: dict[str, str] = {
     "tdx.snapshot_root": "TDX_SNAPSHOT_ROOT",
     "baostock.download_root": "BAOSTOCK_DOWNLOAD_ROOT",
     "baostock.cache_root": "BAOSTOCK_CACHE_ROOT",
+    "baostock.request_ledger": "BAOSTOCK_REQUEST_LEDGER",
     "ingest.temp_root": "V4_INGEST_TEMP_ROOT",
 }
 
@@ -114,16 +116,11 @@ def resolve_baostock_cache_root(project_root: str | Path, explicit: str | Path |
 
 
 def resolve_baostock_request_ledger(project_root: str | Path, explicit: str | Path | None = None) -> Path:
-    """Resolve the request-budget ledger without discarding legacy history."""
-    root = Path(project_root).resolve()
-    if explicit is not None and str(explicit).strip():
-        candidate = Path(explicit).expanduser()
-        return (candidate if candidate.is_absolute() else root / candidate).resolve()
-    legacy = root / "reports" / "v4_baostock" / "request_ledger.json"
-    configured = resolve_baostock_cache_root(root) / "request_ledger.json"
-    if legacy.exists() and configured.exists():
-        raise ValueError("BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT")
-    return legacy if legacy.exists() else configured
+    """Resolve one explicitly selected request-budget state file."""
+    try:
+        return resolve_configured_path(project_root, "baostock.request_ledger", explicit=explicit)  # type: ignore[return-value]
+    except FileNotFoundError as exc:
+        raise FileNotFoundError("BAOSTOCK_REQUEST_LEDGER_NOT_CONFIGURED") from exc
 
 
 def resolve_ingest_temp_root(project_root: str | Path, explicit: str | Path | None = None) -> Path:

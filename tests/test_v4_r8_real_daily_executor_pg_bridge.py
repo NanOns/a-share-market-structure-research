@@ -17,7 +17,9 @@ from workbench_analysis.operational_daily_executor_v1 import (
     _runtime_acceptance_manifest_path,
     _tdx_gbbq_source_path,
 )
+from workbench_analysis import operational_daily_executor_v1 as executor
 from workbench_db import v4_daily_source_ingest_r6 as source_ingest
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -117,14 +119,16 @@ def test_core_result_writer_bridge_is_explicit_and_delegates_to_caller_transacti
 
 
 def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path,monkeypatch):
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     assert _runtime_acceptance_manifest_path(tmp_path, "2026-10-12") == (
         tmp_path / "reports/v4_baostock/runtime_acceptance/20261012/accepted_runtime_manifest.json"
     )
 
 
 def test_tdx_gbbq_is_configured_as_read_only_input(monkeypatch):
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     path = _tdx_gbbq_source_path()
     assert path.parts[-3:] == ("T0002", "hq_cache", "gbbq")
     assert path.is_absolute()
@@ -132,7 +136,8 @@ def test_tdx_gbbq_is_configured_as_read_only_input(monkeypatch):
 
 def test_tdx_gbbq_path_uses_central_configured_root(tmp_path,monkeypatch):
     from common.paths import resolve_tdx_root
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
 
     configured = tmp_path / "configured-tdx"
     (tmp_path / "config").mkdir()
@@ -166,8 +171,7 @@ def test_daily_runtime_contract_uses_approved_pg_registry_by_default(monkeypatch
     monkeypatch.setattr(v4_publication_reader,'readonly_connection',connection)
     monkeypatch.setattr(contract_registry_pg_v1,'load_current_approved_contract',registered)
 
-    contract=executor._daily_runtime_contract(ROOT,'V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0',
-        'config/v4_daily_tdx_readonly_source_v1.json')
+    contract=executor._daily_runtime_contract('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0')
 
     assert contract['gbbq_relative_path']=='T0002/hq_cache/gbbq'
     assert calls[0][0:3]==('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0','runtime_ns')
@@ -179,5 +183,4 @@ def test_daily_runtime_contract_pg_mode_fails_closed_without_namespace(monkeypat
     monkeypatch.delenv('V4_DAILY_CONTRACT_SOURCE',raising=False)
     monkeypatch.delenv('V4_PG_MODEL_NAMESPACE_ID',raising=False)
     with pytest.raises(ValueError,match='PG_MODEL_NAMESPACE_REQUIRED'):
-        executor._daily_runtime_contract(ROOT,'V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0',
-            'config/v4_daily_tdx_readonly_source_v1.json')
+        executor._daily_runtime_contract('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0')

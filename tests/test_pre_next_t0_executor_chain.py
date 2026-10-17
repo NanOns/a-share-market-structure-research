@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import pytest
 from test_cross_day_capture_repair_v1 import chain
 from workbench_analysis import operational_daily_executor_v1 as executor
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
 from workbench_analysis import operational_daily_owner_v1 as owner
 from workbench_analysis import operational_successor_release_v1 as release
 from workbench_analysis import producer_bootstrap_v1 as bootstrap
@@ -19,7 +20,8 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     root, day, freeze, new_head, _ = chain
     # This legacy-chain fixture deliberately exercises the historical file
     # contracts; the default runtime path is the approved PG registry.
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'PG')
     monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE', 'FILE')
     monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE', 'FILE')
     monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))

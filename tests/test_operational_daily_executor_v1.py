@@ -2,12 +2,48 @@
 from datetime import datetime
 import pytest
 import workbench_analysis.operational_daily_executor_v1 as module
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
+
+
+def test_daily_runtime_contract_rejects_file_authority_mode(monkeypatch):
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    with pytest.raises(ValueError,match='DAILY_RUNTIME_CONTRACT_PG_ONLY'):
+        module._daily_runtime_contract('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0')
+
+
+def test_daily_runtime_contract_reads_approved_registry_with_identity(monkeypatch):
+    from contextlib import contextmanager
+    import workbench_analysis.contract_registry_pg_v1 as registry
+    from workbench_db import v4_publication_reader
+
+    monkeypatch.delenv('V4_DAILY_CONTRACT_SOURCE',raising=False)
+    monkeypatch.setenv('V4_PG_MODEL_NAMESPACE_ID','daily_ns')
+    identity={'database':'market_research','database_oid':42,'host':'127.0.0.1','port':5432}
+    monkeypatch.setenv('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON',__import__('json').dumps(identity))
+    calls=[]
+    @contextmanager
+    def connection():
+        yield object()
+    def load(pg,contract_id,version,namespace,**kwargs):
+        calls.append((contract_id,version,namespace,kwargs))
+        return type('Registered',(),{'parsed_json':{
+            'contract_id':contract_id,'contract_version':version,
+            'source_mode':'READ_ONLY_INPUT','gbbq_relative_path':'T0002/hq_cache/gbbq'}})()
+    monkeypatch.setattr(v4_publication_reader,'readonly_connection',connection)
+    monkeypatch.setattr(registry,'load_current_approved_contract',load)
+
+    result=module._daily_runtime_contract('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0')
+
+    assert result['gbbq_relative_path']=='T0002/hq_cache/gbbq'
+    assert calls==[('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0','daily_ns',
+                    {'expected_database_identity':identity})]
 
 
 @pytest.mark.parametrize('downloaded,expected',['2026-10-09T17:45:00+08:00,2'.split(','),
                                               '2026-10-09T18:36:00+08:00,1'.split(',')])
 def test_missing_target_refreshes_pre_gate_capture_once(tmp_path,monkeypatch,downloaded,expected):
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,module)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
     monkeypatch.setenv('TDX_ROOT',str(tmp_path/'readonly-tdx-root'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(tmp_path/'snapshots'))
@@ -34,6 +70,7 @@ def test_execute_sources_uses_pg_acceptance_and_freezes_its_binding(tmp_path,mon
     import json
     from datetime import datetime,timezone,timedelta
     root=tmp_path
+    install_daily_contract_pg_fixture(monkeypatch,module)
     day=datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
     prior=(datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
     head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head.parent.mkdir(parents=True,exist_ok=True)

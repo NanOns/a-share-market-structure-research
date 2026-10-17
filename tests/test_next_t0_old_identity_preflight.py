@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from test_cross_day_capture_repair_v1 import chain
 from workbench_analysis import operational_daily_executor_v1 as executor
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from workbench_analysis.r43_owner_replay import ref
 from workbench_analysis.v4_14_replay_io import publish
@@ -14,7 +15,8 @@ from workbench_analysis.v4_14_replay_io import publish
 def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, added):
     monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
     monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     root, day, freeze, new_head, _ = chain
     head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     old=json.loads(head_path.read_bytes())
@@ -62,7 +64,8 @@ def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     root,day,_,_,_=chain
     monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
     monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','FILE')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx-fixture'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'tdx-snapshots'))
     before=(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()

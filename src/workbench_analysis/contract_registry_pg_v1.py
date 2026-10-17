@@ -31,6 +31,9 @@ class RegisteredContract:
     trade_date: str = ""
     accepted_at: Any = None
     database_identity: tuple[str, str] = ("", "")
+    approved_by: str = ""
+    approval_ref: str = ""
+    approval_source_revision: str = ""
 
 
 def _mapping(value: Any, code: str) -> dict[str, Any]:
@@ -95,21 +98,41 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
         raise ContractRegistryError("V4_PUBLICATION_CONTRACT_BINDING_INVALID")
     try:
         cursor.execute(
-            """SELECT raw_content, raw_sha256, content_format, schema_version,
-                      namespace, status, approved_by, approved_at
-                 FROM v4.contract_versions
-                WHERE contract_id=%s AND version=%s AND approved_at <= %s""",
-            (contract_id, version, accepted_at),
+            """SELECT c.raw_content, c.raw_sha256, c.content_format, c.schema_version,
+                      c.namespace, c.source_revision, a.action, a.authorized_by,
+                      a.authorization_ref, a.occurred_at, a.source_revision,
+                      a.source_sha256, a.recorded_at
+                 FROM v4.contract_versions c
+                 JOIN LATERAL (
+                      SELECT e.action, e.authorized_by, e.authorization_ref,
+                             e.occurred_at, e.source_revision, e.source_sha256,
+                             e.recorded_at
+                        FROM v4.contract_approval_events e
+                       WHERE e.contract_id=c.contract_id
+                         AND e.version=c.version
+                         AND e.raw_sha256=c.raw_sha256
+                         AND e.occurred_at <= %s
+                         AND e.recorded_at <= %s
+                       ORDER BY e.occurred_at DESC, e.event_id DESC
+                       LIMIT 1
+                 ) a ON true
+                WHERE c.contract_id=%s AND c.version=%s AND c.raw_sha256=%s""",
+            (accepted_at, accepted_at, contract_id, version, digest),
         )
         row = cursor.fetchone()
     except Exception as exc:
         raise ContractRegistryError("V4_PG_CONTRACT_REGISTRY_UNAVAILABLE") from exc
     if not row:
         raise ContractRegistryError("V4_PG_CONTRACT_VERSION_NOT_FOUND")
-    raw, stored_digest, content_format, schema_version, contract_namespace, status, approved_by, approved_at = row
+    (raw, stored_digest, content_format, schema_version, contract_namespace,
+     source_revision, action, approved_by, approval_ref, approved_at,
+     approval_source_revision, approval_source_digest, approval_recorded_at) = row
     raw = bytes(raw)
     actual = hashlib.sha256(raw).hexdigest()
-    if (status != "APPROVED" or not approved_by or approved_at is None
+    if (action != "APPROVED" or not approved_by or not approval_ref
+            or approved_at is None or approval_recorded_at is None
+            or not source_revision or not approval_source_revision
+            or str(approval_source_digest) != digest
             or str(stored_digest) != digest or actual != digest):
         raise ContractRegistryError("V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID")
     if str(contract_namespace) != namespace:
@@ -130,4 +153,5 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
     return RegisteredContract(contract_id, version, digest, fmt, str(schema_version),
                               namespace, raw, parsed_json, publication_id,
                               str(publication[4]), publication[3],
-                              (str(session[0]), str(session[1])))
+                              (str(session[0]), str(session[1])), str(approved_by),
+                              str(approval_ref), str(approval_source_revision))

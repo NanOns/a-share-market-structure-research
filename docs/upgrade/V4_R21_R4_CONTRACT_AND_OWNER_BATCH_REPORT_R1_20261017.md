@@ -36,7 +36,7 @@ The registry reader has not yet been wired into the active runtime contract/Head
 
 ## Verification
 
-- Focused offline tests: **29 passed** (`test_v4_contract_registry_pg_v1.py`, `test_v4_r21_owner_manifest_pg_binding.py`, `test_v4_native_reader_dsn.py`), using `--confcutdir=tests` because the repository-wide legacy isolation plugin currently cannot initialize under the installed Python 3.13 environment (`psycopg` has no compatible PQ wrapper; the runtime package set also lacks `cryptography`). These are mocked PG-shaped positive and negative tests, not live-PG acceptance.
+- Focused offline tests: **31 passed** (`test_v4_contract_registry_pg_v1.py`, `test_v4_r21_owner_manifest_pg_binding.py`, `test_v4_native_reader_dsn.py`), using `--confcutdir=tests` because the repository-wide legacy isolation plugin currently cannot initialize under the installed Python 3.13 environment (`psycopg` has no compatible PQ wrapper; the runtime package set also lacks `cryptography`). These are mocked PG-shaped positive and negative tests, not live-PG acceptance.
 - `compileall` passed for modified Python files; `git diff --check` passed.
 - The broader daily-executor/Owner selection did not collect: it is blocked by the incompatible local dependency environment, not reported as passing.
 - GitHub CI and PR checks are pending the authorized commit/push of this batch.

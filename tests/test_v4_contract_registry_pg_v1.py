@@ -28,7 +28,8 @@ def test_reads_exact_approved_bytes_pinned_by_publication():
     digest = hashlib.sha256(raw).hexdigest()
     cursor = Cursor(
         ({"RULE": {"version": "1.2.0", "raw_sha256": digest}}, "PRODUCTION", "ACCEPTED", "2026-10-17T00:00:00Z", "2026-10-16"),
-        (raw, digest, "JSON", "1", "PRODUCTION", "APPROVED", "approver", "2026-10-17T00:00:00Z"),
+        (raw, digest, "JSON", "1", "PRODUCTION", "revision-1", "APPROVED", "approver",
+         "approval-1", "2026-10-17T00:00:00Z", "revision-1", digest, "2026-10-17T00:00:00Z"),
     )
     contract = load_publication_contract(cursor, "publication-1", "RULE")
     assert contract.raw_content == raw
@@ -36,13 +37,17 @@ def test_reads_exact_approved_bytes_pinned_by_publication():
     assert contract.publication_id == "publication-1"
     assert contract.trade_date == "2026-10-16"
     assert contract.database_identity == ("market_research", "v4_reader")
-    assert [call[1] for call in cursor.calls] == [(), ("publication-1",), ("RULE", "1.2.0", "2026-10-17T00:00:00Z")]
+    assert contract.approved_by == "approver"
+    assert contract.approval_ref == "approval-1"
+    assert [call[1] for call in cursor.calls] == [(), ("publication-1",),
+        ("2026-10-17T00:00:00Z", "2026-10-17T00:00:00Z", "RULE", "1.2.0", digest)]
 
 
 @pytest.mark.parametrize("binding,row,code", [
     ({}, None, "V4_PUBLICATION_CONTRACT_NOT_BOUND"),
     ({"RULE": {"version": "1.2.0", "raw_sha256": "0" * 64}},
-     (b"{}", "0" * 64, "JSON", "1", "PRODUCTION", "APPROVED", "approver", "2026-10-17"),
+     (b"{}", "0" * 64, "JSON", "1", "PRODUCTION", "revision-1", "APPROVED", "approver",
+      "approval-1", "2026-10-17", "revision-1", "0" * 64, "2026-10-17"),
      "V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID"),
 ])
 def test_missing_or_mismatched_contract_fails_closed(binding, row, code):
@@ -82,3 +87,17 @@ def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance(
     assert "NOT VALID" in sql
     assert "UPDATE OF contract_bindings" not in sql
     assert "BEFORE INSERT OR UPDATE ON v4.publications" in sql
+    assert "contract_approval_events" in sql
+
+
+@pytest.mark.parametrize("action,source_digest", [("REVOKED", "a" * 64), ("APPROVED", "0" * 64)])
+def test_latest_approval_event_must_be_approved_and_bind_exact_source_digest(action, source_digest):
+    raw = b'{"rule":"event state"}'
+    digest = hashlib.sha256(raw).hexdigest()
+    cursor = Cursor(
+        ({"RULE": {"version": "1.2.0", "raw_sha256": digest}}, "PRODUCTION", "ACCEPTED", "2026-10-17T00:00:00Z", "2026-10-16"),
+        (raw, digest, "JSON", "1", "PRODUCTION", "revision-1", action, "approver",
+         "approval-1", "2026-10-17T00:00:00Z", "revision-1", source_digest, "2026-10-17T00:00:00Z"),
+    )
+    with pytest.raises(ContractRegistryError, match="V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID"):
+        load_publication_contract(cursor, "publication-1", "RULE")

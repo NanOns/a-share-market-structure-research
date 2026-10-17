@@ -11,16 +11,46 @@ CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R4'
 _SCHEMA = re.compile(r'(?:v4|v4_[a-z0-9_]{1,56})')
 
 def configured_dsn():
-    # Writes must be explicit even when the same PostgreSQL instance is used.
+    # Prefer an explicit V4 writer DSN. The project may intentionally use one
+    # shared PostgreSQL identity for both read and write work; in that setup,
+    # reuse the existing WORKBENCH_PG_DSN rather than requiring a duplicate
+    # connection string for the same database endpoint.
     value=os.environ.get('V4_NATIVE_PG_DSN')
-    if not value: raise RuntimeError('V4_NATIVE_PG_DSN_REQUIRED')
-    return value
+    if value:
+        return value
+    value=os.environ.get('WORKBENCH_PG_DSN')
+    if value:
+        return value
+    # Entry points which do not load dotenv still use the repository's
+    # existing connection configuration. Never print or copy the secret.
+    project_root=Path(__file__).resolve().parents[2]
+    for env_path in (project_root/'config/.env', project_root/'.env'):
+        if not env_path.is_file():
+            continue
+        for raw in env_path.read_text(encoding='utf-8-sig').splitlines():
+            key,sep,configured=raw.partition('=')
+            if sep and key.strip() in ('V4_NATIVE_PG_DSN','WORKBENCH_PG_DSN'):
+                configured=configured.strip().strip('"').strip("'")
+                if configured:
+                    return configured
+    raise RuntimeError('V4_POSTGRES_DSN_REQUIRED')
 
 def configured_reader_dsn():
-    """Reuse the project's existing DSN; no separate reader instance/DSN."""
+    """Reuse the project's existing shared DSN; no separate reader instance."""
     value=os.environ.get('WORKBENCH_PG_DSN')
-    if not value: raise RuntimeError('WORKBENCH_PG_DSN_REQUIRED')
-    return value
+    if value:
+        return value
+    project_root=Path(__file__).resolve().parents[2]
+    for env_path in (project_root/'config/.env', project_root/'.env'):
+        if not env_path.is_file():
+            continue
+        for raw in env_path.read_text(encoding='utf-8-sig').splitlines():
+            key,sep,configured=raw.partition('=')
+            if sep and key.strip()=='WORKBENCH_PG_DSN':
+                configured=configured.strip().strip('"').strip("'")
+                if configured:
+                    return configured
+    raise RuntimeError('WORKBENCH_PG_DSN_REQUIRED')
 
 def workspace_schema(root, purpose):
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')

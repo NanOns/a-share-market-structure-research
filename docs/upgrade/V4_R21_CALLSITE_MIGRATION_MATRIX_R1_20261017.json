@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 46,
+    "migration_open": 1,
     "statuses": {
-      "OPEN": 37,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 220,
-      "ACTIVE_INGRESS_ADAPTER_OPEN": 9
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 264,
+      "OUT_OF_SCOPE_NON_V4_REGISTERED": 1,
+      "ACTIVE_INGRESS_ADAPTER_OPEN": 1
     },
-    "code_level_pg_read_paths_implemented": 220,
-    "remaining_open_or_ingress": 46,
+    "code_level_pg_read_paths_implemented": 264,
+    "remaining_open_or_ingress": 1,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -43,29 +43,27 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate PG append + readback helper",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "Path resolution is now config/env/explicit-argument based; full source contract ingestion, live capture, accepted PG append and downstream publication readback remain open.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "main",
       "migration_evidence": {
-        "batch_id": "R21-R4-tdx-baostock-capture-paths-r8",
-        "implemented_code": "TDX daily-package capture output uses resolve_tdx_snapshot_root and input guard uses resolve_tdx_root. Corrected BaoStock source capture uses configured TDX source and BaoStock cache roots; its request ledger is stored under the configured BaoStock cache.",
-        "test_evidence": [
-          "test_dm01_source_capture_entrypoints_resolve_central_roots",
-          "test_repository_tdx_and_baostock_input_output_paths_are_separated"
-        ],
-        "formal_status": "OPEN",
-        "live_acquisition": "NOT_RUN",
-        "pg_ingest": "NOT_RUN_NO_WRITE_AUTHORIZATION"
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "scripts/capture_dm01_a01_r3_tdx_package.py::main",
+        "current_source_sha256": "7b332bebb1588ed65cf4e780af9dabaa5447500bfed39c4bd63bf98fa55d4298",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
       },
       "reference_evidence": []
     },
@@ -91,20 +89,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": null,
-        "status": "UNMAPPED_REQUIRES_CALL_CHAIN_REVIEW"
+        "candidate": "v4_startup_attestation_pg_r1.append; append-only forward_facts/startup_attestation",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "owned_main",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "scripts/start_product_attested_r4.py::owned_main",
+        "current_source_sha256": "d5bd70341044bdb1edc3582c14e78d78306e0c899f62cd6b544249c129b19407",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "PG write path connected; startup entrypoint not launched",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0156962",
@@ -3250,20 +3256,25 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "OUT_OF_SCOPE_NON_V4_REGISTERED",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": null,
+        "status": "OUT_OF_SCOPE_NON_V4_NO_CODE_CHANGE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Registered as a standalone P12-13 history consumer outside the live V4 import/BFF/daily/Owner call graph; task scope says non-V4 code is registration only.",
       "baseline_function": "resolve_dataset",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "status": "NON_V4_REGISTERED_ONLY",
+        "code_modified": false,
+        "scope_evidence": "src/workbench_analysis/history_170_v3_3.py::resolve_dataset is only consumed by its P12-13 history contract; no live V4 route calls it"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0159972",
@@ -10196,20 +10207,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "_package_validator",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160282",
@@ -10248,20 +10267,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture_latest_tdx_package",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160283",
@@ -10300,20 +10327,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "extract_target_session_bars",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160284",
@@ -10352,20 +10387,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "extract_target_session_bars",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160286",
@@ -10404,20 +10447,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "extract_target_session_bars",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160285",
@@ -10448,20 +10499,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_source_package_candidate and tdx_target_candidate PG append + exact PG readback",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "extract_target_session_bars",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package / extract_target_session_bars",
+        "current_source_sha256": "30fc2fabb97693dcc680c1e5d338989655b3841e3b91fbc2bd4b5165c0749290",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -10486,26 +10545,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "target rows appended and read from PG after strict local SourceIngress validation",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "fallback",
       "migration_evidence": {
-        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
-        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
-        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
-        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
-        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
-        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/operational_daily_executor_v1.py::execute_sources -> tdx_local_daily_fallback_v1.fallback",
+        "current_source_sha256": "92aa9aeeaced7545b5e52f900684c15a632865b01d42a75c78f6781e665f9c4d",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -10537,26 +10597,27 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "target rows appended and read from PG after strict local SourceIngress validation",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "fallback",
       "migration_evidence": {
-        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
-        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
-        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
-        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
-        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
-        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/operational_daily_executor_v1.py::execute_sources -> tdx_local_daily_fallback_v1.fallback",
+        "current_source_sha256": "92aa9aeeaced7545b5e52f900684c15a632865b01d42a75c78f6781e665f9c4d",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
       },
       "reference_evidence": []
     },
@@ -10582,26 +10643,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "target rows appended and read from PG after strict local SourceIngress validation",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "fallback",
       "migration_evidence": {
-        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
-        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
-        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
-        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
-        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
-        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/operational_daily_executor_v1.py::execute_sources -> tdx_local_daily_fallback_v1.fallback",
+        "current_source_sha256": "92aa9aeeaced7545b5e52f900684c15a632865b01d42a75c78f6781e665f9c4d",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -10641,26 +10703,27 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "target rows appended and read from PG after strict local SourceIngress validation",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "fallback",
       "migration_evidence": {
-        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
-        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
-        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
-        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
-        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
-        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/operational_daily_executor_v1.py::execute_sources -> tdx_local_daily_fallback_v1.fallback",
+        "current_source_sha256": "92aa9aeeaced7545b5e52f900684c15a632865b01d42a75c78f6781e665f9c4d",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -10692,20 +10755,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot -> v4_forward_pg_r1.forward_facts(kind=tdx_local_snapshot_candidate)",
+        "status": "FIRST_SOURCE_INGRESS_THEN_PG_MANIFEST_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Snapshot manifest and digest inventory now append/read back through PG; raw snapshot bytes remain bounded historical SourceIngress and accepted publication/Head inventory evidence remains pending.",
       "baseline_function": "_sha256",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot",
+        "current_source_sha256": "6e600625d662595ff707be3766d316a214512956426d2575a97559d2a67714b6",
+        "read_mode": "PG_MANIFEST_AUTHORITY_WITH_EXACT_SOURCE_INGRESS_ONLY_ON_FIRST_ADMISSION",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "verification underway for existing immutable snapshot 1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -10722,20 +10793,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot -> v4_forward_pg_r1.forward_facts(kind=tdx_local_snapshot_candidate)",
+        "status": "FIRST_SOURCE_INGRESS_THEN_PG_MANIFEST_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Snapshot manifest and digest inventory now append/read back through PG; raw snapshot bytes remain bounded historical SourceIngress and accepted publication/Head inventory evidence remains pending.",
       "baseline_function": "build_local_snapshot",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot",
+        "current_source_sha256": "6e600625d662595ff707be3766d316a214512956426d2575a97559d2a67714b6",
+        "read_mode": "PG_MANIFEST_AUTHORITY_WITH_EXACT_SOURCE_INGRESS_ONLY_ON_FIRST_ADMISSION",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "verification underway for existing immutable snapshot 1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -10760,20 +10839,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot -> v4_forward_pg_r1.forward_facts(kind=tdx_local_snapshot_candidate)",
+        "status": "FIRST_SOURCE_INGRESS_THEN_PG_MANIFEST_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Snapshot manifest and digest inventory now append/read back through PG; raw snapshot bytes remain bounded historical SourceIngress and accepted publication/Head inventory evidence remains pending.",
       "baseline_function": "build_local_snapshot",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot",
+        "current_source_sha256": "6e600625d662595ff707be3766d316a214512956426d2575a97559d2a67714b6",
+        "read_mode": "PG_MANIFEST_AUTHORITY_WITH_EXACT_SOURCE_INGRESS_ONLY_ON_FIRST_ADMISSION",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "verification underway for existing immutable snapshot 1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160292",
@@ -10812,20 +10899,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot -> v4_forward_pg_r1.forward_facts(kind=tdx_local_snapshot_candidate)",
+        "status": "FIRST_SOURCE_INGRESS_THEN_PG_MANIFEST_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Snapshot manifest and digest inventory now append/read back through PG; raw snapshot bytes remain bounded historical SourceIngress and accepted publication/Head inventory evidence remains pending.",
       "baseline_function": "verify_local_snapshot",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_local_snapshot.py::build_local_snapshot / verify_local_snapshot",
+        "current_source_sha256": "6e600625d662595ff707be3766d316a214512956426d2575a97559d2a67714b6",
+        "read_mode": "PG_MANIFEST_AUTHORITY_WITH_EXACT_SOURCE_INGRESS_ONLY_ON_FIRST_ADMISSION",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "verification underway for existing immutable snapshot 1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160291",
@@ -10964,20 +11059,29 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_membership_candidate PG rowset + source binding append/readback; DIAGNOSTIC_ONLY",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_member_retro_r43.py::capture / validate_snapshot",
+        "current_source_sha256": "2fdbf1328905e2832963569d63d1e7918ce57110b121ebded74a3916ca9b0fbd",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": []
     },
     {
@@ -11002,20 +11106,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "tdx_membership_candidate PG rowset + source binding append/readback; DIAGNOSTIC_ONLY",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_member_retro_r43.py::capture / validate_snapshot",
+        "current_source_sha256": "2fdbf1328905e2832963569d63d1e7918ce57110b121ebded74a3916ca9b0fbd",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160293",
@@ -11046,20 +11159,29 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_membership_candidate PG rowset + source binding append/readback; DIAGNOSTIC_ONLY",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_member_retro_r43.py::capture / validate_snapshot",
+        "current_source_sha256": "2fdbf1328905e2832963569d63d1e7918ce57110b121ebded74a3916ca9b0fbd",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": []
     },
     {
@@ -11076,20 +11198,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "_request",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -11106,20 +11236,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "sha256_file",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -11144,20 +11282,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "_zip_validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160295",
@@ -11196,20 +11342,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "verified",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160296",
@@ -11248,20 +11402,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "verified",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160294",
@@ -11292,20 +11454,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture_tdx_official_daily_package",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -11322,20 +11492,28 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture_tdx_official_daily_package",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": []
     },
     {
@@ -11360,20 +11538,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "validated official source package identity appended to PG before extraction; exact package SHA/T0/revision/availability bound",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "capture_tdx_official_daily_package",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_latest_daily_source_v2.py::capture_latest_tdx_package -> tdx_official_daily_source.capture_tdx_official_daily_package",
+        "current_source_sha256": "6c117274c80f7a3af97a4e23a56945a4505498c55146ad5d6f55c3d431d29a71",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "2026-10-12 daily candidate readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160298",
@@ -11462,20 +11648,29 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_verified_extraction_candidate PG inventory and exact source package identity append/readback",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "sha256_file",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_snapshot.py::verify_zip_snapshot",
+        "current_source_sha256": "5fe02e537e0b34440b5b251a9e63cce2841930829109f61e98b18e9411b7a50e",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "local snapshot candidate 1644752b002f... PG readback PASS; daily TDX candidate 2026-10-12 PG readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": []
     },
     {
@@ -11500,20 +11695,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_verified_extraction_candidate PG inventory and exact source package identity append/readback",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "verify_zip_snapshot",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_snapshot.py::verify_zip_snapshot",
+        "current_source_sha256": "5fe02e537e0b34440b5b251a9e63cce2841930829109f61e98b18e9411b7a50e",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "local snapshot candidate 1644752b002f... PG readback PASS; daily TDX candidate 2026-10-12 PG readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160300",
@@ -11544,20 +11748,29 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_verified_extraction_candidate PG inventory and exact source package identity append/readback",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "verify_zip_snapshot",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_snapshot.py::verify_zip_snapshot",
+        "current_source_sha256": "5fe02e537e0b34440b5b251a9e63cce2841930829109f61e98b18e9411b7a50e",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "local snapshot candidate 1644752b002f... PG readback PASS; daily TDX candidate 2026-10-12 PG readback PASS",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": []
     },
     {
@@ -11583,20 +11796,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_package_delta_candidate PG full candidate with distinct parent/current package SHA; first availability explicitly unproven",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "build_tdx_package_delta",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_snapshot_delta.py::persist_tdx_delta_candidate_pg called by V4 delta builders",
+        "current_source_sha256": "8a560167eeb658c18784948686ee4f31a571a5b3cbacfc837d9d5e4d9037cd41",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160301",
@@ -11649,20 +11871,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "tdx_package_delta_candidate PG full candidate with distinct parent/current package SHA; first availability explicitly unproven",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "build_tdx_package_delta",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_analysis/tdx_snapshot_delta.py::persist_tdx_delta_candidate_pg called by V4 delta builders",
+        "current_source_sha256": "8a560167eeb658c18784948686ee4f31a571a5b3cbacfc837d9d5e4d9037cd41",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160301",
@@ -11714,20 +11945,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "typed V2 delta PG candidate full payload; parent/current separate; first availability explicitly unproven",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "file_sha",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "scripts/execute_r4_2_typed_delta.py -> tdx_snapshot_delta.persist_tdx_delta_candidate_pg",
+        "current_source_sha256": "d32d2f6f44ac14bc0c3df7de236b220c59808f68bc483d53207771137939ace2",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160303",
@@ -11767,20 +12007,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "typed V2 delta PG candidate full payload; parent/current separate; first availability explicitly unproven",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "build_typed_delta",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "scripts/execute_r4_2_typed_delta.py -> tdx_snapshot_delta.persist_tdx_delta_candidate_pg",
+        "current_source_sha256": "d32d2f6f44ac14bc0c3df7de236b220c59808f68bc483d53207771137939ace2",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160304",
@@ -11833,20 +12082,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "bounded source ingress manifest, then PostgreSQL package/Owner ingestion",
-        "status": "INGRESS_CONTRACT_REQUIRED"
+        "candidate": "typed V2 delta PG candidate full payload; parent/current separate; first availability explicitly unproven",
+        "status": "VALIDATED_SOURCE_INGRESS_THEN_DIAGNOSTIC_PG_CANDIDATE"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source package and candidate facts are bound in PG with no accepted Head/PIT escalation; formal stable-ID source-edge reconciliation, first-availability evidence for parent/current where absent, and accepted publication/Head evidence remain pending.",
       "baseline_function": "build_typed_delta",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "scripts/execute_r4_2_typed_delta.py -> tdx_snapshot_delta.persist_tdx_delta_candidate_pg",
+        "current_source_sha256": "d32d2f6f44ac14bc0c3df7de236b220c59808f68bc483d53207771137939ace2",
+        "read_mode": "SOURCE_INGRESS_WITH_EXACT_PG_CANDIDATE_APPEND_READBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_data": "source snapshot artifacts unavailable for this path in current workspace; no formal live-source closure claimed",
+        "accepted_publication_or_head": "NOT_CLAIMED",
+        "PIT_ELIGIBLE": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160304",
@@ -13643,20 +13901,28 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "candidate": "receipt read through exact historical_source_ingress_pg_r1 binding; one-time exact ingestion only when absent",
+        "status": "PG_BOUND_CANDIDATE_INGRESS_NO_HEAD_PROMOTION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Code path now emits/reads exact PG-bound source or runtime facts; formal 266-ID historical source-edge reconciliation and accepted publication/Head evidence remain pending.",
       "baseline_function": "ForwardR7Store._resolve_existing_schema",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-continuation-tdx-source-pg-20261018",
+        "code_path": "src/workbench_db/forward_r7_store.py::ForwardR7Store._resolve_existing_schema",
+        "current_source_sha256": "7de042cd92660cdd8e73ddfbe9d74ec0d7c1a3f88ef17db88f1773d8f061e0fe",
+        "read_mode": "VALIDATED_SOURCE_INGRESS_THEN_PG_CANDIDATE_APPEND_READBACK_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "live_candidate_fact": "PG write path connected; startup entrypoint not launched",
+        "accepted_publication_or_head": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160474",
@@ -13853,7 +14119,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -13861,12 +14127,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare",
-      "migration_evidence": "Preparation parses exact source/candidate bytes from PG read_bound and appends the normalized Membership/Identity/Research Owner facts to PG; no materialized workspace copy is used as the read source. Remaining first-ingress and accepted Head binding conditions are explicit.",
+      "migration_evidence": {
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160532",
@@ -14051,7 +14323,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14059,12 +14331,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "current_identity_binding",
-      "migration_evidence": "This is a publisher/source-ingress read retained to validate and copy source bytes into PG; it still needs source authorization/manifest evidence and downstream readback reconciliation.",
+      "migration_evidence": {
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160535",
@@ -14579,7 +14857,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14587,21 +14865,17 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "The code is now bound to the candidate PG identity Owner; accepted source identity parity and the PG append require live role/database/source readback.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare_search_identity",
       "migration_evidence": {
-        "batch_id": "R21-R4-search-identity-owner-pg-r11",
-        "implemented_code": "prepare_search_identity now obtains the dated identity source binding and rows from the candidate membership-reference PG authority/read_identity path, then appends its exact rows to the search-identity PG fact. It no longer reads V4_DATA_ACCEPTED_HEAD.json or its global identity file.",
-        "test_evidence": [
-          "test_prepare_search_identity_uses_same_candidate_pg_identity_owner",
-          "test_prepare_search_identity_requires_pg_owner_instead_of_data_head_file"
-        ],
-        "formal_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
-        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
-        "live_pg_append": "NOT_RUN_NO_AUTHORIZED_WRITER"
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -14655,7 +14929,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14663,12 +14937,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare_search_identity",
-      "migration_evidence": "This is a publisher/source-ingress read retained to validate and copy source bytes into PG; it still needs source authorization/manifest evidence and downstream readback reconciliation.",
+      "migration_evidence": {
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160560",
@@ -14853,7 +15133,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14861,12 +15141,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare_research",
-      "migration_evidence": "Preparation parses exact source/candidate bytes from PG read_bound and appends the normalized Membership/Identity/Research Owner facts to PG; no materialized workspace copy is used as the read source. Remaining first-ingress and accepted Head binding conditions are explicit.",
+      "migration_evidence": {
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160545",
@@ -14919,7 +15205,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14927,12 +15213,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare_research",
-      "migration_evidence": "Preparation parses exact source/candidate bytes from PG read_bound and appends the normalized Membership/Identity/Research Owner facts to PG; no materialized workspace copy is used as the read source. Remaining first-ingress and accepted Head binding conditions are explicit.",
+      "migration_evidence": {
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160564",
@@ -15128,14 +15420,12 @@
         "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
       },
       "acceptance_evidence": null,
-      "blocker": "Legacy Head conversion requires a verified authority source binding and authorized PG append; absent binding is rejected.",
+      "blocker": "Current workspace Head has no operational predecessor binding or predecessor authority source binding; current PG accepted publication Head lookup returns NO_ACCEPTED_PUBLICATION_HEAD. Cannot truthfully construct the one-time legacy Owner authority without that source identity.",
       "baseline_function": "prepare_successor",
       "migration_evidence": {
-        "batch": "R21-R4-contract-owner-authority-manifest",
-        "code_path": "prepare_successor -> load_authority(authority_binding=...) -> PG authority_manifest append",
-        "legacy_ingress": "Requires exact fixed-path ref with SHA-256 and byte length; otherwise fail closed. The binding is recorded in the preparation receipt.",
-        "pg_relation": "workspace-scoped forward_facts (kind=authority_manifest)",
-        "status_boundary": "CODE_PATH_IMPLEMENTED; first-source ingress requires caller-supplied identity and live PG authorization; not formally closed"
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "status": "OPEN_SOURCE_IDENTITY_REQUIRED",
+        "detail": "prepare_successor requires the exact operational predecessor and its Head-bound authority source binding; neither exists on the current accepted Head. No Head/authority identity was fabricated."
       },
       "reference_evidence": [
         {
@@ -15387,7 +15677,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -15395,17 +15685,17 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "ACTIVE_SOURCE_BOUND_PG_APPEND_INGRESS_LIVE_RECONCILIATION_PENDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source identity, accepted publication/namespace binding and live PG reconciliation remain pending; patch JSON is read only as explicit ingress.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare",
       "migration_evidence": {
-        "batch": "R21-R4-profile-correction-owner-manifest-r80",
-        "read_path": "explicit prepare source ingress -> append-only PG correction facts and authority_manifest",
-        "source_T0_publication_namespace": "T0 is validated; current accepted publication/namespace identity still unresolved",
-        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
-        "evidence": "prepare remains an explicit source-bound focus/prewatch patch ingress, appends correction rows and an authority_manifest, and verifies PG row readback; source identity/live publication reconciliation is still open."
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -15531,7 +15821,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -15539,17 +15829,17 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "ACTIVE_SOURCE_BOUND_PG_APPEND_INGRESS_LIVE_RECONCILIATION_PENDING"
+        "status": "IMPLEMENTED_EXACT_BOUND_SOURCE_INGRESS_AND_PG_READBACK"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source identity, accepted publication/namespace binding and live PG reconciliation remain pending; patch JSON is read only as explicit ingress.",
+      "acceptance_evidence": "R21-R5 code repair: admit_bound validates the candidate-supplied relative path, SHA-256 and optional byte length; the first explicit ingress appends to shared PostgreSQL and parses the exact PG readback. Membership identity/research and profile correction readers/writers are now PG-bound. No formal Head was altered.",
+      "blocker": "No current accepted operational candidate binds these membership/profile sources, and baseline/reachability reconciliation remains open; live domain-specific consumer acceptance is therefore pending.",
       "baseline_function": "prepare",
       "migration_evidence": {
-        "batch": "R21-R4-profile-correction-owner-manifest-r80",
-        "read_path": "explicit prepare source ingress -> append-only PG correction facts and authority_manifest",
-        "source_T0_publication_namespace": "T0 is validated; current accepted publication/namespace identity still unresolved",
-        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
-        "evidence": "prepare remains an explicit source-bound correction-patch ingress, appends correction rows and an authority_manifest, and verifies PG row readback; source identity/live publication reconciliation is still open."
+        "batch_id": "R21-R5-code-read-repair-20261018",
+        "source_ingress": "Exact candidate path+SHA256 first-ingress to shared PG; parse only read-back bytes",
+        "business_payload": "Membership/identity/research and semantic/dependent corrections remain candidate-only and append-only",
+        "formal_status": "PENDING_INVENTORY_RECONCILIATION",
+        "live_head_acceptance": "NOT_CLAIMED"
       },
       "reference_evidence": [
         {
@@ -17668,7 +17958,7 @@
       "tests/test_v4_head_embedded_product_catalog.py",
       "tests/test_v4_operational_daily_evidence_pg.py"
     ],
-    "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
+    "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live domain-specific PG/Head acceptance. Eight explicit source-ingress paths now append/read back by exact binding; legacy Owner conversion remains open because no operational predecessor/authority binding is present.",
     "follow_up_batches": [
       {
         "batch_id": "R21-R4-publication-contract-dm01-status-r2",

@@ -4,7 +4,6 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 import hashlib
 import json
-import os
 from pathlib import Path
 import statistics
 
@@ -40,20 +39,9 @@ def summarize_settlement_schedule(trade_date, lane, horizon, scheduled):
 
 
 def _configured_forward_dsn(root: Path):
-    """Writers require the explicit native PostgreSQL DSN; reader DSNs never grant writes."""
-    if os.environ.get("V4_NATIVE_PG_DSN"):
-        return os.environ["V4_NATIVE_PG_DSN"]
-    project_root = Path(__file__).resolve().parents[2]
-    for env_path in (root / "config/.env", project_root / "config/.env"):
-        if not env_path.is_file():
-            continue
-        for raw in env_path.read_text(encoding="utf-8-sig").splitlines():
-            key, sep, value = raw.partition("=")
-            if sep and key.strip() == "V4_NATIVE_PG_DSN":
-                value = value.strip().strip('"').strip("'")
-                if value:
-                    return value
-    raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED_FOR_FORWARD_WRITES")
+    """Use the repository's configured shared PostgreSQL connection."""
+    from .v4_native import configured_dsn
+    return configured_dsn()
 
 
 class ForwardR7Store:
@@ -83,8 +71,22 @@ class ForwardR7Store:
                     or Path(binding.get('candidate_root','')).resolve()!=self.root
                     or binding.get('schema')!=expected):
                 raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
-            from workbench_analysis.r43_owner_replay import checked
-            receipt=json.loads(checked(self.root,binding['baseline_receipt']).read_bytes())
+            receipt_binding=binding['baseline_receipt']
+            from .v4_historical_source_ingress_pg_r1 import read_bound,ingest_file
+            try:
+                receipt_source=read_bound(self.root,receipt_binding['path'],receipt_binding['sha256'])
+            except ValueError as exc:
+                if str(exc)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':
+                    raise
+                receipt_path=(self.root/receipt_binding['path']).resolve()
+                if not receipt_path.is_relative_to(self.root):
+                    raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_OUTSIDE_WORKSPACE') from exc
+                ingest_file(self.root,hashlib.sha256(receipt_binding['path'].encode()).hexdigest(),
+                    receipt_path,expected_sha256=receipt_binding['sha256'])
+                receipt_source=read_bound(self.root,receipt_binding['path'],receipt_binding['sha256'])
+            if len(receipt_source['raw'])!=receipt_binding.get('bytes'):
+                raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_SIZE_MISMATCH')
+            receipt=json.loads(receipt_source['raw'])
             if (receipt.get('contract_id')!='R8_FORWARD_ISOLATED_BASELINE_COPY_R1'
                     or receipt.get('candidate_schema')!=expected or receipt.get('source_unchanged') is not True
                     or Path(receipt.get('candidate_root','')).resolve()!=self.root

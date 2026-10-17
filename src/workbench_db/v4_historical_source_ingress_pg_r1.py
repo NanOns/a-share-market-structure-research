@@ -207,6 +207,41 @@ def read_bound(root: str | Path, source_path: str, expected_sha256: str) -> dict
             "text": text}
 
 
+def admit_bound(root: str | Path, binding: dict[str, Any]) -> dict[str, Any]:
+    """Admit one explicitly bound project source once, then return PG bytes.
+
+    This is an ingress operation, not a read fallback: path and SHA-256 come
+    from the caller's frozen source binding, the first append is immutable,
+    and every returned value is read back from the shared PostgreSQL store.
+    """
+    project = _root(root)
+    relative = binding.get("path")
+    expected = binding.get("sha256")
+    if (not isinstance(relative, str) or not relative
+            or not isinstance(expected, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", expected)):
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_EXACT_BINDING_REQUIRED")
+    try:
+        admitted = read_bound(project, relative, expected)
+    except ValueError as exc:
+        if str(exc) != "HISTORICAL_SOURCE_INGRESS_NOT_FOUND":
+            raise
+        admitted = None
+    if admitted is None:
+        path = (project / relative).resolve()
+        if not path.is_relative_to(project) or not path.is_file():
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_PATH_UNAVAILABLE")
+        result = ingest_file(project, source_id_for_path(relative), path,
+                             expected_sha256=expected)
+        admitted = read_bound(project, relative, expected)
+        if len(admitted["raw"]) != result["source_bytes"]:
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_SIZE_MISMATCH")
+    declared_bytes = binding.get("bytes")
+    if declared_bytes is not None and len(admitted["raw"]) != declared_bytes:
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_BOUND_SIZE_MISMATCH")
+    return admitted
+
+
 def read_bound_many(root: str | Path, bindings: list[dict[str, Any]]) -> list[dict[str, Any] | None]:
     """Resolve exact bindings under one read-only repeatable-read PG snapshot."""
     project = _root(root)

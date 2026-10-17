@@ -3,7 +3,7 @@ from __future__ import annotations
 """V4-01 bounded TDX history bootstrap from an already accepted package.
 
 All package, extraction, and TDX paths are read-only inputs. Outputs are
-written atomically under the project root and never under D:/new_tdx.
+written atomically under the project root and never under a TDX source root.
 """
 
 import csv
@@ -32,7 +32,8 @@ PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 SOURCE_BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
 PAGE_URL = "https://www.tdx.com.cn/article/vipdata.html"
 PACKAGE_URL = "https://data.tdx.com.cn/vipdoc/hsjday.zip?cache_bust=5349e64987e14b318b12fbd268335dfa"
-TDX_ROOT = Path("D:/new_tdx")
+from common.paths import resolve_tdx_root
+TDX_ROOT = resolve_tdx_root(ROOT)
 PAGE_OBSERVED_AT = "2026-09-25T08:27:38+00:00"
 
 
@@ -230,7 +231,8 @@ def main() -> int:
         for item in inventory
     }
     zip_extraction_verification = verify_zip_snapshot(
-        archive_output, extracted_root, inventory_by_path, expected_entries, content_digest.hexdigest()
+        archive_output, extracted_root, inventory_by_path, expected_entries, content_digest.hexdigest(),
+        project_root=ROOT,target_date=bundle["target_trade_date"],source_role="CURRENT"
     )
 
     index_dates = read_day_dates(extracted_root / "sh/lday/sh000001.day")

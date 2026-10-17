@@ -15,6 +15,7 @@ from workbench_analysis.daily_increment_builder import build_raw_increment_stagi
 from workbench_analysis.tdx_snapshot_delta import (  # noqa: E402
     build_tdx_package_delta,
     build_tdx_session_delta_view,
+    persist_tdx_delta_candidate_pg,
 )
 from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root, resolve_configured_path  # noqa: E402
 
@@ -64,6 +65,7 @@ def main() -> int:
         parent_snapshot_id=args.parent_snapshot_id,
         current_snapshot_id=args.current_snapshot_id,
     )
+    pg_delta_candidate = persist_tdx_delta_candidate_pg(ROOT, args.parent_zip, current_zip, delta)
     delta_dir = current_zip.parent / "delta" / args.target_date.replace("-", "")
     delta_path = delta_dir / f"TDX_PACKAGE_DELTA_{args.target_date.replace('-', '')}.json"
     delta_sha = write_json_atomic(delta_path, delta, tdx_root=tdx_root)
@@ -114,6 +116,7 @@ def main() -> int:
         "current_snapshot_id": args.current_snapshot_id,
         "delta_path": str(delta_path.resolve()),
         "delta_sha256": delta_sha,
+        "pg_candidate": pg_delta_candidate,
         "session_receipts": session_receipts,
         "package_delta_scope": "FULL_PARENT_TO_CURRENT_SNAPSHOT",
         "session_view_count": len(session_receipts),

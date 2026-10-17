@@ -16,6 +16,44 @@ class LocalSnapshotError(ValueError):
     pass
 
 
+def _snapshot_store(snapshot_root: Path):
+    repo_root = Path(__file__).resolve().parents[2]
+    if not Path(snapshot_root).resolve().is_relative_to(repo_root):
+        raise LocalSnapshotError("LOCAL_SNAPSHOT_WORKSPACE_ROOT_REQUIRED")
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+    return ForwardFactStore(repo_root, "data/v4/historical_source_ingress_pg_r1")
+
+
+def _persist_manifest_pg(snapshot_root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    store = _snapshot_store(snapshot_root)
+    record = {"contract_id": "V4_TDX_LOCAL_SNAPSHOT_CANDIDATE_PG_R1",
+              "contract_version": "1.0.0", "candidate_status": "DIAGNOSTIC_ONLY",
+              "snapshot_id": manifest["snapshot_id"], "content_digest": manifest["content_digest"],
+              "manifest": manifest, "AS_RECORDED": False, "PIT_ELIGIBLE": False,
+              "accepted_head": False}
+    binding = store.append("tdx_local_snapshot_candidate", manifest["snapshot_id"], record,
+                           migration_timeout_seconds=120)
+    if store.read(binding) != record:
+        raise LocalSnapshotError("LOCAL_SNAPSHOT_PG_READBACK_MISMATCH")
+    return binding
+
+
+def _read_manifest_pg(snapshot_root: Path, snapshot_id: str):
+    store = _snapshot_store(snapshot_root)
+    for binding in store.refs("tdx_local_snapshot_candidate"):
+        if binding.get("pg_descriptor", {}).get("fact_key") == snapshot_id:
+            record = store.read(binding)
+            manifest = record.get("manifest")
+            if (record.get("contract_id") != "V4_TDX_LOCAL_SNAPSHOT_CANDIDATE_PG_R1"
+                    or record.get("snapshot_id") != snapshot_id
+                    or not isinstance(manifest, dict)
+                    or manifest.get("content_digest") != record.get("content_digest")
+                    or record.get("accepted_head") is not False):
+                raise LocalSnapshotError("LOCAL_SNAPSHOT_PG_IDENTITY_INVALID")
+            return manifest, binding
+    return None
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -137,9 +175,11 @@ def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]
                 if not stored.is_file() or stored.stat().st_size != item["byte_count"] or _sha256(stored) != item["sha256"]:
                     raise LocalSnapshotError("IMMUTABLE_SNAPSHOT_CONTENT_CHANGED")
             shutil.rmtree(staging)
-            return {"snapshot_id": snapshot_id, "manifest_path": str(prior_path), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "status": "REUSED_IDENTICAL_SNAPSHOT"}
+            binding = _persist_manifest_pg(output_root, prior)
+            return {"snapshot_id": snapshot_id, "manifest_path": str(prior_path), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "pg_binding": binding, "status": "REUSED_IDENTICAL_SNAPSHOT"}
         os.replace(staging, final)
-        return {"snapshot_id": snapshot_id, "manifest_path": str(final / "snapshot_manifest.json"), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "status": "SNAPSHOT_CREATED"}
+        binding = _persist_manifest_pg(output_root, manifest)
+        return {"snapshot_id": snapshot_id, "manifest_path": str(final / "snapshot_manifest.json"), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "pg_binding": binding, "status": "SNAPSHOT_CREATED"}
     except Exception:
         shutil.rmtree(staging, ignore_errors=True)
         raise
@@ -149,7 +189,15 @@ def verify_local_snapshot(snapshot_root: Path, snapshot_id: str) -> dict[str, An
     """Re-hash a project snapshot without consulting or writing the source TDX root."""
     snapshot = (snapshot_root / snapshot_id).resolve(strict=True)
     manifest_path = snapshot / "snapshot_manifest.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    pg_manifest = _read_manifest_pg(snapshot_root, snapshot_id)
+    if pg_manifest is None:
+        # A never-ingressed immutable snapshot manifest is a source boundary.
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        binding = _persist_manifest_pg(snapshot_root, manifest)
+        pg_manifest = _read_manifest_pg(snapshot_root, snapshot_id)
+        if pg_manifest is None or pg_manifest[1] != binding:
+            raise LocalSnapshotError("LOCAL_SNAPSHOT_PG_INGRESS_READBACK_REQUIRED")
+    manifest, binding = pg_manifest
     if manifest.get("snapshot_id") != snapshot_id or manifest.get("content_digest_algorithm") != "SHA256(sorted relative_path NUL byte_count NUL file_sha256 LF)":
         raise LocalSnapshotError("LOCAL_SNAPSHOT_MANIFEST_IDENTITY_MISMATCH")
     digest = hashlib.sha256()
@@ -186,4 +234,5 @@ def verify_local_snapshot(snapshot_root: Path, snapshot_id: str) -> dict[str, An
         "file_count": len(seen),
         "byte_count": total_bytes,
         "manifest_path": str(manifest_path),
+        "pg_binding": binding,
     }

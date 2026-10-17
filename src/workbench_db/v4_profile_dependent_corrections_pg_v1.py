@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 from v4.state_identity import digest as row_digest
 from workbench_analysis.r43_operational_publication import digest
-from workbench_analysis.r43_owner_replay import checked
 from .v4_operational_owner_pg_closeout import (
     append_authority_manifest, attest_cached, descriptor_metadata,
     inline_descriptor, prepare as append, read as read_fact,
@@ -35,8 +34,12 @@ def prepare(root,candidate,patches):
         if set(domains)!={'focus','prewatch'}:raise ValueError('DEPENDENT_CORRECTION_DOMAINS_REQUIRED')
         entries[day]={}
         for domain,source in domains.items():
-            document=json.loads(checked(root,source).read_bytes())
+            from .v4_historical_source_ingress_pg_r1 import admit_bound
+            admitted=admit_bound(root,source)
+            document=json.loads(admitted['raw'])
             if document.get('contract_id')!=CONTRACT or document.get('T0')!=day or document.get('domain')!=domain or document.get('original')!=candidate['owners'][day][domain] or document.get('publication_ready') is not False:raise ValueError('DEPENDENT_CORRECTION_CONTEXT_MISMATCH')
+            if document.get('source'):
+                admit_bound(root,document['source'])
             fact_identity=digest(dict(contract_id=CONTRACT,T0=day,domain=domain,source=source));kind='reference_profile_dependent_'+domain
             descriptor=append(root,fact_identity,day,kind,source,document['rows'])
             if read_fact(root,descriptor,fact_identity,day,kind,source)!=document['rows']:raise ValueError('DEPENDENT_CORRECTION_FULL_PG_PAYLOAD_DIFFERENCE')

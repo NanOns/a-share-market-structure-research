@@ -40,7 +40,13 @@ class PublicationReadError(ValueError):
 
 def reader_dsn(environ: Mapping[str, str] | None = None) -> str:
     """Reuse the project's existing read configuration; reads are transaction-RO."""
-    env = os.environ if environ is None else environ
+    if environ is None:
+        from .v4_native import configured_reader_dsn
+        try:
+            return configured_reader_dsn()
+        except RuntimeError as exc:
+            raise PublicationReadError("PG_READ_ENV_UNAVAILABLE") from exc
+    env = environ
     value = env.get("WORKBENCH_PG_DSN")
     if not value:
         raise PublicationReadError("PG_READ_ENV_UNAVAILABLE")

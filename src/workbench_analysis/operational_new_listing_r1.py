@@ -128,7 +128,7 @@ def admitted_identity(root,day,gate,freeze):
             from .baostock_supplemental import RequestBudget
             from .operational_baostock_client_v1 import BaoStockClient
             from .operational_runtime_acceptance_v2 import load as runtime_manifest
-            manifest=runtime_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
+            manifest=runtime_manifest(project_root=root,target_date=day)
             with BaoStockClient(RequestBudget(request_ledger_path(root)),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
                 for code in pending:
                     started=datetime.now(timezone.utc).isoformat()

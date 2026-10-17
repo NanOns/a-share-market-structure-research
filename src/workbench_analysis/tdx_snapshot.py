@@ -47,6 +47,8 @@ def verify_zip_snapshot(
     inventory: dict[str, dict[str, str]],
     expected_entry_count: int,
     expected_content_digest: str,
+    *, project_root: Path | None = None, target_date: str | None = None,
+    source_role: str = "CURRENT",
 ) -> dict[str, object]:
     """Match every ZIP member to an extracted hash-bound inventory row.
 
@@ -106,10 +108,38 @@ def verify_zip_snapshot(
         actual_digest = digest.hexdigest()
         if actual_digest != expected_content_digest:
             raise SnapshotIntegrityError("EXTRACTED_CONTENT_DIGEST_MISMATCH")
-        return {
+        result = {
             "status": "PASS",
             "member_count": len(members),
             "expanded_bytes": total_bytes,
             "content_digest": actual_digest,
             "archive_sha256": sha256_file(archive_path),
         }
+        if project_root is not None:
+            from datetime import date, datetime, timezone
+            from workbench_db.v4_forward_pg_r1 import ForwardFactStore, canonical, digest
+            if source_role not in {"PARENT", "CURRENT"} or not isinstance(target_date,str):
+                raise SnapshotIntegrityError("TDX_SOURCE_PG_ROLE_AND_T0_REQUIRED")
+            date.fromisoformat(target_date)
+            archive_path=Path(archive_path).resolve()
+            if not archive_path.is_relative_to(Path(project_root).resolve()):
+                raise SnapshotIntegrityError("TDX_SOURCE_PG_ARCHIVE_OUTSIDE_WORKSPACE")
+            record={"contract_id":"V4_TDX_VERIFIED_EXTRACTION_CANDIDATE_PG_R1",
+                "contract_version":"1.0.0","candidate_status":"DIAGNOSTIC_ONLY",
+                "source_identity":{"source_id":f"TDX_OFFICIAL_{source_role}_PACKAGE_R1",
+                    "source_role":source_role,"T0":target_date,
+                    "package_sha256":result['archive_sha256'],"package_bytes":archive_path.stat().st_size,
+                    "extracted_content_sha256":actual_digest,"member_count":len(members),
+                    "first_available_at":None,"first_available_status":"NOT_ESTABLISHED",
+                    "AS_RECORDED":False,"PIT_ELIGIBLE":False},
+                "inventory":{k:{"byte_count":str(v['byte_count']),"sha256":v['sha256']} for k,v in sorted(inventory.items())},
+                "verified_at":datetime.now(timezone.utc).isoformat(),
+                "AS_RECORDED":False,"PIT_ELIGIBLE":False,"accepted_head":False}
+            key=digest(canonical(record))
+            store=ForwardFactStore(Path(project_root),'data/v4/historical_source_ingress_pg_r1')
+            binding=store.append('tdx_verified_extraction_candidate',key,record,migration_timeout_seconds=120)
+            if store.read(binding)!=record:raise SnapshotIntegrityError('TDX_SOURCE_PG_READBACK_MISMATCH')
+            result['pg_candidate']={"binding":binding,"readback":"PASS",
+                "source_id":record['source_identity']['source_id'],"T0":target_date,
+                "candidate_status":"DIAGNOSTIC_ONLY","first_available_at":None}
+        return result

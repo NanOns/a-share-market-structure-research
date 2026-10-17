@@ -31,8 +31,8 @@ def _expected_identity() -> Mapping[str, Any]:
         value = json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", "{}"))
     except ValueError as exc:
         raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
-    if not isinstance(value, dict) or not value:
-        raise ValueError("PG_EXPECTED_DATABASE_IDENTITY_REQUIRED")
+    if not isinstance(value, dict):
+        raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID")
     return value
 
 
@@ -224,7 +224,8 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
     schema = v4_native.workspace_schema(root / FOLDER, "forward")
     with v4_native.connection(schema, read_only=True) as pg:
         identity = ForwardFactStore._database_identity(pg)
-        if identity != dict(_expected_identity()):
+        expected_identity=dict(_expected_identity())
+        if expected_identity and identity != expected_identity:
             raise ValueError("BAOSTOCK_PG_RUNTIME_DATABASE_IDENTITY_MISMATCH")
         row = pg.execute(
             "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",

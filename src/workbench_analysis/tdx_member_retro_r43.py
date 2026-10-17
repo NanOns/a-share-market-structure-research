@@ -66,6 +66,36 @@ def digest(rows):
     return hashlib.sha256(json.dumps(rows,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
+def _membership_candidate(root,snapshot,rows=None):
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore,canonical,digest as pg_digest
+    store=ForwardFactStore(Path(root),'data/v4/historical_source_ingress_pg_r1')
+    key=pg_digest(canonical({'membership_snapshot_id':snapshot['membership_snapshot_id'],
+                             'membership_observed_at':snapshot['membership_observed_at']}))
+    bindings=store.refs('tdx_membership_candidate')
+    binding=next((b for b in bindings if b.get('pg_descriptor',{}).get('fact_key')==key),None)
+    if binding:
+        record=store.read(binding)
+        if (record.get('contract_id')!='V4_TDX_MEMBER_SNAPSHOT_CANDIDATE_PG_R1'
+                or record.get('snapshot_id')!=snapshot['membership_snapshot_id']
+                or digest(record.get('rows',[]))!=snapshot['member_digest']
+                or record.get('accepted_head') is not False):raise ValueError('TDX_MEMBER_PG_CANDIDATE_IDENTITY_MISMATCH')
+        return dict(binding=binding,record=record)
+    if rows is None:rows=gzrows(checked(root,snapshot['memberships']))
+    if digest(rows)!=snapshot['member_digest']:raise ValueError('TDX_MEMBER_PG_INGRESS_DIGEST_MISMATCH')
+    record={'contract_id':'V4_TDX_MEMBER_SNAPSHOT_CANDIDATE_PG_R1','contract_version':'1.0.0',
+        'candidate_status':'DIAGNOSTIC_ONLY','snapshot_id':snapshot['membership_snapshot_id'],
+        'membership_observed_at':snapshot['membership_observed_at'],'trade_date':snapshot.get('trade_date'),
+        'taxonomy':snapshot['taxonomy'],'membership_mode':snapshot['membership_mode'],
+        'knowledge_lineage':snapshot['knowledge_lineage'],'member_digest':snapshot['member_digest'],
+        'row_count':len(rows),'source_bindings':snapshot['sources'],'identity_source':snapshot['identity_source'],
+        'rows':rows,'AS_RECORDED':False,'PIT_ELIGIBLE':False,'accepted_head':False}
+    binding=store.append('tdx_membership_candidate',key,record,migration_timeout_seconds=120)
+    readback=store.read(binding)
+    if readback!=record or digest(readback['rows'])!=snapshot['member_digest']:
+        raise ValueError('TDX_MEMBER_PG_CANDIDATE_READBACK_MISMATCH')
+    return dict(binding=binding,record=readback)
+
+
 def validate_snapshot(snapshot, root, *, strict_pit=False):
     if strict_pit:raise ValueError('LATEST_MEMBERSHIP_NOT_STRICT_PIT')
     if snapshot['membership_mode']!=MODE or snapshot['taxonomy']!='TDX_INDUSTRY_CONCEPT':
@@ -82,7 +112,8 @@ def validate_snapshot(snapshot, root, *, strict_pit=False):
     if len(snapshot['sources'])!=3:raise ValueError('COMPLETE_TDX_SOURCE_REQUIRED')
     for source in snapshot['sources']:checked(root,source)
     identity={r['source_security_key'].upper():r['security_id'] for r in load(checked(root,snapshot['identity_source']))['rows'] if r.get('identity_status')=='IDENTITY_BOUND'}
-    rows=gzrows(checked(root,snapshot['memberships']))
+    candidate=_membership_candidate(root,snapshot)
+    rows=candidate['record']['rows']
     if digest(rows)!=snapshot['member_digest']:raise ValueError('MEMBER_SET_DIGEST_MISMATCH')
     names={};keys=set()
     for r in rows:
@@ -134,7 +165,9 @@ def reparse_verification(root, output=None):
 def capture(root):
     root=Path(root).resolve();out=root/EVIDENCE;pointer=out/'MEMBER_SNAPSHOT_S.json'
     if pointer.exists():
-        snapshot=load(pointer);validate_snapshot(snapshot,root);return snapshot
+        snapshot=load(pointer);validate_snapshot(snapshot,root)
+        snapshot['pg_candidate']=_membership_candidate(root,snapshot)['binding']
+        return snapshot
     now=datetime.now(timezone(timedelta(hours=8))).isoformat();tdx=resolve_tdx_root(root)
     sources=[]
     for name in ('tdxhy.cfg','tdxzs.cfg','infoharbor_block.dat'):
@@ -169,6 +202,7 @@ def capture(root):
     diffs.extend(dict(kind='NAME_CHANGE',sector_id=s,old_name=oldnames[s],new_name=newnames[s]) for s in sorted(oldnames.keys()&newnames.keys()) if oldnames[s]!=newnames[s])
     diff=gzwrite(root,out/'02_TDX_MEMBER_SNAPSHOT_S_AND_0930_PIT_DIFF.jsonl.gz',diffs)
     write(pointer,snapshot)
+    snapshot['pg_candidate']=_membership_candidate(root,snapshot,rows)['binding']
     inventory=[dict(path=str(p),bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest(),parser_role='NOT_REQUIRED: full industry/concept relations recovered from supported cfg/infoharbor') for p in tdx.rglob('block_*.dat')]
     write(out/'01_LATEST_TDX_INDUSTRY_CONCEPT_CAPTURE_LEDGER.json',dict(snapshot=ref(root,pointer),sources=sources,
         parser=ref(root,root/'src/sector/membership_snapshot.py'),block_reader=ref(root,root/'src/tdx/block_reader.py'),

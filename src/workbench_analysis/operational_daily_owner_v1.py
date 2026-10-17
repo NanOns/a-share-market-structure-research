@@ -215,7 +215,7 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         from .baostock_supplemental import RequestBudget
         from .operational_baostock_client_v1 import BaoStockClient
         from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest
-        manifest=load_runtime_acceptance_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
+        manifest=load_runtime_acceptance_manifest(project_root=root,target_date=day)
         with BaoStockClient(RequestBudget(request_ledger),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
             for target in missing:
                 cache=root/'data/v4/dynamic_daily_sources/dated_universe'/target/'query_all_stock.json'

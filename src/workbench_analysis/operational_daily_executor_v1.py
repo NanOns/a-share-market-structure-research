@@ -101,11 +101,10 @@ def _capture_optional_daily_sources(root, day, freeze_binding):
 
 
 def _pg_source_ingest_plan_diagnostic(root, day, result):
-    """Bridge the actual executor evidence into the PG adapter without IO.
+    """Persist captured bytes as an explicit PG diagnostic candidate.
 
-    This deliberately reports the adapter's readiness decision only. The
-    executor never turns its own clock/source gate into independent acceptance
-    authority and never persists a package or changes a publication Head.
+    Candidate storage does not grant source acceptance, publication, PIT, or
+    Head authority. Those states still require their separate evidence.
     """
     freeze = result.get('source_freeze')
     readiness = result.get('source_readiness')
@@ -116,6 +115,7 @@ def _pg_source_ingest_plan_diagnostic(root, day, result):
             CONTRACT_ID as SOURCE_INGEST_CONTRACT_ID,
             CONTRACT_VERSION as SOURCE_INGEST_CONTRACT_VERSION,
             build_source_ingest_plan,
+            persist_diagnostic_source_candidate,
         )
         plan = build_source_ingest_plan(root, trade_date=day,
                                         source_freeze=freeze,
@@ -127,12 +127,26 @@ def _pg_source_ingest_plan_diagnostic(root, day, result):
                     contract_version='1.0.0', trade_date=day,
                     status='BRIDGE_BLOCKED', acceptance_status=str(exc),
                     write_mode='PLAN_ONLY_NO_DATABASE_IO', persisted=False)
+    if plan.get('status') == 'DIAGNOSTIC_ONLY':
+        try:
+            persisted = persist_diagnostic_source_candidate(root, plan)
+        except Exception as exc:
+            return dict(contract_id=plan['contract_id'], contract_version=plan['contract_version'],
+                trade_date=plan['trade_date'], package_id=plan['package_id'],
+                package_sha256=plan['package_sha256'], status=plan['status'],
+                acceptance_status=plan['acceptance_status'],
+                write_mode='PG_DIAGNOSTIC_CANDIDATE_APPEND', persisted=False,
+                persistence_error=str(exc))
+    else:
+        persisted = dict(persisted=False, write_mode='ACCEPTED_PACKAGE_REQUIRES_PUBLICATION_TRANSACTION')
     return dict(contract_id=plan['contract_id'], contract_version=plan['contract_version'],
                 trade_date=plan['trade_date'], package_id=plan['package_id'],
                 package_sha256=plan['package_sha256'], status=plan['status'],
                 acceptance_status=plan['acceptance_status'],
                 source_fact_count=len(plan['source_facts']),
-                write_mode=plan['write_mode'], persisted=False)
+                write_mode=persisted.get('write_mode','PG_DIAGNOSTIC_CANDIDATE_APPEND'),
+                persisted=persisted.get('persisted',False),pg_readback=persisted.get('readback'),
+                pg_binding=persisted.get('binding'))
 
 def probe_source_revision(day):
     """Three bounded metadata requests; never download ZIP or query full market."""
@@ -181,7 +195,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root
     snapshot=resolve_tdx_snapshot_root(root)
     tdx_root=resolve_tdx_root(root)
-    package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root)
+    package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,
+                                       pg_candidate=True,target_trade_date=day,source_role='CURRENT')
     if not package.get('download'):
         return dict(status='WAIT_TDX',reason='LATEST_OFFICIAL_PACKAGE_NOT_FROZEN')
     bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
@@ -193,7 +208,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     checked_at=package.get('downloaded_at') or package['observed_at']
     if (bars['status']!='TARGET_BARS_EXTRACTED' and package['provider_package_date']>=day
             and datetime.fromisoformat(checked_at)<gate<=datetime.now(timezone.utc)):
-        package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,force_refresh=True)
+        package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,force_refresh=True,
+                                           pg_candidate=True,target_trade_date=day,source_role='CURRENT')
         if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
         bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
     manifest_mode=_runtime_acceptance_source_mode()
@@ -225,12 +241,19 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     package,bars,local_receipt=fallback(package,bars,day,normalized['daily']['rows'],snapshot_root=snapshot)
     if bars['status']!='TARGET_BARS_EXTRACTED':
         return dict(status='WAIT_TDX',reason='ACTUAL_TARGET_SESSION_NOT_IN_VERIFIED_NATIVE_SOURCES',tdx=bars['artifact'])
+    from .tdx_latest_daily_source_v2 import persist_target_candidate_pg
+    tdx_pg_candidate=persist_target_candidate_pg(root,package,bars)
+    # The source ZIP/local snapshot are bounded SourceIngress only. Daily
+    # derivation consumes the exact rowset read back from its PG fact.
+    bars=dict(bars,target_bars=tdx_pg_candidate.pop('rows'),
+              row_count=tdx_pg_candidate['row_count'])
     available=max(datetime.fromisoformat(raw['observed_at']),datetime.fromisoformat(bars['source_available_at'])).isoformat()
     artifact=dict(contract_id='DYNAMIC_DAILY_SOURCE_FREEZE_V1',target_session=day,
         observed_at=available,tdx_source_available_at=bars['source_available_at'],AS_RECORDED=False,PIT_ELIGIBLE=False,
         tdx=bars['artifact'],native_baostock=dict(path=raw_path.relative_to(root).as_posix(),sha256=tdx.sha256_file(raw_path)),
         runtime_manifest=dict(path=immutable_manifest.relative_to(root).as_posix(),sha256=tdx.sha256_file(immutable_manifest)),
         effective_package=package,
+        tdx_target_candidate_pg=tdx_pg_candidate,
         normalized=normalized,canonical_qfq_authority='TDX_GBBQ_UNCHANGED',
         factor_role='AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY')
     if manifest_mode=='PG':

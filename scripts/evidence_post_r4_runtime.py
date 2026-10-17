@@ -13,28 +13,30 @@ from replay_r4_post_audit_runtime import read, ROUTES
 def main():
     evidence = ROOT / 'docs/evidence/v4_r4_post_audit_repair_20261010/01_E_RUNTIME'
     context = json.loads(read('context')['response_body'])
-    token = context['context_token']
+    context_token_value = context['context_token']
     sample_requests = [
         ('stocks', dict(q='688349', trade_date='2026-09-30')),
         ('stocks/SEC-C08B6C24E4F39D8E85C03F8588661538', {}),
         ('market/breadth', {}), ('market/axes', {}), ('forward', {})]
-    actual = [dict(route=route, **read(route, dict(context_token=token, **q)))
+    actual = [dict(route=route, **read(route, dict(context_token=context_token_value, **q)))
               for route, q in sample_requests]
     atomic_json(ROOT, evidence / 'E_LIVE_28765_EXTRA_REQUESTS.json', actual)
     bff = CoreProductBFFR1(accepted_api(ROOT), None)
     new = []
     for route in ('context',) + ROUTES + ('market/breadth', 'market/axes'):
-        query = {} if route == 'context' else dict(context_token=token)
+        query = {} if route == 'context' else dict(context_token=context_token_value)
         code, data = bff.get('/api/v4/' + route, query)
         new.append(dict(route=route, code=code, status=data.get('status'),
                         reason=data.get('reason'), reason_text=data.get('reason_text'),
                         context_token=data.get('context_token'), payload=data))
-    code, old = bff.get('/api/v4/stocks', dict(context_token=token, q='688349', trade_date='2026-09-30'))
+    code, old = bff.get('/api/v4/stocks', dict(context_token=context_token_value, q='688349', trade_date='2026-09-30'))
     new.append(dict(route='stocks historical 688349', code=code, payload=old))
     atomic_json(ROOT, evidence / 'E_NEW_CODE_READBACK_SEPARATE_FROM_PROD.json', dict(
         scope='IN_PROCESS_NEW_CODE_READ_ONLY_NOT_28765_OR_DOM', records=new))
-    attestation_path=ROOT/'runtime/r4_product_loaded_modules.json'
-    attestation=json.loads(attestation_path.read_bytes()) if attestation_path.is_file() else None
+    from workbench_db.v4_startup_attestation_pg_r1 import read_latest as read_startup_attestation
+    try: attestation_record=read_startup_attestation(ROOT)
+    except ValueError: attestation_record=None
+    attestation=attestation_record['attestation'] if attestation_record else None
     active_pid=attestation['pid'] if attestation else 41528
     ps = ['powershell', '-NoProfile', '-Command',
           f"Get-CimInstance Win32_Process -Filter 'ProcessId = {active_pid}' | Select-Object ProcessId,ParentProcessId,ExecutablePath,CommandLine | ConvertTo-Json -Compress"]
@@ -63,13 +65,15 @@ def main():
         user_steps=[
             'If the original launcher still exposes a documented Stop/Exit action, use it and verify PID 41528 exits. The observed process itself has no console/window and no stop HTTP endpoint; Ctrl+C on a different terminal cannot close it.',
             'Do not use taskkill, Stop-Process, ACL changes, logout, restart or an injected shutdown helper under this task.',
-            'After normal exit, verify Get-NetTCPConnection -LocalPort 28765 -State Listen returns no listener, then in G:/codex work/大A交易 run E:/python/python.exe -B scripts/start_product_attested_r4.py in a console. Stop this future console with Ctrl+C.',
+            'After normal exit, verify the configured production listener is unchanged, then use the repository Python launcher to run scripts/start_product_attested_r4.py in a console. Stop that console with Ctrl+C.',
             'Read runtime/r4_product_loaded_modules.json and replay scripts/replay_r4_post_audit_runtime.py; repeat browser acceptance before requesting external sign-off.'],
         attestation_available=False, loaded_module_bytes='NOT_PROVEN_IN_OLD_PROCESS'))
     print(json.dumps(dict(actual=[dict(route=x['route'],code=x['http_status']) for x in actual],
                           isolated=[dict(route=x['route'],code=x['code']) for x in new], protected=protected)))
 
 if __name__ == '__main__':
+    from common.paths import resolve_ingest_temp_root
+    temp_root=resolve_ingest_temp_root(ROOT)
     for key in ('TMP','TEMP','TMPDIR'):
-        os.environ[key]='G:/codex_tmp'
+        os.environ[key]=str(temp_root)
     main()

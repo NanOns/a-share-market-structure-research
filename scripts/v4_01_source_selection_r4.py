@@ -27,6 +27,15 @@ from workbench_analysis.tdx_local_snapshot import verify_local_snapshot  # noqa:
 from workbench_analysis.tdx_snapshot import sha256_file, verify_zip_snapshot  # noqa: E402
 from workbench_analysis.baostock_supplemental import _atomic_json  # noqa: E402
 
+def read_json_source(path):
+    path=Path(path)
+    relative=path.resolve().relative_to(ROOT).as_posix()
+    if relative.startswith(('reports/','docs/evidence/')):
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+        admitted=ingress_path(ROOT,relative)
+        return admitted['value'] if admitted['value'] is not None else json.loads(admitted['raw'])
+    return json.loads(path.read_text(encoding='utf-8'))
+
 
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
@@ -106,7 +115,7 @@ def main() -> int:
     if sha256_file(package_path) != PACKAGE_SHA:
         raise SystemExit("SOURCE_PACKAGE_HASH_MISMATCH")
     stage_manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_R4_20260925.json"
-    stage_manifest = json.loads(stage_manifest_path.read_text(encoding="utf-8"))
+    stage_manifest = read_json_source(stage_manifest_path)
     if stage_manifest.get("source_bundle_identity", {}).get("source_bundle_id") != BUNDLE_ID:
         raise SystemExit("V4_01_BASE_STAGE_RECEIPT_MISSING_VERIFIED_BUNDLE")
 
@@ -122,9 +131,10 @@ def main() -> int:
     if zip_count != int(bundle["extraction"]["entry_count"]):
         raise SystemExit("EXTRACTION_FILE_COUNT_MISMATCH")
     zip_verification = verify_zip_snapshot(
-        package_path, extracted_root, inventory, zip_count, extraction_digest
+        package_path, extracted_root, inventory, zip_count, extraction_digest,
+        project_root=ROOT,target_date=bundle["target_trade_date"],source_role="CURRENT"
     )
-    prior_manifest = json.loads((ROOT / "reports/v4_01/v4_01_source_manifest_R2_20260925.json").read_text(encoding="utf-8"))
+    prior_manifest = read_json_source(ROOT / "reports/v4_01/v4_01_source_manifest_R2_20260925.json")
     if prior_manifest.get("source", {}).get("extracted_content_digest") != extraction_digest:
         raise SystemExit("EXTRACTION_CONTENT_DIGEST_DIFFERS_FROM_PRIOR_ACCEPTED_SNAPSHOT")
     local_evidence = verify_local_snapshot(ROOT / "data/v4/local_tdx_snapshots", LOCAL_SNAPSHOT_ID)
@@ -145,7 +155,7 @@ def main() -> int:
     session_list = sessions_from_index_chains(extracted_root, 60)
     session_set = set(session_list)
     archive_day = ROOT / "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json"
-    overlap_report = json.loads(archive_day.read_text(encoding="utf-8"))
+    overlap_report = read_json_source(archive_day)
     expected_refresh = int(overlap_report["asset_types"]["A_STOCK"]["source_refresh_volume_revision_rows"])
     if overlap_report.get("asset_types", {}).get("A_STOCK", {}).get("acceptance") != "ACCEPTED_SOURCE_PACKAGE":
         raise SystemExit("V4_00D_A_STOCK_SOURCE_ACCEPTANCE_NOT_PASS")

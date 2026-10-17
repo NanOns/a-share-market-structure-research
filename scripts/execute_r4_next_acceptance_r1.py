@@ -12,6 +12,9 @@ def ref(path):
     path=Path(path);raw=path.read_bytes()
     return dict(path=path.relative_to(ROOT).as_posix(),sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
 def put(name,value):atomic_json(ROOT,OUT/name,value)
+def temp_root():
+    from common.paths import resolve_ingest_temp_root
+    return resolve_ingest_temp_root(ROOT)
 def compact(value):
     if isinstance(value,list):return [compact(x) for x in value[:2]]
     if not isinstance(value,dict):return value
@@ -42,17 +45,18 @@ def entry():
         stages=['E scoped read-only differential','D status correction and isolated SQL','B formal producer decision','C admission counterexamples','FINAL versioned reconciliation'],
         next_stage='Bounded engineering evidence then independent external recheck; no automatic formal release'))
 def runtime():
-    ctx=json.loads(read('context')['response_body']);token=ctx['context_token']
+    ctx=json.loads(read('context')['response_body']);context_token_value=ctx['context_token']
     records=[]
     for route in ROUTES+('market/breadth','market/axes','forward'):
-        for mode,value in [('empty',''),('old','38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40'),('current',token)]:
+        for mode,value in [('empty',''),('old','38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40'),('current',context_token_value)]:
             r=read(route,dict(context_token=value,limit=2,trade_date='2026-10-09'))
             payload=json.loads(r.pop('response_body'));r.update(route=route,mode=mode,payload=compact(payload))
             assert r['http_status']==(200 if mode=='current' else 409),(route,mode,r['http_status'])
             records.append(r)
     for query in [dict(q='688349',trade_date='2026-09-30'),dict(q='301628',trade_date='2026-10-09'),dict(q='688349',trade_date='2026-10-09'),dict(limit=2,offset=2,trade_date='2026-10-09')]:
-        r=read('stocks',dict(context_token=token,**query));r['payload']=compact(json.loads(r.pop('response_body')));records.append(r)
-    att=json.loads((ROOT/'runtime/r4_product_loaded_modules.json').read_bytes())
+        r=read('stocks',dict(context_token=context_token_value,**query));r['payload']=compact(json.loads(r.pop('response_body')));records.append(r)
+    from workbench_db.v4_startup_attestation_pg_r1 import read_latest as read_startup_attestation
+    att=read_startup_attestation(ROOT)['attestation']
     process=json.loads(subprocess.check_output(['powershell','-NoProfile','-Command',f"Get-CimInstance Win32_Process -Filter 'ProcessId={att['pid']}' | Select-Object ProcessId,CreationDate,CommandLine | ConvertTo-Json -Compress"],text=True))
     modules=[dict(module=m['module'],startup_sha=m['source_sha256'],current_sha=hashlib.sha256(Path(m['runtime_module_path']).read_bytes()).hexdigest()) for m in att['modules']]
     put('E_CURRENT_PROCESS_READBACK.json',dict(captured_at=datetime.now(timezone.utc).isoformat(),
@@ -73,7 +77,7 @@ def db_receipts():
     records=[]
     with psycopg.connect('host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated',autocommit=True) as pg:
         directory=Path(pg.execute('show data_directory').fetchone()[0]).resolve()
-        assert directory==Path('G:/codex_tmp/test_temp/r4_next_authority_20261010/data').resolve()
+        assert directory==(temp_root()/'test_temp'/'r4_next_authority_20261010'/'data').resolve()
         for case in ('complete_engineering','expired_grant','missing_prediction'):
             pg.execute('drop schema if exists fep cascade');pg.execute('create schema fep')
             data=complete_rows();request=dict(REQUEST,prediction_id='P')
@@ -98,7 +102,7 @@ def db_receipts():
         status='SOURCE_NOT_PRESENT',next_stage='Independent original-source admission; no model or grant manufactured'))
 def finish():
     import shutil,xml.etree.ElementTree as ET
-    for source,target in [('G:/codex_tmp/r4_next_d_registered.xml','D_NEGATIVE_CANDIDATE_JUNIT.xml'),('G:/codex_tmp/r4_next_c.xml','C_ADMISSION_JUNIT.xml'),('G:/codex_tmp/r4_next_de.xml','DE_CONSUMER_REGRESSION_JUNIT.xml')]:
+    for source,target in [(temp_root()/'r4_next_d_registered.xml','D_NEGATIVE_CANDIDATE_JUNIT.xml'),(temp_root()/'r4_next_c.xml','C_ADMISSION_JUNIT.xml'),(temp_root()/'r4_next_de.xml','DE_CONSUMER_REGRESSION_JUNIT.xml')]:
         raw=Path(source).read_bytes();p=OUT/target;tmp=p.with_suffix('.tmp');tmp.write_bytes(raw);os.replace(tmp,p)
         suite=ET.fromstring(raw).find('testsuite');assert suite is not None
         assert all(suite.get(k,'0')=='0' for k in ('failures','errors','skipped'))
@@ -108,11 +112,13 @@ def finish():
     old=json.loads(original_bytes)
     if not historical.exists():
         tmp=historical.with_suffix('.tmp');tmp.write_bytes(original_bytes);os.replace(tmp,historical)
-    for source,target in [('G:/codex_tmp/r4_next_d.xml','D_INITIAL_UNREGISTERED_CLUSTER_JUNIT.xml'),
+    for source,target in [(temp_root()/'r4_next_d.xml','D_INITIAL_UNREGISTERED_CLUSTER_JUNIT.xml'),
                           (ROOT/'reports/r4_next_acceptance_20261010/ISOLATED_CLUSTER_MANIFEST.json','ISOLATED_CLUSTER_MANIFEST.json')]:
         p=OUT/target;tmp=p.with_suffix('.tmp');tmp.write_bytes(Path(source).read_bytes());os.replace(tmp,p)
-    for name in ('V4_R4_NEXT_ACCEPTANCE_GATES_TASK_R1_20261010.md','V4_R4_POST_AUDIT_EXTERNAL_RECHECK_R2_20261010.md'):
-        p=OUT/name;tmp=p.with_suffix('.tmp');tmp.write_bytes((Path('D:/Users/lps/Desktop/阶段任务')/name).read_bytes());os.replace(tmp,p)
+    task_source_root=os.environ.get('V4_TASK_SOURCE_ROOT')
+    if task_source_root:
+        for name in ('V4_R4_NEXT_ACCEPTANCE_GATES_TASK_R1_20261010.md','V4_R4_POST_AUDIT_EXTERNAL_RECHECK_R2_20261010.md'):
+            p=OUT/name;tmp=p.with_suffix('.tmp');tmp.write_bytes((Path(task_source_root)/name).read_bytes());os.replace(tmp,p)
     entry=json.loads((OUT/'STAGE_CONTRACT.json').read_bytes())
     for head in entry['protected_heads']:assert ref(ROOT/head['path'])==head
     b=json.loads((PREV/'12_BCD_DEVELOPMENT/03_B/B_CURRENT_SOURCE_AND_ENGINEERING_BOUNDARIES.json').read_bytes())
@@ -223,11 +229,11 @@ T0=2026-10-09；两个受保护Head原字节未改变。28765未重启，仍R1�
     files += [ref(ROOT/p) for p in ('src/workbench_analysis/fep_e5/trusted_authority.py','tests/fep_e5/test_canonical_authority_read.py','tests/test_r4_next_real_source_admission.py','scripts/execute_r4_next_acceptance_r1.py','scripts/recheck_r4_next_browser.cjs')]
     put('SHA256_MANIFEST.json',dict(files=files,output_scope='Actual bytes at engineering closeout'))
     import zipfile
-    with zipfile.ZipFile('G:/codex_tmp/V4_R4_NEXT_ACCEPTANCE_LIGHT_20261010.zip','w',zipfile.ZIP_DEFLATED) as z:
+    with zipfile.ZipFile(temp_root()/'V4_R4_NEXT_ACCEPTANCE_LIGHT_20261010.zip','w',zipfile.ZIP_DEFLATED) as z:
         for r in files:
             p=ROOT/r['path'];z.write(p,p.relative_to(ROOT).as_posix())
         z.write(OUT/'SHA256_MANIFEST.json',(OUT/'SHA256_MANIFEST.json').relative_to(ROOT).as_posix())
     print('Versioned closeout and light pack written',flush=True)
 if __name__=='__main__':
-    for k in ('TMP','TEMP','TMPDIR'):os.environ[k]='G:/codex_tmp'
+    for k in ('TMP','TEMP','TMPDIR'):os.environ[k]=str(temp_root())
     globals()[sys.argv[1]]()

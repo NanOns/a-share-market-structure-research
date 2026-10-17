@@ -333,6 +333,7 @@ def main() -> int:
         inventory,
         int(bundle["extraction"]["entry_count"]),
         str(source_manifest["source"]["extracted_content_digest"]),
+        project_root=ROOT,target_date=bundle["target_trade_date"],source_role="CURRENT"
     )
     files = sorted((p for p in extracted_root.rglob("*.day") if p.relative_to(extracted_root).parts[0].lower() in {"sh", "sz", "bj"}), key=lambda p: p.as_posix().casefold())
     expected_files = int(source_manifest["inventory"]["day_file_count"])

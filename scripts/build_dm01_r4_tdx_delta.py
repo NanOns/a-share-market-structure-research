@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from workbench_analysis import dm01_runtime_r4 as r
 from workbench_analysis.dm01_sources_r4 import parent_tdx_package
-from workbench_analysis.tdx_snapshot_delta import build_tdx_package_delta
+from workbench_analysis.tdx_snapshot_delta import build_tdx_package_delta,persist_tdx_delta_candidate_pg
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--target-date',required=True)
@@ -32,11 +32,13 @@ def main():
     r.require(args.current_snapshot_id=='sha256-'+r.sha(current),'CURRENT_TDX_SNAPSHOT_HASH_MISMATCH')
     delta=build_tdx_package_delta(parent_zip=r.path(ROOT,parent),current_zip=current,target_date=args.target_date,
         parent_snapshot_id='sha256-'+parent['sha256'],current_snapshot_id=args.current_snapshot_id)
+    pg_candidate=persist_tdx_delta_candidate_pg(ROOT,r.path(ROOT,parent),current,delta)
     location=current.parent/'delta'/args.target_date.replace('-','')
     binding=r.atomic(ROOT,location/('TDX_PACKAGE_DELTA_'+args.target_date.replace('-','')+'.json'),delta,immutable=True)
     value=dict(contract_id='DM01_R4_TDX_DELTA_BUILD_RECEIPT_V1',status=delta['status'],target_date=args.target_date,
         parent_data_head=gate['parent']['binding'],parent_snapshot_id='sha256-'+parent['sha256'],
-        current_snapshot_id=args.current_snapshot_id,delta_path=str(ROOT/binding['path']),delta_sha256=binding['sha256'],tdx_root_write_count=0)
+        current_snapshot_id=args.current_snapshot_id,delta_path=str(ROOT/binding['path']),delta_sha256=binding['sha256'],
+        pg_candidate=pg_candidate,tdx_root_write_count=0)
     r.atomic(ROOT,location/'tdx_delta_build_receipt.json',value,immutable=True)
     print(json.dumps(value));return 0 if delta['status']=='READY' else 2
 

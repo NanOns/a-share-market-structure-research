@@ -12,21 +12,31 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from workbench_analysis.tdx_snapshot_delta_v2 import build_typed_delta,file_sha,digest
+from workbench_analysis.tdx_snapshot_delta import persist_tdx_delta_candidate_pg
 from workbench_analysis.tdx_official_daily_source import _atomic_write
 from workbench_analysis.dm01_sources_r4 import parent_tdx_package
 
 OUT=ROOT/'docs/evidence/r4_2_1_20261009'
+SOURCE_ACQUISITION_ROOT=ROOT/'docs'/'evidence'/'source_acquisition_r4_20261009'
+PRIOR_AUDIT_ROOT=ROOT/'docs'/'evidence'/'r4_1_audit_repair_r1_20261009'
 DATES=['2026-09-28','2026-09-29','2026-09-30','2026-10-08']
 
 
-def load(p):return json.loads(Path(p).read_bytes())
+def load(p):
+    p=Path(p)
+    relative=p.resolve().relative_to(ROOT).as_posix()
+    if relative.startswith(('docs/evidence/','reports/')):
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+        return ingress_path(ROOT,relative)['value']
+    return json.loads(p.read_bytes())
 
 
 def ref(p):return dict(path=p.relative_to(ROOT).as_posix(),sha256=file_sha(p),bytes=p.stat().st_size)
 
 
 def write(p,v):
-    _atomic_write(p,(json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode(),tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    _atomic_write(p,(json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode(),tdx_root=resolve_tdx_root(ROOT))
 
 
 def inputs():
@@ -36,8 +46,8 @@ def inputs():
     ids={r['source_security_key'].upper():r for r in load(ip)['rows']
          if r['security_type']=='A_STOCK' and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT')}
     pb=parent_tdx_package(ROOT)
-    current=load(ROOT/'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json')['owners'][0]['sources']['package']
-    acq=load(ROOT/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    current=load(SOURCE_ACQUISITION_ROOT/'owner_repair_v1'/'CORE_REPLAY.json')['owners'][0]['sources']['package']
+    acq=load(SOURCE_ACQUISITION_ROOT/'capture'/'acquisition.json')
     members={}; roster_bindings=[]
     for q in acq['queries']:
         if q.get('path') and q['method']=='query_all_stock' and q['params'].get('day') in DATES:
@@ -62,6 +72,7 @@ def main():
             consulted_upgrade='R4_2_1_TASK_CONTRACT.md',acceptance='IN_PROGRESS',next_stage='TYPED_DELTA_AND_TAXONOMY_ISOLATION'))
     result=build_typed_delta(parent_zip=ROOT/pb['path'],current_zip=ROOT/cb['path'],target_dates=DATES,
         identities=ids,identity_binding=ib,policy_binding=ref(policy),parent_sha256=pb['sha256'],current_sha256=cb['sha256'],dated_members=members)
+    result['pg_candidate']=persist_tdx_delta_candidate_pg(ROOT,ROOT/pb['path'],ROOT/cb['path'],result,contract_id='TDX_A_STOCK_PACKAGE_DELTA_V2')
     for day,value in result['targets'].items():
         write(OUT/'typed_delta'/day/'delta_v2.json',dict(value,contract_id=result['contract_id'],target_date=day,
               source_scope_policy=ref(policy),AS_RECORDED=False,production_permission=False,
@@ -85,13 +96,14 @@ def main():
         rs.sort(key=lambda r:r['security_id'])
         if rs!=result['targets'][day]['target_bars']:errors.append(day+':TARGET_ROWS_MISMATCH')
     manifest=result.pop('entry_manifest')
-    _atomic_write(OUT/'TYPED_ENTRY_MANIFEST.jsonl.gz',gzip.compress(b''.join((json.dumps(r,sort_keys=True)+'\n').encode() for r in manifest),mtime=0),tdx_root=Path('D:/new_tdx'))
-    existing=load(ROOT/'docs/evidence/r4_1_audit_repair_r1_20261009/OFFICIAL_PACKAGE_STRICT_DELTA_BLOCKERS.json')
+    from common.paths import resolve_tdx_root
+    _atomic_write(OUT/'TYPED_ENTRY_MANIFEST.jsonl.gz',gzip.compress(b''.join((json.dumps(r,sort_keys=True)+'\n').encode() for r in manifest),mtime=0),tdx_root=resolve_tdx_root(ROOT))
+    existing=load(PRIOR_AUDIT_ROOT/'OFFICIAL_PACKAGE_STRICT_DELTA_BLOCKERS.json')
     bad={r['path'].lower() for r in existing['entries']}
     sample=[r for r in manifest if r['path'] in bad]+[r for r in manifest if r.get('inferred_type')=='A_STOCK_CANONICAL'][:10]
     text=io.StringIO(newline='');writer=csv.DictWriter(text,fieldnames=sorted(set(k for r in sample for k in r)));writer.writeheader()
     writer.writerows({k:json.dumps(v,ensure_ascii=False) if isinstance(v,(dict,list)) else v for k,v in r.items()} for r in sample)
-    _atomic_write(OUT/'OFFICIAL_ZIP_TYPED_ENTRY_VALIDATION.csv',text.getvalue().encode('utf-8-sig'),tdx_root=Path('D:/new_tdx'))
+    _atomic_write(OUT/'OFFICIAL_ZIP_TYPED_ENTRY_VALIDATION.csv',text.getvalue().encode('utf-8-sig'),tdx_root=resolve_tdx_root(ROOT))
     for day,v in result['targets'].items():
         v.pop('target_bars')
         v['binding']=ref(OUT/'typed_delta'/day/'delta_v2.json')

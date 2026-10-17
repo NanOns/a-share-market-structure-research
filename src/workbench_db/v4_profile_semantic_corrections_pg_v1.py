@@ -30,11 +30,13 @@ def prepare(root,candidate,patches):
     root=Path(root);entries={}
     if set(patches)!=set(candidate['owners']):raise ValueError('PROFILE_CORRECTION_DATE_SCOPE_REQUIRED')
     for day,source in patches.items():
-        document=json.loads(checked(root,source).read_bytes())
+        from .v4_historical_source_ingress_pg_r1 import admit_bound
+        admitted=admit_bound(root,source)
+        document=json.loads(admitted['raw'])
         if document.get('contract_id')!=CONTRACT or document.get('T0')!=day or document.get('original_profile')!=candidate['owners'][day]['profile']:
             raise ValueError('PROFILE_CORRECTION_SOURCE_SCOPE_MISMATCH')
         if any(document.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED','publication_ready')):raise ValueError('PROFILE_CORRECTION_CAPABILITY_ESCALATION')
-        checked(root,document['source']);fact_identity=digest(dict(contract_id=CONTRACT,T0=day,source=source))
+        admit_bound(root,document['source']);fact_identity=digest(dict(contract_id=CONTRACT,T0=day,source=source))
         domain='reference_profile_semantic_corrections';descriptor=append(root,fact_identity,day,domain,source,document['rows'])
         if read_fact(root,descriptor,fact_identity,day,domain,source)!=document['rows']:raise ValueError('PROFILE_CORRECTION_FULL_PG_PAYLOAD_DIFFERENCE')
         descriptor=inline_descriptor(root,descriptor)

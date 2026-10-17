@@ -17,8 +17,6 @@ from pathlib import Path
 import re
 from typing import Any, Mapping
 
-from cryptography.exceptions import InvalidSignature
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 
 CONTRACT_ID = "V4_DAILY_SOURCE_INGEST_ADAPTER_R6"
@@ -86,8 +84,12 @@ def _verify_independent_acceptance_authority(plan: Mapping[str, Any]) -> _Indepe
     if receipt.get("receipt_sha256") != receipt_sha:
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_RECEIPT_DIGEST_MISMATCH")
     try:
+        from cryptography.exceptions import InvalidSignature
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
         public_key = Ed25519PublicKey.from_public_bytes(base64.b64decode(issuer["public_key_b64"], validate=True))
         public_key.verify(base64.b64decode(signature_text, validate=True), _canonical(signed))
+    except ImportError as exc:
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_CRYPTO_PROVIDER_UNAVAILABLE") from exc
     except (KeyError, TypeError, ValueError, InvalidSignature) as exc:
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_SIGNATURE_INVALID") from exc
     manifest = plan.get("package_manifest")
@@ -211,6 +213,84 @@ def _load_bound_file(root: Path, ref: Mapping[str, Any], *, code: str) -> tuple[
     if actual != expected:
         raise SourceIngestError(code + "_DIGEST_MISMATCH")
     return path, actual, path.stat().st_size
+
+
+def _tdx_package_metadata(freeze: Mapping[str, Any], trade_date: str) -> list[dict[str, Any]]:
+    """Build separately identified, date-bound TDX package source facts.
+
+    ZIP bytes remain in the configured read-only source snapshot. The PG fact
+    stores their verified immutable identity, source revision and first
+    availability clock, while the normalized target-session rows are stored
+    as their own byte-bound source fact below.
+    """
+    effective = freeze.get("effective_package")
+    if not isinstance(effective, Mapping):
+        return []
+    download = effective.get("download")
+    if not isinstance(download, Mapping):
+        return []
+    package_sha = download.get("sha256")
+    byte_count = download.get("bytes")
+    if not isinstance(package_sha, str) or not _SHA256.fullmatch(package_sha):
+        raise SourceIngestError("TDX_PACKAGE_SOURCE_DIGEST_INVALID")
+    if isinstance(byte_count, bool) or not isinstance(byte_count, int) or byte_count <= 0:
+        raise SourceIngestError("TDX_PACKAGE_SOURCE_BYTE_COUNT_INVALID")
+    provider_date = effective.get("provider_package_date", effective.get("update_date"))
+    try:
+        provider_date = date.fromisoformat(str(provider_date)).isoformat()
+    except ValueError as exc:
+        raise SourceIngestError("TDX_PACKAGE_PROVIDER_DATE_INVALID") from exc
+    if provider_date < trade_date:
+        raise SourceIngestError("TDX_PACKAGE_PROVIDER_DATE_PRECEDES_T0")
+    transport = effective.get("source_transport_v2")
+    available_at = (transport.get("received_at") if isinstance(transport, Mapping)
+                    else effective.get("downloaded_at"))
+    available_at = _utc_timestamp(available_at, "TDX_PACKAGE_FIRST_AVAILABLE_AT_INVALID")
+    validation = effective.get("zip_validation")
+    if not isinstance(validation, Mapping) or validation.get("status") != "PASS" or validation.get("crc_integrity") != "PASS":
+        raise SourceIngestError("TDX_PACKAGE_ZIP_VALIDATION_REQUIRED")
+    entry = {
+        "source_id": "TDX_OFFICIAL_DAILY_CURRENT_PACKAGE_R1",
+        "source_key": "tdx_package_current",
+        "provider": "TDX_OFFICIAL_DAILY_PACKAGE",
+        "T0": trade_date,
+        "provider_package_date": provider_date,
+        "source_revision_number": effective.get("source_revision_number"),
+        "package_sha256": package_sha,
+        "package_bytes": byte_count,
+        "first_available_at": available_at,
+        "parser_contract": "TDX_DAY_TARGET_SESSION_V2",
+        "zip_validation": dict(validation),
+        "AS_RECORDED": False,
+        "PIT_ELIGIBLE": False,
+        "source_role": "OFFICIAL_CURRENT_PACKAGE",
+    }
+    revision = entry["source_revision_number"]
+    if isinstance(revision, bool) or not isinstance(revision, int) or revision <= 0:
+        raise SourceIngestError("TDX_PACKAGE_REVISION_NUMBER_INVALID")
+    result = [entry]
+    fallback = effective.get("local_fallback_receipt")
+    if isinstance(fallback, Mapping):
+        fallback_sha = fallback.get("sha256")
+        if not isinstance(fallback_sha, str) or not _SHA256.fullmatch(fallback_sha):
+            raise SourceIngestError("TDX_LOCAL_COMPOSITE_SOURCE_DIGEST_INVALID")
+        result.append({
+            "source_id": "TDX_LOCAL_DATED_FALLBACK_COMPOSITE_R1",
+            "source_key": "tdx_local_composite",
+            "provider": "TDX_READ_ONLY_LOCAL_NATIVE_PLUS_OFFICIAL_PACKAGE",
+            "T0": trade_date,
+            "source_revision_number": 1,
+            "package_sha256": fallback_sha,
+            "package_bytes": None,
+            "first_available_at": available_at,
+            "parser_contract": "TDX_LOCAL_DATED_FALLBACK_V1",
+            "zip_validation": None,
+            "AS_RECORDED": False,
+            "PIT_ELIGIBLE": False,
+            "source_role": "DERIVED_LOCAL_COMPOSITE_CANDIDATE",
+            "official_package_sha256": package_sha,
+        })
+    return result
 
 
 def _utc_timestamp(value: Any, code: str) -> str:
@@ -358,6 +438,20 @@ def build_source_ingest_plan(
         universe_fact["fact_digest"] = hashlib.sha256(_canonical(universe_fact)).hexdigest()
         sources["security_universe"] = universe_fact
 
+    package_sources = _tdx_package_metadata(freeze, target.isoformat())
+    for package in package_sources:
+        metadata_raw = _canonical(package)
+        fact = {
+            "source_key": package["source_key"],
+            "logical_fact_id": f"daily-source:{target.isoformat()}:{package['source_key']}:{package['package_sha256']}",
+            "record_locator": {"embedded_metadata": package, "role": package["source_role"]},
+            "source_fact_sha256": hashlib.sha256(metadata_raw).hexdigest(),
+            "record_count": 1,
+            "byte_count": len(metadata_raw),
+        }
+        fact["fact_digest"] = hashlib.sha256(_canonical(fact)).hexdigest()
+        sources[package["source_key"]] = fact
+
     bindings = [sources[key] for key in sorted(sources)]
     bindings_sha = hashlib.sha256(_canonical(bindings)).hexdigest()
     proposed_acceptance_id = acceptance_receipt.get("acceptance_id") if isinstance(acceptance_receipt, Mapping) else None
@@ -384,6 +478,8 @@ def build_source_ingest_plan(
         "source_readiness_observed_at": (_utc_timestamp(readiness_doc.get("observed_at"), "SOURCE_READINESS_TIME_INVALID")
                                          if isinstance(readiness_doc, Mapping) and readiness_doc.get("observed_at") is not None else None),
         "source_fact_bindings": bindings,
+        "tdx_source_packages": package_sources,
+        "tdx_source_packages_sha256": hashlib.sha256(_canonical(package_sources)).hexdigest(),
         "adjustment_factor_role": freeze.get("factor_role"),
         "package_id": package_id,
         "package_sha256": package_sha,
@@ -619,6 +715,87 @@ def _persist_accepted_source_ingest_plan_transaction(
         pg.execute("ROLLBACK TO SAVEPOINT " + savepoint)
         pg.execute("RELEASE SAVEPOINT " + savepoint)
         raise
+
+
+def persist_diagnostic_source_candidate(project_root: str | Path,
+                                        plan: Mapping[str, Any]) -> dict[str, Any]:
+    """Append a byte-bound, non-accepted daily source candidate to existing PG facts.
+
+    This gives the daily pipeline a real PG landing point without turning a
+    captured source into an accepted package, publication, or PIT authority.
+    The exact input bytes are copied into the immutable fact so later readers
+    no longer depend on the workspace receipt or source artifact remaining in
+    place.
+    """
+    if not isinstance(plan, Mapping) or plan.get("contract_id") != CONTRACT_ID:
+        raise SourceIngestError("SOURCE_INGEST_PLAN_CONTRACT_INVALID")
+    if plan.get("status") == "ACCEPTED":
+        raise SourceIngestError("ACCEPTED_SOURCE_PACKAGE_REQUIRES_PUBLICATION_BOUND_PERSISTENCE")
+    if plan.get("status") != "DIAGNOSTIC_ONLY":
+        raise SourceIngestError("SOURCE_CANDIDATE_STATUS_INVALID")
+    root = Path(project_root).resolve()
+    if root.drive.upper() != "G:":
+        raise SourceIngestError("SOURCE_CANDIDATE_G_ROOT_REQUIRED")
+    manifest = plan.get("package_manifest")
+    facts = plan.get("source_facts")
+    if (not isinstance(manifest, Mapping) or not isinstance(facts, list) or not facts
+            or manifest.get("package_id") != plan.get("package_id")
+            or manifest.get("package_sha256") != plan.get("package_sha256")):
+        raise SourceIngestError("SOURCE_CANDIDATE_MANIFEST_BINDING_INVALID")
+    captured = {}
+    for fact in facts:
+        if not isinstance(fact, Mapping) or not isinstance(fact.get("source_key"), str):
+            raise SourceIngestError("SOURCE_CANDIDATE_FACT_INVALID")
+        locator = fact.get("record_locator")
+        if isinstance(locator, Mapping) and isinstance(locator.get("embedded_metadata"), Mapping):
+            raw = _canonical(locator["embedded_metadata"])
+            actual_sha = hashlib.sha256(raw).hexdigest()
+            byte_count = len(raw)
+        else:
+            relative = locator.get("path") if isinstance(locator, Mapping) else None
+            path, actual_sha, byte_count = _load_bound_file(
+                root, {"path": relative, "sha256": fact.get("source_fact_sha256")},
+                code="SOURCE_CANDIDATE_FACT")
+            raw = path.read_bytes()
+        if len(raw) != byte_count or actual_sha != fact.get("source_fact_sha256"):
+            raise SourceIngestError("SOURCE_CANDIDATE_FACT_READBACK_MISMATCH")
+        captured[fact["source_key"]] = {
+            "source_fact_digest": fact.get("fact_digest"),
+            "source_fact_sha256": actual_sha,
+            "byte_count": byte_count,
+            "record_count": fact.get("record_count"),
+            "raw_base64": base64.b64encode(raw).decode("ascii"),
+        }
+    record = {
+        "contract_id": "V4_DAILY_SOURCE_DIAGNOSTIC_CANDIDATE_PG_R1",
+        "contract_version": "1.0.0",
+        "candidate_status": "DIAGNOSTIC_ONLY",
+        "acceptance_status": plan.get("acceptance_status"),
+        "trade_date": plan.get("trade_date"),
+        "package_id": plan.get("package_id"),
+        "package_sha256": plan.get("package_sha256"),
+        "package_manifest": dict(manifest),
+        "source_facts": [dict(fact) for fact in facts],
+        "source_bytes": captured,
+        "tdx_source_packages": manifest.get("tdx_source_packages", []),
+        "tdx_source_packages_sha256": manifest.get("tdx_source_packages_sha256"),
+        "AS_RECORDED": False,
+        "PIT_ELIGIBLE": False,
+        "publication_id": None,
+        "accepted_head": False,
+    }
+    from .v4_forward_pg_r1 import ForwardFactStore
+    folder = "data/v4/historical_source_ingress_pg_r1"
+    store = ForwardFactStore(root, folder)
+    binding = store.append("daily_source_candidate", str(plan["package_id"]), record,
+                           migration_timeout_seconds=120)
+    readback = store.read(binding)
+    if readback != record:
+        raise SourceIngestConflict("SOURCE_CANDIDATE_PG_READBACK_MISMATCH")
+    return {"contract_id": record["contract_id"], "candidate_status": "DIAGNOSTIC_ONLY",
+            "trade_date": record["trade_date"], "package_id": record["package_id"],
+            "package_sha256": record["package_sha256"], "source_fact_count": len(facts),
+            "persisted": True, "readback": "PASS", "binding": binding}
 
 
 def persist_source_ingest_plan(

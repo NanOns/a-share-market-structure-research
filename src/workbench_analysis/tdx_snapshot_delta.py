@@ -18,6 +18,48 @@ class TDXDeltaError(ValueError):
     pass
 
 
+def persist_tdx_delta_candidate_pg(project_root, parent_zip: Path, current_zip: Path,
+                                  delta: dict[str, Any], *, contract_id: str | None = None):
+    """Bind distinct parent/current package identities and delta rows in PG."""
+    from datetime import datetime, timezone
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore, canonical, digest
+    parent=Path(parent_zip).resolve();current=Path(current_zip).resolve()
+    with parent.open('rb') as stream: parent_sha=hashlib.file_digest(stream,'sha256').hexdigest()
+    with current.open('rb') as stream: current_sha=hashlib.file_digest(stream,'sha256').hexdigest()
+    expected_parent=str(delta.get('parent_snapshot_id') or delta.get('parent_package_sha256') or '').removeprefix('sha256-')
+    expected_current=str(delta.get('current_snapshot_id') or delta.get('current_package_sha256') or '').removeprefix('sha256-')
+    if (parent_sha!=expected_parent or current_sha!=expected_current or parent_sha==current_sha):
+        raise TDXDeltaError('TDX_DELTA_PG_SOURCE_PACKAGE_IDENTITY_MISMATCH')
+    target_date=delta.get('target_date')
+    if target_date is None and delta.get('target_dates'):
+        target_date=delta['target_dates'][-1]
+    if not isinstance(target_date,str):
+        raise TDXDeltaError('TDX_DELTA_PG_T0_REQUIRED')
+    record={'contract_id':'V4_TDX_PACKAGE_DELTA_CANDIDATE_PG_R1','contract_version':'1.0.0',
+        'candidate_status':'DIAGNOSTIC_ONLY','source_contract_id':contract_id or delta.get('contract_id'),
+        'T0':target_date,'captured_at':datetime.now(timezone.utc).isoformat(),
+        'source_packages':[
+            {'source_id':'TDX_OFFICIAL_PARENT_PACKAGE_R1','role':'PARENT','package_sha256':parent_sha,
+             'package_bytes':parent.stat().st_size,'zip_validation':'PASS','first_available_at':None},
+            {'source_id':'TDX_OFFICIAL_CURRENT_PACKAGE_R1','role':'CURRENT','package_sha256':current_sha,
+             'package_bytes':current.stat().st_size,'zip_validation':'PASS','first_available_at':None},
+        ],
+        'source_availability_complete':False,'availability_gap':'PARENT_CURRENT_FIRST_AVAILABLE_AT_NOT_PROVEN',
+        'delta_sha256':delta.get('delta_sha256'),'delta':delta,
+        'AS_RECORDED':False,'PIT_ELIGIBLE':False,'accepted_head':False,'publication_id':None}
+    key=digest(canonical(record))
+    store=ForwardFactStore(Path(project_root),'data/v4/historical_source_ingress_pg_r1')
+    binding=store.append('tdx_package_delta_candidate',key,record,migration_timeout_seconds=120)
+    readback=store.read(binding)
+    if readback!=record or digest(canonical(readback['delta']))!=digest(canonical(delta)):
+        raise TDXDeltaError('TDX_DELTA_PG_CANDIDATE_READBACK_MISMATCH')
+    return dict(binding=binding,readback='PASS',T0=target_date,
+                parent_source_id='TDX_OFFICIAL_PARENT_PACKAGE_R1',
+                current_source_id='TDX_OFFICIAL_CURRENT_PACKAGE_R1',
+                parent_package_sha256=parent_sha,current_package_sha256=current_sha,
+                candidate_status='DIAGNOSTIC_ONLY',availability_complete=False)
+
+
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 

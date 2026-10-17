@@ -63,9 +63,21 @@ def main():
             knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,first_available_at_target_proven=False,tdx_root_write_count=0))
         if package:break
     ref=bind((base/'request_receipt.json').relative_to(ROOT).as_posix())
+    pg_source_candidate=None
+    if package and attempts and attempts[-1].get('zip_validation',{}).get('status')=='PASS':
+        from workbench_analysis.tdx_latest_daily_source_v2 import persist_package_metadata_pg
+        last=attempts[-1]
+        pg_source_candidate=persist_package_metadata_pg(ROOT,dict(
+            provider_package_date=published,source_revision_number=1,
+            downloaded_at=last['received_at'],
+            download=dict(sha256=last['sha256'],bytes=last['bytes']),
+            zip_validation=last['zip_validation'],remote_package_validator=None),
+            trade_date=published,source_role='CURRENT')
     summary=base/'DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json'
-    atomic_json(summary,dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref))
-    print(json.dumps(dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref,audit_summary_path=summary.as_posix())))
+    atomic_json(summary,dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref,
+        pg_source_candidate=pg_source_candidate))
+    print(json.dumps(dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref,
+        pg_source_candidate=pg_source_candidate,audit_summary_path=summary.as_posix())))
 
 
 def capture_roots(project_root):

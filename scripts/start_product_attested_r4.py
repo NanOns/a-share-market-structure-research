@@ -46,7 +46,6 @@ def owned_main():
         functions={k:hashlib.sha256(marshal.dumps(v.__code__)).hexdigest() for k,v in vars(module).items()
                    if getattr(v,'__module__',None)==name and hasattr(v,'__code__')}
         modules.append(dict(module=name,runtime_module_path=str(path),source_sha256=before[name],loaded_function_bytecode_sha256=functions))
-    from workbench_analysis.operational_daily_storage_v1 import atomic_json
     try:pg_authority_after=PgPublicationReader.startup_head_tuple()
     except PublicationReadError as exc:raise SystemExit('V4_PG_STARTUP_AUTHORITY_CHANGED_OR_UNAVAILABLE:'+exc.code) from exc
     if pg_authority_after!=pg_authority_before:raise SystemExit('V4_PG_STARTUP_AUTHORITY_MOVED_DURING_IMPORT')
@@ -54,8 +53,9 @@ def owned_main():
                  python_executable=sys.executable,repo_root=str(ROOT),exact_HEAD=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                  active_port=28765,modules=modules,pg_authority=pg_authority_before,
                  scope='Normal startup only; existing AUTO configuration preserved')
-    atomic_json(ROOT,ROOT/'runtime/r4_product_loaded_modules.json',receipt)
-    print(json.dumps(receipt),flush=True)
+    from workbench_db.v4_startup_attestation_pg_r1 import append as append_startup_attestation
+    binding=append_startup_attestation(ROOT,receipt)
+    print(json.dumps(dict(attestation=receipt,pg_binding=binding),ensure_ascii=False),flush=True)
     import time
     from workbench_desktop.engine import EngineController
     engine=EngineController(ROOT,28765)

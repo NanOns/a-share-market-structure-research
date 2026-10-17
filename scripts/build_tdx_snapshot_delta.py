@@ -16,6 +16,7 @@ from workbench_analysis.tdx_snapshot_delta import (  # noqa: E402
     build_tdx_package_delta,
     build_tdx_session_delta_view,
     persist_tdx_delta_candidate_pg,
+    resolve_tdx_package_source_candidates,
 )
 from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root, resolve_configured_path  # noqa: E402
 
@@ -65,7 +66,10 @@ def main() -> int:
         parent_snapshot_id=args.parent_snapshot_id,
         current_snapshot_id=args.current_snapshot_id,
     )
-    pg_delta_candidate = persist_tdx_delta_candidate_pg(ROOT, args.parent_zip, current_zip, delta)
+    source_candidates = resolve_tdx_package_source_candidates(
+        ROOT, args.target_date, expected_parent_sha, expected_current_sha)
+    pg_delta_candidate = persist_tdx_delta_candidate_pg(
+        ROOT, args.parent_zip, current_zip, delta, source_candidates=source_candidates)
     delta_dir = current_zip.parent / "delta" / args.target_date.replace("-", "")
     delta_path = delta_dir / f"TDX_PACKAGE_DELTA_{args.target_date.replace('-', '')}.json"
     delta_sha = write_json_atomic(delta_path, delta, tdx_root=tdx_root)
@@ -130,7 +134,7 @@ def main() -> int:
                       "session_receipts": session_receipts,
                       "receipt": str(receipt_path), "receipt_sha256": receipt_sha},
                      ensure_ascii=False))
-    return 0 if delta["status"] == "READY" else 2
+    return 0 if delta["status"] in {"READY", "READY_WITH_HISTORICAL_QUALITY_GAPS"} else 2
 
 
 if __name__ == "__main__":

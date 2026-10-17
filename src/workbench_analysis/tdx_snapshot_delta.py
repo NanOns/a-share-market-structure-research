@@ -18,8 +18,54 @@ class TDXDeltaError(ValueError):
     pass
 
 
+def resolve_tdx_package_source_candidates(project_root, target_date: str,
+                                         parent_sha256: str, current_sha256: str):
+    """Resolve both exact official package identities from PostgreSQL.
+
+    A verified ZIP is not sufficient evidence for an operational delta: the
+    exact provider date, revision, first-available clock and role must already
+    have been recorded as separate PG source candidates.
+    """
+    date.fromisoformat(target_date)
+    if parent_sha256 == current_sha256:
+        raise TDXDeltaError("TDX_DELTA_PARENT_CURRENT_PACKAGE_MUST_DIFFER")
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+    store=ForwardFactStore(Path(project_root),"data/v4/historical_source_ingress_pg_r1")
+    expected={"PARENT":parent_sha256,"CURRENT":current_sha256}
+    resolved={}
+    for binding in store.refs("tdx_source_package_candidate"):
+        candidate=store.read(binding)
+        identity=candidate.get("source_identity",{})
+        role=identity.get("source_role","").removeprefix("OFFICIAL_").removesuffix("_PACKAGE")
+        if role not in expected or identity.get("package_sha256")!=expected[role]:
+            continue
+        if identity.get("T0")!=target_date:
+            continue
+        if candidate.get("contract_id")!="V4_TDX_OFFICIAL_PACKAGE_SOURCE_PG_R1":
+            continue
+        if (candidate.get("accepted_head") is not False or candidate.get("PIT_ELIGIBLE") is not False
+                or identity.get("AS_RECORDED") is not False or identity.get("PIT_ELIGIBLE") is not False):
+            raise TDXDeltaError("TDX_DELTA_SOURCE_CANDIDATE_PERMISSION_OVERCLAIM")
+        if identity.get("first_available_at") is None:
+            raise TDXDeltaError("TDX_DELTA_SOURCE_FIRST_AVAILABLE_AT_REQUIRED")
+        if identity.get("provider")!="TDX_OFFICIAL_DAILY_PACKAGE":
+            raise TDXDeltaError("TDX_DELTA_OFFICIAL_PROVIDER_REQUIRED")
+        if identity.get("zip_validation",{}).get("status")!="PASS":
+            raise TDXDeltaError("TDX_DELTA_SOURCE_ZIP_VALIDATION_REQUIRED")
+        source_id=f"TDX_OFFICIAL_{role}_PACKAGE_R1"
+        if identity.get("source_id")!=source_id:
+            raise TDXDeltaError("TDX_DELTA_SOURCE_ROLE_IDENTITY_MISMATCH")
+        resolved.setdefault(role,[]).append((binding,identity))
+    for role in expected:
+        if len(resolved.get(role,[]))!=1:
+            raise TDXDeltaError("TDX_DELTA_EXACT_PG_SOURCE_IDENTITY_REQUIRED:"+role)
+    return {role:dict(binding=resolved[role][0][0],identity=resolved[role][0][1])
+            for role in ("PARENT","CURRENT")}
+
+
 def persist_tdx_delta_candidate_pg(project_root, parent_zip: Path, current_zip: Path,
-                                  delta: dict[str, Any], *, contract_id: str | None = None):
+                                  delta: dict[str, Any], *, contract_id: str | None = None,
+                                  source_candidates: dict[str, dict[str, Any]] | None = None):
     """Bind distinct parent/current package identities and delta rows in PG."""
     from datetime import datetime, timezone
     from workbench_db.v4_forward_pg_r1 import ForwardFactStore, canonical, digest
@@ -35,16 +81,34 @@ def persist_tdx_delta_candidate_pg(project_root, parent_zip: Path, current_zip: 
         target_date=delta['target_dates'][-1]
     if not isinstance(target_date,str):
         raise TDXDeltaError('TDX_DELTA_PG_T0_REQUIRED')
+    source_packages=[]
+    for role,source_id,sha,path in (
+        ('PARENT','TDX_OFFICIAL_PARENT_PACKAGE_R1',parent_sha,parent),
+        ('CURRENT','TDX_OFFICIAL_CURRENT_PACKAGE_R1',current_sha,current),
+    ):
+        metadata=(source_candidates or {}).get(role)
+        identity=(metadata or {}).get('identity',{})
+        if metadata is not None:
+            if (identity.get('source_id')!=source_id or identity.get('source_role')!=f'OFFICIAL_{role}_PACKAGE'
+                    or identity.get('T0')!=target_date or identity.get('package_sha256')!=sha
+                    or identity.get('package_bytes')!=path.stat().st_size
+                    or identity.get('first_available_at') is None
+                    or identity.get('zip_validation',{}).get('status')!='PASS'):
+                raise TDXDeltaError('TDX_DELTA_PG_SOURCE_METADATA_MISMATCH:'+role)
+            source_packages.append({k:identity.get(k) for k in (
+                'source_id','source_role','provider','T0','provider_package_date',
+                'source_revision_number','package_sha256','package_bytes','first_available_at',
+                'parser_contract','zip_validation','AS_RECORDED','PIT_ELIGIBLE')})
+        else:
+            source_packages.append({'source_id':source_id,'role':role,'package_sha256':sha,
+                'package_bytes':path.stat().st_size,'zip_validation':'PASS','first_available_at':None})
+    availability_complete=all(source.get('first_available_at') is not None for source in source_packages)
     record={'contract_id':'V4_TDX_PACKAGE_DELTA_CANDIDATE_PG_R1','contract_version':'1.0.0',
         'candidate_status':'DIAGNOSTIC_ONLY','source_contract_id':contract_id or delta.get('contract_id'),
         'T0':target_date,'captured_at':datetime.now(timezone.utc).isoformat(),
-        'source_packages':[
-            {'source_id':'TDX_OFFICIAL_PARENT_PACKAGE_R1','role':'PARENT','package_sha256':parent_sha,
-             'package_bytes':parent.stat().st_size,'zip_validation':'PASS','first_available_at':None},
-            {'source_id':'TDX_OFFICIAL_CURRENT_PACKAGE_R1','role':'CURRENT','package_sha256':current_sha,
-             'package_bytes':current.stat().st_size,'zip_validation':'PASS','first_available_at':None},
-        ],
-        'source_availability_complete':False,'availability_gap':'PARENT_CURRENT_FIRST_AVAILABLE_AT_NOT_PROVEN',
+        'source_packages':source_packages,
+        'source_availability_complete':availability_complete,
+        'availability_gap':None if availability_complete else 'PARENT_CURRENT_FIRST_AVAILABLE_AT_NOT_PROVEN',
         'delta_sha256':delta.get('delta_sha256'),'delta':delta,
         'AS_RECORDED':False,'PIT_ELIGIBLE':False,'accepted_head':False,'publication_id':None}
     key=digest(canonical(record))
@@ -57,7 +121,9 @@ def persist_tdx_delta_candidate_pg(project_root, parent_zip: Path, current_zip: 
                 parent_source_id='TDX_OFFICIAL_PARENT_PACKAGE_R1',
                 current_source_id='TDX_OFFICIAL_CURRENT_PACKAGE_R1',
                 parent_package_sha256=parent_sha,current_package_sha256=current_sha,
-                candidate_status='DIAGNOSTIC_ONLY',availability_complete=False)
+                candidate_status='DIAGNOSTIC_ONLY',availability_complete=availability_complete,
+                parent_first_available_at=source_packages[0].get('first_available_at'),
+                current_first_available_at=source_packages[1].get('first_available_at'))
 
 
 def _sha(data: bytes) -> str:
@@ -91,11 +157,16 @@ def _records(raw: bytes) -> list[tuple[bytes, dict[str, Any]]]:
             raise TDXDeltaError("TDX_DAY_FILE_DATE_INVALID") from exc
         if record.trade_date <= previous:
             raise TDXDeltaError("TDX_DAY_FILE_DATE_ORDER_INVALID")
-        if (not all(math.isfinite(value) for value in (record.open, record.high, record.low, record.close, record.amount))
-                or record.amount < 0 or min(record.open, record.high, record.low, record.close) < 0
-                or (record.open or record.high or record.low or record.close) and
-                (record.high < max(record.open, record.low, record.close) or record.low > min(record.open, record.high, record.close))):
-            raise TDXDeltaError("TDX_DAY_FILE_OHLC_INVALID")
+        quality_codes = []
+        ohlc_amount = (record.open, record.high, record.low, record.close, record.amount)
+        if not all(math.isfinite(value) for value in ohlc_amount):
+            quality_codes.append("NON_FINITE_OHLC_OR_AMOUNT")
+        elif record.amount < 0 or min(record.open, record.high, record.low, record.close) < 0:
+            quality_codes.append("NEGATIVE_OHLC_OR_AMOUNT")
+        elif ((record.open or record.high or record.low or record.close)
+              and (record.high < max(record.open, record.low, record.close)
+                   or record.low > min(record.open, record.high, record.close))):
+            quality_codes.append("OHLC_ENVELOPE_INVALID")
         previous = record.trade_date
         records.append((chunk, {
             "trade_date": record.trade_date,
@@ -105,6 +176,7 @@ def _records(raw: bytes) -> list[tuple[bytes, dict[str, Any]]]:
             "close": record.close,
             "amount": record.amount,
             "volume": record.volume,
+            "source_quality_codes": quality_codes,
         }))
     return records
 
@@ -156,6 +228,10 @@ def build_tdx_package_delta(
             entry_events: list[dict[str, Any]] = []
             changed_file_manifest: list[dict[str, Any]] = []
             parsed_count = 0
+            quality_anomalies: list[dict[str, Any]] = []
+            quality_anomaly_count = 0
+            invalid_target_records: list[dict[str, Any]] = []
+            invalid_target_record_count = 0
             for path in sorted(set(changed + added)):
                 lower = path.replace("\\", "/").lower()
                 current_raw = current.read(new_entries[lower])
@@ -211,13 +287,23 @@ def build_tdx_package_delta(
                 elif old_records and not appended and new_chunks != old_chunks:
                     raise TDXDeltaError("SOURCE_REVISION_ANOMALY_REWRITE")
                 for _, row in new_records:
+                    if not row["source_quality_codes"]:
+                        if row["trade_date"] == target_num:
+                            target_bars.append({"security_id": key, **row})
+                        continue
+                    anomaly = {"security_id": key, "trade_date": row["trade_date"],
+                               "quality_codes": row["source_quality_codes"]}
+                    quality_anomaly_count += 1
+                    if len(quality_anomalies) < 100:
+                        quality_anomalies.append(anomaly)
                     if row["trade_date"] == target_num:
-                        target_bars.append({"security_id": key, **row})
+                        invalid_target_record_count += 1
+                        if len(invalid_target_records) < 100:
+                            invalid_target_records.append(anomaly)
                 if appended:
                     appended_records = new_records[len(old_records):]
-                    appended_bars.extend(
-                        {"security_id": key, **row} for _, row in appended_records
-                    )
+                    appended_bars.extend({"security_id": key, **row} for _, row in appended_records
+                                          if not row["source_quality_codes"])
                     target_count = sum(row["trade_date"] == target_num for _, row in appended_records)
                     if target_count:
                         classification = "APPEND_ONLY_TARGET_DATE" if not changed_indices else "APPEND_WITH_HISTORICAL_CORRECTION"
@@ -240,7 +326,9 @@ def build_tdx_package_delta(
             payload: dict[str, Any] = {
                 "contract_id": "TDX_PACKAGE_DELTA_V1",
                 "version": "1.0.0",
-                "status": "READY" if target_bars else "NO_TARGET_DATE_BARS",
+                "status": ("TARGET_DATE_SOURCE_QUALITY_GAP" if invalid_target_records else
+                           "READY_WITH_HISTORICAL_QUALITY_GAPS" if quality_anomalies and target_bars else
+                           "READY" if target_bars else "NO_TARGET_DATE_BARS"),
                 "target_date": target_date,
                 "parent_snapshot_id": parent_snapshot_id,
                 "current_snapshot_id": current_snapshot_id,
@@ -251,6 +339,12 @@ def build_tdx_package_delta(
                 "parsed_changed_or_new_day_entries": parsed_count,
                 "target_bars": target_bars,
                 "target_bar_count": len(target_bars),
+                "source_quality_anomaly_count": quality_anomaly_count,
+                "source_quality_anomalies": quality_anomalies,
+                "source_quality_anomalies_truncated": quality_anomaly_count > len(quality_anomalies),
+                "invalid_target_record_count": invalid_target_record_count,
+                "invalid_target_records": invalid_target_records,
+                "invalid_target_records_truncated": invalid_target_record_count > len(invalid_target_records),
                 "appended_bars": appended_bars,
                 "appended_bar_count": len(appended_bars),
                 "revision_events": revisions,
@@ -289,13 +383,18 @@ def build_tdx_session_delta_view(package_delta: dict[str, Any], trade_date: str)
     payload = {
         "contract_id": "TDX_SESSION_DELTA_VIEW_V1",
         "version": "1.0.0",
-        "status": "READY" if rows else "NO_TARGET_DATE_BARS",
+        "status": ("TARGET_DATE_SOURCE_QUALITY_GAP" if package_delta.get("invalid_target_records")
+                   else "READY" if rows else "NO_TARGET_DATE_BARS"),
+        "source_quality_status": package_delta.get("status"),
         "target_date": trade_date,
         "parent_snapshot_id": parent,
         "current_snapshot_id": current,
         "package_delta_sha256": package_delta["delta_sha256"],
         "target_bars": rows,
         "target_bar_count": len(rows),
+        "source_quality_anomaly_count": package_delta.get("source_quality_anomaly_count", 0),
+        "source_quality_anomalies": package_delta.get("source_quality_anomalies", []),
+        "invalid_target_records": package_delta.get("invalid_target_records", []),
         "historical_corrections": corrections,
         "revision_events": corrections,
         "historical_correction_count": len(corrections),

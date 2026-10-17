@@ -5,8 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACTS = {
-    "V4_DAILY_RUNTIME_ACCEPTANCE_PATH_R1": "config/v4_daily_runtime_acceptance_path_v1.json",
     "V4_DAILY_TDX_READONLY_SOURCE_R1": "config/v4_daily_tdx_readonly_source_v1.json",
+    "BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2": "config/baostock_dm01_sdk_schema_adapter_v2.json",
 }
 
 
@@ -18,7 +18,8 @@ def install(monkeypatch, executor):
         except KeyError as exc:
             raise AssertionError(f"unexpected daily contract: {contract_id}") from exc
         contract = json.loads(path.read_bytes())
-        assert contract.get("contract_version") == version
+        version_field = "version" if contract_id == "BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2" else "contract_version"
+        assert contract.get(version_field) == version
         return contract
 
     monkeypatch.setattr(executor, "_load_daily_contract_from_pg", load)

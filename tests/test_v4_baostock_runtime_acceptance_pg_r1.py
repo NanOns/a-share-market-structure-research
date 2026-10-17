@@ -151,8 +151,6 @@ def test_operational_executor_materializes_manifest_from_pg_bundle_without_file_
     monkeypatch.setattr(pg_acceptance, "load", load)
     monkeypatch.setattr(pg_acceptance, "export_native_response", export)
     monkeypatch.setattr(executor, "package_metadata", lambda: runtime)
-    monkeypatch.setattr(executor, "load_runtime_acceptance_manifest",
-                        lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("local manifest read")))
 
     result = executor._load_pg_runtime_acceptance(tmp_path, day)
     assert calls["target"] == day

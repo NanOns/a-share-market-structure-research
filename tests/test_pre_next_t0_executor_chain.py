@@ -23,7 +23,7 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     # contracts; the default runtime path is the approved PG registry.
     install_daily_contract_pg_fixture(monkeypatch,executor)
     monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'PG')
-    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE', 'FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE', 'PG')
     accepted=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())['accepted_trade_date']
     install_daily_calendar_pg_fixture(monkeypatch,accepted)
     monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))
@@ -70,8 +70,17 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     atomic_json(root, manifest_path, manifest)
     atomic_json(root, smoke.with_name('sdk_accepted_runtime_manifest.json'), manifest)
     atomic_json(root, root/'config/baostock_dm01_sdk_schema_adapter_v2.json', {})
-    monkeypatch.setattr(executor, 'load_runtime_acceptance_manifest', lambda *a, **k: manifest)
-    monkeypatch.setattr(executor, 'runtime_acceptance_error', lambda *a, **k: None)
+    raw_path=smoke.with_name('sdk_raw_responses.json')
+    immutable_path=smoke.with_name('sdk_accepted_runtime_manifest.json')
+    native_binding=dict(path=raw_path.relative_to(root).as_posix(),
+        sha256=executor.tdx.sha256_file(raw_path),bytes=raw_path.stat().st_size,
+        source='PG_FIXTURE',pg_payload_sha256='c'*64)
+    pg_bundle=dict(database_identity={'database':'market_research','database_oid':1,
+        'host':'127.0.0.1','port':5432},schema='v4_fixture',payload_sha256='c'*64)
+    monkeypatch.setattr(executor, '_load_pg_runtime_acceptance', lambda *_a, **_k: dict(
+        manifest=manifest,receipt={'observed_at':now},raw=raw,raw_path=raw_path,
+        manifest_path=immutable_path,manifest_sha256=executor.tdx.sha256_file(immutable_path),
+        native_response_binding=native_binding,bundle=pg_bundle))
     monkeypatch.setattr(executor, 'package_metadata', lambda: {})
     monkeypatch.setattr(executor, 'normalize_response', lambda rows, *a, **k: (rows, {}))
     monkeypatch.setattr(fallback, 'fallback', lambda p, b, *a, **k: (p, b, None))

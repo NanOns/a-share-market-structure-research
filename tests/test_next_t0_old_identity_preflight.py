@@ -14,7 +14,7 @@ from workbench_analysis.v4_14_replay_io import publish
 
 @pytest.mark.parametrize('added', [False, True])
 def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, added):
-    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
     install_daily_contract_pg_fixture(monkeypatch,executor)
     monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     root, day, freeze, new_head, _ = chain
@@ -62,7 +62,7 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
 def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     from scripts import accept_dynamic_daily_baostock_v2 as runtime
     root,day,_,_,_=chain
-    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
     accepted=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())['accepted_trade_date']
     install_daily_calendar_pg_fixture(monkeypatch,accepted)
     install_daily_contract_pg_fixture(monkeypatch,executor)
@@ -79,8 +79,8 @@ def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     monkeypatch.setattr(executor,'source_readiness',lambda *a:dict(time_eligible=True))
     monkeypatch.setattr(executor,'capture_latest_tdx_package',lambda **k:package)
     monkeypatch.setattr(executor,'extract_target_session_bars',lambda *a,**k:bars)
-    def unavailable(*a,**k):raise OSError('SYNTHETIC_RUNTIME_UNAVAILABLE')
-    monkeypatch.setattr(executor,'load_runtime_acceptance_manifest',unavailable)
+    monkeypatch.setattr(executor,'_load_pg_runtime_acceptance',
+        lambda *_a,**_k:(_ for _ in ()).throw(ValueError('BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND')))
     monkeypatch.setattr(runtime,'accept_runtime',lambda *a:dict(status='WAIT_BAOSTOCK_DAILY'))
     result=executor.execute_sources(root,day,'EXECUTE')
     assert result['status']=='WAIT_BAOSTOCK_DAILY'

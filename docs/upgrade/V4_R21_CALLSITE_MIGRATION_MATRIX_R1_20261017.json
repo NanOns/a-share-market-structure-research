@@ -3636,15 +3636,15 @@
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4.publication_heads joined to accepted v4.publications through v4_market_calendar_reader_r1 for the accepted date; v4.contract_versions plus append-only approval events for runtime contracts",
-        "status": "IMPLEMENTED_CODE_PENDING_LIVE_PUBLICATION_NAMESPACE_AND_RUNTIME_REGISTRATION_RECONCILIATION"
+        "candidate": "date-bound V4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R1 fact plus native response Owner, and v4.contract_versions with latest append-only approval event for the SDK schema contract, all consumed with exact accepted PG calendar date",
+        "status": "IMPLEMENTED_CODE_PENDING_LIVE_FACT_PUBLICATION_NAMESPACE_AND_CONTRACT_REGISTRATION_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "The executor no longer reads V4_OPERATIONAL_RESEARCH_HEAD.json to choose the accepted trade date, but live database identity, current Head-to-publication/T0 equivalence, approved runtime contract registration, and compliant PG readback remain unverified; formal row remains open.",
+      "blocker": "Daily executor no longer accepts file-backed runtime acceptance or SDK schema contracts and reads the date-bound acceptance fact/response from PG. Live approved contract registration, database identity, accepted calendar/publication/T0 and business readback remain unverified; formal row remains open.",
       "baseline_function": "execute_sources",
       "migration_evidence": {
         "batch_id": "R21-R4-baostock-runtime-acceptance-executor-pg-r66",
-        "implemented_code": "The operational daily executor now defaults to v4.contract_versions and the latest APPROVED/REVOKED event in a read-only repeatable-read snapshot for the exact runtime contract id/version/namespace. It attests database identity and read-role privileges, verifies approval source revision and raw SHA, and fails closed without registry state. Both the TDX GBBQ path contract and BaoStock runtime acceptance path contract use this reader; file mode must be explicitly selected. R66 also wires the active operational daily executor default to load the exact date-bound runtime-acceptance fact and native BaoStock response bytes from PG; it emits a digest-bound PG authority record into the daily source freeze. A PG-origin derived cache supplies the existing freeze file contract; PG failure has no disk fallback. Explicit FILE mode remains for historical fixtures/development only.",
+        "implemented_code": "The daily executor uses the approved repeatable-read contract registry for runtime contracts and the exact date-bound PG runtime-acceptance fact/native response. R83 removed FILE authority for the TDX and runtime-receipt path contracts; R85 moved accepted-date selection to the PG calendar Head; R87 removed the FILE runtime-acceptance branch and loads the SDK schema adapter through the approved contract registry. PG failures do not fall back to runtime report files.",
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "current_head": "Runtime acceptance facts/contracts remain unregistered or unverified in approved production namespace.",
@@ -3667,6 +3667,19 @@
             "tests/test_pre_next_t0_executor_chain.py"
           ],
           "verification": "23 focused tests passed; PG-shaped controlled calendar boundary only. No live publication identity or business acceptance.",
+          "formal_status": "OPEN",
+          "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+        },
+        "followup_batch_r87": {
+          "batch_id": "R21-R4-daily-executor-pg-runtime-acceptance-and-schema-r87",
+          "implemented_code": "Removed V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE=FILE branch and its local manifest/receipt/raw-response reads. The exact date-bound PG acceptance bundle and response bytes remain the only runtime source. Replaced direct config/baostock_dm01_sdk_schema_adapter_v2.json read with the approved contract registry for BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2 v2.0.0. Removed the old local manifest-path helper; runtime receipt materialization is derived from the PG bundle under runtime_pg_ingress_cache.",
+          "test_evidence": [
+            "tests/test_operational_daily_executor_v1.py",
+            "tests/test_pre_next_t0_executor_chain.py",
+            "tests/test_next_t0_old_identity_preflight.py",
+            "tests/test_v4_baostock_runtime_acceptance_pg_r1.py"
+          ],
+          "verification": "27 focused tests passed using controlled PG-shaped acceptance and calendar fixtures; no live source capture or business acceptance.",
           "formal_status": "OPEN",
           "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
         }

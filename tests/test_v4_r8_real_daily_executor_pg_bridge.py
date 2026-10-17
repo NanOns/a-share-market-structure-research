@@ -14,7 +14,6 @@ from workbench_analysis.operational_daily_executor_v1 import (
     build_daily_core_result_candidate,
     persist_daily_core_result_candidate,
     _pg_source_ingest_plan_diagnostic,
-    _runtime_acceptance_manifest_path,
     _tdx_gbbq_source_path,
 )
 from workbench_analysis import operational_daily_executor_v1 as executor
@@ -116,14 +115,6 @@ def test_core_result_writer_bridge_is_explicit_and_delegates_to_caller_transacti
     assert result["persisted"] is True
     with pytest.raises(ValueError, match="PG_CORE_RESULT_PLAN_NOT_READY"):
         persist_daily_core_result_candidate(pg, {"status": "BLOCKED_PG_PUBLICATION_CONTEXT_MISSING"})
-
-
-def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path,monkeypatch):
-    install_daily_contract_pg_fixture(monkeypatch,executor)
-    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
-    assert _runtime_acceptance_manifest_path(tmp_path, "2026-10-12") == (
-        tmp_path / "reports/v4_baostock/runtime_acceptance/20261012/accepted_runtime_manifest.json"
-    )
 
 
 def test_tdx_gbbq_is_configured_as_read_only_input(monkeypatch):

@@ -49,12 +49,18 @@ def test_accepted_trade_date_rejects_file_head_authority(tmp_path,monkeypatch):
         module._accepted_trade_date(tmp_path)
 
 
+def test_baostock_runtime_acceptance_rejects_file_authority_mode(monkeypatch):
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    with pytest.raises(ValueError,match='BAOSTOCK_RUNTIME_ACCEPTANCE_PG_ONLY'):
+        module._runtime_acceptance_source_mode()
+
+
 @pytest.mark.parametrize('downloaded,expected',['2026-10-09T17:45:00+08:00,2'.split(','),
                                               '2026-10-09T18:36:00+08:00,1'.split(',')])
 def test_missing_target_refreshes_pre_gate_capture_once(tmp_path,monkeypatch,downloaded,expected):
     install_daily_contract_pg_fixture(monkeypatch,module)
     monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
-    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','FILE')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
     monkeypatch.setenv('TDX_ROOT',str(tmp_path/'readonly-tdx-root'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(tmp_path/'snapshots'))
     class Clock(datetime):
@@ -69,7 +75,7 @@ def test_missing_target_refreshes_pre_gate_capture_once(tmp_path,monkeypatch,dow
     monkeypatch.setattr(module,'capture_latest_tdx_package',capture)
     monkeypatch.setattr(module,'extract_target_session_bars',lambda *a,**k:dict(status='WAIT_TDX_TARGET_BARS'))
     def runtime(*a,**k):raise RuntimeError('STOP_BEFORE_ANY_SDK_CALL')
-    monkeypatch.setattr(module,'load_runtime_acceptance_manifest',runtime)
+    monkeypatch.setattr(module,'_load_pg_runtime_acceptance',runtime)
     with pytest.raises(RuntimeError,match='STOP_BEFORE_ANY_SDK_CALL'):
         module.execute_sources(tmp_path,'2026-10-09','CATCH_UP',capture_only=True)
     assert len(calls)==int(expected)
@@ -116,8 +122,6 @@ def test_execute_sources_uses_pg_acceptance_and_freezes_its_binding(tmp_path,mon
     monkeypatch.setattr(module,'_load_pg_runtime_acceptance',lambda *_a,**_k:dict(
         manifest=manifest,receipt=receipt,raw=raw,raw_path=raw_path,manifest_path=manifest_path,
         manifest_sha256=module.tdx.sha256_file(manifest_path),native_response_binding=pg_binding,bundle=bundle))
-    monkeypatch.setattr(module,'load_runtime_acceptance_manifest',
-        lambda *_a,**_k:(_ for _ in ()).throw(AssertionError('local acceptance file read')))
     monkeypatch.setattr(module,'_canonical_rows_digest',lambda rows:'a'*64 if rows else 'b'*64)
     monkeypatch.setattr(module,'normalize_response',lambda rows,meta,**_k:(rows,meta))
     monkeypatch.setattr(module,'package_metadata',lambda:{'package':'baostock','version':'test'})

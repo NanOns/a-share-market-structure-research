@@ -135,10 +135,14 @@ def read_identity(root,candidate,*,workspace_root=None):
     return content
 
 def prepare_search_identity(root,candidate):
-    """Preserve the complete accepted identity universe for search explanations."""
+    """Copy the candidate's verified PG identity Owner into search authority."""
     root=Path(root).resolve();authority=_load_authority(root,candidate)
-    head=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes());source=head['identity']
-    content=json.loads(checked(root,source).read_bytes())['records'];day=candidate['accepted_trade_date']
+    day=candidate['accepted_trade_date']
+    if authority.get('T0')!=day:raise ValueError('NATIVE_SEARCH_IDENTITY_AUTHORITY_T0_MISMATCH')
+    source=identity_source(root,candidate)
+    content=read_identity(root,candidate)
+    if not isinstance(source,dict) or not isinstance(content,list) or not content:
+        raise ValueError('NATIVE_SEARCH_IDENTITY_PG_OWNER_REQUIRED_NO_FILE_FALLBACK')
     fact_key=digest(canonical(dict(contract_id=CONTRACT,domain='search_identity',T0=day,source=source)))
     descriptor=append(root,fact_key,day,'reference_search_identity',source,content)
     if canonical(read_fact(root,descriptor,fact_key,day,'reference_search_identity',source))!=canonical(content):raise ValueError('SEARCH_IDENTITY_FULL_PG_PAYLOAD_DIFFERENCE')

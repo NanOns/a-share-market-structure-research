@@ -13528,9 +13528,19 @@
         "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
       },
       "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "blocker": "The code is now bound to the candidate PG identity Owner; accepted source identity parity and the PG append require live role/database/source readback.",
       "baseline_function": "prepare_search_identity",
-      "migration_evidence": "This is a publisher/source-ingress read retained to validate and copy source bytes into PG; it still needs source authorization/manifest evidence and downstream readback reconciliation.",
+      "migration_evidence": {
+        "batch_id": "R21-R4-search-identity-owner-pg-r11",
+        "implemented_code": "prepare_search_identity now obtains the dated identity source binding and rows from the candidate membership-reference PG authority/read_identity path, then appends its exact rows to the search-identity PG fact. It no longer reads V4_DATA_ACCEPTED_HEAD.json or its global identity file.",
+        "test_evidence": [
+          "test_prepare_search_identity_uses_same_candidate_pg_identity_owner",
+          "test_prepare_search_identity_requires_pg_owner_instead_of_data_head_file"
+        ],
+        "formal_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "live_pg_append": "NOT_RUN_NO_AUTHORIZED_WRITER"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160542",
@@ -16551,6 +16561,26 @@
         "p1_formally_remaining": 266,
         "status": "EXISTING_BFF_TO_PG_CONSUMER_CALL_VERIFIED_OFFLINE; LIVE_IDENTITY_AND_INVENTORY_RECONCILIATION_OPEN.",
         "next": "Continue daily source/identity Owner migration using publication-bound source identity semantics; then exact 28 other-business consumers."
+      },
+      {
+        "batch_id": "R21-R4-search-identity-owner-pg-r11",
+        "files": [
+          "src/workbench_db/v4_membership_reference_pg_v1.py",
+          "tests/test_v4_membership_reference_pg_only_r2.py"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-cebee7277badb03eb82f"
+        ],
+        "evidence": [
+          "Search-identity preparation now reads its rows and source binding from the same candidate PG identity Owner using read_identity/identity_source.",
+          "The global V4_DATA_ACCEPTED_HEAD.json lookup and business file fallback are removed from the active preparation path.",
+          "The PG append is still an explicit writer call and was not executed."
+        ],
+        "verification": "69 focused membership-reference, Owner manifest, publication candidate and BFF candidate tests passed; compile and diff checks passed.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "CODE_WIRED_TO_CANDIDATE_PG_OWNER; active ingress row remains open pending exact source parity and authorized PG append/readback.",
+        "next": "Migrate daily executor identity preflight against the publication-bound identity mapping; preserve explicit source identity semantics and continue remaining Owner IDs."
       }
     ]
   }

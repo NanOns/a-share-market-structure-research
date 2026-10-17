@@ -97,3 +97,33 @@ def test_core_product_bff_rejects_identity_file_fallback_when_pg_authority_missi
     bff=object.__new__(CoreProductBFFR1);bff.api=api
     with pytest.raises(ValueError,match='NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK'):
         bff.identity_records()
+
+
+def test_prepare_search_identity_uses_same_candidate_pg_identity_owner(tmp_path,monkeypatch):
+    day='2026-10-12';source={'path':'missing/identity.jsonl.gz','sha256':'d'*64,'bytes':300}
+    rows=[{'security_id':'SID-1','source_security_key':'SH.600000'}]
+    authority={'contract_id':reference_pg.CONTRACT,'T0':day,'identity_source':source,
+        'membership_snapshot':{'path':'snapshot.json','sha256':'e'*64,'bytes':120},
+        'PIT_ELIGIBLE':False,'AS_RECORDED':False}
+    candidate={'accepted_trade_date':day,'membership_snapshot':authority['membership_snapshot'],
+        reference_pg.KEY:{'engine':'postgresql'}}
+    appended=[];persisted={'contract_id':reference_pg.PG_AUTHORITY_CONTRACT,'engine':'postgresql'}
+    monkeypatch.setattr(reference_pg,'_load_authority',lambda root,selected:authority)
+    monkeypatch.setattr(reference_pg,'identity_source',lambda root,selected:source)
+    monkeypatch.setattr(reference_pg,'read_identity',lambda root,selected:rows)
+    monkeypatch.setattr(reference_pg,'append',lambda *args: (appended.append(args) or {'path':'pg-descriptor'}))
+    monkeypatch.setattr(reference_pg,'read_fact',lambda *args:rows)
+    monkeypatch.setattr(reference_pg,'_persist_authority',lambda root,value:persisted)
+
+    result=reference_pg.prepare_search_identity(tmp_path,candidate)
+    assert result['rows']==1
+    assert appended[0][3:]==('reference_search_identity',source,rows)
+    assert candidate[reference_pg.KEY] is persisted
+    assert not (tmp_path/'data/v4/V4_DATA_ACCEPTED_HEAD.json').exists()
+
+
+def test_prepare_search_identity_requires_pg_owner_instead_of_data_head_file(tmp_path):
+    candidate={'accepted_trade_date':'2026-10-12','membership_snapshot':{},
+        reference_pg.KEY:{'path':'untrusted.json','sha256':'f'*64,'bytes':12}}
+    with pytest.raises(ValueError,match='PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK'):
+        reference_pg.prepare_search_identity(tmp_path,candidate)

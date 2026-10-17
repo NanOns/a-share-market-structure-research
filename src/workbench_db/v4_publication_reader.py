@@ -177,6 +177,21 @@ class PgPublicationReader:
             ) != (expected_publication[0], int(expected_publication[1])):
                 raise PublicationReadError("PUBLICATION_IDENTITY_MISMATCH")
 
+            identity = self._read_database_identity(pg)
+            if not {"database", "database_oid", "host", "port"}.issubset(self.expected_database_identity):
+                raise PublicationReadError("PG_DATABASE_IDENTITY_REQUIRED")
+            if identity != self.expected_database_identity:
+                raise PublicationReadError("PG_DATABASE_IDENTITY_MISMATCH")
+            try:
+                role = self._attest_read_role(pg)
+            except PublicationReadError:
+                raise
+            except Exception as exc:
+                self._map_schema_error(exc, "MODULE_RESULT_BINDING_SCHEMA_UNAVAILABLE")
+                if getattr(exc, "sqlstate", None) == "42501":
+                    raise PublicationReadError("PG_READ_PERMISSION_DENIED") from exc
+                raise PublicationReadError("PG_READER_ROLE_ATTESTATION_FAILED") from exc
+
             # Contract bytes and their approval event share this transaction snapshot
             # with the selected Head, source bindings, and Owner descriptors.  Older
             # accepted publications with no reconciled contract map remain readable
@@ -195,21 +210,6 @@ class PgPublicationReader:
                 )
             except ContractRegistryError as exc:
                 raise PublicationReadError(str(exc)) from exc
-
-            identity = self._read_database_identity(pg)
-            if not {"database", "database_oid", "host", "port"}.issubset(self.expected_database_identity):
-                raise PublicationReadError("PG_DATABASE_IDENTITY_REQUIRED")
-            if identity != self.expected_database_identity:
-                raise PublicationReadError("PG_DATABASE_IDENTITY_MISMATCH")
-            try:
-                role = self._attest_read_role(pg)
-            except PublicationReadError:
-                raise
-            except Exception as exc:
-                self._map_schema_error(exc, "MODULE_RESULT_BINDING_SCHEMA_UNAVAILABLE")
-                if getattr(exc, "sqlstate", None) == "42501":
-                    raise PublicationReadError("PG_READ_PERMISSION_DENIED") from exc
-                raise PublicationReadError("PG_READER_ROLE_ATTESTATION_FAILED") from exc
 
             parent = self._read_same_day_parent(pg, publication)
             sources = self._read_sources(pg, publication)

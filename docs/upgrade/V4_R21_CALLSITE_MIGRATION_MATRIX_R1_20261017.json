@@ -3079,9 +3079,28 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "PG mode is explicit opt-in (V4_MARKET_CALENDAR_SOURCE=PG); default remains the legacy file calendar until runtime selector and exact live publication are reconciled. No compliant live PG reader DSN.",
       "baseline_function": "official_sessions",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-publication-contract-dm01-status-r3",
+        "code_path": "src/workbench_analysis/market_source_acquisition.py::official_sessions(source_mode=PG) -> v4_market_calendar_reader_r1.PgMarketCalendarReader.sessions",
+        "pg_relations": [
+          "v4.publication_heads",
+          "v4.publications",
+          "v4.model_namespaces",
+          "v4.contract_versions",
+          "v4.contract_approval_events",
+          "v4.market_calendar_sessions"
+        ],
+        "checks": [
+          "read-only repeatable-read",
+          "expected database identity",
+          "reader role capability",
+          "accepted publication Head",
+          "exact approved contract bindings",
+          "calendar session sequence/date/digest"
+        ]
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0159982",
@@ -16352,6 +16371,23 @@
         },
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "next": "Continue mapping and replacing active daily source/Head consumers and batch exact Owner/other-business callsites; keep formal closure count unchanged until live readback and per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-pg-market-calendar-r3",
+        "files": [
+          "src/workbench_db/v4_market_calendar_reader_r1.py",
+          "src/workbench_analysis/market_source_acquisition.py"
+        ],
+        "evidence": [
+          "Added an end-to-end opt-in PG calendar read path through the existing official_sessions callsite. It binds the latest accepted publication Head to registered approved contracts and validates the full market_calendar_sessions sequence and digest.",
+          "PG mode fails closed when namespace/database identity configuration, contract bindings, approval, or calendar rows are missing."
+        ],
+        "verification": "107 focused offline tests passed in the consolidated R2/R3 selection; PG reads use fakes. Live PG was not available.",
+        "baseline_callsite_id": "V4-BCA-R2-66c06ef7f4ecead04533",
+        "baseline_callsite_status": "OPEN",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "next": "Make the verified PG calendar the selected runtime path after database identity and accepted publication mapping are reconciled; continue remaining daily and Owner batches."
       }
     ]
   }

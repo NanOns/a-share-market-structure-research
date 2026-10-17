@@ -24,6 +24,7 @@ The active `scripts/capture_baostock_daily_update.py` entrypoint no longer reads
 
 - Focused entrypoint, registry, and daily-executor regressions: **24 passed**.
 - The test verifies the actual capture entrypoint delegates the exact contract id/version/namespace path to the PG runtime-contract reader. Existing registry tests cover latest approval/revocation, source revision, content digest, database identity and read-only transaction guards.
+- Push CI run [39023921836](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39023921836) and PR CI run [39023924531](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39023924531) both completed successfully.
 - No live PG read/catalog, BaoStock network request, runtime smoke, PG write, or DDL/DML ran. The per-day BaoStock runtime acceptance manifest, native response and smoke receipt are still local source-ingress payloads and remain open for migration.
 
 ## Original 266-item accounting

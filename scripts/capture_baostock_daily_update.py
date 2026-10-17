@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from workbench_analysis.baostock_daily_update_source import capture_baostock_daily_update  # noqa: E402
-from workbench_analysis.baostock_supplemental import BaoStockClient, BaoStockError, RequestBudget  # noqa: E402
+from workbench_analysis.baostock_supplemental import BaoStockClient, BaoStockError, RequestBudget, package_metadata  # noqa: E402
 from workbench_analysis.baostock_runtime_acceptance import load_runtime_acceptance_manifest  # noqa: E402
 
 
@@ -23,6 +23,18 @@ def load_source_contract(project_root=ROOT):
         "1.1.0",
         "config/baostock_supplemental_contract_v1.json",
     )
+
+
+def load_runtime_acceptance(project_root, target_date, manifest_path):
+    """Read date-bound runtime approval from PG; FILE is an explicit dev override."""
+    import os
+    source = os.environ.get("V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE", "PG")
+    if source == "PG":
+        from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load
+        return load(project_root, target_date, sdk=package_metadata())["manifest"]
+    if source == "FILE":
+        return load_runtime_acceptance_manifest(manifest_path, project_root=project_root)
+    raise ValueError("BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE_UNSUPPORTED")
 
 
 def main() -> int:
@@ -51,7 +63,7 @@ def main() -> int:
         manifest_path = ROOT / dm01_contract["runtime_acceptance_manifest_template"].replace(
             "{YYYYMMDD}", args.target_date.replace("-", "")
         )
-        runtime_manifest = load_runtime_acceptance_manifest(manifest_path, project_root=ROOT)
+        runtime_manifest = load_runtime_acceptance(ROOT, args.target_date, manifest_path)
         if runtime_manifest.get("live_smoke", {}).get("target_date") != args.target_date:
             print(json.dumps({"status": "WAIT_BAOSTOCK_DAILY_UPDATE",
                               "reason": "BAOSTOCK_RUNTIME_ACCEPTANCE_TARGET_DATE_MISMATCH"}, ensure_ascii=False))
@@ -69,7 +81,7 @@ def main() -> int:
             "status", "trade_date", "snapshot_id", "source_revision_id", "request_count"
         )}, ensure_ascii=False))
         return 0 if result.get("status") in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"} else 2
-    except (BaoStockError, ValueError) as exc:
+    except (BaoStockError, ValueError, RuntimeError) as exc:
         # BaoStockClient sanitizes provider text before it reaches this boundary.
         print(json.dumps({"status": "WAIT_BAOSTOCK_DAILY_UPDATE", "reason": str(exc)}, ensure_ascii=False))
         return 2

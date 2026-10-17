@@ -87,10 +87,18 @@ def accept_runtime(target, root=ROOT):
             smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=digest)
     write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=tdx_root)
     write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=tdx_root)
-    return dict(status='ACCEPTED',target_date=target,manifest= (folder/'accepted_runtime_manifest.json').relative_to(root).as_posix())
+    from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import append_from_files
+    pg_acceptance = append_from_files(root, target, folder/'accepted_runtime_manifest.json')
+    return dict(status='ACCEPTED',target_date=target,
+                manifest=(folder/'accepted_runtime_manifest.json').relative_to(root).as_posix(),
+                pg_acceptance=pg_acceptance)
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--target-date',required=True);a=p.parse_args()
-    result=accept_runtime(a.target_date);print(json.dumps(result,ensure_ascii=False))
+    try:
+        result=accept_runtime(a.target_date)
+    except (OSError,ValueError,RuntimeError) as exc:
+        result=dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=str(exc)[:180])
+    print(json.dumps(result,ensure_ascii=False))
     raise SystemExit(0 if result['status']=='ACCEPTED' else 2)

@@ -13,6 +13,7 @@ def prepare_remaining(root, candidate):
     from .v4_operational_predecessor_pg_v1 import KEY as PREDECESSOR_KEY, prepare as prepare_predecessor, read as read_predecessor
     from .v4_operational_registry_pg_v1 import KEY as REGISTRY_KEY, prepare as prepare_registry, read as read_registry
     from .v4_operational_daily_evidence_pg_v1 import KEY as EVIDENCE_KEY, prepare as prepare_daily_evidence, read as read_daily_evidence, DOCUMENTS
+    from .v4_operational_period_artifact_pg_v1 import KEY as PERIOD_ARTIFACT_KEY, prepare as prepare_period_artifacts, attest as attest_period_artifact, ARTIFACTS
 
     predecessor = (read_predecessor(root, candidate) and dict(reused=True, publication=False)
         if PREDECESSOR_KEY in candidate else prepare_predecessor(root, candidate))
@@ -24,6 +25,14 @@ def prepare_remaining(root, candidate):
         daily_evidence = dict(reused=True, publication=False)
     else:
         daily_evidence = prepare_daily_evidence(root, candidate)
+    if PERIOD_ARTIFACT_KEY in candidate:
+        period = read_daily_evidence(root, candidate, 'period_numeric_oracle')
+        for name in ARTIFACTS:
+            attest_period_artifact(root, candidate, name, period[name])
+        period_artifacts = dict(reused=True, publication=False)
+    else:
+        period_artifacts = prepare_period_artifacts(root, candidate)
     return dict(contract_id=CONTRACT, T0=candidate['accepted_trade_date'],
         predecessor=predecessor, registry=registry, daily_evidence=daily_evidence,
+        period_artifacts=period_artifacts,
         publication=False)

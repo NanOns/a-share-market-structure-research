@@ -101,7 +101,12 @@ def validate(root, candidate, *, pg_owner_authority=None):
         raise ValueError('SUCCESSOR_PERIOD_ORACLE_BINDING_MISMATCH')
     if period.get('input_history')!=target_owners[0]['history']:
         raise ValueError('SUCCESSOR_PERIOD_HISTORY_BINDING_MISMATCH')
-    checked(root,period['input_history']);checked(root,period['verifier'])
+    from workbench_db.v4_operational_period_artifact_pg_v1 import KEY as PERIOD_ARTIFACT_KEY,attest as attest_period_artifact
+    if PERIOD_ARTIFACT_KEY in candidate:
+        attest_period_artifact(root,candidate,'input_history',period['input_history'])
+        attest_period_artifact(root,candidate,'verifier',period['verifier'])
+    else:
+        checked(root,period['input_history']);checked(root,period['verifier'])
     _validate_membership_inputs(root,candidate)
     from workbench_db.v4_operational_registry_pg_v1 import read_registry
     registry=read_registry(root,candidate)

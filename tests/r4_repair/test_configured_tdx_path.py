@@ -2,6 +2,7 @@ from pathlib import Path
 from common.paths import (
     configured_path_source,
     resolve_baostock_cache_root,
+    resolve_baostock_download_root,
     resolve_baostock_request_ledger,
     resolve_configured_path,
     resolve_tdx_root,
@@ -58,11 +59,26 @@ def test_repository_tdx_and_baostock_input_output_paths_are_separated(monkeypatc
     tdx=resolve_tdx_root(root)
     snapshot=resolve_tdx_snapshot_root(root)
     cache=resolve_baostock_cache_root(root)
+    download=resolve_baostock_download_root(root)
     assert configured_path_source(root,'tdx.source_root')=='CONFIG:config/paths.yaml'
     assert configured_path_source(root,'tdx.snapshot_root')=='CONFIG:config/paths.yaml'
     assert configured_path_source(root,'baostock.cache_root')=='CONFIG:config/paths.yaml'
+    assert configured_path_source(root,'baostock.download_root')=='CONFIG:config/paths.yaml'
     assert not snapshot.is_relative_to(tdx)
     assert not cache.is_relative_to(tdx)
+    assert not download.is_relative_to(tdx)
+
+
+def test_baostock_download_root_uses_explicit_environment_yaml_precedence(tmp_path,monkeypatch):
+    configured=tmp_path/'yaml-download';environment=tmp_path/'env-download';explicit=tmp_path/'explicit-download'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'baostock:\n  download_root: "{configured.as_posix()}"\n',encoding='utf-8')
+    monkeypatch.delenv('BAOSTOCK_DOWNLOAD_ROOT',raising=False)
+    assert resolve_baostock_download_root(tmp_path)==configured.resolve()
+    monkeypatch.setenv('BAOSTOCK_DOWNLOAD_ROOT',str(environment))
+    assert resolve_baostock_download_root(tmp_path)==environment.resolve()
+    assert resolve_baostock_download_root(tmp_path,explicit)==explicit.resolve()
 
 
 def test_dm01_source_capture_entrypoints_resolve_central_roots(tmp_path):

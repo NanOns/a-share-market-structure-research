@@ -14,7 +14,7 @@ from workbench_analysis.dm01_runtime_r4 import calendar
 from workbench_analysis.source_readiness_v2 import source_readiness
 from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
-from common.paths import resolve_baostock_request_ledger, resolve_tdx_root
+from common.paths import resolve_baostock_download_root, resolve_baostock_request_ledger, resolve_tdx_root
 
 
 def accept_runtime(target, root=ROOT):
@@ -27,6 +27,11 @@ def accept_runtime(target, root=ROOT):
     runtime=package_metadata()
     schema_contract=json.loads((root/'config/baostock_dm01_sdk_schema_adapter_v2.json').read_bytes())
     folder=root/'reports'/'v4_baostock'/'runtime_acceptance'/target.replace('-','')
+    download_root=resolve_baostock_download_root(root)
+    try:
+        download_root.relative_to(root.resolve())
+    except ValueError as exc:
+        raise ValueError('BAOSTOCK_DOWNLOAD_ROOT_MUST_BE_WITHIN_PROJECT_FOR_PG_INGRESS') from exc
     stamp=now.strftime('%Y%m%dT%H%M%S%f')
     smoke_path=folder/(stamp+'_live_smoke_receipt.json')
     receipt=dict(contract_id='BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1',version='1.0.0',
@@ -48,7 +53,7 @@ def accept_runtime(target, root=ROOT):
             receipt['source_transport_v2']=transport
             receipt['response_metadata']=dict(daily=dm,adjustment_factor=fm)
             receipt['response_row_counts']=dict(daily=len(daily),adjustment_factor=len(factor))
-            raw_path=folder/(stamp+'_raw_responses.json')
+            raw_path=download_root/target.replace('-','')/(stamp+'_raw_responses.json')
             raw_sha=write_json_atomic(raw_path,
                 dict(target_date=target,observed_at=factor_received,requested_at=daily_requested,source_transport_v2=transport,daily_rows=daily,daily_metadata=dm,
                      adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=tdx_root)

@@ -6,8 +6,8 @@ tdx:
   snapshot_root: "data/v4/dynamic_daily_sources"
 
 baostock:
-  # Optional; BaoStock API calls need no download directory unless responses are persisted.
-  # download_root: "G:/market_data/baostock/downloads"
+  # Native BaoStock request responses used by runtime acceptance and PG ingress.
+  download_root: "data/v4/source_snapshots/baostock_downloads"
   cache_root: "data/v4/source_snapshots"
   # Explicitly retain the existing shared request-budget ledger in place.
   request_ledger: "reports/v4_baostock/request_ledger.json"

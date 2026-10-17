@@ -4,6 +4,7 @@ import json
 from workbench_analysis.r43_owner_replay import ref
 from workbench_db import v4_profile_dependent_corrections_pg_v1 as dependent
 from workbench_db import v4_profile_semantic_corrections_pg_v1 as semantic
+from v4.state_identity import digest as row_digest
 
 
 def _pg_binding(kind, fact_key):
@@ -110,3 +111,82 @@ def test_dependent_correction_manifest_is_persisted_and_loaded_via_pg(monkeypatc
     monkeypatch.setattr(dependent, "descriptor_metadata", lambda root, binding: binding["pg_descriptor"])
     monkeypatch.setattr(semantic, "load", lambda root, value: {})
     assert dependent.load(tmp_path, candidate) == persisted
+
+
+def _profile_cell(value, evidence, reason):
+    cell = {
+        "value": value,
+        "evidence": evidence,
+        "unknown_reason": reason,
+        "parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+        "source_digest": "source-digest",
+        "contract_digest": "contract-digest",
+        "input_digest": row_digest(evidence),
+    }
+    cell["output_digest"] = row_digest(cell)
+    return cell
+
+
+def test_semantic_apply_reads_manifest_and_patch_rows_from_pg(monkeypatch, tmp_path):
+    day = "2026-10-12"
+    evidence = {"bias20_atr": 1, "amount_ratio20": 1, "ret5": None}
+    original = {
+        "security_id": "600000.SH",
+        "trade_date": day,
+        "states": {
+            "core_extension_risk": _profile_cell("UNKNOWN", evidence, "REQUIRED_INPUT_UNKNOWN"),
+            "severe_extension": _profile_cell(None, {"core_extension_risk": "UNKNOWN"}, "REQUIRED_INPUT_UNKNOWN"),
+            "unchanged": _profile_cell("KNOWN", {}, None),
+        },
+        "profile_component_status": "PARTIAL",
+        "profile_quality": "PARTIAL_UNKNOWN",
+    }
+    original["output_digest"] = row_digest(original)
+    replacement = json.loads(json.dumps(original))
+    replacement["states"]["core_extension_risk"] = _profile_cell("LOW", evidence, None)
+    replacement["states"]["severe_extension"] = _profile_cell(False, {"core_extension_risk": "LOW"}, None)
+    replacement["profile_component_status"] = "READY"
+    replacement["profile_quality"] = "COMPLETE"
+    replacement.pop("output_digest")
+    replacement["output_digest"] = row_digest(replacement)
+
+    source = {"path": "profile-owner.json", "sha256": "c" * 64, "bytes": 1}
+    descriptor = _pg_binding("reference_profile_semantic_corrections", "patch-fact")
+    manifest_binding = _pg_binding("authority_manifest", "profile-manifest")
+    authority = {
+        "contract_id": semantic.CONTRACT,
+        "dates": {day: {
+            "source": source,
+            "descriptor": descriptor,
+            "fact_token": "d" * 64,
+            "original_profile": source,
+            "security_ids": [original["security_id"]],
+        }},
+        "source_profiles": {day: source},
+        "PIT_ELIGIBLE": False,
+        "AS_RECORDED": False,
+    }
+    candidate = {"owners": {day: {"profile": source}}, semantic.KEY: manifest_binding}
+    patches = [{
+        "security_id": original["security_id"],
+        "original_row_digest": row_digest(original),
+        "replacement": replacement,
+    }]
+    monkeypatch.setattr(semantic, "read_authority_manifest", lambda root, binding: authority)
+    monkeypatch.setattr(semantic, "descriptor_metadata", lambda root, binding: binding["pg_descriptor"])
+    monkeypatch.setattr(semantic, "read_fact", lambda root, binding, fact_identity, trade_day, domain, source_binding, **kwargs: patches)
+    monkeypatch.setattr(semantic, "checked", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runtime opened local authority")))
+
+    result = semantic.apply(tmp_path, candidate, day, [original])
+    assert result == [replacement]
+    assert result[0]["states"]["core_extension_risk"]["value"] == "LOW"
+
+
+def test_semantic_runtime_missing_head_manifest_fails_closed(tmp_path):
+    candidate = {"owners": {"2026-10-12": {"profile": {"path": "owner.json"}}}}
+    try:
+        semantic.load(tmp_path, candidate)
+    except ValueError as exc:
+        assert str(exc) == "PROFILE_CORRECTION_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK"
+    else:
+        raise AssertionError("missing Head-bound PG authority must fail closed")

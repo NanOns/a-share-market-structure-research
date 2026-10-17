@@ -6,12 +6,14 @@ ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')
 from workbench_analysis.tdx_official_daily_source import (_request,_read_bounded,_zip_validate,
     validate_official_url,discover_download_url,discover_update_info_url,parse_update_date,PAGE_URL)
 from workbench_analysis.daily_source_freeze import ensure_outside_tdx
+from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root
 from scripts.build_v4_08_r2_membership_evidence import atomic_json,atomic_bytes
 from scripts.enter_source_authority_remediation_r2 import bind
 
 def main():
-    base=ROOT/'data/v4/source_evidence/dm01_a01_r3/tdx'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    ensure_outside_tdx(base,Path('D:/new_tdx'));base.mkdir(parents=True,exist_ok=False)
+    source_root,snapshot_root=capture_roots(ROOT)
+    base=snapshot_root/'source_evidence/dm01_a01_r3/tdx'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+    ensure_outside_tdx(base,source_root);base.mkdir(parents=True,exist_ok=False)
     observed=datetime.now(timezone.utc).isoformat()
     with _request(PAGE_URL,timeout=30) as r:page=_read_bounded(r,4*1024*1024)
     url=discover_download_url(page)
@@ -61,6 +63,14 @@ def main():
             knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,first_available_at_target_proven=False,tdx_root_write_count=0))
         if package:break
     ref=bind((base/'request_receipt.json').relative_to(ROOT).as_posix())
-    atomic_json(ROOT/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json',dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref))
-    print(json.dumps(dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref)))
+    summary=base/'DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json'
+    atomic_json(summary,dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref))
+    print(json.dumps(dict(status='PASS' if package else 'BLOCKED',capture_receipt=ref,audit_summary_path=summary.as_posix())))
+
+
+def capture_roots(project_root):
+    """Resolve the read-only source and writable snapshot roots centrally."""
+    return resolve_tdx_root(project_root),resolve_tdx_snapshot_root(project_root)
+
+
 if __name__=='__main__':main()

@@ -10,8 +10,16 @@ from .tdx_official_daily_source import _atomic_write
 from .market_source_acquisition import official_sessions
 
 
-def write(path, payload):
-    _atomic_write(path,(json.dumps(payload,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode(),tdx_root=Path('D:/new_tdx'))
+def resolve_source_paths(project_root):
+    from common.paths import resolve_tdx_root, resolve_baostock_cache_root
+    return resolve_tdx_root(project_root),resolve_baostock_cache_root(project_root)
+
+
+def write(path, payload, *, project_root=None, tdx_root=None):
+    from common.paths import resolve_tdx_root
+    root=Path(project_root or Path(__file__).resolve().parents[2]).resolve()
+    source_root=resolve_tdx_root(root,tdx_root)
+    _atomic_write(path,(json.dumps(payload,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode(),tdx_root=source_root)
 
 
 def normalize_factor_schema(rows):
@@ -30,15 +38,18 @@ def normalize_factor_schema(rows):
 
 class CorrectedFactorSchemaClient:
     """Versioned spelling adapter; native response retained separately."""
-    def __init__(self, client, output):self.client=client;self.output=output
+    def __init__(self, client, output, *, project_root, tdx_root):
+        self.client=client;self.output=output;self.project_root=project_root;self.tdx_root=tdx_root
     def __getattr__(self,name):return getattr(self.client,name)
     def query_rows(self, operation, method, **params):
         rows,meta=self.client.query_rows(operation,method,**params)
         if method==DAILY_METHOD:
-            write(self.output/'CAPTURE_NATIVE_DAILY_RESPONSE.json',dict(rows=rows,metadata=meta,params=params))
+            write(self.output/'CAPTURE_NATIVE_DAILY_RESPONSE.json',dict(rows=rows,metadata=meta,params=params),
+                  project_root=self.project_root,tdx_root=self.tdx_root)
             meta=dated_daily_metadata(rows,meta,params['date'])
         if method==FACTOR_METHOD:
-            write(self.output/'CAPTURE_NATIVE_FACTOR_RESPONSE.json',dict(rows=rows,metadata=meta,params=params))
+            write(self.output/'CAPTURE_NATIVE_FACTOR_RESPONSE.json',dict(rows=rows,metadata=meta,params=params),
+                  project_root=self.project_root,tdx_root=self.tdx_root)
             rows=normalize_factor_schema(rows)
             meta=dict(meta,fields=['adjustFactor' if f=='adjustFacto' else f for f in meta.get('fields',[])],
                 schema_adapter='DM01_CORRECTED_FACTOR_FIELD_ALIAS_V2',native_factor_response='CAPTURE_NATIVE_FACTOR_RESPONSE.json')
@@ -55,12 +66,16 @@ def dated_daily_metadata(rows, meta, target):
 
 def corrected_baostock_capture(root, target_date, output):
     root=Path(root).resolve();output=Path(output).resolve()
+    tdx_root,cache_root=resolve_source_paths(root)
+    from .daily_source_freeze import ensure_outside_tdx
+    ensure_outside_tdx(output,tdx_root)
+    ensure_outside_tdx(cache_root,tdx_root)
     if target_date not in official_sessions(root):raise ValueError('OFFICIAL_SESSION_NOT_VERIFIED')
     from zoneinfo import ZoneInfo
     local=datetime.now(ZoneInfo('Asia/Shanghai'))
     if target_date>local.date().isoformat() or (target_date==local.date().isoformat() and local.hour<15):
         raise ValueError('WAIT_MARKET_CLOSE')
-    ledger=root/'reports/v4_baostock/request_ledger.json'
+    ledger=cache_root/'baostock/request_ledger.json'
     budget=RequestBudget(ledger)
     def count():
         return sum(r['count'] for r in json.loads(ledger.read_bytes()).get('by_shanghai_date',{}).values()) if ledger.exists() else 0
@@ -73,7 +88,7 @@ def corrected_baostock_capture(root, target_date, output):
             receipt['endpoint']=client.runtime_endpoint
             daily,dm=client.query_rows('dm01_corrected_runtime_daily',DAILY_METHOD,date=target_date,max_rows=20000,max_pages=1)
             receipt['requests'].append(dict(method=DAILY_METHOD,params=dict(date=target_date),metadata=dm,rows=daily))
-            write(output/'CORRECTED_BAOSTOCK_CAPABILITY_RECEIPT.json',receipt)
+            write(output/'CORRECTED_BAOSTOCK_CAPABILITY_RECEIPT.json',receipt,project_root=root,tdx_root=tdx_root)
             factors,fm=client.query_rows('dm01_corrected_runtime_factors',FACTOR_METHOD,date=target_date,max_rows=20000,max_pages=1)
             receipt['requests'].append(dict(method=FACTOR_METHOD,params=dict(date=target_date),metadata=fm,rows=factors))
             _validate_daily_rows(daily,target_date);_validate_factor_rows(normalize_factor_schema(factors),target_date)
@@ -85,24 +100,26 @@ def corrected_baostock_capture(root, target_date, output):
             smoke=dict(status='PASS',target_date=target_date,auth_mode=client.auth_mode,endpoint=client.runtime_endpoint,
                 daily=record(DAILY_METHOD,daily,dated_daily_metadata(daily,dm,target_date)),adjustment_factor=record(FACTOR_METHOD,factors,fm))
             receipt.update(status='PASS_CORRECTED_READ_CAPABILITY',live_smoke=smoke)
-        write(output/'CORRECTED_BAOSTOCK_CAPABILITY_RECEIPT.json',receipt)
+        write(output/'CORRECTED_BAOSTOCK_CAPABILITY_RECEIPT.json',receipt,project_root=root,tdx_root=tdx_root)
         import hashlib
         smoke_path=output/'LIVE_READ_CAPABILITY_SMOKE_V1.json'
         runtime=package_metadata()
         write(smoke_path,dict(contract_id='BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1',status='PASS',
             runtime={k:runtime[k] for k in ('package','version','installed_python_sources_sha256')},
             auth_mode='PUBLIC_ANONYMOUS',live_smoke=smoke,AS_RECORDED=False,
-            consumer_scope='CORRECTED_SOURCE_STAGING_ONLY'))
+            consumer_scope='CORRECTED_SOURCE_STAGING_ONLY'),project_root=root,tdx_root=tdx_root)
         manifest=build_runtime_acceptance_manifest(sdk=package_metadata(),auth_mode='PUBLIC_ANONYMOUS',live_smoke=smoke,
             smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=hashlib.sha256(smoke_path.read_bytes()).hexdigest())
         manifest.update(consumer_scope='CORRECTED_SOURCE_STAGING_ONLY',production_permission=False,AS_RECORDED=False)
         manifest['manifest_sha256']=canonical_sha256({k:v for k,v in manifest.items() if k!='manifest_sha256'})
-        write(output/'CORRECTED_RUNTIME_CAPABILITY_MANIFEST.json',manifest)
+        write(output/'CORRECTED_RUNTIME_CAPABILITY_MANIFEST.json',manifest,project_root=root,tdx_root=tdx_root)
         with BaoStockClient(budget,auth_mode='PUBLIC_ANONYMOUS',runtime_acceptance_manifest=manifest) as client:
-            source=capture_baostock_daily_update(trade_date=target_date,client=CorrectedFactorSchemaClient(client,output),
-                snapshot_root=root/'data/v4/source_snapshots',tdx_root=Path('D:/new_tdx'),runtime_acceptance_manifest=manifest)
+            source=capture_baostock_daily_update(trade_date=target_date,
+                client=CorrectedFactorSchemaClient(client,output,project_root=root,tdx_root=tdx_root),
+                snapshot_root=cache_root,tdx_root=tdx_root,runtime_acceptance_manifest=manifest)
         receipt.update(status=source['status'],snapshot_id=source['snapshot_id'],source_status=source['status'])
-        write(output/'CORRECTED_BAOSTOCK_CAPTURE_RESULT.json',dict(source,AS_RECORDED=False,production_permission=False))
+        write(output/'CORRECTED_BAOSTOCK_CAPTURE_RESULT.json',dict(source,AS_RECORDED=False,production_permission=False),
+              project_root=root,tdx_root=tdx_root)
         return source,manifest,None
     except Exception as error:
         # Source errors are concrete and bounded. No fallback to fictitious empty rows.
@@ -110,4 +127,4 @@ def corrected_baostock_capture(root, target_date, output):
         return None,None,receipt['reason']
     finally:
         receipt['request_count_this_run']=count()-before
-        write(output/'CORRECTED_BAOSTOCK_FULL_TRACE.json',receipt)
+        write(output/'CORRECTED_BAOSTOCK_FULL_TRACE.json',receipt,project_root=root,tdx_root=tdx_root)

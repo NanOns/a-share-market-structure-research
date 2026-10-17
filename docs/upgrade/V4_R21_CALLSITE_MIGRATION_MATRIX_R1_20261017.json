@@ -54,9 +54,19 @@
         "status": "INGRESS_CONTRACT_REQUIRED"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "Path resolution is now config/env/explicit-argument based; full source contract ingestion, live capture, accepted PG append and downstream publication readback remain open.",
       "baseline_function": "main",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-tdx-baostock-capture-paths-r8",
+        "implemented_code": "TDX daily-package capture output uses resolve_tdx_snapshot_root and input guard uses resolve_tdx_root. Corrected BaoStock source capture uses configured TDX source and BaoStock cache roots; its request ledger is stored under the configured BaoStock cache.",
+        "test_evidence": [
+          "test_dm01_source_capture_entrypoints_resolve_central_roots",
+          "test_repository_tdx_and_baostock_input_output_paths_are_separated"
+        ],
+        "formal_status": "OPEN",
+        "live_acquisition": "NOT_RUN",
+        "pg_ingest": "NOT_RUN_NO_WRITE_AUTHORIZATION"
+      },
       "reference_evidence": []
     },
     {
@@ -16474,7 +16484,29 @@
         "p1_formally_remaining": 266,
         "status": "PG_CODE_PATH_OPT_IN; exact baseline callsite code replaced under PG selector, formal acceptance remains open.",
         "next": "Migrate daily identity Owner read and executor final Head/CAS using approved PG relation and immutable source candidate flow."
+      },
+      {
+        "batch_id": "R21-R4-tdx-baostock-capture-paths-r8",
+        "files": [
+          "scripts/capture_dm01_a01_r3_tdx_package.py",
+          "src/workbench_analysis/dm01_corrected_source_capture_v2.py",
+          "tests/r4_repair/test_configured_tdx_path.py"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-78d61b55d2259e7f1c21"
+        ],
+        "evidence": [
+          "DM-01 TDX official-package capture resolves its read-only source root and writable snapshot root through existing central configuration.",
+          "Corrected BaoStock capture resolves source/cache roots through existing central configuration, enforces cache/output outside TDX, and stores its bounded request ledger in the configured BaoStock cache.",
+          "No network acquisition or data capture ran."
+        ],
+        "verification": "31 focused path, BaoStock client, market calendar and PG-calendar tests passed; compile, diff and staged repository policy checks passed. No external acquisition or live PG read.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PATH_CODE_WIRED; external-ingress/PG-acceptance rows remain open.",
+        "next": "Migrate another exact BFF/Owner or other-business consumer to existing publication-bound PG APIs."
       }
     ]
   }
 }
+

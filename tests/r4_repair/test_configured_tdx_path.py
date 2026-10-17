@@ -62,3 +62,20 @@ def test_repository_tdx_and_baostock_input_output_paths_are_separated(monkeypatc
     assert configured_path_source(root,'baostock.cache_root')=='CONFIG:config/paths.yaml'
     assert not snapshot.is_relative_to(tdx)
     assert not cache.is_relative_to(tdx)
+
+
+def test_dm01_source_capture_entrypoints_resolve_central_roots(tmp_path):
+    from scripts.capture_dm01_a01_r3_tdx_package import capture_roots
+    from workbench_analysis.dm01_corrected_source_capture_v2 import resolve_source_paths
+
+    configured_tdx=tmp_path/'read-only-tdx'
+    configured_snapshot=tmp_path/'tdx-snapshots'
+    configured_baostock=tmp_path/'baostock-cache'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'tdx:\n  source_root: "{configured_tdx.as_posix()}"\n'
+        f'  snapshot_root: "{configured_snapshot.as_posix()}"\n'
+        f'baostock:\n  cache_root: "{configured_baostock.as_posix()}"\n',
+        encoding='utf-8')
+    assert capture_roots(tmp_path)==(configured_tdx.resolve(),configured_snapshot.resolve())
+    assert resolve_source_paths(tmp_path)==(configured_tdx.resolve(),configured_baostock.resolve())

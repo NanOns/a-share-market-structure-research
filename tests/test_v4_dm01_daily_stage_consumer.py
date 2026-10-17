@@ -136,12 +136,26 @@ def test_continuous_bootstrap_does_not_fallback_when_baseline_stage_fact_is_miss
 def test_continuous_data_head_bootstrap_uses_pg_without_local_head_fallback(monkeypatch, tmp_path):
     import json
     import pytest
+    import hashlib
     from scripts import run_v4_continuous_data_maintenance as maintenance
     from workbench_db import v4_dm01_stage_state_pg_r1 as state
 
-    payload = {"contract_id": "V4_DATA_ACCEPTED_HEAD_V1", "accepted_trade_date": "2026-10-16",
-               "manifest_sha256": "a" * 64, "stage_accepted_head_sha256": "b" * 64,
-               "dev_baseline_sha256": "c" * 64, "PIT_ELIGIBLE": False, "AS_RECORDED": False}
+    head = {"contract_id": "V4_DATA_ACCEPTED_HEAD_V2", "version": "2.0.0",
+            "accepted_trade_date": "2026-10-16", "PIT_ELIGIBLE": False, "AS_RECORDED": False}
+    raw = json.dumps(head, separators=(",", ":")).encode("utf-8")
+    binding = {"path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+               "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+    authority_bindings = {
+        "data": binding,
+        "stage": {"path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json", "sha256": "a" * 64, "bytes": 10},
+        "current_stage_head": {"path": "data/v4/V4_15_ACCEPTED_HEAD.json", "sha256": "b" * 64, "bytes": 10},
+        "current_authority_contract": {"path": "config/v4_current_stage_authority_v2.json", "sha256": "c" * 64, "bytes": 10},
+    }
+    payload = {"contract_id": state.DATA_HEAD_IMPORT_CONTRACT, "contract_version": state.VERSION,
+               "trade_date": "2026-10-16", "accepted_trade_date": "2026-10-16",
+               "source_binding": binding, "source_raw_utf8": raw.decode("utf-8"),
+               "source_raw_sha256": binding["sha256"], "source_raw_bytes": len(raw),
+               "accepted_authority_bindings": authority_bindings, "head": head}
     monkeypatch.setattr(maintenance, "ROOT", tmp_path)
     monkeypatch.setattr(state, "read_latest_stage", lambda root, *, stage: payload)
     monkeypatch.setattr(maintenance, "read", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("LOCAL_HEAD_READ_FORBIDDEN")))
@@ -150,12 +164,14 @@ def test_continuous_data_head_bootstrap_uses_pg_without_local_head_fallback(monk
     result = maintenance.initialize_bootstrap({})
 
     assert result["status"] == "PG_DATA_HEAD_READY"
-    assert result["data_head"] == payload
+    assert result["data_head"] == head
+    assert result["data_head_sha256"] == binding["sha256"]
+    assert result["data_head_source_binding"] == binding
     assert result["authority"] == "PG_FORWARD_FACT"
 
     monkeypatch.setattr(state, "read_latest_stage", lambda *_a, **_k: (_ for _ in ()).throw(ValueError("DM01_STAGE_STATE_NOT_FOUND")))
     local_pointer = tmp_path / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
     local_pointer.parent.mkdir(parents=True)
-    local_pointer.write_text(json.dumps(payload), encoding="utf-8")
+    local_pointer.write_text(json.dumps(head), encoding="utf-8")
     with pytest.raises(SystemExit, match="DM01_PG_DATA_HEAD_MIGRATION_REQUIRED:DM01_STAGE_STATE_NOT_FOUND"):
         maintenance.initialize_bootstrap({})

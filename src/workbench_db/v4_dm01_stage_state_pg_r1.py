@@ -13,6 +13,7 @@ CONTRACT = "V4_DM01_STAGE_STATE_PG_R1"
 VERSION = "1.0.0"
 FOLDER = "data/v4/dm01_stage_state_pg_r1"
 KIND = "stage_state"
+DATA_HEAD_IMPORT_CONTRACT = "V4_DM01_DATA_HEAD_IMPORT_R1"
 STAGES = frozenset({
     "phase0_acceptance",
     "v401_acceptance",
@@ -143,6 +144,92 @@ def append_stage(root, trade_date: str, stage: str, payload: dict) -> dict:
         "payload_sha256": record["payload_sha256"],
         "binding": binding,
     }
+
+
+def build_data_head_import_payload(root, binding: dict) -> dict:
+    """Prepare the exact accepted V2 Data Head for a one-time PG import.
+
+    This is an explicit source-ingress operation. The input path is fixed to
+    the current V4 Data Head namespace, and both its raw bytes and validated
+    decoded object are retained so PG readback can prove byte identity.
+    """
+    project_root = Path(root).resolve()
+    expected_path = "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    if project_root.drive.upper() != "G:":
+        raise ValueError("DM01_DATA_HEAD_IMPORT_G_ROOT_REQUIRED")
+    if not isinstance(binding, dict) or set(binding) != {"path", "sha256", "bytes"}:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_BINDING_REQUIRED")
+    if binding.get("path") != expected_path:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_PATH_INVALID")
+    source = (project_root / expected_path).resolve()
+    if not source.is_relative_to(project_root) or not source.is_file():
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_MISSING")
+    raw = source.read_bytes()
+    if len(raw) != binding["bytes"] or digest(raw) != binding["sha256"]:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_DIGEST_MISMATCH")
+    try:
+        head = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_JSON_INVALID") from exc
+    if (not isinstance(head, dict) or head.get("contract_id") != "V4_DATA_ACCEPTED_HEAD_V2"
+            or head.get("version") != "2.0.0" or not isinstance(head.get("accepted_trade_date"), str)):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_V2_REQUIRED")
+    try:
+        from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
+        authority = CurrentStageAuthority(project_root)
+        if authority.data_ref != binding or authority.data != head:
+            raise ValueError("DM01_DATA_HEAD_IMPORT_NOT_CURRENTLY_ACCEPTED")
+        authority_bindings = authority.bindings()
+    except (AssertionError, KeyError, TypeError, ValueError, OSError) as exc:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_ACCEPTED_HEAD_INVALID") from exc
+    return {
+        "contract_id": DATA_HEAD_IMPORT_CONTRACT,
+        "contract_version": VERSION,
+        "trade_date": head["accepted_trade_date"],
+        "accepted_trade_date": head["accepted_trade_date"],
+        "source_binding": dict(binding),
+        "source_raw_utf8": raw.decode("utf-8"),
+        "source_raw_sha256": digest(raw),
+        "source_raw_bytes": len(raw),
+        "accepted_authority_bindings": authority_bindings,
+        "head": head,
+    }
+
+
+def decode_data_head_import_payload(payload: dict) -> tuple[dict, dict]:
+    """Recover a byte-verified V2 Head and its source binding from PG state."""
+    if (not isinstance(payload, dict) or payload.get("contract_id") != DATA_HEAD_IMPORT_CONTRACT
+            or payload.get("contract_version") != VERSION):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_ENVELOPE_REQUIRED")
+    binding = payload.get("source_binding")
+    if (not isinstance(binding, dict) or binding.get("path") != "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+            or not isinstance(binding.get("sha256"), str)
+            or isinstance(binding.get("bytes"), bool) or not isinstance(binding.get("bytes"), int)):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_BINDING_INVALID")
+    authority_bindings = payload.get("accepted_authority_bindings")
+    if (not isinstance(authority_bindings, dict) or authority_bindings.get("data") != binding
+            or not isinstance(authority_bindings.get("stage"), dict)
+            or not isinstance(authority_bindings.get("current_stage_head"), dict)
+            or not isinstance(authority_bindings.get("current_authority_contract"), dict)):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_ACCEPTED_AUTHORITY_BINDING_REQUIRED")
+    raw_text = payload.get("source_raw_utf8")
+    if not isinstance(raw_text, str):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_RAW_BYTES_REQUIRED")
+    raw = raw_text.encode("utf-8")
+    if (len(raw) != binding["bytes"] or len(raw) != payload.get("source_raw_bytes")
+            or digest(raw) != binding["sha256"] or digest(raw) != payload.get("source_raw_sha256")):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_DIGEST_MISMATCH")
+    try:
+        decoded = json.loads(raw.decode("utf-8"))
+    except ValueError as exc:
+        raise ValueError("DM01_DATA_HEAD_IMPORT_SOURCE_JSON_INVALID") from exc
+    if (not isinstance(decoded, dict) or decoded != payload.get("head")
+            or decoded.get("contract_id") != "V4_DATA_ACCEPTED_HEAD_V2"
+            or decoded.get("version") != "2.0.0"
+            or decoded.get("accepted_trade_date") != payload.get("accepted_trade_date")
+            or payload.get("trade_date") != payload.get("accepted_trade_date")):
+        raise ValueError("DM01_DATA_HEAD_IMPORT_PAYLOAD_MISMATCH")
+    return decoded, dict(binding)
 
 
 def read_stage(root, binding: dict, *, trade_date: str, stage: str) -> dict:

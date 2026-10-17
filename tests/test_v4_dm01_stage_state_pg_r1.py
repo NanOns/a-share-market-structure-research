@@ -242,6 +242,54 @@ def test_latest_data_head_is_selected_from_pg_and_rejects_same_day_duplicates(mo
         state.read_latest_stage(tmp_path, stage="data_head")
 
 
+def test_v2_data_head_import_preserves_exact_source_bytes_and_fails_closed(monkeypatch, tmp_path):
+    import hashlib
+    import json
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    root = tmp_path
+    path = root / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    path.parent.mkdir(parents=True)
+    raw = b'{\n  "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",\n  "version": "2.0.0",\n  "accepted_trade_date": "2026-09-30",\n  "AS_RECORDED": false,\n  "PIT_ELIGIBLE": false\n}\n'
+    path.write_bytes(raw)
+    binding = {"path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+               "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+    authority_bindings = {
+        "data": binding,
+        "stage": {"path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json", "sha256": "a" * 64, "bytes": 10},
+        "current_stage_head": {"path": "data/v4/V4_15_ACCEPTED_HEAD.json", "sha256": "b" * 64, "bytes": 10},
+        "current_authority_contract": {"path": "config/v4_current_stage_authority_v2.json", "sha256": "c" * 64, "bytes": 10},
+    }
+    class Authority:
+        def __init__(self, _root): self.data_ref, self.data = binding, json.loads(raw)
+        def bindings(self): return authority_bindings
+    monkeypatch.setattr("workbench_analysis.v4_current_stage_authority.CurrentStageAuthority", Authority)
+
+    payload = state.build_data_head_import_payload(root, binding)
+    recovered, recovered_binding = state.decode_data_head_import_payload(payload)
+    assert recovered == json.loads(raw)
+    assert recovered_binding == binding
+    assert payload["source_raw_utf8"].encode("utf-8") == raw
+    assert payload["source_raw_sha256"] == binding["sha256"]
+    assert payload["accepted_authority_bindings"] == authority_bindings
+
+    tampered = dict(payload, source_raw_utf8=payload["source_raw_utf8"].replace("2026-09-30", "2026-10-01"))
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_SOURCE_DIGEST_MISMATCH"):
+        state.decode_data_head_import_payload(tampered)
+    non_object_raw = b"[]"
+    non_object_binding = {**binding, "sha256": hashlib.sha256(non_object_raw).hexdigest(),
+                          "bytes": len(non_object_raw)}
+    non_object_authority = dict(authority_bindings, data=non_object_binding)
+    non_object = dict(payload, source_raw_utf8="[]", source_raw_sha256=hashlib.sha256(non_object_raw).hexdigest(),
+                      source_raw_bytes=len(non_object_raw),
+                      source_binding=non_object_binding,
+                      accepted_authority_bindings=non_object_authority)
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_PAYLOAD_MISMATCH"):
+        state.decode_data_head_import_payload(non_object)
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_SOURCE_PATH_INVALID"):
+        state.build_data_head_import_payload(root, dict(binding, path="data/v4/V4_DEV_BASELINE_HEAD.json"))
+
+
 def test_gbbq_probe_entrypoint_appends_exact_result_to_pg_stage(monkeypatch, tmp_path, capsys):
     import sys
     from scripts import probe_v4_dm01_gbbq_revision as probe

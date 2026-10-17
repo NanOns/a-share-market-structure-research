@@ -38,7 +38,7 @@ from common.paths import resolve_baostock_cache_root, resolve_tdx_root, resolve_
 CONTRACT = Path("config/v4_continuous_data_maintenance_v1.json")
 DAILY_CONTRACT = Path("config/v4_continuous_data_maintenance_v2.json")
 SOURCE_FREEZE_CONTRACT = Path("config/v4_daily_source_freeze_v2.json")
-HEAD_CONTRACT = Path("config/v4_data_accepted_head_v1.json")
+HEAD_CONTRACT = Path("config/v4_data_accepted_head_v2.json")
 BRIDGE_CONTRACT = Path("config/v4_dm01_bridge_calendar_v1.json")
 CALENDAR_CONTRACT = Path("config/v4_official_exchange_calendar_v2.json")
 CLOSURES_CONTRACT = Path("config/v4_official_exchange_calendar_expected_closures_v2.json")
@@ -398,11 +398,16 @@ def initialize_bootstrap(bindings: dict) -> dict:
     """Resolve the current data authority from PG; local bootstrap JSON is never read."""
     del bindings  # Baseline facts were already selected from PG by the caller.
     try:
-        from workbench_db.v4_dm01_stage_state_pg_r1 import read_latest_stage
-        data = read_latest_stage(ROOT, stage="data_head")
+        from workbench_db.v4_dm01_stage_state_pg_r1 import (
+            decode_data_head_import_payload,
+            read_latest_stage,
+        )
+        imported = read_latest_stage(ROOT, stage="data_head")
+        data, source_binding = decode_data_head_import_payload(imported)
     except (OSError, RuntimeError, ValueError) as exc:
         raise SystemExit("DM01_PG_DATA_HEAD_MIGRATION_REQUIRED:" + str(exc)) from exc
-    if (data.get("contract_id") != "V4_DATA_ACCEPTED_HEAD_V1"
+    if (data.get("contract_id") != "V4_DATA_ACCEPTED_HEAD_V2"
+            or data.get("version") != "2.0.0"
             or data.get("accepted_trade_date") is None
             or data.get("PIT_ELIGIBLE") is True
             or data.get("AS_RECORDED") is True):
@@ -411,7 +416,8 @@ def initialize_bootstrap(bindings: dict) -> dict:
         "status": "PG_DATA_HEAD_READY",
         "accepted_trade_date": data["accepted_trade_date"],
         "data_head": data,
-        "data_head_sha256": pg_digest(canonical(data)),
+        "data_head_sha256": source_binding["sha256"],
+        "data_head_source_binding": source_binding,
         "authority": "PG_FORWARD_FACT",
     }
 

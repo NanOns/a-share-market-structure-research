@@ -131,8 +131,7 @@ def _reachable_json_documents(root: Path, tracked: list[str]) -> set[str]:
         if Path(rel).suffix.lower()!=".json": continue
         authority_name=any(k in Path(low).name for k in ("accepted_head", "head_", "_head", "manifest", "registry", "receipt", "contract", "authority", "migration", "owner", "rps", "publication", "universe", "source_pit", "lineage", "binding"))
         if (low.startswith("data/v4/") and "head" in low
-                or low.startswith("config/") and authority_name
-                or low.startswith(("reports/", "docs/")) and authority_name and ("v4" in low or "r17" in low or "r18" in low or "r19" in low)):
+                or low.startswith("config/") and authority_name):
             found.add(rel)
     return found
 
@@ -225,14 +224,9 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
         if file_index % 10000 == 0: print(f"scanned tracked paths: {file_index}/{len(tracked)}; edges={len(entries)}",file=sys.stderr)
         p=root/rel;ext=p.suffix.lower();module=rel.split("/",1)[0];module_coverage[module]=module_coverage.get(module,0)+1
         low=rel.lower()
-        named_v4=("v4" in low or "r19" in low or "/r17" in low or "/r18" in low)
-        audit_doc=(low.startswith("reports/v4")
-                   or low.startswith("reports/audits/") and named_v4
-                   or low.startswith("reports/stage/") and named_v4
-                   or low.startswith(("docs/upgrade/", "docs/audits/", "docs/evidence/")) and named_v4)
-        is_code_or_v4_data=(low.startswith(("src/", "scripts/", "tests/", "config/", "data/v4/", ".github/workflows/", "frontend/", "web/", "ui/", "client/")))
-        if not is_code_or_v4_data and not audit_doc:
-            excluded.append({"path":rel,"reason":"OUTSIDE_CURRENT_V4_CODE_AND_AUTHORITY_PATHS; no V4 entrypoint/import/head binding identified"})
+        is_code_or_v4_data=(low.startswith(("src/", "scripts/", "config/", "data/v4/", ".github/workflows/", "sql/", "frontend/", "web/", "ui/", "client/")))
+        if not is_code_or_v4_data:
+            excluded.append({"path":rel,"reason":"OUTSIDE_CURRENT_V4_EXECUTABLE_OR_AUTHORITY_PATHS; referenced bytes are independently checked from active code/config/Accepted Heads"})
             continue
         if low.startswith("reports/audits/") and not any(x in low for x in ("r19", "r18", "r17", "v4_r14", "v4_r15", "v4_r16", "v4_r17", "v4_r18", "v4_r19")):
             excluded.append({"path":rel,"reason":"AUDIT_REPORT_OUTSIDE_R17_R18_R19_V4_SCOPE; no current V4 Accepted Head reference identified"})
@@ -240,7 +234,10 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
         if ext not in {".py", ".sh", ".ps1", ".bat", ".cmd", ".sql", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".html", ".css", ".json", ".jsonl", ".ndjson", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf"}:
             excluded.append({"path":rel,"reason":"NON_TEXT_PAYLOAD; bytes are independently hashed when a scanned manifest or code edge references this target"})
             continue
-        if (rel.startswith(("data/v4/", "reports/")) and ext in {".json", ".jsonl", ".ndjson"}
+        if low.startswith("data/v4/") and "head" not in low and ext not in {".json", ".jsonl", ".ndjson"}:
+            excluded.append({"path":rel,"reason":"V4_SOURCE_OR_BUSINESS_PAYLOAD; whole bytes are hashed when referenced by an Accepted Head, manifest, or executable path"})
+            continue
+        if (rel.startswith("data/v4/") and ext in {".json", ".jsonl", ".ndjson"}
                 and rel not in reachable_json and not (rel.startswith("data/v4/") and "head" in low)):
             excluded.append({"path":rel,"reason":"JSON_RESULT_OR_DATA_NOT_REACHABLE_FROM_A_V4_ACCEPTED_HEAD_OR_CONFIG_AUTHORITY; path and byte identity are still captured when another active reference targets it"})
             continue

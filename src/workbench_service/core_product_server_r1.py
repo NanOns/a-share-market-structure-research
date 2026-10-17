@@ -6,7 +6,7 @@ import hashlib,json,threading,time,logging
 from copy import copy
 import psycopg
 from .operational_daily_server_v1 import make_daily_handler, PREFIX
-from .core_product_bff_r1 import CoreProductBFFR1, product_manifest_bindings
+from .core_product_bff_r1 import CoreProductBFFR1
 from workbench_analysis.operational_successor_v1 import accepted_api
 
 def _collect_local_binding_paths(root,value,paths):
@@ -28,62 +28,26 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
     logger=logging.getLogger("v4.http.timing")
     flights={}
     def build(signature):
-        authority=root/'config/core_product_read_authority_r1.json'
         read_index_r2_authority=root/'config/v4_read_index_authority_r2.json'
-        focus_authority=root/'config/core_product_focus_read_authority_r2.json'
-        api=accepted_api(root);paths=set();external_paths=set()
+        api=accepted_api(root);paths=set()
         def collect(value):_collect_local_binding_paths(root,value,paths)
         if operational_owner_index_root is not None:
             api.pg_owner_workspace_root=operational_owner_index_root
-        def collect_external(base_root,x):
-            if isinstance(x,dict):
-                if x.get('pg_descriptor') is not None:
-                    collect_external(base_root,x['pg_descriptor'])
-                    return
-                if x.get('path') and x.get('sha256'):
-                    from workbench_analysis.r43_owner_replay import checked
-                    external_paths.add(checked(base_root,x))
-                for v in x.values():collect_external(base_root,v)
-            elif isinstance(x,list):
-                for v in x:collect_external(base_root,v)
-        collect(api.candidate);collect(api.snapshot)
-        if operational_owner_index_root is not None:
-            native_owner=getattr(api,'pg_owner_authority',None)
-            if native_owner is not None:
-                collect_external(operational_owner_index_root,native_owner)
-                collect_external(operational_owner_index_root,api.candidate.get('owners'))
-        if api.candidate.get('native_membership_reference'):
-            membership_authority=json.loads((root/api.candidate['native_membership_reference']['path']).read_bytes())
-            collect(membership_authority)
-            if operational_owner_index_root is not None:
-                collect_external(operational_owner_index_root,membership_authority)
+        # Accepted Owner and snapshot payloads are consumed from PostgreSQL.
+        # Watching their archived source files here made mutable path metadata
+        # a second runtime dependency after the PG reader had validated them.
         from .native_product_catalog_v3 import KEY,load as load_catalog
         if KEY in api.candidate:
-            catalog=load_catalog(root,api.candidate);collect(catalog)
-            for binding in catalog['dates'].values():
-                collect(json.loads((root/binding['path']).read_bytes()))
-        identity_head=root/'data/v4/V4_DATA_ACCEPTED_HEAD.json'
-        paths.add(identity_head);collect(json.loads(identity_head.read_bytes())['identity'])
-        collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
-        if authority.exists():
-            a=json.loads(authority.read_bytes());collect(a)
-            for binding in product_manifest_bindings(a):
-                manifest=json.loads((root/binding['path']).read_bytes());collect(manifest)
-                if (market_fact_index_root is not None and
-                        manifest.get('contract_id')=='CORE_PRODUCT_DATED_READ_PACK_PG_MARKET_R2'):
-                    collect_external(market_fact_index_root,manifest.get('market_facts'))
-                    collect_external(market_fact_index_root,manifest.get('source_bindings'))
+            # Loading the catalog exercises its Head-bound PG authority. Do not
+            # reopen the per-date manifest locator files to discover source
+            # files for a filesystem cache signature.
+            load_catalog(root,api.candidate)
         if read_index_r2_authority.exists():collect(json.loads(read_index_r2_authority.read_bytes()))
-        if focus_authority.exists():
-            a=json.loads(focus_authority.read_bytes());collect(a);collect(json.loads((root/a['manifest']['path']).read_bytes()))
         cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority,
             chart_history_index_root=chart_history_index_root,market_fact_index_root=market_fact_index_root),
             sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
-        cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in external_paths})
         native=getattr(api,'pg_owner_authority',None)
         if native is not None:
-            collect(native)
-            cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
             identities=[entry['descriptor']['pg_descriptor']['database_identity']
                         for owners in native['owners'].values() for entry in owners.values()
                         if entry['descriptor'].get('pg_descriptor') is not None]
@@ -107,8 +71,6 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         nonlocal published
         # Expensive file/PG validation and construction run outside the pointer lock.
         signed=[root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',
-                root/'config/core_product_read_authority_r1.json',
-                root/'config/core_product_focus_read_authority_r2.json',
                 root/'config/v4_read_index_authority_r1.json',
                 root/'config/v4_read_index_authority_r2.json',
                 root/'config/v4_current_native_joint_authority_v3.json']
@@ -192,7 +154,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                     joint_token=hashlib.sha256(json.dumps(current_joint,sort_keys=True).encode()).hexdigest() if current_joint else None
                     response_key=(signature,joint_token,path,tuple(sorted((k,v[0]) for k,v in params.items())),self.headers.get('Accept-Encoding',''))
                     responses=cache.setdefault('home_encoded',{})
-                    indexed=(root/'config/v4_read_index_authority_r1.json').is_file() or (root/'config/v4_read_index_authority_r2.json').is_file()
+                    indexed=(root/'config/v4_read_index_authority_r2.json').is_file()
                     with lock:encoded=responses.get(response_key) if path=='/api/v4/home' and not indexed else None
                     if encoded is not None:
                         # A disconnected/missing native database must not

@@ -18,10 +18,10 @@
     "migration_open": 213,
     "statuses": {
       "OPEN": 203,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 53,
-      "ACTIVE_INGRESS_ADAPTER_OPEN": 10
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 54,
+      "ACTIVE_INGRESS_ADAPTER_OPEN": 9
     },
-    "code_level_pg_read_paths_implemented": 53,
+    "code_level_pg_read_paths_implemented": 54,
     "remaining_open_or_ingress": 213,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
@@ -13115,10 +13115,10 @@
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
         "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
       },
-      "acceptance_evidence": "New R21 targeted test assertions; current R20 inventory has not been regenerated. Live PG readback remains unavailable.",
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "acceptance_evidence": "Focused read-path assertions pass (10 tests); the inline PG descriptor is the only schema locator and is checked against the Head binding before the read. No live PG Reader DSN is configured.",
+      "blocker": "Live PG readback and accepted publication/Head identity reconciliation remain unavailable without the configured read-only DSN.",
       "baseline_function": "read",
-      "migration_evidence": "The runtime/authority consumer no longer opens the business payload; its typed PostgreSQL binding is validated and read in a read-only transaction.",
+      "migration_evidence": "Schema selection for Owner facts now follows the exact inline PostgreSQL descriptor (kind, fact_key, payload digest, database identity), independent of workspace path. The Owner payload remains read in a read-only repeatable-read transaction; local origin/Head/authority JSON is no longer consulted.",
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160533",
@@ -14449,20 +14449,20 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "candidate": "Head-embedded inline PostgreSQL owner descriptor schema; operational_owner_pg_closeout.read_schema",
+        "status": "CODE_BOUND_TO_INLINE_PG_DESCRIPTOR_LIVE_IDENTITY_PENDING"
       },
-      "acceptance_evidence": null,
-      "blocker": "Source-ingress authorization/manifest and PG ingestion reconciliation are still required.",
+      "acceptance_evidence": "Focused read-path assertions pass (10 tests); schema selection now uses only the Head-bound inline descriptor, validates the PostgreSQL schema identifier, and does not open origin, Head, or authority files. No live PG Reader DSN is configured.",
+      "blocker": "Live PG readback and accepted publication/Head identity reconciliation remain unavailable without the configured read-only DSN.",
       "baseline_function": "read_schema",
-      "migration_evidence": "This is a publisher/source-ingress read retained to validate and copy source bytes into PG; it still needs source authorization/manifest evidence and downstream readback reconciliation.",
+      "migration_evidence": "The former runtime schema resolver opened the local origin config, accepted Head, and authority JSON. It now resolves schema exclusively from the digest-bound inline PG descriptor; the file reads are removed from the runtime Reader path.",
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160576",

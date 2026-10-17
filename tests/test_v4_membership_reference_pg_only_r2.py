@@ -30,7 +30,7 @@ def test_membership_reference_loads_authority_and_rows_from_pg_only(tmp_path,mon
         source=source,identity_source=None,membership_snapshot_id=None,descriptor=fact_binding,
         fact_token=token,rows=len(rows),AS_RECORDED=False,PIT_ELIGIBLE=False)
     authority_raw=canonical(authority).decode();authority_sha=digest(authority_raw.encode())
-    authority_key=digest(canonical(authority));authority_schema=workspace_schema(tmp_path/reference_pg.FOLDER,'forward')
+    authority_key=digest(canonical(authority));authority_schema='v4_forward_abcdef0123456789'
     candidate={
         'accepted_trade_date':day,'membership_snapshot':snapshot,
         reference_pg.KEY:dict(contract_id=reference_pg.PG_AUTHORITY_CONTRACT,engine='postgresql',
@@ -87,6 +87,21 @@ def test_core_product_bff_identity_records_calls_pg_reader_without_file_fallback
     assert calls==[(tmp_path,candidate,None)]
     assert bff.identity_records()==(rows,binding)
     assert len(calls)==1
+
+
+def test_core_product_bff_display_identity_falls_back_to_pg_identity_owner(tmp_path,monkeypatch):
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+
+    bff=object.__new__(CoreProductBFFR1)
+    bff.api=SimpleNamespace(root=tmp_path,candidate={},cache={})
+    monkeypatch.setattr(bff,'_read_index_r2',lambda _day:None)
+    monkeypatch.setattr(bff,'identity_records',lambda:([
+        dict(security_id='SID-1',source_security_key='SH.600000',symbol='600000.SH',security_name='浦发银行')
+    ],{'contract_id':'PG_IDENTITY_FIXTURE','T0':'2026-10-12'}))
+    result=bff._display_identity_map('2026-10-12',[{'entity_id':'SID-1'},{'entity_id':'600000.SH'}])
+    assert result['SID-1']['display_name']=='浦发银行'
+    assert result['600000.SH']['display_name_source']['contract_id']=='PG_IDENTITY_FIXTURE'
 
 
 def test_core_product_bff_rejects_identity_file_fallback_when_pg_authority_missing(tmp_path):

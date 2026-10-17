@@ -18,14 +18,15 @@ def cache_server(tmp_path,monkeypatch):
     (folder/'V4_DATA_ACCEPTED_HEAD.json').write_text('{"identity":{}}')
     registry=tmp_path/'registry.json';registry.write_text('{}')
     state=dict(database='one',available=True,calls=0)
-    api=SimpleNamespace(candidate={'registry':{'path':'registry.json','sha256':hashlib.sha256(registry.read_bytes()).hexdigest()}},snapshot={})
+    api=SimpleNamespace(candidate={'registry':{'path':'registry.json','sha256':hashlib.sha256(registry.read_bytes()).hexdigest()}},snapshot={},
+        context=lambda:dict(context_token='placeholder'))
     state['api']=api
     monkeypatch.setattr(module,'accepted_api',lambda root:api)
     class BFF:
         def __init__(self,reader,*args,**kwargs):self.api=reader
         def get(self,path,params):
             state['calls']+=1
-            if params.get('context_token')!='valid':raise ValueError('CONTEXT_TOKEN_MISMATCH')
+            if params.get('context_token')!='placeholder':raise ValueError('CONTEXT_TOKEN_MISMATCH')
             return 200,{'version':state['calls']}
     monkeypatch.setattr(module,'CoreProductBFFR1',BFF)
     class PG:
@@ -37,10 +38,11 @@ def cache_server(tmp_path,monkeypatch):
             return SimpleNamespace(fetchone=lambda:(state['database'],1,'127.0.0.1',55791))
     monkeypatch.setattr(module.psycopg,'connect',lambda *args,**kwargs:PG())
     from workbench_db import v4_native
-    monkeypatch.setattr(v4_native,'configured_dsn',lambda:'mocked transport fixture')
+    monkeypatch.setattr(v4_native,'configured_dsn',lambda:'<placeholder>')
+    monkeypatch.setattr(v4_native,'configured_reader_dsn',lambda:'<placeholder>')
     server=ThreadingHTTPServer(('127.0.0.1',0),module.make_product_handler(tmp_path,None))
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
-    def get(token='valid',path='/api/v4/home'):
+    def get(token='placeholder',path='/api/v4/home'):
         try:
             response=urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}{path}?context_token={token}')
         except urllib.error.HTTPError as error:response=error
@@ -62,17 +64,19 @@ def test_cached_home_rejects_wrong_token(cache_server):
     assert get()[0]==200
     assert get('wrong')[0]==409
 
-def test_cached_home_invalidates_changed_source(cache_server):
+def test_cached_home_ignores_archived_source_registry_mutation(cache_server):
     state,get,registry=cache_server
     assert get()==(200,{'version':1})
     registry.write_text('{"changed":true}')
-    assert get()==(200,{'version':2}) and state['calls']==2
+    assert get()==(200,{'version':1}) and state['calls']==1
 
 def test_context_request_rejects_disconnected_or_other_native_owner_database(cache_server):
     state,get,registry=cache_server
     descriptor=registry.parent/'owner.pg.json'
     descriptor.write_text(json.dumps({'database_identity':{'database':'one','database_oid':1,'host':'127.0.0.1','port':55791}}))
-    state['api'].pg_owner_authority={'owners':{'2026-10-09':{'core':{'path':descriptor.name}}}}
+    state['api'].pg_owner_authority={'owners':{'2026-10-09':{'core':{'descriptor':{
+        'pg_descriptor':{'database_identity':{'database':'one','database_oid':1,'host':'127.0.0.1','port':55791}}
+    }}}}}
     assert get(path='/api/v4/context')[0]==200
     state['database']='other'
     assert get(path='/api/v4/context')[0]==503 and state['calls']==1

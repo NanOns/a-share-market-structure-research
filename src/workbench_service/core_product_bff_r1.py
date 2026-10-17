@@ -22,6 +22,7 @@ HOME_SECTOR_SUMMARY_FIELDS={'output_state','prior_rotation_state','sector_rs5','
 HOME_IDENTITY_FIELDS={'entity_id','security_id','symbol','display_name','display_name_scope','trade_date'}
 HOME_CELL_FIELDS={'value','quality','unit','reason','as_of','source','actual_count','required_count'}
 LEGACY_R1_READ_CAPABILITY='R1 legacy summary; D2 detail fields may be unavailable'
+PG_OWNER_DIRECT_READ_CAPABILITY='Accepted PG Owner read; materialized list projection unavailable'
 
 def is_legacy_r1_home_fallback(payload):
     """True only for an explicitly marked legacy read-index response."""
@@ -285,13 +286,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return self.api.cache[key]
 
     def _read_index_r2_state(self,day):
-        from workbench_db.v4_read_index_r2 import AUTHORITY
-        path=self.api.root/AUTHORITY
-        if not path.exists():return 'LEGACY_R1_AUTHORITY_ONLY'
-        authority=json.loads(path.read_bytes());versions=authority.get('versions',{})
-        if self.api.token not in versions:return 'R2_TOKEN_NOT_PREPARED'
-        if day not in versions[self.api.token]:return 'R2_DATE_NOT_PREPARED'
-        return 'R2_AUTHORITY_BOUND'
+        return 'R2_AUTHORITY_BOUND' if self._read_index_r2(day) is not None else 'PG_OWNER_DIRECT_READ'
 
     @staticmethod
     def _base_query(query):
@@ -307,11 +302,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         keys=[next((row.get(k) for k in key_fields if row.get(k)),None) for row in rows]
         index=self._read_index_r2(day)
         if index is not None:return index.display_identities(domain,keys)
-        from workbench_db.v4_read_index_r1 import load as load_index_r1
-        legacy=load_index_r1(self.api.root,self.api.token,day,
-            allow_missing=day!=self.api.candidate['accepted_trade_date'])
-        if legacy is None:return {}
-        return legacy.display_identities(domain,keys)
+        records,source=self.identity_records()
+        by_alias={}
+        for record in records:
+            name=record.get('name') or record.get('security_name')
+            identity=dict(entity_id=record.get('security_id'),symbol=record.get('symbol'),
+                display_name=name,display_name_source=source,
+                display_name_scope='PG_DATED_IDENTITY_DISPLAY_ONLY',
+                name_quality='KNOWN' if name else 'UNKNOWN',
+                name_reason=None if name else 'ACCEPTED_STOCK_IDENTITY_NOT_FOUND')
+            for alias in (record.get('security_id'),record.get('source_security_key'),record.get('symbol')):
+                if alias:by_alias[str(alias).upper()]=identity
+        result={}
+        for key in keys:
+            if key is None:continue
+            identity=by_alias.get(str(key).upper())
+            if identity is not None:result[key]=identity
+        return result
 
     def _enrich_display_names(self,day,rows,*,key_fields=('entity_id','security_id')):
         identities=self._display_identity_map(day,rows,key_fields=key_fields)
@@ -330,10 +337,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if not key:return None
         if not getattr(self,'building_read_index',False):
             index=self._read_index_r2(day)
-            if index is not None and domain in ('stocks','sectors','focus'):
-                return index.detail(domain,str(key).strip().upper())
-            from workbench_db.v4_read_index_r1 import load as load_index
-            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
             if index is not None and domain in ('stocks','sectors','focus'):
                 return index.detail(domain,str(key).strip().upper())
         needle=str(key).strip().upper()
@@ -487,32 +490,46 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     contract_id='V4_FORWARD_STATISTICS_R7_R1',source=None,
                     write_authorized=False,PIT_ELIGIBLE=False)
         if path=='/api/v4/forward/fep':
-            from workbench_analysis.fep_r7_read import read_r7_fep
             try:
                 from workbench_db.forward_r7_store import ForwardR7Store
                 store=ForwardR7Store(self.api.root)
                 counts=store.read_counts()
                 projections=store.read_fep_projections()
-                result=read_r7_fep(self.api.root,current_counts=counts)
-                if projections.get('items'):
-                    result['pg_projection_status']='READY'
-                    result['pg_historical_baselines']=projections['items']
-                else:
-                    result['pg_projection_status']='DATA_MISSING'
-                    result['historical_baselines']=[]
-                    result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
-                return 200,self.envelope(day,status='READY' if result['models'] else 'DATA_MISSING',
+                items=projections.get('items') if isinstance(projections,dict) else None
+                if not isinstance(items,list) or any(not isinstance(item,dict) for item in items):
+                    raise ValueError('PG_FEP_PROJECTION_SHAPE_INVALID')
+                baselines=[item for item in items if item.get('diagnostic_only') is not True]
+                diagnostics=[item for item in items if item.get('diagnostic_only') is True]
+                result=dict(status='READY' if baselines or diagnostics else 'DATA_MISSING',
+                    scope='FEP_STOCK_ENTRY_CORE / FIRST_PREWATCH / ABS_RETURN_N:T1 / CORE',
+                    models=[{key:item.get(key) for key in ('stage','model_family','evidence_class','production_role',
+                        'model_id','model_set_id','scope_id','observation_scope','target_id','horizon',
+                        'feature_contract_id','artifact_digest','champion')} for item in items],
+                    historical_baselines=baselines,diagnostics=diagnostics,
+                    current_observation_coverage=counts,
+                    prediction_slots=[dict(status='PENDING',reason='DAILY_MODEL_NOT_TRAINED',
+                        eligible_prediction_generated=False,priority_v1_unchanged=True)],
+                    pg_projection_status='READY' if items else 'DATA_MISSING',
+                    missing_inputs=[] if items else ['PG_PUBLISHED_FEP_RESEARCH_PROJECTION'],
+                    asof=max((str(item.get('asof') or '') for item in items),default=None),
+                    source=dict(engine='postgresql',relation='forward_facts',kind='r7_fep_projection',
+                        total=projections.get('total',len(items))))
+                return 200,self.envelope(day,status=result['status'],
                     data=result,contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',
                     source=result.get('source'),priority_v1_unchanged=True,
                     write_authorized=False,PIT_ELIGIBLE=False)
             except Exception as exc:
-                result=read_r7_fep(self.api.root)
-                result['historical_baselines']=[]
-                result['pg_projection_status']='ERROR'
-                result['missing_inputs'].append('PG_PUBLISHED_FEP_RESEARCH_PROJECTION')
+                result=dict(status='DATA_MISSING',
+                    scope='FEP_STOCK_ENTRY_CORE / FIRST_PREWATCH / ABS_RETURN_N:T1 / CORE',
+                    models=[],historical_baselines=[],diagnostics=[],
+                    current_observation_coverage=None,prediction_slots=[dict(status='PENDING',
+                        reason='DAILY_MODEL_NOT_TRAINED',eligible_prediction_generated=False,
+                        priority_v1_unchanged=True)],pg_projection_status='ERROR',
+                    missing_inputs=['PG_PUBLISHED_FEP_RESEARCH_PROJECTION'],
+                    error_code=type(exc).__name__,source=None,write_authorized=False,PIT_ELIGIBLE=False)
                 return 200,self.envelope(day,status='DATA_MISSING',data=result,
                     contract_id='V4_FORWARD_FEP_RESEARCH_READ_R7_R1',error_code=type(exc).__name__,
-                    source=result.get('source'),priority_v1_unchanged=True)
+                    source=None,priority_v1_unchanged=True)
         lane_alias={'historical':'RETROSPECTIVE_RESEARCH','live':'LIVE_OOS'}
         try:
             from workbench_db.forward_r7_store import ForwardR7Store
@@ -533,7 +550,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
-        from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
@@ -574,13 +590,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|page|{
                 'contract_id':'V4_ACCEPTED_FOCUS_RADAR_PAGE_R1','source':self.api.candidate['owners'][day].get('forward'),
                 'scope':'ACCEPTED_FOCUS_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE','producer_status':'FORMAL_RADAR_PRIORITY_NOT_PUBLISHED'}
-        index=index_r2 if index_r2 is not None else None if getattr(self,'building_read_index',False) or not index_route or path=='/api/v4/radar' else load_index_r1(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
+        index=index_r2
         if index is not None and path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus'):
             if path in ('/api/v4/context','/api/v4/home'):
                 response=index.response(path)
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
-                if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
-                    read_index_capability=LEGACY_R1_READ_CAPABILITY)
+                if index_r2 is None:response=dict(response,read_index_status='PG_OWNER_DIRECT_READ',
+                    read_index_capability=PG_OWNER_DIRECT_READ_CAPABILITY)
                 if path=='/api/v4/home':
                     cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
                     response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
@@ -631,8 +647,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
             response.update(index.page(path.rsplit('/',1)[-1],query))
             if path=='/api/v4/stocks':response=mark_stock_d2_semantics(normalize_indexed_code_status(response,day))
-            if index_r2 is None:response.update(read_index_status=self._read_index_r2_state(day),
-                read_index_capability=LEGACY_R1_READ_CAPABILITY)
+            if index_r2 is None:response.update(read_index_status='PG_OWNER_DIRECT_READ',
+                read_index_capability=PG_OWNER_DIRECT_READ_CAPABILITY)
             if path=='/api/v4/focus':
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
@@ -838,7 +854,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         aliases={}
         for record in identities:
             aliases.setdefault(record['security_id'],set()).update(str(record.get(k,'')) for k in ('symbol','source_security_key','security_name'))
-        registries={r['field_id']:r for filename in ('v4_03_field_registry_v1.json','v4_04_field_registry_v2.json','v4_08_sector_field_registry_r5.json') for r in json.loads((self.api.root/'config'/filename).read_bytes())['fields']}
         display_identities=self._display_identity_map(day,data,key_fields=('entity_id','security_id')) if domain in ('stocks','focus','events') else {}
         for row in data:
             if domain in ('stocks','focus','events'):
@@ -914,7 +929,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             for field,cell in row['fields'].items():
                 alias={'sector_rs5':'sector_rs5_pct','sector_rs20':'sector_rs20_pct','seed_width':'base_seed_width_adjusted'}.get(field,field) if domain=='sectors' else field
                 rawcell=original.get(alias,{})
-                unit=registries.get(alias,{}).get('unit')
+                # Unit semantics travel with the same accepted PG owner row as
+                # the value; opening field-registry JSON here would let a
+                # workspace file silently redefine an already-published field.
+                unit=rawcell.get('unit') or cell.get('unit')
                 if unit:cell['unit']=unit
                 if domain=='stocks' and field in ('open','high','low','close','amount','volume'):cell['unit']='SHARES' if field=='volume' else 'CNY'
                 for k in ('window_start_trade_date','window_end_trade_date','actual_count','calendar_span','suspended_count','contract_id','parameter_set_id','input_digest','output_digest','evidence','n','k'):
@@ -954,14 +972,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
                 response={**base,**index.page(domain,q,entity=entity,sector=sector)}
                 return normalize_indexed_code_status(response,day) if domain=='stocks' else response
-            from workbench_db.v4_read_index_r1 import load as load_index
-            index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
-            if index is not None:
-                context=index.response('/api/v4/context')
-                return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
-                        **index.page(domain,q,entity=entity,sector=sector),
-                        'read_index_status':self._read_index_r2_state(day),
-                        'read_index_capability':'R1 legacy summary; D2 detail fields may be unavailable'}
         data=self.project(domain,day)
         if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
         if sector:

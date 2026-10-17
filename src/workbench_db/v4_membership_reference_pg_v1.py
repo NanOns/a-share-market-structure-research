@@ -1,5 +1,6 @@
 """Native PG membership reference; archive relation rows are producer inputs."""
 import json
+import re
 from pathlib import Path
 from .v4_forward_pg_r1 import canonical,digest,ForwardFactStore
 from .v4_native import connection,workspace_schema
@@ -27,10 +28,12 @@ def _load_authority(root,candidate):
     if binding is None:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_REQUIRED_NO_FALLBACK')
     if not isinstance(binding,dict):
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
-    root=Path(root).resolve();schema=workspace_schema(root/FOLDER,'forward')
-    if (binding.get('contract_id'),binding.get('engine'),binding.get('schema'),binding.get('kind'))!=(
-            PG_AUTHORITY_CONTRACT,'postgresql',schema,AUTHORITY_KIND):
+    schema=binding.get('schema')
+    if (binding.get('contract_id'),binding.get('engine'),binding.get('kind'))!=(
+            PG_AUTHORITY_CONTRACT,'postgresql',AUTHORITY_KIND):
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    if not isinstance(schema,str) or not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
     fact_key=binding.get('fact_key');expected_sha=binding.get('payload_sha256')
     if (not isinstance(fact_key,str) or len(fact_key)!=64 or any(c not in '0123456789abcdef' for c in fact_key)
             or not isinstance(expected_sha,str) or len(expected_sha)!=64

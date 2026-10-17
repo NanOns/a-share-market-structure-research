@@ -157,7 +157,6 @@ def test_gbbq_probe_entrypoint_appends_exact_result_to_pg_stage(monkeypatch, tmp
         return {**binding, "trade_date": day}
 
     monkeypatch.setattr(state, "append_stage", append)
-    monkeypatch.setattr(probe, "write_json_atomic", lambda *a, **k: "b" * 64)
 
     assert probe.main() == 0
     output = json.loads(capsys.readouterr().out)

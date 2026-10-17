@@ -8,6 +8,7 @@ sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolv
 from scripts.v4_production_cutover_evidence import ROOT, REPORT, write
 from workbench_service.current_v4_context import digest
 from workbench_service.v4_daily_refresh import AUTHORITY, publish_accepted_view, refresh_status
+from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
 
 
 def can_publish_increment(child, returncode, accepted_date, target_date):
@@ -23,7 +24,11 @@ def main():
         if args.candidate_contract:
             status=publish_accepted_view(ROOT,args.candidate_contract,before)
         elif status['next_completed_session']:
-            source_args=['--typed-scope-v2'] if (ROOT/'config/tdx_a_stock_delta_scope_policy_v2.json').exists() else []
+            scope_policy=_daily_runtime_contract(
+                'TDX_A_STOCK_DELTA_SCOPE_POLICY_V2','2.0.0',version_field='version')
+            if scope_policy.get('source_mode')!='RECONSTRUCTED_CORRECTED' or scope_policy.get('production_permission') is not False:
+                raise ValueError('DAILY_TDX_SCOPE_POLICY_NOT_CORRECTED_CANDIDATE')
+            source_args=['--typed-scope-v2']
             process=subprocess.run([sys.executable,'-X','utf8',str(ROOT/'scripts/run_v4_dm01_daily_increment.py'),'--target-date',status['next_completed_session'],'--active-source-policy',*source_args],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
             status['daily_pipeline_exit_code']=process.returncode;status['daily_pipeline_output']=process.stdout;status['daily_pipeline_error']=process.stderr
             child=None

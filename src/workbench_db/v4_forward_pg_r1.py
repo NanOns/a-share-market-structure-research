@@ -129,6 +129,10 @@ class ForwardFactStore:
             if descriptor.get('contract_id') != CONTRACT or descriptor.get('schema') != self.schema or descriptor.get('engine') != 'postgresql' or descriptor.get('database_identity') != self.database_identity:
                 raise ValueError('FORWARD_DESCRIPTOR_IDENTITY_MISMATCH')
             kind, key, expected = descriptor['kind'], descriptor['fact_key'], descriptor['payload_sha256']
+            if (not isinstance(kind,str) or not isinstance(key,str)
+                    or not re.fullmatch('[a-z][a-z0-9_]{0,60}',kind)
+                    or path != (self.folder/kind/(digest(key.encode())+'.pg.json')).resolve()):
+                raise ValueError('FORWARD_DESCRIPTOR_PATH_MISMATCH')
         else:
             kind, key, expected = path.parent.name, path.stem, binding['sha256']
         with connection(self.schema, dsn=configured_reader_dsn(), read_only=True) as pg:

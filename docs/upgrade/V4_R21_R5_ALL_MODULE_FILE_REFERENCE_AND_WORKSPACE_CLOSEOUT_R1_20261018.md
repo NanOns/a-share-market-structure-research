@@ -70,11 +70,10 @@
 
 ## 未完成项与单独授权边界
 
-- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。冻结矩阵原始计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；冻结摘要出现 53/10/203 的一项分类差异，本轮未改分母。只按原矩阵与本分支源码路径做 delta，发现 **66 个稳定 ID 的主 source_file 落在本分支已改路径**（冻结状态分布：40 PG-only pending、6 ingress open、20 OPEN）；“路径被改”不代表这 66 项都迁移或关闭，未逐 ID 精确核销者仍全部保持未关闭。活跃残留包括 `v4_operational_owner_authority_v2.py` / `v4_operational_owner_pg_closeout.py` 中历史 Head/authority 初次导入边界、`operational_successor_release_v1.py` 对 Operational Research Head 的文件 CAS/恢复、`v4_current_stage_authority.py` 的冻结 Stage/Head 读取，以及 Owner/Head/Publication 缺正式 PG accepted row 导致的下游阻断。非 V4 引用只登记。
+- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。冻结矩阵原始计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；冻结摘要出现 53/10/203 的一项分类差异，本轮未改分母。只按原矩阵与本分支源码路径做 delta，**85 个 ID 的 source_file 出现在本分支改动路径**：40 条冻结为 PG-only pending、8 条 ingress open、37 条 OPEN。该路径交集不是修复数或关闭数；未逐 ID 精确核销的项仍全部保持未关闭。活跃残留包括 `v4_operational_owner_authority_v2.py` / `v4_operational_owner_pg_closeout.py` 中历史 Head/authority 初次导入边界、`operational_successor_release_v1.py` 对 Operational Research Head 的文件 CAS/恢复、`v4_current_stage_authority.py` 的冻结 Stage/Head 读取，以及 Owner/Head/Publication 缺正式 PG accepted row 导致的下游阻断。非 V4 引用只登记。
+- 三个历史异常 ID `V4-BCA-R2-33ff91eb2cc7f9242d1b`、`V4-BCA-R2-d8f1515f20b63e2ab89c`、`V4-BCA-R2-c53955269a0f76785382` 均映射到同一未变更文件的真实函数/行；冻结矩阵的源 SHA-256 `d52846f9cb3bc3f64a6c1ae3e0353d3b35e400a478459772e389ee552783da90` 与 Git 基点/current 工作树文件内容一致，Git tree blob 也一致。G 盘旧 inventory 的 `baseline_blob_sha256_observed=3760...` 与 Git/矩阵不符，是 inventory 自身记录异常；未改历史 Git 引用，也未把三个调用点宣称为迁移完成。
 - 7 份导入合同均为 DRAFT，没有批准事件；publication/head 表仍为空。不得将其称为正式接受或 Head 切换。
 - 仍需单独授权：正式 Head CAS/切换、生产 28765 部署、物理删除及 Git 强推/历史重写。正常提交和推送不包含上述操作。
 - GitHub Issue body 和 Draft PR Conversation 写入连接器在本轮最终摘要更新时均返回 HTTP 403 `Resource not accessible by integration`；未用 GitHub CLI 绕过。只读 fetch 可用。
-
-稳定 ID 对照说明：现有冻结 inventory 中 **85 条**记录的 `source_file` 出现在从 `4a69c4c` 到当前 HEAD 的改动路径中；此数字不是修复数或关闭数。实际代码修复按上列 10 组和本报告具体改动描述统计，稳定 ID 正式关闭仍为 0/266；未逐条完成语义证据核销的记录均保持未关闭。
 
 本报告如实区分代码层修复、真实 PG 候选验收与正式 authority closure；提交/推送不代表生产发布。

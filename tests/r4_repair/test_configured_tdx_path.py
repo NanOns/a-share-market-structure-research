@@ -109,3 +109,13 @@ def test_live_baostock_acceptance_adapter_uses_resolved_roots():
     assert "resolve_tdx_root(root)" in source
     assert "resolve_baostock_request_ledger(root)" in source
     assert "D:/new_tdx" not in source
+
+
+def test_dm01_runtime_entrypoints_resolve_tdx_root_from_central_config():
+    root=Path(__file__).resolve().parents[2]
+    source=(root/'scripts/run_dm01_a01_next_session_r1.py').read_text(encoding='utf-8')
+    assert 'resolve_tdx_root' in source
+    assert 'D:/new_tdx' not in source
+    probe=(root/'src/workbench_analysis/gbbq_source_revision_probe.py').read_text(encoding='utf-8')
+    assert 'tdx_root: Path,' in probe
+    assert 'Path("D:/new_tdx")' not in probe

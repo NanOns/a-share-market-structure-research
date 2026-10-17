@@ -14,6 +14,7 @@ from workbench_analysis.dm01_incremental_component_builders import sha,load,dige
 from workbench_analysis.dm01_accepted_builder_registry import validate_incremental_registry
 from workbench_analysis.dm01_candidate_orchestrator_r1 import build_candidate
 from workbench_analysis.gbbq_source_revision_probe import probe_gbbq_source_revision
+from common.paths import resolve_tdx_root
 from scripts.run_v4_dm01_daily_increment import _runtime_acceptance
 
 def bind(p):
@@ -39,9 +40,10 @@ def real_probe():
         no_hardcoded_target_date=True,later_sessions_cannot_leap_over_missing_target=True)
     atomic_json(report/'DM01_A01_TARGET_SESSION_RESOLUTION_R1.json',resolution)
     gbbq_root=ROOT/'data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e'
-    gbbq=probe_gbbq_source_revision(target_date=target,current_source_root=Path('D:/new_tdx/vipdoc/cw'),
+    tdx_root=resolve_tdx_root(ROOT)
+    gbbq=probe_gbbq_source_revision(target_date=target,current_source_root=tdx_root/'vipdoc/cw',
         accepted_snapshot_root=gbbq_root,output_snapshot_root=ROOT/'data/v4/source_snapshot_store',
-        observed_at=now,official_sessions_after_target=[d for d in calendar['session_dates'] if d>target],tdx_root=Path('D:/new_tdx'))
+        observed_at=now,official_sessions_after_target=[d for d in calendar['session_dates'] if d>target],tdx_root=tdx_root)
     runtime,error=_runtime_acceptance(target)
     captures=[]
     folder=ROOT/'data/v4/source_snapshots/tdx'/target.replace('-','')

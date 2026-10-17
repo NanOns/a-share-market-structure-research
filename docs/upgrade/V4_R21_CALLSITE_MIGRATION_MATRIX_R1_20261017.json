@@ -17792,6 +17792,31 @@
           "head": "45d414fbb16f8577d9ee28672a28bc2cc482ec53",
           "result": "success"
         }
+      },
+      {
+        "batch_id": "R21-R4-dm01-configured-path-and-admission-audit-r67",
+        "files": [
+          "docs/upgrade/V4_R21_R4_DM01_CONFIGURED_PATH_AND_PG_ACCEPTANCE_WIRING_R67_20261017.md",
+          "scripts/run_dm01_a01_next_session_r1.py",
+          "src/workbench_analysis/gbbq_source_revision_probe.py",
+          "tests/r4_repair/test_configured_tdx_path.py"
+        ],
+        "evidence": [
+          "The committed next-session GBBQ probe resolves the TDX source root through resolve_tdx_root; the library probe API has no implicit drive-root default.",
+          "Additional active daily/lifecycle/source-freeze PG rewiring passed the working-tree focused regression, but six touched orchestration scripts remain uncommitted because staged repository admission reports PROCESS_DATA_DEPENDENCY on their reads of reports/v4_* business evidence.",
+          "The actual source identity for DM-01 lifecycle, special-phase and source-freeze history is not yet reconciled to a semantically equivalent PG relation; no path rename, policy exception or count reduction was used."
+        ],
+        "verification": "Working-tree focused selection: 74 passed. The committed path tests cover central path precedence and the GBBQ probe API. A wider historical DM-01 selection reported 2 failures and 1 setup error from isolated frozen-archive SHA mismatch and missing G-drive historical evidence directory.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 210,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48
+        },
+        "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write was attempted",
+        "next": "Map lifecycle/special-phase/source-freeze and historical inputs to their actual Owner/source PG relation, then remove the report-file consumer dependency; in parallel continue Head/descriptor/Owner/BFF batches.",
+        "admission": "Six in-progress DM-01 orchestration script blobs rejected by tools/git_repository_policy.py with PROCESS_DATA_DEPENDENCY; retained as code-open pending real relation mapping and consumer read migration."
       }
     ]
   }

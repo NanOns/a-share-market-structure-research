@@ -1,7 +1,7 @@
 ---
 stage_id: V4_R21_R4_PUBLICATION_CURSOR_FIXTURE_R29_20261017
 branch: codex/v4-workspace-cleanup
-status: PUBLICATION_READER_FIXTURE_ALIGNED_CI_RERUN_PENDING
+status: PUBLICATION_READER_FIXTURE_ALIGNED_CI_GREEN
 p1_business_reads_baseline: 266
 p1_formally_closed: 0
 p1_formally_remaining: 266
@@ -25,7 +25,7 @@ Date: 2026-10-17 (Asia/Shanghai). This batch repairs CI fixtures exposed by the 
 ## Verification and limits
 
 - `tests/test_v4_pg_publication_candidate.py`: **53 passed**.
-- The R25/R26 pushed revisions' full workflow had 23 failures caused by the stale fake cursor returning the four-field identity tuple for the two-field scope query. The local fix passes the affected focused suite; full GitHub CI rerun is pending this push.
+- The R25/R26 pushed revisions' full workflow had 23 failures caused by the stale fake cursor returning the four-field identity tuple for the two-field scope query. The R29 fix passes the affected focused suite. GitHub Actions runs **39013839108** and **39013836479** both completed successfully, including repository content policy, PG publication candidate tests, and the current business-code file-access audit.
 - No live PG connection, schema check, contract approval round trip, DDL/DML, Head mutation, service, or worker ran.
 
 ## Accounting

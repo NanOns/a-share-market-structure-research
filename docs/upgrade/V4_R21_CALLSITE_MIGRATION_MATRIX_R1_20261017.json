@@ -16956,11 +16956,30 @@
           "Updated the publication-reader fake cursor to model the read-only transaction scope query and exact publication ID/revision contract_bindings query added in R25.",
           "The fake preserves database/user identity responses for the individual contract read path; production checks remain active."
         ],
-        "verification": "53 tests in tests/test_v4_pg_publication_candidate.py passed. Full GitHub CI rerun is pending this push; no live PG.",
+        "verification": "53 focused publication-reader tests passed. GitHub Actions run 39013839108 and duplicate run 39013836479 both passed, including repository content policy, publication candidate tests, and current business-code file-access audit. No live PG.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
-        "status": "CI_FIXTURE_ALIGNED; no baseline P1 row closed.",
-        "next": "Rerun full CI and continue exact runtime consumer migration; keep formal counts unchanged."
+        "status": "CI_FIXTURE_ALIGNED_AND_CI_GREEN; no baseline P1 row closed.",
+        "next": "Continue exact runtime consumer migration; keep formal counts unchanged until live per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-dm01-http-reader-route-wiring-r30",
+        "files": [
+          "src/workbench_service/operational_daily_server_v1.py",
+          "tests/test_v4_daily_server_reader_wiring_r30.py",
+          "docs/upgrade/V4_R21_R4_DM01_HTTP_READER_ROUTE_WIRING_R30_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Daily progress, status, settings, job detail and event GET routes now call a separate DailyJobsReadOnly client; the nested daily-update status response uses the same Reader-only client.",
+          "Settings PUT keeps its state mutation on the Writer controller and performs the response readback through the Reader-only client.",
+          "No baseline business callsite is claimed closed; live PG identity, schema and state remain unavailable."
+        ],
+        "verification": "12 focused HTTP route and DM-01 reader tests passed. A broader historical runtime selection had 6 setup failures because V4_NATIVE_PG_DSN and the frozen default product source are unavailable; no live PG connection or service startup.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DM01_HTTP_STATUS_GETS_WIRED_TO_READER_ONLY_CLIENT; formal baseline unchanged.",
+        "next": "Continue actual operational Head, Authority, descriptor, source-ingress and Owner callsites. Preserve 266 formal remaining until approved same-T0 PG readback and per-ID reconciliation."
       }
     ]
   }

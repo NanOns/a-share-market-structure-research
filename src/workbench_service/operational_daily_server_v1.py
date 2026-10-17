@@ -20,8 +20,11 @@ def successor_control(api,legacy):
     return dict(control,context=current)
 
 
-def make_daily_handler(root,jobs,*,static_root=None):
+def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
     root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_v4_handler(root,static_root=static) if static_root is not None else make_v4_handler(root);writes={};mutex=threading.Lock()
+    if status_reader is None:
+        from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobsReadOnly
+        status_reader=DailyJobsReadOnly(root)
     from .current_v4_context import CurrentAcceptedV4Reader
     strict_reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     successor_cache={};successor_lock=threading.RLock()
@@ -59,13 +62,16 @@ def make_daily_handler(root,jobs,*,static_root=None):
                             params=parse_qs(parsed.query,keep_blank_values=True)
                             if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
                             if path=='/api/operations/status':
-                                if params.get('context_token',[api.token])[0]!=api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+                                request_context=params.get('context_token',[api.token])[0]
+                                expected_context=api.token
+                                if request_context!=expected_context:
+                                    raise ValueError('CONTEXT_TOKEN_MISMATCH')
                                 code,legacy=strict_reader.read('context')
                                 if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
                                 from .operational_control_status import CONTRACT as CONTROL_CONTRACT
                                 return self.send(200,dict(successor_control(api,legacy),service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',
                                     service_control_contract=CONTROL_CONTRACT,product_version='V4',default_ui='V4',
-                                    daily_update=jobs.status()))
+                                    daily_update=status_reader.status()))
                             from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
                             from .research_bff import ResearchBFF
                             code,payload=OperationalSuccessorBFFV1(api,ResearchBFF(root)).get(path,{k:v[0] for k,v in params.items()})
@@ -99,12 +105,12 @@ def make_daily_handler(root,jobs,*,static_root=None):
             if path.startswith(PREFIX):
                 try:
                     tail=path.removeprefix(PREFIX).strip('/').split('/')
-                    if tail==['progress']:return self.send(200,jobs.progress())
-                    if tail==['status']:return self.send(200,jobs.status())
-                    if tail==['settings']:return self.send(200,jobs.settings())
-                    if len(tail)==2 and tail[0]=='jobs':return self.send(200,jobs.job(tail[1]))
+                    if tail==['progress']:return self.send(200,status_reader.progress())
+                    if tail==['status']:return self.send(200,status_reader.status())
+                    if tail==['settings']:return self.send(200,status_reader.settings())
+                    if len(tail)==2 and tail[0]=='jobs':return self.send(200,status_reader.job(tail[1]))
                     if len(tail)==3 and tail[0]=='jobs' and tail[2]=='events':
-                        return self.send(200,dict(events=jobs.events(tail[1],int(parse_qs(parsed.query).get('after',['0'])[0]))))
+                        return self.send(200,dict(events=status_reader.events(tail[1],int(parse_qs(parsed.query).get('after',['0'])[0]))))
                     return self.send(404,dict(code='DAILY_ROUTE_NOT_FOUND'))
                 except (psycopg.Error,RuntimeError):return self.send(503,dict(code='V4_PG_UNAVAILABLE',fallback=False))
                 except ValueError as exc:return self.send(400,dict(code=str(exc)))
@@ -131,7 +137,8 @@ def make_daily_handler(root,jobs,*,static_root=None):
                 tail=path.removeprefix(PREFIX).strip('/').split('/')
                 if self.command=='PUT' and tail==['settings']:
                     if set(body)!={'auto_enabled'}:raise ValueError('SETTINGS_FIELD_NOT_ALLOWED')
-                    return self.send(200,jobs.settings(body['auto_enabled']))
+                    jobs.settings(body['auto_enabled'])
+                    return self.send(200,status_reader.settings())
                 if self.command=='POST' and tail in (['jobs'],['probe']):
                     if set(body)-{'mode','through_date'}:raise ValueError('JOB_FIELD_NOT_ALLOWED')
                     key=self.headers.get('Idempotency-Key','')

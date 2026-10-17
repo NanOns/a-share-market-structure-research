@@ -93,6 +93,9 @@ def test_capture_entrypoint_uses_pg_runtime_authority_by_default(monkeypatch):
 
     monkeypatch.delenv("V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE", raising=False)
     monkeypatch.setattr(pg_acceptance, "load", load)
+    monkeypatch.setattr(capture, "package_metadata", lambda: {
+        "package": "baostock", "version": "0.9.0", "installed_python_sources_sha256": "a" * 64,
+    })
     assert capture.load_runtime_acceptance("G:/repo", "2026-10-16", "ignored.json") == expected
     assert called["day"] == "2026-10-16"
 

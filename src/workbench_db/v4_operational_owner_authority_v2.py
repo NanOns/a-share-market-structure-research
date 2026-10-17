@@ -6,10 +6,9 @@ This module prepares candidates only and never moves an accepted pointer.
 """
 import json
 from pathlib import Path
-from .v4_forward_pg_r1 import canonical,digest
-from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,attest_cached,descriptor_metadata,OWNER
-from workbench_analysis.r43_owner_replay import checked,ref
-from workbench_analysis.operational_daily_storage_v1 import atomic_json
+from .v4_forward_pg_r1 import ForwardFactStore,canonical,digest
+from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,read_authority_manifest,attest_cached,descriptor_metadata,inline_descriptor,OWNER,FOLDER
+from workbench_analysis.r43_owner_replay import checked
 
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
@@ -45,7 +44,7 @@ def validate(candidate,authority):
 def load(root,candidate):
     binding=candidate.get(KEY)
     if binding is None:raise ValueError('PG_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
-    authority=validate(candidate,json.loads(checked(root,binding).read_bytes()))
+    authority=validate(candidate,read_authority_manifest(root,binding))
     for domains in authority['owners'].values():
         for entry in domains.values():descriptor_metadata(root,entry['descriptor'])
     return authority
@@ -90,8 +89,7 @@ def prepare(root,candidate,predecessor=None):
     authority=dict(contract_id=CONTRACT,owner_source_digest=digest(canonical(candidate['owners'])),
         source_owners=candidate['owners'],owners=owners,historical_PIT_permission=False,AS_RECORDED=False,PIT_ELIGIBLE=False)
     validate(candidate,authority)
-    path=root/'data/v4/operational_owner_pg_closeout_r1/authorities_v2'/digest(canonical(authority))/'AUTHORITY.json'
-    if path.exists():
-        if json.loads(path.read_bytes())!=authority:raise ValueError('PRESERVE_IMMUTABLE_PG_OWNER_AUTHORITY')
-    else:atomic_json(root,path,authority)
-    return ref(root,path),dict(contract_id=CONTRACT,scope='FULL_OWNER_PAYLOAD_READBACK_ONLY',counts=counts,publication=False)
+    manifest_key=digest(canonical(authority))
+    manifest_binding=ForwardFactStore(root,FOLDER).append('authority_manifest',manifest_key,authority)
+    manifest_binding=inline_descriptor(root,manifest_binding)
+    return manifest_binding,dict(contract_id=CONTRACT,scope='FULL_OWNER_PAYLOAD_READBACK_ONLY',counts=counts,publication=False)

@@ -27,6 +27,10 @@ class RegisteredContract:
     namespace: str
     raw_content: bytes
     parsed_json: Any | None = None
+    publication_id: str = ""
+    trade_date: str = ""
+    accepted_at: Any = None
+    database_identity: tuple[str, str] = ("", "")
 
 
 def _mapping(value: Any, code: str) -> dict[str, Any]:
@@ -52,7 +56,18 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
         raise ContractRegistryError("V4_CONTRACT_LOOKUP_ID_REQUIRED")
     try:
         cursor.execute(
-            """SELECT p.contract_bindings, n.namespace, p.status, p.accepted_at
+            """SELECT current_database(), current_user,
+                      current_setting('transaction_isolation'),
+                      current_setting('transaction_read_only')"""
+        )
+        session = cursor.fetchone()
+        if (not session or len(session) < 4 or not session[0] or not session[1]
+                or str(session[2]).lower() != "repeatable read"
+                or str(session[3]).lower() not in ("on", "true", "1")):
+            raise ContractRegistryError("V4_PG_READONLY_REPEATABLE_READ_REQUIRED")
+        cursor.execute(
+            """SELECT p.contract_bindings, n.namespace, p.status, p.accepted_at,
+                      p.trade_date
                  FROM v4.publications p
                  JOIN v4.model_namespaces n ON n.namespace_id=p.model_namespace_id
                 WHERE p.publication_id=%s""",
@@ -61,10 +76,12 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
         publication = cursor.fetchone()
     except Exception as exc:
         # Missing migration/schema is a closed failure, not a signal to open a file.
+        if isinstance(exc, ContractRegistryError):
+            raise
         raise ContractRegistryError("V4_PG_CONTRACT_BINDING_UNAVAILABLE") from exc
     if not publication:
         raise ContractRegistryError("V4_PUBLICATION_NOT_FOUND")
-    if len(publication) < 4 or publication[2] != "ACCEPTED" or publication[3] is None:
+    if len(publication) < 5 or publication[2] != "ACCEPTED" or publication[3] is None:
         raise ContractRegistryError("V4_PUBLICATION_NOT_ACCEPTED")
     bindings = _mapping(publication[0], "V4_PUBLICATION_CONTRACT_BINDINGS_INVALID")
     namespace = str(publication[1] or "")
@@ -111,4 +128,6 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
     elif fmt != "TEXT":
         raise ContractRegistryError("V4_PG_CONTRACT_FORMAT_UNSUPPORTED")
     return RegisteredContract(contract_id, version, digest, fmt, str(schema_version),
-                              namespace, raw, parsed_json)
+                              namespace, raw, parsed_json, publication_id,
+                              str(publication[4]), publication[3],
+                              (str(session[0]), str(session[1])))

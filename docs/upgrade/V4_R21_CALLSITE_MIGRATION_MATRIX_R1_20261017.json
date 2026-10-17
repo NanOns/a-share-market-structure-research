@@ -14083,9 +14083,17 @@
         "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
       },
       "acceptance_evidence": "New R21 targeted test assertions; current R20 inventory has not been regenerated. Live PG readback remains unavailable.",
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "No compliant live PG Reader DSN; mocked readback is code-path evidence only and does not close this P1 row.",
       "baseline_function": "load",
-      "migration_evidence": "The runtime/authority consumer no longer opens the business payload; its typed PostgreSQL binding is validated and read in a read-only transaction.",
+      "migration_evidence": {
+        "batch": "R21-R4-contract-owner-authority-manifest",
+        "code_path": "src/workbench_db/v4_operational_owner_authority_v2.py::load -> v4_operational_owner_pg_closeout.read_authority_manifest",
+        "pg_relation": "workspace-scoped forward_facts (kind=authority_manifest)",
+        "binding": "inline PostgreSQL descriptor includes schema, database identity, fact key, and payload SHA-256",
+        "read_transaction": "read-only repeatable-read; schema and database identity checked",
+        "positive_and_negative_tests": "tests/test_v4_r21_owner_manifest_pg_binding.py; mocked PostgreSQL positive read and digest rejection",
+        "status_boundary": "CODE_PATH_IMPLEMENTED; LIVE_PG_AUTHORIZATION_REQUIRED; inventory reconciliation still open"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160572",

@@ -78,7 +78,7 @@ def attest_read_role(pg, schema):
 def connection(schema, *, read_only=False, dsn=None, row_factory=None):
     if not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema): raise ValueError('INVALID_V4_PG_SCHEMA')
     with psycopg.connect(dsn or (configured_reader_dsn() if read_only else configured_dsn()),connect_timeout=5,row_factory=row_factory) as pg:
-        if read_only: pg.execute('SET TRANSACTION READ ONLY')
+        if read_only: pg.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY')
         pg.execute("SET LOCAL statement_timeout='30s'")
         pg.execute("SET LOCAL lock_timeout='5s'")
         pg.execute(sql.SQL('SET LOCAL search_path TO {}, pg_catalog').format(sql.Identifier(schema)))

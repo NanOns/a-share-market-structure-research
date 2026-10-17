@@ -107,6 +107,27 @@ def read(root,binding,head_token,day,domain,source_binding,*,workspace_root=None
         raise ValueError('PG_OPERATIONAL_OWNER_PIT_ESCALATION')
     return payload['rows']
 
+def read_authority_manifest(root,binding,*,workspace_root=None):
+    """Read the authority value from PG; the inline descriptor is only a locator."""
+    descriptor=descriptor_metadata(root,binding)
+    schema=read_schema(root,binding,descriptor,workspace_root)
+    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,'authority_manifest'):
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
+    with connection(schema,read_only=True) as pg:
+        if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
+            raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
+                       ('authority_manifest',descriptor['fact_key'])).fetchone()
+    if row is None or row[1]!=descriptor.get('payload_sha256') or digest(row[0].encode())!=row[1]:
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_PAYLOAD_DIGEST_MISMATCH')
+    try:
+        payload=json.loads(row[0])
+    except (TypeError,ValueError) as exc:
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_PAYLOAD_INVALID') from exc
+    if not isinstance(payload,dict):
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_PAYLOAD_INVALID')
+    return payload
+
 def load_authority(root,candidate,head_token):
     from workbench_analysis.r43_owner_replay import checked
     path=Path(root)/'config/v4_operational_owner_pg_closeout_r1.json'

@@ -2,6 +2,7 @@
 from pathlib import Path, PureWindowsPath
 from datetime import datetime,timezone
 import json
+import os
 from . import tdx_official_daily_source as tdx
 from .tdx_latest_daily_source_v2 import capture_latest_tdx_package,extract_target_session_bars
 from .operational_daily_storage_v1 import output_path,atomic_json
@@ -49,6 +50,21 @@ def _tdx_gbbq_source_path():
     if not path.is_absolute() and not PureWindowsPath(raw_path).is_absolute():
         raise ValueError('DAILY_TDX_SOURCE_PATH_MUST_BE_ABSOLUTE')
     return path
+
+
+def _accepted_trade_date(root):
+    """Resolve the last-good trade date from the selected authority source."""
+    mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')
+    if mode=='PG':
+        from workbench_db.v4_market_calendar_reader_r1 import from_environment
+        calendar=from_environment().calendar()
+        if calendar.get('status')!='ACCEPTED' or calendar.get('source')!='PG_ACCEPTED_PUBLICATION_HEAD':
+            raise ValueError('PG_ACCEPTED_PUBLICATION_HEAD_REQUIRED')
+        return calendar['accepted_trade_date']
+    if mode!='FILE':
+        raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
+    head=json.loads((Path(root)/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+    return head['accepted_trade_date']
 
 
 def _pg_source_ingest_plan_diagnostic(root, day, result):
@@ -108,9 +124,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     progress=instrument_progress(progress)
     root=Path(root)
     if mode!='PROBE' and not capture_only:
-        head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
-        if day<=head['accepted_trade_date']:
-            return dict(status='PUBLISHED',reason='NOOP_ALREADY_CURRENT',accepted_trade_date=head['accepted_trade_date'],recovered_after_cas=True)
+        accepted_trade_date=_accepted_trade_date(root)
+        if day<=accepted_trade_date:
+            return dict(status='PUBLISHED',reason='NOOP_ALREADY_CURRENT',accepted_trade_date=accepted_trade_date,recovered_after_cas=True)
     if mode=='PROBE':
         response=tdx._request(tdx.PAGE_URL)
         try:

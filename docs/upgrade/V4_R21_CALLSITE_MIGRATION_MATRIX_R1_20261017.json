@@ -3626,9 +3626,19 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "PG branch is opt-in and live publication/identity readback plus the remaining executor Head/Owner/CAS paths are still open.",
       "baseline_function": "execute_sources",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-dm01-executor-pg-head-r7",
+        "implemented_code": "operational_daily_executor_v1._accepted_trade_date reads the accepted trade date from PgMarketCalendarReader.calendar when V4_MARKET_CALENDAR_SOURCE=PG; FILE remains default.",
+        "test_evidence": [
+          "test_daily_executor_noop_uses_pg_accepted_head_without_file_fallback",
+          "test_daily_executor_pg_head_failure_does_not_fall_back_to_file"
+        ],
+        "formal_status": "OPEN",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "residuals": "Other daily executor Head/Owner reads, candidate write and CAS are not migrated by this callsite batch."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160026",
@@ -16444,6 +16454,26 @@
         "p1_formally_remaining": 266,
         "status": "CODE_PATH_OPT_IN; baseline callsite remains open pending runtime selection and live readback.",
         "next": "Migrate daily provider source/artifact inputs and accepted publication write flow."
+      },
+      {
+        "batch_id": "R21-R4-dm01-executor-pg-head-r7",
+        "files": [
+          "src/workbench_analysis/operational_daily_executor_v1.py",
+          "tests/test_v4_r21_dm01_pg_progress.py"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-928e5423aa7c5ec455a8"
+        ],
+        "evidence": [
+          "The daily executor NOOP/already-published check now reads the accepted trade date from the same PG publication Head/calendar reader when PG mode is selected.",
+          "PG Head read failure is fail-closed and never falls back to V4_OPERATIONAL_RESEARCH_HEAD.json.",
+          "File mode remains the configured default; later executor Owner/Head/CAS paths are explicitly not covered."
+        ],
+        "verification": "128 focused tests passed; executor compile and diff checks passed; no live PG read.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PG_CODE_PATH_OPT_IN; exact baseline callsite code replaced under PG selector, formal acceptance remains open.",
+        "next": "Migrate daily identity Owner read and executor final Head/CAS using approved PG relation and immutable source candidate flow."
       }
     ]
   }

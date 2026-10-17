@@ -87,6 +87,36 @@ def test_dm01_gap_plan_uses_pg_accepted_head_and_calendar_without_file_head(monk
     assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
 
 
+def test_daily_executor_noop_uses_pg_accepted_head_without_file_fallback(monkeypatch, tmp_path):
+    from workbench_analysis import operational_daily_executor_v1 as executor
+
+    class Reader:
+        def calendar(self):
+            return {"status": "ACCEPTED", "source": "PG_ACCEPTED_PUBLICATION_HEAD",
+                    "accepted_trade_date": "2026-10-16"}
+
+    monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE", "PG")
+    monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment", lambda: Reader())
+    result = executor.execute_sources(tmp_path, "2026-10-16", "CATCH_UP")
+    assert result["reason"] == "NOOP_ALREADY_CURRENT"
+    assert result["accepted_trade_date"] == "2026-10-16"
+    assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
+
+
+def test_daily_executor_pg_head_failure_does_not_fall_back_to_file(monkeypatch, tmp_path):
+    from workbench_analysis import operational_daily_executor_v1 as executor
+    import pytest
+
+    monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE", "PG")
+    monkeypatch.setattr(
+        "workbench_db.v4_market_calendar_reader_r1.from_environment",
+        lambda: (_ for _ in ()).throw(ValueError("PG_READ_FAILED")),
+    )
+    with pytest.raises(ValueError, match="PG_READ_FAILED"):
+        executor.execute_sources(tmp_path, "2026-10-16", "CATCH_UP")
+    assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
+
+
 def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, tmp_path):
     pg = ReadConnection(None, {"last_published_trade_date": None})
 

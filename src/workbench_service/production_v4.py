@@ -601,9 +601,17 @@ class ProductionV4ResearchReader:
         if len(q.get('sort','id').split(','))>4:raise ValueError('SORT_BOUND')
         sort.append('id ASC');where=['domain=?'];args=[domain]
         if needle:
-            # Prefix range uses the name/symbol indexes; exact historic alias uses alias_lookup.
-            where.append("id IN (SELECT id FROM objects WHERE domain=? AND id=? UNION SELECT id FROM objects WHERE domain=? AND symbol>=? AND symbol<? UNION SELECT id FROM objects WHERE domain=? AND name>=? AND name<? UNION SELECT id FROM aliases WHERE alias>=? AND alias<? UNION SELECT o.id FROM aliases a JOIN objects o ON o.domain=? AND o.id>=a.id||':' AND o.id<a.id||';' WHERE a.alias>=? AND a.alias<?)")
-            args.extend((domain,needle.upper(),domain,needle.upper(),needle.upper()+'\uffff',domain,needle,needle+'\uffff',needle,needle+'\uffff',domain,needle,needle+'\uffff'))
+            # Prefix ranges keep indexed ID/symbol/alias lookup bounded. Some
+            # imported PG snapshots have a lossy legacy `name` projection while
+            # canonical Unicode display_name remains intact in the JSON payload.
+            indexed_match="id IN (SELECT id FROM objects WHERE domain=? AND id=? UNION SELECT id FROM objects WHERE domain=? AND symbol>=? AND symbol<? UNION SELECT id FROM objects WHERE domain=? AND name>=? AND name<? UNION SELECT id FROM aliases WHERE alias>=? AND alias<? UNION SELECT o.id FROM aliases a JOIN objects o ON o.domain=? AND o.id>=a.id||':' AND o.id<a.id||';' WHERE a.alias>=? AND a.alias<?)"
+            indexed_args=(domain,needle.upper(),domain,needle.upper(),needle.upper()+'\uffff',domain,needle,needle+'\uffff',needle,needle+'\uffff',domain,needle,needle+'\uffff')
+            if getattr(self,'pg_candidate_schema',None):
+                where.append('('+indexed_match+" OR COALESCE((payload::jsonb)->>'display_name','') ILIKE ?)")
+                args.extend(indexed_args+('%'+needle+'%',))
+            else:
+                where.append('('+indexed_match+" OR COALESCE(json_extract(payload,'$.display_name'),'') LIKE ? COLLATE NOCASE)")
+                args.extend(indexed_args+('%'+needle+'%',))
         if q.get('state'):where.append('state=?');args.append(q['state'])
         if domain in ('stocks','sectors','focus'):
             for key,field in [('type','sector_type'),('maturity','maturity'),('health','health'),('rotation','output_state'),('quality','quality'),('eligibility','final_eligibility')]:

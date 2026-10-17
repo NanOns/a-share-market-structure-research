@@ -9,7 +9,8 @@ def output_path(root,path):
     root=Path(root).resolve();path=Path(path).resolve()
     if not path.is_relative_to(root):
         raise ValueError('OUTPUT_OUTSIDE_PROJECT')
-    roots=['D:/new_tdx']
+    from common.paths import resolve_tdx_root
+    roots=[resolve_tdx_root(root)]
     contract=root/'config/dm01_go_forward_runtime_contract_r4r1.json'
     if contract.is_file():
         roots+=json.loads(contract.read_bytes()).get('read_only_tdx_roots',[])

@@ -273,16 +273,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             self.isolated_history=load(api,isolated_history_authority)
 
     def _read_index_r2(self,day):
-        """Cache only the immutable binding; each PG read still attests its digest and database."""
+        """Use only the immutable index binding embedded by the PG Head writer."""
         if getattr(self,'building_read_index',False):return None
-        from workbench_db.v4_read_index_r2 import AUTHORITY,load
-        path=self.api.root/AUTHORITY
-        try:stat=path.stat();signature=(stat.st_mtime_ns,stat.st_size)
-        except FileNotFoundError:signature=None
-        key=('product-read-index-r2',self.api.token,day,signature)
+        from workbench_db.v4_read_index_r2 import PG_AUTHORITY_KEY,load
+        authority=self.api.candidate.get(PG_AUTHORITY_KEY)
+        if authority is None:return None
+        key=('product-read-index-r2',self.api.token,day)
         if key not in self.api.cache:
             self.api.cache[key]=load(self.api.root,self.api.token,day,
-                allow_missing=day!=self.api.candidate['accepted_trade_date'])
+                authority=authority,allow_missing=day!=self.api.candidate['accepted_trade_date'])
         return self.api.cache[key]
 
     def _read_index_r2_state(self,day):

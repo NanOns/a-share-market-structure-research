@@ -1,7 +1,6 @@
 """Dynamic operational gap planning; frozen R43 and strict PIT are untouched."""
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
-from .dm01_runtime_r4 import calendar
 
 CONTRACT = 'V4_OPERATIONAL_DAILY_CALENDAR_V2'
 SHANGHAI = ZoneInfo('Asia/Shanghai')
@@ -54,18 +53,8 @@ def plan_sessions(last_good, now, cal, through_date=None, main_check='18:35'):
 
 def gap_plan(root, now=None, through_date=None, main_check='18:35', *,
              last_good_trade_date=None, calendar_binding=None):
-    import json
-    from pathlib import Path
-    from .scoped_successor_r421 import sha
     if last_good_trade_date is None or calendar_binding is None:
-        head_path = Path(root) / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        head = json.loads(head_path.read_bytes())
-        last_good_trade_date = head['accepted_trade_date']
-        calendar_binding = calendar(root)
-        result = plan_sessions(last_good_trade_date, now or datetime.now(SHANGHAI),
-                               calendar_binding, through_date, main_check)
-        result['last_good_head_sha256'] = sha(head_path)
-        return result
+        raise ValueError('PG_ACCEPTED_OPERATIONAL_HEAD_AND_CALENDAR_REQUIRED_NO_FILE_FALLBACK')
     result = plan_sessions(last_good_trade_date, now or datetime.now(SHANGHAI),
                            calendar_binding, through_date, main_check)
     result['last_good_head_source'] = 'PG_ACCEPTED_PUBLICATION_HEAD'

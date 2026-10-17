@@ -12,7 +12,7 @@ from .v4_native import connection, create_schema, workspace_schema
 from .v4_forward_pg_r1 import ForwardFactStore
 
 CONTRACT = 'V4_READ_INDEX_R2'
-AUTHORITY = 'config/v4_read_index_authority_r2.json'
+PG_AUTHORITY_KEY = 'native_read_index_r2'
 NUMERIC = {'sector_rs20_pct','sector_rs5_pct','sector_rs20','sector_rs5',
            'breadth_ret1','breadth_ret5','breadth_ret20','ma20_width',
            'participation_proxy','member_count','close','rps5','rps20'}
@@ -44,7 +44,7 @@ def schema_for_revision(root, revision_sha256):
     """Keep a new immutable index digest in its own schema.
 
     The unsuffixed schema remains readable as the R2 predecessor. A rebuild
-    after producer code changes must never rewrite its sealed token/day rows.
+    after producer code changes must never rewrite its sealed context_id/day rows.
     """
     from .v4_native import workspace_schema
     if not isinstance(revision_sha256,str) or len(revision_sha256)!=64 or any(c not in '0123456789abcdef' for c in revision_sha256):
@@ -111,7 +111,7 @@ def detail_payload(row):
     return result
 
 
-def validate_query(query, token, dates, default_day, path):
+def validate_query(query, context_id, dates, default_day, path):
     route_only=set()
     if path=='/api/v4/market/limits':
         route_only={'limit_state'}
@@ -134,9 +134,9 @@ def validate_query(query, token, dates, default_day, path):
         if query['event'] not in ('INVALIDATED','EXITED','WEAKENED','UPGRADED','REENTERED','NEW','PERSISTENT','DATA_UNAVAILABLE'): raise ValueError('INVALID_EVENT')
     day=query.get('trade_date', default_day)
     if day not in dates: raise ValueError('TARGET_DATE_NOT_GRANTED')
-    if path!='/api/v4/context' and query.get('context_token')!=token:
+    if path!='/api/v4/context' and query.get('context_token')!=context_id:
         raise ValueError('CONTEXT_TOKEN_MISMATCH')
-    if query.get('release_id',token)!=token or query.get('model_namespace','TDX_INDUSTRY_CONCEPT')!='TDX_INDUSTRY_CONCEPT':
+    if query.get('release_id',context_id)!=context_id or query.get('model_namespace','TDX_INDUSTRY_CONCEPT')!='TDX_INDUSTRY_CONCEPT':
         raise ValueError('CONTEXT_TOKEN_MISMATCH')
     offset=int(query.get('offset',0));limit=int(query.get('limit',30))
     if not 0<=offset<=1000000 or not 1<=limit<=200: raise ValueError('INVALID_QUERY_BOUND')
@@ -150,28 +150,11 @@ def query_parts(domain, query, *, entity=None, sector=None):
     if len(needle)>80: raise ValueError('INVALID_QUERY_BOUND')
     specs=query.get('sort','id').split(',')
     if len(specs)>4 or any(k.lstrip('-') not in SORTS for k in specs): raise ValueError('INVALID_SORT_FIELD')
-    clauses=[];args=[]
-    if needle:
-        clauses.append(sql.SQL('EXISTS (SELECT 1 FROM unnest(search_parts) part WHERE strpos(part,%s)>0)'));args.append(needle)
-    if entity:
-        clauses.append(sql.SQL('%s=ANY(aliases)'));args.append(entity)
-    if sector:
-        clauses.append(sql.SQL('%s=ANY(sector_ids)'));args.append(sector)
+    filters={}
     for key,field in FILTERS.items():
         if key=='state' and domain!='stocks': field='output_state'
-        if query.get(key):
-            clauses.append(sql.SQL('values_json->>{}=%s').format(sql.Literal(field)));args.append(query[key])
-    order=[]
-    for spec in specs:
-        key=spec.lstrip('-');direction=sql.SQL('DESC' if spec.startswith('-') else 'ASC')
-        top={'id':'entity_id','name':'display_name','symbol':'symbol'}.get(key)
-        field=('scenario' if domain=='stocks' else 'output_state') if key=='state' else key
-        expression=sql.Identifier(top) if top else sql.SQL('values_json->>{}').format(sql.Literal(field))
-        expression=sql.SQL('({})::numeric').format(expression) if key in NUMERIC else sql.SQL('{} COLLATE "C"').format(expression)
-        order.append(sql.SQL('{} {} NULLS LAST').format(expression,direction))
-    order.append(sql.SQL('entity_id COLLATE "C" ASC'))
-    where=sql.SQL(' AND ').join(clauses) if clauses else sql.SQL('TRUE')
-    return where,args,sql.SQL(',').join(order),offset,limit
+        if query.get(key): filters[field]=query[key]
+    return dict(needle=needle,filters=filters,entity=entity,sector=sector,specs=specs),offset,limit
 
 
 def materialize_radar_rows(stocks, focus_rows, sector_memberships, rotations, events, forward_ref, day):
@@ -201,10 +184,10 @@ def materialize_radar_rows(stocks, focus_rows, sector_memberships, rotations, ev
     return result
 
 
-def prepare(root, token, day, collections, responses, memberships):
+def prepare(root, context_id, day, collections, responses, memberships):
     """One producer transaction; existing version content can only be verified."""
     root=Path(root);source_sha=producer_sha256()
-    material=dict(contract_id=CONTRACT,head_token=token,T0=day,collections=collections,
+    material=dict(contract_id=CONTRACT,head_token=context_id,T0=day,collections=collections,
                   producer_sha256=source_sha,
                   responses=responses,memberships=memberships)
     digest=hashlib.sha256(canonical(material)).hexdigest()
@@ -212,46 +195,49 @@ def prepare(root, token, day, collections, responses, memberships):
     with connection(schema) as pg:
         create_schema(pg,schema)
         pg.execute('''CREATE TABLE IF NOT EXISTS read_versions(
-            token text NOT NULL, day text NOT NULL, digest text NOT NULL,
-            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(token,day))''')
+            context_id text NOT NULL, day text NOT NULL, digest text NOT NULL,
+            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(context_id,day))''')
         pg.execute('''CREATE TABLE IF NOT EXISTS read_items(
-            token text NOT NULL, day text NOT NULL, domain text NOT NULL,
+            context_id text NOT NULL, day text NOT NULL, domain text NOT NULL,
             entity_id text NOT NULL, symbol text, display_name text,
             aliases text[] NOT NULL, search_parts text[] NOT NULL,
             sector_ids text[] NOT NULL, values_json jsonb NOT NULL,
             summary jsonb NOT NULL, detail jsonb NOT NULL, detail_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,domain,entity_id),
-            FOREIGN KEY(token,day) REFERENCES read_versions(token,day))''')
+            PRIMARY KEY(context_id,day,domain,entity_id),
+            FOREIGN KEY(context_id,day) REFERENCES read_versions(context_id,day))''')
         pg.execute('''CREATE TABLE IF NOT EXISTS read_responses(
-            token text NOT NULL, day text NOT NULL, path text NOT NULL,
+            context_id text NOT NULL, day text NOT NULL, path text NOT NULL,
             payload jsonb NOT NULL, payload_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,path), FOREIGN KEY(token,day) REFERENCES read_versions(token,day))''')
-        pg.execute('CREATE INDEX IF NOT EXISTS read_items_order ON read_items(token,day,domain,entity_id)')
+            PRIMARY KEY(context_id,day,path), FOREIGN KEY(context_id,day) REFERENCES read_versions(context_id,day))''')
+        pg.execute('CREATE INDEX IF NOT EXISTS read_items_order ON read_items(context_id,day,domain,entity_id)')
         pg.execute('''CREATE OR REPLACE FUNCTION read_index_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
           BEGIN
             IF TG_TABLE_NAME='read_versions' THEN
               IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
-                 (OLD.token,OLD.day,OLD.digest,OLD.contract)=(NEW.token,NEW.day,NEW.digest,NEW.contract) THEN RETURN NEW; END IF;
+                 (OLD.context_id,OLD.day,OLD.digest,OLD.contract)=(NEW.context_id,NEW.day,NEW.digest,NEW.contract) THEN RETURN NEW; END IF;
               IF TG_OP='INSERT' THEN RETURN NEW; END IF;
               RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
             END IF;
-            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions WHERE token=NEW.token AND day=NEW.day AND sealed) THEN
+            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions WHERE context_id=NEW.context_id AND day=NEW.day AND sealed) THEN
               RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
             END IF;
             RETURN NEW;
           END $$''')
         for table in ('read_versions','read_items','read_responses'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_immutable_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON {} FOR EACH ROW EXECUTE FUNCTION read_index_immutable()').format(sql.Identifier(table)))
+            pg.execute(sql.Composed([sql.SQL('DROP TRIGGER IF EXISTS read_index_immutable_guard ON '),sql.Identifier(table)]))
+            pg.execute(sql.Composed([sql.SQL('CREATE TRIGGER read_index_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON '),
+                sql.Identifier(table),sql.SQL(' FOR EACH ROW EXECUTE FUNCTION read_index_immutable()')]))
         pg.execute("CREATE OR REPLACE FUNCTION read_index_no_truncate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'READ_INDEX_IMMUTABLE'; END $$")
         for table in ('read_versions','read_items','read_responses'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_truncate_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_truncate_guard BEFORE TRUNCATE ON {} EXECUTE FUNCTION read_index_no_truncate()').format(sql.Identifier(table)))
-        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(schema+token+day,))
-        old=pg.execute('SELECT digest FROM read_versions WHERE token=%s AND day=%s',(token,day)).fetchone()
+            pg.execute(sql.Composed([sql.SQL('DROP TRIGGER IF EXISTS read_index_truncate_guard ON '),sql.Identifier(table)]))
+            pg.execute(sql.Composed([sql.SQL('CREATE TRIGGER read_index_truncate_guard BEFORE TRUNCATE ON '),
+                sql.Identifier(table),sql.SQL(' EXECUTE FUNCTION read_index_no_truncate()')]))
+        lock_key=hashlib.sha256(canonical([schema,context_id,day])).hexdigest()
+        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(lock_key,))
+        old=pg.execute('SELECT digest FROM read_versions WHERE context_id=%s AND day=%s',(context_id,day)).fetchone()
         if old and old[0]!=digest: raise ValueError('READ_INDEX_IMMUTABLE_VERSION_CONFLICT')
         if old is None:
-            pg.execute('INSERT INTO read_versions(token,day,digest,contract) VALUES(%s,%s,%s,%s)',(token,day,digest,CONTRACT))
+            pg.execute('INSERT INTO read_versions(context_id,day,digest,contract) VALUES(%s,%s,%s,%s)',(context_id,day,digest,CONTRACT))
             with pg.cursor() as cur:
                 for domain,rows in collections.items():
                     values=[]
@@ -260,39 +246,39 @@ def prepare(root, token, day, collections, responses, memberships):
                         aliases=sorted(set(aliases)|{v.upper() for v in aliases}|{v.upper().split('.')[-1] for v in aliases})
                         search=[str(v).casefold() for v in [sid,row['symbol'],row['display_name'],*row.get('search_aliases',[])]]
                         detail=detail_payload(row)
-                        values.append((token,day,domain,sid,row['symbol'],row['display_name'],aliases,search,
+                        values.append((context_id,day,domain,sid,row['symbol'],row['display_name'],aliases,search,
                             memberships.get(sid,[]),Jsonb({k:c.get('value') for k,c in row['fields'].items()}),
                             Jsonb(summary(row,domain)),Jsonb(detail),hashlib.sha256(canonical(detail)).hexdigest()))
                     cur.executemany('INSERT INTO read_items VALUES('+','.join(['%s']*13)+')',values)
                 cur.executemany('INSERT INTO read_responses VALUES(%s,%s,%s,%s,%s)',
-                    [(token,day,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
-            pg.execute('UPDATE read_versions SET sealed=true WHERE token=%s AND day=%s',(token,day))
-        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items WHERE token=%s AND day=%s GROUP BY domain',(token,day)).fetchall())
+                    [(context_id,day,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
+            pg.execute('UPDATE read_versions SET sealed=true WHERE context_id=%s AND day=%s',(context_id,day))
+        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items WHERE context_id=%s AND day=%s GROUP BY domain',(context_id,day)).fetchall())
         if counts!={k:len(v) for k,v in collections.items() if v}: raise ValueError('READ_INDEX_COUNT_MISMATCH')
         # Read back every row once before handing the index to HTTP.
         for domain,rows in collections.items():
-            actual=pg.execute('SELECT detail FROM read_items WHERE token=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(token,day,domain)).fetchall()
+            actual=pg.execute('SELECT detail FROM read_items WHERE context_id=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(context_id,day,domain)).fetchall()
             expected=sorted((detail_payload(row) for row in rows),key=lambda r:r['entity_id'])
             if [r[0] for r in actual]!=expected: raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
         identity=ForwardFactStore._database_identity(pg)
     return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,producer_sha256=source_sha,
-                head_token=token,T0=day,
+                head_token=context_id,T0=day,
                 digest=digest,counts=counts,database_identity=identity)
 
 
 class ReadIndex:
-    def __init__(self, root, binding, token, day):
-        self.root=Path(root);self.binding=binding;self.token=token;self.day=day
+    def __init__(self, root, binding, context_id, day):
+        self.root=Path(root);self.binding=binding;self.context_id=context_id;self.day=day
         if not isinstance(binding,dict) or not {'contract_id','engine','schema','head_token','T0','digest','counts','database_identity'}<=set(binding):
             raise ValueError('READ_INDEX_BINDING_SCHEMA_INVALID')
         if binding['contract_id']!=CONTRACT:raise ValueError('READ_INDEX_BINDING_CONTRACT_MISMATCH')
         if binding['engine']!='postgresql' or not schema_binding_matches(root,binding):
             raise ValueError('READ_INDEX_SCHEMA_MISMATCH')
-        if (binding['head_token'],binding['T0'])!=(token,day):raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
+        if (binding['head_token'],binding['T0'])!=(context_id,day):raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
 
     def attest(self, pg):
         if ForwardFactStore._database_identity(pg)!=self.binding['database_identity']: raise ValueError('READ_INDEX_DATABASE_MISMATCH')
-        row=pg.execute('SELECT digest,contract,sealed FROM read_versions WHERE token=%s AND day=%s',(self.token,self.day)).fetchone()
+        row=pg.execute('SELECT digest,contract,sealed FROM read_versions WHERE context_id=%s AND day=%s',(self.context_id,self.day)).fetchone()
         if row is None or row[2] is not True:raise ValueError('READ_INDEX_VERSION_UNAVAILABLE')
         if row[1]!=CONTRACT:raise ValueError('READ_INDEX_VERSION_CONTRACT_MISMATCH')
         if row[0]!=self.binding['digest']:raise ValueError('READ_INDEX_VERSION_DIGEST_MISMATCH')
@@ -300,27 +286,27 @@ class ReadIndex:
     def response(self, path):
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
-            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE token=%s AND day=%s AND path=%s',(self.token,self.day,path)).fetchone()
+            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE context_id=%s AND day=%s AND path=%s',(self.context_id,self.day,path)).fetchone()
         if row is None: return None
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return row[0]
 
     @staticmethod
-    def _detail_row(pg, token, day, domain, key):
+    def _detail_row(pg, context_id, day, domain, key):
         # Prefer the primary key. Combining entity, symbol and alias
         # predicates with OR prevents PostgreSQL from using the composite
         # primary-key index efficiently on the dominant detail route.
         rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-            WHERE token=%s AND day=%s AND domain=%s AND entity_id=%s LIMIT 2''',
-            (token,day,domain,key)).fetchall()
+            WHERE context_id=%s AND day=%s AND domain=%s AND entity_id=%s LIMIT 2''',
+            (context_id,day,domain,key)).fetchall()
         if not rows:
             rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-                WHERE token=%s AND day=%s AND domain=%s AND upper(symbol)=upper(%s) LIMIT 2''',
-                (token,day,domain,key)).fetchall()
+                WHERE context_id=%s AND day=%s AND domain=%s AND upper(symbol)=upper(%s) LIMIT 2''',
+                (context_id,day,domain,key)).fetchall()
         if not rows:
             rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-                WHERE token=%s AND day=%s AND domain=%s AND %s=ANY(aliases) LIMIT 2''',
-                (token,day,domain,key)).fetchall()
+                WHERE context_id=%s AND day=%s AND domain=%s AND %s=ANY(aliases) LIMIT 2''',
+                (context_id,day,domain,key)).fetchall()
         if len(rows)!=1:return None
         row=rows[0]
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
@@ -330,28 +316,54 @@ class ReadIndex:
         """Read the shared context and one detail with a single attested PG session."""
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
-            response=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE token=%s AND day=%s AND path=%s',
-                                (self.token,self.day,path)).fetchone()
-            detail=self._detail_row(pg,self.token,self.day,domain,key)
+            response=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE context_id=%s AND day=%s AND path=%s',
+                                (self.context_id,self.day,path)).fetchone()
+            detail=self._detail_row(pg,self.context_id,self.day,domain,key)
         if response is None:return None,None
         if hashlib.sha256(canonical(response[0])).hexdigest()!=response[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return response[0],detail
 
     def page(self, domain, query, *, entity=None, sector=None):
-        where,args,order,offset,limit=query_parts(domain,query,entity=entity,sector=sector)
-        base=(self.token,self.day,domain)
-        predicate=sql.SQL('token=%s AND day=%s AND domain=%s AND {}').format(where)
+        selection,offset,limit=query_parts(domain,query,entity=entity,sector=sector)
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
-            total=pg.execute(sql.SQL('SELECT count(*) FROM read_items WHERE {}').format(predicate),base+tuple(args)).fetchone()[0]
-            rows=pg.execute(sql.SQL('SELECT summary FROM read_items WHERE {} ORDER BY {} LIMIT %s OFFSET %s').format(predicate,order),base+tuple(args)+(limit,offset)).fetchall()
-        return dict(status='READY' if total else 'EMPTY_VALID',items=[r[0] for r in rows],total=total,
+            rows=pg.execute('''SELECT entity_id,symbol,display_name,aliases,search_parts,
+                                      sector_ids,values_json,summary
+                                 FROM read_items
+                                WHERE context_id=%s AND day=%s AND domain=%s''',
+                            (self.context_id,self.day,domain)).fetchall()
+        matched=[]
+        for entity_id,symbol,name,aliases,search_parts,sector_ids,values_json,summary in rows:
+            if selection['needle'] and not any(selection['needle'] in str(part).casefold() for part in search_parts):continue
+            if selection['entity'] and selection['entity'] not in aliases:continue
+            if selection['sector'] and selection['sector'] not in sector_ids:continue
+            if any(str((values_json or {}).get(field) or '')!=value for field,value in selection['filters'].items()):continue
+            matched.append(dict(entity_id=entity_id,symbol=symbol,display_name=name,values=values_json or {},summary=summary))
+        def sort_value(row,key):
+            aliases={'id':'entity_id','name':'display_name','symbol':'symbol'}
+            if key in aliases:return row.get(aliases[key])
+            field=('scenario' if domain=='stocks' else 'output_state') if key=='state' else key
+            value=row['values'].get(field)
+            if key in NUMERIC and value not in (None,''):
+                try:return float(value)
+                except (TypeError,ValueError):return None
+            return str(value).casefold() if value is not None else None
+        matched.sort(key=lambda row:row['entity_id'])
+        for spec in reversed(selection['specs']):
+            key=spec.lstrip('-');present=[];missing=[]
+            for row in matched:
+                (missing if sort_value(row,key) is None else present).append(row)
+            present.sort(key=lambda row:sort_value(row,key),reverse=spec.startswith('-'))
+            matched=present+missing
+        total=len(matched)
+        page=matched[offset:offset+limit]
+        return dict(status='READY' if total else 'EMPTY_VALID',items=[r['summary'] for r in page],total=total,
                     offset=offset,limit=limit,has_next=offset+limit<total,domain=domain,gap=None)
 
     def detail(self, domain, key):
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
-            return self._detail_row(pg,self.token,self.day,domain,key)
+            return self._detail_row(pg,self.context_id,self.day,domain,key)
 
     def display_identities(self, domain, entity_ids):
         """Bounded identity/name join for already selected event or ladder rows."""
@@ -360,8 +372,8 @@ class ReadIndex:
         with connection(self.binding['schema'],read_only=True) as pg:
             self.attest(pg)
             rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
-                FROM read_items WHERE token=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
-                (self.token,self.day,domain,keys)).fetchall()
+                FROM read_items WHERE context_id=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
+                (self.context_id,self.day,domain,keys)).fetchall()
         result={}
         for entity_id,symbol,name,detail,digest in rows:
             if hashlib.sha256(canonical(detail)).hexdigest()!=digest:raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
@@ -377,27 +389,30 @@ class ReadIndex:
         return result
 
 
-def load(root, token, day, *, allow_missing=False):
-    path=Path(root)/AUTHORITY
-    if not path.exists(): return None
-    try:authority=json.loads(path.read_bytes())
-    except (OSError,UnicodeDecodeError,json.JSONDecodeError) as exc:raise ValueError('READ_INDEX_AUTHORITY_INVALID_JSON') from exc
-    if not isinstance(authority,dict) or authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')
-    if not isinstance(authority.get('versions'),dict):raise ValueError('READ_INDEX_AUTHORITY_SCHEMA_INVALID')
-    if any(not isinstance(days,dict) for days in authority['versions'].values()):raise ValueError('READ_INDEX_AUTHORITY_SCHEMA_INVALID')
-    binding=authority.get('versions',{}).get(token,{}).get(day)
+def load(root, context_id, day, *, authority=None, allow_missing=False):
+    """Resolve only the exact Head-embedded PG index binding.
+
+    The former config JSON catalogue was another runtime selector and could
+    outlive or disagree with the operational Head. Existing historical Heads
+    without this optional R2 binding continue through the direct PG Owner BFF.
+    """
+    if authority is None:
+        if allow_missing:return None
+        raise ValueError('READ_INDEX_PG_HEAD_BINDING_REQUIRED_NO_FILE_FALLBACK')
+    if (not isinstance(authority,dict) or authority.get('contract_id')!=CONTRACT
+            or authority.get('head_token')!=context_id or not isinstance(authority.get('versions'),dict)):
+        raise ValueError('READ_INDEX_PG_HEAD_AUTHORITY_INVALID')
+    binding=authority.get('versions',{}).get(day)
     if binding is None:
         if allow_missing:return None
-        if token not in authority.get('versions',{}):raise ValueError('READ_INDEX_TOKEN_NOT_PREPARED')
         raise ValueError('READ_INDEX_DATE_NOT_PREPARED')
     if not isinstance(binding,dict):raise ValueError('READ_INDEX_BINDING_SCHEMA_INVALID')
-    return ReadIndex(root,binding,token,day)
+    return ReadIndex(root,binding,context_id,day)
 
 
 def prepare_bff(root, candidate, *, days=None, jobs=None):
     """Producer/migration entrypoint, never invoked from an HTTP request."""
     from workbench_analysis.operational_successor_v1 import OperationalSuccessorReaderV1
-    from workbench_analysis.operational_daily_storage_v1 import atomic_json
     from workbench_service.core_product_bff_r1 import CoreProductBFFR1
     root=Path(root)
     api=OperationalSuccessorReaderV1(root,candidate)
@@ -407,7 +422,7 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
     for day in dates:
         if day not in candidate['published_sessions']: raise ValueError('READ_INDEX_UNPUBLISHED_DATE')
         # Build the exact dated full response once, then only SQL pages serve it.
-        query=dict(trade_date=day,context_token=api.token)
+        query=dict(trade_date=day,context_token=api.context_id)
         collections={domain:bff.project(domain,day) for domain in ('stocks','sectors','focus')}
         responses={path:bff.get(path,query)[1] for path in ('/api/v4/context','/api/v4/home')}
         validate_home_response(responses['/api/v4/home'])
@@ -422,19 +437,8 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
         memberships={}
         for sector in bff.source('sector',day):
             for sid in set(sector.get('member_ids',[])): memberships.setdefault(sid,[]).append(sector['sector_id'])
-        prepared[day]=prepare(root,api.token,day,collections,responses,memberships)
-    path=root/AUTHORITY
-    authority=json.loads(path.read_bytes()) if path.exists() else dict(contract_id=CONTRACT,versions={})
-    if authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')
-    versions=authority['versions'].setdefault(api.token,{})
-    history=authority.setdefault('revision_history',{}).setdefault(api.token,{})
-    for day,binding in prepared.items():
-        prior=versions.get(day)
-        if prior is not None and prior!=binding:
-            revisions=history.setdefault(day,[])
-            if prior not in revisions:revisions.append(prior)
-            if binding not in revisions:revisions.append(binding)
-        versions[day]=binding
-    # An old Head is a read-only migration input; the index is an additive artifact.
-    atomic_json(root,path,authority)
-    return dict(contract_id=CONTRACT,head_token=api.token,dates=prepared,head_changed=False)
+        prepared[day]=prepare(root,api.context_id,day,collections,responses,memberships)
+    authority=dict(contract_id=CONTRACT,head_token=api.context_id,versions=prepared)
+    candidate[PG_AUTHORITY_KEY]=authority
+    return dict(contract_id=CONTRACT,head_token=api.context_id,dates=prepared,
+                binding=PG_AUTHORITY_KEY,head_changed=False)

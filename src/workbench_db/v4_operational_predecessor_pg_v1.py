@@ -58,6 +58,8 @@ def read(root, candidate, *, workspace_root=None):
 
 
 def read_predecessor(root, candidate, *, workspace_root=None):
-    if KEY in candidate:
-        return read(root, candidate, workspace_root=workspace_root)
-    return json.loads(checked(Path(root).resolve(), candidate['predecessor']).read_bytes())
+    # Historical bytes may be read only by prepare() at the explicit one-time
+    # ingress boundary. Runtime validation must use the exact PG fact written
+    # for this candidate; falling back to the predecessor path reintroduced a
+    # second mutable Head authority.
+    return read(root, candidate, workspace_root=workspace_root)

@@ -12,28 +12,10 @@ from workbench_analysis.operational_daily_executor_v1 import execute_sources
 PREFIX='/api/v4/operations/daily-update'
 
 
-def _local_successor_source_paths(root,*values):
-    root=Path(root).resolve();paths=set()
-    def visit(value):
-        if isinstance(value,dict):
-            if value.get('path') and value.get('sha256'):
-                # PG descriptors retain their source identity for lineage, but
-                # their path is only a logical locator and must never be stat'ed.
-                if 'pg_descriptor' not in value:
-                    path=(root/value['path']).resolve()
-                    if path.is_relative_to(root):paths.add(path)
-                return
-            for child in value.values():visit(child)
-        elif isinstance(value,list):
-            for child in value:visit(child)
-    for value in values:visit(value)
-    return paths
-
-
 def successor_control(api,legacy):
     from .operational_control_status import control_status
     current=api.context();current['authorization_mode']='DIRECT_HUMAN_USER'
-    control=control_status(legacy,current,api.token)
+    control=control_status(legacy,current,api.context_digest)
     control['data_updated_at']=api.candidate['observed_at']
     return dict(control,context=current)
 
@@ -47,18 +29,14 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
     strict_reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     successor_cache={};successor_lock=threading.RLock()
     def successor_reader():
-        import hashlib
         from workbench_analysis.operational_successor_v1 import accepted_api
-        from workbench_db.v4_operational_registry_pg_v1 import read_registry
-        head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        signature=hashlib.sha256(head.read_bytes()).hexdigest()
-        changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in successor_cache.get('sources',{}).items())
-        if changed or signature!=successor_cache.get('signature'):
-            api=accepted_api(root)
-            registry=read_registry(root,api.candidate)
-            paths=_local_successor_source_paths(root,api.candidate,api.snapshot,registry)
+        # Re-resolve the exact PG Owner/registry facts on every request. Their
+        # archival source paths are lineage only and are never stat'ed to
+        # validate or invalidate the live API cache.
+        api=accepted_api(root)
+        if api.context_digest!=successor_cache.get('signature'):
             successor_cache.clear()
-            successor_cache.update(signature=signature,api=api,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+            successor_cache.update(signature=api.context_digest,api=api)
         from copy import copy
         return copy(successor_cache['api'])
     class Handler(base):
@@ -66,18 +44,17 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
             parsed=urlparse(self.path);path=parsed.path
             if (path.startswith('/api/v4/') and not path.startswith(PREFIX) and not path.startswith('/api/v4/original-0930/')) or path=='/api/operations/status':
                 from workbench_analysis.operational_successor_v1 import CONTRACT,accepted_api
-                head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
-                if head.get('contract_id')==CONTRACT:
+                head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+                transport=json.loads(head_path.read_bytes()) if head_path.is_file() else {}
+                if transport.get('contract_id')==CONTRACT:
                     try:
                         with successor_lock:
                             api=successor_reader()
                             params=parse_qs(parsed.query,keep_blank_values=True)
                             if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')
                             if path=='/api/operations/status':
-                                request_context=params.get('context_token',[api.token])[0]
-                                expected_context=api.token
-                                if request_context!=expected_context:
-                                    raise ValueError('CONTEXT_TOKEN_MISMATCH')
+                                request_context=params.get('context_token',[api.context_digest])[0]
+                                if request_context!=api.context_digest:raise ValueError('CONTEXT_TOKEN_MISMATCH')
                                 code,legacy=strict_reader.read('context')
                                 if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
                                 from .operational_control_status import CONTRACT as CONTROL_CONTRACT
@@ -90,6 +67,7 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
                         return self.send(code,payload)
                     except (ValueError,KeyError,OSError) as exc:
                         return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503,dict(code='SUCCESSOR_READ_FAILED',reason=str(exc)[:180]))
+                return super().do_GET()
             if path=='/v4/research/data-update':
                 return self.send(200,(static/'daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
             if path=='/v4/daily-update.js':

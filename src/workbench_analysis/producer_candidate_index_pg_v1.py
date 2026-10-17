@@ -24,8 +24,6 @@ def build_review_and_display_candidates(root, day, candidate_binding, capture_re
 
     root = Path(root)
     candidate = json.loads(checked(root, candidate_binding).read_bytes())
-    if not candidate.get("exact_daily_adjustment_contract"):
-        raise ValueError("EXACT_DAILY_CANDIDATE_REQUIRED_FOR_PG_INDEX")
     sector = optional_step(produce_daily_sector, root, day, candidate_binding)
     state = optional_step(produce_daily_state, root, day, candidate_binding)
     publisher = optional_step(publish_state, root, candidate_binding=candidate_binding,

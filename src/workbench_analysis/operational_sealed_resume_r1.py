@@ -86,6 +86,11 @@ def resume(root,day,mode,*,cancelled=lambda:False,readback_url=None,progress=lam
     prepare_read_index_r1(root,candidate)
     progress(day,'READ_INDEX',dict(processed=1,total=2,unit='versions'))
     prepare_read_index_r2(root,candidate)
+    from .operational_daily_storage_v1 import atomic_json
+    from .r43_owner_replay import ref
+    candidate_path=output/'candidate_pg_read_index.json'
+    atomic_json(root,candidate_path,candidate)
+    manifest['candidate']=ref(root,candidate_path)
     progress(day,'READ_INDEX',dict(processed=2,total=2,unit='versions'))
     if cancelled():return dict(status='CANCELLED',reason='CANCELLED_BEFORE_CAS')
     if not readback_url:return dict(status='QA_BLOCKED',reason='LIVE_SERVICE_READBACK_ENDPOINT_REQUIRED',candidate=manifest['candidate'])

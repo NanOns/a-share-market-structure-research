@@ -3,7 +3,7 @@ from copy import deepcopy
 from pathlib import Path
 from types import FunctionType
 import json
-from .r43_operational_publication import CandidateReadV2, digest, accepted_api as frozen_api
+from .r43_operational_publication import CandidateReadV2, digest
 from .r43_owner_replay import checked
 from .market_source_acquisition import official_sessions
 
@@ -135,7 +135,7 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         return dict(metadata(self.snapshot,day),contract_id=CONTRACT,context_token=self.context_digest,publication_id=self.context_digest,
                     accepted_trade_date=day,data_cutoff_date=day,available_trade_dates=self.candidate['published_sessions'],
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,
-                    read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY',production_accepted=True,
+                    read_scope='PG_BOUND_OPERATIONAL_CANDIDATE',production_accepted=False,
                     independent_external_acceptance=False,external_domain_disposition=self.domain_disposition,
                     rotation_validation_state='VALIDATION_ONGOING')
 
@@ -201,9 +201,23 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
 
 def accepted_api(root):
     root=Path(root);head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    if not head.is_file():return None
+    if not head.is_file():
+        raise ValueError('PG_ACCEPTED_PUBLICATION_REQUIRED_NO_HEAD_FILE_FALLBACK')
     candidate=json.loads(head.read_bytes())
-    if candidate.get('contract_id')!=CONTRACT:return frozen_api(root)
+    if candidate.get('contract_id')!=CONTRACT:
+        raise ValueError('PG_ACCEPTED_PUBLICATION_REQUIRED_NO_FROZEN_FILE_FALLBACK')
+    # The file may be retained as an immutable candidate transport during the
+    # transition, but it cannot confer authority. Every runtime Owner,
+    # predecessor, membership and daily-evidence binding must resolve through
+    # the same database identity before this API can be constructed.
+    from workbench_db.v4_operational_owner_authority_v2 import KEY as OWNER_KEY
+    from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY
+    from workbench_db.v4_operational_predecessor_pg_v1 import KEY as PREDECESSOR_KEY
+    from workbench_db.v4_operational_daily_evidence_pg_v1 import KEY as EVIDENCE_KEY
+    required=(OWNER_KEY,MEMBERSHIP_KEY,PREDECESSOR_KEY,EVIDENCE_KEY)
+    missing=[key for key in required if key not in candidate]
+    if missing:
+        raise ValueError('PG_ACCEPTED_PUBLICATION_BINDINGS_REQUIRED:'+','.join(missing))
     from .operational_successor_release_v1 import verify_policy
     verify_policy(root,candidate,verify_loaded=False)
     if candidate.get('exact_daily_adjustment_contract'):

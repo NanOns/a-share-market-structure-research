@@ -162,6 +162,7 @@ class PgMarketCalendarReader:
             publication_revision=read["publication_revision"],
             market_calendar_id=read["market_calendar_id"],
             calendar_digest=read["calendar_digest"],
+            source="PG_ACCEPTED_PUBLICATION_HEAD",
             contract_id=contract.contract_id,contract_version=contract.version,
             contract_sha256=contract.raw_sha256)
         return dict(contract_id=CALENDAR_CONTRACT_ID,status="ACCEPTED",agreement=True,

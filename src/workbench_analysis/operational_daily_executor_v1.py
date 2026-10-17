@@ -92,6 +92,14 @@ def _accepted_trade_date(root):
     return calendar['accepted_trade_date']
 
 
+def _capture_optional_daily_sources(root, day, freeze_binding):
+    """Run the optional sidecar only with PG-validated candidate bindings."""
+    from .operational_successor_v1 import accepted_api
+    from .producer_bootstrap_v1 import capture_daily_sources
+    return capture_daily_sources(root,day,freeze_binding,
+                                 pg_head_candidate=accepted_api(root).candidate)
+
+
 def _pg_source_ingest_plan_diagnostic(root, day, result):
     """Bridge the actual executor evidence into the PG adapter without IO.
 
@@ -243,9 +251,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
         source_captured=True,source_ready=False,derived_ready=False,published=False,last_good_preserved=True)
     # Freeze real bytes even when the previous accepted identity pool is no
     # longer the new day's universe. The gate below still controls Owner work.
-    from .producer_bootstrap_v1 import capture_daily_sources, optional_step
+    from .producer_bootstrap_v1 import optional_step
     result=dict(result,first_capture_source_candidate=optional_step(
-        capture_daily_sources,root,day,result['source_freeze']))
+        _capture_optional_daily_sources,root,day,result['source_freeze']))
     result,readiness=verify_source_gate(root,day,artifact,result)
     result['pg_source_ingest_candidate'] = _pg_source_ingest_plan_diagnostic(root, day, result)
     progress(day,'SOURCE_READY' if readiness['source_ready'] else readiness['status'],result)
@@ -272,10 +280,10 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
                 or not root.resolve().is_relative_to(Path(isolation_root).resolve())):
             raise ValueError('ENGINEERING_REPLAY_CANNOT_PROMOTE')
     artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
-    from .producer_bootstrap_v1 import capture_daily_sources, optional_step
+    from .producer_bootstrap_v1 import optional_step
     if not result.get('first_capture_source_candidate',{}).get('candidate'):
         result=dict(result,first_capture_source_candidate=optional_step(
-            capture_daily_sources,root,day,result['source_freeze']))
+            _capture_optional_daily_sources,root,day,result['source_freeze']))
     result,readiness=verify_source_gate(root,day,artifact,result)
     result['pg_source_ingest_candidate'] = _pg_source_ingest_plan_diagnostic(root, day, result)
     if not readiness['source_ready']:
@@ -338,6 +346,9 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     progress(day,'READ_INDEX',dict(result,processed=1,total=2,unit='versions'))
     read_index_r2=prepare_read_index_r2(root,candidate)
     result=dict(result,read_index_r2=read_index_r2)
+    # The exact PG index version bindings are part of the successor candidate;
+    # persist the updated transport before the accepted-Head CAS can reference it.
+    candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
     progress(day,'READ_INDEX',dict(result,processed=2,total=2,unit='versions'))
     progress(day,'DERIVED_READY',dict(result,candidate=binding,derived_ready=True,source_ready=True))
     if cancelled():return dict(result,status='CANCELLED',reason='CANCELLED_BEFORE_CAS')

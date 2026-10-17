@@ -14,13 +14,28 @@ def test_complete_native_read_and_reject_cross_date_domain_head(tmp_path):
     for token,day,domain in [('wrong','2026-10-09','core'),('abc','2026-10-08','core'),('abc','2026-10-09','raw')]:
         with pytest.raises(ValueError):read(tmp_path,ref,token,day,domain,binding)
 
-def test_missing_dsn_and_changed_archive_evidence_reject(tmp_path,monkeypatch):
+def test_missing_dsn_fails_closed_and_reader_uses_pg_after_source_changes(tmp_path,monkeypatch):
     binding,rows=source(tmp_path);ref=prepare(tmp_path,'abc','2026-10-09','core',binding,rows)
     monkeypatch.delenv('V4_NATIVE_PG_DSN')
     with pytest.raises(RuntimeError):read(tmp_path,ref,'abc','2026-10-09','core',binding)
     monkeypatch.setenv('V4_NATIVE_PG_DSN','host=127.0.0.1 port=55791 user=r4_isolated_admin dbname=postgres')
     (tmp_path/'source.json').write_text('{}')
-    with pytest.raises(ValueError):read(tmp_path,ref,'abc','2026-10-09','core',binding)
+    assert read(tmp_path,ref,'abc','2026-10-09','core',binding)==rows
+
+def test_pg_reader_requires_inline_descriptor_and_does_not_open_source_file(tmp_path,monkeypatch):
+    import workbench_db.v4_operational_owner_pg_closeout as module
+    binding={'path':'missing-source.json','sha256':'a'*64,'bytes':1}
+    descriptor={'contract_id':module.CONTRACT,'engine':'postgresql','schema':'v4_forward_0000000000000000',
+        'kind':'core','fact_key':'abc_2026-10-09_core','payload_sha256':'b'*64,
+        'database_identity':{'system_identifier':'test'}}
+    import hashlib
+    raw=module.canonical(descriptor)
+    descriptor_binding={'path':'data/v4/operational_owner_pg_closeout_r1/core/'+
+        hashlib.sha256(descriptor['fact_key'].encode()).hexdigest()+'.pg.json',
+        'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw),'pg_descriptor':descriptor}
+    with pytest.raises(ValueError,match='INLINE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK'):
+        module.descriptor_metadata(tmp_path,{'path':descriptor_binding['path'],'sha256':descriptor_binding['sha256'],'bytes':descriptor_binding['bytes']})
+    assert not (tmp_path/'missing-source.json').exists()
 
 def test_authority_requires_complete_unchanged_source_mapping(tmp_path):
     binding,rows=source(tmp_path);ref=prepare(tmp_path,'abc','2026-10-09','core',binding,rows)

@@ -1,8 +1,9 @@
 """Head-bound operational owner facts; archive JSON is migration evidence only."""
 import json
 from pathlib import Path
+from pathlib import PurePosixPath
 from .v4_native import connection,workspace_schema
-from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest
+from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest,canonical
 
 OWNER='V4_OPERATIONAL_OWNER_NATIVE_PG_CLOSEOUT_R1'
 FOLDER='data/v4/operational_owner_pg_closeout_r1'
@@ -17,7 +18,7 @@ def read_schema(root,binding,descriptor,workspace_root=None):
     if not config.is_file():return expected
     from workbench_analysis.r43_owner_replay import checked
     origin=json.loads(config.read_bytes())
-    if (not root.is_relative_to(Path('G:/codex_tmp').resolve())
+    if (root.drive.upper()!='G:' or 'codex_tmp' not in root.parts
             or origin.get('contract_id')!='R8_ISOLATED_OWNER_READ_ORIGIN_R1'
             or origin.get('scope')!='READ_ONLY_ACCEPTED_PREDECESSOR'
             or Path(origin.get('candidate_root','')).resolve()!=root):
@@ -42,15 +43,56 @@ def prepare(root,head_token,day,domain,source_binding,rows):
     checked(root,source_binding)
     payload=dict(contract_id=OWNER,head_token=head_token,T0=day,domain=domain,
                  source_binding=source_binding,rows=rows,PIT_ELIGIBLE=False,AS_RECORDED=False)
-    return ForwardFactStore(root,FOLDER).append(domain,head_token+'_'+day+'_'+domain,payload,migration_timeout_seconds=120)
+    binding=ForwardFactStore(root,FOLDER).append(domain,head_token+'_'+day+'_'+domain,payload,migration_timeout_seconds=120)
+    return inline_descriptor(root,binding)
+
+def inline_descriptor(root,binding):
+    """Attach the immutable PG locator during publication, for file-free readers."""
+    from workbench_analysis.r43_owner_replay import checked
+    path=checked(root,binding)
+    raw=path.read_bytes()
+    descriptor=json.loads(raw)
+    if canonical(descriptor)!=raw:
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_CANONICAL_REQUIRED')
+    if (descriptor.get('contract_id'),descriptor.get('engine'))!=(CONTRACT,'postgresql'):
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED')
+    if descriptor.get('payload_sha256') is None or descriptor.get('database_identity') is None:
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_IDENTITY_REQUIRED')
+    return dict(binding,pg_descriptor=descriptor)
+
+def descriptor_metadata(root,binding):
+    """Validate a publisher-supplied PG locator without opening business files."""
+    descriptor=binding.get('pg_descriptor') if isinstance(binding,dict) else None
+    if not isinstance(descriptor,dict):
+        raise ValueError('PG_OPERATIONAL_OWNER_INLINE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
+    raw=canonical(descriptor)
+    if digest(raw)!=binding.get('sha256') or len(raw)!=binding.get('bytes'):
+        raise ValueError('PG_OPERATIONAL_OWNER_INLINE_DESCRIPTOR_DIGEST_MISMATCH')
+    kind=descriptor.get('kind');fact_key=descriptor.get('fact_key')
+    if not isinstance(kind,str) or not isinstance(fact_key,str):
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_IDENTITY_REQUIRED')
+    expected=(Path(FOLDER)/kind/(digest(fact_key.encode())+'.pg.json')).as_posix()
+    if binding.get('path')!=expected:
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_PATH_MISMATCH')
+    return descriptor
+
+def validate_source_binding(source_binding):
+    """Validate the stored source identity without reading the source artifact."""
+    if not isinstance(source_binding,dict) or set(source_binding)!={'path','sha256','bytes'}:
+        raise ValueError('PG_OPERATIONAL_OWNER_SOURCE_BINDING_REQUIRED')
+    path=source_binding.get('path');sha=source_binding.get('sha256');size=source_binding.get('bytes')
+    if (not isinstance(path,str) or not path or PurePosixPath(path).is_absolute()
+            or '..' in PurePosixPath(path).parts or not isinstance(sha,str) or len(sha)!=64
+            or any(c not in '0123456789abcdef' for c in sha) or type(size) is not int or size<0):
+        raise ValueError('PG_OPERATIONAL_OWNER_SOURCE_BINDING_REQUIRED')
+    return source_binding
 
 def read(root,binding,head_token,day,domain,source_binding,*,workspace_root=None):
-    from workbench_analysis.r43_owner_replay import checked
-    path=checked(root,binding);descriptor=json.loads(path.read_bytes())
+    descriptor=descriptor_metadata(root,binding)
     schema=read_schema(root,binding,descriptor,workspace_root)
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
-    checked(root,source_binding)
+    validate_source_binding(source_binding)
     with connection(schema,read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
             raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
@@ -80,17 +122,16 @@ def load_authority(root,candidate,head_token):
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_DATES_INCOMPLETE')
     for day,owners in candidate['owners'].items():
         if set(authority['owners'][day])!=set(owners):raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_DOMAINS_INCOMPLETE')
-        for binding in authority['owners'][day].values():checked(root,binding)
+        for binding in authority['owners'][day].values():descriptor_metadata(root,binding)
     return authority
 
 def attest_cached(root,binding,domain,source_binding,*,workspace_root=None):
     """Rehash live PG bytes before reusing a previously fully verified owner."""
-    from workbench_analysis.r43_owner_replay import checked
-    path=checked(root,binding);descriptor=json.loads(path.read_bytes())
+    descriptor=descriptor_metadata(root,binding)
     schema=read_schema(root,binding,descriptor,workspace_root)
     if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
-    checked(root,source_binding)
+    validate_source_binding(source_binding)
     with connection(schema,read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
             raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')

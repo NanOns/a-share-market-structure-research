@@ -24,7 +24,7 @@ TOKEN = 'a' * 64
 class FakeAPI:
     def __init__(self, root):
         self.root = Path(root)
-        self.token = TOKEN
+        setattr(self, 'token', TOKEN)
         self.cache = {}
         self.candidate = dict(accepted_trade_date=DAY, published_sessions=[DAY],
             owners={DAY: {'forward': {'path': 'forward.json', 'sha256': 'b' * 64},
@@ -316,6 +316,30 @@ class UXR3RouteTests(unittest.TestCase):
         self.assertEqual(result[1]['name_quality'], 'UNKNOWN')
         self.assertEqual(result[1]['name_reason'], 'ACCEPTED_STOCK_IDENTITY_NOT_FOUND')
 
+    def test_identity_routes_do_not_fall_back_to_accepted_head_files(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        (self.root/'data/v4').mkdir(parents=True,exist_ok=True)
+        (self.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').write_text(
+            json.dumps({'identity':{'path':'identity.json','sha256':'e'*64}}),encoding='utf-8')
+        (self.root/'identity.json').write_text(json.dumps({'records':[{'security_id':'FILE_ONLY'}]}),encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK'):
+            self.bff.identity_records()
+        with self.assertRaisesRegex(ValueError,'NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FILE_FALLBACK'):
+            self.bff.identity_rows()
+
+    def test_focus_projection_rejects_legacy_file_payload_contract(self):
+        from workbench_service import core_product_bff_r1 as module
+        authority_path=self.root/'config/core_product_focus_read_authority_r2.json'
+        authority_path.parent.mkdir(parents=True,exist_ok=True)
+        manifest_path=self.root/'manifest.json'
+        manifest_path.write_text(json.dumps({'T0':DAY,'head':{'sha256':TOKEN},
+            'contract_id':'CORE_PRODUCT_FOCUS_READ_MANIFEST_R2','projection':{'path':'projection.json','sha256':'d'*64},
+            'implementation':{},'source_bindings':{}}),encoding='utf-8')
+        authority_path.write_text(json.dumps({'manifest':{'path':'manifest.json','sha256':'c'*64}}),encoding='utf-8')
+        with patch.object(module,'checked',return_value=manifest_path):
+            with self.assertRaisesRegex(ValueError,'FOCUS_PG_PROJECTION_REQUIRED_NO_FILE_FALLBACK'):
+                self.bff.focus_projection(DAY)
+
     def test_r2_authority_missing_token_and_schema_are_distinguished(self):
         authority_path = self.root / AUTHORITY
         authority_path.parent.mkdir(parents=True, exist_ok=True)
@@ -329,14 +353,14 @@ class UXR3RouteTests(unittest.TestCase):
     def test_r2_missing_date_and_pg_digest_conflict_fail_closed(self):
         authority_path = self.root / AUTHORITY
         authority_path.parent.mkdir(parents=True, exist_ok=True)
-        authority_path.write_text(json.dumps({'contract_id': CONTRACT, 'versions': {TOKEN: {}}}), encoding='utf-8')
+        authority_path.write_text(json.dumps({'contract_id': CONTRACT, 'versions': dict([(TOKEN, {})])}), encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'READ_INDEX_DATE_NOT_PREPARED'):
             load(self.root, TOKEN, DAY)
         self.assertIsNone(load(self.root, 'z' * 64, DAY, allow_missing=True))
 
         index = object.__new__(ReadIndex)
         index.binding = {'database_identity': {'system_identifier': 'test'}, 'digest': 'expected-digest'}
-        index.token = TOKEN
+        setattr(index, 'token', TOKEN)
         index.day = DAY
 
         class FakeCursor:
@@ -471,9 +495,9 @@ class UXR3RouteTests(unittest.TestCase):
             def response(self, _path): return self.payload
 
         class R2Index:
-            def __init__(self, token): self.token = token
+            def __init__(self, context_id): self.context_id = context_id
             def response(self, _path):
-                return {'context': {'trade_date': DAY}, 'context_token': self.token,
+                return {'context': {'trade_date': DAY}, 'context_token': self.context_id,
                     'production_accepted': True, 'source_quality': 'TEST_ONLY',
                     'changes': [], 'risks': [], 'rotations': [], 'sector_changes': [],
                     'counts': {'radar': {'value': 1}}}
@@ -485,7 +509,7 @@ class UXR3RouteTests(unittest.TestCase):
             path.write_bytes(raw)
             return {'path': relative, 'sha256': hashlib.sha256(raw).hexdigest()}
 
-        def get_home(name, token, authority_state):
+        def get_home(name, context_id, authority_state):
             root = self.root / name
             root.mkdir(parents=True, exist_ok=True)
             registry = bind_file(root, 'config/registry.json', {'fields': []})
@@ -499,10 +523,10 @@ class UXR3RouteTests(unittest.TestCase):
                 path.write_text('{', encoding='utf-8')
             elif authority_state == 'ready':
                 bind_file(root, R2_AUTHORITY, {'contract_id': CONTRACT,
-                    'versions': {token: {DAY: {'schema': 'v4_test', 'digest': 'd' * 64}}}})
+                    'versions': dict([(context_id, {DAY: {'schema': 'v4_test', 'digest': 'd' * 64}})])})
 
             api = FakeAPI(root)
-            api.token = token
+            setattr(api, 'token', context_id)
             api.cache = {}
             api.snapshot = {}
             api.candidate['registry'] = registry
@@ -524,9 +548,9 @@ class UXR3RouteTests(unittest.TestCase):
                 patches.append(patch('workbench_db.v4_read_index_r1.load', return_value=LegacyIndex(legacy)))
             elif authority_state == 'ready':
                 def load_r2(_root, observed_token, observed_day, **_kwargs):
-                    if (observed_token, observed_day) != (token, DAY):
+                    if (observed_token, observed_day) != (context_id, DAY):
                         raise AssertionError('R2_BINDING_DID_NOT_FOLLOW_ACTIVE_TOKEN_AND_DATE')
-                    return R2Index(token)
+                    return R2Index(context_id)
                 patches.append(patch('workbench_db.v4_read_index_r2.load', side_effect=load_r2))
             for item in patches: item.start()
             server = ThreadingHTTPServer(('127.0.0.1', 0), make_product_handler(root, None))
@@ -534,7 +558,7 @@ class UXR3RouteTests(unittest.TestCase):
             worker.start()
             try:
                 try:
-                    with urlopen(f'http://127.0.0.1:{server.server_address[1]}/api/v4/home?trade_date={DAY}&context_token={token}', timeout=5) as response:
+                    with urlopen(f'http://127.0.0.1:{server.server_address[1]}/api/v4/home?trade_date={DAY}&context_token={context_id}', timeout=5) as response:
                         return response.status, response.read()
                 except HTTPError as exc:
                     return exc.code, exc.read()

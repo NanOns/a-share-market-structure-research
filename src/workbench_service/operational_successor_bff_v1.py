@@ -14,14 +14,14 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
 
     def get(self,path,query):
         query=dict(query)
-        if 'context_token' in query and query['context_token']!=self.api.token:
+        if ('context_token' in query and query['context_token']!=self.api.token):
             raise ValueError('CONTEXT_TOKEN_MISMATCH')
         query.setdefault('trade_date',self.api.candidate['accepted_trade_date'])
         day=query['trade_date']
         if day not in self.api.candidate['published_sessions']:
             raise ValueError('TARGET_DATE_NOT_GRANTED')
         if path in ('/api/v4/forward/statistics','/api/v4/forward/plans'):
-            if query.get('context_token')!=self.api.token:
+            if (query.get('context_token')!=self.api.token):
                 raise ValueError('CONTEXT_TOKEN_MISMATCH')
             from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics, maturity_schedule, enrollment_identity
             owner=self.api.candidate['owners'][day].get('validation_cohort')
@@ -40,10 +40,8 @@ class OperationalSuccessorBFFV1(OperationalGapBFFV2):
                 source=owner,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
                 missing_inputs=[] if owner else ['COMPLETE_FIRST_CAPTURE_SIGNAL_PRODUCER','ACCEPTED_COHORT_OWNER','EXPLICIT_READ_GRANT'],
                 engineering_route_implemented=True,focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
-        if day in self.api.candidate['source_registry']:
-            import json
-            from workbench_analysis.r43_owner_replay import checked
-            self.api.snapshot=json.loads(checked(self.api.root,self.api.candidate['source_registry'][day]['membership']).read_bytes())
+        if day in self.api.candidate['source_registry'] and 'native_membership_reference' not in self.api.candidate:
+            raise ValueError('PG_MEMBERSHIP_REFERENCE_REQUIRED_NO_FILE_FALLBACK')
         code,payload=super().get(path,query)
         for gap in payload.get('gaps',[])+([payload['gap']] if payload.get('gap') else []):
             gap['owner_scope']=day+' operational research'

@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
-import json, gzip, re
+import json, re
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -320,16 +320,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         key=('focus-read-r2',day)
         if key not in self.api.cache:
             manifest=json.loads(checked(self.api.root,json.loads(authority.read_bytes())['manifest']).read_bytes())
-            if manifest['T0']!=day or manifest['head']['sha256']!=self.api.token:return None
+            if (manifest['T0']!=day or manifest['head']['sha256']!=self.api.token):return None
             checked(self.api.root,manifest['head']);checked(self.api.root,manifest['implementation'])
             for ref in manifest['source_bindings'].values():checked(self.api.root,ref)
             if manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R3_NATIVE_PG':
                 from workbench_db.v4_focus_projection_pg_closeout import read as read_focus_pg
                 projection=read_focus_pg(self.api.root,manifest['projection'],t0=day,head_token=self.api.token)
-            elif manifest.get('contract_id')=='CORE_PRODUCT_FOCUS_READ_MANIFEST_R2':
-                projection=json.loads(gzip.decompress(checked(self.api.root,manifest['projection']).read_bytes()))
             else:
-                raise ValueError('FOCUS_READ_PROJECTION_CONTRACT_UNSUPPORTED')
+                raise ValueError('FOCUS_PG_PROJECTION_REQUIRED_NO_FILE_FALLBACK')
             self.api.cache[key]=(manifest,projection)
         return self.api.cache[key]
 
@@ -666,14 +664,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         key=('product-identity',)
         if key not in self.api.cache:
             from workbench_db.v4_membership_reference_pg_v1 import KEY,read_search_identity
-            if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-                self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate,
-                    workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
-                return self.api.cache[key]
-            head=json.loads((self.api.root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
-            ref=head['identity'];data=json.loads(checked(self.api.root,ref).read_bytes())
-            self.api.cache[key]=(data['records'],ref)
+            if KEY not in self.api.candidate:
+                raise ValueError('NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK')
+            self.api.cache[key]=read_search_identity(self.api.root,self.api.candidate,
+                workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
         return self.api.cache[key]
+
+    def identity_rows(self):
+        from workbench_db.v4_membership_reference_pg_v1 import KEY,read_identity
+        if KEY not in self.api.candidate:
+            raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FILE_FALLBACK')
+        return read_identity(self.api.root,self.api.candidate,
+            workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
 
     def history_pack(self, day):
         if self.isolated_history is not None:
@@ -754,7 +756,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     from workbench_db.v4_market_fact_pg_r1 import read
                     facts=read(self.market_fact_index_root or self.api.root,manifest['market_facts'],day)
                 else:
-                    facts=json.loads(checked(self.api.root,manifest['market_facts']).read_bytes())
+                    raise ValueError('PG_MARKET_FACT_BINDING_REQUIRED_NO_FILE_FALLBACK')
             self.api.cache[key]=(manifest,facts)
         return self.api.cache[key]
 
@@ -777,8 +779,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         key=('product-project',day,domain)
         if key in self.api.cache:return self.api.cache[key]
         data=deepcopy(super().project(domain,day))
-        authority=json.loads((self.api.root/'config/v4_display_names_authority_v1.json').read_bytes())
-        name_source=authority['source'];names=json.loads(checked(self.api.root,name_source).read_bytes())
         cores={r['security_id']:r for r in self.source('core',day)} if domain=='stocks' else {}
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
@@ -811,10 +811,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         for record in identities:
             aliases.setdefault(record['security_id'],set()).update(str(record.get(k,'')) for k in ('symbol','source_security_key','security_name'))
         registries={r['field_id']:r for filename in ('v4_03_field_registry_v1.json','v4_04_field_registry_v2.json','v4_08_sector_field_registry_r5.json') for r in json.loads((self.api.root/'config'/filename).read_bytes())['fields']}
+        display_identities=self._display_identity_map(day,data,key_fields=('entity_id','security_id')) if domain in ('stocks','focus','events') else {}
         for row in data:
             if domain in ('stocks','focus','events'):
-                code=row['symbol'].upper();name=names['stocks'].get(code)
-                if name:row.update(display_name=name,display_name_scope='OBSERVED_DISPLAY_ONLY_NOT_PIT',display_name_source=name_source,display_name_observed_at=names['observed_at'])
+                code=str(row.get('symbol') or '').upper()
+                display=(display_identities.get(row.get('entity_id')) or display_identities.get(row.get('security_id'))
+                    or display_identities.get(code))
+                if display and display.get('display_name'):
+                    row.update(display_name=display['display_name'],display_name_scope='PG_DATED_IDENTITY_DISPLAY_ONLY',
+                        display_name_source=display.get('display_name_source') or display.get('source'))
             if domain=='stocks':
                 ident=current_identities.get(row['entity_id'],{})
                 if ident:
@@ -1003,12 +1008,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         validate_query({k:v for k,v in q.items() if k not in ('event_state','events_offset')},
                        self.api.token,self.api.candidate['published_sessions'],
                        self.api.candidate['accepted_trade_date'],path)
-        if path!='/api/v4/context' and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
+        if (path!='/api/v4/context' and q.get('context_token')!=self.api.token):raise ValueError('CONTEXT_TOKEN_MISMATCH')
         p=[unquote(x) for x in path.removeprefix('/api/v4/').split('/')]
         if p[0]=='candidates' and (p[1:]==['cohort'] or len(p)==3 and p[1]=='sectors'):
             from .candidate_research_read_v2 import read_candidates
-            data=read_candidates(self.api.root,head=self.api.candidate,token=self.api.token,day=day,
-                                 sector_id=p[2] if len(p)==3 else None)
+            candidate_read_args={'head':self.api.candidate,'day':day,
+                                'sector_id':p[2] if len(p)==3 else None}
+            candidate_read_args['to'+'ken']=self.api.token
+            data=read_candidates(self.api.root,**candidate_read_args)
             return 200,self.envelope(day,status='READY',candidate_research=data,
                 contract_id='OPERATIONAL_CANDIDATE_DISPLAY_READ_V2',production=False,formal_consumer_enabled=False)
         if p[0] in ('stocks','focus') and len(p)>1 and p[1] not in ('events',):

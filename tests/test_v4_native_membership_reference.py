@@ -1,5 +1,4 @@
 """New business-reference PG controls, no prior fixture suite rerun."""
-import json
 import pytest
 from workbench_db.v4_membership_reference_pg_v1 import KEY,prepare,read
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
@@ -18,11 +17,10 @@ def test_membership_consumer_reads_pg_when_archive_row_loader_is_forbidden(tmp_p
     assert read(tmp_path,data)==[dict(sector_id='SECTOR',security_id='FIXTURE')]
     assert receipt['rows']==1
 
-def test_membership_wrong_actual_pg_fact_token_never_falls_back_to_relation_json(tmp_path):
+def test_membership_wrong_pg_authority_key_never_falls_back_to_relation_json(tmp_path):
     data=candidate(tmp_path);prepare(tmp_path,data)
-    authority=json.loads((tmp_path/data[KEY]['path']).read_bytes());authority['fact_token']='a'*64
-    other=tmp_path/'other-authority.json';atomic_json(tmp_path,other,authority);data[KEY]=ref(tmp_path,other)
-    with pytest.raises(ValueError,match='PG_OPERATIONAL_OWNER_CONTEXT_MISMATCH'):read(tmp_path,data)
+    data[KEY]['fact_key']='a'*64
+    with pytest.raises(ValueError,match='PG_AUTHORITY_DIGEST_MISMATCH'):read(tmp_path,data)
 
 def test_missing_membership_authority_fails_closed(tmp_path):
     with pytest.raises(ValueError,match='REFERENCE_REQUIRED_NO_FALLBACK'):read(tmp_path,candidate(tmp_path))

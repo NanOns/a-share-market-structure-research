@@ -1,36 +1,69 @@
 """Native PG membership reference; archive relation rows are producer inputs."""
 import json
 from pathlib import Path
-from .v4_forward_pg_r1 import canonical,digest
+from .v4_forward_pg_r1 import canonical,digest,ForwardFactStore
+from .v4_native import connection,workspace_schema
 from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact
-from workbench_analysis.r43_owner_replay import checked,ref
-from workbench_analysis.operational_daily_storage_v1 import atomic_json
+from workbench_analysis.r43_owner_replay import checked
 
 KEY='native_membership_reference'
 CONTRACT='V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1'
+PG_AUTHORITY_CONTRACT='V4_NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_R2'
+AUTHORITY_KIND='native_membership_reference_authority'
+FOLDER='data/v4/membership_reference_pg_v1'
+
+def _persist_authority(root,authority):
+    root=Path(root).resolve();store=ForwardFactStore(root,FOLDER)
+    payload_sha256=digest(canonical(authority));fact_key=payload_sha256
+    store.append(AUTHORITY_KIND,fact_key,authority,migration_timeout_seconds=120)
+    return dict(contract_id=PG_AUTHORITY_CONTRACT,engine='postgresql',schema=store.schema,
+        database_identity=store.database_identity,kind=AUTHORITY_KIND,fact_key=fact_key,
+        payload_sha256=payload_sha256)
+
+def _load_authority(root,candidate):
+    binding=candidate.get(KEY)
+    if binding is None:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_REQUIRED_NO_FALLBACK')
+    if not isinstance(binding,dict):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
+    root=Path(root).resolve();schema=workspace_schema(root/FOLDER,'forward')
+    if (binding.get('contract_id'),binding.get('engine'),binding.get('schema'),binding.get('kind'))!=(
+            PG_AUTHORITY_CONTRACT,'postgresql',schema,AUTHORITY_KIND):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    fact_key=binding.get('fact_key');expected_sha=binding.get('payload_sha256')
+    if (not isinstance(fact_key,str) or len(fact_key)!=64 or any(c not in '0123456789abcdef' for c in fact_key)
+            or not isinstance(expected_sha,str) or len(expected_sha)!=64
+            or any(c not in '0123456789abcdef' for c in expected_sha)):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
+    with connection(schema,read_only=True) as pg:
+        if ForwardFactStore._database_identity(pg)!=binding.get('database_identity'):
+            raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_DATABASE_IDENTITY_MISMATCH')
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
+            (AUTHORITY_KIND,fact_key)).fetchone()
+    if row is None or row[1]!=expected_sha or digest(row[0].encode())!=expected_sha:
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_DIGEST_MISMATCH')
+    authority=json.loads(row[0])
+    if digest(canonical(authority))!=fact_key:
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_KEY_MISMATCH')
+    return authority
 
 def prepare(root,candidate):
     root=Path(root).resolve();snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     source=snapshot['memberships'];day=candidate['accepted_trade_date']
-    token=digest(canonical(dict(contract_id=CONTRACT,T0=day,source=source,membership_snapshot=candidate['membership_snapshot'])))
+    fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,source=source,membership_snapshot=candidate['membership_snapshot'])))
     from workbench_analysis.r43_operational_publication import rows
-    content=rows(root,source);descriptor=append(root,token,day,'reference_memberships',source,content)
-    if canonical(read_fact(root,descriptor,token,day,'reference_memberships',source))!=canonical(content):raise ValueError('MEMBERSHIP_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
-    authority=dict(contract_id=CONTRACT,T0=day,membership_snapshot=candidate['membership_snapshot'],source=source,descriptor=descriptor,
-        fact_token=token,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
-    path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority)
-    candidate[KEY]=ref(root,path)
+    content=rows(root,source);descriptor=append(root,fact_key,day,'reference_memberships',source,content)
+    if canonical(read_fact(root,descriptor,fact_key,day,'reference_memberships',source))!=canonical(content):raise ValueError('MEMBERSHIP_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
+    authority=dict(contract_id=CONTRACT,T0=day,membership_snapshot=candidate['membership_snapshot'],source=source,
+        identity_source=snapshot.get('identity_source'),membership_snapshot_id=snapshot.get('membership_snapshot_id'),
+        descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
+    candidate[KEY]=_persist_authority(root,authority)
     return dict(contract_id=CONTRACT,T0=day,rows=len(content),publication=False)
 
 def read(root,candidate,*,workspace_root=None):
-    binding=candidate.get(KEY)
-    if binding is None:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_REQUIRED_NO_FALLBACK')
-    authority=json.loads(checked(root,binding).read_bytes())
+    authority=_load_authority(root,candidate)
     if authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date'] or authority.get('membership_snapshot')!=candidate['membership_snapshot']:
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_SCOPE_MISMATCH')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PIT_ESCALATION')
-    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
-    if snapshot['memberships']!=authority['source']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_SOURCE_MISMATCH')
     content=read_fact(root,authority['descriptor'],authority['fact_token'],authority['T0'],'reference_memberships',authority['source'],
         workspace_root=workspace_root)
     if len(content)!=authority['rows']:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_ROW_DENOMINATOR')
@@ -46,26 +79,29 @@ def current_identity_binding(root,candidate):
 
 
 def identity_source(root,candidate):
-    authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    authority=_load_authority(root,candidate)
     entry=authority.get('current_identity')
     if entry:
-        source,lifecycle=current_identity_binding(root,candidate)
-        if entry.get('source_type')!='CURRENT_LIFECYCLE_IDENTITY_R1' or entry['source']!=source or entry['lifecycle']!=lifecycle:
+        lifecycle=candidate.get('owners',{}).get(authority['T0'],{}).get('lifecycle')
+        if entry.get('source_type')!='CURRENT_LIFECYCLE_IDENTITY_R1' or entry.get('lifecycle')!=lifecycle:
             raise ValueError('CURRENT_IDENTITY_REFERENCE_SOURCE_MISMATCH')
-        return source
-    return json.loads(checked(root,candidate['membership_snapshot']).read_bytes())['identity_source']
+        return entry['source']
+    source=authority.get('identity_source')
+    if not isinstance(source,dict):raise ValueError('NATIVE_IDENTITY_SOURCE_BINDING_REQUIRED')
+    return source
 
 def prepare_identity(root,candidate):
     """Extend an existing immutable reference without rebuilding memberships."""
-    root=Path(root).resolve();authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    root=Path(root).resolve();authority=_load_authority(root,candidate)
     if authority['T0']!=candidate['accepted_trade_date'] or authority['membership_snapshot']!=candidate['membership_snapshot']:
         raise ValueError('NATIVE_REFERENCE_EXTENSION_SCOPE_MISMATCH')
-    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes());source=snapshot['identity_source'];day=authority['T0']
-    token=digest(canonical(dict(contract_id=CONTRACT,domain='identity',T0=day,source=source,membership_snapshot=candidate['membership_snapshot'])))
+    source=authority.get('identity_source');day=authority['T0']
+    if not isinstance(source,dict):raise ValueError('NATIVE_IDENTITY_SOURCE_BINDING_REQUIRED')
+    fact_key=digest(canonical(dict(contract_id=CONTRACT,domain='identity',T0=day,source=source,membership_snapshot=candidate['membership_snapshot'])))
     from workbench_analysis.r43_operational_publication import rows
-    content=rows(root,source);descriptor=append(root,token,day,'reference_identity',source,content)
-    if canonical(read_fact(root,descriptor,token,day,'reference_identity',source))!=canonical(content):raise ValueError('IDENTITY_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
-    authority['identity']=dict(source=source,descriptor=descriptor,fact_token=token,rows=len(content))
+    content=rows(root,source);descriptor=append(root,fact_key,day,'reference_identity',source,content)
+    if canonical(read_fact(root,descriptor,fact_key,day,'reference_identity',source))!=canonical(content):raise ValueError('IDENTITY_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
+    authority['identity']=dict(source=source,descriptor=descriptor,fact_token=fact_key,rows=len(content))
     current,lifecycle=current_identity_binding(root,candidate)
     current_content=rows(root,current)
     prior={r['security_id']:r for r in content};now={r['security_id']:r for r in current_content}
@@ -74,20 +110,17 @@ def prepare_identity(root,candidate):
     current_descriptor=append(root,current_token,day,'reference_current_identity',current,current_content)
     if canonical(read_fact(root,current_descriptor,current_token,day,'reference_current_identity',current))!=canonical(current_content):raise ValueError('CURRENT_IDENTITY_FULL_PG_PAYLOAD_DIFFERENCE')
     authority['current_identity']=dict(source_type='CURRENT_LIFECYCLE_IDENTITY_R1',source=current,lifecycle=lifecycle,descriptor=current_descriptor,fact_token=current_token,rows=len(current_content))
-    path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
+    candidate[KEY]=_persist_authority(root,authority)
     return dict(contract_id=CONTRACT,domain='identity',rows=len(content),membership_fact_recomputed=False,publication=False)
 
 def read_identity(root,candidate,*,workspace_root=None):
-    binding=candidate.get(KEY)
-    if binding is None:raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK')
-    authority=json.loads(checked(root,binding).read_bytes())
+    authority=_load_authority(root,candidate)
     if authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date'] or authority.get('membership_snapshot')!=candidate['membership_snapshot']:
         raise ValueError('NATIVE_IDENTITY_REFERENCE_SCOPE_MISMATCH')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_REFERENCE_PIT_ESCALATION')
     entry=authority.get('identity')
     if entry is None:raise ValueError('NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK')
-    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
-    if entry['source']!=snapshot['identity_source']:raise ValueError('NATIVE_IDENTITY_REFERENCE_SOURCE_MISMATCH')
+    if entry['source']!=authority.get('identity_source'):raise ValueError('NATIVE_IDENTITY_REFERENCE_SOURCE_MISMATCH')
     content=read_fact(root,entry['descriptor'],entry['fact_token'],authority['T0'],'reference_identity',entry['source'],
         workspace_root=workspace_root)
     if len(content)!=entry['rows']:raise ValueError('NATIVE_IDENTITY_REFERENCE_ROW_DENOMINATOR')
@@ -103,20 +136,18 @@ def read_identity(root,candidate,*,workspace_root=None):
 
 def prepare_search_identity(root,candidate):
     """Preserve the complete accepted identity universe for search explanations."""
-    root=Path(root).resolve();authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    root=Path(root).resolve();authority=_load_authority(root,candidate)
     head=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes());source=head['identity']
     content=json.loads(checked(root,source).read_bytes())['records'];day=candidate['accepted_trade_date']
-    token=digest(canonical(dict(contract_id=CONTRACT,domain='search_identity',T0=day,source=source)))
-    descriptor=append(root,token,day,'reference_search_identity',source,content)
-    if canonical(read_fact(root,descriptor,token,day,'reference_search_identity',source))!=canonical(content):raise ValueError('SEARCH_IDENTITY_FULL_PG_PAYLOAD_DIFFERENCE')
-    authority['search_identity']=dict(source=source,descriptor=descriptor,fact_token=token,rows=len(content))
-    path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
+    fact_key=digest(canonical(dict(contract_id=CONTRACT,domain='search_identity',T0=day,source=source)))
+    descriptor=append(root,fact_key,day,'reference_search_identity',source,content)
+    if canonical(read_fact(root,descriptor,fact_key,day,'reference_search_identity',source))!=canonical(content):raise ValueError('SEARCH_IDENTITY_FULL_PG_PAYLOAD_DIFFERENCE')
+    authority['search_identity']=dict(source=source,descriptor=descriptor,fact_token=fact_key,rows=len(content))
+    candidate[KEY]=_persist_authority(root,authority)
     return dict(contract_id=CONTRACT,domain='search_identity',rows=len(content),prior_reference_facts_recomputed=False,publication=False)
 
 def read_search_identity(root,candidate,*,workspace_root=None):
-    binding=candidate.get(KEY)
-    if binding is None:raise ValueError('NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FALLBACK')
-    authority=json.loads(checked(root,binding).read_bytes())
+    authority=_load_authority(root,candidate)
     if authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date'] or authority.get('membership_snapshot')!=candidate['membership_snapshot']:
         raise ValueError('NATIVE_SEARCH_IDENTITY_SCOPE_MISMATCH')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_REFERENCE_PIT_ESCALATION')
@@ -129,7 +160,7 @@ def read_search_identity(root,candidate,*,workspace_root=None):
 
 def prepare_research(root,candidate,input_candidate,index):
     """Store already frozen research sidecars; never recalculate their facts."""
-    root=Path(root);authority=json.loads(checked(root,candidate[KEY]).read_bytes());day=candidate['accepted_trade_date']
+    root=Path(root);authority=_load_authority(root,candidate);day=candidate['accepted_trade_date']
     entry=index.get('sessions',{}).get(day)
     if not entry or entry['head']!=input_candidate or entry.get('production') is not False:raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_REQUIRED')
     original=json.loads(checked(root,input_candidate).read_bytes())
@@ -141,24 +172,24 @@ def prepare_research(root,candidate,input_candidate,index):
         if not source:continue
         content=json.loads(checked(root,source).read_bytes())
         if content.get('production') is not False:raise ValueError('NATIVE_RESEARCH_PERMISSION_ESCALATION')
-        token=digest(canonical(dict(contract_id=CONTRACT,domain='research_'+name,T0=day,source=source)))
-        descriptor=append(root,token,day,'reference_research_'+name,source,content)
-        if canonical(read_fact(root,descriptor,token,day,'reference_research_'+name,source))!=canonical(content):raise ValueError('NATIVE_RESEARCH_FULL_PAYLOAD_DIFFERENCE')
-        documents[name]=dict(source=source,descriptor=descriptor,fact_token=token)
-    authority['research']=dict(input_candidate=input_candidate,T0=day,documents=documents)
-    path=root/'data/v4/membership_reference_pg_v1'/digest(canonical(authority))/'AUTHORITY.json';atomic_json(root,path,authority);candidate[KEY]=ref(root,path)
+        fact_key=digest(canonical(dict(contract_id=CONTRACT,domain='research_'+name,T0=day,source=source)))
+        descriptor=append(root,fact_key,day,'reference_research_'+name,source,content)
+        if canonical(read_fact(root,descriptor,fact_key,day,'reference_research_'+name,source))!=canonical(content):raise ValueError('NATIVE_RESEARCH_FULL_PAYLOAD_DIFFERENCE')
+        documents[name]=dict(source=source,descriptor=descriptor,fact_token=fact_key)
+    authority['research']=dict(input_candidate=input_candidate,T0=day,documents=documents,
+        source_owner_bindings={name:candidate.get(name) for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot')})
+    candidate[KEY]=_persist_authority(root,authority)
     return dict(documents=sorted(documents),numeric_producers_reexecuted=False,publication=False)
 
 def research_authority(root,candidate,day):
-    authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    authority=_load_authority(root,candidate)
     if authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date'] or authority.get('membership_snapshot')!=candidate['membership_snapshot']:
         raise ValueError('NATIVE_RESEARCH_AUTHORITY_SCOPE_MISMATCH')
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('NATIVE_REFERENCE_PIT_ESCALATION')
     research=authority.get('research')
     if not research or research['T0']!=day:raise ValueError('NATIVE_RESEARCH_DATED_AUTHORITY_REQUIRED')
-    original=json.loads(checked(root,research['input_candidate']).read_bytes())
-    for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot'):
-        if original.get(name)!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
+    for name,value in research.get('source_owner_bindings',{}).items():
+        if value!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
     return research
 
 def read_research(root,candidate,day,source):

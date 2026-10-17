@@ -1,13 +1,13 @@
 """Immutable Owner authority embedded in one Head, without circular tokens.
 
-HTTP uses the full accepted Head token. Stored facts bind exact dated source
-owners; their immutable fact token can be reused across successive Heads.
+HTTP uses the full accepted Head fact_key. Stored facts bind exact dated source
+owners; their immutable fact fact_key can be reused across successive Heads.
 This module prepares candidates only and never moves an accepted pointer.
 """
 import json
 from pathlib import Path
 from .v4_forward_pg_r1 import canonical,digest
-from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,attest_cached,OWNER
+from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,attest_cached,descriptor_metadata,OWNER
 from workbench_analysis.r43_owner_replay import checked,ref
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 
@@ -47,7 +47,7 @@ def load(root,candidate):
     if binding is None:raise ValueError('PG_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
     authority=validate(candidate,json.loads(checked(root,binding).read_bytes()))
     for domains in authority['owners'].values():
-        for entry in domains.values():checked(root,entry['descriptor'])
+        for entry in domains.values():descriptor_metadata(root,entry['descriptor'])
     return authority
 
 def read(root,authority,day,domain,source_binding,*,workspace_root=None):
@@ -76,16 +76,16 @@ def prepare(root,candidate,predecessor=None):
                 old=predecessor['owners'][day][domain]
                 entry=old if predecessor['contract_id']==CONTRACT else dict(descriptor=old,fact_token=predecessor['head_token'])
                 # Read validates live cluster, whole payload SHA, exact date,
-                # domain, source binding and original fact token before reuse.
+                # domain, source binding and original fact fact_key before reuse.
                 read_fact(root,entry['descriptor'],entry['fact_token'],day,domain,binding)
                 counts['reused']+=1
             else:
-                token=digest(canonical(dict(contract_id=CONTRACT,T0=day,domain=domain,source_binding=binding)))
+                fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,domain=domain,source_binding=binding)))
                 content=rows(root,binding)
-                descriptor=append(root,token,day,domain,binding,content)
-                if canonical(read_fact(root,descriptor,token,day,domain,binding))!=canonical(content):
+                descriptor=append(root,fact_key,day,domain,binding,content)
+                if canonical(read_fact(root,descriptor,fact_key,day,domain,binding))!=canonical(content):
                     raise ValueError('PG_OWNER_EMBEDDED_FULL_PAYLOAD_DIFFERENCE')
-                entry=dict(descriptor=descriptor,fact_token=token);counts['created']+=1
+                entry=dict(descriptor=descriptor,fact_token=fact_key);counts['created']+=1
             owners[day][domain]=entry
     authority=dict(contract_id=CONTRACT,owner_source_digest=digest(canonical(candidate['owners'])),
         source_owners=candidate['owners'],owners=owners,historical_PIT_permission=False,AS_RECORDED=False,PIT_ELIGIBLE=False)

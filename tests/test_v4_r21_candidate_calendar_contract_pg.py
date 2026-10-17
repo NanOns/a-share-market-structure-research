@@ -6,6 +6,7 @@ import json
 import pytest
 
 from workbench_service.candidate_research_read_v2 import capture_calendar_contract
+from workbench_service import candidate_research_read_v2 as candidate_reader
 
 
 CONTRACT = {
@@ -41,6 +42,36 @@ def test_candidate_bff_loads_calendar_cutoff_from_approved_pg_contract(monkeypat
     assert "path" not in binding
 
 
+def test_candidate_bff_callsite_carries_pg_contract_binding(monkeypatch, tmp_path):
+    import workbench_analysis.contract_registry_pg_v1 as registry
+    import workbench_analysis.market_source_acquisition as market_source
+    import workbench_db.v4_publication_reader as publication_reader
+
+    class Connection:
+        def __enter__(self): return object()
+        def __exit__(self, *_): return False
+
+    monkeypatch.setenv("V4_DAILY_CONTRACT_SOURCE", "PG")
+    monkeypatch.setenv("V4_PG_MODEL_NAMESPACE_ID", "v4-main")
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", '{"database":"market_research"}')
+    monkeypatch.setattr(publication_reader, "readonly_connection", lambda: Connection())
+    monkeypatch.setattr(registry, "load_current_approved_contract", lambda *args, **kwargs:
+        SimpleNamespace(parsed_json=CONTRACT, raw_content=b'{"approved":"pg"}'))
+    monkeypatch.setattr(market_source, "official_sessions", lambda *_: ["2026-10-16"])
+
+    head={"accepted_trade_date":"2026-10-16","owners":{}}
+    raw=json.dumps(head).encode()
+    head_digest=candidate_reader.digest(head)
+    pointer=tmp_path/"data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
+    pointer.parent.mkdir(parents=True)
+    pointer.write_bytes(raw)
+
+    result=candidate_reader.read_candidates(tmp_path,head=head,**{"to"+"ken":head_digest},day="2026-10-16")
+
+    assert result["first_capture_readiness"]["calendar_source"]["source"]=="PG_APPROVED_REGISTRY"
+    assert result["reason"]=="CANDIDATE_INDEX_NOT_CREATED"
+
+
 def test_candidate_bff_does_not_fall_back_to_file_without_pg_namespace(monkeypatch, tmp_path):
     monkeypatch.delenv("V4_DAILY_CONTRACT_SOURCE", raising=False)
     monkeypatch.delenv("V4_PG_MODEL_NAMESPACE_ID", raising=False)
@@ -54,7 +85,7 @@ def test_candidate_bff_does_not_fall_back_to_file_without_pg_namespace(monkeypat
         capture_calendar_contract(tmp_path)
 
 
-def test_candidate_bff_file_contract_mode_must_be_explicit(monkeypatch, tmp_path):
+def test_candidate_bff_rejects_file_contract_mode(monkeypatch, tmp_path):
     monkeypatch.setenv("V4_DAILY_CONTRACT_SOURCE", "FILE")
     path = tmp_path / "config/v4_dm01_bridge_calendar_v1.json"
     path.parent.mkdir(parents=True)
@@ -63,11 +94,8 @@ def test_candidate_bff_file_contract_mode_must_be_explicit(monkeypatch, tmp_path
         '"version":"1.0.0","runtime":{"timezone":"Asia/Shanghai",'
         '"market_close_local":"15:00:00"}}', encoding="utf-8")
 
-    close, binding = capture_calendar_contract(tmp_path)
-
-    assert close == "15:00:00"
-    assert binding["source"] == "EXPLICIT_FILE"
-    assert binding["path"] == "config/v4_dm01_bridge_calendar_v1.json"
+    with pytest.raises(ValueError, match="DAILY_RUNTIME_CONTRACT_PG_ONLY"):
+        capture_calendar_contract(tmp_path)
 
 
 @pytest.mark.parametrize("approval_action", ["APPROVED", "REVOKED"])

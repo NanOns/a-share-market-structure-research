@@ -88,43 +88,37 @@ def first_capture_readiness(head, day, sessions, *, evaluated_at=None, session_c
 
 
 def capture_calendar_contract(root):
-    """Load the approved calendar cutoff contract without a PG-to-file fallback."""
+    """Load the approved calendar cutoff contract only from its PG registry entry."""
     import os
     contract_id='V4_DM01_OFFICIAL_CALENDAR_BRIDGE_V1';version='1.0.0'
     source=os.environ.get('V4_DAILY_CONTRACT_SOURCE','PG')
-    if source=='PG':
-        namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
-        try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
-        except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
-        if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
-        from workbench_analysis.contract_registry_pg_v1 import (
-            ContractRegistryError,
-            load_current_approved_contract,
-        )
-        from workbench_db.v4_publication_reader import readonly_connection
-        try:
-            with readonly_connection() as pg:
-                registered=load_current_approved_contract(pg,contract_id,version,namespace,
-                    expected_database_identity=identity)
-        except ContractRegistryError as exc:
-            raise ValueError(str(exc)) from exc
-        document=registered.parsed_json
-        raw=registered.raw_content
-    elif source=='FILE':
-        path=Path(root)/'config/v4_dm01_bridge_calendar_v1.json'
-        raw=path.read_bytes();document=json.loads(raw)
-    else:
-        raise ValueError('DAILY_CONTRACT_SOURCE_UNSUPPORTED')
+    if source!='PG':raise ValueError('DAILY_RUNTIME_CONTRACT_PG_ONLY')
+    namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+    try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
+    if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
+    from workbench_analysis.contract_registry_pg_v1 import (
+        ContractRegistryError,
+        load_current_approved_contract,
+    )
+    from workbench_db.v4_publication_reader import readonly_connection
+    try:
+        with readonly_connection() as pg:
+            registered=load_current_approved_contract(pg,contract_id,version,namespace,
+                expected_database_identity=identity)
+    except ContractRegistryError as exc:
+        raise ValueError(str(exc)) from exc
+    document=registered.parsed_json
+    raw=registered.raw_content
     runtime=document.get('runtime',{})
     if (document.get('contract_id')!=contract_id
             or document.get('version')!=version
             or runtime.get('timezone')!='Asia/Shanghai'
             or not runtime.get('market_close_local')):
         raise ValueError('SESSION_CUTOFF_CONTRACT_INVALID')
-    binding={'source':'PG_APPROVED_REGISTRY' if source=='PG' else 'EXPLICIT_FILE',
+    binding={'source':'PG_APPROVED_REGISTRY',
         'sha256':hashlib.sha256(raw).hexdigest(),'contract_id':document['contract_id'],
         'version':document['version'],'timezone':runtime['timezone']}
-    if source=='FILE':binding['path']=path.relative_to(root).as_posix()
     return runtime['market_close_local'],binding
 
 

@@ -230,3 +230,28 @@ class DailyJobs(StateMachine):
                     active_job=active_record,
                     last_catch_up_job=self.job(last_catch_up['job_id']) if last_catch_up else None,
                     worker_error=self.worker_error,last_good_preserved=True)
+
+
+class DailyJobsReadOnly(DailyJobs):
+    """PG-only scheduler status client that never resolves a Writer DSN or runs DDL."""
+    def __init__(self,root,clock=None):
+        self.root=Path(root).resolve();self.clock=clock or (lambda:datetime.now(SHANGHAI))
+        self.executor=None;self.stop=threading.Event();self.thread=None;self.worker_error=None
+        self.active_job_id=None;self.source_probe=None;self.policy_binding=None
+        self.schema=workspace_schema(self.root,'jobs');self.dsn=None;self.lock_key=None
+
+    @contextmanager
+    def connect(self):
+        raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')
+        yield  # pragma: no cover - keeps this a context manager
+
+    @contextmanager
+    def worker_lock(self):
+        raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')
+        yield  # pragma: no cover - keeps this a context manager
+
+    def start(self):
+        raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')
+
+    def tick(self):
+        raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')

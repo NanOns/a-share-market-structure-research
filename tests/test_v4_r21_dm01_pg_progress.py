@@ -241,3 +241,22 @@ def test_dm01_job_and_settings_reads_use_reader_dsn_and_readonly_transaction(mon
     settings=jobs.settings()
     assert settings['auto_enabled'] is True and settings['revision']==2
     assert opened==[('v4_jobs_test','reader-only-dsn',True)]*2
+
+
+def test_dm01_readonly_status_client_needs_no_writer_and_cannot_start_work(monkeypatch, tmp_path):
+    import pytest
+    pg=ReadConnection(None,None)
+    @contextmanager
+    def connection(schema,*,dsn,read_only,row_factory):
+        assert schema.startswith('v4_jobs_') and dsn=='reader-only-dsn' and read_only is True
+        yield pg
+    monkeypatch.setattr(daily_pg,'connection',connection)
+    monkeypatch.setattr(daily_pg,'configured_reader_dsn',lambda:'reader-only-dsn')
+    monkeypatch.setattr(daily_pg,'configured_dsn',lambda:(_ for _ in ()).throw(AssertionError('writer DSN resolved')))
+    reader=daily_pg.DailyJobsReadOnly(tmp_path)
+    assert reader.progress()['stage_state']=='IDLE'
+    with pytest.raises(RuntimeError,match='V4_PG_DAILY_JOBS_READ_ONLY'):
+        reader.start()
+    with pytest.raises(RuntimeError,match='V4_PG_DAILY_JOBS_READ_ONLY'):
+        with reader.connect():
+            pass

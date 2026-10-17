@@ -16926,6 +16926,24 @@
         "p1_formally_remaining": 266,
         "status": "DM01_SCHEDULER_READS_USE_READER_DSN; no baseline P1 row closed.",
         "next": "Continue accepted daily Head/source/Owner and PG scheduler wiring; no change to formal counts without live per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-dm01-readonly-status-client-r28",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "docs/upgrade/V4_R21_R4_DM01_READONLY_STATUS_CLIENT_R28_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Added DailyJobsReadOnly for status queries without writer DSN resolution, schema creation, or DDL.",
+          "Worker start/tick/locks and writer connection use fail closed. Existing state reads use the Reader DSN and read-only repeatable-read transaction."
+        ],
+        "verification": "11 focused DM-01 progress/state tests passed with PG-shaped cursor only; no live DB or service.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DM01_READONLY_STATUS_CLIENT_CODE_ADDED; no baseline P1 row closed.",
+        "next": "Continue accepted daily Head/source/Owner mapping and live scheduler-state readback; retain all baseline counts."
       }
     ]
   }

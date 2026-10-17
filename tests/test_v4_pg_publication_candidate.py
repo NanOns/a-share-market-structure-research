@@ -115,7 +115,12 @@ class FakeConnection:
         if "FROM v4.publication_heads" in statement:
             return Cursor(one=self.head)
         if "current_setting('transaction_isolation')" in statement:
-            return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
+            if "current_database()" in statement:
+                return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
+            return Cursor(one=("repeatable read", "on"))
+        if ("FROM v4.publications p" in statement and "p.revision_no=%s" in statement
+                and "JOIN v4.model_namespaces" not in statement):
+            return Cursor(one=(self.head.get("contract_bindings"),))
         if "JOIN v4.model_namespaces" in statement and "contract_bindings" in statement:
             return Cursor(one=(self.head.get("contract_bindings"), "v4-main", "ACCEPTED", ACCEPTED_AT, TARGET_DATE))
         if "FROM v4.contract_versions c" in statement:

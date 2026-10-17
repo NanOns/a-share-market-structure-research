@@ -16944,6 +16944,23 @@
         "p1_formally_remaining": 266,
         "status": "DM01_READONLY_STATUS_CLIENT_CODE_ADDED; no baseline P1 row closed.",
         "next": "Continue accepted daily Head/source/Owner mapping and live scheduler-state readback; retain all baseline counts."
+      },
+      {
+        "batch_id": "R21-R4-publication-cursor-fixture-r29",
+        "files": [
+          "tests/test_v4_pg_publication_candidate.py",
+          "docs/upgrade/V4_R21_R4_PUBLICATION_CURSOR_FIXTURE_R29_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Updated the publication-reader fake cursor to model the read-only transaction scope query and exact publication ID/revision contract_bindings query added in R25.",
+          "The fake preserves database/user identity responses for the individual contract read path; production checks remain active."
+        ],
+        "verification": "53 tests in tests/test_v4_pg_publication_candidate.py passed. Full GitHub CI rerun is pending this push; no live PG.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "CI_FIXTURE_ALIGNED; no baseline P1 row closed.",
+        "next": "Rerun full CI and continue exact runtime consumer migration; keep formal counts unchanged."
       }
     ]
   }

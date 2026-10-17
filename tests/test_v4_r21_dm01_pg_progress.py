@@ -207,3 +207,37 @@ def test_dm01_progress_does_not_fall_back_to_writer_dsn(monkeypatch, tmp_path):
 
     with pytest.raises(RuntimeError, match="V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK"):
         jobs.progress()
+
+
+def test_dm01_job_and_settings_reads_use_reader_dsn_and_readonly_transaction(monkeypatch, tmp_path):
+    class RowsCursor:
+        def __init__(self, one=None, rows=()):
+            self.one=one;self.rows=rows
+        def fetchone(self):return self.one
+        def __iter__(self):return iter(self.rows)
+
+    class ReadDb:
+        def execute(self,sql,params=()):
+            if sql=='SELECT * FROM update_jobs WHERE job_id=?':
+                return RowsCursor(one={'job_id':'job-1','status':'QUEUED','through_date':'2026-10-16'})
+            if sql=='SELECT * FROM update_job_days WHERE job_id=? ORDER BY trade_date':
+                return RowsCursor(rows=[])
+            if sql=='SELECT * FROM scheduler_policy WHERE id=1':
+                return RowsCursor(one={'enabled':1,'revision':2,'updated_at':'2026-10-16T10:00:00+08:00'})
+            raise AssertionError('unexpected read SQL: '+sql)
+
+    db=ReadDb();opened=[]
+    @contextmanager
+    def connection(schema,*,dsn,read_only,row_factory):
+        opened.append((schema,dsn,read_only))
+        yield db
+
+    monkeypatch.setattr(daily_pg,'connection',connection)
+    monkeypatch.setattr(daily_pg,'configured_reader_dsn',lambda:'reader-only-dsn')
+    jobs=object.__new__(daily_pg.DailyJobs)
+    jobs.schema='v4_jobs_test';jobs.root=tmp_path;jobs.thread=None;jobs.policy_binding=None
+
+    assert jobs.job('job-1')['status']=='QUEUED'
+    settings=jobs.settings()
+    assert settings['auto_enabled'] is True and settings['revision']==2
+    assert opened==[('v4_jobs_test','reader-only-dsn',True)]*2

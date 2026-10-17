@@ -9,7 +9,7 @@ import threading
 import psycopg
 from workbench_db.v4_native import connection, configured_dsn, configured_reader_dsn, create_schema, workspace_schema
 from .operational_daily_calendar_v2 import SHANGHAI
-from .operational_daily_jobs_v1 import DailyJobs as StateMachine
+from .operational_daily_jobs_v1 import DailyJobs as StateMachine, RETRY_TIMES
 
 CONTRACT='V4_PG_OPERATIONAL_JOB_STORE_R1'
 DDL='''
@@ -104,6 +104,12 @@ class DailyJobs(StateMachine):
             yield JobTransaction(pg,self.lock_key)
 
     @contextmanager
+    def read_connect(self):
+        """Use the explicit Reader DSN for scheduler-state queries."""
+        with connection(self.schema,dsn=configured_reader_dsn(),read_only=True,row_factory=row_factory) as pg:
+            yield pg
+
+    @contextmanager
     def worker_lock(self):
         # Session lock spans executor calls without an idle open transaction.
         with psycopg.connect(self.dsn,autocommit=True,connect_timeout=5) as pg:
@@ -114,7 +120,7 @@ class DailyJobs(StateMachine):
             finally: pg.execute('SELECT pg_advisory_unlock(%s)',(key,))
 
     def read_probe(self,target):
-        with self.connect() as db:
+        with self.read_connect() as db:
             row=db.execute('SELECT payload FROM source_probe_state WHERE target=?',(target,)).fetchone()
         return row[0] if row else {}
 
@@ -157,7 +163,7 @@ class DailyJobs(StateMachine):
 
     def progress(self):
         # One small row; no gap planner or Owner decoding on this polling path.
-        with connection(self.schema,dsn=configured_reader_dsn(),read_only=True,row_factory=row_factory) as db:
+        with self.read_connect() as db:
             row=db.execute("""SELECT j.job_id,COALESCE(p.mode,j.mode) AS mode,j.mode AS job_mode,j.through_date AS target_trade_date,j.status AS stage_state,
                 j.created_at AS started_at,j.finished_at,j.error AS error_code,p.stage,p.stage_started_at,p.last_progress_at,
                 p.processed,p.total,p.unit,p.recent_message,p.heartbeat_at,
@@ -178,3 +184,49 @@ class DailyJobs(StateMachine):
         # a second Head from the legacy operational JSON in this polling path.
         result['last_published_trade_date']=(accepted['last_published_trade_date'] if accepted else None)
         return result
+
+    def job(self,job):
+        with self.read_connect() as db:
+            row=db.execute('SELECT * FROM update_jobs WHERE job_id=?',(job,)).fetchone()
+            if not row:raise ValueError('JOB_NOT_FOUND')
+            days=[dict(x) for x in db.execute('SELECT * FROM update_job_days WHERE job_id=? ORDER BY trade_date',(job,))]
+        for day in days:day['source_checks']=json.loads(day['source_checks'])
+        return dict(row)|dict(days=days)
+
+    def events(self,job,after=0):
+        self.job(job)
+        with self.read_connect() as db:
+            return [dict(x) for x in db.execute('SELECT * FROM update_events WHERE job_id=? AND event_id>? ORDER BY event_id LIMIT 100',(job,after))]
+
+    def settings(self,enabled=None):
+        if enabled is not None:
+            if not isinstance(enabled,bool):raise ValueError('ENABLED_BOOLEAN_REQUIRED')
+            with self.connect() as db:
+                db.execute('UPDATE scheduler_policy SET enabled=?,revision=revision+1,updated_at=? WHERE id=1',
+                           (int(enabled),self.clock().isoformat()))
+                self.event(db,None,'SETTINGS','AUTO_RESUMED' if enabled else 'AUTO_PAUSED_BY_USER',{})
+        with self.read_connect() as db:
+            row=dict(db.execute('SELECT * FROM scheduler_policy WHERE id=1').fetchone())
+        return dict(contract_id='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1',
+            auto_enabled=bool(row['enabled']),revision=row['revision'],updated_at=row['updated_at'],
+            first_check='18:35',timezone='Asia/Shanghai',retry_times=RETRY_TIMES,
+            service_alive=self.thread is not None and self.thread.is_alive(),
+            operational_mode='AUTO_ON' if row['enabled'] else 'AUTO_PAUSED_BY_USER',
+            permission_scope='READ_ONLY_OPERATIONAL_RESEARCH',
+            publication_ready=(json.loads((self.root/self.policy_binding['path']).read_bytes()).get('publication_ready',False) if self.policy_binding else False),
+            policy_binding=self.policy_binding)
+
+    def status(self):
+        plan=self._gap_plan()
+        with self.read_connect() as db:
+            row=db.execute('SELECT job_id FROM update_jobs ORDER BY created_at DESC LIMIT 1').fetchone()
+            active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') ORDER BY created_at LIMIT 1").fetchone()
+            last_catch_up=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' ORDER BY created_at DESC LIMIT 1").fetchone()
+        active_record=self.job(active['job_id']) if active else None
+        retry_times=[d['next_retry_at'] for d in (active_record or {}).get('days',[]) if d['next_retry_at']]
+        if retry_times:
+            plan['next_trigger_at']=min(retry_times+([plan['next_trigger_at']] if plan.get('next_trigger_at') else []))
+        return dict(plan,settings=self.settings(),last_job=self.job(row['job_id']) if row else None,
+                    active_job=active_record,
+                    last_catch_up_job=self.job(last_catch_up['job_id']) if last_catch_up else None,
+                    worker_error=self.worker_error,last_good_preserved=True)

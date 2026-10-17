@@ -16908,6 +16908,24 @@
         "p1_formally_remaining": 266,
         "status": "OWNER_RUNTIME_READER_PATH_HARDENED; current accepted Head and live PG readback remain open.",
         "next": "Migrate native_pg_owner_authority into the accepted operational Head and continue exact daily source/Owner/BFF consumers; do not change formal counts before same-T0 readback and per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-dm01-reader-dsn-state-reads-r27",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "docs/upgrade/V4_R21_R4_DM01_READER_DSN_STATE_READS_R27_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Added a read_connect boundary using only configured_reader_dsn() in read-only REPEATABLE READ mode. Routed progress, job, events, status, settings reads and source-probe reads through it.",
+          "Settings updates and scheduler mutations remain on the explicit Writer DSN."
+        ],
+        "verification": "10 focused DM-01 progress/state tests passed. Broader PG jobs tests cannot initialize without V4_NATIVE_PG_DSN; no live PG connection occurred.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DM01_SCHEDULER_READS_USE_READER_DSN; no baseline P1 row closed.",
+        "next": "Continue accepted daily Head/source/Owner and PG scheduler wiring; no change to formal counts without live per-ID reconciliation."
       }
     ]
   }

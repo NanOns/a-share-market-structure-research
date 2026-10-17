@@ -151,6 +151,20 @@ def test_daily_executor_noop_uses_pg_accepted_head_without_file_fallback(monkeyp
     assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
 
 
+def test_daily_executor_defaults_to_pg_accepted_head_without_file_fallback(monkeypatch,tmp_path):
+    from workbench_analysis import operational_daily_executor_v1 as executor
+    class Reader:
+        def calendar(self):
+            return {"status":"ACCEPTED","source":"PG_ACCEPTED_PUBLICATION_HEAD",
+                    "accepted_trade_date":"2026-10-16"}
+    monkeypatch.delenv("V4_MARKET_CALENDAR_SOURCE",raising=False)
+    monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment",lambda:Reader())
+    result=executor.execute_sources(tmp_path,"2026-10-16","CATCH_UP")
+    assert result["reason"]=="NOOP_ALREADY_CURRENT"
+    assert result["accepted_trade_date"]=="2026-10-16"
+    assert not (tmp_path/"data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
+
+
 def test_daily_executor_pg_head_failure_does_not_fall_back_to_file(monkeypatch, tmp_path):
     from workbench_analysis import operational_daily_executor_v1 as executor
     import pytest

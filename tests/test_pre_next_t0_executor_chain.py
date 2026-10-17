@@ -17,6 +17,10 @@ from scripts import audit_dynamic_daily_period_numbers_v1 as oracle
 @pytest.mark.parametrize('gate_ready', [False, True])
 def test_full_executor_entry(chain, monkeypatch, gate_ready):
     root, day, freeze, new_head, _ = chain
+    # This legacy-chain fixture deliberately exercises the historical file
+    # contracts; the default runtime path is the approved PG registry.
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'FILE')
+    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE', 'FILE')
     monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'configured-snapshots'))
     if gate_ready:

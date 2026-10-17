@@ -82,7 +82,7 @@ def _tdx_gbbq_source_path(project_root=None):
 
 def _accepted_trade_date(root):
     """Resolve the last-good trade date from the selected authority source."""
-    mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')
+    mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
     if mode=='PG':
         from workbench_db.v4_market_calendar_reader_r1 import from_environment
         calendar=from_environment().calendar()

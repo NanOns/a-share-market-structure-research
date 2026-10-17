@@ -75,7 +75,7 @@ class FakePg:
         if "FROM v4.contract_versions c" in sql:
             return Cursor(one=(CONTRACT_BYTES, CONTRACT_SHA, "JSON", "1", "v4-main", "source-r1",
                                "APPROVED", "approver", "approval-r1", ACCEPTED_AT,
-                               "approval-source-r1", CONTRACT_SHA, ACCEPTED_AT))
+                               "source-r1", CONTRACT_SHA, ACCEPTED_AT))
         if "FROM v4.market_calendar_sessions" in sql:
             return Cursor(rows=self.sessions)
         raise AssertionError(f"unexpected query: {sql}")
@@ -128,6 +128,14 @@ def test_official_session_consumers_select_pg_calendar_from_runtime_mode(monkeyp
     monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE", "PG")
     monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment", lambda: Reader())
     assert official_sessions("no-file-head-here") == ["2026-10-15", "2026-10-16"]
+
+
+def test_official_session_consumers_default_to_pg_without_file_fallback(monkeypatch):
+    class Reader:
+        def sessions(self):return ["2026-10-15","2026-10-16"]
+    monkeypatch.delenv("V4_MARKET_CALENDAR_SOURCE",raising=False)
+    monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment",lambda:Reader())
+    assert official_sessions("missing-data-head")==["2026-10-15","2026-10-16"]
 
 
 def test_pg_calendar_configuration_is_required_and_does_not_fall_back():

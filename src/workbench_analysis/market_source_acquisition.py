@@ -46,7 +46,7 @@ def write(path, value, *, tdx_root=None, project_root=None):
 
 def official_sessions(root, *, pg_reader=None, source_mode=None):
     import os
-    selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')
+    selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
     if selected_mode=='PG':
         if pg_reader is None:
             from workbench_db.v4_market_calendar_reader_r1 import from_environment

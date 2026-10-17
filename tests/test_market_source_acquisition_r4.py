@@ -45,7 +45,7 @@ def test_calendar_holiday_and_exact_predecessors():
     assert not is_stock_code('sz.399001') and is_stock_code('sz.300010')
     assert not is_stock_code('bj.899050') and not is_stock_code('bj.899601')
     assert is_stock_code('bj.920001') and is_stock_code('bj.830001')
-    dates = official_sessions(Path(__file__).resolve().parents[1])
+    dates = official_sessions(Path(__file__).resolve().parents[1],source_mode='FILE')
     assert dates[dates.index('2026-10-08')-1]=='2026-09-30'
     assert dates[dates.index('2026-09-30')-3]=='2026-09-24'
     assert not any(f'2026-10-{i:02}' in dates for i in range(1,8))

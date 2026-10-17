@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 218,
+    "migration_open": 219,
     "statuses": {
-      "OPEN": 210,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48,
+      "OPEN": 211,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 47,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 48,
-    "remaining_open_or_ingress": 218,
+    "code_level_pg_read_paths_implemented": 47,
+    "remaining_open_or_ingress": 219,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -3089,18 +3089,19 @@
         "status": "IMPLEMENTED_PG_PATH_PENDING_PUBLICATION_AND_LIVE_READBACK_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "PG calendar code path is selected explicitly, but no compliant live Reader identity/readback or caller-level accepted publication mapping is available.",
+      "blocker": "PG calendar is now the default selection for the shared official_sessions runtime call and daily executor/job scheduler; live Reader identity, approved calendar contract registration and accepted-publication readback remain unverified.",
       "baseline_function": "official_sessions",
       "migration_evidence": {
-        "batch_id": "R21-R4-market-source-sessions-pg-callsite-r41",
-        "implemented_code": "market_source_acquisition.official_sessions selects v4_market_calendar_reader_r1 only under explicit source_mode=PG or V4_MARKET_CALENDAR_SOURCE=PG, returns sessions pinned to the accepted publication Head/revision/calendar contract and fails closed on unsupported mode or PG errors. It does not fall back from PG mode to files.",
+        "batch_id": "R21-R4-pg-calendar-default-and-matrix-audit-r57",
+        "implemented_code": "official_sessions defaults to PG and fails closed without PG authority; FILE is explicit. The daily executor and PG DailyJobs scheduler also default to PG calendar mode. The exact selected call still requires live accepted-publication/read-role reconciliation.",
         "test_evidence": [
           "tests/test_v4_r21_pg_market_calendar.py",
           "tests/test_market_source_acquisition_r4.py"
         ],
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
-        "accepted_publication_mapping": "PENDING"
+        "accepted_publication_mapping": "PENDING",
+        "verification": "51 focused PG calendar/daily/acquisition/contract tests passed; repository-policy CI selection also passed locally: 300 passed. Controlled PG boundaries only; no live PG read."
       },
       "reference_evidence": [
         {
@@ -3755,26 +3756,24 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+      "migration_status": "OPEN",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4.contract_versions plus latest append-only v4.contract_approval_events in the exact model namespace; read-only repeatable-read runtime contract reader",
-        "status": "IMPLEMENTED_CODE_PENDING_LIVE_REGISTRATION_AND_NAMESPACE_RECONCILIATION"
+        "candidate": "Accepted operational Head plus dated Owner identity/lifecycle relations in PG; exact normalized identities must be bound to the requested trade date before source validation",
+        "status": "RELATION_MAPPING_REQUIRED_NO_EQUIVALENT_OWNER_RELATION_VERIFIED"
       },
       "acceptance_evidence": null,
-      "blocker": "The two runtime contract versions have not been registered/approved in the current PG namespace, and compliant read identity/catalog verification is pending. PG mode fails closed; no file fallback.",
+      "blocker": "derive_ready_sources reaches verify_source_gate, which still reads V4_OPERATIONAL_RESEARCH_HEAD.json, its lifecycle binding, and identity sidecar. The R56 runtime contract reader does not replace this Head/Owner identity authority. Map the exact accepted Head and dated identity/lifecycle PG relations and migrate the consumer before changing this row.",
       "baseline_function": "derive_ready_sources",
       "migration_evidence": {
-        "batch_id": "R21-R4-daily-runtime-contracts-pg-reader-r56",
-        "implemented_code": "The operational daily executor now defaults to v4.contract_versions and the latest APPROVED/REVOKED event in a read-only repeatable-read snapshot for the exact runtime contract id/version/namespace. It attests database identity and read-role privileges, verifies approval source revision and raw SHA, and fails closed without registry state. Both the TDX GBBQ path contract and BaoStock runtime acceptance path contract use this reader; file mode must be explicitly selected.",
+        "batch_id": "R21-R4-matrix-source-audit-r57",
+        "implemented_code": "No PG migration credited for this row. Source-line audit found the active verify_source_gate still opens local operational Head, lifecycle sidecar and identity sidecar.",
         "formal_status": "OPEN",
-        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
-        "current_head": "RUNTIME_CONTRACT_REGISTRATION_NOT_VERIFIED",
-        "verification": "32 focused registry/runtime-executor tests passed using controlled PG boundaries; no live catalog query or registry import."
+        "verification": "Source and caller audit; no live PG read or Head mutation."
       },
       "reference_evidence": [
         {

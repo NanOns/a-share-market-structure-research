@@ -72,7 +72,7 @@ class DailyJobs(StateMachine):
         self.active_job_id=None;self.source_probe=source_probe;self.policy_binding=None
         self.dsn=configured_dsn();self.schema=workspace_schema(self.root,'jobs')
         self.lock_key=int.from_bytes(hashlib.sha256(self.schema.encode()).digest()[:8],'big',signed=True)
-        calendar_mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')
+        calendar_mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
         if calendar_mode not in {'FILE','PG'}:raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
         head_path=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
         if (calendar_mode=='PG' or (calendar_mode=='FILE' and head_path.is_file())):
@@ -89,7 +89,7 @@ class DailyJobs(StateMachine):
             pg.execute(DDL)
 
     def _gap_plan(self,through_date=None):
-        if os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')!='PG':
+        if os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')!='PG':
             return super()._gap_plan(through_date)
         from workbench_db.v4_market_calendar_reader_r1 import from_environment
         from .operational_daily_calendar_v2 import gap_plan

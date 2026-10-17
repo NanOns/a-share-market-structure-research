@@ -48,7 +48,7 @@
 
 ## 未完成项与单独授权边界
 
-- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。本次代码修改尚未完成全部 Stable ID 的逐项核销；既有清单中的未修引用仍需继续处理。被明确识别的活跃点包括 `core_product_server_r1.py` 的 accepted API/Head 签名装载、`producer_bootstrap_v1.py` 的 Head/producer 输入、`operational_successor_release_v1.py` 的 Head JSON 写入和 `v4_current_stage_authority.py` 的 authority 文件读取。非 V4 引用仅登记。
+- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。既有矩阵最新保存计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；任务卡冻结摘要为 53/10/203，差异是一行已在既有矩阵中从 ingress-open 归入 code-pending。本轮没有重复全仓扫描或逐 ID 关闭核销，因此上述存量均作为未关闭处理。被明确识别的活跃点包括 `core_product_server_r1.py` 的 accepted API/Head 签名装载、`producer_bootstrap_v1.py` 的 Head/producer 输入、`operational_successor_release_v1.py` 的 Head JSON 写入和 `v4_current_stage_authority.py` 的 authority 文件读取。非 V4 引用仅登记。
 - 7 份导入合同均为 DRAFT，没有批准事件；publication/head 表仍为空。不得将其称为正式接受或 Head 切换。
 - 仍需单独授权：正式 Head CAS/切换、生产 28765 部署、物理删除及 Git 强推/历史重写。正常提交和推送不包含上述操作。
 - GitHub Issue/PR 状态更新连接器此前返回 HTTP 403，本轮不通过 GitHub CLI 绕过。

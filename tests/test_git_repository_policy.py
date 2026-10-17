@@ -76,6 +76,16 @@ def test_arbitrary_windows_drive_paths_are_machine_specific():
     assert "MACHINE_PATH" in {item.code for item in findings}
 
 
+def test_only_the_v4_reference_auditor_may_read_historical_reports():
+    body = b"# Read-only inventory tool\nopen('reports/audits/current.json', 'r')\nROOT = 'D:/fixture'\n"
+    assert policy.inspect_blob("scripts/audit_v4_nonconfig_file_references_r1.py", body) == []
+    codes = {item.code for item in policy.inspect_blob("scripts/other.py", body)}
+    assert {"PROCESS_DATA_DEPENDENCY", "MACHINE_PATH"} <= codes
+    validator = b"open('reports/v4_12/frozen_manifest.json', 'r')\n"
+    assert "PROCESS_DATA_DEPENDENCY" not in {item.code for item in policy.inspect_blob("scripts/validate_v4_12_promotion_r14.py", validator)}
+    assert "PROCESS_DATA_DEPENDENCY" in {item.code for item in policy.inspect_blob("scripts/other.py", validator)}
+
+
 def test_stage_report_requires_schema():
     findings = policy.inspect_blob(
         "reports/stage/V4_GOVERNANCE_COMPREHENSIVE_TEST_REPORT_20261016_R1.md",

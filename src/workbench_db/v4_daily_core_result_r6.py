@@ -840,8 +840,12 @@ def read_daily_core_result(pg: Any, *, publication_id: str, publication_revision
                 trade_date=target, source_manifest_sha256=source_manifest_sha256,
                 core_rows=material_rows,
             )
-            if not is_verified_universe_readback(universe_proof):
-                raise CoreResultError("UNIVERSE_TYPED_READBACK_INVALID")
+            if (not is_verified_universe_readback(universe_proof)
+                    or universe_proof.publication_id != publication_id
+                    or universe_proof.publication_revision != publication_revision
+                    or universe_proof.trade_date != target
+                    or universe_proof.source_manifest_sha256 != source_manifest_sha256):
+                raise CoreResultError("UNIVERSE_TYPED_READBACK_IDENTITY_MISMATCH")
             universe_status = "PASS"
             universe_contract_id = "V4_MARKET_UNIVERSE_COMPLETENESS_R1"
             universe_sha256 = universe_proof.universe_sha256

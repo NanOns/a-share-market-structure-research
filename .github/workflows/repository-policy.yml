@@ -47,6 +47,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -79,3 +81,14 @@ jobs:
           tests/test_v4_native_reader_dsn.py
           tests/test_v4_current_accepted_reader.py
           tests/test_v4_server_pg_candidate_mode.py
+          tests/test_v4_r14_governance_contracts.py
+          tests/test_v4_universe_pg_r1.py
+          tests/test_git_repository_policy.py
+          tests/test_r19_a_historical_static_bindings.py
+          tests/test_v4_nonconfig_external_file_references_r1.py
+
+      - name: Full V4 non-config external file reference inventory
+        env:
+          TMPDIR: ${{ runner.temp }}
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python scripts/audit_v4_nonconfig_file_references_r1.py --output "${{ runner.temp }}/v4-r19-nonconfig-file-reference-inventory.json"

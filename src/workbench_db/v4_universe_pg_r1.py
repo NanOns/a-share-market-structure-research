@@ -21,6 +21,8 @@ from .v4_market_universe_completeness_r1 import (
 
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 _PROOF = object()
+READBACK_CONTRACT_ID = "V4_UNIVERSE_PG_READBACK_R2"
+READBACK_CONTRACT_VERSION = "1.0.0"
 
 
 class UniversePgError(ValueError):
@@ -29,16 +31,28 @@ class UniversePgError(ValueError):
 
 @dataclass(frozen=True)
 class VerifiedUniverseReadback:
+    readback_contract_id: str
+    readback_contract_version: str
     publication_id: str
     publication_revision: int
     trade_date: str
     source_manifest_sha256: str
     source_package_id: str
+    source_package_sha256: str
+    source_fact_sha256: str
+    logical_fact_id: str
+    fact_digest: str
+    acceptance_receipt_id: str
+    acceptance_receipt_sha256: str
+    acceptance_authority_id: str
     universe_id: str
+    universe_contract_id: str
+    universe_contract_version: str
     universe_sha256: str
     raw_artifact_sha256: str
     expected_count: int
     core_count: int
+    coverage_ratio: float
     reconciliation_sha256: str
     readback_receipt_sha256: str
     status: str
@@ -47,6 +61,11 @@ class VerifiedUniverseReadback:
 
 def is_verified_universe_readback(value: Any) -> bool:
     if not isinstance(value, VerifiedUniverseReadback) or value._proof is not _PROOF:
+        return False
+    if (value.readback_contract_id != READBACK_CONTRACT_ID
+            or value.readback_contract_version != READBACK_CONTRACT_VERSION
+            or value.universe_contract_id != CONTRACT_ID
+            or value.universe_contract_version != CONTRACT_VERSION):
         return False
     return value.readback_receipt_sha256 == _sha(_receipt_material(value))
 
@@ -61,9 +80,13 @@ def _sha(value: Any) -> str:
 
 def _receipt_material(value: VerifiedUniverseReadback) -> dict[str, Any]:
     return {key: getattr(value, key) for key in (
+        "readback_contract_id", "readback_contract_version",
         "publication_id", "publication_revision", "trade_date", "source_manifest_sha256",
-        "source_package_id", "universe_id", "universe_sha256", "raw_artifact_sha256",
-        "expected_count", "core_count", "reconciliation_sha256", "status",
+        "source_package_id", "source_package_sha256", "source_fact_sha256", "logical_fact_id",
+        "fact_digest", "acceptance_receipt_id", "acceptance_receipt_sha256", "acceptance_authority_id",
+        "universe_id", "universe_contract_id", "universe_contract_version", "universe_sha256",
+        "raw_artifact_sha256", "expected_count", "core_count", "coverage_ratio",
+        "reconciliation_sha256", "status",
     )}
 
 
@@ -390,9 +413,15 @@ def read_universe_snapshot(pg: Any, *, publication_id: str, publication_revision
     }
     if _sha(persisted_material)!=str(header[20]).strip():
         raise UniversePgError("UNIVERSE_PG_PERSISTENCE_IDENTITY_MISMATCH")
-    receipt={"publication_id":publication_id,"publication_revision":publication_revision,"trade_date":target,
-        "source_manifest_sha256":source_manifest_sha256,"source_package_id":header[2],"universe_id":header[10],
+    receipt={"readback_contract_id":READBACK_CONTRACT_ID,"readback_contract_version":READBACK_CONTRACT_VERSION,
+        "publication_id":publication_id,"publication_revision":publication_revision,"trade_date":target,
+        "source_manifest_sha256":source_manifest_sha256,"source_package_id":header[2],
+        "source_package_sha256":str(fact[6]).strip(),"source_fact_sha256":str(header[6]).strip(),
+        "logical_fact_id":header[7],"fact_digest":str(header[8]).strip(),
+        "acceptance_receipt_id":acceptance.authority_receipt_id,
+        "acceptance_receipt_sha256":acceptance.receipt_sha256,"acceptance_authority_id":acceptance.authority_id,
+        "universe_id":header[10],"universe_contract_id":header[11],"universe_contract_version":header[12],
         "universe_sha256":str(header[13]).strip(),"raw_artifact_sha256":str(header[9]).strip(),
-        "expected_count":int(header[15]),"core_count":int(header[16]),"reconciliation_sha256":str(header[18]).strip(),
-        "acceptance_receipt_sha256":acceptance.receipt_sha256,"status":"PASS"}
+        "expected_count":int(header[15]),"core_count":int(header[16]),"coverage_ratio":float(header[17]),
+        "reconciliation_sha256":str(header[18]).strip(),"status":"PASS"}
     return VerifiedUniverseReadback(**receipt,readback_receipt_sha256=_sha(receipt),_proof=_PROOF)

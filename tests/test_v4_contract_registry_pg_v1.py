@@ -92,6 +92,10 @@ def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance(
     assert "BEFORE TRUNCATE ON v4.contract_versions" in sql
     assert "BEFORE TRUNCATE ON v4.contract_approval_events" in sql
     assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in sql
+    assert "V4_ACCEPTED_PUBLICATION_IDENTITY_IMMUTABLE" in sql
+    assert "V4_ACCEPTED_PUBLICATION_CONTRACT_BINDINGS_IMMUTABLE" in sql
+    assert "to_jsonb(NEW) - 'contract_bindings'" in sql
+    assert sql.index("V4_ACCEPTED_PUBLICATION_IDENTITY_IMMUTABLE") < sql.index("NEW.contract_bindings IS NULL AND OLD.contract_bindings IS NULL")
     assert "CREATE EXTENSION" not in sql
     assert "encode(sha256(raw_content), 'hex') = raw_sha256" in sql
 

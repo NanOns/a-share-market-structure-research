@@ -16672,6 +16672,24 @@
         "p1_formally_remaining": 266,
         "status": "SHARED_PG_OWNER_READ_DSN_GUARD_WIRED; no baseline row is formally reconciled or closed.",
         "next": "Continue exact Owner/API callsite migrations and full daily state lifecycle; retain 266 formal remaining until live accepted readback."
+      },
+      {
+        "batch_id": "R21-R4-accepted-publication-immutability-r17",
+        "files": [
+          "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R17.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The registry trigger now rejects edits to any accepted publication field while permitting only a NULL-to-verified-contract-bindings backfill for historical accepted rows.",
+          "Once bound, accepted contract_bindings are immutable. The check uses to_jsonb row comparison so future publication columns are covered without a second hard-coded column list."
+        ],
+        "verification": "Focused contract registry, PG publication candidate and candidate BFF tests passed; static migration assertion covers the immutability-before-legacy-exception ordering. No live trigger execution.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "APPROVAL_AND_ACCEPTED_IDENTITY_SQL_GUARD_STRENGTHENED_OFFLINE; database trigger acceptance remains open.",
+        "next": "Continue other-business and Owner callsite implementations and run approved catalog/migration validation when a compliant PG environment is available."
       }
     ]
   }

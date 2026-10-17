@@ -103,6 +103,21 @@ DECLARE
     should_validate boolean;
     approval record;
 BEGIN
+    -- Accepted publication identity is immutable. The only staged exception
+    -- is adding an evidence-backed contract map to an older accepted row
+    -- whose map is NULL; accepted_at, status, revision and every other current
+    -- or future publication column must remain byte-for-byte equivalent.
+    IF TG_OP = 'UPDATE' AND OLD.status = 'ACCEPTED' THEN
+        IF (to_jsonb(NEW) - 'contract_bindings') IS DISTINCT FROM
+           (to_jsonb(OLD) - 'contract_bindings') THEN
+            RAISE EXCEPTION 'V4_ACCEPTED_PUBLICATION_IDENTITY_IMMUTABLE';
+        END IF;
+        IF OLD.contract_bindings IS NOT NULL
+           AND NEW.contract_bindings IS DISTINCT FROM OLD.contract_bindings THEN
+            RAISE EXCEPTION 'V4_ACCEPTED_PUBLICATION_CONTRACT_BINDINGS_IMMUTABLE';
+        END IF;
+    END IF;
+
     IF TG_OP = 'INSERT' THEN
         should_validate := true;
     ELSE

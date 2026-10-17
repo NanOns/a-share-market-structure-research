@@ -6,7 +6,7 @@ from workbench_analysis.r43_owner_replay import ref
 from workbench_db.v4_forward_pg_r1 import canonical, digest
 from workbench_db.v4_native import workspace_schema
 from workbench_service import native_product_catalog_v3 as catalog
-from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+from workbench_service.core_product_bff_r1 import CoreProductBFFR1, dated_product_manifest
 
 
 def _fixture(root, monkeypatch):
@@ -55,14 +55,20 @@ def test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback(tmp_
     monkeypatch.setattr(catalog, 'checked', lambda *_: pytest.fail('PG catalogue reopened local manifest'))
     loaded = catalog.load(tmp_path, candidate)
     assert loaded['dates']['2026-10-17'] == expected
+    assert dated_product_manifest(tmp_path, loaded, '2026-10-17', candidate=candidate) == expected
     api = SimpleNamespace(root=tmp_path, candidate=candidate, cache={})
     setattr(api, 'token', 'head-token')
     bff = object.__new__(CoreProductBFFR1)
     bff.api = api
+    bff.isolated_history = None
     bff.market_fact_index_root = None
     bff.chart_history_index_root = None
     manifest, facts = bff.pack('2026-10-17')
     assert manifest == expected and facts is None
+    chart_manifest, chart_index = bff.chart_history_pack('2026-10-17')
+    assert chart_manifest == expected and chart_index is None
+    with pytest.raises(ValueError, match='PRODUCT_PG_CANDIDATE_REQUIRED_NO_FILE_FALLBACK'):
+        dated_product_manifest(tmp_path, loaded, '2026-10-17')
 
 
 def test_pg_product_catalog_rejects_owner_binding_substitution(tmp_path, monkeypatch):

@@ -67,6 +67,13 @@ def home_summary(row, fields):
 
 def product_manifest_bindings(authority):
     """Versioned authority: R1 singleton or R2 exact date catalogue."""
+    if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
+        dates=authority.get('dates');scopes=authority.get('scopes')
+        if not isinstance(dates,dict) or not dates or not isinstance(scopes,dict) or set(dates)!=set(scopes):
+            raise ValueError('PRODUCT_PG_AUTHORITY_CATALOG_INVALID')
+        if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED','historical_PIT_permission')):
+            raise ValueError('PRODUCT_AUTHORITY_PIT_ESCALATION')
+        return list(dates.values())
     if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
         return [authority['manifest']]
     if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R2':
@@ -76,8 +83,20 @@ def product_manifest_bindings(authority):
     raise ValueError('PRODUCT_AUTHORITY_CONTRACT_REQUIRED')
 
 
-def dated_product_manifest(root, authority, day):
+def dated_product_manifest(root, authority, day, *, candidate=None):
     product_manifest_bindings(authority)
+    if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
+        from .native_product_catalog_v3 import PG_KEY,load
+        if not isinstance(candidate,dict) or PG_KEY not in candidate:
+            raise ValueError('PRODUCT_PG_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+        verified=load(root,candidate)
+        if (verified.get('owner_source_digest')!=authority.get('owner_source_digest')
+                or verified.get('catalog_source_binding')!=authority.get('catalog_source_binding')):
+            raise ValueError('PRODUCT_PG_AUTHORITY_SUBSTITUTION')
+        manifest=verified['dates'].get(day)
+        if manifest is not None and manifest.get('T0')!=day:
+            raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
+        return manifest
     binding = authority.get('dates', {}).get(day) if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2' else authority['manifest']
     if binding is None:
         return None
@@ -709,7 +728,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if pg_catalog or KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
                 authority=load(self.api.root,self.api.candidate)
                 entry=authority['dates'].get(day)
-                manifest=entry if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None
+                manifest=(dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
+                    if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None)
             else:
                 authority=self.api.root/'config/core_product_read_authority_r1.json'
                 if not authority.exists():return None
@@ -748,7 +768,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if pg_catalog or embedded or self.api.candidate.get('exact_daily_adjustment_contract'):
                 authority=load(self.api.root,self.api.candidate)
                 entry=authority['dates'].get(day)
-                manifest=entry if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None
+                manifest=(dated_product_manifest(self.api.root,authority,day,candidate=self.api.candidate)
+                    if pg_catalog else json.loads(checked(self.api.root,entry).read_bytes()) if entry else None)
             else:
                 authority=self.api.root/'config/core_product_read_authority_r1.json'
                 if not authority.exists():return None

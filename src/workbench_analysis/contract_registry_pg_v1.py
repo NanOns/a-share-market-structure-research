@@ -188,6 +188,33 @@ def load_publication_contracts(
     normalized = _mapping(bindings, "V4_PUBLICATION_CONTRACT_BINDINGS_INVALID")
     if not normalized:
         raise ContractRegistryError("V4_PUBLICATION_CONTRACT_BINDINGS_REQUIRED")
+    if (not publication_id or isinstance(publication_revision, bool)
+            or not isinstance(publication_revision, int) or publication_revision <= 0):
+        raise ContractRegistryError("V4_PUBLICATION_REVISION_INVALID")
+    try:
+        session = _fetchone(cursor,
+            """SELECT current_setting('transaction_isolation'),
+                      current_setting('transaction_read_only')""")
+        if (not session or len(session) < 2
+                or str(session[0]).lower() != "repeatable read"
+                or str(session[1]).lower() not in ("on", "true", "1")):
+            raise ContractRegistryError("V4_PG_READONLY_REPEATABLE_READ_REQUIRED")
+        publication = _fetchone(cursor,
+            """SELECT p.contract_bindings
+                 FROM v4.publications p
+                WHERE p.publication_id=%s AND p.revision_no=%s
+                  AND p.status='ACCEPTED' AND p.accepted_at IS NOT NULL""",
+            (publication_id, publication_revision),
+        )
+    except ContractRegistryError:
+        raise
+    except Exception as exc:
+        raise ContractRegistryError("V4_PG_CONTRACT_BINDING_UNAVAILABLE") from exc
+    if not publication:
+        raise ContractRegistryError("V4_PUBLICATION_NOT_FOUND")
+    stored_bindings = _mapping(publication[0], "V4_PUBLICATION_CONTRACT_BINDINGS_INVALID")
+    if normalized != stored_bindings:
+        raise ContractRegistryError("V4_PUBLICATION_CONTRACT_BINDINGS_MISMATCH")
     result = {}
     for contract_id in sorted(normalized):
         result[contract_id] = load_publication_contract(

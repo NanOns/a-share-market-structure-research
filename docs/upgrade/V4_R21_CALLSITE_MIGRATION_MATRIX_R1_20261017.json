@@ -16866,6 +16866,25 @@
         "p1_formally_remaining": 266,
         "status": "TDX_LOCAL_FALLBACK_PATH_CONFIGURATION_CODE_COMPLETE; source ingestion and accepted PG readback remain OPEN.",
         "next": "Continue exact source contract and PG append/readback wiring for TDX and BaoStock; retain all P1 items until accepted publication and row-level reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-contract-registry-exact-map-r25",
+        "files": [
+          "src/workbench_analysis/contract_registry_pg_v1.py",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_EXACT_MAP_R25_20261017.md",
+          "tests/test_v4_r21_pg_market_calendar.py"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "load_publication_contracts now checks the complete caller binding map against the exact accepted publication_id + revision_no row inside a read-only REPEATABLE READ transaction.",
+          "Partial, extra, or substituted contract sets fail closed before any contract bytes are returned."
+        ],
+        "verification": "23 contract-registry and PG market-calendar focused tests passed; PG-shaped cursor only; no live PG schema or approval round trip.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "CONTRACT_SET_INTEGRITY_CODE_HARDENED; no exact P1 row closed.",
+        "next": "Continue active daily contract/Head/Authority/descriptor and exact Owner/other-business consumer wiring; retain all formal counts until live per-ID reconciliation."
       }
     ]
   }

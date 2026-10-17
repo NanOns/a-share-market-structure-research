@@ -63,7 +63,12 @@ class FakePg:
             return Cursor(one=("pub-20261016-r1", 1, date(2026, 10, 16), ACCEPTED_AT,
                               "calendar-r1", {"V4_OFFICIAL_MARKET_CALENDAR_V1": {"version": "1.0.0", "raw_sha256": CONTRACT_SHA}}))
         if "current_setting('transaction_isolation')" in sql:
-            return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
+            if "current_database()" in sql:
+                return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
+            return Cursor(one=("repeatable read", "on"))
+        if ("FROM v4.publications p" in sql and "p.revision_no=%s" in sql
+                and "JOIN v4.model_namespaces" not in sql):
+            return Cursor(one=({"V4_OFFICIAL_MARKET_CALENDAR_V1": {"version": "1.0.0", "raw_sha256": CONTRACT_SHA}},))
         if "JOIN v4.model_namespaces" in sql and "contract_bindings" in sql:
             return Cursor(one=({"V4_OFFICIAL_MARKET_CALENDAR_V1": {"version": "1.0.0", "raw_sha256": CONTRACT_SHA}},
                                "v4-main", "ACCEPTED", ACCEPTED_AT, date(2026, 10, 16)))

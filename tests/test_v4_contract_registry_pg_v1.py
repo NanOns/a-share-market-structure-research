@@ -4,6 +4,7 @@ import pytest
 from workbench_analysis.contract_registry_pg_v1 import (
     ContractRegistryError,
     load_publication_contract,
+    load_publication_contracts,
 )
 
 
@@ -180,3 +181,47 @@ def test_latest_approval_event_must_be_approved_and_bind_exact_source_digest(act
     )
     with pytest.raises(ContractRegistryError, match="V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID"):
         load_publication_contract(cursor, "publication-1", "RULE")
+
+
+def test_batch_loader_requires_the_complete_publication_contract_map():
+    class BatchCursor:
+        def __init__(self, stored, session=("repeatable read", "on")):
+            self.stored = stored
+            self.session = session
+            self.calls = []
+
+        def execute(self, query, params=()):
+            self.calls.append((query, params))
+
+        def fetchone(self):
+            query, _ = self.calls[-1]
+            if "current_setting('transaction_isolation')" in query:
+                return self.session
+            return (self.stored,)
+
+    full = {
+        "A": {"version": "1.0.0", "raw_sha256": "a" * 64},
+        "B": {"version": "2.0.0", "raw_sha256": "b" * 64},
+    }
+    for supplied in (
+        {"A": full["A"]},
+        {**full, "C": {"version": "1.0.0", "raw_sha256": "c" * 64}},
+        {"A": {"version": "9.9.9", "raw_sha256": "a" * 64}, "B": full["B"]},
+    ):
+        cursor = BatchCursor(full)
+        with pytest.raises(ContractRegistryError, match="V4_PUBLICATION_CONTRACT_BINDINGS_MISMATCH"):
+            load_publication_contracts(cursor, "publication-1", 3, supplied)
+        assert len(cursor.calls) == 2
+
+
+def test_batch_loader_requires_repeatable_read_only_scope():
+    class BatchCursor:
+        def execute(self, query, params=()):
+            self.query = query
+
+        def fetchone(self):
+            return ("read committed", "on")
+
+    with pytest.raises(ContractRegistryError, match="V4_PG_READONLY_REPEATABLE_READ_REQUIRED"):
+        load_publication_contracts(BatchCursor(), "publication-1", 3,
+                                   {"A": {"version": "1.0.0", "raw_sha256": "a" * 64}})

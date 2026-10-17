@@ -21,6 +21,24 @@ def _validate_owner_bindings(root, candidate, pg_owner_authority=None):
         checked(root,binding)
 
 
+def _validate_membership_inputs(root,candidate):
+    from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY
+    if MEMBERSHIP_KEY in candidate:
+        from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read,read_identity
+        snapshot=context_snapshot(root,candidate)
+        if (snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id']
+                or snapshot.get('PIT_ELIGIBLE') is not False):
+            raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
+        read(root,candidate)
+        read_identity(root,candidate)
+        return snapshot
+    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
+    if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
+        raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
+    checked(root,snapshot['memberships']);checked(root,snapshot['identity_source'])
+    return snapshot
+
+
 def validate(root, candidate, *, pg_owner_authority=None):
     root=Path(root)
     if candidate.get('contract_id')!=CONTRACT:
@@ -75,10 +93,7 @@ def validate(root, candidate, *, pg_owner_authority=None):
     if period.get('input_history')!=target_owners[0]['history']:
         raise ValueError('SUCCESSOR_PERIOD_HISTORY_BINDING_MISMATCH')
     checked(root,period['input_history']);checked(root,period['verifier'])
-    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
-    if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
-        raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
-    checked(root,snapshot['memberships']);checked(root,snapshot['identity_source'])
+    _validate_membership_inputs(root,candidate)
     registry=json.loads(checked(root,candidate['registry']).read_bytes())
     if registry.get('owner_bindings')!=candidate['owners']:
         raise ValueError('SUCCESSOR_OWNER_REGISTRY_MISMATCH')

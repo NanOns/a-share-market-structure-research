@@ -17105,6 +17105,26 @@
         "p1_formally_remaining": 266,
         "status": "BFF_ACCEPTS_HEAD_BOUND_PG_MEMBERSHIP_DESCRIPTOR_AND_REJECTS_FILE_FALLBACK; current Head unmapped.",
         "next": "Continue accepted Head/Authority/descriptor/BFF invocation mapping and retain exact per-ID reconciliation as open."
+      },
+      {
+        "batch_id": "R21-R4-reader-startup-pg-membership-validation-r37",
+        "files": [
+          "src/workbench_analysis/operational_successor_v1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "tests/test_v4_native_membership_reference.py",
+          "docs/upgrade/V4_R21_R4_READER_STARTUP_PG_MEMBERSHIP_VALIDATION_R37_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "OperationalSuccessorReaderV1 admission now reads Head-bound membership context, membership facts and identity facts through the PG authority when native_membership_reference is present; it enforces snapshot ID and non-PIT flags before proceeding.",
+          "The legacy exact file-binding validation remains for candidates without the PG membership authority. A direct regression forbids local membership-file access and observes both PG readers.",
+          "The current accepted Head has no mapped PG membership authority. No original P1 baseline ID is closed; all 266 remain open."
+        ],
+        "verification": "Focused selection: 7 passed, 10 deselected. Unfiltered selection: 15 passed, 2 blocked at the real PG append guard V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK; no fake DSN or DB write. R36 push run 39015066650 passed and 39015064536 was in progress at report time. No live PG readback or BFF business request.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "HEAD_BOUND_PG_MEMBERSHIP_AND_IDENTITY_STARTUP_VALIDATION_WIRED; current Head unmapped; no baseline row closed.",
+        "next": "Continue Head-to-BFF invocation mapping and other eligible reader callsites; preserve exact P1 baseline counts until permitted same-T0 readback."
       }
     ]
   }

@@ -1,6 +1,6 @@
 """New business-reference PG controls, no prior fixture suite rerun."""
 import pytest
-from workbench_db.v4_membership_reference_pg_v1 import KEY,prepare,read,context_metadata
+from workbench_db.v4_membership_reference_pg_v1 import KEY,prepare,read,context_metadata,context_snapshot
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from workbench_analysis.r43_owner_replay import ref
 
@@ -35,9 +35,11 @@ def test_membership_context_metadata_requires_exact_head_scope_and_non_pit_linea
     authority=dict(contract_id='V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1',T0=data['accepted_trade_date'],
         membership_snapshot=data['membership_snapshot'],membership_snapshot_id='SNAP-1',snapshot_metadata=dict(
             contract_id='V4_NATIVE_MEMBERSHIP_CONTEXT_METADATA_R1',version='1.0.0',fields=metadata),
+        descriptor={'path':'membership.json','sha256':'a'*64,'pg_descriptor':{'kind':'reference_memberships'}},
         AS_RECORDED=False,PIT_ELIGIBLE=False)
     monkeypatch.setattr('workbench_db.v4_membership_reference_pg_v1._load_authority',lambda root,candidate:authority)
     assert context_metadata(tmp_path,data)==metadata
+    assert context_snapshot(tmp_path,data)['memberships']==authority['descriptor']
     authority['snapshot_metadata']['fields']=dict(metadata,PIT_ELIGIBLE=True)
     with pytest.raises(ValueError,match='CONTEXT_LINEAGE_MISMATCH'):
         context_metadata(tmp_path,data)

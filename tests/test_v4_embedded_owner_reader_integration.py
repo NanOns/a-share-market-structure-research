@@ -119,6 +119,26 @@ def test_successor_http_context_uses_head_bound_pg_membership_metadata_without_f
     assert reader.snapshot['memberships']==pg_membership_descriptor
 
 
+def test_successor_validation_uses_pg_membership_and_identity_authorities_without_file_fallback(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_v1 as module
+    from workbench_db import v4_membership_reference_pg_v1 as membership
+    data=candidate(tmp_path)
+    data.update(membership_snapshot_id='SNAP-PG')
+    data[membership.KEY]={'contract_id':membership.PG_AUTHORITY_CONTRACT}
+    snapshot={'membership_snapshot_id':'SNAP-PG','PIT_ELIGIBLE':False,
+        'memberships':{'pg_descriptor':{'kind':'reference_memberships'}}}
+    calls=[]
+    monkeypatch.setattr(membership,'context_snapshot',lambda root,candidate:snapshot)
+    monkeypatch.setattr(membership,'read',lambda root,candidate:calls.append('memberships') or [])
+    monkeypatch.setattr(membership,'read_identity',lambda root,candidate:calls.append('identity') or [])
+    monkeypatch.setattr(module,'checked',lambda *args,**kwargs:(_ for _ in ()).throw(AssertionError('MEMBERSHIP_FILE_OPENED')))
+
+    result=module._validate_membership_inputs(tmp_path,data)
+
+    assert result is snapshot
+    assert calls==['memberships','identity']
+
+
 def test_candidate_preparation_owner_validation_keeps_exact_file_binding_check(tmp_path,monkeypatch):
     from workbench_analysis import operational_successor_v1 as module
     binding={'path':'owner.json','sha256':'a'*64}

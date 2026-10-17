@@ -62,6 +62,7 @@
 - `scripts/run_v4_dm01_daily_increment.py` 修正两个现役入口问题：`--active-source-policy` 曾引用不存在的 `args.receipt_dir`；`--snapshot-root` 默认值绕过中央配置。现在显式参数仍优先，否则使用 `TDX_SNAPSHOT_ROOT/config/paths.yaml`，并在该快照根下按日期写入 active source capture；TDX 源根保持只读。配置缺失在发出 source request 前返回 `BLOCKED_PATH_CONFIGURATION`。校正分支共用解析后的 snapshot root。
 - 对该入口完成 `py_compile` 与 `git diff --check`。没有启动采集器或日更 worker。
 - 28766 新增交互实测：Focus 搜索“中华企业”返回 1 条；Forward 搜索同对象返回 1 条并展开来源详情；市场页展开上证指数，展示真实行情蜡烛图并标注指数成交量单位待核实；Diagnostics/Jobs 展示 `SNAPSHOT_ONLY`、source requests=0 和两项明确缺口；Sources 与 Contracts 展开后读取同一候选快照身份（`market_research` / OID `646711`，T0 `2026-09-30`，`PG_CANDIDATE_SNAPSHOT`）。页面未运行日更 worker。
+- 首页展开“趋势”四轴来源抽屉，实测 `trend_axis=WEAK` 及三日宽度变化、参与度、压力计算输入，证据载明 2026-09-28 至 2026-09-30 各源 artifact 的具体 SHA-256；与首页候选快照日期一致。
 - 28766 仍由旧服务 PID `42876` 提供。尝试停止这一精确 PID 以载入最新 Python 代码被自动审查拒绝；没有通过其它进程控制方式绕过。故本轮新路径代码尚未在浏览器服务器进程内重新载入，浏览器集成验收仍记为 `BROWSER_PARTIAL_28766_OLD_PROCESS`。进程/端口核验：28766 由 PID `42876` 监听，28765 未监听，PostgreSQL 5432 仍在监听。
 - 后续又修正 `scripts/run_v4_current_daily.py`：启用 typed-scope V2 不再由本地 JSON 是否存在决定，改为读取 PostgreSQL Registry 中批准的 `TDX_A_STOCK_DELTA_SCOPE_POLICY_V2/2.0.0`，校验 `RECONSTRUCTED_CORRECTED` 且 `production_permission=false` 后才向 DM-01 传入 V2 参数。当前共享 PG 的 RR/RO readback 与两份日更入口 `py_compile`、`git diff --check` 均通过。
 - 按任务卡尝试更新 Issue #2 与 Draft PR #3；GitHub 连接器对 Issue body update 和 PR conversation comment 均返回 HTTP 403 `Resource not accessible by integration`。未改用 GitHub CLI。

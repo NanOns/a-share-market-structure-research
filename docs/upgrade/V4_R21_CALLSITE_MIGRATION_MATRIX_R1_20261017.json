@@ -26,7 +26,7 @@
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
-    "formal_p1_remaining": "NOT_RECOMPUTED"
+    "formal_p1_remaining": 266
   },
   "rows": [
     {
@@ -11056,7 +11056,7 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The caller source is pinned by accepted historical runtime SHA evidence used by V4.12/R14 governance checks. Direct edits invalidate the exact accepted closure. A separately versioned PG-backed runtime/entrypoint and accepted transition contract are needed before replacing these frozen readers.",
       "baseline_function": "load_contract",
       "migration_evidence": null,
       "reference_evidence": [
@@ -11122,7 +11122,7 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The caller source is pinned by accepted historical runtime SHA evidence used by V4.12/R14 governance checks. Direct edits invalidate the exact accepted closure. A separately versioned PG-backed runtime/entrypoint and accepted transition contract are needed before replacing these frozen readers.",
       "baseline_function": "load_contract",
       "migration_evidence": null,
       "reference_evidence": [

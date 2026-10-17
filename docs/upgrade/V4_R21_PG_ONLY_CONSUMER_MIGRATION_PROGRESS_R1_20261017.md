@@ -1,10 +1,10 @@
 ---
 stage_id: V4_R21_PG_ONLY_CONSUMER_MIGRATION_20261017_R1
 baseline_sha: 81f7398d52a786a0c0d4570a988f6aeeabf9b3f5
-code_sha: 01ad4c674f765fd718396ae258c2ce6d9f3ef5f3
+code_sha: fe0907891b81813a6f8ffa9e19ceb5306db49f9a
 branch: codex/v4-workspace-cleanup
 scope: explicit TDX source-root boundary for official and latest package capture
-test_scope: official TDX package, latest package, local fallback, operational executor focused regressions
+test_scope: TDX source-root boundary regressions and focused V4 PG candidate CI suite
 conclusion: R21_CODE_PARTIAL_OWNER_AND_BUSINESS_READ_MIGRATION_OPEN
 P1_business_reads_before: 266
 P1_business_reads_after: 266
@@ -20,7 +20,7 @@ Date: 2026-10-17 (Asia/Shanghai). The active stage input is Drive task card `V4_
 - `capture_tdx_official_daily_package`, `capture_latest_tdx_package`, and `extract_target_session_bars` no longer default to `D:/new_tdx`. An omitted root resolves through `common.paths.resolve_tdx_root`, which accepts the configured `config/paths.yaml` root or `TDX_ROOT` and fails closed when neither exists; tests pass an explicit isolated test root.
 - The current challenge-downloader adapter now reads the exact receipt reference returned by its bounded subprocess and verifies that receipt and package. It no longer consumes its `reports/audits` pointer file.
 - This change only tightens the source-root safety boundary. It does not establish source issuer/PIT acceptance or a PG ingestion/readback path, and it does not represent any of the 266 business-file P1 call sites as migrated.
-- Targeted regression result: 60 passed. `git diff --check` and the staged repository policy passed. No PG connection, server, market source request, Head, scheduler or production operation was performed.
+- Targeted local regression result: 62 passed. The final push and PR CI on `fe0907891b81813a6f8ffa9e19ceb5306db49f9a` both passed admission and V4 candidate jobs; the focused CI suite reported 232 passed and 1 skipped. `git diff --check` and staged repository policy passed. No PG connection, server, market source request, Head, scheduler or production operation was performed.
 
 ## Remaining R21 gates
 

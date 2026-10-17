@@ -23,7 +23,6 @@ CONTRACT_ID = "V4_DAILY_SOURCE_INGEST_ADAPTER_R6"
 CONTRACT_VERSION = "1.2.0"
 ACCEPTANCE_CONTRACT_ID = "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R3"
 PIT_CLOCK_CONTRACT_ID = "V4_DAILY_PIT_DECISION_CLOCK_R1"
-ACCEPTANCE_AUTHORITY_REGISTRY = Path(__file__).resolve().parents[2] / "config" / "v4_daily_source_acceptance_authorities_r1.json"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _SOURCE_NAMES = ("tdx", "native_baostock", "runtime_manifest")
 
@@ -49,20 +48,43 @@ class _IndependentAcceptanceProof:
         self.receipt_sha256 = receipt_sha256
 
 
-def _verify_independent_acceptance_authority(plan: Mapping[str, Any]) -> _IndependentAcceptanceProof:
-    """Verify an Ed25519 receipt against the repository-pinned issuer registry.
+def _acceptance_authority_registry(pg: Any | None = None) -> Mapping[str, Any]:
+    from workbench_analysis.contract_registry_pg_v1 import load_unique_current_approved_contract
+    from .v4_publication_reader import PgPublicationReader, readonly_connection
 
-    The registry is intentionally empty until an independent issuer is
-    separately approved and its public key is installed. A caller-supplied
-    public key or self-hash is never treated as trust material.
+    def read(cursor: Any) -> Mapping[str, Any]:
+        identity = PgPublicationReader._read_database_identity(cursor)
+        registered = load_unique_current_approved_contract(
+            cursor, "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1", "1.0.0",
+            expected_database_identity=identity,
+        )
+        if not isinstance(registered.parsed_json, Mapping):
+            raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_CONTRACT_INVALID")
+        return registered.parsed_json
+
+    if pg is not None:
+        return read(pg)
+    with readonly_connection() as cursor:
+        return read(cursor)
+
+
+def _verify_independent_acceptance_authority(
+    plan: Mapping[str, Any], *, pg: Any | None = None,
+) -> _IndependentAcceptanceProof:
+    """Verify an Ed25519 receipt against the currently approved PG contract.
+
+    The issuer registry is a versioned runtime contract, not a repository file.
+    Its bytes and approval event are resolved in one repeatable-read, read-only
+    transaction. Missing approval or an ambiguous namespace fails closed.
     """
     receipt = plan.get("acceptance_receipt")
     if not isinstance(receipt, Mapping):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_RECEIPT_REQUIRED")
     try:
-        registry = json.loads(ACCEPTANCE_AUTHORITY_REGISTRY.read_bytes())
-    except (OSError, ValueError) as exc:
-        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE") from exc
+        registry = _acceptance_authority_registry(pg)
+    except Exception as exc:
+        code = getattr(exc, "code", None) or str(exc)
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE:" + str(code)) from exc
     if (not isinstance(registry, Mapping)
             or registry.get("contract_id") != "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1"
             or registry.get("status") != "ACTIVE"):
@@ -165,7 +187,9 @@ def _verify_independent_acceptance_authority(plan: Mapping[str, Any]) -> _Indepe
     )
 
 
-def verify_source_package_manifest_authority(manifest: Mapping[str, Any]) -> dict[str, str]:
+def verify_source_package_manifest_authority(
+    manifest: Mapping[str, Any], *, pg: Any | None = None,
+) -> dict[str, str]:
     """Re-verify the persisted Ed25519 evidence from the immutable PG manifest."""
     proof = manifest.get("acceptance_proof") if isinstance(manifest, Mapping) else None
     receipt = proof.get("receipt") if isinstance(proof, Mapping) else None
@@ -178,7 +202,7 @@ def verify_source_package_manifest_authority(manifest: Mapping[str, Any]) -> dic
         "source_facts": manifest.get("source_fact_bindings"),
         "acceptance_receipt": dict(receipt),
     }
-    verified = _verify_independent_acceptance_authority(plan)
+    verified = _verify_independent_acceptance_authority(plan, pg=pg)
     if (proof.get("receipt_sha256") != verified.receipt_sha256
             or proof.get("issuer_id") != verified.authority_id
             or proof.get("contract_id") != ACCEPTANCE_CONTRACT_ID):

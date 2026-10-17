@@ -67,15 +67,29 @@ def publish_accepted_view(root,candidate_contract,expected_authority_digest,*,no
 
 
 def refresh_status(root,*,now=None):
-    root=Path(root);reader=CurrentAcceptedV4Reader(root,require_runtime=True);context=reader.load_context()
-    contract,_=reader._contract();heads=reader._heads(contract)
-    calendar=reader._read(heads['stage_authority']['calendar'])
-    sessions=calendar.get('session_dates') or calendar.get('sessions')
+    root=Path(root).resolve()
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current as read_data_head
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    head=read_data_head(root);candidate=head['candidate']
+    calendar_binding=candidate.get('calendar')
+    if not isinstance(calendar_binding,dict):raise SourceInvalid('PG_DATA_HEAD_CALENDAR_BINDING_MISSING')
+    calendar_source=read_bound(root,calendar_binding['path'],calendar_binding['sha256'])
+    if len(calendar_source['raw'])!=calendar_binding.get('bytes'):
+        raise SourceInvalid('PG_DATA_HEAD_CALENDAR_SIZE_MISMATCH')
+    calendar=calendar_source.get('value')
+    sessions=calendar.get('session_dates') or calendar.get('sessions') if isinstance(calendar,dict) else None
     if not sessions:raise SourceInvalid('OFFICIAL_CALENDAR_UNAVAILABLE')
     if isinstance(sessions[0],dict):sessions=sorted(set(row['trade_date'] for row in sessions))
+    accepted_date=candidate.get('accepted_trade_date')
+    if not isinstance(accepted_date,str):raise SourceInvalid('PG_DATA_HEAD_T0_MISSING')
+    context=dict(context=dict(accepted_trade_date=accepted_date),
+        data_head_sha256=head['head_sha256'],generation=head['generation'],
+        database_identity=head['database_identity'],source_mode='PG_DATA_ACCEPTED_HEAD')
     # The accepted PG calendar is the sole date authority. A local DM-01
     # candidate calendar must never extend the operational run horizon.
     now=now or datetime.now(ZoneInfo('Asia/Shanghai'))
-    completed=[d for d in sessions if context['context']['accepted_trade_date']<d<now.date().isoformat() or (d==now.date().isoformat() and now.hour>=15 and d>context['context']['accepted_trade_date'])]
+    completed=[d for d in sessions if accepted_date<d<now.date().isoformat() or (d==now.date().isoformat() and now.hour>=15 and d>accepted_date)]
     return dict(status='WAIT_NEXT_ACCEPTED_INPUT' if not completed else 'COMPLETED_INPUT_CAPTURE_REQUIRED',next_completed_session=min(completed) if completed else None,
-        source_requests=0,data_preserved=True,context=context,contract_id='V4_ACCEPTED_CURRENT_REFRESH_V1')
+        source_requests=0,data_preserved=True,context=context,contract_id='V4_PG_DATA_HEAD_REFRESH_STATUS_R1',
+        calendar_source=dict(path=calendar_binding['path'],sha256=calendar_binding['sha256']),
+        worker_started=False)

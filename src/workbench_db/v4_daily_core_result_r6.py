@@ -235,7 +235,7 @@ def _read_consumed_source_proofs(pg: Any, *, publication_id: str, publication_re
             if is_manifest_r3:
                 from .v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
                 try:
-                    verify_source_package_manifest_authority(package_manifest)
+                    verify_source_package_manifest_authority(package_manifest, pg=pg)
                 except ValueError as exc:
                     raise CoreResultError("CORE_RESULT_SOURCE_ACCEPTANCE_SIGNATURE_INVALID") from exc
             cutoff_clocks = {

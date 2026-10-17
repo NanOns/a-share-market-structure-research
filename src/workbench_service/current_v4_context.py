@@ -41,8 +41,8 @@ class CurrentAcceptedV4Reader:
 
     def _read(self, ref):
         try:
-            from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-            path=materialize_bound(self.root,ref);raw=path.read_bytes()
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+            source=read_bound(self.root,ref['path'],ref['sha256']);raw=source['raw']
         except (OSError,ValueError) as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
         if len(raw)!=ref.get('bytes',ref.get('byte_count')) or digest(raw)!=ref['sha256']:
             raise SourceInvalid('BOUND_ARTIFACT_DIGEST_MISMATCH:'+ref['path'])
@@ -64,21 +64,21 @@ class CurrentAcceptedV4Reader:
 
     def _contract(self):
         try:
-            from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
             if self.follow_runtime and self.contract_path=='config/v4_current_accepted_read_contract_v1.json':
-                try: runtime_path=materialize_path(self.root,'config/v4_production_runtime_authority_v1.json')
+                try: runtime_source=read_path(self.root,'config/v4_production_runtime_authority_v1.json')
                 except ValueError:
                     if self.require_runtime:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
-                    runtime_path=None
-            else:runtime_path=None
-            if self.require_runtime and runtime_path is None:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
-            if runtime_path is not None:
-                runtime=json.loads(runtime_path.read_bytes())
+                    runtime_source=None
+            else:runtime_source=None
+            if self.require_runtime and runtime_source is None:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
+            if runtime_source is not None:
+                runtime=json.loads(runtime_source['raw'])
                 if runtime['contract_id']!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1' or not runtime['ui_read_only'] or runtime['tdx_write_authorized'] or runtime['trading_action_authorized']:raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
                 ref=runtime['read_authority'];contract=self._read(ref);contract_digest=ref['sha256']
                 if runtime['data_head_binding']['sha256']!=contract['anchors']['data_head']['sha256'] or runtime['stage_authority_binding']['sha256']!=contract['anchors']['stage_authority']['sha256']:raise SourceInvalid('RUNTIME_READ_AUTHORITY_INCONSISTENT')
             else:
-                raw=materialize_path(self.root,self.contract_path).read_bytes();contract=json.loads(raw);contract_digest=digest(raw)
+                source=read_path(self.root,self.contract_path);raw=source['raw'];contract=json.loads(raw);contract_digest=digest(raw)
             if contract['contract_id']!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1' or contract['source_discovery'] or contract['fallback']!='NONE':raise SourceInvalid('READ_CONTRACT_INVALID')
             return contract,contract_digest
         except (OSError,KeyError,json.JSONDecodeError) as exc:raise SourceInvalid('READ_CONTRACT_INVALID') from exc

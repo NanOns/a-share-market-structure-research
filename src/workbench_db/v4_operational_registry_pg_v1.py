@@ -7,7 +7,6 @@ from .v4_operational_owner_pg_closeout import (
     read as read_owner_fact,
 )
 from .v4_forward_pg_r1 import canonical, digest
-from workbench_analysis.r43_owner_replay import checked
 
 KEY = 'native_operational_registry'
 CONTRACT = 'V4_OPERATIONAL_BUILDER_REGISTRY_PG_R1'
@@ -23,7 +22,21 @@ def prepare(root, candidate):
     root = Path(root).resolve()
     day = candidate['accepted_trade_date']
     source_binding = candidate['registry']
-    raw = checked(root, source_binding).read_bytes()
+    from .v4_operational_owner_pg_closeout import validate_source_binding
+    validate_source_binding(source_binding)
+    from .v4_historical_source_ingress_pg_r1 import read_bound, ingest_file, source_id_for_path
+    try:
+        source = read_bound(root, source_binding['path'], source_binding['sha256'])
+    except ValueError as exc:
+        if str(exc) != 'HISTORICAL_SOURCE_INGRESS_NOT_FOUND':
+            raise
+        source_path = root / source_binding['path']
+        ingest_file(root, source_id_for_path(source_binding['path']), source_path,
+            expected_sha256=source_binding['sha256'])
+        source = read_bound(root, source_binding['path'], source_binding['sha256'])
+    raw = source['raw']
+    if len(raw) != source_binding.get('bytes'):
+        raise ValueError('OPERATIONAL_REGISTRY_SOURCE_SIZE_MISMATCH')
     value = json.loads(raw)
     if not isinstance(value, dict) or value.get('owner_bindings') != candidate['owners']:
         raise ValueError('OPERATIONAL_REGISTRY_OWNER_BINDING_MISMATCH')

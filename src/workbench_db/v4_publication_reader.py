@@ -885,7 +885,7 @@ class PgPublicationReader:
                 manifest = row.get("source_package_manifest")
                 try:
                     from .v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
-                    proof = verify_source_package_manifest_authority(manifest)
+                    proof = verify_source_package_manifest_authority(manifest, pg=pg)
                 except (TypeError, ValueError) as exc:
                     raise PublicationReadError("SOURCE_PACKAGE_INDEPENDENT_ACCEPTANCE_INVALID") from exc
                 if (manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True

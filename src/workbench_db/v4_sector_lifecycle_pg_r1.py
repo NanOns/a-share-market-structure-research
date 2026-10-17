@@ -10,10 +10,8 @@ from psycopg.types.json import Jsonb
 
 from .v4_native import connection,create_schema,workspace_schema
 from .v4_forward_pg_r1 import ForwardFactStore
-from workbench_analysis.operational_daily_storage_v1 import atomic_json
 
 CONTRACT='V4_SECTOR_LIFECYCLE_PG_OWNER_R1'
-AUTHORITY='data/v4/sector_lifecycle_authority_r1.json'
 
 
 def canonical(value):
@@ -75,7 +73,7 @@ def prepare(root,token,day,rows,*,producer_sha256,parameter_digest,input_digest)
     owner_digest=digest(material);schema=schema_for_revision(root,owner_digest)
     with connection(schema) as pg:
         _install_schema(pg,schema)
-        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(schema+token+day,))
+        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),))
         identity=ForwardFactStore._database_identity(pg)
         old=pg.execute(sql.SQL('SELECT digest,sealed FROM {}.owner_versions WHERE token=%s AND T0=%s').format(sql.Identifier(schema)),(token,day)).fetchone()
         if old and (old[0]!=owner_digest or old[1] is not True):raise ValueError('SECTOR_LIFECYCLE_OWNER_IMMUTABLE_VERSION_CONFLICT')
@@ -92,24 +90,17 @@ def prepare(root,token,day,rows,*,producer_sha256,parameter_digest,input_digest)
     binding=dict(contract_id=CONTRACT,engine='postgresql',schema=schema,token=token,T0=day,
         digest=owner_digest,producer_sha256=producer_sha256,parameter_digest=parameter_digest,
         input_digest=input_digest,row_count=len(rows),database_identity=identity)
-    authority_path=root/AUTHORITY
-    authority=json.loads(authority_path.read_bytes()) if authority_path.exists() else dict(contract_id=CONTRACT,versions={})
-    if authority.get('contract_id')!=CONTRACT or not isinstance(authority.get('versions'),dict):raise ValueError('SECTOR_LIFECYCLE_OWNER_AUTHORITY_INVALID')
-    versions=authority['versions'].setdefault(token,{})
-    prior=versions.get(day)
-    if prior is not None and prior!=binding:raise ValueError('SECTOR_LIFECYCLE_OWNER_AUTHORITY_IMMUTABLE_CONFLICT')
-    versions[day]=binding
-    atomic_json(root,authority_path,authority)
-    return dict(binding=binding,authority_path=AUTHORITY,authority_sha256=hashlib.sha256(authority_path.read_bytes()).hexdigest(),head_changed=False)
+    from .v4_pg_binding_registry_r1 import put
+    registry=put(root,'sector_lifecycle',token,day,binding)
+    return dict(binding=binding,registry=registry,head_changed=False)
 
 
 def load(root,token,day):
-    root=Path(root).resolve();path=root/AUTHORITY
-    authority=json.loads(path.read_bytes())
-    if authority.get('contract_id')!=CONTRACT:raise ValueError('SECTOR_LIFECYCLE_OWNER_AUTHORITY_INVALID')
-    binding=authority.get('versions',{}).get(token,{}).get(day)
-    if not binding:raise ValueError('SECTOR_LIFECYCLE_OWNER_AUTHORITY_NOT_FOUND')
-    if binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql' or not binding.get('sealed',True):
+    root=Path(root).resolve()
+    from .v4_pg_binding_registry_r1 import get
+    binding=get(root,'sector_lifecycle',token,day)
+    if (binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql'
+            or binding.get('sealed',True) is not True):
         raise ValueError('SECTOR_LIFECYCLE_OWNER_BINDING_INVALID')
     if binding.get('schema')!=schema_for_revision(root,binding.get('digest')):raise ValueError('SECTOR_LIFECYCLE_OWNER_SCHEMA_MISMATCH')
     with connection(binding['schema'],read_only=True) as pg:

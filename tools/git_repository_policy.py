@@ -188,6 +188,14 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
         findings.append(Finding("CREDENTIAL_PATTERN", path, "credential-bearing connection string pattern detected"))
     for match in SECRET_ASSIGNMENT.finditer(text):
         value = match.group(1).strip().strip("'\"")
+        # A token field assigned from the identically named SQL/Python field
+        # is an identifier binding, not a credential literal. Literal and
+        # named-secret values remain subject to the checks below.
+        left = re.split(r"[=:]", match.group(0), maxsplit=1)[0].strip().strip("'\"")
+        left = left.rsplit(".", 1)[-1].lower()
+        right = value.rsplit(".", 1)[-1].lower()
+        if left and right == left and re.fullmatch(r"[A-Za-z_]\w*", value.rsplit(".", 1)[-1]):
+            continue
         if value and not PLACEHOLDER.fullmatch(value) and not re.match(
             r"(?i)^(?:os\.(?:getenv|environ)|settings\.|config\.|secretmanager\.|"
             r"get_secret\(|read_secret\(|process\.env\b|env\(|[A-Za-z_]\w*\.[A-Za-z_]\w*\()", value

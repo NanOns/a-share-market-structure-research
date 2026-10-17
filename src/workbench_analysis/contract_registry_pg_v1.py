@@ -339,6 +339,71 @@ def load_current_approved_contract(
         approved_at, approval_recorded_at, str(approval_source_digest))
 
 
+def load_unique_current_approved_contract(
+    cursor: Any,
+    contract_id: str,
+    version: str,
+    *,
+    expected_database_identity: dict[str, Any],
+) -> RegisteredContract:
+    """Resolve one bootstrap contract without a filesystem namespace locator.
+
+    Before publication exists, an approved runtime contract must still resolve
+    to exactly one current namespace in the caller-owned repeatable-read,
+    read-only snapshot. Missing or ambiguous approvals fail closed.
+    """
+    if not all(isinstance(value, str) and value.strip()
+               for value in (contract_id, version)):
+        raise ContractRegistryError("V4_CONTRACT_LOOKUP_ID_REQUIRED")
+    if not isinstance(expected_database_identity, dict):
+        raise ContractRegistryError("V4_PG_DATABASE_IDENTITY_REQUIRED")
+    try:
+        session = _fetchone(cursor,
+            """SELECT current_setting('transaction_isolation'),
+                      current_setting('transaction_read_only')""")
+        if (not session or len(session) < 2
+                or str(session[0]).lower() != "repeatable read"
+                or str(session[1]).lower() not in ("on", "true", "1")):
+            raise ContractRegistryError("V4_PG_READONLY_REPEATABLE_READ_REQUIRED")
+        from workbench_db.v4_publication_reader import PgPublicationReader
+        identity = PgPublicationReader._read_database_identity(cursor)
+        if identity != expected_database_identity:
+            raise ContractRegistryError("V4_PG_DATABASE_IDENTITY_MISMATCH")
+        PgPublicationReader._attest_read_role(cursor)
+        rows = cursor.execute(
+            """SELECT c.namespace
+                 FROM v4.contract_versions c
+                 JOIN LATERAL (
+                      SELECT e.action
+                        FROM v4.contract_approval_events e
+                       WHERE e.contract_id=c.contract_id
+                         AND e.version=c.version
+                         AND e.raw_sha256=c.raw_sha256
+                         AND e.source_revision=c.source_revision
+                         AND e.occurred_at <= transaction_timestamp()
+                         AND e.recorded_at <= transaction_timestamp()
+                       ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC
+                       LIMIT 1
+                 ) current_event ON current_event.action='APPROVED'
+                WHERE c.contract_id=%s AND c.version=%s
+                ORDER BY c.namespace""",
+            (contract_id, version),
+        ).fetchall()
+    except ContractRegistryError:
+        raise
+    except Exception as exc:
+        raise ContractRegistryError("V4_PG_CONTRACT_REGISTRY_UNAVAILABLE") from exc
+    namespaces = sorted({str(row[0]) for row in rows if row and row[0]})
+    if not namespaces:
+        raise ContractRegistryError("V4_PG_CONTRACT_VERSION_NOT_FOUND")
+    if len(namespaces) != 1:
+        raise ContractRegistryError("V4_PG_CONTRACT_NAMESPACE_AMBIGUOUS")
+    return load_current_approved_contract(
+        cursor, contract_id, version, namespaces[0],
+        expected_database_identity=expected_database_identity,
+    )
+
+
 def load_current_approved_contract_by_digest(
     cursor: Any, contract_id: str, raw_sha256: str, namespace: str, *,
     expected_database_identity: dict[str, Any],

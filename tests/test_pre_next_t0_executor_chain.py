@@ -18,6 +18,7 @@ from scripts import audit_dynamic_daily_period_numbers_v1 as oracle
 def test_full_executor_entry(chain, monkeypatch, gate_ready):
     root, day, freeze, new_head, _ = chain
     monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'configured-snapshots'))
     if gate_ready:
         from tests.exact_daily_policy_fixture import install_official_closure
         install_official_closure(root)

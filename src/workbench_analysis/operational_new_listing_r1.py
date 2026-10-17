@@ -12,6 +12,16 @@ from .security_entity_identity import stable_security_id
 CONTRACT='V4_CURRENT_OPERATIONAL_NEW_CODE_R2'
 PATH='config/v4_operational_new_listing_r1.json'
 
+def request_ledger_path(root):
+    """Keep the existing durable budget ledger while adopting configured cache paths."""
+    root=Path(root)
+    from common.paths import resolve_baostock_cache_root
+    legacy=root/'reports/v4_baostock/request_ledger.json'
+    configured=resolve_baostock_cache_root(root)/'request_ledger.json'
+    if legacy.exists() and configured.exists():
+        raise ValueError('BAOSTOCK_REQUEST_LEDGER_MIGRATION_CONFLICT')
+    return legacy if legacy.exists() else configured
+
 def validate_basic(code,day,rows,existing_ids):
     if len(rows)!=1:raise ValueError('IPO_BASIC_SINGLE_RECORD_REQUIRED')
     row=rows[0]
@@ -124,7 +134,7 @@ def admitted_identity(root,day,gate,freeze):
             from .operational_baostock_client_v1 import BaoStockClient
             from .operational_runtime_acceptance_v2 import load as runtime_manifest
             manifest=runtime_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
-            with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
+            with BaoStockClient(RequestBudget(request_ledger_path(root)),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
                 for code in pending:
                     started=datetime.now(timezone.utc).isoformat()
                     try:

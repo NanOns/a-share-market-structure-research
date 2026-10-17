@@ -16980,6 +16980,25 @@
         "p1_formally_remaining": 266,
         "status": "DM01_HTTP_STATUS_GETS_WIRED_TO_READER_ONLY_CLIENT; formal baseline unchanged.",
         "next": "Continue actual operational Head, Authority, descriptor, source-ingress and Owner callsites. Preserve 266 formal remaining until approved same-T0 PG readback and per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-baostock-new-listing-budget-path-r31",
+        "files": [
+          "src/workbench_analysis/operational_new_listing_r1.py",
+          "tests/test_operational_new_listing_r1.py",
+          "docs/upgrade/V4_R21_R4_BAOSTOCK_NEW_LISTING_BUDGET_PATH_R31_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The new-listing BaoStock adapter uses the centrally configured cache for a fresh request ledger while preserving an existing legacy ledger to avoid silently resetting request-budget history.",
+          "If both old and configured ledger files exist, the adapter rejects the ambiguous dual history; no ledger contents were read, copied or changed during source review.",
+          "The path is not present as an exact row in this 266-callsite baseline, so no synthetic baseline ID or count change is recorded."
+        ],
+        "verification": "46 focused new-listing and configured-TDX/BaoStock path tests passed. No provider call, source capture, PG access or service startup.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "BAOSTOCK_NEW_LISTING_REQUEST_BUDGET_USES_CONFIGURED_CACHE_WITH_LEGACY_CONTINUITY; no baseline row reconciled.",
+        "next": "Continue exact source-ingress contract and accepted PG append/readback work; reconcile current inventory edges without synthesizing callsite IDs."
       }
     ]
   }

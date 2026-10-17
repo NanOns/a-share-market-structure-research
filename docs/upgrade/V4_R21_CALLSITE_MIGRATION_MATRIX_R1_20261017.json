@@ -3767,13 +3767,13 @@
         "status": "RELATION_MAPPING_REQUIRED_NO_EQUIVALENT_OWNER_RELATION_VERIFIED"
       },
       "acceptance_evidence": null,
-      "blocker": "derive_ready_sources reaches verify_source_gate, which still reads V4_OPERATIONAL_RESEARCH_HEAD.json, its lifecycle binding, and identity sidecar. The R56 runtime contract reader does not replace this Head/Owner identity authority. Map the exact accepted Head and dated identity/lifecycle PG relations and migrate the consumer before changing this row.",
+      "blocker": "derive_ready_sources still reads data/v4/producer_candidate_index_v2.json before prepare_research. The exact-dated PG authority stores an index entry only after this input is supplied; no pre-read PG source for the active day index has been verified. Migrate the index producer/reader as one chain before changing this row.",
       "baseline_function": "derive_ready_sources",
       "migration_evidence": {
         "batch_id": "R21-R4-matrix-source-audit-r57",
-        "implemented_code": "No PG migration credited for this row. Source-line audit found the active verify_source_gate still opens local operational Head, lifecycle sidecar and identity sidecar.",
+        "implemented_code": "No PG migration credited for this exact row. The R55 PG reference stores the index entry downstream in the candidate Owner authority; derive_ready_sources still reads the local index to supply prepare_research.",
         "formal_status": "OPEN",
-        "verification": "Source and caller audit; no live PG read or Head mutation."
+        "verification": "Exact caller and data-flow audit of operational_daily_executor_v1.derive_ready_sources and v4_membership_reference_pg_v1.prepare_research; no live PG read or write."
       },
       "reference_evidence": [
         {

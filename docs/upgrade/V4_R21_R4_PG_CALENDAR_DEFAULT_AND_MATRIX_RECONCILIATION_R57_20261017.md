@@ -17,7 +17,7 @@ Date: 2026-10-17 (Asia/Shanghai). Reviewed the R21-R4 execution card and the lat
 ## Implemented
 
 - The shared `market_source_acquisition.official_sessions` call now defaults to the accepted PG market calendar. `FILE` remains available only by explicit mode. The existing executor and PG DailyJobs calendar selectors also default to PG; PG failures do not fall back to local calendar files.
-- Updated the file-backed acquisition test and legacy full-executor fixture to select `FILE` explicitly. Added default-PG assertions and put the market-calendar, DM-01 progress and acquisition test modules into repository-policy CI.
+- Updated the file-backed acquisition test and legacy full-executor fixture to select `FILE` explicitly. Added default-PG assertions and put the market-calendar and DM-01 progress test modules into repository-policy CI. The BaoStock-SDK-dependent acquisition module is locally tested but excluded from CI.
 - Re-audited the exact R56 source lines for `V4-BCA-R2-251b6859286f1bec50bc`. `derive_ready_sources` calls `verify_source_gate`, which still reads the operational Head and its lifecycle and identity sidecars. R56's runtime-contract reader does not replace those authorities. Reopened this row as `OPEN` and documented the actual missing PG relation mapping. It receives no migration credit.
 - Updated `V4-BCA-R2-66c06ef7f4ecead04533` with the selected default-path evidence. Its formal status remains open pending live identity, approved calendar contract and accepted-publication reconciliation.
 
@@ -25,7 +25,7 @@ Date: 2026-10-17 (Asia/Shanghai). Reviewed the R21-R4 execution card and the lat
 
 - Focused local selection: **51 passed** across PG calendar, DM-01 progress, source acquisition, executor-chain and contract-registry tests. The exact repository-policy pytest selection after excluding the Baostock-SDK-dependent acquisition module passed locally: **293 passed**.
 - The PG path was exercised with controlled fake boundaries. No live catalog read, Registry import, database write, server start, accepted Head update, or provider capture occurred. These tests are not business acceptance.
-- R56 CI initially failed in two legacy executor-chain tests because those fixtures had not explicitly selected file-contract mode; R57 makes that test boundary explicit. The first R57 CI attempt then showed that the acquisition module requires Baostock package metadata that repository CI does not install. The module is removed from the CI command; the PG calendar and DM-01 regression modules remain included. Current pushed CI is authoritative.
+- R56 CI initially failed in two legacy executor-chain tests because those fixtures had not explicitly selected file-contract mode; R57 makes that test boundary explicit. The first R57 CI attempt then showed that the acquisition module requires Baostock package metadata that repository CI does not install. The module was removed from the CI command; the PG calendar and DM-01 regression modules remain included. Current pushed CI is authoritative.
 
 ## Accounting
 

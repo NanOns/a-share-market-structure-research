@@ -1,5 +1,11 @@
 from pathlib import Path
-from common.paths import resolve_configured_path, resolve_tdx_root, configured_path_source
+from common.paths import (
+    configured_path_source,
+    resolve_baostock_cache_root,
+    resolve_configured_path,
+    resolve_tdx_root,
+    resolve_tdx_snapshot_root,
+)
 
 def test_environment_tdx_root_overrides_config(tmp_path,monkeypatch):
     configured=tmp_path/"configured";configured.mkdir();environment=tmp_path/"environment";environment.mkdir()
@@ -42,3 +48,17 @@ def test_no_implicit_absolute_tdx_root_fallback(tmp_path,monkeypatch):
         assert str(exc)=="TDX_ROOT_NOT_CONFIGURED"
     else:
         raise AssertionError("TDX_ROOT_MUST_NOT_FALL_BACK_TO_CODED_ABSOLUTE_PATH")
+
+
+def test_repository_tdx_and_baostock_input_output_paths_are_separated(monkeypatch):
+    root=Path(__file__).resolve().parents[2]
+    for key in ('TDX_ROOT','TDX_SNAPSHOT_ROOT','BAOSTOCK_CACHE_ROOT'):
+        monkeypatch.delenv(key,raising=False)
+    tdx=resolve_tdx_root(root)
+    snapshot=resolve_tdx_snapshot_root(root)
+    cache=resolve_baostock_cache_root(root)
+    assert configured_path_source(root,'tdx.source_root')=='CONFIG:config/paths.yaml'
+    assert configured_path_source(root,'tdx.snapshot_root')=='CONFIG:config/paths.yaml'
+    assert configured_path_source(root,'baostock.cache_root')=='CONFIG:config/paths.yaml'
+    assert not snapshot.is_relative_to(tdx)
+    assert not cache.is_relative_to(tdx)

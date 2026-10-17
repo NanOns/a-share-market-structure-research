@@ -88,6 +88,10 @@ def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance(
     assert "UPDATE OF contract_bindings" not in sql
     assert "BEFORE INSERT OR UPDATE ON v4.publications" in sql
     assert "contract_approval_events" in sql
+    assert "NEW.recorded_at := clock_timestamp()" in sql
+    assert "BEFORE TRUNCATE ON v4.contract_versions" in sql
+    assert "BEFORE TRUNCATE ON v4.contract_approval_events" in sql
+    assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in sql
 
 
 @pytest.mark.parametrize("action,source_digest", [("REVOKED", "a" * 64), ("APPROVED", "0" * 64)])

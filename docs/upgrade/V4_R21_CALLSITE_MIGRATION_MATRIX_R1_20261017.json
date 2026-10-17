@@ -16388,6 +16388,24 @@
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "next": "Make the verified PG calendar the selected runtime path after database identity and accepted publication mapping are reconciled; continue remaining daily and Owner batches."
+      },
+      {
+        "batch_id": "R21-R4-registry-sql-and-path-guards-r4",
+        "files": [
+          "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql",
+          "src/workbench_analysis/contract_registry_pg_v1.py",
+          "src/workbench_db/v4_publication_reader.py",
+          "tests/r4_repair/test_configured_tdx_path.py"
+        ],
+        "evidence": [
+          "Database-stamped registry record times prevent approval/version backdating; TRUNCATE is blocked on both append-only registry tables.",
+          "Publication contract lookup is pinned to publication_id and revision_no; deterministic tie ordering includes occurred_at, recorded_at and event_id.",
+          "Repository path test verifies configured TDX input and configured TDX/BaoStock output/cache roots are separated."
+        ],
+        "verification": "108 focused offline tests passed; compileall and diff check passed. No live PG catalog/readback.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "next": "Continue active daily accepted Head/source migration and mapped Owner/other-business consumer batches."
       }
     ]
   }

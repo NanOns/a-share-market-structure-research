@@ -131,7 +131,7 @@ def load_publication_contract(
                          AND e.raw_sha256=c.raw_sha256
                          AND e.occurred_at <= %s
                          AND e.recorded_at <= %s
-                       ORDER BY e.occurred_at DESC, e.event_id DESC
+                       ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC
                        LIMIT 1
                  ) a ON true
                 WHERE c.contract_id=%s AND c.version=%s AND c.raw_sha256=%s""",

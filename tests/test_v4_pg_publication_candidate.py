@@ -206,6 +206,10 @@ def test_reader_returns_final_schema_identity_and_preserves_owner_quality():
     assert result["candidate_only"] is True and result["readback_complete"] is True
     assert result["publication_id"] == "pub-20261015-r1" and result["revision_no"] == 1
     assert result["contracts"]["V4_PUBLICATION_TEST_CONTRACT"]["raw_sha256"] == hashlib.sha256(b"{}").hexdigest()
+    contract_lookup = next((sql, params) for sql, params in connection.statements
+                           if "JOIN v4.model_namespaces" in sql and "contract_bindings" in sql)
+    assert "p.revision_no=%s" in contract_lookup[0]
+    assert contract_lookup[1] == ("pub-20261015-r1", 1)
     assert result["module_results"]["research_priority"]["quality_status"] == "DEGRADED"
     assert result["module_results"]["research_priority"]["as_recorded"] is False
     assert result["module_results"]["research_priority"]["pit_eligible"] is False

@@ -58,6 +58,33 @@ CREATE TRIGGER contract_approval_events_append_only
     BEFORE UPDATE OR DELETE ON v4.contract_approval_events
     FOR EACH ROW EXECUTE FUNCTION v4.reject_contract_approval_event_mutation();
 
+-- Recording timestamps are assigned by the database on insert. Callers cannot
+-- backdate an approval into a publication's historical acceptance interval.
+CREATE FUNCTION v4.stamp_contract_registry_recorded_at() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+    NEW.recorded_at := clock_timestamp();
+    RETURN NEW;
+END $$;
+CREATE TRIGGER contract_versions_recorded_at
+    BEFORE INSERT ON v4.contract_versions
+    FOR EACH ROW EXECUTE FUNCTION v4.stamp_contract_registry_recorded_at();
+CREATE TRIGGER contract_approval_events_recorded_at
+    BEFORE INSERT ON v4.contract_approval_events
+    FOR EACH ROW EXECUTE FUNCTION v4.stamp_contract_registry_recorded_at();
+
+CREATE FUNCTION v4.reject_contract_registry_truncate() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+    RAISE EXCEPTION 'V4_CONTRACT_REGISTRY_APPEND_ONLY';
+END $$;
+CREATE TRIGGER contract_versions_no_truncate
+    BEFORE TRUNCATE ON v4.contract_versions
+    FOR EACH STATEMENT EXECUTE FUNCTION v4.reject_contract_registry_truncate();
+CREATE TRIGGER contract_approval_events_no_truncate
+    BEFORE TRUNCATE ON v4.contract_approval_events
+    FOR EACH STATEMENT EXECUTE FUNCTION v4.reject_contract_registry_truncate();
+
 -- Historical accepted publications are intentionally left NULL until an
 -- approved, evidence-backed binding is reconciled for each row. NOT VALID
 -- avoids retrospectively rejecting those rows while enforcing future writes.
@@ -132,7 +159,7 @@ BEGIN
                  AND e.raw_sha256 = c.raw_sha256
                  AND e.occurred_at <= NEW.accepted_at
                  AND e.recorded_at <= NEW.accepted_at
-               ORDER BY e.occurred_at DESC, e.event_id DESC
+               ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC
                LIMIT 1
           ) e ON true
          WHERE c.contract_id = binding.contract_id

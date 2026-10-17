@@ -24,6 +24,7 @@ Added the pinned PostgreSQL grammar parser `pglast==8.6` to the repository-polic
 
 - Local focused verification: **22 passed** across the parser regression and contract registry behavior tests.
 - Parser accepted forward draft (16 statements), rollback draft (19 statements), and read-only preflight (7 statements).
+- Push CI [39023559420](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39023559420) and PR CI [39023562326](https://github.com/NanOns/a-share-market-structure-research/actions/runs/39023562326) both completed successfully, including the V4 PG contract/candidate suite and business-code file-access audit.
 - This confirms PostgreSQL grammar parsing only. No PG connection/catalog inspection, DDL/DML, registry import, or accepted Head readback occurred. It does not replace full business acceptance.
 
 ## Original 266-item accounting

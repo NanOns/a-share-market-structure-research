@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 245,
+    "migration_open": 244,
     "statuses": {
-      "OPEN": 237,
+      "OPEN": 236,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 21
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 22
     },
-    "code_level_pg_read_paths_implemented": 21,
-    "remaining_open_or_ingress": 245,
+    "code_level_pg_read_paths_implemented": 22,
+    "remaining_open_or_ingress": 244,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -16251,7 +16251,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -16262,9 +16262,21 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head does not contain native_operational_registry, and approved live PG identity/readback plus downstream inventory reconciliation remain open.",
       "baseline_function": "Handler.do_GET",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-operational-registry-pg-reader-r39",
+        "implemented_code": "The exact builder-registry reader in operational_daily_server_v1 now resolves the Head-bound native_operational_registry via v4_operational_registry_pg_v1.read_registry; PG mode validates the source binding, accepted T0, inline descriptor and fact token, without opening the source registry JSON. Candidate preparation appends and reads back exact registry bytes in the existing PG Owner fact store.",
+        "test_evidence": [
+          "test_registry_reader_uses_head_bound_pg_fact_without_opening_source_file",
+          "test_registry_reader_rejects_descriptor_not_bound_to_candidate",
+          "test_registry_prepare_appends_exact_payload_and_embeds_pg_descriptor",
+          "test_daily_status_routes_use_injected_read_only_client"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_OPERATIONAL_REGISTRY_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160929",
@@ -17144,6 +17156,29 @@
         "p1_formally_remaining": 266,
         "status": "DAILY_SERVICE_READER_CACHE_HANDLES_PG_ONLY_LOCATORS_WITHOUT_LOCAL_STAT; no original P1 row closed.",
         "next": "Continue moving direct accepted registry and Head reads where exact PG authority mappings are available; retain 266 open until permitted readback."
+      },
+      {
+        "batch_id": "R21-R4-operational-registry-pg-reader-r39",
+        "files": [
+          "src/workbench_db/v4_operational_registry_pg_v1.py",
+          "src/workbench_analysis/operational_successor_v1.py",
+          "src/workbench_service/operational_daily_server_v1.py",
+          "tests/test_v4_operational_registry_pg.py",
+          "docs/upgrade/V4_R21_R4_OPERATIONAL_REGISTRY_PG_READER_R39_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-6e494c31ad6b9871ea87"
+        ],
+        "evidence": [
+          "Added a versioned Head/T0-bound PG builder-registry authority and read path using the append-only operational Owner fact store.",
+          "Reader admission and daily-service registry consumers use the shared PG reader when the authority key is present; that branch has no local registry fallback.",
+          "Reconciled one code-level path to the exact service registry row. Current accepted Head lacks the PG authority and no live PG evidence exists, so formal P1 count remains unchanged."
+        ],
+        "verification": "Focused tests: 14 passed across registry authority, daily service routes and embedded Owner Reader. Python compile and diff check passed. No PG write/readback or service startup.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "HEAD_BOUND_OPERATIONAL_REGISTRY_PG_READ_PATH_IMPLEMENTED_PENDING_LIVE_HEAD_RECONCILIATION; one baseline row remains formally open.",
+        "next": "Continue exact-mapped Owner and other-business PG consumers; no formal closure before permitted same-T0 readback."
       }
     ]
   }

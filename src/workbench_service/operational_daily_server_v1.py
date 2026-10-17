@@ -49,12 +49,13 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
     def successor_reader():
         import hashlib
         from workbench_analysis.operational_successor_v1 import accepted_api
+        from workbench_db.v4_operational_registry_pg_v1 import read_registry
         head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
         signature=hashlib.sha256(head.read_bytes()).hexdigest()
         changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in successor_cache.get('sources',{}).items())
         if changed or signature!=successor_cache.get('signature'):
             api=accepted_api(root)
-            registry=json.loads((root/api.candidate['registry']['path']).read_bytes())
+            registry=read_registry(root,api.candidate)
             paths=_local_successor_source_paths(root,api.candidate,api.snapshot,registry)
             successor_cache.clear()
             successor_cache.update(signature=signature,api=api,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
@@ -102,9 +103,10 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
             if path in ('/v4/assets/api.js','/v4/assets/components.js'):
                 from workbench_analysis.operational_successor_v1 import CONTRACT
                 from workbench_analysis.r43_owner_replay import checked
+                from workbench_db.v4_operational_registry_pg_v1 import read_registry
                 head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
                 if head.get('contract_id')==CONTRACT:
-                    registry=json.loads(checked(root,head['registry']).read_bytes())
+                    registry=read_registry(root,head)
                     relative='src/workbench_service/static/r43-compat/'+path.rsplit('/',1)[1]
                     binding=next(b for b in registry['bindings'] if b['path']==relative)
                     return self.send(200,checked(root,binding).read_bytes(),'application/javascript; charset=utf-8')

@@ -94,7 +94,8 @@ def validate(root, candidate, *, pg_owner_authority=None):
         raise ValueError('SUCCESSOR_PERIOD_HISTORY_BINDING_MISMATCH')
     checked(root,period['input_history']);checked(root,period['verifier'])
     _validate_membership_inputs(root,candidate)
-    registry=json.loads(checked(root,candidate['registry']).read_bytes())
+    from workbench_db.v4_operational_registry_pg_v1 import read_registry
+    registry=read_registry(root,candidate)
     if registry.get('owner_bindings')!=candidate['owners']:
         raise ValueError('SUCCESSOR_OWNER_REGISTRY_MISMATCH')
     for binding in registry['bindings']:checked(root,binding)

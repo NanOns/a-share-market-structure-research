@@ -39,3 +39,19 @@ def test_dm01_freeze_and_daily_increment_use_central_baostock_cache_resolver():
     assert "resolve_baostock_cache_root(ROOT)" in increment
     assert "data/v4/source_snapshots/baostock" not in freeze
     assert "data/v4/source_snapshots/baostock" not in increment
+
+
+def test_next_session_probe_uses_configured_tdx_and_baostock_capture_roots(tmp_path):
+    from scripts import run_dm01_a01_next_session_r1 as next_session
+
+    tdx = tmp_path / "moved-tdx-snapshots"
+    bao = tmp_path / "moved-bao-cache"
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/paths.yaml").write_text(
+        f'tdx:\n  snapshot_root: "{tdx.as_posix()}"\n'
+        f'baostock:\n  cache_root: "{bao.as_posix()}"\n', encoding="utf-8"
+    )
+    day = "2026-10-16"
+
+    assert next_session.tdx_capture_folder(day, tmp_path) == tdx / "tdx" / "20261016"
+    assert next_session.baostock_capture_folder(day, tmp_path) == bao / "baostock" / "20261016"

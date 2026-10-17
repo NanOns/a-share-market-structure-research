@@ -14,11 +14,17 @@ from workbench_analysis.dm01_incremental_component_builders import sha,load,dige
 from workbench_analysis.dm01_accepted_builder_registry import validate_incremental_registry
 from workbench_analysis.dm01_candidate_orchestrator_r1 import build_candidate
 from workbench_analysis.gbbq_source_revision_probe import probe_gbbq_source_revision
-from common.paths import resolve_tdx_root
+from common.paths import resolve_baostock_cache_root, resolve_tdx_root, resolve_tdx_snapshot_root
 from scripts.run_v4_dm01_daily_increment import _runtime_acceptance
 
 def bind(p):
     p=Path(p);return dict(path=p.relative_to(ROOT).as_posix(),sha256=sha(p),bytes=p.stat().st_size)
+
+def tdx_capture_folder(target_date, project_root=ROOT):
+    return resolve_tdx_snapshot_root(project_root)/'tdx'/target_date.replace('-','')
+
+def baostock_capture_folder(target_date, project_root=ROOT):
+    return resolve_baostock_cache_root(project_root)/'baostock'/target_date.replace('-','')
 
 def real_probe():
     protected_paths=[ROOT/'data/v4'/n for n in ('V4_DATA_ACCEPTED_HEAD.json','V4_STAGE_ACCEPTED_HEAD.json','V4_DEV_BASELINE_HEAD.json')]
@@ -46,7 +52,7 @@ def real_probe():
         observed_at=now,official_sessions_after_target=[d for d in calendar['session_dates'] if d>target],tdx_root=tdx_root)
     runtime,error=_runtime_acceptance(target)
     captures=[]
-    folder=ROOT/'data/v4/source_snapshots/tdx'/target.replace('-','')
+    folder=tdx_capture_folder(target)
     for p in folder.glob('*/capture_receipt.json'):
         value=json.loads(p.read_text(encoding='utf8'))
         if value.get('target_date')==target and value.get('update_date')==target and value.get('status') in ('TDX_PACKAGE_READY','NOOP_SOURCE_ALREADY_FROZEN'):
@@ -61,7 +67,7 @@ def real_probe():
             if go['external_acceptance']=='EXTERNALLY_ACCEPTED' and ref['sha256']==value['package_sha256'] and sha(package)==ref['sha256']:
                 captures.append(dict(receipt=bind(p),package=ref,status='PASS_EXTERNALLY_ACCEPTED_FROZEN_R2_PACKAGE_EXACT',
                     snapshot_id='sha256-'+ref['sha256'],accepted_go_forward_head=bind(go_head_path)))
-    bao_folder=ROOT/'data/v4/source_snapshots/baostock'/target.replace('-','')
+    bao_folder=baostock_capture_folder(target)
     bao_files=list(bao_folder.glob('*/daily_update.json'))
     problems=[]
     if not captures:problems.append('REQUIRED_TARGET_OFFICIAL_TDX_CAPTURE_MISSING')

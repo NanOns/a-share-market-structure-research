@@ -30,6 +30,7 @@
 ## 剩余开放点
 
 - 正式 266 个 callsite 与 accepted publication Head、source edge、T0/namespace 对账未关闭；22 条 reference edge 仍 unmapped，当前 PG 无 accepted operational publication Head。本轮没有构造来源身份或做 Head CAS。
+- 22 条 unmapped edge 行涉及 21 个唯一调用点 ID（`src/workbench_analysis/v4_current_stage_authority.py:53` 对应两条 edge）：`scripts/capture_dm01_a01_r3_tdx_package.py:48`；`src/workbench_analysis/historical_binding_routing_remainder.py:45`；`tdx_latest_daily_source_v2.py:144`；`tdx_local_daily_fallback_v1.py:32`；`tdx_local_snapshot.py:21,87`；`tdx_member_retro_r43.py:57,115,117,139,170`；`tdx_official_daily_source.py:65,151,395,430`；`tdx_snapshot.py:16,94`；`v4_13_accepted_contract_package.py:78`；`v4_current_stage_authority.py:42,53,53,56`。这些调用路径已有 PG candidate 实现；待完成的是历史 inventory 的精确 edge join。唯一未改的非 V4 点是 `V4-BCA-R2-3a03bb9b0ef3ec4fa6a3`，`src/workbench_analysis/history_170_v3_3.py:13`。
 - 未运行全仓基线扫描、GitHub CLI 流程测试、完整测试套件或 GitHub Actions；执行了最小语法编译、JSON parse、`git diff --check`、staged repository policy 和真实浏览器交互。
 - 未执行正式 Head 切换、生产 28765 部署、物理删除、历史改写或强推。正常提交/推送不表示正式数据发布或生产验收。
 - 保留原有 5 个无关 untracked 文件，未暂存。

@@ -4,8 +4,8 @@ import argparse, ast, hashlib, json, os, re, subprocess, sys
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
-CONTRACT_ID = "V4_NONCONFIG_EXTERNAL_FILE_REFERENCE_AUDIT_R1"
-CONTRACT_VERSION = "1.0.0"
+CONTRACT_ID = "V4_NONCONFIG_EXTERNAL_FILE_REFERENCE_AUDIT_R2"
+CONTRACT_VERSION = "2.0.0"
 NONCONFIG_EXTS = {".py", ".sh", ".ps1", ".bat", ".cmd", ".sql", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".html", ".css", ".csv", ".jsonl", ".ndjson", ".parquet", ".zip", ".gz", ".bin", ".dat", ".db", ".sqlite", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".pdf", ".dll", ".exe", ".so", ".dylib", ".wasm"}
 CONFIG_EXTS = {".json", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf"}
 PATH_KEYS = {"path", "filepath", "file_path", "file", "archive_path", "artifact_path", "source_path", "script_path", "sql_path", "asset_path", "uri", "locator", "source_locator", "record_locator"}
@@ -109,7 +109,9 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
     if caller.startswith("tests/"):
         return "TEST_ONLY","INFO",str(resolved),_sha(raw),len(raw),True
     if Path(target).suffix.lower() in CONFIG_EXTS:
-        return "CONFIG_ONLY","INFO",str(resolved),_sha(raw),len(raw),True
+        if target.replace("\\","/").lower().startswith(("data/v4/","reports/","docs/")):
+            return "BUSINESS_ARTIFACT_REFERENCE_REQUIRES_CLASSIFICATION","P2",str(resolved),_sha(raw),len(raw),True
+        return "CONFIG_SCOPE_REVIEW_REQUIRED","P2",str(resolved),_sha(raw),len(raw),True
     return "KNOWN_VALID_CURRENT_REFERENCE","INFO",str(resolved),_sha(raw),len(raw),True
 
 def _call_name(node: ast.AST) -> str:
@@ -119,6 +121,131 @@ def _call_name(node: ast.AST) -> str:
     return ".".join(reversed(parts))
 def _const_string(node: ast.AST|None) -> str|None:
     return node.value if isinstance(node,ast.Constant) and isinstance(node.value,str) else None
+
+def _eval_path_expr(node: ast.AST|None, assignments: dict[str, ast.AST], seen: set[str]|None=None) -> tuple[str|None, list[str]]:
+    """Resolve a conservative subset of Python path expressions without reading env values."""
+    seen=set() if seen is None else seen
+    if node is None: return None,["missing expression"]
+    if isinstance(node,ast.Constant) and isinstance(node.value,(str,int,float)):
+        return str(node.value),[]
+    if isinstance(node,ast.Name):
+        if node.id in seen: return None,[f"recursive binding {node.id}"]
+        value=assignments.get(node.id)
+        if value is None: return None,[f"unbound name {node.id}"]
+        return _eval_path_expr(value,assignments,seen|{node.id})
+    if isinstance(node,ast.BinOp) and isinstance(node.op,(ast.Add,ast.Div)):
+        left,lb=_eval_path_expr(node.left,assignments,seen);right,rb=_eval_path_expr(node.right,assignments,seen)
+        if left is None or right is None: return None,lb+rb
+        return (str(PureWindowsPath(left)/right) if "\\" in left else str(Path(left)/right)) if isinstance(node.op,ast.Div) else left+right,[]
+    if isinstance(node,ast.JoinedStr):
+        chunks=[];blockers=[]
+        for part in node.values:
+            if isinstance(part,ast.Constant): chunks.append(str(part.value));continue
+            value,why=_eval_path_expr(part.value,assignments,seen) if isinstance(part,ast.FormattedValue) else (None,["unsupported f-string part"])
+            if value is None: blockers.extend(why)
+            else: chunks.append(value)
+        return ("".join(chunks),[]) if not blockers else (None,blockers)
+    if isinstance(node,ast.Call):
+        name=_call_name(node.func)
+        if name in {"Path","PurePath","PurePosixPath","PureWindowsPath"} and node.args:
+            return _eval_path_expr(node.args[0],assignments,seen)
+        if name.endswith(".joinpath") or name=="joinpath":
+            values=[];blockers=[]
+            receiver=node.func.value if isinstance(node.func,ast.Attribute) else None
+            if receiver is not None:
+                v,b=_eval_path_expr(receiver,assignments,seen);values.append(v) if v is not None else None;blockers.extend(b)
+            for arg in node.args:
+                v,b=_eval_path_expr(arg,assignments,seen);values.append(v) if v is not None else None;blockers.extend(b)
+            return (str(Path(values[0]).joinpath(*values[1:])),[]) if not blockers and values else (None,blockers)
+        if name in {"os.getenv","getenv","os.environ.get","environ.get"} and node.args:
+            key=_const_string(node.args[0])
+            return None,[f"environment variable {key or ast.unparse(node.args[0])} value not read"]
+        return None,[f"dynamic call {name or ast.unparse(node.func)}"]
+    return None,[f"unresolved expression {ast.unparse(node)}"]
+
+def _scope_assignments(statements: list[ast.stmt]) -> dict[str, ast.AST]:
+    """Collect assignments in one lexical scope, excluding nested scopes."""
+    result={}
+    pending=list(statements)
+    while pending:
+        node=pending.pop()
+        if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef,ast.ClassDef,ast.Lambda)): continue
+        if isinstance(node,ast.Assign):
+            for target in node.targets:
+                if isinstance(target,ast.Name): result[target.id]=node.value
+        elif isinstance(node,ast.AnnAssign) and isinstance(node.target,ast.Name) and node.value is not None:
+            result[node.target.id]=node.value
+        pending.extend(ast.iter_child_nodes(node))
+    return result
+
+def _module_assignments(tree: ast.Module) -> dict[str, ast.AST]:
+    return _scope_assignments(tree.body)
+
+def _expr_text(node: ast.AST|None) -> str|None:
+    try: return ast.unparse(node) if node is not None else None
+    except Exception: return None
+
+def _reachability_index(root: Path, tracked: list[str], authority_docs: set[str]) -> dict[str,dict[str,Any]]:
+    """Conservative Python import/script graph rooted at V4 launch and CI entries."""
+    source_ext={".py",".sh",".ps1",".bat",".cmd",".sql",".js",".mjs",".ts",".tsx",".jsx",".html",".css"}
+    code=[p for p in tracked if Path(p).suffix.lower() in source_ext]
+    code_set=set(code); module_to_path={}
+    for rel in code:
+        if not rel.endswith(".py"): continue
+        stem=rel[:-3].replace("/",".")
+        if stem.endswith(".__init__"): stem=stem[:-9]
+        module_to_path[stem]=rel
+        if stem.startswith("src."): module_to_path[stem[4:]]=rel
+    graph={p:set() for p in code}; roots=set()
+    roots.update(p for p in code if p in {"run_desktop.py","src/workbench_service/server.py","src/workbench_service/app.py","src/workbench_service/__main__.py","src/v4/app.py","src/v4/server.py"})
+    for rel in tracked:
+        if rel.startswith(".github/workflows/"):
+            roots.add(rel)
+            try: text=(root/rel).read_text(encoding="utf-8-sig",errors="replace")
+            except OSError: continue
+            for match in re.finditer(r"(?:python|py|bash|pwsh)?\s*(scripts/[A-Za-z0-9_./-]+\.(?:py|sh|ps1|sql))",text,re.I):
+                if match.group(1) in code_set: roots.add(match.group(1))
+        if rel in code_set and not rel.endswith(".py"): continue
+        if rel not in code_set or not rel.endswith(".py"): continue
+        try: tree=ast.parse((root/rel).read_text(encoding="utf-8-sig"),filename=rel)
+        except (OSError,SyntaxError,UnicodeDecodeError): continue
+        for node in ast.walk(tree):
+            if isinstance(node,ast.Import):
+                names=[a.name for a in node.names]
+            elif isinstance(node,ast.ImportFrom):
+                module=node.module or ""
+                if node.level and rel.startswith("src/"):
+                    parts=rel[:-3].split("/")[:-1]; base=parts[:max(0,len(parts)-node.level+1)]; module=".".join(base+([module] if module else []))
+                names=[module]+[module+"."+a.name for a in node.names if a.name!="*"]
+            else: names=[]
+            for name in names:
+                path=module_to_path.get(name)
+                if path: graph[rel].add(path)
+            if isinstance(node,ast.Constant) and isinstance(node.value,str):
+                value=node.value.replace("\\","/")
+                match=re.search(r"(?:^|\b)(scripts/[A-Za-z0-9_./-]+\.py)(?:$|\b)",value)
+                if match and match.group(1) in code_set: graph[rel].add(match.group(1))
+    chains={}; queue=[]
+    for entry in sorted(roots):
+        if entry in code_set: chains[entry]=[entry];queue.append(entry)
+    while queue:
+        caller=queue.pop(0)
+        for child in sorted(graph.get(caller,())):
+            if child not in chains: chains[child]=chains[caller]+[child];queue.append(child)
+    result={}
+    for rel in tracked:
+        low=rel.lower()
+        if rel in chains:
+            result[rel]={"class":"CONFIRMED_STATIC_CHAIN","chain":chains[rel]}
+        elif rel in authority_docs:
+            result[rel]={"class":"CONFIRMED_AUTHORITY_CLOSURE","chain":[rel]}
+        elif low.startswith(("tests/upgrade_v1/","tests/upgrade_v2/","tests/upgrade_v3/")) or "m14" in low or low.startswith("archive/"):
+            result[rel]={"class":"DETERMINED_RETIRED_OR_FIXTURE","chain":[]}
+        elif _reachable(rel):
+            result[rel]={"class":"POSSIBLE_CURRENT_SCOPE","chain":[]}
+        else:
+            result[rel]={"class":"OUTSIDE_V4_SCOPE","chain":[]}
+    return result
 
 def _walk_json(value: Any, pointer: str=""):
     if isinstance(value,dict):
@@ -138,24 +265,61 @@ def _json_pointer_line(raw: bytes, pointer: str) -> int:
     offset=raw.find(key)
     return raw[:offset].count(b"\n")+1 if offset>=0 else 1
 
-def _reachable_json_documents(root: Path, tracked: list[str]) -> set[str]:
-    # Read every current Accepted Head and every explicitly named authority
-    # document once. Do not recursively traverse arbitrary result JSON: a
-    # single accepted manifest may point at millions of rows with irrelevant
-    # free-text fields and would make the auditor unbounded in memory.
-    found=set()
+def _reachable_json_documents(root: Path, tracked: list[str]) -> tuple[set[str],int,int,bool]:
+    """Bounded path-dependency closure from current V4 authority documents.
+
+    Only current Head/authority JSON documents seed the walk. Their explicit
+    path bindings may lead into reports/docs evidence; those documents are
+    scanned only when they are tracked and reached through a recorded edge.
+    The byte and document limits prevent large historical report trees from
+    turning a targeted audit into an unbounded repository dump.
+    """
+    tracked_set=set(tracked); found=set(); pending=[]; total_bytes=0
     for rel in tracked:
         low=rel.lower()
         if Path(rel).suffix.lower()!=".json": continue
         authority_name=any(k in Path(low).name for k in ("accepted_head", "head_", "_head", "manifest", "registry", "receipt", "contract", "authority", "migration", "owner", "rps", "publication", "universe", "source_pit", "lineage", "binding"))
         if (low.startswith("data/v4/") and "head" in low
                 or low.startswith("config/") and authority_name):
-            found.add(rel)
-    return found
+            pending.append(rel)
+    while pending and len(found)<16384 and total_bytes<512_000_000:
+        rel=pending.pop(0)
+        if rel in found or rel not in tracked_set: continue
+        path=root/rel
+        try:
+            size=path.stat().st_size
+            if size>1_000_000 or total_bytes+size>512_000_000: continue
+            raw=path.read_bytes()
+        except OSError: continue
+        found.add(rel);total_bytes+=len(raw);low=rel.lower();targets=[]
+        if path.suffix.lower()==".json":
+            try: obj=json.loads(raw.decode("utf-8-sig"))
+            except (UnicodeDecodeError,json.JSONDecodeError): obj=None
+            if obj is not None: targets.extend(target for _,target,_ in _walk_json(obj))
+        elif path.suffix.lower() in {".md",".mdx",".html",".txt"}:
+            text=raw.decode("utf-8-sig","replace")
+            targets.extend(m.group(0).strip("<>()[]{}.,;'") for m in re.finditer(r"(?:reports|docs|data/v4|config)/[A-Za-z0-9_./@+-]+\.(?:jsonl?|jsonl\.gz|ya?ml|toml|py|sql|csv|parquet|zip|md|mdx|html|txt)",text,re.I))
+            targets.extend(m.group(1) for m in re.finditer(r"\[[^\]]*\]\((?:\.\.?/)?([^\s)#]+)",text))
+        for target in targets:
+            if not target or re.match(r"^(?:https?:|/api/|\$|%|\{)",target,re.I): continue
+            normalized=target.split("#",1)[0].split("?",1)[0].replace("\\","/")
+            candidates=[normalized]
+            if not normalized.startswith(("reports/","docs/","data/v4/","config/")):
+                candidates.insert(0,(Path(rel).parent/normalized).as_posix())
+            for candidate in candidates:
+                try: resolved=(root/candidate).resolve(strict=False)
+                except OSError: continue
+                if resolved.is_relative_to(root) and candidate in tracked_set:
+                    if candidate.lower().startswith(("reports/","docs/","data/v4/","config/")) and candidate not in found:
+                        pending.append(candidate)
+                    break
+    return found,len(pending),total_bytes,bool(pending and (len(found)>=16384 or total_bytes>=512_000_000))
 
 def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
     root=root.resolve(); tracked=_tracked(root); entries=[]; edge_no=0; identity_cache={}; excluded=[]
-    reachable_json=_reachable_json_documents(root,tracked)
+    reachable_json,closure_pending_count,closure_bytes,closure_truncated=_reachable_json_documents(root,tracked)
+    reachability=_reachability_index(root,tracked,reachable_json)
+    reachability_chains={}
     try:
         historical_registry=json.loads((root/"config/v4_historical_moving_head_registry_r17_v1.json").read_bytes())
         historical_rows={}
@@ -173,7 +337,8 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
     edge_counts={"runtime_verified":0,"dynamic_unresolved":0,"historical":0,"hash_success":0,"lfs":0,"lfs_verified":0,"p0":0,"p1":0}
     spool_handle=edges_spool.open("w",encoding="utf-8",newline="\n") if edges_spool else None
     def emit(caller:str,line:int,symbol:str,entrypoint:str,mode:str,target:str|None,path_source:str,
-             purpose:str,expected_sha:str|None=None,expected_bytes:int|None=None,historical:str="CURRENT"):
+             purpose:str,expected_sha:str|None=None,expected_bytes:int|None=None,historical:str="CURRENT",
+             path_expression:str|None=None,unresolved_steps:list[str]|None=None):
         nonlocal edge_no
         edge_no+=1;kind=_kind(target or "")
         cache_key=(caller,target,expected_sha,expected_bytes)
@@ -199,6 +364,16 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
             except (OSError,UnicodeDecodeError): pass
         if purpose in {"browser-generated download filename", "runtime output path"}:
             risk,priority,resolved,actual_sha,actual_bytes,exists="OUTPUT_PATH_DECLARATION","INFO",None,None,None,None
+        elif purpose=="file read or executable invocation" and target and risk not in {"UNTRUSTED_PATH_TRAVERSAL","ACTUAL_MISMATCH","MISSING_FILE","GIT_LFS_POINTER_ONLY"} and not symbol.startswith(("subprocess.","runpy.","importlib.")) and caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/")):
+            target_norm=target.replace("\\","/").lower()
+            config_env = Path(target_norm).name in {".env", ".env.local", ".env.production"} and "/config/" in f"/{target_norm.strip('/')}"
+            if config_env:
+                risk,priority="ENVIRONMENT_CONFIGURATION_READ","INFO"
+            elif not target_norm.startswith("config/"):
+                reach_class=reachability.get(caller,{}).get("class")
+                risk,priority="BUSINESS_FILE_READ_REQUIRES_DB","P1" if reach_class=="CONFIRMED_STATIC_CHAIN" else "P2"
+            elif risk not in {"ACTUAL_MISMATCH","MISSING_FILE","GIT_LFS_POINTER_ONLY"}:
+                risk,priority="CONFIG_SCOPE_REVIEW_REQUIRED","P2"
         origin=None; identity=None; archive_path=None; archive_sha=None; archive_bytes=None; archive_ok=False
         row=historical_rows.get((target,expected_sha)) if historical=="HISTORICAL" and target and expected_sha else None
         if row:
@@ -215,10 +390,16 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                     risk="HISTORICAL_ARCHIVE_VALID_CURRENT_CHANGED" if actual_sha!=expected_sha else "KNOWN_VALID_HISTORICAL_ARCHIVE"
                     priority="INFO"
             except (OSError,KeyError,subprocess.CalledProcessError): pass
+        reach=reachability.get(caller,{})
+        chain=reach.get("chain",[])
+        chain_id=_sha("\n".join(chain).encode("utf-8")) if chain else None
+        if chain_id: reachability_chains[chain_id]=chain
         edge={
           "reference_id":f"V4-NCFR-{edge_no:07d}","caller_path":caller,"line":line,"symbol":symbol,
-          "entrypoint":entrypoint,"reachable":_reachable(caller),"static_or_dynamic":mode,
+          "entrypoint":entrypoint,"reachable":reach.get("class") in {"CONFIRMED_STATIC_CHAIN","CONFIRMED_AUTHORITY_CLOSURE","POSSIBLE_CURRENT_SCOPE"},
+          "reachability_class":reach.get("class","OUTSIDE_V4_SCOPE"),"reachability_chain_id":chain_id,"static_or_dynamic":mode,
           "literal_or_resolved_target":target,"root/source_of_path":path_source,"file_type":kind,
+          "path_expression":path_expression or (f"<expression unavailable at {caller}:{line}>" if mode=="DYNAMIC" else None),"dynamic_resolution_steps":unresolved_steps or (["runtime CLI/environment/user input or configured root not available to static scan"] if mode=="DYNAMIC" else []),
           "purpose":purpose,"historical_or_current":historical,"accepted_head/manifest_identity":caller+"#"+symbol if historical=="HISTORICAL" else None,
           "origin_commit":origin,"expected_sha256":expected_sha,"expected_bytes":expected_bytes,
           "actual_sha256":actual_sha,"actual_bytes":actual_bytes,"resolved_path":resolved,"exists":exists,
@@ -239,15 +420,16 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
         else: entries.append(edge)
     module_coverage={}
     for file_index,rel in enumerate(tracked,1):
-        if file_index % 10000 == 0: print(f"scanned tracked paths: {file_index}/{len(tracked)}; edges={len(entries)}",file=sys.stderr)
+        if file_index % 10000 == 0: print(f"scanned tracked paths: {file_index}/{len(tracked)}; edges={edge_no}",file=sys.stderr)
         p=root/rel;ext=p.suffix.lower();module=rel.split("/",1)[0];module_coverage[module]=module_coverage.get(module,0)+1
         low=rel.lower()
-        is_code_or_v4_data=(low.startswith(("src/", "scripts/", "config/", "data/v4/", ".github/workflows/", "sql/", "frontend/", "web/", "ui/", "client/")))
+        is_code_or_v4_data=(low.startswith(("src/", "scripts/", "config/", "data/v4/", ".github/workflows/", "sql/", "frontend/", "web/", "ui/", "client/"))
+                            or (low.startswith(("reports/","docs/")) and rel in reachable_json))
         if not is_code_or_v4_data:
             excluded.append({"path":rel,"reason":"OUTSIDE_CURRENT_V4_EXECUTABLE_OR_AUTHORITY_PATHS; referenced bytes are independently checked from active code/config/Accepted Heads"})
             continue
-        if low.startswith("reports/audits/") and not any(x in low for x in ("r19", "r18", "r17", "v4_r14", "v4_r15", "v4_r16", "v4_r17", "v4_r18", "v4_r19")):
-            excluded.append({"path":rel,"reason":"AUDIT_REPORT_OUTSIDE_R17_R18_R19_V4_SCOPE; no current V4 Accepted Head reference identified"})
+        if low.startswith(("reports/","docs/")) and rel not in reachable_json:
+            excluded.append({"path":rel,"reason":"REPORT_DOC_NOT_IN_BOUNDED_ACCEPTED_HEAD_OR_AUTHORITY_DEPENDENCY_CLOSURE"})
             continue
         if ext not in {".py", ".sh", ".ps1", ".bat", ".cmd", ".sql", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".html", ".css", ".json", ".jsonl", ".ndjson", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf"}:
             excluded.append({"path":rel,"reason":"NON_TEXT_PAYLOAD; bytes are independently hashed when a scanned manifest or code edge references this target"})
@@ -281,25 +463,37 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                     size=record.get("bytes",record.get("byte_count"))
                     exp_size=size if isinstance(size,int) and not isinstance(size,bool) else None
                     hist="HISTORICAL" if rel.startswith(("data/v4/", "reports/", "docs/")) and ("accepted" in rel.lower() or "head" in rel.lower() or "archive" in rel.lower()) else "CURRENT"
-                    emit(rel,_json_pointer_line(raw,ptr),ptr,_entry(rel),"STATIC" if not target.startswith(("$","%","${")) else "DYNAMIC",target,ptr,"manifest/config path binding",sh if isinstance(sh,str) else None,exp_size,hist)
+                    dynamic=target.startswith(("$","%","${")) or "${" in target
+                    emit(rel,_json_pointer_line(raw,ptr),ptr,_entry(rel),"DYNAMIC" if dynamic else "STATIC",None if dynamic else target,ptr,"manifest/config path binding",sh if isinstance(sh,str) else None,exp_size,hist,target if dynamic else None,["runtime JSON substitution not evaluated"] if dynamic else [])
         # Python AST: file I/O and executed external paths.
         if ext==".py":
             try: tree=ast.parse(raw.decode("utf-8-sig"),filename=rel)
             except (SyntaxError,UnicodeDecodeError): tree=None
             if tree:
+                assignments=_module_assignments(tree)
+                parents={child:parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+                function_assignments={id(scope):_scope_assignments(scope.body) for scope in ast.walk(tree) if isinstance(scope,(ast.FunctionDef,ast.AsyncFunctionDef))}
                 for node in ast.walk(tree):
                     if not isinstance(node,ast.Call): continue
                     name=_call_name(node.func)
                     if name not in IO_CALLS: continue
                     arg=node.args[0] if node.args else next((kw.value for kw in node.keywords if kw.arg in {"file","path","args"}),None)
-                    value=_const_string(arg)
-                    if name in {"subprocess.run","subprocess.Popen","subprocess.check_call","subprocess.check_output"} and isinstance(arg,ast.List) and arg.elts: value=_const_string(arg.elts[0])
-                    if value and (Path(value).suffix.lower() in NONCONFIG_EXTS or "/" in value or "\\" in value):
-                        mode=next((_const_string(arg) for arg in node.args[1:2]),None) if name=="open" else None
-                        output=name in {"Path.write_bytes","Path.write_text","write_bytes","write_text"} or bool(mode and any(c in mode for c in "wax"))
-                        emit(rel,node.lineno,name,_entry(rel),"STATIC",value,"source literal/command argument","runtime output path" if output else "file read or executable invocation")
+                    path_arg=arg
+                    method_name=node.func.attr if isinstance(node.func,ast.Attribute) else ""
+                    if isinstance(node.func,ast.Attribute) and method_name in {"open","read_bytes","read_text","write_bytes","write_text","glob","rglob"}:
+                        path_arg=node.func.value
+                    if name in {"subprocess.run","subprocess.Popen","subprocess.check_call","subprocess.check_output"} and isinstance(arg,(ast.List,ast.Tuple)) and arg.elts: path_arg=arg.elts[0]
+                    scope=node
+                    while scope in parents and not isinstance(scope,(ast.FunctionDef,ast.AsyncFunctionDef)):
+                        scope=parents[scope]
+                    path_bindings={**assignments,**function_assignments.get(id(scope),{})}
+                    value,blockers=_eval_path_expr(path_arg,path_bindings)
+                    if value and (Path(value).suffix.lower() in NONCONFIG_EXTS|CONFIG_EXTS or "/" in value or "\\" in value):
+                        mode=_const_string(node.args[0]) if method_name=="open" and node.args else next((_const_string(arg) for arg in node.args[1:2]),None) if name=="open" else None
+                        output=method_name in {"write_bytes","write_text"} or name in {"Path.write_bytes","Path.write_text","write_bytes","write_text"} or bool(mode and any(c in mode for c in "wax"))
+                        emit(rel,node.lineno,name,_entry(rel),"STATIC",value,"source literal/command argument","runtime output path" if output else "file read or executable invocation",path_expression=_expr_text(path_arg))
                     elif not value:
-                        emit(rel,node.lineno,name,_entry(rel),"DYNAMIC",None,"runtime argument/environment/database/glob","file operation target unresolved")
+                        emit(rel,node.lineno,name,_entry(rel),"DYNAMIC",None,"runtime argument/environment/database/glob","file operation target unresolved",path_expression=_expr_text(path_arg),unresolved_steps=blockers)
         # Other code/document formats: file-valued UI attributes and command/path literals.
         if ext in {".js",".mjs",".cjs",".ts",".tsx",".jsx",".html",".css",".sql",".sh",".ps1",".bat",".cmd",".yml",".yaml"}:
             text=raw.decode("utf-8-sig","replace")
@@ -313,9 +507,9 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                     runner_output=rel.startswith(".github/workflows/") and ("--output" in line or "runner.temp" in line)
                     emit(rel,line_no,"path_literal",_entry(rel),"STATIC",target,"source/UI/SQL/shell literal","browser-generated download filename" if output_name else "runtime output path" if runner_output else "external file or asset path literal")
                 if ext in {".js",".mjs",".ts",".tsx",".jsx",".html"} and re.search(r"\b(?:fetch|import|require)\s*\([^)]*(?:\+|\$\{|\bprocess\.env\b)",line):
-                    emit(rel,line_no,"dynamic_asset_or_fetch",_entry(rel),"DYNAMIC",None,"runtime/UI loader","dynamic frontend asset or request path")
+                    emit(rel,line_no,"dynamic_asset_or_fetch",_entry(rel),"DYNAMIC",None,"runtime/UI loader","dynamic frontend asset or request path",path_expression=line.strip(),unresolved_steps=["runtime request construction depends on nonliteral expression"])
     if spool_handle: spool_handle.close()
-    return {"contract_id":CONTRACT_ID,"contract_version":CONTRACT_VERSION,"scan_mode":"READ_ONLY_GIT_TRACKED_PLUS_STATIC_SYNTAX","repository_root":str(root),"git_head":_git(root,"rev-parse","HEAD").decode().strip(),"tracked_file_count":len(tracked),"source_file_count":sum(1 for p in tracked if Path(p).suffix.lower() in {".py",".sh",".ps1",".bat",".cmd",".sql",".js",".mjs",".ts",".tsx",".jsx",".html",".css"}),"module_coverage":module_coverage,"reference_edges_total":edge_no,"runtime_verified_count":edge_counts["runtime_verified"],"dynamic_unresolved_count":edge_counts["dynamic_unresolved"],"historical_frozen_reference_count":edge_counts["historical"],"independent_hash_success_count":edge_counts["hash_success"],"lfs_pointer_only_count":edge_counts["lfs"],"lfs_object_verified_count":edge_counts["lfs_verified"],"p0_open":edge_counts["p0"],"p1_open":edge_counts["p1"],"excluded_with_reason_count":len(excluded),"excluded_files":excluded,"reference_edges":entries if not edges_spool else None}
+    return {"contract_id":CONTRACT_ID,"contract_version":CONTRACT_VERSION,"scan_mode":"READ_ONLY_TRACKED_CODE_CONFIG_AUTHORITY_AND_BOUNDED_HEAD_DEPENDENCY_CLOSURE","repository_root":str(root),"git_head":_git(root,"rev-parse","HEAD").decode().strip(),"tracked_file_count":len(tracked),"source_file_count":sum(1 for p in tracked if Path(p).suffix.lower() in {".py",".sh",".ps1",".bat",".cmd",".sql",".js",".mjs",".ts",".tsx",".jsx",".html",".css"}),"module_coverage":module_coverage,"authority_dependency_closure_count":len(reachable_json),"authority_dependency_closure_files":sorted(reachable_json),"authority_dependency_closure_bytes":closure_bytes,"authority_dependency_closure_truncated":closure_truncated,"authority_dependency_closure_pending_count":closure_pending_count,"reachability_class_counts":dict(__import__('collections').Counter(x.get("class") for x in reachability.values())),"reachability_chains":reachability_chains,"reference_edges_total":edge_no,"runtime_verified_count":edge_counts["runtime_verified"],"dynamic_unresolved_count":edge_counts["dynamic_unresolved"],"historical_frozen_reference_count":edge_counts["historical"],"independent_hash_success_count":edge_counts["hash_success"],"lfs_pointer_only_count":edge_counts["lfs"],"lfs_object_verified_count":edge_counts["lfs_verified"],"p0_open":edge_counts["p0"],"p1_open":edge_counts["p1"],"excluded_with_reason_count":len(excluded),"excluded_files":excluded,"reference_edges":entries if not edges_spool else None}
 
 def main() -> int:
     ap=argparse.ArgumentParser();ap.add_argument("--root",default=str(Path(__file__).resolve().parents[1]));ap.add_argument("--output");a=ap.parse_args();root=Path(a.root).resolve()

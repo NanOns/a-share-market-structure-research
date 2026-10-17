@@ -86,6 +86,7 @@ jobs:
           tests/test_git_repository_policy.py
           tests/test_r19_a_historical_static_bindings.py
           tests/test_v4_business_code_file_access_r1.py
+          tests/test_v4_nonconfig_external_file_references_r1.py
 
       - name: Current V4 business-code file-access audit
         env:

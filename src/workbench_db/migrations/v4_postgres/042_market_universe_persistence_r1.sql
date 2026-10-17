@@ -1,5 +1,10 @@
 -- R14: persist the independently sourced same-T0 Universe and exact Core reconciliation.
--- DDL proposal only; this migration is registered but has not been executed.
+-- The legacy publication table's primary key is publication_id. The canonical
+-- row identity exposed to publication-bound relations is (publication_id,
+-- revision_no), so expose that exact key for downstream foreign keys as well.
+CREATE UNIQUE INDEX IF NOT EXISTS uq_publications_publication_revision
+    ON v4.publications (publication_id, revision_no);
+
 CREATE TABLE v4.market_universe_snapshots (
     publication_id text NOT NULL,
     publication_revision integer NOT NULL CHECK (publication_revision > 0),

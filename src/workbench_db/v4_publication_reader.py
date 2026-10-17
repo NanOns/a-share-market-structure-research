@@ -115,6 +115,92 @@ class PgPublicationReader:
             owner_readers = default_owner_readers()
         self.owner_readers = dict(owner_readers)
 
+    @staticmethod
+    def startup_head_tuple(*, connection_factory: Callable[[], Any] | None = None) -> dict[str, Any]:
+        """Attest the current accepted PG Head set and contracts in one snapshot.
+
+        Startup uses the tuple twice around module loading to detect an authority
+        change without consulting JSON Head files or runtime acceptance files.
+        """
+        factory = connection_factory or readonly_connection
+        with factory() as pg:
+            try:
+                pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+                pg.execute("SET LOCAL statement_timeout='30s'")
+                pg.execute("SET LOCAL lock_timeout='5s'")
+            except Exception as exc:
+                raise PublicationReadError("PG_READ_TRANSACTION_NOT_READ_ONLY") from exc
+            from .v4_native import attest_read_role
+            attest_read_role(pg, "v4")
+            identity = PgPublicationReader._read_database_identity(pg)
+            cursor = pg.execute(
+                """WITH ranked AS (
+                       SELECT p.publication_id,p.revision_no,p.trade_date,p.model_namespace_id,
+                              p.status,p.accepted_at,p.core_revision,p.source_manifest_sha256,
+                              p.computation_identity_sha256,
+                              p.publication_lineage_id,p.same_day_revision_parent_id,
+                              p.prior_session_publication_id,p.prior_session_state_head,
+                              p.prior_session_state_logical_digest,p.prior_session_gap_reason,
+                              p.contract_bindings,h.state_head_id,h.state_logical_digest,
+                              sh.logical_digest AS verified_state_digest,
+                              row_number() OVER (PARTITION BY h.model_namespace_id
+                                ORDER BY h.trade_date DESC,p.revision_no DESC,p.publication_id) AS rn
+                         FROM v4.publication_heads AS h
+                         JOIN v4.publications AS p ON p.publication_id=h.publication_id
+                         LEFT JOIN v4.state_heads AS sh
+                           ON sh.namespace_id=h.model_namespace_id
+                          AND sh.state_head_id=h.state_head_id
+                          AND sh.publication_id=h.publication_id
+                          AND sh.logical_digest=h.state_logical_digest
+                        WHERE p.status='ACCEPTED' AND p.accepted_at IS NOT NULL
+                     )
+                     SELECT publication_id,revision_no,trade_date,model_namespace_id,status,accepted_at,
+                            core_revision,source_manifest_sha256,computation_identity_sha256,
+                            publication_lineage_id,same_day_revision_parent_id,
+                            prior_session_publication_id,prior_session_state_head,
+                            prior_session_state_logical_digest,prior_session_gap_reason,contract_bindings,
+                            state_head_id,state_logical_digest,verified_state_digest
+                       FROM ranked WHERE rn=1 ORDER BY model_namespace_id"""
+            )
+            columns = (
+                "publication_id","revision_no","trade_date","model_namespace_id","status","accepted_at",
+                "core_revision","source_manifest_sha256",
+                "computation_identity_sha256","publication_lineage_id","same_day_revision_parent_id",
+                "prior_session_publication_id","prior_session_state_head","prior_session_state_logical_digest",
+                "prior_session_gap_reason","contract_bindings","state_head_id","state_logical_digest",
+                "verified_state_digest",
+            )
+            heads = _row_dicts(cursor, columns)
+            if not heads:
+                raise PublicationReadError("NO_ACCEPTED_PUBLICATION_HEAD")
+            try:
+                from workbench_analysis.contract_registry_pg_v1 import load_publication_contracts
+            except ImportError as exc:
+                raise PublicationReadError("CONTRACT_REGISTRY_UNAVAILABLE") from exc
+            contract_rows = []
+            for head in heads:
+                day = _iso_date(head["trade_date"])
+                PgPublicationReader._validate_publication(head, day, head["model_namespace_id"])
+                try:
+                    contracts = load_publication_contracts(
+                        pg, head["publication_id"], int(head["revision_no"]), head.get("contract_bindings")
+                    )
+                except Exception as exc:
+                    code = getattr(exc, "code", None)
+                    raise PublicationReadError(str(code or "PUBLICATION_CONTRACT_BINDING_INVALID")) from exc
+                contract_rows.append(dict(
+                    publication_id=head["publication_id"], revision_no=int(head["revision_no"]),
+                    trade_date=day, model_namespace_id=head["model_namespace_id"],
+                    contracts_digest=digest(canonical(contracts)),
+                ))
+            return dict(contract_id="V4_STARTUP_PG_HEAD_ATTESTATION_R1",
+                database_identity=identity, heads=[dict(
+                    publication_id=row["publication_id"],revision_no=int(row["revision_no"]),
+                    trade_date=_iso_date(row["trade_date"]),model_namespace_id=row["model_namespace_id"],
+                    source_manifest_sha256=row["source_manifest_sha256"],state_head_id=row["state_head_id"],
+                    state_logical_digest=row["state_logical_digest"],verified_state_digest=row["verified_state_digest"],
+                ) for row in heads], contracts=contract_rows)
+
     def read_context(
         self,
         *,

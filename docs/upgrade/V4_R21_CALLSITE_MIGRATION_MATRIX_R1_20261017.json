@@ -17224,6 +17224,27 @@
         "p1_formally_remaining": 266,
         "status": "OFFICIAL_MARKET_SESSION_CALLSITE_HAS_EXPLICIT_PG_READER_PATH_PENDING_LIVE_PUBLICATION_RECONCILIATION; no baseline row formally closed.",
         "next": "Continue exact mapped reader migrations and maintain formal counts until authorized same-T0 readback."
+      },
+      {
+        "batch_id": "R21-R4-tdx-baostock-config-path-verification-r42",
+        "files": [
+          "tests/r4_repair/test_configured_tdx_path.py",
+          "tests/test_tdx_latest_daily_source_v2.py",
+          "tests/test_operational_new_listing_r1.py",
+          "tests/test_operational_daily_executor_v1.py",
+          "docs/upgrade/V4_R21_R4_TDX_BAOSTOCK_CONFIG_PATH_VERIFICATION_R42_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Reverified configured TDX read-only source root and separate snapshot output root across capture and executor paths.",
+          "Reverified configured BaoStock cache/request ledger and new-listing budget routing.",
+          "No provider capture or PG ingest occurred; the eight active ingress rows and 38 external-source P1 rows remain open."
+        ],
+        "verification": "56 focused path/configuration tests passed using G:/codex_tmp/test_temp. No TDX-root writes, network acquisition, PG ingest or service execution.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "TDX_BAOSTOCK_CONFIGURED_PATH_REGRESSIONS_PASS; no P1 callsite formally closed.",
+        "next": "Continue PG consumer migration; source ingress still requires approved manifest and authorized append/readback."
       }
     ]
   }

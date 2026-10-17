@@ -27,3 +27,10 @@
 - 基线 266 个 P1 的正式 source-edge、T0、namespace 与 accepted publication Head 对账仍是 0/266；22 条历史 reference edge 未精确映射（21 个唯一调用点）。这些是历史 inventory join，不是声称尚有未实现的 V4 PG candidate consumer。不得伪造边 ID 或 Head 身份。
 - 当前数据库没有 accepted operational publication Head。正式 Head 切换、生产部署/网页 28765、物理删除及强推未执行；需要相应单独授权。非 V4 调用点 `src/workbench_analysis/history_170_v3_3.py:13` 仅登记，未改。
 - 保留原有 5 个无关 untracked 文件，未纳入本次提交。
+
+## 继续实修（本次续行）
+
+- 另修现役产品服务缓存绑定：移除对 Owner/候选归档路径 `stat` 和本地 read-index/joint 文件哈希的第二缓存身份；缓存身份改由已从 PostgreSQL live Head 校验的精确候选 token 与配置的外部索引根决定。准确 Joint 内容仍须通过候选校验，不据此宣称正式发布。
+- 诊断页移除旧 `run_fp02_research_snapshot.py --daily` 指令（该入口会进入本地 accepted-head/receipt 流程），改为引导到日更状态/任务页面。
+- 续行浏览器复验 28766：Diagnostics 显示新入口文案；Jobs 实际显示 `PG_CANDIDATE_SNAPSHOT`、T0 `2026-09-30`、stocks 5,213、sectors 378、focus 469、forward 117，且明确标出本次未启动 worker、无作业进度。没有触发任何写作业。
+- 本续行改动共 2 个现役代码文件；定向 Python 编译、Node 语法检查和 `git diff --check` 通过。

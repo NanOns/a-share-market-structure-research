@@ -9,15 +9,6 @@ from .operational_daily_server_v1 import make_daily_handler, PREFIX
 from .core_product_bff_r1 import CoreProductBFFR1
 from workbench_analysis.operational_successor_v1 import accepted_api
 
-def _collect_local_binding_paths(root,value,paths):
-    """Collect file inputs while treating inline PG descriptors as locators."""
-    if isinstance(value,dict):
-        if value.get('pg_descriptor') is not None:return
-        if value.get('path') and value.get('sha256'):paths.add(Path(root)/value['path'])
-        for item in value.values():_collect_local_binding_paths(root,item,paths)
-    elif isinstance(value,list):
-        for item in value:_collect_local_binding_paths(root,item,paths)
-
 def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None,operational_owner_index_root=None,static_root=None):
     root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_daily_handler(root,jobs,static_root=static) if static_root is not None else make_daily_handler(root,jobs);lock=threading.RLock();published={}
     chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
@@ -26,8 +17,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
     logger=logging.getLogger("v4.http.timing")
     flights={}
     def build(signature,api=None):
-        api=api or accepted_api(root);paths=set()
-        def collect(value):_collect_local_binding_paths(root,value,paths)
+        api=api or accepted_api(root)
         if operational_owner_index_root is not None:
             api.pg_owner_workspace_root=operational_owner_index_root
         # Accepted Owner and snapshot payloads are consumed from PostgreSQL.
@@ -41,7 +31,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
             load_catalog(root,api.candidate)
         cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority,
             chart_history_index_root=chart_history_index_root,market_fact_index_root=market_fact_index_root),
-            sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+            sources={})
         native=getattr(api,'pg_owner_authority',None)
         if native is not None:
             identities=[entry['descriptor']['pg_descriptor']['database_identity']
@@ -54,28 +44,17 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         if api.candidate.get('exact_daily_adjustment_contract') and 'joint' not in cache:
             from .native_current_snapshot_v3 import current
             cache['joint']=current(root,api.candidate)
-            collect(cache['joint'])
-            if cache['joint']:
-                policy=json.loads((root/api.candidate['release_policy']['path']).read_bytes())
-                collect(policy)
-                joint=json.loads((root/'config/v4_current_native_joint_authority_v3.json').read_bytes())
-                collect(joint)
-            cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
         return cache
 
     def bind():
         nonlocal published
         # Expensive file/PG validation and construction run outside the pointer lock.
-        signed=[root/'config/v4_read_index_authority_r1.json',
-                root/'config/v4_current_native_joint_authority_v3.json']
-        if isolated_history_authority is not None:signed.append(Path(isolated_history_authority))
         def signature(api):
             external_roots='\0'.join(str(path or '') for path in (chart_history_index_root,market_fact_index_root,operational_owner_index_root)).encode()
-            immutable_inputs=b'\0'.join(p.read_bytes() if p.exists() else b'' for p in signed)
-            # The on-disk Head document is transport only. Cache identity comes
-            # from the exact PG-bound candidate token and its verified database
-            # identity, never from a file hash or archived Owner paths.
-            return hashlib.sha256(external_roots+b'\0'+api.token.encode()+b'\0'+immutable_inputs).hexdigest()
+            # Cache identity follows the exact candidate token attested from the
+            # PostgreSQL live Head. Archived contract/source paths are lineage,
+            # not extra filesystem cache authorities.
+            return hashlib.sha256(external_roots+b'\0'+api.token.encode()).hexdigest()
         while True:
             request_api=accepted_api(root)
             generation_signature=signature(request_api);prior=published
@@ -140,9 +119,9 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                             pg.execute('SET TRANSACTION READ ONLY')
                             if ForwardFactStore._database_identity(pg)!=cache['operational_database_identity']:
                                 raise RuntimeError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
-                    # A home response is derived entirely from this signed
-                    # immutable Head and its verified source closure. Every
-                    # request still passes the signature/change gate above.
+                    # A home response is derived from the PG-bound candidate and
+                    # its verified source closure. Every request still passes the
+                    # candidate-token/database gate above.
                     # Cache bounded encoded variants, never mutable API state.
                     # Each request owns its date snapshot/cache container. Immutable
                     # cached values may be shared; dated readers never share mutable state.

@@ -47,16 +47,11 @@ def write(path, value, *, tdx_root=None, project_root=None):
 def official_sessions(root, *, pg_reader=None, source_mode=None):
     import os
     selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
-    if selected_mode=='PG':
-        if pg_reader is None:
-            from workbench_db.v4_market_calendar_reader_r1 import from_environment
-            pg_reader=from_environment()
-        return pg_reader.sessions()
-    if selected_mode!='FILE':raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
-    from .dm01_runtime_r4 import calendar
-    head = json.loads((root / 'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
-    historical = json.loads((root / head['calendar']['path']).read_bytes())
-    return sorted(set(historical['session_dates']) | set(calendar(root)['session_dates']))
+    if selected_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+    if pg_reader is None:
+        from workbench_db.v4_market_calendar_reader_r1 import from_environment
+        pg_reader=from_environment()
+    return pg_reader.sessions()
 
 
 def read_day_bytes(data, dates):

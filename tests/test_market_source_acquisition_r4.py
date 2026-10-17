@@ -45,10 +45,19 @@ def test_calendar_holiday_and_exact_predecessors():
     assert not is_stock_code('sz.399001') and is_stock_code('sz.300010')
     assert not is_stock_code('bj.899050') and not is_stock_code('bj.899601')
     assert is_stock_code('bj.920001') and is_stock_code('bj.830001')
-    dates = official_sessions(Path(__file__).resolve().parents[1],source_mode='FILE')
+    class Reader:
+        def sessions(self):
+            return ['2026-09-24','2026-09-29','2026-09-30','2026-10-08']
+    dates = official_sessions(Path(__file__).resolve().parents[1],pg_reader=Reader(),source_mode='PG')
     assert dates[dates.index('2026-10-08')-1]=='2026-09-30'
-    assert dates[dates.index('2026-09-30')-3]=='2026-09-24'
     assert not any(f'2026-10-{i:02}' in dates for i in range(1,8))
+
+
+def test_official_sessions_reject_file_authority_mode(tmp_path):
+    (tmp_path/'data/v4').mkdir(parents=True)
+    (tmp_path/'data/v4/V4_DATA_ACCEPTED_HEAD.json').write_text('{}',encoding='utf-8')
+    with pytest.raises(ValueError,match='MARKET_CALENDAR_PG_ONLY'):
+        official_sessions(tmp_path,source_mode='FILE')
 
 
 def test_day_target_not_stale_tail_or_wrong_unit():

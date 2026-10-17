@@ -3085,11 +3085,11 @@
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_market_calendar_reader_r1 exact accepted-publication Head and approved contract reader",
-        "status": "IMPLEMENTED_PG_PATH_PENDING_PUBLICATION_AND_LIVE_READBACK_RECONCILIATION"
+        "candidate": "v4.publication_heads joined to accepted v4.publications, resolved by v4_market_calendar_reader_r1 inside the reader snapshot",
+        "status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_LIVE_CALENDAR_PUBLICATION_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "PG calendar is now the default selection for the shared official_sessions runtime call and daily executor/job scheduler; live Reader identity, approved calendar contract registration and accepted-publication readback remain unverified.",
+      "blocker": "The shared official_sessions reader now rejects FILE mode and reads sessions only from the PG market-calendar reader. Live database identity, approved calendar registration, accepted publication/namespace and T0 equivalence remain unverified; formal row remains open.",
       "baseline_function": "official_sessions",
       "migration_evidence": {
         "batch_id": "R21-R4-pg-calendar-default-and-matrix-audit-r57",
@@ -3101,7 +3101,19 @@
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "accepted_publication_mapping": "PENDING",
-        "verification": "51 focused PG calendar/daily/acquisition/contract tests passed; repository-policy CI selection also passed locally: 300 passed. Controlled PG boundaries only; no live PG read."
+        "verification": "51 focused PG calendar/daily/acquisition/contract tests passed; repository-policy CI selection also passed locally: 300 passed. Controlled PG boundaries only; no live PG read.",
+        "followup_batch": {
+          "batch_id": "R21-R4-official-sessions-pg-only-r86",
+          "implemented_code": "Removed the V4_DATA_ACCEPTED_HEAD and calendar-file fallback from market_source_acquisition.official_sessions. The shared active reader now requires PG mode and returns sessions from the configured PG calendar reader.",
+          "test_evidence": [
+            "tests/test_market_source_acquisition_r4.py::test_calendar_holiday_and_exact_predecessors",
+            "tests/test_market_source_acquisition_r4.py::test_official_sessions_reject_file_authority_mode",
+            "tests/test_v4_r21_pg_market_calendar.py"
+          ],
+          "verification": "34 focused tests passed across official sessions, PG calendar reader, candidate BFF calendar, and daily executor call chains. Controlled fixtures only; no live publication acceptance.",
+          "formal_status": "OPEN",
+          "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+        }
       },
       "reference_evidence": [
         {

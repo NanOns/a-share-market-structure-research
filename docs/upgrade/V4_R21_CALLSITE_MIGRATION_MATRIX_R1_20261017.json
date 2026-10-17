@@ -16652,10 +16652,12 @@
       "docs/upgrade/V4_R21_R4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R64_20261017.md",
       "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_XML_ENCODING_GUARD_R65_20261017.md",
       "docs/upgrade/V4_R21_R4_DAILY_RUNTIME_ACCEPTANCE_EXECUTOR_PG_R66_20261017.md",
+      "docs/upgrade/V4_R21_R4_DM01_LIFECYCLE_STAGE_PG_R69_20261017.md",
       "docs/upgrade/V4_R21_R4_DM01_STAGE_STATE_PG_WRITER_R68_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
+      "scripts/build_v4_dm01_lifecycle_snapshot.py",
       "scripts/capture_baostock_daily_update.py",
       "scripts/probe_v4_dm01_gbbq_revision.py",
       "src/workbench_analysis/contract_registry_pg_v1.py",
@@ -16672,6 +16674,7 @@
       "tests/test_pre_next_t0_executor_chain.py",
       "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
       "tests/test_v4_contract_registry_pg_v1.py",
+      "tests/test_v4_dm01_lifecycle_pg_stage.py",
       "tests/test_v4_dm01_stage_state_pg_r1.py"
     ],
     "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
@@ -17849,6 +17852,31 @@
         "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write attempted",
         "next": "Complete PG producer/consumer handoff for the main DM-01 orchestrator, lifecycle, special-phase and source-freeze; clear real report-backed business-state reads before admission; continue exact-mapped Owner/Head/BFF batches.",
         "admission": "The stage-fact producer and store are staged and pass repository admission. Main-orchestrator PG reader integration remains in the working tree; that full script still reads reports/v4_* state and is not admitted."
+      },
+      {
+        "batch_id": "R21-R4-dm01-lifecycle-stage-pg-r69",
+        "files": [
+          "docs/upgrade/V4_R21_R4_DM01_LIFECYCLE_STAGE_PG_R69_20261017.md",
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "scripts/build_v4_dm01_lifecycle_snapshot.py",
+          "tests/test_v4_dm01_lifecycle_pg_stage.py"
+        ],
+        "evidence": [
+          "Lifecycle builder now appends its complete dated manifest or waiting/blocked result to the shared PG stage fact contract and emits the exact descriptor binding; it no longer writes a lifecycle report artifact.",
+          "The main daily orchestrator PG consumer was adapted in the working tree but remains uncommitted because other report-backed inputs still block admission."
+        ],
+        "verification": "52 selected lifecycle-manifest and PG-stage entrypoint tests passed; no live PG write, source capture, or business acceptance.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 210,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48
+        },
+        "baseline_callsite_ids_matched": [],
+        "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write attempted",
+        "next": "Complete the main orchestrator consumer plus special-phase and source-freeze PG inputs; map each to the real Owner/Head or accepted source relation before claiming callsite completion.",
+        "admission": "This lifecycle producer batch passes staged repository admission. The main consumer wiring is not included until all remaining reports/v4_* business reads in that script are removed through actual PG relation migration."
       }
     ]
   }

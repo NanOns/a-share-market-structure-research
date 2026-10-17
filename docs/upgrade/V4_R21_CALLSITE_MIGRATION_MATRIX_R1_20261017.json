@@ -6873,7 +6873,10 @@
         "code_path": "src/workbench_analysis/operational_successor_v1.py::OperationalSuccessorReaderV1.__init__ -> v4_operational_owner_authority_v2.load -> PostgreSQL authority_manifest",
         "bff_path": "src/workbench_service/core_product_server_r1.py ignores inline PG descriptor paths for local file cache/stat and reads database_identity from the accepted Head descriptor bytes",
         "positive_and_negative_tests": "tests/test_v4_embedded_owner_reader_integration.py and tests/test_v4_bff_pg_descriptor_binding.py; fixture PG owner read path and legacy-head fallback rejection",
-        "status_boundary": "PARTIAL_CODE_WIRING; current accepted Head has no native_pg_owner_authority, live Reader DSN is unavailable, and baseline row remains OPEN"
+        "status_boundary": "PARTIAL_CODE_WIRING; current accepted Head has no native_pg_owner_authority, live Reader DSN is unavailable, and baseline row remains OPEN",
+        "runtime_validation_path": "OperationalSuccessorReaderV1 loads the Head-embedded PG authority manifest before validate(); Owner dates/domains/source digest are validated from that manifest and descriptors, without opening target Owner payload files.",
+        "preparation_path": "Without embedded PG authority, candidate preparation retains the exact file-binding check.",
+        "live_status": "OPEN: current accepted operational Head still lacks native_pg_owner_authority; no live PG Reader DSN or same-T0 readback."
       },
       "reference_evidence": [
         {
@@ -16885,6 +16888,26 @@
         "p1_formally_remaining": 266,
         "status": "CONTRACT_SET_INTEGRITY_CODE_HARDENED; no exact P1 row closed.",
         "next": "Continue active daily contract/Head/Authority/descriptor and exact Owner/other-business consumer wiring; retain all formal counts until live per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-owner-runtime-no-local-payload-r26",
+        "files": [
+          "src/workbench_analysis/operational_successor_v1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "docs/upgrade/V4_R21_R4_OWNER_RUNTIME_NO_LOCAL_PAYLOAD_R26_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-ce030238606ae3e34b44"
+        ],
+        "evidence": [
+          "OperationalSuccessorReaderV1 loads the embedded PG authority before candidate validation; runtime Owner date/domain/source bindings are checked against the PG manifest and descriptors.",
+          "The runtime validation branch skips local Owner payload opens; exact file checks remain only in candidate preparation without PG authority. Current accepted Head lacks the binding, so the baseline row remains OPEN."
+        ],
+        "verification": "11 focused embedded Owner Reader, Head catalog, and BFF descriptor tests passed, including a spy proving no Owner file open on the PG-authority validation branch. Broader Owner append tests require V4_NATIVE_PG_DSN and were not accepted as passing.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "OWNER_RUNTIME_READER_PATH_HARDENED; current accepted Head and live PG readback remain open.",
+        "next": "Migrate native_pg_owner_authority into the accepted operational Head and continue exact daily source/Owner/BFF consumers; do not change formal counts before same-T0 readback and per-ID reconciliation."
       }
     ]
   }

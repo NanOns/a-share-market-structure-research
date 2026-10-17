@@ -27,7 +27,7 @@ def test_new_reader_uses_fact_token_and_enforces_current_http_token(tmp_path,mon
             "bytes":4,"pg_descriptor":{"kind":"raw","fact_key":"fact"}},"fact_token":"a"*64}}},
         "historical_PIT_permission":False,"AS_RECORDED":False,"PIT_ELIGIBLE":False}
     # This control exercises Reader IO only; full admission has separate real data evidence.
-    monkeypatch.setattr(module,'validate',lambda root,data:True)
+    monkeypatch.setattr(module,'validate',lambda root,data,**kwargs:True)
     monkeypatch.setattr('workbench_db.v4_operational_owner_authority_v2.load',lambda root,data:authority)
     monkeypatch.setattr('workbench_db.v4_operational_owner_authority_v2.read',lambda *a,**k:[dict(security_id='FIXTURE',amount=105.625)])
     monkeypatch.setattr('workbench_db.v4_operational_owner_authority_v2.attest',lambda *a,**k:None)
@@ -38,7 +38,7 @@ def test_new_reader_uses_fact_token_and_enforces_current_http_token(tmp_path,mon
 
 def test_exact_reader_rejects_missing_embedded_authority_without_static_fallback(tmp_path,monkeypatch):
     from workbench_analysis import operational_successor_v1 as module
-    monkeypatch.setattr(module,'validate',lambda root,data:True)
+    monkeypatch.setattr(module,'validate',lambda root,data,**kwargs:True)
     with pytest.raises(ValueError,match='EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK'):
         module.OperationalSuccessorReaderV1(tmp_path,candidate(tmp_path))
 
@@ -46,7 +46,7 @@ def test_operational_reader_rejects_legacy_head_authority_file_fallback(tmp_path
     from workbench_analysis import operational_successor_v1 as module
     data=candidate(tmp_path)
     data.pop('exact_daily_adjustment_contract')
-    monkeypatch.setattr(module,'validate',lambda root,data:True)
+    monkeypatch.setattr(module,'validate',lambda root,data,**kwargs:True)
     with pytest.raises(ValueError,match='PG_OPERATIONAL_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK'):
         module.OperationalSuccessorReaderV1(tmp_path,data)
 
@@ -74,3 +74,30 @@ def test_successor_preparation_preserves_original_serialized_head_fact_token(tmp
     assert receipt['counts']==dict(reused=1,created=0)
     assert receipt['legacy_authority_ingress']==dict(path=legacy_binding['path'],sha256=legacy_binding['sha256'],
         disposition='EXACT_BOUND_ONE_TIME_INGRESS_THEN_PG_MANIFEST')
+
+
+def test_runtime_owner_validation_uses_pg_authority_without_opening_owner_files(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_v1 as module
+    from workbench_db.v4_operational_owner_authority_v2 import CONTRACT,validate as validate_pg
+    from workbench_db.v4_forward_pg_r1 import canonical, digest as pg_digest
+    owners={'2026-10-12':{'raw':{'path':'raw.json','sha256':'b'*64,'bytes':1}}}
+    candidate={'owners':owners,'accepted_trade_date':'2026-10-12'}
+    authority={'contract_id':CONTRACT,'source_owners':owners,
+        'owner_source_digest':pg_digest(canonical(owners)),
+        'owners':{'2026-10-12':{'raw':{'descriptor':{'kind':'raw'},'fact_token':'a'*64}}},
+        'historical_PIT_permission':False,'AS_RECORDED':False,'PIT_ELIGIBLE':False}
+    checked=[]
+    monkeypatch.setattr(module,'checked',lambda *args,**kwargs:checked.append(args) or (_ for _ in ()).throw(AssertionError('OWNER_FILE_OPENED')))
+    module._validate_owner_bindings(tmp_path,candidate,authority)
+    assert checked==[]
+    validate_pg(candidate,authority)
+
+
+def test_candidate_preparation_owner_validation_keeps_exact_file_binding_check(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_v1 as module
+    binding={'path':'owner.json','sha256':'a'*64}
+    candidate={'owners':{'2026-10-12':{'raw':binding}},'accepted_trade_date':'2026-10-12'}
+    opened=[]
+    monkeypatch.setattr(module,'checked',lambda root,value:opened.append(value) or b'owner')
+    module._validate_owner_bindings(tmp_path,candidate)
+    assert opened==[binding]

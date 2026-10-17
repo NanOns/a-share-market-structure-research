@@ -12,7 +12,16 @@ REQUIRED = frozenset(('raw','adjusted','core','profile','sector','relative_secto
                       'rotation','lifecycle','special_phase','period_raw','period_adjusted','diagnostic'))
 
 
-def validate(root, candidate):
+def _validate_owner_bindings(root, candidate, pg_owner_authority=None):
+    if pg_owner_authority is not None:
+        from workbench_db.v4_operational_owner_authority_v2 import validate as validate_pg_authority
+        validate_pg_authority(candidate, pg_owner_authority)
+        return
+    for binding in candidate['owners'][candidate['accepted_trade_date']].values():
+        checked(root,binding)
+
+
+def validate(root, candidate, *, pg_owner_authority=None):
     root=Path(root)
     if candidate.get('contract_id')!=CONTRACT:
         raise ValueError('WRONG_SUCCESSOR_CONTRACT')
@@ -38,7 +47,7 @@ def validate(root, candidate):
     day=dates[-1]; owners=candidate['owners'][day]
     if not REQUIRED<=set(owners):
         raise ValueError('SUCCESSOR_REQUIRED_OWNER_MISSING')
-    for binding in owners.values():checked(root,binding)
+    _validate_owner_bindings(root,candidate,pg_owner_authority)
     for binding in candidate['source_registry'][day].values():checked(root,binding)
     qa=json.loads(checked(root,candidate['day_receipt']).read_bytes())
     if qa.get('target_session')!=day or qa.get('acceptance')!='DERIVED_READY' or qa.get('owners')!=owners:
@@ -79,11 +88,8 @@ def validate(root, candidate):
 
 class OperationalSuccessorReaderV1(CandidateReadV2):
     def __init__(self,root,candidate):
-        self.root=Path(root);self.candidate=candidate;validate(root,candidate)
+        self.root=Path(root);self.candidate=candidate
         self.context_digest=digest(candidate);self.cache={}
-        self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
-        self.user_authorized_cutover=True;self.independent_external_acceptance=False
-        self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
         from workbench_db.v4_operational_owner_authority_v2 import KEY,load
         self.embedded_pg_owner_authority=KEY in candidate
         if self.embedded_pg_owner_authority or candidate.get('exact_daily_adjustment_contract'):
@@ -93,6 +99,10 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
             # predecessor ingress while preparing a successor. Runtime reads
             # must use the manifest embedded in the accepted Head.
             raise ValueError('PG_OPERATIONAL_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
+        validate(root,candidate,pg_owner_authority=self.pg_owner_authority)
+        self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
+        self.user_authorized_cutover=True;self.independent_external_acceptance=False
+        self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
 
     def context(self):
         from .tdx_member_retro_r43 import metadata

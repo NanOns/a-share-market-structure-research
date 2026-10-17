@@ -5,9 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'src')]
-from scripts.v4_production_cutover_evidence import ROOT, REPORT, write
-from workbench_service.current_v4_context import digest
-from workbench_service.v4_daily_refresh import AUTHORITY, publish_accepted_view, refresh_status
+from scripts.v4_production_cutover_evidence import ROOT
+from workbench_service.v4_daily_refresh import refresh_status, validate_current_view_candidate
 from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
 from workbench_db.dm01_data_accepted_head_pg_r1 import read_current as read_data_head
 
@@ -19,11 +18,10 @@ def can_publish_increment(child, returncode, accepted_date, target_date):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--candidate-contract');args=parser.parse_args()
-    before=digest((ROOT/AUTHORITY).read_bytes())
     try:
         status=refresh_status(ROOT)
         if args.candidate_contract:
-            status=publish_accepted_view(ROOT,args.candidate_contract,before)
+            status=validate_current_view_candidate(ROOT,args.candidate_contract)
         elif status['next_completed_session']:
             scope_policy=_daily_runtime_contract(
                 'TDX_A_STOCK_DELTA_SCOPE_POLICY_V2','2.0.0',version_field='version')
@@ -44,10 +42,10 @@ def main():
                 status['source_request_count_scope']='UNVERIFIED;INSPECT_CHILD_RECEIPT'
             actual_head=read_data_head(ROOT)['candidate']
             if can_publish_increment(child,process.returncode,actual_head['accepted_trade_date'],status['next_completed_session']):
-                build=subprocess.run([sys.executable,'-m','scripts.build_v4_current_read_contract'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
-                status['owner_view_build_exit_code']=build.returncode
-                if build.returncode==0:status=publish_accepted_view(ROOT,'config/v4_current_accepted_read_contract_v1.json',before)
-                else:status.update(status='BLOCKED_OWNER_ACCEPTANCE_REQUIRED',owner_error=build.stderr,data_preserved=True)
+                status.update(status='INPUT_CAPTURED_PENDING_CANONICAL_PG_PUBLICATION',
+                    accepted_trade_date=actual_head['accepted_trade_date'],
+                    candidate_contract_status='NOT_BUILT_FROM_WORKSPACE_HEAD_FILES',
+                    data_preserved=True,accepted_research_head_changed=False)
             else:
                 policy=ROOT/'config/v4_corrected_owner_replay_v1.json'
                 if policy.exists() and status['next_completed_session'] in json.loads(policy.read_bytes())['target_sessions']:
@@ -56,12 +54,11 @@ def main():
                     status.update(corrected_owner_exit_code=corrected.returncode,corrected_owner_output=corrected.stdout,
                         corrected_owner_error=corrected.stderr,status='BLOCKED_SCOPED_OWNER_RELEASE_GATE',data_preserved=True)
                 else:status.update(status='BLOCKED_SOURCE_OR_OWNER_GATE',data_preserved=True)
-        write(REPORT/'DAILY_REFRESH_LATEST_RECEIPT.json',status)
         print(json.dumps(status,ensure_ascii=False))
-        return 2 if status['status'].startswith('BLOCKED') else 0
+        return 0 if status.get('status') in ('WAIT_NEXT_ACCEPTED_INPUT','COMPLETED_INPUT_CAPTURE_REQUIRED') else 2
     except (ValueError,OSError,KeyError) as error:
-        receipt=dict(status='BLOCKED_DAILY_REFRESH',reason=str(error),production_pointer_preserved=digest((ROOT/AUTHORITY).read_bytes())==before)
-        write(REPORT/'DAILY_REFRESH_LATEST_RECEIPT.json',receipt);print(json.dumps(receipt));return 2
+        receipt=dict(status='BLOCKED_DAILY_REFRESH',reason=str(error))
+        print(json.dumps(receipt,ensure_ascii=False));return 2
 
 
 if __name__=='__main__':raise SystemExit(main())

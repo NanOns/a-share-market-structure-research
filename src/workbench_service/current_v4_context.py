@@ -64,20 +64,38 @@ class CurrentAcceptedV4Reader:
 
     def _contract(self):
         try:
-            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
             if self.follow_runtime and self.contract_path=='config/v4_current_accepted_read_contract_v1.json':
-                try: runtime_source=read_path(self.root,'config/v4_production_runtime_authority_v1.json')
-                except ValueError:
-                    if self.require_runtime:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
-                    runtime_source=None
-            else:runtime_source=None
-            if self.require_runtime and runtime_source is None:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
-            if runtime_source is not None:
-                runtime=json.loads(runtime_source['raw'])
-                if runtime['contract_id']!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1' or not runtime['ui_read_only'] or runtime['tdx_write_authorized'] or runtime['trading_action_authorized']:raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
-                ref=runtime['read_authority'];contract=self._read(ref);contract_digest=ref['sha256']
+                from workbench_analysis.contract_registry_pg_v1 import (
+                    load_current_approved_contract_by_digest,
+                    load_unique_current_approved_contract,
+                )
+                from workbench_db.v4_publication_reader import PgPublicationReader, readonly_connection
+                with readonly_connection() as pg:
+                    identity=PgPublicationReader._read_database_identity(pg)
+                    runtime_registered=load_unique_current_approved_contract(
+                        pg,'V4_PRODUCTION_RUNTIME_AUTHORITY_V1','1.0.0',
+                        expected_database_identity=identity)
+                    runtime=runtime_registered.parsed_json
+                    if not isinstance(runtime,dict):raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
+                    if (runtime.get('contract_id')!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1'
+                            or runtime.get('version')!='1.0.0' or not runtime.get('ui_read_only')
+                            or runtime.get('tdx_write_authorized') or runtime.get('trading_action_authorized')):
+                        raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
+                    ref=runtime.get('read_authority')
+                    if not isinstance(ref,dict) or ref.get('contract_id')!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1':
+                        raise SourceInvalid('RUNTIME_READ_AUTHORITY_BINDING_INVALID')
+                    registered=load_current_approved_contract_by_digest(
+                        pg,'V4_CURRENT_ACCEPTED_READ_CONTRACT_V1',ref.get('sha256',''),
+                        'V4_CURRENT_ACCEPTED',expected_database_identity=identity)
+                    if (len(registered.raw_content)!=ref.get('bytes')
+                            or registered.raw_sha256!=ref.get('sha256')
+                            or registered.parsed_json is None):
+                        raise SourceInvalid('RUNTIME_READ_AUTHORITY_REGISTRY_MISMATCH')
+                    contract=registered.parsed_json;contract_digest=registered.raw_sha256
                 if runtime['data_head_binding']['sha256']!=contract['anchors']['data_head']['sha256'] or runtime['stage_authority_binding']['sha256']!=contract['anchors']['stage_authority']['sha256']:raise SourceInvalid('RUNTIME_READ_AUTHORITY_INCONSISTENT')
             else:
+                if self.require_runtime:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
+                from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
                 source=read_path(self.root,self.contract_path);raw=source['raw'];contract=json.loads(raw);contract_digest=digest(raw)
             if contract['contract_id']!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1' or contract['source_discovery'] or contract['fallback']!='NONE':raise SourceInvalid('READ_CONTRACT_INVALID')
             return contract,contract_digest
@@ -111,8 +129,10 @@ class CurrentAcceptedV4Reader:
         return result
 
     def load_context(self):
-        contract,contract_digest=self._contract()
-        return self._load_context(contract,contract_digest)
+        from workbench_db.v4_publication_reader import readonly_connection
+        with readonly_connection():
+            contract,contract_digest=self._contract()
+            return self._load_context(contract,contract_digest)
 
     def _load_context(self,contract,contract_digest):
         heads=self._heads(contract)
@@ -141,6 +161,18 @@ class CurrentAcceptedV4Reader:
                 self._verify(ref)
 
     def read(self,module,query=None):
+        from workbench_db.v4_publication_reader import readonly_connection
+        try:
+            with readonly_connection():
+                return self._read_in_snapshot(module,query)
+        except SourceInvalid as exc:
+            return 409,dict(status='BLOCKED',module=module,code='SOURCE_INVALID',reason=str(exc),items=[])
+        except Exception as exc:
+            detail=str(exc)
+            code=detail if detail.startswith('V4_PG_CONTRACT_') else 'PG_READ_FAILED:'+type(exc).__name__
+            return 503,dict(status='BLOCKED',module=module,code=code,items=[])
+
+    def _read_in_snapshot(self,module,query=None):
         query=query or {}
         try:
             contract,contract_digest=self._contract();context=self._load_context(contract,contract_digest)

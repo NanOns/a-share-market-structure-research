@@ -67,14 +67,12 @@ def reference(root, path):
 
 def frozen_current_reader(root):
     root=Path(root).resolve()
-    runtime=json.loads((root/'config/v4_production_runtime_authority_v1.json').read_bytes())
-    if runtime.get('contract_id')!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1' or not runtime.get('ui_read_only') or runtime.get('tdx_write_authorized') or runtime.get('trading_action_authorized'):
-        raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
-    verifier=CurrentAcceptedV4Reader(root,require_runtime=True);verifier._read(runtime['read_authority'])
-    reader=CurrentAcceptedV4Reader(root,contract_path=runtime['read_authority']['path'],follow_runtime=False)
-    _,sha=reader._contract()
-    if sha!=runtime['read_authority']['sha256']:raise SourceInvalid('FROZEN_READ_AUTHORITY_MISMATCH')
-    return reader,runtime['read_authority']
+    reader=CurrentAcceptedV4Reader(root,require_runtime=True)
+    contract,sha=reader._contract()
+    # The contract bytes are selected and digest-verified in the PG Registry;
+    # they are a version identity, not a workspace artifact reference.
+    return reader,dict(contract_id=contract['contract_id'],version=contract.get('version'),
+        namespace=contract.get('namespace'),sha256=sha,bytes=len(canonical(contract)))
 
 
 def compact_cell(cell, ref, field, date):
@@ -109,7 +107,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
     before = pointer.read_bytes() if pointer.exists() else None
     if expected_pointer is not None and (digest(before) if before else None) != expected_pointer:
         raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
-    legacy,read_authority = frozen_current_reader(root)
+    legacy,_ = frozen_current_reader(root)
     context = legacy.load_context(); date = context['context']['accepted_trade_date']
     if date>datetime.now(ZoneInfo('Asia/Shanghai')).date().isoformat():raise SourceInvalid('FUTURE_TRADE_DATE_FORBIDDEN')
     if before:
@@ -119,7 +117,6 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
     sources = dict(contract['sources']); owners = dict(contract['owner_heads'])
     name_authority=json.loads((root/'config/v4_display_names_authority_v1.json').read_bytes())
     decoration=legacy._read(name_authority['source']);sources['display_names']=name_authority['source']
-    sources.update({'read_contract':read_authority})
     advanced_head = legacy._read(owners['v4_13'])
     units={}
     for ref in advanced_head['contract_refs']:

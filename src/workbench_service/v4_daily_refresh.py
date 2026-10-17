@@ -21,49 +21,63 @@ def atomic_bytes(path,raw):
         if temp.exists():temp.unlink()
 
 
-def publish_accepted_view(root,candidate_contract,expected_authority_digest,*,now=None):
+def validate_current_view_candidate(root,candidate_contract,expected_authority_digest=None,*,now=None):
+    """Validate and persist a PG candidate without promoting a workspace Head.
+
+    ``candidate_contract`` is a one-time source-ingress input. Its exact bytes
+    and all bound module sources are read back from PostgreSQL before use.
+    Successful validation appends an immutable candidate fact; only the
+    canonical publication workflow can promote an accepted Head.
+    """
     root=Path(root).resolve()
-    locator=CurrentAcceptedV4Reader(root,contract_path=candidate_contract,follow_runtime=False)
-    raw=locator._path(candidate_contract).read_bytes();contract=json.loads(raw)
-    archive=root/'data/v4/production_views'/digest(raw)/'read_contract.json'
-    if archive.exists() and archive.read_bytes()!=raw:raise SourceInvalid('IMMUTABLE_VIEW_CONFLICT')
-    if not archive.exists():atomic_bytes(archive,raw)
-    # All module gates consume one frozen candidate, even if a concurrent daily
-    # build replaces the mutable candidate configuration during validation.
-    reader=CurrentAcceptedV4Reader(root,contract_path=archive.relative_to(root).as_posix(),follow_runtime=False)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_bound, source_id_for_path
+    candidate_path=Path(candidate_contract)
+    if candidate_path.is_absolute():
+        try:candidate_path=candidate_path.resolve().relative_to(root).as_posix()
+        except ValueError as exc:raise SourceInvalid('CANDIDATE_CONTRACT_OUTSIDE_WORKSPACE') from exc
+    else:candidate_path=candidate_path.as_posix()
+    if not candidate_path or Path(candidate_path).is_absolute() or '..' in Path(candidate_path).parts:
+        raise SourceInvalid('CANDIDATE_CONTRACT_PATH_INVALID')
+    source_path=(root/candidate_path).resolve()
+    if not source_path.is_relative_to(root) or not source_path.is_file():
+        raise SourceInvalid('CANDIDATE_CONTRACT_SOURCE_UNAVAILABLE')
+    raw=source_path.read_bytes();contract_digest=digest(raw)
+    source=admit_bound(root,dict(path=candidate_path,sha256=contract_digest,bytes=len(raw)))
+    try:contract=json.loads(source['raw'])
+    except (UnicodeDecodeError,ValueError) as exc:raise SourceInvalid('CURRENT_READ_CONTRACT_INVALID') from exc
+    if contract.get('contract_id')!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1':
+        raise SourceInvalid('CURRENT_READ_CONTRACT_REQUIRED')
+    # Freeze one exact PG-ingressed contract value for every module gate.
+    reader=CurrentAcceptedV4Reader(root,contract_path=candidate_path,follow_runtime=False)
+    reader._contract=lambda:(contract,contract_digest)
     candidate=reader.load_context()
     for module in ['summary','radar','entity','sector','cohort','settlement','health']:
         code,value=reader.read(module)
         if code!=200:raise SourceInvalid('CANDIDATE_OWNER_GATE:'+module+':'+value.get('reason',''))
     today=(now or datetime.now(ZoneInfo('Asia/Shanghai'))).date().isoformat()
     if candidate['context']['accepted_trade_date']>today:raise SourceInvalid('FUTURE_INPUT_FORBIDDEN')
-    path=root/AUTHORITY;old_raw=path.read_bytes()
-    if digest(old_raw)!=expected_authority_digest:raise SourceInvalid('AUTHORITY_CAS_CONFLICT')
-    old=json.loads(old_raw)
-    if candidate['context']['accepted_trade_date']<old['last_accepted_trade_date']:raise SourceInvalid('OLDER_CANDIDATE_FORBIDDEN')
-    previous=root/'data/v4/production_views'/digest(old_raw)/'authority.json'
-    if not previous.exists():atomic_bytes(previous,old_raw)
-    new={**old,'read_authority':dict(path=archive.relative_to(root).as_posix(),bytes=len(raw),sha256=digest(raw),owner_stage='CURRENT_ACCEPTED',contract_id=contract['contract_id']),
-        'data_head_binding':contract['anchors']['data_head'],'stage_authority_binding':contract['anchors']['stage_authority'],
-        'last_accepted_trade_date':candidate['context']['accepted_trade_date'],
-        'rollback_binding':dict(path=previous.relative_to(root).as_posix(),bytes=len(old_raw),sha256=digest(old_raw)),
-        'source_mode':'V4_ACCEPTED_RESEARCH_READONLY'}
-    lock=path.with_suffix('.lock')
-    fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
-    try:
-        os.close(fd)
-        if digest(path.read_bytes())!=expected_authority_digest:raise SourceInvalid('AUTHORITY_CAS_CONFLICT')
-        atomic_bytes(path,canonical(new)+b'\n')
-        # Fresh reader must verify the exact newly visible pointer.
-        try:
-            readback=CurrentAcceptedV4Reader(root,require_runtime=True).load_context()
-        except (ValueError,OSError,KeyError):
-            # Keep the previous accepted pointer even if an external source
-            # mutation or readback failure occurs after the atomic swap.
-            atomic_bytes(path,old_raw)
-            raise
-        return dict(status='PUBLISHED_CURRENT_ACCEPTED',before=digest(old_raw),after=digest(path.read_bytes()),context=readback)
-    finally:lock.unlink()
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+    from .current_v4_context import canonical
+    candidate_fact=dict(contract_id='V4_CURRENT_ACCEPTED_VIEW_VALIDATED_CANDIDATE_R1',
+        contract_source=dict(source_id=source_id_for_path(candidate_path),path=candidate_path,
+            sha256=contract_digest,bytes=len(source['raw'])),
+        contract_version=contract.get('version'),context=candidate['context'],
+        context_token=candidate['context_token'],
+        validated_modules=['summary','radar','entity','sector','cohort','settlement','health'],
+        validation='ALL_MODULES_READ_FROM_EXACT_PG_INGRESS_BINDINGS',
+        acceptance='NOT_REQUESTED_NO_HEAD_CAS')
+    fact_key=digest(canonical(candidate_fact))
+    store=ForwardFactStore(root,'data/v4/current_accepted_view_candidates_r1')
+    descriptor=store.append('validated_candidate',fact_key,candidate_fact)
+    if canonical(store.read(descriptor))!=canonical(candidate_fact):
+        raise SourceInvalid('PG_CANDIDATE_VALIDATION_READBACK_MISMATCH')
+    return dict(status='VALIDATED_CANDIDATE_PENDING_PUBLICATION',candidate_descriptor=descriptor,
+        context=candidate,accepted_head_changed=False,workspace_authority_changed=False)
+
+
+# Compatibility name for callers retained during the transition. This no
+# longer publishes or promotes an accepted view.
+publish_accepted_view=validate_current_view_candidate
 
 
 def refresh_status(root,*,now=None):

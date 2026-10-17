@@ -9,6 +9,8 @@ from workbench_analysis.r43_owner_replay import checked
 KEY='native_membership_reference'
 CONTRACT='V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1'
 PG_AUTHORITY_CONTRACT='V4_NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_R2'
+CONTEXT_CONTRACT='V4_NATIVE_MEMBERSHIP_CONTEXT_METADATA_R1'
+CONTEXT_CONTRACT_VERSION='1.0.0'
 AUTHORITY_KIND='native_membership_reference_authority'
 FOLDER='data/v4/membership_reference_pg_v1'
 
@@ -56,7 +58,8 @@ def prepare(root,candidate):
     metadata_fields=('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
         'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
         'production_eligible_scope','survivorship_bias_risk')
-    snapshot_metadata={key:snapshot[key] for key in metadata_fields}
+    snapshot_metadata=dict(contract_id=CONTEXT_CONTRACT,version=CONTEXT_CONTRACT_VERSION,
+        fields={key:snapshot[key] for key in metadata_fields})
     authority=dict(contract_id=CONTRACT,T0=day,membership_snapshot=candidate['membership_snapshot'],source=source,
         identity_source=snapshot.get('identity_source'),membership_snapshot_id=snapshot.get('membership_snapshot_id'),
         snapshot_metadata=snapshot_metadata,descriptor=descriptor,fact_token=fact_key,rows=len(content),AS_RECORDED=False,PIT_ELIGIBLE=False)
@@ -81,7 +84,12 @@ def context_metadata(root,candidate):
             or authority.get('membership_snapshot')!=candidate['membership_snapshot']
             or authority.get('membership_snapshot_id')!=candidate.get('membership_snapshot_id')):
         raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_SCOPE_MISMATCH')
-    metadata=authority.get('snapshot_metadata')
+    snapshot_metadata=authority.get('snapshot_metadata')
+    if (not isinstance(snapshot_metadata,dict)
+            or snapshot_metadata.get('contract_id')!=CONTEXT_CONTRACT
+            or snapshot_metadata.get('version')!=CONTEXT_CONTRACT_VERSION):
+        raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_METADATA_CONTRACT_REQUIRED')
+    metadata=snapshot_metadata.get('fields')
     required={'membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
         'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
         'production_eligible_scope','survivorship_bias_risk'}

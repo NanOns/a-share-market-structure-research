@@ -19,7 +19,7 @@ Date: 2026-10-17 (Asia/Shanghai). This batch advances the existing PG membership
 
 ## Implemented
 
-- Membership reference preparation now pins the source snapshot's context metadata in the same authority manifest as the dated membership descriptor.
+- Membership reference preparation now pins the source snapshot's context metadata in the same authority manifest as the dated membership descriptor under `V4_NATIVE_MEMBERSHIP_CONTEXT_METADATA_R1` version `1.0.0`.
 - Added a PG authority reader for that metadata. It verifies exact snapshot binding, membership snapshot ID, required metadata shape, and non-PIT lineage; it does not consult the snapshot file as a fallback.
 - When the accepted operational candidate carries `native_membership_reference`, `OperationalSuccessorReaderV1` obtains context metadata through that PG authority and retains it for HTTP context responses. The legacy file path remains available only for candidates without the PG binding.
 - Startup `validate()` still performs its existing source/candidate validation, including the snapshot binding. The accepted operational Head in this checkout contains neither `native_pg_owner_authority` nor `native_membership_reference`, so this PG branch cannot be exercised against the current Head.

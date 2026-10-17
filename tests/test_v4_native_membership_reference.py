@@ -33,11 +33,12 @@ def test_membership_context_metadata_requires_exact_head_scope_and_non_pit_linea
     metadata.update(membership_snapshot_id='SNAP-1',AS_RECORDED=False,PIT_ELIGIBLE=False,
         HISTORICAL_FIRST_AVAILABLE_PROVEN=False)
     authority=dict(contract_id='V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1',T0=data['accepted_trade_date'],
-        membership_snapshot=data['membership_snapshot'],membership_snapshot_id='SNAP-1',snapshot_metadata=metadata,
+        membership_snapshot=data['membership_snapshot'],membership_snapshot_id='SNAP-1',snapshot_metadata=dict(
+            contract_id='V4_NATIVE_MEMBERSHIP_CONTEXT_METADATA_R1',version='1.0.0',fields=metadata),
         AS_RECORDED=False,PIT_ELIGIBLE=False)
     monkeypatch.setattr('workbench_db.v4_membership_reference_pg_v1._load_authority',lambda root,candidate:authority)
     assert context_metadata(tmp_path,data)==metadata
-    authority['snapshot_metadata']=dict(metadata,PIT_ELIGIBLE=True)
+    authority['snapshot_metadata']['fields']=dict(metadata,PIT_ELIGIBLE=True)
     with pytest.raises(ValueError,match='CONTEXT_LINEAGE_MISMATCH'):
         context_metadata(tmp_path,data)
 
@@ -61,8 +62,9 @@ def test_membership_prepare_pins_snapshot_context_into_pg_authority_fixture(monk
 
     module.prepare(tmp_path,data)
 
-    assert stored[0]['snapshot_metadata']=={key:snapshot[key] for key in (
-        'membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
-        'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
-        'production_eligible_scope','survivorship_bias_risk')}
+    assert stored[0]['snapshot_metadata']==dict(contract_id='V4_NATIVE_MEMBERSHIP_CONTEXT_METADATA_R1',version='1.0.0',
+        fields={key:snapshot[key] for key in (
+            'membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof',
+            'knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN',
+            'production_eligible_scope','survivorship_bias_risk')})
     assert data[KEY]=={'authority':'fixture'}

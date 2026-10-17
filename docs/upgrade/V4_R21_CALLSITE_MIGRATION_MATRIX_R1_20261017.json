@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 218,
+    "migration_open": 216,
     "statuses": {
-      "OPEN": 210,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48,
+      "OPEN": 208,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 50,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 48,
-    "remaining_open_or_ingress": 218,
+    "code_level_pg_read_paths_implemented": 50,
+    "remaining_open_or_ingress": 216,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -16146,20 +16146,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "operational_successor Head native_product_read_authority_pg -> native_product_catalog_v3._load_pg -> v4_operational_owner_pg_closeout.read for dated manifest and scope facts",
+        "status": "PG_ONLY_RUNTIME_READER_CODE; LIVE_HEAD_FACT_READBACK_PENDING"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Runtime file fallback is removed; live accepted Head authority binding, PG database identity, full dated manifest/scope readback and source-domain inventory reconciliation remain open.",
       "baseline_function": "load",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-only-r70",
+        "implemented_code": "native_product_catalog_v3.load now requires native_product_read_authority_pg and delegates only to _load_pg; the legacy runtime JSON authority/manifest/source fallback was deleted. prepare_pg remains a separate explicit ingress operation.",
+        "test_evidence": [
+          "test_v4_head_embedded_product_catalog",
+          "test_v4_product_catalog_pg_r48",
+          "test_v4_successor_pg_authority_preparation_r46",
+          "test_v4_embedded_owner_reader_integration"
+        ],
+        "formal_status": "OPEN_PENDING_LIVE_PG_READBACK_AND_INVENTORY_RECONCILIATION",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160909",
@@ -16212,20 +16223,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "operational_successor Head native_product_read_authority_pg -> native_product_catalog_v3._load_pg -> v4_operational_owner_pg_closeout.read for dated manifest and scope facts",
+        "status": "PG_ONLY_RUNTIME_READER_CODE; LIVE_HEAD_FACT_READBACK_PENDING"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Runtime file fallback is removed; live accepted Head authority binding, PG database identity, full dated manifest/scope readback and source-domain inventory reconciliation remain open.",
       "baseline_function": "load",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-only-r70",
+        "implemented_code": "native_product_catalog_v3.load now requires native_product_read_authority_pg and delegates only to _load_pg; the legacy runtime JSON authority/manifest/source fallback was deleted. prepare_pg remains a separate explicit ingress operation.",
+        "test_evidence": [
+          "test_v4_head_embedded_product_catalog",
+          "test_v4_product_catalog_pg_r48",
+          "test_v4_successor_pg_authority_preparation_r46",
+          "test_v4_embedded_owner_reader_integration"
+        ],
+        "formal_status": "OPEN_PENDING_LIVE_PG_READBACK_AND_INVENTORY_RECONCILIATION",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160911",
@@ -16654,6 +16676,7 @@
       "docs/upgrade/V4_R21_R4_DAILY_RUNTIME_ACCEPTANCE_EXECUTOR_PG_R66_20261017.md",
       "docs/upgrade/V4_R21_R4_DM01_LIFECYCLE_STAGE_PG_R69_20261017.md",
       "docs/upgrade/V4_R21_R4_DM01_STAGE_STATE_PG_WRITER_R68_20261017.md",
+      "docs/upgrade/V4_R21_R4_PRODUCT_CATALOG_PG_ONLY_R70_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
@@ -16668,6 +16691,7 @@
       "src/workbench_db/v4_operational_owner_authority_v2.py",
       "src/workbench_db/v4_operational_owner_pg_closeout.py",
       "src/workbench_service/core_product_bff_r1.py",
+      "src/workbench_service/native_product_catalog_v3.py",
       "src/workbench_service/operational_successor_bff_v1.py",
       "tests/test_next_t0_old_identity_preflight.py",
       "tests/test_operational_daily_executor_v1.py",
@@ -16675,7 +16699,8 @@
       "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
       "tests/test_v4_contract_registry_pg_v1.py",
       "tests/test_v4_dm01_lifecycle_pg_stage.py",
-      "tests/test_v4_dm01_stage_state_pg_r1.py"
+      "tests/test_v4_dm01_stage_state_pg_r1.py",
+      "tests/test_v4_head_embedded_product_catalog.py"
     ],
     "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
     "follow_up_batches": [
@@ -17877,6 +17902,46 @@
         "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write attempted",
         "next": "Complete the main orchestrator consumer plus special-phase and source-freeze PG inputs; map each to the real Owner/Head or accepted source relation before claiming callsite completion.",
         "admission": "This lifecycle producer batch passes staged repository admission. The main consumer wiring is not included until all remaining reports/v4_* business reads in that script are removed through actual PG relation migration."
+      },
+      {
+        "batch_id": "R21-R4-product-catalog-pg-only-r70",
+        "files": [
+          "docs/upgrade/V4_R21_R4_PRODUCT_CATALOG_PG_ONLY_R70_20261017.md",
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "src/workbench_service/native_product_catalog_v3.py",
+          "tests/test_v4_head_embedded_product_catalog.py"
+        ],
+        "evidence": [
+          "Removed the runtime legacy JSON catalogue authority, dated manifest, and source binding fallback; runtime now requires the accepted Head-embedded PG authority and reads the exact dated manifest and scope facts from PG.",
+          "Updated exact baseline Owner rows V4-BCA-R2-96a1db02fb06bc6096e1 and V4-BCA-R2-ca45d459cf05da9b3d97 to PG-only code pending live reconciliation."
+        ],
+        "verification": "17 selected product-catalogue, Head-bound Owner, BFF, and authority-preparation tests passed. The PG fact-store boundary is controlled in tests; no live database access.",
+        "baseline_callsite_ids_matched": [
+          "V4-BCA-R2-96a1db02fb06bc6096e1",
+          "V4-BCA-R2-ca45d459cf05da9b3d97"
+        ],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_after_batch": {
+          "OPEN": 208,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 50
+        },
+        "owner_subcount_after_batch": {
+          "total": 200,
+          "code_paths_pending_live_reconciliation": 46,
+          "OPEN": 147,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 7
+        },
+        "other_business_subcount_after_batch": {
+          "total": 28,
+          "code_paths_pending_live_reconciliation": 4,
+          "OPEN": 23,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 1
+        },
+        "reference_edges_unmapped": 22,
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
+        "next": "Reconcile live accepted Head authority and full PG reads per exact ID, then continue Owner/Head/BFF and DM-01 stage consumers."
       }
     ]
   }

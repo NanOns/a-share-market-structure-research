@@ -19,23 +19,30 @@ def package(tmp_path):
 
 def test_latest_contains_actual_older_session(tmp_path):
     p=package(tmp_path)
-    a=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen')
-    b=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen')
+    a=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen',tdx_root=tmp_path/'readonly')
+    b=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen',tdx_root=tmp_path/'readonly')
     assert a['row_count']==2 and a['reconstruction_from_later_snapshot']
     assert a['artifact']==b['artifact']
     assert a['source_available_at']==p['observed_at']
     assert a['PIT_ELIGIBLE'] is False
 
 
+def test_latest_package_and_extraction_resolve_configured_tdx_root(monkeypatch,tmp_path):
+    resolved=tmp_path/'configured-tdx-root'
+    monkeypatch.setattr(module.old,'_tdx_root_or_configured',lambda value:resolved if value is None else Path(value))
+    assert module.old._tdx_root_or_configured(None)==resolved
+    assert module.old._tdx_root_or_configured(tmp_path/'explicit')==tmp_path/'explicit'
+
+
 def test_absent_date_not_inferred_from_package_date(tmp_path):
-    a=extract_target_session_bars(package(tmp_path),'2026-10-07',snapshot_root=tmp_path/'frozen')
+    a=extract_target_session_bars(package(tmp_path),'2026-10-07',snapshot_root=tmp_path/'frozen',tdx_root=tmp_path/'readonly')
     assert a['status']=='WAIT_TDX_TARGET_BARS' and not a['target_bars']
 
 
 def test_tamper_fails(tmp_path):
     p=package(tmp_path);Path(p['download']['path']).write_bytes(b'html')
     with pytest.raises(ValueError,match='BINDING'):
-        extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen')
+        extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen',tdx_root=tmp_path/'readonly')
 
 
 def test_same_page_metadata_replaced_zip_invalidates_cache(tmp_path,monkeypatch):
@@ -54,9 +61,9 @@ def test_same_page_metadata_replaced_zip_invalidates_cache(tmp_path,monkeypatch)
     calls=[];fresh=[]
     monkeypatch.setattr(module,'_refresh_existing_downloader',lambda:fresh.append(True))
     monkeypatch.setattr(old,'capture_tdx_official_daily_package',lambda **k:(calls.append(k) or dict(original,update_date='2026-10-09',contract_id='OLD',resolved_download_url=url)))
-    first=module.capture_latest_tdx_package(snapshot_root=tmp_path)
+    first=module.capture_latest_tdx_package(snapshot_root=tmp_path,tdx_root=tmp_path/'readonly')
     assert len(calls)==1 and fresh==[True] and first['remote_package_validator']==validator
-    second=module.capture_latest_tdx_package(snapshot_root=tmp_path)
+    second=module.capture_latest_tdx_package(snapshot_root=tmp_path,tdx_root=tmp_path/'readonly')
     assert len(calls)==1 and fresh==[True] and second['status']=='NOOP_SOURCE_ALREADY_FROZEN'
-    module.capture_latest_tdx_package(snapshot_root=tmp_path,force_refresh=True)
+    module.capture_latest_tdx_package(snapshot_root=tmp_path,tdx_root=tmp_path/'readonly',force_refresh=True)
     assert len(calls)==2 and fresh==[True,True]

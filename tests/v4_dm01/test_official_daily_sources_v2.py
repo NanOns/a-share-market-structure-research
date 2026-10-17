@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -333,6 +334,40 @@ def test_package_never_writes_client_vipdoc(monkeypatch, tmp_path):
     assert result["tdx_root_write_count"] == 0
     assert not client_root.exists()
     assert Path(result["download"]["path"]).is_relative_to(tmp_path / "snapshots")
+
+
+def test_tdx_root_uses_configured_resolver_when_omitted(monkeypatch,tmp_path):
+    from common import paths
+    resolved=tmp_path/'configured-tdx-root'
+    observed=[]
+    monkeypatch.setattr(paths,'resolve_tdx_root',lambda root:(observed.append(root) or resolved))
+    assert tdx_source._tdx_root_or_configured(None)==resolved
+    assert observed==[Path(tdx_source.__file__).resolve().parents[2]]
+
+
+def test_existing_downloader_uses_structured_stdout_receipt_without_report_pointer(monkeypatch,tmp_path):
+    url='https://data.tdx.com.cn/vipdoc/hsjday.zip'
+    capture_root=tmp_path/'data/v4/source_evidence/dm01_a01_r3/tdx/run'
+    package=capture_root/'sha256-package'/'hsjday.zip'
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b'zip-payload')
+    package_binding={'path':package.relative_to(tmp_path).as_posix(),'bytes':package.stat().st_size,
+                     'sha256':tdx_source.sha256_file(package)}
+    receipt={'status':'PASS_OFFICIAL_ZIP','observed_at':datetime.now(timezone.utc).isoformat(),
+             'official_publication_date':TARGET,'attempts':[{'ZIP_valid':True,'url':url}],
+             'request_count':3,'request_limit':5,'package':package_binding,
+             'knowledge_lineage':'RECONSTRUCTED_CORRECTED'}
+    receipt_path=capture_root/'request_receipt.json'
+    receipt_path.write_bytes(tdx_source._json_bytes(receipt))
+    reference={'path':receipt_path.relative_to(tmp_path).as_posix(),
+               'sha256':tdx_source.sha256_file(receipt_path)}
+    output=json.dumps({'status':'PASS','capture_receipt':reference})
+    monkeypatch.setattr(tdx_source.subprocess,'run',lambda *args,**kwargs:type('Result',(),{'returncode':0,'stdout':output})())
+    resolved,metadata=tdx_source._existing_downloader_package(
+        TARGET,url,max_bytes=1024,project_root=tmp_path)
+    assert resolved==package
+    assert metadata['capture_receipt']==reference
+    assert metadata['package']==package_binding
 
 
 class FakeSDK:

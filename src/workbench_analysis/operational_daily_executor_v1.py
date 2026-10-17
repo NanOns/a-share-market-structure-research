@@ -130,10 +130,12 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     time_check=source_readiness(day,now)
     if not time_check['time_eligible']:return time_check
     snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
-    package=capture_latest_tdx_package(snapshot_root=snapshot)
+    from common.paths import resolve_tdx_root
+    tdx_root=resolve_tdx_root(root)
+    package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root)
     if not package.get('download'):
         return dict(status='WAIT_TDX',reason='LATEST_OFFICIAL_PACKAGE_NOT_FROZEN')
-    bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
+    bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
     # A pre-gate package with absent target bars receives one bounded fresh
     # post-gate capture, even if CDN validators/publication text are unchanged.
     # downloaded_at tracks the full request, independently of earliest source
@@ -142,9 +144,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     checked_at=package.get('downloaded_at') or package['observed_at']
     if (bars['status']!='TARGET_BARS_EXTRACTED' and package['provider_package_date']>=day
             and datetime.fromisoformat(checked_at)<gate<=datetime.now(timezone.utc)):
-        package=capture_latest_tdx_package(snapshot_root=snapshot,force_refresh=True)
+        package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,force_refresh=True)
         if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
-        bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
+        bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
     manifest_path=_runtime_acceptance_manifest_path(root, day)
     try:
         manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)

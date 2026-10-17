@@ -3,8 +3,8 @@ stage_id: V4_R21_PG_ONLY_CONSUMER_MIGRATION_20261017_R1
 baseline_sha: 81f7398d52a786a0c0d4570a988f6aeeabf9b3f5
 code_sha: cc9ec42be
 branch: codex/v4-workspace-cleanup
-scope: explicit TDX source-root boundary for official and latest package capture
-test_scope: TDX source-root boundary regressions and focused V4 PG candidate CI suite
+scope: TDX source-root boundary; PG-only Owner and active page reads; 266-callsite reference crosswalk
+test_scope: TDX regressions, focused PG-only reader regressions, and required push/PR candidate CI
 conclusion: R21_CODE_PARTIAL_OWNER_AND_BUSINESS_READ_MIGRATION_OPEN
 P1_business_reads_before: 266
 P1_business_reads_after_formal_inventory_reconciliation: NOT_RUN
@@ -31,7 +31,7 @@ Date: 2026-10-17 (Asia/Shanghai). The active stage input is Drive task card `V4_
 - Active `CoreProductBFFR1` paths no longer read identity files, display-name files, legacy gzip Focus projections, or legacy file market-fact payloads. They require typed PG identity, Focus projection, and market-fact owners. The successor BFF no longer opens the dated membership file and returns an explicit missing-PG-owner error when the new authority is absent.
 - Added a 266-row matrix at `docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json`. It links 244 callsites to exact `V4-NCFR-*` IDs by normalized caller path and line. Twenty-two callsites have no exact edge at that key and remain explicitly unmapped; no IDs were fabricated. Each row records the baseline function, reachability evidence, proposed PG mapping, and current status.
 - Code-level status in the matrix: 21 PG-only read paths implemented pending inventory reconciliation, 8 retained publisher/ingress reads still open, and 237 untouched callsites. The formal P1 count remains 266 until the inventory is reconciled; the matrix is not a severity downgrade or live PG acceptance.
-- Targeted no-live-PG regression selection: 27 passed. One PG-writer integration case was excluded because no `V4_NATIVE_PG_DSN` is configured; no PG connection or DDL/DML was attempted. The previously recorded `fe0907891b81813a6f8ffa9e19ceb5306db49f9a` push/PR CI result applies to the earlier TDX batch, not this new code batch.
+- Targeted no-live-PG regression selection: 27 passed. One PG-writer integration case was excluded because no `V4_NATIVE_PG_DSN` is configured; no PG connection or DDL/DML was attempted. After this code batch, push CI run `39003908041` and PR CI run `39003912571` both passed admission, PG candidate validation, and the standard CI business-code file-access check on `2a887a146b133d52068d929956b9f805126ef43a`. These checks do not constitute live PG readback or production acceptance.
 
 ## Remaining R21 gates
 

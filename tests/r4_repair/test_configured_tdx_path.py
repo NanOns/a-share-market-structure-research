@@ -179,6 +179,48 @@ def test_live_baostock_acceptance_adapter_uses_resolved_roots():
     assert "D:/new_tdx" not in source
 
 
+def test_daily_increment_defaults_to_the_configured_tdx_root(tmp_path, monkeypatch):
+    import json
+    from workbench_analysis import daily_increment_builder as increment
+
+    tdx = tmp_path / "configured-tdx"
+    output = tmp_path / "staging" / "raw.jsonl"
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/paths.yaml").write_text(
+        f'tdx:\n  source_root: "{tdx.as_posix()}"\n', encoding="utf-8")
+    monkeypatch.setattr(increment, "PROJECT_ROOT", tmp_path)
+    delta = {
+        "status": "READY", "target_date": "2026-10-16", "current_snapshot_id": "snapshot-1",
+        "target_bars": [{"trade_date": 20261016, "security_id": "SH.600000", "open": 10,
+                          "high": 11, "low": 9, "close": 10, "amount": 20, "volume": 2}],
+    }
+
+    result = increment.build_raw_increment_staging(
+        trade_date="2026-10-16", source_snapshot_id="snapshot-1", delta=delta, output_path=output)
+
+    assert result["status"] == "STAGING_READY"
+    assert output.is_file()
+    assert not output.resolve().is_relative_to(tdx.resolve())
+
+
+def test_dm01_component_artifact_guard_uses_central_tdx_root(tmp_path, monkeypatch):
+    import pytest
+    from workbench_analysis import dm01_incremental_component_builders as builders
+
+    tdx = tmp_path / "configured-tdx"
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/paths.yaml").write_text(
+        f'tdx:\n  source_root: "{tdx.as_posix()}"\n', encoding="utf-8")
+    monkeypatch.setattr(builders, "ROOT", tmp_path)
+    monkeypatch.setattr(builders, "_tdx_root", lambda: resolve_tdx_root(tmp_path))
+    with pytest.raises(ValueError, match="OUTPUT_UNDER_TDX_ROOT_FORBIDDEN"):
+        builders._write_immutable(tdx / "must-not-write.json", {"x": 1})
+    output = tmp_path / "artifact" / "candidate.json"
+    builders._write_immutable(output, {"x": 1})
+    assert output.is_file()
+    assert not output.resolve().is_relative_to(tdx.resolve())
+
+
 def test_dm01_baostock_runtime_acceptance_uses_pg_calendar_and_configured_ledger(tmp_path):
     from scripts.accept_v4_dm01_baostock_runtime import _target_is_official_session
     assert _target_is_official_session(

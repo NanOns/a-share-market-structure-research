@@ -134,6 +134,7 @@ def test_approval_event_selection_is_historical_and_revocation_aware():
     reader = (Path(__file__).resolve().parents[1] / "src/workbench_analysis/contract_registry_pg_v1.py").read_text(encoding="utf-8")
     assert "e.occurred_at <= NEW.accepted_at" in migration
     assert "e.recorded_at <= NEW.accepted_at" in migration
+    assert "e.source_revision = c.source_revision" in migration
     assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in migration
     assert "e.occurred_at <= %s" in reader
     assert "e.recorded_at <= %s" in reader
@@ -178,6 +179,25 @@ def test_latest_approval_event_must_be_approved_and_bind_exact_source_digest(act
         ({"RULE": {"version": "1.2.0", "raw_sha256": digest}}, "PRODUCTION", "ACCEPTED", "2026-10-17T00:00:00Z", "2026-10-16"),
         (raw, digest, "JSON", "1", "PRODUCTION", "revision-1", action, "approver",
          "approval-1", "2026-10-17T00:00:00Z", "revision-1", source_digest, "2026-10-17T00:00:00Z"),
+    )
+    with pytest.raises(ContractRegistryError, match="V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID"):
+        load_publication_contract(cursor, "publication-1", "RULE")
+
+
+@pytest.mark.parametrize("approved_by,approval_ref,approval_source_revision", [
+    ("   ", "approval-1", "revision-1"),
+    ("approver", "  ", "revision-1"),
+    ("approver", "approval-1", "different-revision"),
+])
+def test_approval_event_must_bind_nonblank_identity_and_exact_source_revision(
+    approved_by, approval_ref, approval_source_revision
+):
+    raw = b'{"rule":"source revision binding"}'
+    digest = hashlib.sha256(raw).hexdigest()
+    cursor = Cursor(
+        ({"RULE": {"version": "1.2.0", "raw_sha256": digest}}, "PRODUCTION", "ACCEPTED", "2026-10-17T00:00:00Z", "2026-10-16"),
+        (raw, digest, "JSON", "1", "PRODUCTION", "revision-1", "APPROVED", approved_by,
+         approval_ref, "2026-10-17T00:00:00Z", approval_source_revision, digest, "2026-10-17T00:00:00Z"),
     )
     with pytest.raises(ContractRegistryError, match="V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID"):
         load_publication_contract(cursor, "publication-1", "RULE")

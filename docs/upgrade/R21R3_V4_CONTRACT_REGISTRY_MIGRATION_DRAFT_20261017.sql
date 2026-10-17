@@ -173,6 +173,7 @@ BEGIN
                WHERE e.contract_id = c.contract_id
                  AND e.version = c.version
                  AND e.raw_sha256 = c.raw_sha256
+                 AND e.source_revision = c.source_revision
                  AND e.occurred_at <= NEW.accepted_at
                  AND e.recorded_at <= NEW.accepted_at
                ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC

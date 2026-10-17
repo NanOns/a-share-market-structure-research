@@ -149,9 +149,11 @@ def load_publication_contract(
      approval_source_revision, approval_source_digest, approval_recorded_at) = row
     raw = bytes(raw)
     actual = hashlib.sha256(raw).hexdigest()
-    if (action != "APPROVED" or not approved_by or not approval_ref
+    if (action != "APPROVED" or not str(approved_by or "").strip()
+            or not str(approval_ref or "").strip()
             or approved_at is None or approval_recorded_at is None
             or not source_revision or not approval_source_revision
+            or str(approval_source_revision) != str(source_revision)
             or str(approval_source_digest) != digest
             or str(stored_digest) != digest or actual != digest):
         raise ContractRegistryError("V4_PG_CONTRACT_APPROVAL_OR_DIGEST_INVALID")

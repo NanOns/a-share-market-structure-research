@@ -8,6 +8,11 @@ from .tdx_official_daily_source import sha256_file,_atomic_write
 from .operational_successor_v1 import validate,digest
 
 
+def _tdx_root(root):
+    from common.paths import resolve_tdx_root
+    return resolve_tdx_root(Path(root).resolve())
+
+
 def verify_policy(root,candidate,*,verify_loaded=True):
     root=Path(root)
     binding=candidate['release_policy'];policy=json.loads(checked(root,binding).read_bytes())
@@ -44,7 +49,11 @@ def promote(root,candidate,expected_sha,readback):
     root=Path(root);head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     transaction=root/'runtime/dynamic_daily/publication_transaction.json'
     with exclusive_lock(root,root/'runtime/dynamic_daily/publisher.lock'):
-        validate(root,candidate);verify_policy(root,candidate)
+        verify_policy(root,candidate)
+        if candidate.get('exact_daily_adjustment_contract'):
+            from workbench_db.v4_successor_pg_authority_preparation_v1 import prepare_remaining
+            prepare_remaining(root,candidate)
+        validate(root,candidate)
         if sha256_file(head)!=expected_sha or candidate['predecessor']['sha256']!=expected_sha:
             raise ValueError('STALE_OPERATIONAL_HEAD_CAS')
         current_joint=root/'config/v4_current_native_joint_authority_v3.json'
@@ -56,10 +65,10 @@ def promote(root,candidate,expected_sha,readback):
         joint_previous=None
         if joint_before is not None:
             joint_archive=head.parent/'current_joint_predecessors'/(digest(json.loads(joint_before))+'.json')
-            _atomic_write(joint_archive,joint_before,tdx_root=Path('D:/new_tdx'))
+            _atomic_write(joint_archive,joint_before,tdx_root=_tdx_root(root))
             joint_previous=ref(root,joint_archive)
         before=head.read_bytes();archive=head.parent/'predecessors'/(expected_sha+'.json')
-        _atomic_write(archive,before,tdx_root=Path('D:/new_tdx'))
+        _atomic_write(archive,before,tdx_root=_tdx_root(root))
         coordination=dict(current_joint=joint_binding,current_joint_predecessor=joint_previous)
         published = _commit_pointers(root,head,current_joint,transaction,candidate,before,archive,coordination,joint_before,
             checked(root,joint_binding).read_bytes() if joint_binding is not None else None,readback)
@@ -79,7 +88,7 @@ def _commit_pointers(pointer_root,head,current_joint,transaction,candidate,befor
     atomic_json(root,transaction,dict(state='PREPARED',predecessor=ref(root,archive),candidate_token=digest(candidate),**coordination))
     atomic_json(root,head,candidate)
     if joint_bytes is not None:
-        _atomic_write(current_joint,joint_bytes,tdx_root=Path('D:/new_tdx'))
+        _atomic_write(current_joint,joint_bytes,tdx_root=_tdx_root(root))
     current=sha256_file(head)
     atomic_json(root,transaction,dict(state='CAS_COMPLETE_READBACK_PENDING',predecessor=ref(root,archive),head_sha256=current,candidate_token=digest(candidate),**coordination))
     try:
@@ -88,10 +97,10 @@ def _commit_pointers(pointer_root,head,current_joint,transaction,candidate,befor
             raise ValueError('HTTP_SAME_TOKEN_READBACK_FAILED')
     except Exception:
         if sha256_file(head)!=current:raise ValueError('ROLLBACK_HEAD_MOVED_FAIL_CLOSED')
-        _atomic_write(head,before,tdx_root=Path('D:/new_tdx'))
+        _atomic_write(head,before,tdx_root=_tdx_root(root))
         if joint_bytes is not None:
             if joint_before is None:current_joint.unlink()
-            else:_atomic_write(current_joint,joint_before,tdx_root=Path('D:/new_tdx'))
+            else:_atomic_write(current_joint,joint_before,tdx_root=_tdx_root(root))
         atomic_json(root,transaction,dict(state='ROLLED_BACK',predecessor=ref(root,archive),failed_token=digest(candidate),**coordination))
         raise
     atomic_json(root,transaction,dict(state='COMMITTED',predecessor=ref(root,archive),head_sha256=current,readback=receipt,**coordination))
@@ -111,7 +120,7 @@ def recover(root):
             if path.exists() and previous and path.read_bytes()==checked(root,previous).read_bytes():return
             if path.exists() and json.loads(path.read_bytes()).get('business_token')!=record['candidate_token']:
                 raise ValueError('RECOVERY_CURRENT_JOINT_MOVED_FAIL_CLOSED')
-            if previous:_atomic_write(path,checked(root,previous).read_bytes(),tdx_root=Path('D:/new_tdx'))
+            if previous:_atomic_write(path,checked(root,previous).read_bytes(),tdx_root=_tdx_root(root))
             elif path.exists():path.unlink()
         head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
         current=json.loads(head.read_bytes())
@@ -122,7 +131,7 @@ def recover(root):
                 return
             raise ValueError('RECOVERY_HEAD_MOVED_FAIL_CLOSED')
         restore_joint()
-        _atomic_write(head,checked(root,record['predecessor']).read_bytes(),tdx_root=Path('D:/new_tdx'))
+        _atomic_write(head,checked(root,record['predecessor']).read_bytes(),tdx_root=_tdx_root(root))
         atomic_json(root,transaction,dict(record,state='RECOVERED_EXACT_PREDECESSOR'))
 
 
@@ -130,7 +139,8 @@ def engineering_shadow_promote(root,candidate,expected_sha,readback,*,shadow_roo
     """Engineering G4 only: formal source/PG reads, G-local shadow pointers."""
     import os
     shadow=Path(shadow_root).resolve();root=Path(root).resolve()
-    if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not shadow.is_relative_to(Path('G:/codex_tmp').resolve()) or shadow==root:
+    if (os.environ.get('R4_NATIVE_ISOLATION')!='1' or shadow.drive.upper()!='G:'
+            or not any(part.lower()=='codex_tmp' for part in shadow.parts) or shadow==root):
         raise ValueError('ENGINEERING_SHADOW_SCOPE_REQUIRED')
     validate(root,candidate)
     from .operational_daily_exact_policy_v2 import verify
@@ -152,6 +162,6 @@ def engineering_shadow_promote(root,candidate,expected_sha,readback,*,shadow_roo
     with exclusive_lock(shadow,shadow/'runtime/dynamic_daily/publisher.lock'):
         if sha256_file(head)!=expected_sha or candidate['predecessor']['sha256']!=expected_sha:raise ValueError('STALE_OPERATIONAL_HEAD_CAS')
         before=head.read_bytes();archive=shadow/'data/v4/predecessors'/(expected_sha+'.json')
-        _atomic_write(archive,before,tdx_root=Path('D:/new_tdx'))
+        _atomic_write(archive,before,tdx_root=_tdx_root(root))
         result=_commit_pointers(shadow,head,shadow/'config/v4_current_native_joint_authority_v3.json',transaction,candidate,before,archive,{},None,None,readback)
     return dict(result,status='ENGINEERING_SHADOW_PUBLISHED',production_accepted=False,formal_head_changed=False)

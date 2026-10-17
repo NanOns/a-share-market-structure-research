@@ -12,6 +12,7 @@ from workbench_analysis.operational_successor_v1 import digest
 @pytest.fixture
 def simulated(tmp_path,monkeypatch):
     root=tmp_path;head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    monkeypatch.setenv('TDX_ROOT',str(root/'readonly_tdx'))
     atomic_json(root,head,dict(accepted_trade_date='2026-10-08',simulation=True))
     archive=root/'data/v4/predecessors'/ (sha256_file(head)+'.json')
     archive.parent.mkdir(parents=True);archive.write_bytes(head.read_bytes())
@@ -40,6 +41,19 @@ def test_success_and_restart_transaction(simulated):
     result=release.promote(root,candidate,sha256_file(head),lambda c:dict(status='PASS',context_token=digest(c),accepted_trade_date=c['accepted_trade_date']))
     assert result['status']=='PUBLISHED'
     before=head.read_bytes();release.recover(root);assert head.read_bytes()==before
+
+
+def test_exact_candidate_prepares_remaining_pg_authorities_before_validation(simulated,monkeypatch):
+    from workbench_db import v4_successor_pg_authority_preparation_v1 as preparation
+    from workbench_service import native_current_snapshot_v3
+    root,head,candidate=simulated;candidate['exact_daily_adjustment_contract']='exact-r1'
+    events=[]
+    monkeypatch.setattr(preparation,'prepare_remaining',lambda r,c:events.append('prepare'))
+    monkeypatch.setattr(release,'validate',lambda *a:events.append('validate'))
+    monkeypatch.setattr(native_current_snapshot_v3,'prepare_joint',lambda *a,**k:None)
+    monkeypatch.setattr(release,'_commit_pointers',lambda *a:events.append('commit') or {'status':'PUBLISHED'})
+    release.promote(root,candidate,sha256_file(head),lambda c:dict(status='PASS',context_token=digest(c),accepted_trade_date=c['accepted_trade_date']))
+    assert events==['prepare','validate','commit']
 
 
 def test_crash_after_cas_recovers_exact_predecessor(simulated):

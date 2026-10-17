@@ -12,6 +12,9 @@ def test_live_smoke_uses_requested_or_observed_stock_identity(tmp_path,monkeypat
     """Explicit provider fixture; no network call or real-source acceptance."""
     import json
     import workbench_analysis.market_source_acquisition as m
+    source_root=tmp_path/'tdx-source';source_root.mkdir()
+    monkeypatch.setenv('TDX_ROOT',str(source_root))
+    monkeypatch.setenv('BAOSTOCK_CACHE_ROOT',str(tmp_path/'baostock-cache'))
     (tmp_path/'config').mkdir()
     for name,value in [('v4_market_source_fallback_policy_v1.json',dict(contract_id=m.CONTRACT,production_admission=False)),
                        ('dm01_go_forward_runtime_contract_r4.json',dict(read_only_tdx_roots=[]))]:
@@ -70,6 +73,9 @@ def test_candidate_gates_and_coordinate_never_mix():
 def test_official_failure_does_not_skip_bao_and_errors_are_not_empty(tmp_path,monkeypatch):
     import json
     import workbench_analysis.market_source_acquisition as m
+    source_root=tmp_path/'tdx-source';source_root.mkdir()
+    monkeypatch.setenv('TDX_ROOT',str(source_root))
+    monkeypatch.setenv('BAOSTOCK_CACHE_ROOT',str(tmp_path/'baostock-cache'))
     (tmp_path/'config').mkdir()
     for name,value in [('v4_market_source_fallback_policy_v1.json',dict(contract_id=m.CONTRACT,production_admission=False)),
                        ('dm01_go_forward_runtime_contract_r4.json',dict(read_only_tdx_roots=[]))]:

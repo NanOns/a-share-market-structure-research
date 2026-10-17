@@ -152,14 +152,15 @@ class DailyJobs(StateMachine):
                 EXTRACT(EPOCH FROM clock_timestamp()-p.last_progress_at) AS seconds_since_progress
                 FROM update_jobs j LEFT JOIN update_job_progress p USING(job_id)
                 ORDER BY CASE WHEN j.status IN ('RUNNING','PUBLISHING','CANCEL_REQUESTED') THEN 0 ELSE 1 END,j.created_at DESC LIMIT 1""").fetchone()
+            accepted=db.execute("""SELECT MAX(d.trade_date) AS last_published_trade_date
+                FROM update_job_days d JOIN update_jobs j USING(job_id)
+                WHERE j.mode='CATCH_UP' AND d.state='PUBLISHED'""").fetchone()
         result=dict(row) if row else dict(stage_state='IDLE')
         for key in ('elapsed_seconds','stage_elapsed_seconds','seconds_since_progress'):
             if result.get(key) is not None:result[key]=float(result[key])
         result.update(contract_id='V4_DAILY_PROGRESS_R1',eta_seconds=None,error_detail=None,
                       head_unchanged=result.get('stage_state') not in ('PUBLISHED_FULL',),worker_error=self.worker_error)
-        # Small Head metadata only; the published payload remains untouched.
-        head=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        if head.is_file():
-            data=json.loads(head.read_bytes())
-            result['last_published_trade_date']=data.get('accepted_trade_date',data.get('trade_date',data.get('target_session')))
+        # Daily acceptance state is owned by PG job-day receipts. Do not rebuild
+        # a second Head from the legacy operational JSON in this polling path.
+        result['last_published_trade_date']=(accepted['last_published_trade_date'] if accepted else None)
         return result

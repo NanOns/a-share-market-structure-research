@@ -143,7 +143,8 @@ class PgPublicationReader:
                               p.same_day_revision_parent_id, p.prior_session_publication_id,
                               p.prior_session_state_head, p.prior_session_state_logical_digest,
                               p.prior_session_gap_reason, h.state_head_id,
-                              h.state_logical_digest, sh.logical_digest AS verified_state_digest
+                              h.state_logical_digest, sh.logical_digest AS verified_state_digest,
+                              p.contract_bindings
                        FROM v4.publication_heads AS h
                        JOIN v4.publications AS p ON p.publication_id=h.publication_id
                        LEFT JOIN v4.state_heads AS sh
@@ -165,6 +166,7 @@ class PgPublicationReader:
                 "prior_session_state_head", "prior_session_state_logical_digest",
                 "prior_session_gap_reason", "state_head_id", "state_logical_digest",
                 "verified_state_digest",
+                "contract_bindings",
             )
             publication = _as_dict(head_cursor.fetchone(), pub_columns)
             if publication is None:
@@ -174,6 +176,25 @@ class PgPublicationReader:
                 publication["publication_id"], int(publication["revision_no"])
             ) != (expected_publication[0], int(expected_publication[1])):
                 raise PublicationReadError("PUBLICATION_IDENTITY_MISMATCH")
+
+            # Contract bytes and their approval event share this transaction snapshot
+            # with the selected Head, source bindings, and Owner descriptors.  Older
+            # accepted publications with no reconciled contract map remain readable
+            # only through their explicit legacy path; this candidate surface fails
+            # closed instead of silently consulting filesystem contracts.
+            try:
+                from workbench_analysis.contract_registry_pg_v1 import (
+                    ContractRegistryError,
+                    load_publication_contracts,
+                )
+                registered_contracts = load_publication_contracts(
+                    pg,
+                    publication["publication_id"],
+                    int(publication["revision_no"]),
+                    publication.get("contract_bindings"),
+                )
+            except ContractRegistryError as exc:
+                raise PublicationReadError(str(exc)) from exc
 
             identity = self._read_database_identity(pg)
             if not {"database", "database_oid", "host", "port"}.issubset(self.expected_database_identity):
@@ -231,6 +252,23 @@ class PgPublicationReader:
                 "model_namespace_id": model_namespace_id,
                 "publication_id": publication["publication_id"],
                 "revision_no": int(publication["revision_no"]),
+                "contracts": {
+                    contract_id: {
+                        "version": contract.version,
+                        "raw_sha256": contract.raw_sha256,
+                        "content_format": contract.content_format,
+                        "schema_version": contract.schema_version,
+                        "namespace": contract.namespace,
+                        "publication_id": contract.publication_id,
+                        "trade_date": contract.trade_date,
+                        "accepted_at": contract.accepted_at.isoformat()
+                        if hasattr(contract.accepted_at, "isoformat") else str(contract.accepted_at),
+                        "approved_by": contract.approved_by,
+                        "approval_ref": contract.approval_ref,
+                        "approval_source_revision": contract.approval_source_revision,
+                    }
+                    for contract_id, contract in sorted(registered_contracts.items())
+                },
                 "publication_status": publication["status"],
                 "accepted_at": publication["accepted_at"].isoformat()
                 if hasattr(publication["accepted_at"], "isoformat") else str(publication["accepted_at"]),
@@ -292,6 +330,8 @@ class PgPublicationReader:
                       (has_table_privilege(current_user, 'v4.publication_heads', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_heads', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_heads', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_heads', 'TRUNCATE')),
                       (has_table_privilege(current_user, 'v4.publication_consumed_sources', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'TRUNCATE')),
                       (has_table_privilege(current_user, 'v4.publication_module_results', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_module_results', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'TRUNCATE')),
+                      (has_table_privilege(current_user, 'v4.contract_versions', 'INSERT') OR has_table_privilege(current_user, 'v4.contract_versions', 'UPDATE') OR has_table_privilege(current_user, 'v4.contract_versions', 'DELETE') OR has_table_privilege(current_user, 'v4.contract_versions', 'TRUNCATE')),
+                      (has_table_privilege(current_user, 'v4.contract_approval_events', 'INSERT') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'UPDATE') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'DELETE') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'TRUNCATE')),
                       EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
                                WHERE n.nspname='v4' AND c.relkind='S'
                                  AND (has_sequence_privilege(current_user,c.oid,'USAGE')

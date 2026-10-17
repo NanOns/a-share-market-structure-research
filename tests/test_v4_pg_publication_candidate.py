@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
+import hashlib
 
 import pytest
 
@@ -31,6 +32,7 @@ def publication_row(**changes):
         "prior_session_state_head": None, "prior_session_state_logical_digest": None,
         "prior_session_gap_reason": "INITIAL_BOUNDARY", "state_head_id": "state-20261015-r1",
         "state_logical_digest": "c" * 64, "verified_state_digest": "c" * 64,
+        "contract_bindings": {"V4_PUBLICATION_TEST_CONTRACT": {"version": "r1", "raw_sha256": hashlib.sha256(b"{}").hexdigest()}},
     }
     row.update(changes)
     return row
@@ -91,7 +93,7 @@ class FakeConnection:
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
         self.identity = identity or ("market_research", 16384, "127.0.0.1", 5432)
-        self.role = role or ("v4_reader", False, False, False, False, False, False, False, False, False, False, False)
+        self.role = role or ("v4_reader", False, False, False, False, False, False, False, False, False, False, False, False, False)
         self.missing_bindings = missing_bindings
         self.parent = parent
         self.page_data = page_data or {}
@@ -112,6 +114,16 @@ class FakeConnection:
             return Cursor()
         if "FROM v4.publication_heads" in statement:
             return Cursor(one=self.head)
+        if "current_setting('transaction_isolation')" in statement:
+            return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
+        if "JOIN v4.model_namespaces" in statement and "contract_bindings" in statement:
+            return Cursor(one=(self.head.get("contract_bindings"), "v4-main", "ACCEPTED", ACCEPTED_AT, TARGET_DATE))
+        if "FROM v4.contract_versions c" in statement:
+            raw = b"{}"
+            raw_digest = hashlib.sha256(raw).hexdigest()
+            return Cursor(one=(raw, raw_digest, "JSON", "1", "v4-main", "contract-source-r1",
+                              "APPROVED", "test-approver", "test-approval-ref", ACCEPTED_AT,
+                              "approval-source-r1", raw_digest, ACCEPTED_AT))
         if "inet_server_addr()" in statement:
             return Cursor(one=self.identity)
         if "FROM pg_roles r" in statement:
@@ -193,6 +205,7 @@ def test_reader_returns_final_schema_identity_and_preserves_owner_quality():
     result = reader_for(connection).read_context(trade_date="2026-10-15", model_namespace_id="v4-main")
     assert result["candidate_only"] is True and result["readback_complete"] is True
     assert result["publication_id"] == "pub-20261015-r1" and result["revision_no"] == 1
+    assert result["contracts"]["V4_PUBLICATION_TEST_CONTRACT"]["raw_sha256"] == hashlib.sha256(b"{}").hexdigest()
     assert result["module_results"]["research_priority"]["quality_status"] == "DEGRADED"
     assert result["module_results"]["research_priority"]["as_recorded"] is False
     assert result["module_results"]["research_priority"]["pit_eligible"] is False
@@ -329,9 +342,9 @@ def test_reader_role_write_privilege_blocks_even_read_only_transaction():
         )
 
 
-@pytest.mark.parametrize("index", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+@pytest.mark.parametrize("index", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 def test_reader_rejects_every_privileged_role_or_namespace_write_capability(index):
-    role=["v4_reader"]+[False]*11
+    role=["v4_reader"]+[False]*13
     role[index]=True
     with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_WRITE_PRIVILEGES"):
         reader_for(FakeConnection(head=publication_row(), role=tuple(role))).read_context(

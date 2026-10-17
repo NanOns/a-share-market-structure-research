@@ -49,7 +49,21 @@ def _mapping(value: Any, code: str) -> dict[str, Any]:
     raise ContractRegistryError(code)
 
 
-def load_publication_contract(cursor: Any, publication_id: str, contract_id: str) -> RegisteredContract:
+def _fetchone(cursor: Any, statement: str, params: tuple[Any, ...] = ()):
+    result = cursor.execute(statement, params)
+    fetch = getattr(result, "fetchone", None)
+    if callable(fetch):
+        return fetch()
+    return cursor.fetchone()
+
+
+def load_publication_contract(
+    cursor: Any,
+    publication_id: str,
+    contract_id: str,
+    *,
+    publication_revision: int | None = None,
+) -> RegisteredContract:
     """Load exact approved bytes selected by one canonical publication.
 
     ``cursor`` must be attached to a read-only repeatable-read transaction.
@@ -57,26 +71,30 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
     """
     if not publication_id or not contract_id:
         raise ContractRegistryError("V4_CONTRACT_LOOKUP_ID_REQUIRED")
+    if publication_revision is not None and (
+        isinstance(publication_revision, bool) or int(publication_revision) <= 0
+    ):
+        raise ContractRegistryError("V4_PUBLICATION_REVISION_INVALID")
     try:
-        cursor.execute(
+        session = _fetchone(cursor,
             """SELECT current_database(), current_user,
                       current_setting('transaction_isolation'),
                       current_setting('transaction_read_only')"""
         )
-        session = cursor.fetchone()
         if (not session or len(session) < 4 or not session[0] or not session[1]
                 or str(session[2]).lower() != "repeatable read"
                 or str(session[3]).lower() not in ("on", "true", "1")):
             raise ContractRegistryError("V4_PG_READONLY_REPEATABLE_READ_REQUIRED")
-        cursor.execute(
-            """SELECT p.contract_bindings, n.namespace, p.status, p.accepted_at,
+        publication_sql = """SELECT p.contract_bindings, n.namespace, p.status, p.accepted_at,
                       p.trade_date
                  FROM v4.publications p
                  JOIN v4.model_namespaces n ON n.namespace_id=p.model_namespace_id
-                WHERE p.publication_id=%s""",
-            (publication_id,),
-        )
-        publication = cursor.fetchone()
+                WHERE p.publication_id=%s"""
+        publication_params = (publication_id,)
+        if publication_revision is not None:
+            publication_sql += " AND p.revision_no=%s"
+            publication_params += (publication_revision,)
+        publication = _fetchone(cursor, publication_sql, publication_params)
     except Exception as exc:
         # Missing migration/schema is a closed failure, not a signal to open a file.
         if isinstance(exc, ContractRegistryError):
@@ -97,7 +115,7 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
     if not version or not re.fullmatch(r"[0-9a-f]{64}", digest):
         raise ContractRegistryError("V4_PUBLICATION_CONTRACT_BINDING_INVALID")
     try:
-        cursor.execute(
+        row = _fetchone(cursor,
             """SELECT c.raw_content, c.raw_sha256, c.content_format, c.schema_version,
                       c.namespace, c.source_revision, a.action, a.authorized_by,
                       a.authorization_ref, a.occurred_at, a.source_revision,
@@ -119,7 +137,6 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
                 WHERE c.contract_id=%s AND c.version=%s AND c.raw_sha256=%s""",
             (accepted_at, accepted_at, contract_id, version, digest),
         )
-        row = cursor.fetchone()
     except Exception as exc:
         raise ContractRegistryError("V4_PG_CONTRACT_REGISTRY_UNAVAILABLE") from exc
     if not row:
@@ -155,3 +172,24 @@ def load_publication_contract(cursor: Any, publication_id: str, contract_id: str
                               str(publication[4]), publication[3],
                               (str(session[0]), str(session[1])), str(approved_by),
                               str(approval_ref), str(approval_source_revision))
+
+
+def load_publication_contracts(
+    cursor: Any,
+    publication_id: str,
+    publication_revision: int,
+    bindings: Any,
+) -> dict[str, RegisteredContract]:
+    """Resolve every exact contract pinned by one accepted publication."""
+    normalized = _mapping(bindings, "V4_PUBLICATION_CONTRACT_BINDINGS_INVALID")
+    if not normalized:
+        raise ContractRegistryError("V4_PUBLICATION_CONTRACT_BINDINGS_REQUIRED")
+    result = {}
+    for contract_id in sorted(normalized):
+        result[contract_id] = load_publication_contract(
+            cursor,
+            publication_id,
+            contract_id,
+            publication_revision=publication_revision,
+        )
+    return result

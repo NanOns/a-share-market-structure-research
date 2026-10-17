@@ -1,7 +1,7 @@
 ---
 stage_id: V4_R21_PG_ONLY_CONSUMER_MIGRATION_20261017_R1
 baseline_sha: 81f7398d52a786a0c0d4570a988f6aeeabf9b3f5
-code_sha: PENDING_COMMIT
+code_sha: cc9ec42be
 branch: codex/v4-workspace-cleanup
 scope: explicit TDX source-root boundary for official and latest package capture
 test_scope: TDX source-root boundary regressions and focused V4 PG candidate CI suite

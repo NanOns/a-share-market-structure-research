@@ -1,7 +1,7 @@
 # V4 R21-R5 全模块文件引用与 Workspace 集中实修收尾
 
 - 日期：2026-10-18；分支：`codex/v4-workspace-cleanup`。
-- 状态：`CODE_SCOPE_PG_BOUND_CANDIDATE_COMPLETE / LIVE_PG_PASS / BROWSER_PASS_CURRENT_28766 / FORMAL_HEAD_RECONCILIATION_PENDING`。
+- 状态：`CODE_SCOPE_PG_BOUND_CANDIDATE_COMPLETE / LIVE_PG_PASS / BROWSER_PARTIAL_28766_OLD_PROCESS / FORMAL_HEAD_RECONCILIATION_PENDING`。
 - 范围：集中修复现役 V4 的历史源 ingress、Operational Owner authority、Workspace 来源路径与前端调用链；非 V4 调用点只登记。
 
 ## 代码与调用点
@@ -37,3 +37,13 @@
 - 未运行全仓基线扫描、GitHub CLI 流程测试、完整测试套件或 GitHub Actions；执行了最小语法编译、JSON parse、`git diff --check`、staged repository policy 和真实浏览器交互。
 - 未执行正式 Head 切换、生产 28765 部署、物理删除、历史改写或强推。正常提交/推送不表示正式数据发布或生产验收。
 - 保留原有 5 个无关 untracked 文件，未暂存。
+
+## 本轮续做：DM01 Head、合同和共享 PG 读链
+
+- 新增 `v4.dm01_data_accepted_heads` 及 append-only history/CAS migration（045），接入应用 Phase 0 migration ledger。已在同一 `market_research` 实例执行该 DDL，并按现有已入库 Head 的精确原始字节 bootstrap generation 1；Head SHA 为 `38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40`、日期仍为 `2026-09-30`。未执行 CAS，未改变 accepted Head 内容。
+- 对当前 Registry 中 14 个合同版本完成批准事件 readback；包括 Full Closeout 4.2、Head schema 2.0、promotion policy 4.1、已接受 R4R1 4.1 与现行日更运行合同。该操作为本轮用户授权的 DB Registry 状态写入，不代表第三方外部验收，也未放宽 Head/生产权限。
+- DM01 运行合同、日历 Head、source ingress、calendar 来源、历史 Head archive 和组件 receipts 统一在共享数据库读快照中读取。验证同一 RR/RO connection 嵌套复用；当前 parent 为 9 个组件，R4 acceptance envelope、4.2 Registry contract 和 calendar readback 通过。`2026-10-19` 的 session gate 因缺少 `2026-10-08` 中间交易日而拒绝捕获，未启动日更或采集器。
+- 修正新增 Head 查询未限定 `v4` schema 的运行错误；修正只读连接包装器把业务校验异常误报为 `PG_READ_FAILED` 的错误映射。历史 Git ingress 现在校验精确 `git:<commit>:<path>` blob 字节后才接收入库。
+- 历史 R3.3 链的源冻结重建不再在当前源码写入 `D:/new_tdx`；从 Head 合同指定、已精确导入 PG 的历史 builder blob 解析该次历史运行的 `TDX_ROOT`，保持原有接受链摘要可复核，同时现役采集/构建路径仍走中央 `resolve_tdx_root` 配置。
+- 13 个变更 Python 文件定向编译通过，`git diff --check` 通过。没有运行完整测试集、GitHub CLI/Actions 或重复全仓扫描。
+- 浏览器上一轮覆盖的页面和交互仍对当前旧 28766 服务有效；但服务入口 `G:/codex_tmp/v4_r21_r5_dev_candidate_28766.py` 直接导入服务模块，PID `42876` 在最终代码修改前启动。停止该精确进程的操作被自动审查拒绝，本轮没有通过其它方式绕过。故最新修改后的浏览器验收记为 `BROWSER_PARTIAL`，需在允许安全重启 28766 后复验。

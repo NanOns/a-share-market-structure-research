@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 from datetime import datetime, timezone
@@ -88,6 +89,10 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
         text = raw.decode("utf-8")
     except UnicodeDecodeError:
         text = None
+    # PostgreSQL json/jsonb text rejects U+0000. Keep such native/source bytes
+    # losslessly in the base64 field and omit the optional text projection.
+    if text is not None and "\x00" in text:
+        text = None
     if text is not None:
         try:
             decoded: Any = json.loads(text)
@@ -129,6 +134,95 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
             "binding": binding}
 
 
+def ingest_git_revision(root: str | Path, source_path: str, raw: bytes, *,
+                        source_revision: str, expected_sha256: str,
+                        store: ForwardFactStore | None = None) -> dict[str, Any]:
+    """Ingest an exact Git revision when a Head binds an older code/config blob.
+
+    This is an explicit source-ingress operation. Consumers still select only
+    the path+digest fact from PostgreSQL and never consult Git/workspace as a
+    read fallback.
+    """
+    project=_root(root);relative=Path(source_path).as_posix()
+    source_id=source_id_for_path(relative)
+    match=re.fullmatch(r"git:([0-9a-f]{40,64}):(.+)",source_revision or "")
+    if (match is None or Path(match.group(2)).as_posix()!=relative
+            or hashlib.sha256(raw).hexdigest()!=expected_sha256):
+        raise ValueError("HISTORICAL_SOURCE_GIT_REVISION_BINDING_INVALID")
+    try:
+        revision_bytes=subprocess.check_output(
+            ["git","show",f"{match.group(1)}:{relative}"],cwd=project,
+            stderr=subprocess.DEVNULL,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("HISTORICAL_SOURCE_GIT_OBJECT_UNAVAILABLE") from exc
+    if revision_bytes!=raw:
+        raise ValueError("HISTORICAL_SOURCE_GIT_BLOB_MISMATCH")
+    try:
+        existing=read_bound(project,relative,expected_sha256)
+    except ValueError as exc:
+        if str(exc)!="HISTORICAL_SOURCE_INGRESS_NOT_FOUND":raise
+        existing=None
+    if existing is not None:
+        if existing["raw"]!=raw:raise ValueError("HISTORICAL_SOURCE_INGRESS_IDENTITY_CONFLICT")
+        return {"status":"ALREADY_PRESENT","source_path":relative,
+                "source_sha256":expected_sha256,"source_bytes":len(raw),"binding":None}
+    try:text=raw.decode("utf-8")
+    except UnicodeDecodeError:text=None
+    if text is not None and "\x00" in text:text=None
+    try:decoded=json.loads(text) if text is not None else None
+    except ValueError:decoded=None
+    record={"contract_id":CONTRACT,"contract_version":VERSION,
+            "source_id":source_id,"source_path":relative,
+            "source_sha256":expected_sha256,"source_bytes":len(raw),
+            "source_raw_base64":base64.b64encode(raw).decode("ascii"),
+            "source_text_utf8":text,"source_json":decoded,
+            "source_revision":source_revision,
+            "first_ingested_at":datetime.now(timezone.utc).isoformat()}
+    key=digest(canonical({"contract_id":CONTRACT,"source_id":record["source_id"],
+                         "source_sha256":expected_sha256}))
+    target=store or ForwardFactStore(project,FOLDER)
+    binding=target.append(KIND,key,record,migration_timeout_seconds=120)
+    actual=read_bound(project,relative,expected_sha256)
+    if actual["raw"]!=raw:raise ValueError("HISTORICAL_SOURCE_INGRESS_READBACK_MISMATCH")
+    return {"status":"INGESTED_OR_ALREADY_PRESENT","source_path":relative,
+            "source_sha256":expected_sha256,"source_bytes":len(raw),"binding":binding}
+
+
+def ingest_captured_bytes(root: str | Path, source_path: str, raw: bytes, *,
+                          source_revision: str, source_origin: str) -> dict[str, Any]:
+    """Append exact bytes captured at an explicitly declared external boundary."""
+    project=_root(root);relative=Path(source_path).as_posix()
+    if (not isinstance(source_origin,str) or not source_origin.strip()
+            or not isinstance(source_revision,str) or not source_revision.strip()):
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_PROVENANCE_REQUIRED")
+    source_id=source_id_for_path(relative);sha=hashlib.sha256(raw).hexdigest()
+    try:existing=read_bound(project,relative,sha)
+    except ValueError as exc:
+        if str(exc)!="HISTORICAL_SOURCE_INGRESS_NOT_FOUND":raise
+        existing=None
+    if existing is not None:
+        if existing["raw"]!=raw:raise ValueError("HISTORICAL_SOURCE_INGRESS_IDENTITY_CONFLICT")
+        return {"status":"ALREADY_PRESENT","source_path":relative,
+                "source_sha256":sha,"source_bytes":len(raw),"binding":None}
+    try:text=raw.decode("utf-8")
+    except UnicodeDecodeError:text=None
+    if text is not None and "\x00" in text:text=None
+    try:decoded=json.loads(text) if text is not None else None
+    except ValueError:decoded=None
+    record={"contract_id":CONTRACT,"contract_version":VERSION,
+            "source_id":source_id,"source_path":relative,"source_sha256":sha,
+            "source_bytes":len(raw),"source_raw_base64":base64.b64encode(raw).decode("ascii"),
+            "source_text_utf8":text,"source_json":decoded,"source_revision":source_revision,
+            "source_origin":source_origin,"first_ingested_at":datetime.now(timezone.utc).isoformat()}
+    key=digest(canonical({"contract_id":CONTRACT,"source_id":source_id,"source_sha256":sha}))
+    target=ForwardFactStore(project,FOLDER);binding=target.append(KIND,key,record,migration_timeout_seconds=120)
+    actual=read_bound(project,relative,sha)
+    if actual["raw"]!=raw:raise ValueError("HISTORICAL_SOURCE_INGRESS_READBACK_MISMATCH")
+    return {"status":"INGESTED_OR_ALREADY_PRESENT","source_path":relative,
+            "source_sha256":sha,"source_bytes":len(raw),"binding":binding}
+
+
 def _query(root: str | Path, *, source_id: str | None = None,
            source_path: str | None = None, expected_sha256: str | None = None,
            pg: Any | None = None) -> tuple[dict[str, Any], bytes]:
@@ -146,17 +240,21 @@ def _query(root: str | Path, *, source_id: str | None = None,
         identity = ForwardFactStore._database_identity(connection)
         if expected and identity != expected:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH")
-        return connection.execute(
-            "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s "
+        statement=sql.SQL(
+            "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_id'=%s) "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_path'=%s) "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_sha256'=%s) "
             "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
-            (KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256),
-        ).fetchall()
+        ).format(sql.Identifier(schema))
+        return connection.execute(statement,
+            (KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256)).fetchall()
     if pg is None:
-        with _same_instance_read(schema) as connection:
-            rows = query(connection)
+        from .v4_native import current_read_snapshot
+        active=current_read_snapshot()
+        if active is not None: rows=query(active)
+        else:
+            with _same_instance_read(schema) as connection:rows=query(connection)
     else:
         rows = query(pg)
     if len(rows) != 1:

@@ -1,6 +1,7 @@
 """Read accepted DM01 chains, retaining exact historical moving-head identities."""
 from pathlib import Path
 import hashlib,json
+import ast
 from .daily_data_head import CAPABILITIES, canonical_digest
 from .daily_source_freeze import build_source_freeze_manifest_v2
 
@@ -16,12 +17,15 @@ class AcceptedChainError(ValueError):pass
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def binding(root,path):
-    p=Path(root)/path
-    return dict(path=path,sha256=sha(p),bytes=p.stat().st_size)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    record=read_path(root,path)['record']
+    return dict(path=record['source_path'],sha256=record['source_sha256'],bytes=record['source_bytes'])
 def bound_path(root,ref):
-    root=Path(root).resolve();path=(root/ref['path']).resolve()
-    if not path.is_relative_to(root) or not path.is_file() or sha(path)!=ref['sha256']:
-        raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+    try:
+        from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+        path=materialize_bound(root,ref)
+    except (OSError,ValueError) as error:
+        raise AcceptedChainError('PG_EXACT_BINDING_INVALID:'+str(ref.get('path'))) from error
     for key in ('bytes','byte_count'):
         if key in ref and path.stat().st_size!=ref[key]:raise AcceptedChainError('BINDING_SIZE_INVALID')
     return path
@@ -37,7 +41,9 @@ def require_audit(root,authority):
 
 def resolve_frozen_binding(root,ref):
     """Only an explicitly promoted V2 anchor may redirect an old namespace binding."""
-    root=Path(root);head=json.loads((root/HEAD_PATH).read_bytes())
+    root=Path(root)
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    head=read_current(root)['candidate']
     if ref.get('path')==HEAD_PATH and ref.get('sha256')==ANCHOR_SHA and head.get('contract_id')==HEAD_CONTRACT:
         archive=head['parent_archive']
         if archive['path']==HEAD_PATH or archive['sha256']!=ANCHOR_SHA or archive.get('bytes')!=2478:
@@ -120,7 +126,7 @@ def validate_chain(root,chain,*,source_readback=False):
         if post['status']!='PASS' or canonical_digest(post)!=marker['postcheck_digest']:raise AcceptedChainError('NODE_POSTCHECK_NOT_PASS')
         source=context['inputs'][target]
         freeze=build_source_freeze_manifest_v2(trade_date=target,sources=source['families'],changed_tdx_files=[],observed_at=context['observed_at'],ingested_at=context['observed_at'],system_available_at=context['observed_at'])
-        freeze.update(inputs=source['inputs'],parent_data_head_digest=parent['sha256'],calendar_publication_id=context['calendar']['publication_id'],identity_publication_id=context['identity']['publication_id'],field_source_instances=source['instances'],tdx_roots=['D:/new_tdx'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+        freeze.update(inputs=source['inputs'],parent_data_head_digest=parent['sha256'],calendar_publication_id=context['calendar']['publication_id'],identity_publication_id=context['identity']['publication_id'],field_source_instances=source['instances'],tdx_roots=[_historical_tdx_root(root,contract)],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
         freeze['manifest_sha256']=canonical_digest({k:v for k,v in freeze.items() if k!='manifest_sha256'})
         if freeze['manifest_sha256']!=marker['source_freeze_digest'] or freeze['field_source_instances']!=node['source_instances']:raise AcceptedChainError('SOURCE_FREEZE_REVISION_MISMATCH')
         for cap,r in marker['components'].items():
@@ -141,6 +147,30 @@ def validate_chain(root,chain,*,source_readback=False):
         parent=node['candidate'];parent_date=target
     if len(out)!=3 or parent_date!=record['accepted_through'] or record['candidate_bindings']!=[n['candidate'] for n in chain['nodes']]:raise AcceptedChainError('ACCEPTED_CHAIN_SCOPE_MISMATCH')
     return out
+
+def _historical_tdx_root(root,contract):
+    """Recover the frozen legacy root from the exact PG-bound builder blob.
+
+    This preserves the historical source-freeze digest without carrying a
+    machine-specific path in the active runtime source.
+    """
+    binding=next((r for r in contract['runtime_bindings']
+                  if r.get('path')=='src/workbench_analysis/dm01_incremental_component_builders_r3_3.py'),None)
+    if binding is None:raise AcceptedChainError('HISTORICAL_TDX_ROOT_BINDING_MISSING')
+    source=bound_path(root,binding).read_text(encoding='utf-8')
+    tree=ast.parse(source)
+    values=[]
+    for node in ast.walk(tree):
+        if not isinstance(node,(ast.Assign,ast.AnnAssign)):continue
+        targets=node.targets if isinstance(node,ast.Assign) else [node.target]
+        if not any(isinstance(target,ast.Name) and target.id=='TDX_ROOT' for target in targets):continue
+        value=node.value
+        if isinstance(value,ast.Call) and isinstance(value.func,ast.Name) and value.func.id=='Path' and len(value.args)==1:
+            value=value.args[0]
+        if isinstance(value,ast.Constant) and isinstance(value.value,str):values.append(value.value)
+    normalized={Path(value).as_posix() for value in values}
+    if len(normalized)!=1:raise AcceptedChainError('HISTORICAL_TDX_ROOT_IDENTITY_AMBIGUOUS')
+    return next(iter(normalized))
 
 def validate_head_v2(root,head,*,source_readback=False):
     if head.get('contract_id')!=HEAD_CONTRACT or head.get('version')!='2.0.0':raise AcceptedChainError('DATA_HEAD_V2_CONTRACT_REQUIRED')

@@ -20,7 +20,7 @@ def parent_tdx_package(root):
     return binding
 
 def identity_projection(root, target, observed_at):
-    root=Path(root); c=json.loads((runtime.ROOT/runtime.CONTRACT).read_bytes())
+    root=Path(root); c=runtime.contract(root)
     head=runtime.read(root,c['accepted_identity_head']); original=runtime.read(root,head['identity_revision'])
     records=[]
     for row in original['records']:
@@ -43,7 +43,7 @@ def lifecycle(root,target,bao,observed_at):
     return build_current_lifecycle_snapshot(trade_date=target,baseline_date=parent['head']['accepted_trade_date'],baseline_data_head=parent['head'],parent_universe_rows=rows,identity_records=identity['records'],baostock_snapshot=bao,official_session_bridge=dict(status='PASS',latest_completed_official_session=parent['head']['accepted_trade_date'],official_sessions_after_base_cutoff=[d for d in cal['session_dates'] if d>parent['head']['accepted_trade_date']]),source_evidence=dict(parent=parent['binding'],identity=identity['binding'],calendar=cal['binding']),observed_at=observed_at)
 
 def project_source_freeze(root,freeze,tdx_capture_binding,bao_binding,runtime_binding):
-    root=Path(root); c=json.loads((runtime.ROOT/runtime.CONTRACT).read_bytes())
+    root=Path(root); c=runtime.contract(root)
     target=freeze['trade_date']; now=freeze['observed_at']; parent=runtime.current_parent(root); cal=runtime.calendar(root)
     identity=identity_projection(root,target,now)
     bao=runtime.read(root,bao_binding); capture=runtime.read(root,tdx_capture_binding)

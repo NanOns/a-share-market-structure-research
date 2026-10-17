@@ -12,18 +12,27 @@ from .baostock_daily_update_source import DAILY_METHOD,FACTOR_METHOD,_canonical_
 from .source_readiness_v2 import source_readiness
 
 
-def _load_daily_contract_from_pg(contract_id, version):
+def _load_daily_contract_record_from_pg(contract_id, version):
     """Load a daily runtime contract only from its approved PG registry entry."""
     namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
-    try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    try:expected_identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
     except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
-    if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
     from .contract_registry_pg_v1 import load_current_approved_contract
-    from workbench_db.v4_publication_reader import readonly_connection
+    from workbench_db.v4_publication_reader import readonly_connection,PgPublicationReader
     with readonly_connection() as pg:
+        identity=PgPublicationReader._read_database_identity(pg)
+        if expected_identity and identity!=expected_identity:raise ValueError('DAILY_CONTRACT_DATABASE_IDENTITY_MISMATCH')
+        if not namespace:
+            rows=pg.execute('SELECT namespace FROM v4.contract_versions WHERE contract_id=%s AND version=%s',
+                            (contract_id,version)).fetchall()
+            if len(rows)!=1:raise ValueError('DAILY_CONTRACT_NAMESPACE_NOT_UNIQUE')
+            namespace=str(rows[0][0])
         registered=load_current_approved_contract(pg,contract_id,version,namespace,
             expected_database_identity=identity)
-    return registered.parsed_json
+    return registered
+
+def _load_daily_contract_from_pg(contract_id, version):
+    return _load_daily_contract_record_from_pg(contract_id,version).parsed_json
 
 
 def _daily_runtime_contract(contract_id, version, *, version_field='contract_version'):

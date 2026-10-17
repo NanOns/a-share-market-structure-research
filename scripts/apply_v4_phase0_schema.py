@@ -36,6 +36,7 @@ VERSIONS={
     "041_r3_effective_date_gate.sql":"V4_R3_EFFECTIVE_DATE_GATE_R1",
     "042_market_universe_persistence_r1.sql":"V4_MARKET_UNIVERSE_PERSISTENCE_R1",
     "044_operational_research_live_head_r1.sql":"V4_OPERATIONAL_RESEARCH_LIVE_HEAD_R1",
+    "045_dm01_data_accepted_head_pg_r1.sql":"V4_DM01_DATA_ACCEPTED_HEAD_PG_R1",
 }
 
 def dsn():

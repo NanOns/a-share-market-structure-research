@@ -1,5 +1,6 @@
 """Native PG V4 candidate connections: explicit configuration, no fallback."""
 from contextlib import contextmanager
+from contextvars import ContextVar
 import hashlib
 import os
 from pathlib import Path
@@ -9,6 +10,17 @@ from psycopg import sql
 
 CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R4'
 _SCHEMA = re.compile(r'(?:v4|v4_[a-z0-9_]{1,56})')
+_READ_SNAPSHOT = ContextVar('v4_read_snapshot_connection',default=None)
+
+@contextmanager
+def bind_read_snapshot(pg):
+    """Share one caller-owned RR/RO connection across nested V4 readers."""
+    token=_READ_SNAPSHOT.set(pg)
+    try:yield pg
+    finally:_READ_SNAPSHOT.reset(token)
+
+def current_read_snapshot():
+    return _READ_SNAPSHOT.get()
 
 def configured_dsn():
     # Prefer an explicit V4 writer DSN. The project may intentionally use one

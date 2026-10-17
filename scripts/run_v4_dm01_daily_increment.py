@@ -21,7 +21,9 @@ from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E
 from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
 from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
 from common.paths import resolve_baostock_cache_root, resolve_tdx_root  # noqa: E402
-from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract  # noqa: E402
+from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
+    _daily_runtime_contract, _load_daily_contract_record_from_pg,
+)
 from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baostock_runtime_pg  # noqa: E402
 
 
@@ -59,6 +61,20 @@ def _run_json_cli(*args: str) -> tuple[int, dict]:
     return result.returncode, payload
 
 
+def _read_baostock_daily_update_from_pg(target_date: str, snapshot_id: str,
+                                       source_revision: str | None = None) -> dict:
+    """Capture exact provider cache bytes once, then consume the PG readback."""
+    folder=resolve_baostock_cache_root(ROOT)/"baostock"/target_date.replace("-","")
+    snapshot_file=folder/snapshot_id/"daily_update.json"
+    raw=snapshot_file.read_bytes()
+    logical_path=f"external/baostock_daily/{target_date}/{snapshot_id}/daily_update.json"
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes,read_bound
+    ingested=ingest_captured_bytes(ROOT,logical_path,raw,
+        source_revision=str(source_revision or snapshot_id),
+        source_origin='BAOSTOCK_DAILY_CAPTURE_EXPLICIT_PROVIDER_BOUNDARY')
+    return json.loads(read_bound(ROOT,logical_path,ingested['source_sha256'])['raw'])
+
+
 def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | None, str | None]:
     # The active DM-01 lane uses the adapter that captures exact native response
     # bytes and appends the date-bound acceptance fact to PG before returning.
@@ -71,11 +87,9 @@ def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | N
     capture_code, capture = _run_json_cli("scripts/capture_baostock_daily_update.py", "--target-date", target_date)
     if capture_code != 0 or capture.get("status") not in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
         return None, smoke, str(capture.get("reason") or capture.get("status") or "BAOSTOCK_DAILY_CAPTURE_NOT_READY")
-    folder = resolve_baostock_cache_root(ROOT) / "baostock" / target_date.replace("-", "")
-    snapshot_file = folder / capture["snapshot_id"] / "daily_update.json"
     try:
-        record = json.loads(snapshot_file.read_text(encoding="utf-8"))
-    except (OSError, ValueError, KeyError) as exc:
+        record=_read_baostock_daily_update_from_pg(target_date,str(capture['snapshot_id']),capture.get('source_revision_id'))
+    except (OSError, ValueError, KeyError, TypeError) as exc:
         return None, smoke, "BAOSTOCK_DAILY_SNAPSHOT_READBACK_FAILED:" + type(exc).__name__
     return record, smoke, None
 
@@ -97,9 +111,15 @@ def _accepted_gbbq_snapshot(target_date: str, stage_binding: dict | None = None)
         return probe
     manifest_path = Path(str(probe.get("accepted_manifest_path") or ""))
     try:
-        if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != probe.get("accepted_manifest_sha256"):
+        raw=manifest_path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != probe.get("accepted_manifest_sha256"):
             return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_MANIFEST_DIGEST_MISMATCH"}
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes,read_bound
+        logical_path=f"external/tdx_gbbq/{target_date}/{probe.get('accepted_snapshot_id')}/manifest.json"
+        ingested=ingest_captured_bytes(ROOT,logical_path,raw,
+            source_revision=str(probe.get('accepted_snapshot_id') or probe.get('accepted_manifest_sha256')),
+            source_origin='TDX_GBBQ_ACCEPTED_SNAPSHOT_EXPLICIT_READ_ONLY_SOURCE_BOUNDARY')
+        manifest = json.loads(read_bound(ROOT,logical_path,ingested['source_sha256'])['raw'])
         if manifest.get("snapshot_id") != probe.get("accepted_snapshot_id"):
             return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_SNAPSHOT_ID_MISMATCH"}
     except (OSError, ValueError):
@@ -196,8 +216,8 @@ def main() -> int:
                     from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
                     source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
                     if source:
-                        snapshot=resolve_baostock_cache_root(ROOT)/'baostock'/args.target_date.replace('-','')/source['snapshot_id']/'daily_update.json'
-                        bao=json.loads(snapshot.read_bytes());bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
+                        bao=_read_baostock_daily_update_from_pg(args.target_date,str(source['snapshot_id']),source.get('source_revision_id'))
+                        bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
                     else:bao_smoke=dict(status='BLOCKED',reason=bao_error)
                     probe_code,gbbq_probe=_run_json_cli('-m','scripts.probe_v4_dm01_gbbq_revision','--target-date',args.target_date)
                     gbbq_stage_binding=gbbq_probe.get('pg_stage_state')
@@ -308,13 +328,14 @@ def main() -> int:
         readiness=dict(readiness,canonical_pit_promotion=False,source_scope_admission='CORRECTED_STAGING_ONLY',
                        corrected_source_status=readiness['status'],status='BLOCKED_SCOPED_SUCCESSOR_ADMISSION',
                        reason='V2_TYPED_SOURCE_CANNOT_ENTER_V1_AS_RECORDED_FREEZE; SCOPED_SUCCESSOR_REVIEW_REQUIRED')
+    continuous_contract=_load_daily_contract_record_from_pg('V4_CONTINUOUS_DATA_MAINTENANCE_V2','2.0.0')
     result = {
         "contract_id": "V4_DM01_SOURCE_READINESS_RECEIPT_R2",
         "version": "2.0.0",
         "status": readiness["status"],
         "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
         "contract_path": "config/v4_continuous_data_maintenance_v2.json",
-        "contract_sha256": hashlib.sha256((ROOT / "config/v4_continuous_data_maintenance_v2.json").read_bytes()).hexdigest(),
+        "contract_sha256": continuous_contract.raw_sha256,
         "target_date": args.target_date,
         "observed_at": now.isoformat(),
         "source_readiness": readiness,

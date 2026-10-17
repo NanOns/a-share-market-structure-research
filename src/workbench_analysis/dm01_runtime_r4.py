@@ -21,6 +21,9 @@ from .daily_source_freeze import ensure_outside_tdx, source_freeze_complete_v2
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT = 'config/dm01_go_forward_runtime_contract_full_closeout_r1.json'
+ACCEPTED_CONTRACT = 'config/dm01_go_forward_runtime_contract_r4r1.json'
+CONTRACT_ID = 'DM01_GO_FORWARD_RUNTIME_FULL_CLOSEOUT_R1_V1'
+CONTRACT_VERSION = '4.2.0'
 POLICY = 'config/dm01_v2_promotion_policy_r4r1.json'
 CALENDAR = 'data/v4/DM01_R4_CALENDAR_HEAD_V1.json'
 HEAD = 'data/v4/V4_DATA_ACCEPTED_HEAD.json'
@@ -34,13 +37,10 @@ def require(condition, reason):
         raise ValueError(reason)
 
 def path(root, binding):
-    root = Path(root).resolve()
-    p = Path(binding['path'])
-    p = p.resolve() if p.is_absolute() else (root / p).resolve()
-    require(p.is_relative_to(root), 'INPUT_OUTSIDE_PROJECT')
-    require(p.is_file() and sha(p) == binding['sha256'], 'INPUT_DIGEST_MISMATCH')
-    if 'bytes' in binding:
-        require(p.stat().st_size == binding['bytes'], 'INPUT_SIZE_MISMATCH')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    p = materialize_bound(Path(root).resolve(), binding)
+    require(sha(p) == binding['sha256'], 'INPUT_DIGEST_MISMATCH')
+    if 'bytes' in binding: require(p.stat().st_size == binding['bytes'], 'INPUT_SIZE_MISMATCH')
     return p
 
 def ingress_bytes(root, binding):
@@ -61,41 +61,105 @@ def ingress_bytes(root, binding):
 
 def read(root, binding):
     """Decode an exact JSON business input from PG SourceIngress."""
+    if binding.get('path') == HEAD:
+        from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+        current=read_current(root)
+        require(current['head_sha256']==binding['sha256'], 'DM01_PG_DATA_HEAD_BINDING_MOVED')
+        if 'bytes' in binding: require(current['head_bytes']==binding['bytes'], 'DM01_PG_DATA_HEAD_SIZE_MISMATCH')
+        return current['candidate']
     raw = ingress_bytes(root, binding)
     try:
         return json.loads(raw)
     except (UnicodeDecodeError, ValueError) as error:
         raise ValueError('DM01_PG_SOURCE_INGRESS_JSON_INVALID') from error
 
+def _path_binding(root, relative):
+    """Resolve exact imported bytes from PG; workspace copies are not selectors."""
+    if relative == HEAD:
+        from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+        current=read_current(root)
+        return dict(path=HEAD,sha256=current['head_sha256'],bytes=current['head_bytes'])
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    record=read_path(root,relative)['record']
+    return dict(path=record['source_path'],sha256=record['source_sha256'],bytes=record['source_bytes'])
+
+def _registered_contract(contract_id=CONTRACT_ID, version=CONTRACT_VERSION):
+    """Resolve one uniquely namespaced approved contract in a PG RR snapshot."""
+    from workbench_analysis.contract_registry_pg_v1 import load_current_approved_contract
+    from workbench_db.v4_publication_reader import readonly_connection, PgPublicationReader
+    requested=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+    try: expected=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    except ValueError as error: raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from error
+    if not isinstance(expected,dict):raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID')
+    with readonly_connection() as pg:
+        identity=PgPublicationReader._read_database_identity(pg)
+        if expected and identity!=expected: raise ValueError('DM01_RUNTIME_CONTRACT_DATABASE_IDENTITY_MISMATCH')
+        namespace=requested
+        if not namespace:
+            rows=pg.execute('SELECT namespace FROM v4.contract_versions WHERE contract_id=%s AND version=%s',
+                            (contract_id,version)).fetchall()
+            if len(rows)!=1:raise ValueError('DM01_CONTRACT_REGISTRY_NAMESPACE_NOT_UNIQUE')
+            namespace=str(rows[0][0])
+        registered=load_current_approved_contract(pg,contract_id,version,namespace,
+            expected_database_identity=identity)
+    return registered
+
+def contract(root=ROOT):
+    """Read only the approved runtime contract in PostgreSQL Contract Registry."""
+    registered=_registered_contract(CONTRACT_ID,CONTRACT_VERSION)
+    value=registered.parsed_json
+    if (not isinstance(value,dict) or value.get('contract_id')!=CONTRACT_ID
+            or value.get('version')!=CONTRACT_VERSION or registered.raw_sha256!=value.get('raw_sha256',registered.raw_sha256)):
+        raise ValueError('DM01_RUNTIME_CONTRACT_REGISTRY_BINDING_INVALID')
+    return value
+
+def contract_digest(root=ROOT):
+    return _registered_contract(CONTRACT_ID,CONTRACT_VERSION).raw_sha256
+
+def registered_json(contract_id,version):
+    registered=_registered_contract(contract_id,version)
+    if not isinstance(registered.parsed_json,dict) or registered.parsed_json.get('contract_id')!=contract_id:
+        raise ValueError('DM01_CONTRACT_REGISTRY_CONTENT_INVALID:'+contract_id)
+    return registered.parsed_json,registered.raw_sha256
+
 def ref(root, p):
     p = Path(p).resolve()
     return dict(path=p.relative_to(Path(root).resolve()).as_posix(), sha256=sha(p), bytes=p.stat().st_size)
 
+def _ingress_output(root, binding):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_file,source_id_for_path
+    source_path=(Path(root).resolve()/binding['path']).resolve()
+    ingest_file(root,source_id_for_path(binding['path']),source_path,expected_sha256=binding['sha256'])
+    return binding
+
 def atomic(root, p, value, *, immutable=False):
     root = Path(root).resolve(); p = Path(p).resolve()
     require(p.is_relative_to(root), 'OUTPUT_OUTSIDE_PROJECT')
-    contract = json.loads((ROOT / CONTRACT).read_bytes())
-    for tdx in contract['read_only_tdx_roots']:
+    contract_doc = contract(root)
+    for tdx in contract_doc['read_only_tdx_roots']:
         ensure_outside_tdx(p, Path(tdx))
     raw = value if isinstance(value, bytes) else kernels.canonical(value) + b'\n'
     if immutable and p.exists():
         require(p.read_bytes() == raw, 'IMMUTABLE_CANDIDATE_COLLISION')
-        return ref(root, p)
+        return _ingress_output(root,ref(root,p))
     p.parent.mkdir(parents=True, exist_ok=True)
     staging = p.with_name(p.name + '.r4-staging')
     with staging.open('wb') as stream:
         stream.write(raw); stream.flush(); os.fsync(stream.fileno())
     os.replace(staging, p)
-    return ref(root, p)
+    return _ingress_output(root,ref(root,p))
 
 def accepted_envelope(root):
     """One externally accepted envelope; no caller-supplied acceptance booleans."""
-    p = Path(root) / ACCEPTANCE
-    require(p.is_file(), 'BLOCKED_PENDING_DM01_R4_EXTERNAL_ACCEPTANCE')
-    a = read(root, ref(root, p))
+    a = read(root, _path_binding(root, ACCEPTANCE))
     require(a.get('status') == 'EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME', 'R4_ENVELOPE_NOT_ACCEPTED')
-    for name, key in ((CONTRACT, 'runtime_contract'), (POLICY, 'promotion_policy'), (CALENDAR, 'calendar_head')):
-        require(a[key] == ref(root, Path(root) / name), 'R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH')
+    accepted_contract=_registered_contract('DM01_GO_FORWARD_RUNTIME_R4R1_V1','4.1.0')
+    runtime_binding=dict(path=ACCEPTED_CONTRACT,sha256=accepted_contract.raw_sha256,bytes=len(accepted_contract.raw_content))
+    policy_doc,policy_sha=registered_json('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0')
+    policy_binding=dict(path=POLICY,sha256=policy_sha,bytes=len(_registered_contract('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0').raw_content))
+    calendar_binding=_path_binding(root,CALENDAR)
+    for key, binding in (('runtime_contract',runtime_binding),('promotion_policy',policy_binding),('calendar_head',calendar_binding)):
+        require(a[key] == binding, 'R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH')
     document = ingress_bytes(root, a['independent_external_authority']).decode('utf8')
     require(a.get('external_verdict') == 'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' and
             'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' in document and
@@ -106,7 +170,7 @@ def accepted_envelope(root):
     return a
 
 def calendar(root=ROOT):
-    head_source = read(root, ref(root, Path(root) / CALENDAR))
+    head_source = read(root, _path_binding(root, CALENDAR))
     head = head_source
     require(head.get('contract_id') == 'DM01_R4_CALENDAR_HEAD_V1' and head.get('status') in ('ACCEPTED', 'LOCAL_READY_FOR_EXTERNAL_AUDIT'), 'CALENDAR_HEAD_NOT_ACCEPTED_OR_AUDIT_CANDIDATE')
     cal = read(root, head['calendar'])
@@ -122,30 +186,29 @@ def calendar(root=ROOT):
     require(all(date.fromisoformat(d).weekday()<5 for d in cal['session_dates']), 'CALENDAR_WEEKEND_SESSION')
     for source in cal['sources']:
         path(root, source['source'])
-    return dict(cal, head_binding=ref(root, Path(root) / CALENDAR), binding=head['calendar'], publication_id=head['calendar']['sha256'], payload_digest=digest(cal), status='ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE')
+    return dict(cal, head_binding=_path_binding(root, CALENDAR), binding=head['calendar'], publication_id=head['calendar']['sha256'], payload_digest=digest(cal), status='ACCEPTED_CALENDAR_BYTES_LOCAL_AUDIT_CANDIDATE')
 
 def current_parent(root=ROOT):
+    """Resolve Head, Registry and its bound facts inside one shared PG snapshot."""
+    from workbench_db.v4_publication_reader import readonly_connection
+    with readonly_connection():
+        return _current_parent_snapshot(root)
+
+def _current_parent_snapshot(root=ROOT):
     root = Path(root)
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-    source = read_path(root, HEAD)
-    binding = dict(path=source['record']['source_path'],
-                   sha256=source['record']['source_sha256'],
-                   bytes=source['record']['source_bytes'])
-    head = read(root, binding)
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    current=read_current(root)
+    binding=dict(path=HEAD,sha256=current['head_sha256'],bytes=current['head_bytes'])
+    head=current['candidate']
     import os
     try:
         expected_identity = json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON', '{}'))
     except ValueError as error:
         raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from error
-    namespace = os.environ.get('V4_PG_MODEL_NAMESPACE_ID', '').strip()
     if (os.environ.get('V4_DAILY_CONTRACT_SOURCE', 'PG') != 'PG'
-            or not namespace or not isinstance(expected_identity, dict)):
+            or not isinstance(expected_identity, dict)):
         raise ValueError('DM01_ACCEPTED_HEAD_CONTRACT_PG_BINDING_REQUIRED')
-    from .contract_registry_pg_v1 import load_current_approved_contract
-    from workbench_db.v4_publication_reader import readonly_connection
-    with readonly_connection() as pg:
-        schema = load_current_approved_contract(pg, 'V4_DATA_ACCEPTED_HEAD_V2', '2.0.0', namespace,
-            expected_database_identity=expected_identity).parsed_json
+    schema,_=registered_json('V4_DATA_ACCEPTED_HEAD_V2','2.0.0')
     if schema.get('contract_id') != 'V4_DATA_ACCEPTED_HEAD_V2' or schema.get('version') != '2.0.0':
         raise ValueError('DM01_ACCEPTED_HEAD_CONTRACT_INVALID')
     require(head.get('contract_id') == 'V4_DATA_ACCEPTED_HEAD_V2', 'V1_PARENT_HISTORY_ONLY')
@@ -165,7 +228,7 @@ def current_parent(root=ROOT):
                 record['candidate'] == head['final_candidate'] == chain['candidate'] and
                 chain['acceptance'] == head['external_acceptance_record'] and
                 record['permissions'] == candidate['permissions'] == PERMISSIONS and
-                record['policy'] == ref(root, root/POLICY) and record['envelope'] == ref(root, root/ACCEPTANCE) and
+                record['policy'] == dict(path=POLICY,sha256=registered_json('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0')[1],bytes=len(_registered_contract('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0').raw_content)) and record['envelope'] == _path_binding(root,ACCEPTANCE) and
                 candidate['target_trade_date'] == head['accepted_trade_date'] and
                 candidate.get('real_forward_evidence') is True and head['AS_RECORDED'] is False,
                 'V2_PARENT_ACCEPTANCE_RECORD_MISMATCH')
@@ -185,6 +248,11 @@ def current_parent(root=ROOT):
     return dict(kind='CURRENT_ACCEPTED_V2', binding=binding, head=head, components=components)
 
 def session_gate(target, observed_at, root=ROOT):
+    from workbench_db.v4_publication_reader import readonly_connection
+    with readonly_connection():
+        return _session_gate_snapshot(target,observed_at,root)
+
+def _session_gate_snapshot(target, observed_at, root=ROOT):
     cal = calendar(root); parent = current_parent(root)
     require(target <= cal['coverage_end'], 'BLOCKED_CALENDAR_COVERAGE')
     require(parent['head']['accepted_trade_date'] in cal['session_dates'], 'PARENT_CALENDAR_SESSION_MISSING')
@@ -198,13 +266,13 @@ def session_gate(target, observed_at, root=ROOT):
     return dict(status='SOURCE_CAPTURE_ALLOWED', target_trade_date=next_session, parent=parent, calendar=cal)
 
 def validate_registry(builders, root=ROOT):
-    c = json.loads((ROOT / CONTRACT).read_bytes())
+    c = contract(root)
     require(set(builders) == set(CAPABILITIES), 'ONE_OR_MORE_BUILDERS_MISSING')
     for cap in CAPABILITIES:
         require(builders[cap] is BUILDERS[cap], 'BUILDER_CALLABLE_MISMATCH:' + cap)
         require(builders[cap].__name__ == kernels.BUILDERS[cap].__name__ and builders[cap].__module__ == __name__, 'BUILDER_EXPORT_MISMATCH:' + cap)
     for binding in c['runtime_bindings']:
-        path(ROOT, binding)
+        path(root, binding)
     return c
 
 def validate_lineage(freeze, root, *, simulation=False):
@@ -242,7 +310,7 @@ def validate_lineage(freeze, root, *, simulation=False):
         for value in freeze['source_authority_bindings']: read(root, value)
         require(len(freeze['source_authority_bindings']) >= 2, 'SOURCE_ACCEPTED_AUTHORITY_MISSING')
         from .source_authority_producers_r4 import require_accepted_producer
-        c = json.loads((ROOT/CONTRACT).read_bytes())
+        c = contract(root)
         rules = read(root,c['producer_governance'])['field_rules']
         for field in ('TRADING_STATUS','ISST'):
             proof = require_accepted_producer(root,next(r for r in rules if r['field_id']==field),consumer_contract_id='DM01_FINAL_ALL_NINE')
@@ -294,6 +362,23 @@ def _finish(c, rows, extra=None):
     atomic(c['root'],c['staging']/c['cap']/'receipt.json',receipt,immutable=True)
     return receipt
 
+def _dependency_pg(project_root,c,cap):
+    """Read the completed prior component only from its exact PG ingress fact."""
+    root=Path(project_root).resolve()
+    receipt_path=(Path(c['staging'])/cap/'receipt.json').resolve()
+    relative=receipt_path.relative_to(root).as_posix()
+    receipt_binding=_path_binding(root,relative)
+    r=read(root,receipt_binding)
+    if r['parent_data_head_digest']!=c['parent']['binding']['sha256'] or r['source_revision']!=c['freeze']['manifest_sha256']:
+        raise ValueError('DEPENDENCY_PUBLICATION_MISMATCH:'+cap)
+    artifact=Path(r['artifact_path']).resolve()
+    if not artifact.is_relative_to(root):raise ValueError('DEPENDENCY_ARTIFACT_OUTSIDE_PROJECT:'+cap)
+    binding=dict(path=artifact.relative_to(root).as_posix(),sha256=r['artifact_sha256'],bytes=r['artifact_bytes'])
+    payload=read(root,binding)
+    if digest(payload['rows'])!=r['logical_digest'] or len(payload['rows'])!=r['row_count']:
+        raise ValueError('DEPENDENCY_LOGICAL_DIGEST_MISMATCH:'+cap)
+    return payload['rows'],r
+
 def run_kernel(cap, *args, project_root=ROOT):
     scope = dict(vars(kernels))
     # Helpers such as _build_period must share the private hooks as well.
@@ -301,7 +386,12 @@ def run_kernel(cap, *args, project_root=ROOT):
         if isinstance(original, FunctionType) and original.__module__ == kernels.__name__:
             scope[name] = FunctionType(original.__code__, scope, original.__name__, original.__defaults__, original.__closure__)
             scope[name].__kwdefaults__ = original.__kwdefaults__
-    scope.update(_context=lambda *a:_context(project_root,*a), _finish=_finish)
+    from common.paths import resolve_tdx_root
+    scope.update(_context=lambda *a:_context(project_root,*a), _finish=_finish,
+                 bound_path=lambda binding:path(project_root,binding),
+                 load=lambda binding:json.loads(path(project_root,binding).read_text(encoding='utf8')),
+                 _dependency=lambda c,cap:_dependency_pg(project_root,c,cap),
+                 ROOT=Path(project_root).resolve(),TDX_ROOT=resolve_tdx_root(project_root))
     original = kernels.BUILDERS[cap]
     function = scope[original.__name__]
     return function(*args)
@@ -322,12 +412,17 @@ def build_candidate(*, parent, freeze, cal, identity, root=ROOT, builders=None):
     require(parent['head'].get('contract_id')=='V4_DATA_ACCEPTED_HEAD_V2', 'V1_PARENT_HISTORY_ONLY')
     validate_registry(builders,root); validate_lineage(freeze,root,simulation=bool(freeze.get('engineering_simulation')))
     require(freeze['parent_data_head_digest']==parent['binding']['sha256'], 'V2_PARENT_DIGEST_MISMATCH')
-    protected={p:sha(root/p) for p in json.loads((ROOT/CONTRACT).read_bytes())['protected_runtime_paths']}
+    contract_doc=contract(root)
+    protected={p:sha(root/p) for p in contract_doc['protected_runtime_paths']}
     target=kernels.resolve_target_session(parent['head']['accepted_trade_date'],cal,freeze['observed_at'],freeze['trade_date'])
-    run_id=digest(dict(target=target,parent=parent['binding']['sha256'],source=freeze['manifest_sha256'],contract=sha(ROOT/CONTRACT)))
+    run_id=digest(dict(target=target,parent=parent['binding']['sha256'],source=freeze['manifest_sha256'],contract=contract_digest(root)))
     staging=root/'data/v4/dm01_r4/candidates'/run_id; marker=staging/'PROMOTION_CANDIDATE.json'
-    if marker.exists():
-        old=json.loads(marker.read_bytes()); post=check_cross_components(old['components'],freeze,parent,cal,identity)
+    marker_binding=None
+    try:marker_binding=_path_binding(root,marker.relative_to(root).as_posix())
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+    if marker_binding is not None:
+        old=read(root,marker_binding); post=check_cross_components(old['components'],freeze,parent,cal,identity)
         require(post['status']=='PASS' and digest(post)==old['postcheck_digest'], 'CANDIDATE_RECHECK_FAILED')
         require(all(sha(root/p)==d for p,d in old['protected_heads'].items()), 'PROTECTED_STATE_MOVED')
         return dict(status='NOOP_IDENTICAL_CANDIDATE',candidate=ref(root,marker),candidate_id=run_id)
@@ -356,19 +451,19 @@ def build_candidate(*, parent, freeze, cal, identity, root=ROOT, builders=None):
 def promote(candidate_binding, *, expected_parent_sha, root=ROOT):
     """CAS V2 pointer under the externally accepted once-only machine policy."""
     root=Path(root).resolve(); accepted_envelope(root)
-    policy=json.loads((root/POLICY).read_bytes()); require(policy['output_contract_id']=='V4_DATA_ACCEPTED_HEAD_V2', 'STALE_V1_PROMOTER_FORBIDDEN')
+    policy,_=registered_json('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0'); require(policy['output_contract_id']=='V4_DATA_ACCEPTED_HEAD_V2', 'STALE_V1_PROMOTER_FORBIDDEN')
     candidate=read(root,candidate_binding); target=candidate['target_trade_date']
-    protected_scope=json.loads((ROOT/CONTRACT).read_bytes())['protected_runtime_paths']
+    protected_scope=contract(root)['protected_runtime_paths']
     require(set(candidate['protected_heads'])==set(protected_scope), 'PROTECTED_STATE_SCOPE_INCOMPLETE')
     require(candidate['contract_id']=='DM01_ATOMIC_GO_FORWARD_CANDIDATE_R4', 'WRONG_CANDIDATE_CONTRACT')
-    expected_id=digest(dict(target=target,parent=candidate['parent_data_head_digest'],source=candidate['source_manifest_digest'],contract=sha(ROOT/CONTRACT)))
+    expected_id=digest(dict(target=target,parent=candidate['parent_data_head_digest'],source=candidate['source_manifest_digest'],contract=contract_digest(root)))
     require(expected_id==candidate['candidate_id'], 'CANDIDATE_ID_MISMATCH')
-    head=json.loads((root/HEAD).read_bytes())
+    parent=current_parent(root)
+    head=parent['head']
     if head.get('final_candidate')==candidate_binding:
-        current_parent(root)
-        return dict(status='NOOP_IDENTICAL_PROMOTION',data_head=ref(root,root/HEAD))
-    require(sha(root/HEAD)==expected_parent_sha==candidate['parent_data_head_digest'], 'BLOCKED_DATA_HEAD_PARENT_MOVED')
-    parent=current_parent(root); cal=calendar(root); freeze=read(root,candidate['source_manifest']); identity_payload=read(root,candidate['identity'])
+        return dict(status='NOOP_IDENTICAL_PROMOTION',data_head=parent['binding'])
+    require(parent['binding']['sha256']==expected_parent_sha==candidate['parent_data_head_digest'], 'BLOCKED_DATA_HEAD_PARENT_MOVED')
+    cal=calendar(root); freeze=read(root,candidate['source_manifest']); identity_payload=read(root,candidate['identity'])
     identity=dict(binding=candidate['identity'],publication_id=candidate['identity']['sha256'],records=identity_payload['records'])
     require(candidate['knowledge_lineage'] in ('PIT_OBSERVED','MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT') and candidate['permissions']==PERMISSIONS, 'SIMULATED_OR_ESCALATED_PROMOTION_FORBIDDEN')
     require(candidate.get('real_forward_evidence') is True,'REAL_FORWARD_EVIDENCE_REQUIRED')
@@ -378,22 +473,27 @@ def promote(candidate_binding, *, expected_parent_sha, root=ROOT):
     require(freeze['manifest_sha256']==candidate['source_manifest_digest'] and candidate['calendar']==cal['binding'] and freeze['calendar_publication_id']==cal['publication_id'] and freeze['identity_publication_id']==candidate['identity']['sha256'], 'CANDIDATE_SOURCE_IDENTITY_MISMATCH')
     require(target==kernels.resolve_target_session(head['accepted_trade_date'],cal,freeze['observed_at'],target), 'PROMOTION_SKIPPED_SESSION')
     require(set(candidate['components'])==set(CAPABILITIES), 'PARTIAL_PROMOTION_FORBIDDEN')
+    artifact_bindings={}
     for cap,r in candidate['components'].items():
         require(r['status'] in policy['allowed_component_statuses'], 'COMPONENT_STATUS_NOT_ACCEPTED')
         artifact=Path(r['artifact_path']).resolve()
         require(artifact.is_relative_to(root), 'COMPONENT_OUTSIDE_PROJECT')
-        require(sha(artifact)==r['artifact_sha256'], 'COMPONENT_DIGEST_MISMATCH')
-        require(read(root,ref(root,artifact.parent/'receipt.json'))==r, 'COMPONENT_RECEIPT_READBACK_MISMATCH')
+        artifact_binding=dict(path=artifact.relative_to(root).as_posix(),sha256=r['artifact_sha256'],bytes=r['artifact_bytes'])
+        artifact_bindings[cap]=artifact_binding
+        read(root,artifact_binding)
+        receipt_path=(artifact.parent/'receipt.json').relative_to(root).as_posix()
+        require(read(root,_path_binding(root,receipt_path))==r, 'COMPONENT_RECEIPT_READBACK_MISMATCH')
     post=check_cross_components(candidate['components'],freeze,parent,cal,identity)
     require(post['status']=='PASS' and digest(post)==candidate['postcheck_digest'] and read(root,candidate['cross_postcheck'])==post, 'PROMOTION_INDEPENDENT_POSTCHECK_FAILED')
     require(all(sha(root/p)==d for p,d in candidate['protected_heads'].items()), 'PROTECTED_STATE_MOVED')
     location=root/'data/v4/dm01_r4/accepted'/candidate['candidate_id']
-    archive=atomic(root,location/'parent_head.json',(root/HEAD).read_bytes(),immutable=True)
-    record=atomic(root,location/'session_acceptance.json',dict(contract_id='DM01_R4_MACHINE_SESSION_ACCEPTANCE_V1',status='ACCEPTED_UNDER_DM01_R4_MACHINE_POLICY',candidate=candidate_binding,policy=ref(root,root/POLICY),envelope=ref(root,root/ACCEPTANCE),parent=archive,permissions=PERMISSIONS,independent_postcheck_digest=digest(post)),immutable=True)
+    archive=atomic(root,location/'parent_head.json',kernels.canonical(head),immutable=True)
+    policy_binding=dict(path=POLICY,sha256=registered_json('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0')[1],bytes=len(_registered_contract('DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1','4.1.0').raw_content))
+    record=atomic(root,location/'session_acceptance.json',dict(contract_id='DM01_R4_MACHINE_SESSION_ACCEPTANCE_V1',status='ACCEPTED_UNDER_DM01_R4_MACHINE_POLICY',candidate=candidate_binding,policy=policy_binding,envelope=_path_binding(root,ACCEPTANCE),parent=archive,permissions=PERMISSIONS,independent_postcheck_digest=digest(post)),immutable=True)
     chain=atomic(root,location/'accepted_chain.json',dict(contract_id='DM01_R4_ACCEPTED_CHAIN_V1',parent=head['accepted_chain'],parent_head=archive,candidate=candidate_binding,acceptance=record),immutable=True)
     next_head=deepcopy(head)
-    artifacts={cap:ref(root,Path(r['artifact_path'])) for cap,r in candidate['components'].items()}
-    permissions={cap:dict(status=r['status'],cutoff=target,artifact=artifacts[cap],receipt=ref(root,Path(r['artifact_path']).parent/'receipt.json'),logical_digest=r['logical_digest'],row_count=r['row_count'],accepted_algorithm_contract=r['accepted_algorithm_contract'],accepted_owner_stage=r['accepted_owner_stage']) for cap,r in candidate['components'].items()}
+    artifacts=artifact_bindings
+    permissions={cap:dict(status=r['status'],cutoff=target,artifact=artifacts[cap],receipt=_path_binding(root,(Path(r['artifact_path']).parent/'receipt.json').resolve().relative_to(root).as_posix()),logical_digest=r['logical_digest'],row_count=r['row_count'],accepted_algorithm_contract=r['accepted_algorithm_contract'],accepted_owner_stage=r['accepted_owner_stage']) for cap,r in candidate['components'].items()}
     for cap,permission in permissions.items():
         if head['component_permissions'][cap]['status']=='DEGRADED_PASS':
             permission['status']='DEGRADED_PASS'
@@ -407,9 +507,11 @@ def promote(candidate_binding, *, expected_parent_sha, root=ROOT):
         raise ValueError('BLOCKED_DATA_HEAD_PROMOTION_LOCKED') from error
     try:
         os.close(descriptor)
-        require(sha(root/HEAD)==expected_parent_sha, 'BLOCKED_DATA_HEAD_PARENT_MOVED')
         require(all(sha(root/p)==d for p,d in candidate['protected_heads'].items()), 'PROTECTED_STATE_MOVED')
-        result=atomic(root,root/HEAD,next_head)
+        from workbench_db.dm01_data_accepted_head_pg_r1 import compare_and_swap
+        result=compare_and_swap(root,next_head,expected_parent_sha)
     finally:
         lock.unlink()
-    return dict(status='PROMOTED_V2',data_head=result,session_acceptance=record,r25_grant=False,real_shadow_observations_increment=0)
+    data_head=dict(path=HEAD,sha256=result['head_sha256'],bytes=result['head_bytes'],
+                   generation=result['generation'],updated_at=result['updated_at'])
+    return dict(status='PROMOTED_V2',data_head=data_head,session_acceptance=record,r25_grant=False,real_shadow_observations_increment=0)

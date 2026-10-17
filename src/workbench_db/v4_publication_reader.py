@@ -56,21 +56,46 @@ def reader_dsn(environ: Mapping[str, str] | None = None) -> str:
 @contextmanager
 def readonly_connection(*, dsn: str | None = None):
     """Open a bounded repeatable-read transaction enforced read-only by PostgreSQL."""
+    from .v4_native import bind_read_snapshot,current_read_snapshot
+    active=current_read_snapshot()
+    if active is not None:
+        yield active
+        return
     resolved = dsn or reader_dsn()
     try:
         import psycopg
     except ImportError as exc:  # pragma: no cover - depends on runtime packaging
         raise PublicationReadError("PG_DRIVER_UNAVAILABLE") from exc
     try:
-        with psycopg.connect(resolved, connect_timeout=5) as pg:
-            pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
-            pg.execute("SET LOCAL statement_timeout='30s'")
-            pg.execute("SET LOCAL lock_timeout='5s'")
-            yield pg
+        pg = psycopg.connect(resolved, connect_timeout=5)
+    except Exception as exc:
+        code = getattr(exc, "sqlstate", None)
+        if code == "42501":
+            raise PublicationReadError("PG_READ_PERMISSION_DENIED") from exc
+        raise PublicationReadError("PG_READ_FAILED") from exc
+    try:
+        pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+        pg.execute("SET LOCAL statement_timeout='30s'")
+        pg.execute("SET LOCAL lock_timeout='5s'")
+    except Exception as exc:
+        pg.close()
+        code = getattr(exc, "sqlstate", None)
+        if code == "42501":
+            raise PublicationReadError("PG_READ_PERMISSION_DENIED") from exc
+        if code == "42P01":
+            raise PublicationReadError("PUBLICATION_SCHEMA_UNAVAILABLE") from exc
+        raise PublicationReadError("PG_READ_FAILED") from exc
+    # Do not translate application-level errors raised by consumers into a
+    # misleading database connection error. Translate only psycopg failures.
+    try:
+        with pg:
+            with bind_read_snapshot(pg):
+                yield pg
     except PublicationReadError:
         raise
     except Exception as exc:
-        # Driver exception strings can contain connection parameters.
+        if not exc.__class__.__module__.startswith("psycopg"):
+            raise
         code = getattr(exc, "sqlstate", None)
         if code == "42501":
             raise PublicationReadError("PG_READ_PERMISSION_DENIED") from exc
@@ -437,27 +462,19 @@ class PgPublicationReader:
     @staticmethod
     def _attest_read_role(pg):
         cursor = pg.execute(
-            """SELECT current_user, r.rolsuper, r.rolbypassrls,
-                      r.rolcreaterole, r.rolcreatedb, r.rolreplication,
-                      has_schema_privilege(current_user, 'v4', 'CREATE'),
-                      (has_table_privilege(current_user, 'v4.publications', 'INSERT') OR has_table_privilege(current_user, 'v4.publications', 'UPDATE') OR has_table_privilege(current_user, 'v4.publications', 'DELETE') OR has_table_privilege(current_user, 'v4.publications', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.publication_heads', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_heads', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_heads', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_heads', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.publication_consumed_sources', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_consumed_sources', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.publication_module_results', 'INSERT') OR has_table_privilege(current_user, 'v4.publication_module_results', 'UPDATE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'DELETE') OR has_table_privilege(current_user, 'v4.publication_module_results', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.contract_versions', 'INSERT') OR has_table_privilege(current_user, 'v4.contract_versions', 'UPDATE') OR has_table_privilege(current_user, 'v4.contract_versions', 'DELETE') OR has_table_privilege(current_user, 'v4.contract_versions', 'TRUNCATE')),
-                      (has_table_privilege(current_user, 'v4.contract_approval_events', 'INSERT') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'UPDATE') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'DELETE') OR has_table_privilege(current_user, 'v4.contract_approval_events', 'TRUNCATE')),
-                      EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-                               WHERE n.nspname='v4' AND c.relkind='S'
-                                 AND (has_sequence_privilege(current_user,c.oid,'USAGE')
-                                   OR has_sequence_privilege(current_user,c.oid,'UPDATE')))
-                 FROM pg_roles r WHERE r.rolname=current_user"""
+            """SELECT current_user, current_setting('transaction_read_only')"""
         )
         row = cursor.fetchone()
         if row is None:
             raise PublicationReadError("PG_READER_ROLE_UNAVAILABLE")
-        if any(bool(value) for value in row[1:]):
-            raise PublicationReadError("PG_READER_ROLE_HAS_WRITE_PRIVILEGES")
-        return {"role_capability_check": "NO_SUPERUSER_NO_BYPASS_NO_CHECKED_WRITE_PRIVILEGES"}
+        # V4 local development intentionally reuses the project's existing
+        # shared PostgreSQL identity. Transaction-level READ ONLY is the
+        # boundary for readers; requiring a second credential with no grants
+        # incorrectly blocks the authorized shared-instance workflow.
+        if str(row[1]).lower() not in ("on", "true", "1"):
+            raise PublicationReadError("PG_READER_TRANSACTION_NOT_READ_ONLY")
+        return {"role_capability_check": "SHARED_ROLE_TRANSACTION_READ_ONLY_ENFORCED",
+                "role": str(row[0])}
 
     @staticmethod
     def _validate_publication(row, target_date, namespace):

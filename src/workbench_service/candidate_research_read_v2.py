@@ -97,11 +97,17 @@ def capture_calendar_contract(root):
         try:identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
         except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
         if not namespace:raise ValueError('PG_MODEL_NAMESPACE_REQUIRED_FOR_DAILY_CONTRACT')
-        from workbench_analysis.contract_registry_pg_v1 import load_current_approved_contract
+        from workbench_analysis.contract_registry_pg_v1 import (
+            ContractRegistryError,
+            load_current_approved_contract,
+        )
         from workbench_db.v4_publication_reader import readonly_connection
-        with readonly_connection() as pg:
-            registered=load_current_approved_contract(pg,contract_id,version,namespace,
-                expected_database_identity=identity)
+        try:
+            with readonly_connection() as pg:
+                registered=load_current_approved_contract(pg,contract_id,version,namespace,
+                    expected_database_identity=identity)
+        except ContractRegistryError as exc:
+            raise ValueError(str(exc)) from exc
         document=registered.parsed_json
         raw=registered.raw_content
     elif source=='FILE':

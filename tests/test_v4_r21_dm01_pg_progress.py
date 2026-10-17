@@ -58,6 +58,35 @@ def test_dm01_published_receipt_poll_has_partial_index():
     assert "WHERE state='PUBLISHED'" in daily_pg.DDL
 
 
+def test_dm01_gap_plan_uses_pg_accepted_head_and_calendar_without_file_head(monkeypatch, tmp_path):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    calendar = {
+        "contract_id": "V4_OFFICIAL_MARKET_CALENDAR_V1", "status": "ACCEPTED",
+        "agreement": True, "exchanges": ["SSE", "SZSE"],
+        "coverage_start": "2026-10-15", "coverage_end": "2026-10-16",
+        "accepted_trade_date": "2026-10-15", "session_dates": ["2026-10-15", "2026-10-16"],
+        "binding": {"market_calendar_id": "calendar-r1", "calendar_digest": "a" * 64},
+    }
+
+    class Reader:
+        def calendar(self):
+            return calendar
+
+    monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE", "PG")
+    monkeypatch.setattr("workbench_db.v4_market_calendar_reader_r1.from_environment", lambda: Reader())
+    jobs = object.__new__(daily_pg.DailyJobs)
+    jobs.root = tmp_path
+    jobs.clock = lambda: datetime.fromisoformat("2026-10-16T19:00:00+08:00").astimezone(ZoneInfo("Asia/Shanghai"))
+
+    plan = jobs._gap_plan("2026-10-16")
+    assert plan["last_good_trade_date"] == "2026-10-15"
+    assert plan["last_good_head_source"] == "PG_ACCEPTED_PUBLICATION_HEAD"
+    assert plan["eligible_sessions"] == ["2026-10-16"]
+    assert not (tmp_path / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json").exists()
+
+
 def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, tmp_path):
     pg = ReadConnection(None, {"last_published_trade_date": None})
 

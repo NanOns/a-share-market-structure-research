@@ -24,6 +24,9 @@ class DailyJobs:
         from .operational_daily_jobs_pg_r1 import DailyJobs as NativeDailyJobs
         NativeDailyJobs.__init__(self,root,executor,clock,source_probe)
 
+    def _gap_plan(self, through_date=None):
+        return gap_plan(self.root,self.clock(),through_date)
+
     def rearm(self,target,revision,reason='OPERATOR_REARM'):
         """Explicit authorized recovery; never inferred from a user cancellation."""
         if not revision or not reason:raise ValueError('REARM_EVIDENCE_REQUIRED')
@@ -43,11 +46,9 @@ class DailyJobs:
                 if verdict['source_ready'] and record['source_revision_id']==verdict['source_revision_id']:
                     revisions.append(record['source_revision_id'])
             except (OSError,ValueError,KeyError,TypeError):continue
-        # Accepted provider caches can change before a combined readiness record
-        # exists. Freeze their byte identities; the executor must still reverify
-        # all three sources and downstream QA before deriving/publishing.
-        manifest=self.root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')/'accepted_runtime_manifest.json'
-        if manifest.is_file():revisions.append(hashlib.sha256(manifest.read_bytes()).hexdigest())
+        # Runtime acceptance is checked by the executor from its pinned source
+        # receipt. The scheduler tracks PG probe revisions and complete source
+        # readiness freezes; report-directory files are not scheduler authority.
         if self.source_probe:
             from .operational_daily_storage_v1 import atomic_json
             cached=self.read_probe(target)
@@ -55,11 +56,14 @@ class DailyJobs:
                 try:
                     probe=self.source_probe(target)
                     if probe.get('verified') and probe.get('revision'):
-                        cached.update(probe)
+                        for name, value in probe.items():
+                            cached[name] = value
                         cached['probe_state']='VERIFIED'
-                    cached.update(observed_at=self.clock().isoformat(),next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat())
+                    cached['observed_at'] = self.clock().isoformat()
+                    cached['next_probe_at'] = (self.clock()+timedelta(minutes=30)).isoformat()
                 except (OSError,ValueError,KeyError):
-                    cached.update(next_probe_at=(self.clock()+timedelta(minutes=30)).isoformat(),probe_state='WAIT_PROVIDER')
+                    cached['next_probe_at'] = (self.clock()+timedelta(minutes=30)).isoformat()
+                    cached['probe_state'] = 'WAIT_PROVIDER'
                 self.write_probe(target,cached)
             if cached.get('verified'):revisions.append(cached['revision'])
         return hashlib.sha256(json.dumps(sorted(revisions)).encode()).hexdigest() if revisions else None
@@ -151,7 +155,7 @@ class DailyJobs:
 
     def enqueue(self,through_date=None,mode='CATCH_UP',trigger='MANUAL',key=None):
         if mode not in {'CATCH_UP','PROBE'}:raise ValueError('MODE_NOT_ALLOWED')
-        plan=gap_plan(self.root,self.clock(),through_date)
+        plan=self._gap_plan(through_date)
         if plan['status']=='CALENDAR_COVERAGE_EXHAUSTED':raise ValueError('OFFICIAL_CALENDAR_COVERAGE_EXHAUSTED')
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
@@ -186,7 +190,7 @@ class DailyJobs:
             return [dict(x) for x in db.execute('SELECT * FROM update_events WHERE job_id=? AND event_id>? ORDER BY event_id LIMIT 100',(job,after))]
 
     def status(self):
-        plan=gap_plan(self.root,self.clock())
+        plan=self._gap_plan()
         with self.connect() as db:
             row=db.execute('SELECT job_id FROM update_jobs ORDER BY created_at DESC LIMIT 1').fetchone()
             active=db.execute("SELECT job_id FROM update_jobs WHERE mode='CATCH_UP' AND status NOT IN ('PUBLISHED_FULL','NOOP_ALREADY_CURRENT','FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED') ORDER BY created_at LIMIT 1").fetchone()
@@ -262,7 +266,7 @@ class DailyJobs:
         # the durable checkpoint; only unaccepted days can be replayed.
         with self.worker_lock():
             if self.settings()['auto_enabled']:
-                plan=gap_plan(self.root,self.clock())
+                plan=self._gap_plan()
                 if plan['missing_sessions'] and plan['eligible_sessions']:
                     self.dispatch(plan)
             with self.connect() as db:

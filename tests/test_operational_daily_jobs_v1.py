@@ -118,6 +118,17 @@ def test_native_target_absent_waits_without_publication(tmp_path,plan):
     assert jobs.status()['next_trigger_at']=='2026-10-09T19:05:00+08:00'
 
 
+def test_scheduler_source_revision_does_not_treat_report_manifest_as_authority(tmp_path):
+    jobs=object.__new__(DailyJobs)
+    jobs.root=tmp_path
+    jobs.clock=lambda:datetime.fromisoformat('2026-10-09T22:10+08:00')
+    jobs.source_probe=None
+    report=tmp_path/'reports/v4_baostock/runtime_acceptance/20261009/accepted_runtime_manifest.json'
+    report.parent.mkdir(parents=True)
+    report.write_text('{"status":"ACCEPTED"}',encoding='utf-8')
+    assert jobs.source_revision('2026-10-09') is None
+
+
 def test_restart_recovers_running_checkpoint(tmp_path,plan):
     jobs=DailyJobs(tmp_path);job=jobs.enqueue()
     with jobs.connect() as db:

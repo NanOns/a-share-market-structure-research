@@ -52,13 +52,21 @@ def plan_sessions(last_good, now, cal, through_date=None, main_check='18:35'):
                 source_ready=False, head_mutated=False, external_acceptance='NOT_GRANTED')
 
 
-def gap_plan(root, now=None, through_date=None, main_check='18:35'):
+def gap_plan(root, now=None, through_date=None, main_check='18:35', *,
+             last_good_trade_date=None, calendar_binding=None):
     import json
     from pathlib import Path
     from .scoped_successor_r421 import sha
-    head_path = Path(root) / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    head = json.loads(head_path.read_bytes())
-    result = plan_sessions(head['accepted_trade_date'], now or datetime.now(SHANGHAI),
-                           calendar(root), through_date, main_check)
-    result['last_good_head_sha256'] = sha(head_path)
+    if last_good_trade_date is None or calendar_binding is None:
+        head_path = Path(root) / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        head = json.loads(head_path.read_bytes())
+        last_good_trade_date = head['accepted_trade_date']
+        calendar_binding = calendar(root)
+        result = plan_sessions(last_good_trade_date, now or datetime.now(SHANGHAI),
+                               calendar_binding, through_date, main_check)
+        result['last_good_head_sha256'] = sha(head_path)
+        return result
+    result = plan_sessions(last_good_trade_date, now or datetime.now(SHANGHAI),
+                           calendar_binding, through_date, main_check)
+    result['last_good_head_source'] = 'PG_ACCEPTED_PUBLICATION_HEAD'
     return result

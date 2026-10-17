@@ -72,7 +72,10 @@ class DailyJobs(StateMachine):
         self.active_job_id=None;self.source_probe=source_probe;self.policy_binding=None
         self.dsn=configured_dsn();self.schema=workspace_schema(self.root,'jobs')
         self.lock_key=int.from_bytes(hashlib.sha256(self.schema.encode()).digest()[:8],'big',signed=True)
-        if (self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').is_file():
+        calendar_mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')
+        if calendar_mode not in {'FILE','PG'}:raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
+        head_path=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        if (calendar_mode=='PG' or (calendar_mode=='FILE' and head_path.is_file())):
             policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
             policy=json.loads(policy_path.read_bytes())
             if policy.get('contract_id')!='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1' or any(policy.get(k) is not False for k in ('historical_PIT_permission','automated_trading_permission','algorithm_upgrade_permission')): raise ValueError('DAILY_POLICY_SCOPE_INVALID')
@@ -84,6 +87,16 @@ class DailyJobs(StateMachine):
         with connection(self.schema,dsn=self.dsn) as pg:
             pg.execute('SELECT pg_advisory_xact_lock(%s)',(self.lock_key,))
             pg.execute(DDL)
+
+    def _gap_plan(self,through_date=None):
+        if os.environ.get('V4_MARKET_CALENDAR_SOURCE','FILE')!='PG':
+            return super()._gap_plan(through_date)
+        from workbench_db.v4_market_calendar_reader_r1 import from_environment
+        from .operational_daily_calendar_v2 import gap_plan
+        calendar=from_environment().calendar()
+        return gap_plan(self.root,self.clock(),through_date,
+                        last_good_trade_date=calendar['accepted_trade_date'],
+                        calendar_binding=calendar)
 
     @contextmanager
     def connect(self):

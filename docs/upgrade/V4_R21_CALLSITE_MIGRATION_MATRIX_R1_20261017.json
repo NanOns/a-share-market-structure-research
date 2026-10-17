@@ -16422,6 +16422,28 @@
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "remaining": "Default calendar selection and the broader daily execution/accepted Head/source artifact flow remain file-backed pending exact relation mapping and live readback."
+      },
+      {
+        "batch_id": "R21-R4-dm01-pg-head-gap-planner-r6",
+        "files": [
+          "config/v4_official_market_calendar_contract_v1.json",
+          "src/workbench_analysis/operational_daily_calendar_v2.py",
+          "src/workbench_analysis/operational_daily_jobs_v1.py",
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "src/workbench_db/v4_market_calendar_reader_r1.py",
+          "tests/test_operational_daily_jobs_v1.py"
+        ],
+        "evidence": [
+          "The PG daily scheduler gap-planner boundary now supplies its accepted trade date and market sessions from the PG publication Head and exact approved calendar contract in PG mode.",
+          "No Operational Head file read occurs on this scheduler path in PG mode; file mode remains default.",
+          "Daily progress uses PG PUBLISHED receipts with a matching partial index.",
+          "Scheduler source-revision calculation no longer treats reports/v4_baostock runtime-acceptance files as authority; executor still validates the dated source receipt."
+        ],
+        "verification": "126 focused offline tests passed; compile checks, staged repository policy and diff check passed. A broader 16-test legacy daily-jobs selection is blocked at setup by missing V4_NATIVE_PG_DSN; no PG connection or writes occurred.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "CODE_PATH_OPT_IN; baseline callsite remains open pending runtime selection and live readback.",
+        "next": "Migrate daily provider source/artifact inputs and accepted publication write flow."
       }
     ]
   }

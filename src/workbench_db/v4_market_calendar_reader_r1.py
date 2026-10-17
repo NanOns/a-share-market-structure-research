@@ -15,6 +15,7 @@ from .v4_publication_reader import PgPublicationReader, readonly_connection
 
 
 CONTRACT_ID = "V4_PG_MARKET_CALENDAR_READER_R1"
+CALENDAR_CONTRACT_ID = "V4_OFFICIAL_MARKET_CALENDAR_V1"
 _DIGEST = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -92,7 +93,7 @@ class PgMarketCalendarReader:
                         or revision_no < 1):
                     raise MarketCalendarReadError("PUBLICATION_CALENDAR_BINDING_INVALID")
                 try:
-                    load_publication_contracts(pg, publication_id, revision_no, contract_bindings)
+                    registered_contracts=load_publication_contracts(pg, publication_id, revision_no, contract_bindings)
                 except ContractRegistryError as exc:
                     raise MarketCalendarReadError(str(exc)) from exc
                 rows = pg.execute(
@@ -136,4 +137,34 @@ class PgMarketCalendarReader:
         selected_date = trade_date.isoformat() if isinstance(trade_date, date) else str(trade_date)
         if selected_date not in sessions:
             raise MarketCalendarReadError("HEAD_TRADE_DATE_OUTSIDE_MARKET_CALENDAR")
+        self._last_read=dict(publication_id=publication_id,publication_revision=revision_no,
+            accepted_trade_date=selected_date,market_calendar_id=calendar_id,
+            calendar_digest=digest,session_dates=sessions,contracts=registered_contracts)
         return sessions
+
+    def calendar(self) -> dict[str, Any]:
+        sessions=self.sessions()
+        read=getattr(self,"_last_read",{})
+        contract=read.get("contracts",{}).get(CALENDAR_CONTRACT_ID)
+        metadata=contract.parsed_json if contract is not None else None
+        if (not isinstance(metadata,dict)
+                or metadata.get("contract_id")!=CALENDAR_CONTRACT_ID
+                or metadata.get("version")!="1.0.0"
+                or metadata.get("agreement") is not True
+                or metadata.get("exchanges")!=["SSE","SZSE"]
+                or metadata.get("session_relation")!="v4.market_calendar_sessions"
+                or metadata.get("session_numbering")!="CONTIGUOUS_STARTING_AT_ONE"
+                or metadata.get("calendar_digest_semantics")!="ONE_SHA256_FOR_COMPLETE_ORDERED_SESSION_SET"
+                or metadata.get("historical_PIT_permission") is not False
+                or metadata.get("automated_trading_permission") is not False):
+            raise MarketCalendarReadError("OFFICIAL_MARKET_CALENDAR_CONTRACT_INVALID")
+        binding=dict(publication_id=read["publication_id"],
+            publication_revision=read["publication_revision"],
+            market_calendar_id=read["market_calendar_id"],
+            calendar_digest=read["calendar_digest"],
+            contract_id=contract.contract_id,contract_version=contract.version,
+            contract_sha256=contract.raw_sha256)
+        return dict(contract_id=CALENDAR_CONTRACT_ID,status="ACCEPTED",agreement=True,
+            exchanges=["SSE","SZSE"],coverage_start=sessions[0],coverage_end=sessions[-1],
+            accepted_trade_date=read["accepted_trade_date"],session_dates=sessions,
+            binding=binding,source="PG_ACCEPTED_PUBLICATION_HEAD")

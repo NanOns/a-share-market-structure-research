@@ -1,5 +1,6 @@
 from datetime import date, datetime, timezone
 import hashlib
+import json
 
 import pytest
 
@@ -13,7 +14,15 @@ from workbench_db.v4_market_calendar_reader_r1 import (
 
 IDENTITY = {"database": "market_research", "database_oid": 16384, "host": "127.0.0.1", "port": 5432}
 ACCEPTED_AT = datetime(2026, 10, 16, 16, 0, tzinfo=timezone.utc)
-CONTRACT_BYTES = b'{"contract":"calendar"}'
+CALENDAR_CONTRACT = {
+    "contract_id": "V4_OFFICIAL_MARKET_CALENDAR_V1", "version": "1.0.0",
+    "agreement": True, "exchanges": ["SSE", "SZSE"],
+    "session_relation": "v4.market_calendar_sessions",
+    "session_numbering": "CONTIGUOUS_STARTING_AT_ONE",
+    "calendar_digest_semantics": "ONE_SHA256_FOR_COMPLETE_ORDERED_SESSION_SET",
+    "historical_PIT_permission": False, "automated_trading_permission": False,
+}
+CONTRACT_BYTES = json.dumps(CALENDAR_CONTRACT, sort_keys=True, separators=(",", ":")).encode()
 CONTRACT_SHA = hashlib.sha256(CONTRACT_BYTES).hexdigest()
 
 
@@ -52,11 +61,11 @@ class FakePg:
             return Cursor(one=("v4_reader",) + (False,) * 13)
         if "FROM v4.publication_heads" in sql:
             return Cursor(one=("pub-20261016-r1", 1, date(2026, 10, 16), ACCEPTED_AT,
-                              "calendar-r1", {"CALENDAR": {"version": "r1", "raw_sha256": CONTRACT_SHA}}))
+                              "calendar-r1", {"V4_OFFICIAL_MARKET_CALENDAR_V1": {"version": "1.0.0", "raw_sha256": CONTRACT_SHA}}))
         if "current_setting('transaction_isolation')" in sql:
             return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
         if "JOIN v4.model_namespaces" in sql and "contract_bindings" in sql:
-            return Cursor(one=({"CALENDAR": {"version": "r1", "raw_sha256": CONTRACT_SHA}},
+            return Cursor(one=({"V4_OFFICIAL_MARKET_CALENDAR_V1": {"version": "1.0.0", "raw_sha256": CONTRACT_SHA}},
                                "v4-main", "ACCEPTED", ACCEPTED_AT, date(2026, 10, 16)))
         if "FROM v4.contract_versions c" in sql:
             return Cursor(one=(CONTRACT_BYTES, CONTRACT_SHA, "JSON", "1", "v4-main", "source-r1",
@@ -83,6 +92,19 @@ def test_pg_market_calendar_reader_uses_accepted_head_contract_and_ordered_sessi
         connection_factory=factory(FakePg()),
     )
     assert reader.sessions() == ["2026-10-15", "2026-10-16"]
+
+
+def test_pg_calendar_exposes_verified_metadata_for_daily_gap_planning():
+    reader = PgMarketCalendarReader(
+        namespace_id="v4-main", expected_database_identity=IDENTITY,
+        connection_factory=factory(FakePg()),
+    )
+    calendar = reader.calendar()
+    assert calendar["agreement"] is True
+    assert calendar["exchanges"] == ["SSE", "SZSE"]
+    assert calendar["accepted_trade_date"] == "2026-10-16"
+    assert calendar["coverage_start"] == "2026-10-15"
+    assert calendar["binding"]["market_calendar_id"] == "calendar-r1"
 
 
 def test_market_source_acquisition_calendar_entry_can_be_pinned_to_pg():

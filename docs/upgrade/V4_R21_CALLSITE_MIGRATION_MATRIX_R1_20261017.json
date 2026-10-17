@@ -17125,6 +17125,25 @@
         "p1_formally_remaining": 266,
         "status": "HEAD_BOUND_PG_MEMBERSHIP_AND_IDENTITY_STARTUP_VALIDATION_WIRED; current Head unmapped; no baseline row closed.",
         "next": "Continue Head-to-BFF invocation mapping and other eligible reader callsites; preserve exact P1 baseline counts until permitted same-T0 readback."
+      },
+      {
+        "batch_id": "R21-R4-bff-cache-pg-descriptor-path-guard-r38",
+        "files": [
+          "src/workbench_service/operational_daily_server_v1.py",
+          "tests/test_v4_daily_server_reader_wiring_r30.py",
+          "docs/upgrade/V4_R21_R4_BFF_CACHE_PG_DESCRIPTOR_PATH_GUARD_R38_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The daily service cache invalidator now tracks only workspace-local exact-file bindings; descriptors carrying pg_descriptor are excluded from filesystem stat checks.",
+          "Head digest/local file changes still invalidate the Reader cache, and paths resolving outside the workspace are not tracked.",
+          "Current Head still lacks PG membership/Owner authority. This repairs service preparation but does not establish a live business callsite or close a P1 item."
+        ],
+        "verification": "tests/test_v4_daily_server_reader_wiring_r30.py: 3 passed; Python compile and git diff --check passed. No service startup or PG request.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DAILY_SERVICE_READER_CACHE_HANDLES_PG_ONLY_LOCATORS_WITHOUT_LOCAL_STAT; no original P1 row closed.",
+        "next": "Continue moving direct accepted registry and Head reads where exact PG authority mappings are available; retain 266 open until permitted readback."
       }
     ]
   }

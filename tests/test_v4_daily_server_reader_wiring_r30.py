@@ -1,6 +1,18 @@
 from types import SimpleNamespace
 
 
+def test_successor_cache_tracks_files_but_never_stats_pg_descriptor_locators(tmp_path):
+    from workbench_service.operational_daily_server_v1 import _local_successor_source_paths
+
+    local=tmp_path/'local.json';local.write_text('{}',encoding='utf8')
+    candidate={'source':{'path':'local.json','sha256':'a'*64},
+        'membership':{'path':'data/v4/membership.json','sha256':'b'*64,
+            'pg_descriptor':{'kind':'reference_memberships','fact_key':'c'*64}},
+        'escape':{'path':'../outside.json','sha256':'d'*64}}
+
+    assert _local_successor_source_paths(tmp_path,candidate)=={local.resolve()}
+
+
 def test_daily_status_routes_use_injected_read_only_client(monkeypatch, tmp_path):
     from workbench_service import operational_daily_server_v1 as server
     from workbench_service import current_v4_context

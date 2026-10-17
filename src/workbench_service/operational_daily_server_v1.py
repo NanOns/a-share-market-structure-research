@@ -12,6 +12,24 @@ from workbench_analysis.operational_daily_executor_v1 import execute_sources
 PREFIX='/api/v4/operations/daily-update'
 
 
+def _local_successor_source_paths(root,*values):
+    root=Path(root).resolve();paths=set()
+    def visit(value):
+        if isinstance(value,dict):
+            if value.get('path') and value.get('sha256'):
+                # PG descriptors retain their source identity for lineage, but
+                # their path is only a logical locator and must never be stat'ed.
+                if 'pg_descriptor' not in value:
+                    path=(root/value['path']).resolve()
+                    if path.is_relative_to(root):paths.add(path)
+                return
+            for child in value.values():visit(child)
+        elif isinstance(value,list):
+            for child in value:visit(child)
+    for value in values:visit(value)
+    return paths
+
+
 def successor_control(api,legacy):
     from .operational_control_status import control_status
     current=api.context();current['authorization_mode']='DIRECT_HUMAN_USER'
@@ -35,16 +53,9 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
         signature=hashlib.sha256(head.read_bytes()).hexdigest()
         changed=any(not p.is_file() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat for p,stat in successor_cache.get('sources',{}).items())
         if changed or signature!=successor_cache.get('signature'):
-            api=accepted_api(root);bindings=[]
-            def collect(value):
-                if isinstance(value,dict):
-                    if value.get('path') and value.get('sha256'):bindings.append(value)
-                    for child in value.values():collect(child)
-                elif isinstance(value,list):
-                    for child in value:collect(child)
-            collect(api.candidate);collect(api.snapshot)
-            collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
-            paths={root/b['path'] for b in bindings}
+            api=accepted_api(root)
+            registry=json.loads((root/api.candidate['registry']['path']).read_bytes())
+            paths=_local_successor_source_paths(root,api.candidate,api.snapshot,registry)
             successor_cache.clear()
             successor_cache.update(signature=signature,api=api,sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
         from copy import copy

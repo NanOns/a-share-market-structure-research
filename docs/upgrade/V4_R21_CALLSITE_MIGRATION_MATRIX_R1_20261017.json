@@ -3636,12 +3636,13 @@
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "current_head": "Runtime acceptance facts/contracts remain unregistered or unverified in approved production namespace.",
-        "verification": "PG-default executor call path and exact native-response digest/tamper checks covered by controlled boundary tests; selected V4 workflow 314 passed after R66; no live PG, source capture or accepted business publication.",
+        "verification": "PG-default execute_sources chain and exact native-response digest/tamper checks covered by controlled boundary tests; selected V4 workflow 315 passed after R66; no live PG, source capture or accepted business publication.",
         "test_evidence": [
           "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
           "tests/test_operational_daily_executor_v1.py",
           "tests/test_pre_next_t0_executor_chain.py",
-          "tests/test_next_t0_old_identity_preflight.py"
+          "tests/test_next_t0_old_identity_preflight.py",
+          "tests/test_operational_daily_executor_v1.py::test_execute_sources_uses_pg_acceptance_and_freezes_its_binding"
         ],
         "live_write": "NOT_RUN_NO_WRITE_AUTHORIZATION"
       },
@@ -17782,9 +17783,15 @@
         "evidence": [
           "The active daily executor defaults to the date-bound PG runtime acceptance reader; exact native provider-response bytes are stored and verified with source SHA, receipt binding, date and observation time. The resulting daily freeze records the PG database identity, schema, acceptance-fact payload digest and native response binding. PG absence or validation errors do not fall back to local acceptance files. Explicit FILE mode is retained for historical fixtures/development."
         ],
-        "verification": "R66 focused tests 13 passed; selected V4 PG/consumer workflow 314 passed (including the unchanged accepted R19/R20 and Universe tests). Controlled PG fixtures only. No live PG catalog/read/write, BaoStock source acquisition, Head CAS or complete business acceptance.",
+        "verification": "R66 focused tests 14 passed; selected V4 PG/consumer workflow 315 passed (including unchanged accepted R19/R20 and Universe tests). Controlled PG fixtures only. No live PG catalog/read/write, BaoStock source acquisition, Head CAS or complete business acceptance.",
         "accounting": "Original P1 baseline remains 266; formal complete 0/266, formal remaining 266/266. Status counts remain 210 OPEN, 48 implemented PG-only read paths pending live reconciliation, 8 ingress adapters open; 218 open or ingress; 22 unmapped edges. Priority 28 other-business rows: 4 code-level PG paths pending live reconciliation, 23 OPEN, 1 ingress. Owner 200: 44 code-level PG paths pending live reconciliation, 149 OPEN, 7 ingress. R66 improves an existing mapped runtime-contract/daily call chain and does not add a separate baseline ID or formally close a row.",
-        "live_pg": "NOT_RUN_NO_COMPLIANT_READ_DSN; no actual PG writes authorized or attempted."
+        "live_pg": "NOT_RUN_NO_COMPLIANT_READ_DSN; no actual PG writes authorized or attempted.",
+        "ci": {
+          "push": "39026564472",
+          "pull_request": "39026567221",
+          "head": "45d414fbb16f8577d9ee28672a28bc2cc482ec53",
+          "result": "success"
+        }
       }
     ]
   }

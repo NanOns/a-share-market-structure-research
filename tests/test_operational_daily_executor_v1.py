@@ -28,3 +28,63 @@ def test_missing_target_refreshes_pre_gate_capture_once(tmp_path,monkeypatch,dow
         module.execute_sources(tmp_path,'2026-10-09','CATCH_UP',capture_only=True)
     assert len(calls)==int(expected)
     assert calls==([False,True] if int(expected)==2 else [False])
+
+
+def test_execute_sources_uses_pg_acceptance_and_freezes_its_binding(tmp_path,monkeypatch):
+    import json
+    from datetime import datetime,timezone,timedelta
+    root=tmp_path
+    day=datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).date().isoformat()
+    prior=(datetime.fromisoformat(day)-timedelta(days=1)).date().isoformat()
+    head=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head.parent.mkdir(parents=True,exist_ok=True)
+    head.write_text(json.dumps({'accepted_trade_date':prior}))
+    schema=root/'config/baostock_dm01_sdk_schema_adapter_v2.json';schema.parent.mkdir(parents=True,exist_ok=True)
+    schema.write_text('{}')
+    for key in ('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','V4_DAILY_CONTRACT_SOURCE'):
+        monkeypatch.delenv(key,raising=False)
+    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
+    monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'data/v4/snapshots'))
+    monkeypatch.setattr(module,'source_readiness',lambda *_a,**_k:{'time_eligible':True})
+    now=datetime.now(timezone.utc).isoformat()
+    package={'download':{'sha256':'d'*64},'provider_package_date':day,'observed_at':now}
+    bars={'status':'TARGET_BARS_EXTRACTED','artifact':{'path':'inputs/tdx.json','sha256':'e'*64},
+          'source_available_at':now,'row_count':1}
+    monkeypatch.setattr(module,'capture_latest_tdx_package',lambda **_k:package)
+    monkeypatch.setattr(module,'extract_target_session_bars',lambda *_a,**_k:bars)
+    raw={'target_date':day,'observed_at':now,'daily_rows':[{'code':'sh.600000'}],
+         'daily_metadata':{'error_code':'0'},'adjustment_factor_rows':[],
+         'adjustment_factor_metadata':{'error_code':'0'}}
+    raw_path=root/'data/v4/runtime_pg_ingress_cache/baostock'/day.replace('-','')/'native_response.json'
+    raw_path.parent.mkdir(parents=True,exist_ok=True);raw_path.write_text(json.dumps(raw))
+    manifest={'live_smoke':{'target_date':day,
+        'daily':{'response_sha256':'a'*64},'adjustment_factor':{'response_sha256':'b'*64}}}
+    receipt={'observed_at':now}
+    manifest_path=root/'data/v4/runtime_pg_ingress_cache/baostock'/day.replace('-','')/'accepted_runtime_manifest.json'
+    manifest_path.write_text(json.dumps(manifest))
+    pg_binding={'path':raw_path.relative_to(root).as_posix(),'sha256':module.tdx.sha256_file(raw_path),
+        'bytes':raw_path.stat().st_size,'source':'PG_FACT_DERIVED_CACHE','pg_payload_sha256':'c'*64}
+    bundle={'database_identity':{'database':'market_research','database_oid':42,'host':'127.0.0.1','port':5432},
+            'schema':'v4_fixture','payload_sha256':'c'*64}
+    monkeypatch.setattr(module,'_load_pg_runtime_acceptance',lambda *_a,**_k:dict(
+        manifest=manifest,receipt=receipt,raw=raw,raw_path=raw_path,manifest_path=manifest_path,
+        manifest_sha256=module.tdx.sha256_file(manifest_path),native_response_binding=pg_binding,bundle=bundle))
+    monkeypatch.setattr(module,'load_runtime_acceptance_manifest',
+        lambda *_a,**_k:(_ for _ in ()).throw(AssertionError('local acceptance file read')))
+    monkeypatch.setattr(module,'_canonical_rows_digest',lambda rows:'a'*64 if rows else 'b'*64)
+    monkeypatch.setattr(module,'normalize_response',lambda rows,meta,**_k:(rows,meta))
+    monkeypatch.setattr(module,'package_metadata',lambda:{'package':'baostock','version':'test'})
+    from workbench_analysis import tdx_local_daily_fallback_v1 as fallback
+    monkeypatch.setattr(fallback,'fallback',lambda p,b,*_a,**_k:(p,b,None))
+    monkeypatch.setattr(module,'verify_source_gate',lambda *args,**_k:(args[3],
+        {'source_ready':False,'status':'WAIT_SYNTHETIC_GATE','reason':'controlled test boundary'}))
+    from workbench_analysis import producer_bootstrap_v1 as bootstrap
+    monkeypatch.setattr(bootstrap,'capture_daily_sources',lambda *_a,**_k:{'candidate':None})
+    monkeypatch.setattr(module,'_pg_source_ingest_plan_diagnostic',lambda *_a,**_k:None)
+
+    result=module.execute_sources(root,day,'CATCH_UP')
+    frozen=json.loads((root/result['source_freeze']['path']).read_bytes())
+    assert result['status']=='WAIT_SYNTHETIC_GATE'
+    assert frozen['runtime_acceptance_pg']['database_identity']==bundle['database_identity']
+    assert frozen['runtime_acceptance_pg']['payload_sha256']=='c'*64
+    assert frozen['runtime_acceptance_pg']['native_response']==pg_binding

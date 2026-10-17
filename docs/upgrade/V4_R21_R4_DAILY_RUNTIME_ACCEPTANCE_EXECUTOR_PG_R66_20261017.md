@@ -26,10 +26,10 @@ unmapped_reference_edges: 22
 
 ## 验证与限制
 
-- R66 聚焦回归 **13 passed**；完整选定 V4 PG/消费者工作流 **314 passed**，包括现有历史精确绑定和 Universe 用例。
+- R66 聚焦回归 **14 passed**；完整选定 V4 PG/消费者工作流 **315 passed**，包括现有历史精确绑定和 Universe 用例。
 - BaoStock PG Reader、native-response tamper rejection 与执行器缓存接线测试使用受控 PG 边界；未连接 live PG，未运行 BaoStock 网络采集、实际 PG 登记/写入、accepted Head CAS 或完整业务验收。模拟边界测试只证明代码路径与拒绝行为，不等于业务通过。
 - 当前未提供合规只读 DSN，且无真实 PG 写入授权；运行时合同/事实的正式 namespace 登记与真实读回仍为现场门。
-- CI 将在推送 R66 代码后记录实际 Push/PR 结论。R65 Push/PR CI 已通过：`39025631882` / `39025635111`。
+- R66 code/doc commit `45d414fbb16f8577d9ee28672a28bc2cc482ec53` 的 Push/PR CI 均成功：`39026564472` / `39026567221`。R65 Push/PR CI 也已通过：`39025631882` / `39025635111`。后加的贯穿 `execute_sources` 回归尚在本地，其结果计入上述 14/315。
 
 ## 原 266 项逐项核对
 

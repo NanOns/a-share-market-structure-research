@@ -16641,16 +16641,20 @@
     "files": [
       ".github/workflows/repository-policy.yml",
       "docs/upgrade/V4_R21_R4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R64_20261017.md",
+      "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_XML_ENCODING_GUARD_R65_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
+      "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
       "scripts/capture_baostock_daily_update.py",
+      "src/workbench_analysis/contract_registry_pg_v1.py",
       "src/workbench_db/v4_baostock_runtime_acceptance_pg_r1.py",
       "src/workbench_db/v4_membership_reference_pg_v1.py",
       "src/workbench_db/v4_operational_owner_authority_v2.py",
       "src/workbench_db/v4_operational_owner_pg_closeout.py",
       "src/workbench_service/core_product_bff_r1.py",
       "src/workbench_service/operational_successor_bff_v1.py",
-      "tests/test_v4_baostock_runtime_acceptance_pg_r1.py"
+      "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
+      "tests/test_v4_contract_registry_pg_v1.py"
     ],
     "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
     "follow_up_batches": [
@@ -17713,9 +17717,10 @@
           "The active BaoStock capture entrypoint now defaults to the exact trade-date daily_runtime_acceptance fact in the deterministic forward_facts schema. The read checks configured database identity, read-only repeatable-read reader privileges, payload and manifest digests, live-smoke receipt binding, runtime fingerprint, auth mode, method set and target date. It does not use a local PG descriptor locator.",
           "The acceptance producer validates the local ingress manifest/receipt and appends via explicit V4_NATIVE_PG_DSN. The immutable PG payload supports V1 manifests and V2 zero-change proof plus every exact per-code empty response. The active operational daily executor has not yet been switched to consume the PG fact; its local runtime-manifest/native-response and source-freeze paths remain open.",
           "No original baseline callsite ID is closed by this subpath; the R63 capture script was not an independent row in the exact 266-row baseline inventory.",
-          "Business-file-access audit output: G:/codex_tmp/R64_business_file_access.json; PASS. Temporary evidence remains outside Git."
+          "Business-file-access audit output: G:/codex_tmp/R64_business_file_access.json; PASS. Temporary evidence remains outside Git.",
+          "R64 CI on corrected test fixture passed: Push 39024797612 and PR 39024801715. Earlier runner failure caused by absent BaoStock SDK package metadata was fixed in the test fixture."
         ],
-        "verification": "9 focused regressions and the repository workflow selected V4 PG/consumer suite (306 passed); business-file-access audit and validator PASS (1,430 call sites scanned, 176 Owner-file reads and 238 P1 findings remain). Controlled PG-shaped tests only: no live PG catalog/read/write, BaoStock acquisition, production smoke or business acceptance.",
+        "verification": "9 focused regressions and the repository workflow selected V4 PG/consumer suite (306 passed); business-file-access audit and validator PASS (1,430 call sites scanned, 176 Owner-file reads and 238 P1 findings remain). Controlled PG-shaped tests only: no live PG catalog/read/write, BaoStock acquisition, production smoke or business acceptance. Latest R64 Push/PR CI passed (39024797612 / 39024801715).",
         "baseline_callsite_ids": [],
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
@@ -17727,6 +17732,29 @@
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "live_pg_write": "NOT_RUN_NO_WRITE_AUTHORIZATION",
         "next": "Continue PG runtime acceptance and raw-response ingress for the operational executor including zero-change proof records; migrate the active operational Head and daily source-freeze consumers, then continue other-business and Owner cohorts."
+      },
+      {
+        "batch_id": "R21-R4-contract-registry-xml-dtd-encoding-guard-r65",
+        "files": [
+          "src/workbench_analysis/contract_registry_pg_v1.py",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_XML_ENCODING_GUARD_R65_20261017.md",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md"
+        ],
+        "evidence": [
+          "Both publication-pinned and current-approved contract readers reject DTD/ENTITY markers in byte form and standard UTF-8/16/32 decoded forms; regression cases cover UTF-8 DTD, UTF-16 DTD and UTF-32 ENTITY. This is a direct contract reader correction, not an approval-state or DB migration acceptance."
+        ],
+        "verification": "Contract registry and SQL focused regression: 25 passed. Repository selected V4 PG/consumer workflow suite: 309 passed. No live PG catalog/read/write; controlled Reader fixtures only.",
+        "baseline_callsite_ids": [],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 210,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8
+        },
+        "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "next": "Continue approval lifecycle and SQL compatibility after authorized read-only catalog reconciliation; continue actual PG consumer migrations."
       }
     ]
   }

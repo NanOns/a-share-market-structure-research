@@ -17,6 +17,25 @@ class ContractRegistryError(RuntimeError):
     pass
 
 
+def _xml_contains_dtd_or_entity(raw: bytes) -> bool:
+    """Reject declarations across XML's BOM and byte-order encodings."""
+    markers = ("<!DOCTYPE", "<!ENTITY")
+    if any(marker.encode("ascii") in raw.upper() for marker in markers):
+        return True
+    # UTF-16/32 declarations contain interleaved NUL bytes, so a byte-only
+    # ASCII scan is insufficient. Probe only fixed, standard XML encodings;
+    # unsupported encodings still receive the raw-byte scan above.
+    for encoding in ("utf-8-sig", "utf-16", "utf-32", "utf-16-le", "utf-16-be",
+                     "utf-32-le", "utf-32-be"):
+        try:
+            text = raw.decode(encoding).upper()
+        except (UnicodeDecodeError, LookupError):
+            continue
+        if any(marker in text for marker in markers):
+            return True
+    return False
+
+
 @dataclass(frozen=True)
 class RegisteredContract:
     contract_id: str
@@ -167,8 +186,7 @@ def load_publication_contract(
         except (UnicodeDecodeError, ValueError) as exc:
             raise ContractRegistryError("V4_PG_CONTRACT_JSON_INVALID") from exc
     elif fmt == "XML":
-        upper = raw.upper()
-        if b"<!DOCTYPE" in upper or b"<!ENTITY" in upper:
+        if _xml_contains_dtd_or_entity(raw):
             raise ContractRegistryError("V4_PG_CONTRACT_XML_DTD_FORBIDDEN")
     elif fmt != "TEXT":
         raise ContractRegistryError("V4_PG_CONTRACT_FORMAT_UNSUPPORTED")
@@ -311,8 +329,7 @@ def load_current_approved_contract(
         except (UnicodeDecodeError, ValueError) as exc:
             raise ContractRegistryError("V4_PG_CONTRACT_JSON_INVALID") from exc
     elif fmt == "XML":
-        upper = raw.upper()
-        if b"<!DOCTYPE" in upper or b"<!ENTITY" in upper:
+        if _xml_contains_dtd_or_entity(raw):
             raise ContractRegistryError("V4_PG_CONTRACT_XML_DTD_FORBIDDEN")
     elif fmt != "TEXT":
         raise ContractRegistryError("V4_PG_CONTRACT_FORMAT_UNSUPPORTED")

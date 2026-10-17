@@ -123,6 +123,23 @@ def test_contract_registry_schema_absence_does_not_fallback_to_files():
         load_publication_contract(cursor, "publication-1", "RULE")
 
 
+@pytest.mark.parametrize("raw", [
+    b"<!DOCTYPE contract><contract/>",
+    "<!DOCTYPE contract><contract/>".encode("utf-16"),
+    "<!ENTITY x 'external'>".encode("utf-32-be"),
+])
+def test_xml_contract_rejects_dtd_and_entity_in_multibyte_encodings(raw):
+    digest = hashlib.sha256(raw).hexdigest()
+    cursor = Cursor(
+        ({"RULE": {"version": "1.2.0", "raw_sha256": digest}}, "PRODUCTION", "ACCEPTED",
+         "2026-10-17T00:00:00Z", "2026-10-16"),
+        (raw, digest, "XML", "1", "PRODUCTION", "revision-1", "APPROVED", "approver",
+         "approval-1", "2026-10-17T00:00:00Z", "revision-1", digest, "2026-10-17T00:00:00Z"),
+    )
+    with pytest.raises(ContractRegistryError, match="V4_PG_CONTRACT_XML_DTD_FORBIDDEN"):
+        load_publication_contract(cursor, "publication-1", "RULE")
+
+
 @pytest.mark.parametrize("session", [
     ("market_research", "v4_reader", "read committed", "on"),
     ("market_research", "v4_reader", "repeatable read", "off"),

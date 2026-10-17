@@ -102,3 +102,8 @@ def test_runtime_writes_are_output_paths_not_missing_inputs(tmp_path):
 def test_optional_tray_python_override_is_not_a_blocking_stale_root():
     risk, priority, *_ = audit._risk("E:/python/python.exe", ROOT, "scripts/workbench_tray.ps1", None, None)
     assert risk == "ABSOLUTE_STALE_ROOT" and priority == "P2"
+
+
+def test_oversized_document_literal_is_retained_without_filesystem_stat():
+    risk, priority, resolved, *_ = audit._risk("#" + "x" * 5000, ROOT, "scripts/example.py", None, None)
+    assert risk == "NON_PATH_LITERAL" and priority == "INFO" and resolved is None

@@ -61,7 +61,8 @@ def validate(root, candidate, *, pg_owner_authority=None):
         raise ValueError('SUCCESSOR_CUTOFF_MISMATCH')
     if any(candidate.get(k) is not False for k in ('historical_PIT_permission','AS_RECORDED','PIT_ELIGIBLE')):
         raise ValueError('SUCCESSOR_PIT_ESCALATION')
-    predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes())
+    from workbench_db.v4_operational_predecessor_pg_v1 import read_predecessor
+    predecessor=read_predecessor(root,candidate)
     olddates=predecessor.get('published_sessions',predecessor['dates'])
     if dates[:-1]!=olddates:
         raise ValueError('SUCCESSOR_MUST_EXTEND_ONE_SESSION')

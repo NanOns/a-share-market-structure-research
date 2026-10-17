@@ -24,7 +24,7 @@ Date: 2026-10-17 (Asia/Shanghai). Reviewed R21-R4 task card, R60 source-freeze a
 
 - Focused tests: **28 passed** across the new producer/executor regression, PG reference, historical producer continuation, daily executor and pre-next-T0 chain.
 - The new regression invokes the actual `build_review_and_display_candidates` function with an exact-daily candidate and proves a pre-existing local index remains byte-identical while the returned index contains only the current T0. A source assertion checks the executor no longer refers to the index filename.
-- Full repository-policy selection: **278 passed**. Push/PR CI results will be recorded after commit. No live PG write/readback, source capture, service start, Head CAS or production operation was performed.
+- Full repository-policy selection: **278 passed**. Push CI `39023065604` and PR CI `39023067791` both completed successfully (Repository content policy). No live PG write/readback, source capture, service start, Head CAS or production operation was performed.
 
 ## Exact row accounting
 

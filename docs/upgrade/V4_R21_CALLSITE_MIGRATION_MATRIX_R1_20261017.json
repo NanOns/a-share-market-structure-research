@@ -17637,7 +17637,7 @@
           "The exact-daily executor selects the PG-specific producer to build the dated candidate index document in memory and hand it directly to the existing PG Owner preparation path. It does not merge file-backed historical sessions or read back producer_candidate_index_v2.json. Non-exact/historical candidate production remains unchanged.",
           "The existing PG BFF reads the accepted candidate index entry from the resulting Head-bound PG authority; no local fallback is introduced for exact-daily current T0."
         ],
-        "verification": "28 focused producer/reference/executor regressions passed; consolidated repository-policy selection passed 278 tests. Push/PR CI pending. No live PG write/readback or accepted Head update.",
+        "verification": "28 focused producer/reference/executor regressions passed; consolidated repository-policy selection passed 278 tests. Push CI `39023065604` and PR CI `39023067791` both succeeded (Repository content policy). No live PG write/readback or accepted Head update.",
         "baseline_callsite_ids": [
           "V4-BCA-R2-251b6859286f1bec50bc"
         ],

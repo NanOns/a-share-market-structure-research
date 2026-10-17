@@ -1,11 +1,18 @@
 """One pre-I/O destination boundary for engineering copies and materializers."""
 import json
+import os
 import re
 from functools import lru_cache
 from pathlib import Path, PureWindowsPath
 
 REPOSITORY = Path(__file__).resolve().parents[2]
-DISPOSABLE_BASES = (Path('E:/codex_tmp/test_temp'), Path('G:/codex_tmp/test_temp'))
+
+
+def disposable_bases():
+    configured = os.environ.get('CODEX_DISPOSABLE_TEMP_ROOT') or os.environ.get('TMPDIR')
+    if not configured:
+        raise ValueError('DISPOSABLE_TEMP_ROOT_ENV_REQUIRED')
+    return (Path(configured).resolve(),)
 
 
 @lru_cache(maxsize=1)
@@ -32,7 +39,7 @@ def resolve_destination_inside_root(root, relative):
     if any(':' in p for p in win.parts):
         raise ValueError('DISPOSABLE_DESTINATION_STREAM_REJECTED')
     base = Path(root).resolve()
-    if not any(base.is_relative_to(p.resolve()) for p in DISPOSABLE_BASES):
+    if not any(base.is_relative_to(p) for p in disposable_bases()):
         raise ValueError('DISPOSABLE_OUTPUT_ROOT_REQUIRED')
     target = base.joinpath(*win.parts).resolve()
     if target == base or not target.is_relative_to(base):

@@ -13,6 +13,4 @@ def resolve_tdx_root(project_root: str|Path) -> Path:
         configured=match.group(1).strip() if match else None
     candidate=configured or os.environ.get("TDX_ROOT")
     if candidate:return Path(candidate).expanduser().resolve()
-    for path in (Path("D:/new_tdx"),Path("D:/TDX/new_tdx")):
-        if path.is_dir():return path.resolve()
-    raise FileNotFoundError("TDX_ROOT_NOT_CONFIGURED_OR_DISCOVERED")
+    raise FileNotFoundError("TDX_ROOT_NOT_CONFIGURED")

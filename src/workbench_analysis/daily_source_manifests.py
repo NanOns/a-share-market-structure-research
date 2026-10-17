@@ -240,7 +240,7 @@ def build_special_phase_source_manifest(
     policy_path: Path,
     lifecycle_snapshot: Mapping[str, Any],
     observed_at: str,
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ) -> dict[str, Any]:
     """Bind the accepted event store and policy even when no new event starts on T."""
     try:
@@ -251,6 +251,8 @@ def build_special_phase_source_manifest(
     if parsed_observed.tzinfo is None:
         raise ValueError("SPECIAL_PHASE_MANIFEST_TIMEZONE_REQUIRED")
     root = project_root.resolve()
+    from common.paths import resolve_tdx_root
+    tdx_root = resolve_tdx_root(root, tdx_root)
     for path in (v402_external_acceptance_path, v402_stage_manifest_path, event_store_path, policy_path):
         ensure_outside_tdx(path, tdx_root)
     acceptance = json.loads(v402_external_acceptance_path.read_text(encoding="utf-8"))

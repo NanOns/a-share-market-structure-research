@@ -824,6 +824,10 @@ def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
         "source_revision": "lifecycle-r1",
         "active_security_ids": [],
     }
+    (tmp_path / "config").mkdir(exist_ok=True)
+    (tmp_path / "config/paths.yaml").write_text(
+        f"tdx:\n  source_root: {tmp_path / 'tdx-read-only'}\n", encoding="utf-8"
+    )
     result = build_special_phase_source_manifest(
         trade_date=TARGET,
         project_root=tmp_path,
@@ -833,7 +837,6 @@ def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
         policy_path=policy_path,
         lifecycle_snapshot=lifecycle,
         observed_at="2026-09-28T07:00:00+00:00",
-        tdx_root=tmp_path / "tdx-read-only",
     )
     assert result["status"] == "READY"
     assert result["event_status"] == "NO_NEW_SPECIAL_PHASE_EVENT"

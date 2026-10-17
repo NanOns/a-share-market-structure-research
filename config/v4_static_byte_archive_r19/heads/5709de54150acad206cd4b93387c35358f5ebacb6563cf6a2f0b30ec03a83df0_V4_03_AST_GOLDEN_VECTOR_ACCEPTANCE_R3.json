@@ -1,0 +1,300 @@
+{
+  "case_category_count": 31,
+  "case_manifest_sha256": "e6ccc07eb9b93434f421f7d76963d1f91dbc1e0140b45b74544249b5e5b13062",
+  "comparison": "numeric abs/rel tolerance 1e-12; UNKNOWN exact",
+  "contract_count": 47,
+  "contract_id": "V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3",
+  "contract_set_sha256": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2",
+  "failed_count": 0,
+  "failures": [],
+  "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a",
+  "framework_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "negative_tamper_detection": "tested in tests/v4_03/test_ast_golden_r3.py",
+  "numeric_executor_sha256": "435d0cbec15a6912cf23d73ab7e9751cb389dc1e48cbaf580c1d0d53d12544a8",
+  "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+  "passed_count": 30,
+  "per_category_coverage": {
+    "adjustment_basis_mismatch": [
+      "TECH_MIXED_ADJUSTMENT"
+    ],
+    "amount_volume_zero_denominator": [
+      "TECH_AMOUNT_DENOMINATOR_ZERO"
+    ],
+    "cross_section_endpoint_missing": [
+      "REL_ENDPOINT_MISSING"
+    ],
+    "cross_section_exact_session_endpoint": [
+      "CROSS_EXACT_PRIOR_SESSION"
+    ],
+    "cross_section_intermediate_gap": [
+      "CROSS_INTERMEDIATE_GAP"
+    ],
+    "cross_section_intermediate_suspension": [
+      "CROSS_INTERMEDIATE_CONFIRMED_SUSPENSION"
+    ],
+    "cross_section_partial_evaluable": [
+      "RANK_PARTIAL_EVALUABLE"
+    ],
+    "cross_section_prior_endpoint_missing": [
+      "DELTA_PRIOR_ENDPOINT_MISSING"
+    ],
+    "flat_range": [
+      "TECH_FLAT_RANGE"
+    ],
+    "input_source_identity_digest_change": [
+      "SOURCE_IDENTITY_DIGEST_CHANGE"
+    ],
+    "log_invalid_input": [
+      "AST_LOG_NONPOSITIVE"
+    ],
+    "nonpositive_required_price": [
+      "TECH_NONPOSITIVE_REQUIRED_PRICE"
+    ],
+    "ranking_full_tie": [
+      "RANK_FULL_TIE"
+    ],
+    "ranking_membership_change": [
+      "RANK_MEMBER_CHANGED"
+    ],
+    "ranking_missing_member": [
+      "RANK_MISSING_MEMBER"
+    ],
+    "ranking_n_lt_2": [
+      "RANK_N_LT_2"
+    ],
+    "ranking_partial_tie": [
+      "RANK_PARTIAL_TIE"
+    ],
+    "ranking_reorder_invariance": [
+      "RANK_REORDER_INVARIANT"
+    ],
+    "ranking_strict_order": [
+      "RANK_STRICT_ORDER"
+    ],
+    "ranking_target_missing": [
+      "RANK_TARGET_MISSING"
+    ],
+    "source_revision_mismatch": [
+      "TECH_SOURCE_REVISION_MISMATCH"
+    ],
+    "technical_confirmed_suspension": [
+      "TECH_CONFIRMED_SUSPENSION"
+    ],
+    "technical_exact_n_actual": [
+      "TECH_EXACT_5"
+    ],
+    "technical_one_short": [
+      "TECH_ONE_SHORT"
+    ],
+    "technical_resume": [
+      "TECH_RESUME_AFTER_SUSPENSION"
+    ],
+    "technical_t0_prior_only": [
+      "TECH_T0_SUSPENDED_PRIOR"
+    ],
+    "technical_t0_suspension": [
+      "TECH_T0_SUSPENDED_CURRENT"
+    ],
+    "technical_unexplained_gap": [
+      "TECH_UNEXPLAINED_GAP"
+    ],
+    "unknown_node_propagation": [
+      "REL_INPUT_LOCAL_UNKNOWN"
+    ],
+    "volume_zero_denominator": [
+      "TECH_VOLUME_DENOMINATOR_ZERO"
+    ],
+    "zero_denominator": [
+      "TECH_ZERO_DENOMINATOR"
+    ]
+  },
+  "r3_edge_vector_count": 30,
+  "results": [
+    {
+      "case_id": "TECH_EXACT_5",
+      "category": "technical_exact_n_actual",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_ONE_SHORT",
+      "category": "technical_one_short",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_CONFIRMED_SUSPENSION",
+      "category": "technical_confirmed_suspension",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_RESUME_AFTER_SUSPENSION",
+      "category": "technical_resume",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_T0_SUSPENDED_CURRENT",
+      "category": "technical_t0_suspension",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_T0_SUSPENDED_PRIOR",
+      "category": "technical_t0_prior_only",
+      "field_id": "prior_high5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_UNEXPLAINED_GAP",
+      "category": "technical_unexplained_gap",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_MIXED_ADJUSTMENT",
+      "category": "adjustment_basis_mismatch",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_SOURCE_REVISION_MISMATCH",
+      "category": "source_revision_mismatch",
+      "field_id": "ma5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_NONPOSITIVE_REQUIRED_PRICE",
+      "category": "nonpositive_required_price",
+      "field_id": "ret1",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_ZERO_DENOMINATOR",
+      "category": "zero_denominator",
+      "field_id": "ret1",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_FLAT_RANGE",
+      "category": "flat_range",
+      "field_id": "clv",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_AMOUNT_DENOMINATOR_ZERO",
+      "category": "amount_volume_zero_denominator",
+      "field_id": "amount_ratio5",
+      "passed": true
+    },
+    {
+      "case_id": "TECH_VOLUME_DENOMINATOR_ZERO",
+      "category": "volume_zero_denominator",
+      "field_id": "volume_ratio5",
+      "passed": true
+    },
+    {
+      "case_id": "AST_LOG_NONPOSITIVE",
+      "category": "log_invalid_input",
+      "field_id": "__LOG_OPERATOR__",
+      "passed": true
+    },
+    {
+      "case_id": "CROSS_EXACT_PRIOR_SESSION",
+      "category": "cross_section_exact_session_endpoint",
+      "field_id": "rps5_delta1",
+      "passed": true
+    },
+    {
+      "case_id": "CROSS_INTERMEDIATE_CONFIRMED_SUSPENSION",
+      "category": "cross_section_intermediate_suspension",
+      "field_id": "ret3",
+      "passed": true
+    },
+    {
+      "case_id": "CROSS_INTERMEDIATE_GAP",
+      "category": "cross_section_intermediate_gap",
+      "field_id": "ret3",
+      "passed": true
+    },
+    {
+      "case_id": "REL_ENDPOINT_MISSING",
+      "category": "cross_section_endpoint_missing",
+      "field_id": "rel_market_1",
+      "passed": true
+    },
+    {
+      "case_id": "REL_INPUT_LOCAL_UNKNOWN",
+      "category": "unknown_node_propagation",
+      "field_id": "rel_market_1",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_STRICT_ORDER",
+      "category": "ranking_strict_order",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_FULL_TIE",
+      "category": "ranking_full_tie",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_PARTIAL_TIE",
+      "category": "ranking_partial_tie",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_MISSING_MEMBER",
+      "category": "ranking_missing_member",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_TARGET_MISSING",
+      "category": "ranking_target_missing",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_N_LT_2",
+      "category": "ranking_n_lt_2",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_MEMBER_CHANGED",
+      "category": "ranking_membership_change",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_REORDER_INVARIANT",
+      "category": "ranking_reorder_invariance",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "RANK_PARTIAL_EVALUABLE",
+      "category": "cross_section_partial_evaluable",
+      "field_id": "rps5",
+      "passed": true
+    },
+    {
+      "case_id": "DELTA_PRIOR_ENDPOINT_MISSING",
+      "category": "cross_section_prior_endpoint_missing",
+      "field_id": "rps5_delta1",
+      "passed": true
+    }
+  ],
+  "source_identity_digest_change_detected": true,
+  "stage_acceptance": "NOT_GRANTED",
+  "status": "PASS",
+  "vector_count": 124,
+  "vector_extension_version": "1.0.0"
+}

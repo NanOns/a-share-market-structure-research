@@ -10,7 +10,7 @@ NONCONFIG_EXTS = {".py", ".sh", ".ps1", ".bat", ".cmd", ".sql", ".js", ".mjs", "
 CONFIG_EXTS = {".json", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf"}
 PATH_KEYS = {"path", "filepath", "file_path", "file", "archive_path", "artifact_path", "source_path", "script_path", "sql_path", "asset_path", "uri", "locator", "source_locator", "record_locator"}
 IO_CALLS = {"open", "os.open", "Path.open", "Path.read_bytes", "Path.read_text", "Path.write_bytes", "Path.write_text", "read_bytes", "read_text", "write_bytes", "write_text", "read_csv", "read_parquet", "read_json", "read_sql", "json.load", "json.loads", "csv.reader", "gzip.open", "zipfile.ZipFile", "ZipFile", "glob.glob", "Path.glob", "Path.rglob", "runpy.run_path", "importlib.util.spec_from_file_location", "subprocess.run", "subprocess.Popen", "subprocess.check_call", "subprocess.check_output", "os.system"}
-LITERAL_PATH_RE = re.compile(r"(?<![\w])(?:[A-Za-z]:[\\/][^\s\"'<>|,]+|(?:[\\/]|\.\.?[\\/])?[\w@+-]+(?:[\\/][\w@+-]+)*\.(?:jsonl?\.gz|jsonl|ndjson|parquet|sqlite|json|ya?ml|toml|py|sh|ps1|bat|cmd|sql|js|mjs|ts|tsx|html|css|csv|zip|gz|bin|dat|png|jpg|jpeg|gif|ico|pdf|dll|exe|wasm))(?![\w])", re.I)
+LITERAL_PATH_RE = re.compile(r"(?<![\w.])(?:[A-Za-z]:[\\/][^\s\"'<>|,]+|(?:[\\/]|\.\.?[\\/])?[\w@+-]+(?:[\\/][\w@+-]+)*\.(?:jsonl?\.gz|jsonl|ndjson|parquet|sqlite|json|ya?ml|toml|py|sh|ps1|bat|cmd|sql|js|mjs|ts|tsx|html|css|csv|zip|gz|bin|dat|png|jpg|jpeg|gif|ico|pdf|dll|exe|wasm))(?![\w])", re.I)
 
 
 def _sha(raw: bytes) -> str: return hashlib.sha256(raw).hexdigest()
@@ -53,7 +53,11 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
             resolved=static_root/"daily-update/app.js"
         elif target.startswith("/v4/assets/"):
             name=Path(target).name
-            resolved=static_root/"core-product-r1"/name
+            resolved=static_root/"research"/name
+        elif target=="/v4/workbench.js":
+            resolved=static_root/"v4-workbench.js"
+        elif target=="/v4/shadow.js":
+            resolved=static_root/"shadow-v4.js"
         else:
             resolved=(static_root/Path(caller).parent.relative_to("src/workbench_service/static")/target.lstrip("/")).resolve(strict=False)
         if not resolved.is_relative_to(static_root.resolve()): return "UNTRUSTED_PATH_TRAVERSAL","P1",str(resolved),None,None,False
@@ -70,7 +74,10 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
         if not resolved.is_relative_to(root): return "ABSOLUTE_STALE_ROOT","P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/","data/v4/V4_")) else "P2",str(resolved),None,None,False
     else:
         ui_caller=caller.startswith(("frontend/","web/","ui/","client/")) or caller.startswith("src/workbench_service/static/") and Path(caller).suffix.lower() in {".html", ".css"}
-        base=(root/Path(caller).parent) if target.startswith(("./","../")) or ui_caller else root
+        if caller.startswith(("src/workbench_service/static/r43-compat/","src/workbench_service/static/r43-control-v2/")) and target.startswith("./"):
+            base=static_root/"research"
+        else:
+            base=(root/Path(caller).parent) if target.startswith(("./","../")) or ui_caller else root
         resolved=(base/candidate).resolve(strict=False)
         if not resolved.is_relative_to(root): return "UNTRUSTED_PATH_TRAVERSAL","P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/")) else "P2",str(resolved),None,None,False
     exists=resolved.is_file()
@@ -179,8 +186,8 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                                 risk="ACTUAL_MISMATCH";priority="P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/","data/v4/V4_")) else "P2"
                             else:risk="KNOWN_VALID_CURRENT_REFERENCE";priority="INFO"
             except (OSError,UnicodeDecodeError): pass
-        if purpose=="browser-generated download filename":
-            risk,priority,resolved,actual_sha,actual_bytes,exists="OUTPUT_FILENAME_ONLY","INFO",None,None,None,None
+        if purpose in {"browser-generated download filename", "runtime output path"}:
+            risk,priority,resolved,actual_sha,actual_bytes,exists="OUTPUT_PATH_DECLARATION","INFO",None,None,None,None
         origin=None; identity=None; archive_path=None; archive_sha=None; archive_bytes=None; archive_ok=False
         row=historical_rows.get((target,expected_sha)) if historical=="HISTORICAL" and target and expected_sha else None
         if row:
@@ -277,7 +284,9 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                     value=_const_string(arg)
                     if name in {"subprocess.run","subprocess.Popen","subprocess.check_call","subprocess.check_output"} and isinstance(arg,ast.List) and arg.elts: value=_const_string(arg.elts[0])
                     if value and (Path(value).suffix.lower() in NONCONFIG_EXTS or "/" in value or "\\" in value):
-                        emit(rel,node.lineno,name,_entry(rel),"STATIC",value,"source literal/command argument","file read or executable invocation")
+                        mode=next((_const_string(arg) for arg in node.args[1:2]),None) if name=="open" else None
+                        output=name in {"Path.write_bytes","Path.write_text","write_bytes","write_text"} or bool(mode and any(c in mode for c in "wax"))
+                        emit(rel,node.lineno,name,_entry(rel),"STATIC",value,"source literal/command argument","runtime output path" if output else "file read or executable invocation")
                     elif not value:
                         emit(rel,node.lineno,name,_entry(rel),"DYNAMIC",None,"runtime argument/environment/database/glob","file operation target unresolved")
         # Other code/document formats: file-valued UI attributes and command/path literals.
@@ -285,10 +294,12 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
             text=raw.decode("utf-8-sig","replace")
             for line_no,line in enumerate(text.splitlines(),1):
                 if len(line)>5000: continue
+                if ext in {".js",".mjs",".cjs",".ts",".tsx",".jsx"} and not re.search(r"\b(?:fetch|import|require|src|href|download|screenshot|writeFile|createWriteStream)\b|\burl\s*\(",line,re.I): continue
                 for match in LITERAL_PATH_RE.finditer(line):
                     target=match.group(0).rstrip(".,;:)")
-                    output_name=bool(re.search(r"\bdownload\s*=|\.download\s*=",line))
-                    emit(rel,line_no,"path_literal",_entry(rel),"STATIC",target,"source/UI/SQL/shell literal","browser-generated download filename" if output_name else "external file or asset path literal")
+                    output_name=bool(re.search(r"\bdownload\s*=|\.download\s*=|screenshot|writeFile|createWriteStream",line,re.I))
+                    runner_output=rel.startswith(".github/workflows/") and ("--output" in line or "runner.temp" in line)
+                    emit(rel,line_no,"path_literal",_entry(rel),"STATIC",target,"source/UI/SQL/shell literal","browser-generated download filename" if output_name else "runtime output path" if runner_output else "external file or asset path literal")
                 if ext in {".js",".mjs",".ts",".tsx",".jsx",".html"} and re.search(r"\b(?:fetch|import|require)\s*\([^)]*(?:\+|\$\{|\bprocess\.env\b)",line):
                     emit(rel,line_no,"dynamic_asset_or_fetch",_entry(rel),"DYNAMIC",None,"runtime/UI loader","dynamic frontend asset or request path")
     if spool_handle: spool_handle.close()

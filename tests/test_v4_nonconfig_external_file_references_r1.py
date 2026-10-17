@@ -81,7 +81,19 @@ def test_frontend_relative_assets_api_routes_and_download_names_are_not_false_mi
     name = next(x for x in result["reference_edges"] if x["literal_or_resolved_target"] == "export.csv")
     assert rel["risk_type"] == "KNOWN_VALID_CURRENT_REFERENCE" and rel["actual_sha256"] == audit._sha((root / "src/ui/chunk.js").read_bytes())
     assert api["risk_type"] == "API_ROUTE_NOT_LOCAL_FILE"
-    assert name["risk_type"] == "OUTPUT_FILENAME_ONLY"
+    assert name["risk_type"] == "OUTPUT_PATH_DECLARATION"
     css = next(x for x in result["reference_edges"] if x["literal_or_resolved_target"] == "/v2/styles.css")
     alias = next(x for x in result["reference_edges"] if x["literal_or_resolved_target"] == "/v4/daily-update.js")
     assert css["risk_type"] == alias["risk_type"] == "KNOWN_VALID_CURRENT_REFERENCE"
+
+
+def test_runtime_writes_are_output_paths_not_missing_inputs(tmp_path):
+    root = tmp_path
+    _git(root, "init", "-q")
+    (root / "src").mkdir()
+    (root / "src/writer.py").write_text("open('generated.csv', 'w').write('x')\n", encoding="utf-8")
+    _git(root, "add", ".")
+    _commit(root)
+    result = audit.scan_repository(root)
+    output = next(x for x in result["reference_edges"] if x["literal_or_resolved_target"] == "generated.csv")
+    assert output["risk_type"] == "OUTPUT_PATH_DECLARATION" and output["priority"] == "INFO"

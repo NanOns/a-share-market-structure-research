@@ -1,0 +1,39 @@
+{
+  "accepted_candidate_commit": "e19bd4f376d9e47ae14610ad5c93247f3513c4bd",
+  "capabilities": {
+    "MARKET_REFERENCE": "PASS",
+    "MARKET_REGIME": "PASS",
+    "RELATIVE_RPS": "PASS",
+    "SECTOR_NATIVE": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+    "STOCK_CORE": "PASS"
+  },
+  "contract_id": "V4_03_ACCEPTED_HEAD_V1",
+  "final_stage_receipt": {
+    "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+    "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+  },
+  "incremental_update": "DEFERRED_NON_BLOCKING",
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-03",
+  "status": "PASS_WITH_SECTOR_SCOPE_DEGRADED",
+  "upstream_identities": {
+    "v4_01_identity_map": {
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "v4_01_universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "v4_02_accepted_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_02_manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    }
+  },
+  "v4_04_stock_core_authorization": "AUTHORIZED",
+  "v4_08_sector": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP"
+}

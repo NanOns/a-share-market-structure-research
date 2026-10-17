@@ -16600,6 +16600,24 @@
         "p1_formally_remaining": 266,
         "status": "SQL_SCHEMA_COMPATIBILITY_CHECKED_AGAINST_REPOSITORY_MIGRATION_CHAIN; LIVE_CATALOG_AND_APPROVAL_LIFECYCLE_ACCEPTANCE_OPEN.",
         "next": "Continue real daily Owner/Head call chains and remaining exact business consumers; retain all 266 formal P1 items until live readback and inventory reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-contract-registry-readonly-catalog-preflight-r13",
+        "files": [
+          "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_PREFLIGHT_READONLY_20261017.sql",
+          "tests/test_v4_contract_registry_pg_v1.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R13.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Added a repeatable-read, read-only PostgreSQL preflight for canonical publication/namespace columns, built-in sha256, registry object presence, reader permissions and publication status counts.",
+          "The preflight does not select contract bytes and tolerates registry objects being absent before migration; no live query was run."
+        ],
+        "verification": "Registry preflight static contract test and focused registry/publication/BFF suites passed; no live PostgreSQL connection.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "READONLY_CATALOG_PROBE_READY_NOT_EXECUTED; no baseline callsite is closed.",
+        "next": "Continue DM-01 state and daily Owner source mapping code; execute this catalog probe only when the compliant reader DSN is configured."
       }
     ]
   }

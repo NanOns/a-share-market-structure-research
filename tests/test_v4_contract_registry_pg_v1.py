@@ -134,6 +134,22 @@ def test_approval_event_selection_is_historical_and_revocation_aware():
     assert 'action != "APPROVED"' in reader
 
 
+def test_registry_catalog_preflight_is_repeatable_read_and_select_only():
+    import re
+    from pathlib import Path
+
+    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_PREFLIGHT_READONLY_20261017.sql").read_text(encoding="utf-8")
+    statements = re.sub(r"--[^\n]*", "", sql)
+    statements = [part.strip().upper() for part in statements.split(";") if part.strip()]
+    assert statements[0] == "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"
+    assert statements[-1] == "COMMIT"
+    assert all(statement.startswith(("SELECT ", "WITH ")) for statement in statements[1:-1])
+    assert "TO_REGPROCEDURE('SHA256(BYTEA)')" in sql.upper()
+    assert "PUBLICATION_BINDINGS_COLUMN_EXISTS" in sql.upper()
+    assert "PUBLICATIONS_INSERT" in sql.upper()
+    assert "APPROVAL_EVENTS_SELECT" in sql.upper()
+
+
 def test_registry_rollback_refuses_to_discard_history_or_bound_publications():
     from pathlib import Path
 

@@ -10,23 +10,34 @@ from workbench_analysis.operational_baostock_client_v1 import BaoStockClient
 from workbench_analysis.baostock_daily_update_source import DAILY_METHOD, FACTOR_METHOD, _validate_daily_rows, _validate_factor_rows
 from workbench_analysis.baostock_runtime_acceptance import build_runtime_acceptance_manifest
 from workbench_analysis.daily_data_head import write_json_atomic
-from workbench_analysis.dm01_runtime_r4 import calendar
 from workbench_analysis.source_readiness_v2 import source_readiness
 from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
-from common.paths import resolve_baostock_download_root, resolve_baostock_request_ledger, resolve_tdx_root
+from workbench_analysis.market_source_acquisition import official_sessions
+from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
+from common.paths import (resolve_baostock_cache_root, resolve_baostock_download_root,
+                          resolve_baostock_request_ledger, resolve_tdx_root)
+
+
+def runtime_acceptance_cache_dir(root, target):
+    """Use the configured project cache for bounded ingress evidence."""
+    return resolve_baostock_cache_root(root)/'baostock'/target.replace('-','')/'runtime_acceptance'
 
 
 def accept_runtime(target, root=ROOT):
     root=Path(root);now=datetime.now(SHANGHAI)
-    if target not in calendar(root)['session_dates']:
+    try:
+        sessions=official_sessions(root)
+    except (OSError,RuntimeError,ValueError) as exc:
+        return dict(status='BLOCKED',reason='OFFICIAL_SESSION_NOT_VERIFIED',detail=str(exc)[:120])
+    if target not in sessions:
         return dict(status='BLOCKED',reason='OFFICIAL_SESSION_NOT_VERIFIED')
     if not source_readiness(target,now)['time_eligible']:
         return dict(status='WAIT_BAOSTOCK_FACTOR',reason='TIME_GATE_NOT_REACHED')
     tdx_root=resolve_tdx_root(root)
     runtime=package_metadata()
-    schema_contract=json.loads((root/'config/baostock_dm01_sdk_schema_adapter_v2.json').read_bytes())
-    folder=root/'reports'/'v4_baostock'/'runtime_acceptance'/target.replace('-','')
+    schema_contract=_daily_runtime_contract('BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2','2.0.0',version_field='version')
+    folder=runtime_acceptance_cache_dir(root,target)
     download_root=resolve_baostock_download_root(root)
     try:
         download_root.relative_to(root.resolve())

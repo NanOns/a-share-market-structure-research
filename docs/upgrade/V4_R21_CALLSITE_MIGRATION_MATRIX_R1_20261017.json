@@ -18,8 +18,8 @@
     "migration_open": 233,
     "statuses": {
       "OPEN": 225,
-      "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 33
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 33,
+      "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
     "code_level_pg_read_paths_implemented": 33,
     "remaining_open_or_ingress": 233,
@@ -43,7 +43,7 @@
       "reference_entrypoints": [],
       "reference_risk_types": [],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+      "migration_status": "OPEN",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -1193,23 +1193,13 @@
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_predecessor_pg_v1 Head-bound predecessor_head fact",
-        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
+        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
+        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_predecessor_head; producer integration, live Reader identity/readback and exact inventory reconciliation remain open.",
+      "blocker": "No per-callsite migration evidence recorded yet.",
       "baseline_function": "validate",
-      "migration_evidence": {
-        "batch_id": "R21-R4-predecessor-head-pg-reader-r45",
-        "document": "predecessor Head",
-        "implemented_code": "OperationalSuccessorV1.validate now routes an embedded native_predecessor_head through v4_operational_predecessor_pg_v1.read_predecessor. The PG route binds accepted T0, fact key, exact descriptor and unchanged source binding; it does not reopen the source artifact.",
-        "test_evidence": [
-          "test_pg_predecessor_read_uses_bound_owner_reader_without_file_fallback",
-          "test_pg_predecessor_rejects_source_binding_change_before_read",
-          "test_prepare_binds_exact_legacy_head_as_migration_ingress"
-        ],
-        "formal_status": "OPEN"
-      },
+      "migration_evidence": null,
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0159740",
@@ -6328,20 +6318,30 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_predecessor_pg_v1 Head-bound predecessor_head fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_predecessor_head; producer integration, live Reader identity/readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-predecessor-head-pg-reader-r45",
+        "document": "predecessor Head",
+        "implemented_code": "OperationalSuccessorV1.validate now routes an embedded native_predecessor_head through v4_operational_predecessor_pg_v1.read_predecessor. The PG route binds accepted T0, fact key, exact descriptor and unchanged source binding; it does not reopen the source artifact.",
+        "test_evidence": [
+          "test_pg_predecessor_read_uses_bound_owner_reader_without_file_fallback",
+          "test_pg_predecessor_rejects_source_binding_change_before_read",
+          "test_prepare_binds_exact_legacy_head_as_migration_ingress"
+        ],
+        "formal_status": "OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160134",

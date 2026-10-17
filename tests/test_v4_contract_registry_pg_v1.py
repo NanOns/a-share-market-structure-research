@@ -94,6 +94,18 @@ def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance(
     assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in sql
 
 
+def test_registry_rollback_refuses_to_discard_history_or_bound_publications():
+    from pathlib import Path
+
+    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_ROLLBACK_DRAFT_20261017.sql").read_text(encoding="utf-8")
+    assert "V4_CONTRACT_REGISTRY_ROLLBACK_REFUSED_DATA_PRESENT" in sql
+    assert "FROM v4.contract_versions" in sql
+    assert "FROM v4.contract_approval_events" in sql
+    assert "contract_bindings IS NOT NULL" in sql
+    assert "DROP TABLE v4.contract_approval_events" in sql
+    assert "DROP TABLE v4.contract_versions" in sql
+
+
 @pytest.mark.parametrize("action,source_digest", [("REVOKED", "a" * 64), ("APPROVED", "0" * 64)])
 def test_latest_approval_event_must_be_approved_and_bind_exact_source_digest(action, source_digest):
     raw = b'{"rule":"event state"}'

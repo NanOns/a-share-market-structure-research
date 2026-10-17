@@ -16505,8 +16505,25 @@
         "p1_formally_remaining": 266,
         "status": "PATH_CODE_WIRED; external-ingress/PG-acceptance rows remain open.",
         "next": "Migrate another exact BFF/Owner or other-business consumer to existing publication-bound PG APIs."
+      },
+      {
+        "batch_id": "R21-R4-contract-registry-rollback-r9",
+        "files": [
+          "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_ROLLBACK_DRAFT_20261017.sql",
+          "tests/test_v4_contract_registry_pg_v1.py"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Added a forward-compatible rollback draft guarded against any contract version, approval event or publication contract binding.",
+          "Existing approved versions and revocations remain append-only; rollback refuses to drop history or bound publications.",
+          "No schema writes or live database read occurred."
+        ],
+        "verification": "66 focused contract registry, PG publication and BFF candidate tests passed; PostgreSQL parser accepted forward draft (17 statements) and guarded rollback (19 statements); diff check passed.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "SQL_ROLLBACK_DRAFT_AND_OFFLINE_TESTED; live catalog compatibility remains open.",
+        "next": "Continue exact PG business consumers and complete contract approval/revocation lifecycle verification against the verified schema."
       }
     ]
   }
 }
-

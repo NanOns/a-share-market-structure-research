@@ -313,12 +313,18 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     from .producer_bootstrap_v1 import produce_daily_state, produce_daily_sector, optional_step
     result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,binding),
                 sector_operational_candidate=optional_step(produce_daily_sector,root,day,binding))
-    from .producer_bootstrap_v1 import build_review_and_display_candidates
+    if context.get('exact_daily_policy'):
+        from .producer_candidate_index_pg_v1 import build_review_and_display_candidates
+    else:
+        from .producer_bootstrap_v1 import build_review_and_display_candidates
     result=dict(result,producer_review_candidates=optional_step(build_review_and_display_candidates,root,day,binding,
             result.get('first_capture_source_candidate',{})))
     if context.get('exact_daily_policy'):
         from workbench_db.v4_membership_reference_pg_v1 import prepare_research
-        index=json.loads((root/'data/v4/producer_candidate_index_v2.json').read_bytes())
+        review=result.get('producer_review_candidates',{})
+        index=(review.get('candidate') or {}).get('index_document')
+        if not isinstance(index,dict) or index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or day not in index.get('sessions',{}):
+            raise ValueError('NATIVE_RESEARCH_INDEX_PRODUCER_PG_INPUT_REQUIRED')
         reference_receipt=prepare_research(root,candidate,binding,index)
         atomic_json(root,context['folder']/'NATIVE_RESEARCH_REFERENCE_PREPARATION_V1.json',reference_receipt)
         candidate_path=context['folder']/'NATIVE_RESEARCH_SUCCESSOR_CANDIDATE.json'

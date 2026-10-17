@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 219,
+    "migration_open": 218,
     "statuses": {
-      "OPEN": 211,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 47,
+      "OPEN": 210,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 47,
-    "remaining_open_or_ingress": 219,
+    "code_level_pg_read_paths_implemented": 48,
+    "remaining_open_or_ingress": 218,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -3756,24 +3756,33 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "Accepted operational Head plus dated Owner identity/lifecycle relations in PG; exact normalized identities must be bound to the requested trade date before source validation",
-        "status": "RELATION_MAPPING_REQUIRED_NO_EQUIVALENT_OWNER_RELATION_VERIFIED"
+        "candidate": "v4_membership_reference_pg_v1.prepare_research / research_authority",
+        "status": "PG_PRODUCER_AND_EXECUTOR_CHAIN_IMPLEMENTED_PENDING_LIVE_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "derive_ready_sources still reads data/v4/producer_candidate_index_v2.json before prepare_research. The exact-dated PG authority stores an index entry only after this input is supplied; no pre-read PG source for the active day index has been verified. Migrate the index producer/reader as one chain before changing this row.",
+      "blocker": "The exact-daily producer and executor now pass the freshly built T0 index document directly to the existing PG Owner preparation; the file is no longer read in derive_ready_sources. Live PG write/readback and accepted same-T0 current Head reconciliation remain unavailable; formal row stays open.",
       "baseline_function": "derive_ready_sources",
       "migration_evidence": {
-        "batch_id": "R21-R4-matrix-source-audit-r57",
-        "implemented_code": "No PG migration credited for this exact row. The R55 PG reference stores the index entry downstream in the candidate Owner authority; derive_ready_sources still reads the local index to supply prepare_research.",
+        "batch_id": "R21-R4-candidate-index-producer-to-pg-owner-r61",
+        "implemented_code": "For exact-daily candidates, operational_daily_executor_v1 selects producer_candidate_index_pg_v1 to build a current-T0-only in-memory index and passes it directly to prepare_research. That PG path does not read producer_candidate_index_v2.json. The existing non-exact/historical producer path remains unchanged.",
+        "test_evidence": [
+          "test_exact_daily_index_producer_passes_fresh_document_without_reading_file",
+          "test_executor_exact_daily_branch_consumes_producer_document_without_file_read",
+          "test_v4_native_research_reference.py",
+          "test_producer_continuation_r2.py",
+          "test_operational_daily_executor_v1.py",
+          "test_pre_next_t0_executor_chain.py"
+        ],
         "formal_status": "OPEN",
-        "verification": "Exact caller and data-flow audit of operational_daily_executor_v1.derive_ready_sources and v4_membership_reference_pg_v1.prepare_research; no live PG read or write."
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "pg_write": "NOT_RUN_NO_WRITE_AUTHORIZATION"
       },
       "reference_evidence": [
         {
@@ -17615,6 +17624,27 @@
         },
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "next": "Continue the remaining 23 other-business reads (plus one ingress adapter), then continue Owner reads and DM-01 PG state; verify registered runtime contract identity on approved PG Reader."
+      },
+      {
+        "batch_id": "R21-R4-candidate-index-producer-to-pg-owner-r61",
+        "files": [
+          "src/workbench_analysis/producer_candidate_index_pg_v1.py",
+          "src/workbench_analysis/operational_daily_executor_v1.py",
+          "tests/test_v4_r21_candidate_index_producer_pg.py",
+          ".github/workflows/repository-policy.yml"
+        ],
+        "evidence": [
+          "The exact-daily executor selects the PG-specific producer to build the dated candidate index document in memory and hand it directly to the existing PG Owner preparation path. It does not merge file-backed historical sessions or read back producer_candidate_index_v2.json. Non-exact/historical candidate production remains unchanged.",
+          "The existing PG BFF reads the accepted candidate index entry from the resulting Head-bound PG authority; no local fallback is introduced for exact-daily current T0."
+        ],
+        "verification": "28 focused producer/reference/executor regressions passed; consolidated repository-policy selection passed 278 tests. Push/PR CI pending. No live PG write/readback or accepted Head update.",
+        "baseline_callsite_ids": [
+          "V4-BCA-R2-251b6859286f1bec50bc"
+        ],
+        "formal_p1_closed": 0,
+        "formal_p1_remaining": 266,
+        "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "next": "Continue the remaining 210 OPEN and 8 ingress rows, especially correct operational Head ownership, DM-01 lifecycle/source state, and other current business contracts."
       }
     ]
   }

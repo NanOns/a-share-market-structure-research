@@ -38,18 +38,18 @@ def prepare(root,head_token,day,domain,source_binding,rows):
     return inline_descriptor(root,binding)
 
 def inline_descriptor(root,binding):
-    """Attach the immutable PG locator during publication, for file-free readers."""
-    from workbench_analysis.r43_owner_replay import checked
-    path=checked(root,binding)
-    raw=path.read_bytes()
-    descriptor=json.loads(raw)
-    if canonical(descriptor)!=raw:
+    """Bind the PG-returned descriptor inline without opening a local file."""
+    descriptor=binding.get('pg_descriptor') if isinstance(binding,dict) else None
+    if not isinstance(descriptor,dict):
+        raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_INLINE_REQUIRED_NO_FILE_FALLBACK')
+    raw=canonical(descriptor)
+    if digest(raw)!=binding.get('sha256') or len(raw)!=binding.get('bytes'):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_CANONICAL_REQUIRED')
     if (descriptor.get('contract_id'),descriptor.get('engine'))!=(CONTRACT,'postgresql'):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED')
     if descriptor.get('payload_sha256') is None or descriptor.get('database_identity') is None:
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_IDENTITY_REQUIRED')
-    return dict(binding,pg_descriptor=descriptor)
+    return dict(binding)
 
 def append_authority_manifest(root,authority):
     """Store business authority in PG and return its Head-embeddable locator."""

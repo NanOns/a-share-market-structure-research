@@ -2,9 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
-import os
 import re
-import uuid
 from .v4_native import connection, create_schema, configured_dsn, configured_reader_dsn, workspace_schema
 
 CONTRACT = 'V4_FORWARD_PG_FACT_STORE_R1'
@@ -68,22 +66,11 @@ class ForwardFactStore:
         descriptor = dict(contract_id=CONTRACT, engine='postgresql', database_identity=self.database_identity, schema=self.schema, kind=kind, fact_key=key, payload_sha256=payload_digest)
         path = self.folder / kind / (digest(str(key).encode()) + '.pg.json')
         raw = canonical(descriptor)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        if path.exists():
-            if path.read_bytes() != raw:
-                raise ValueError('FORWARD_DESCRIPTOR_IDENTITY_CONFLICT')
-        else:
-            temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
-            try:
-                temporary.write_bytes(raw)
-                try:
-                    os.link(temporary, path)
-                except FileExistsError:
-                    if path.read_bytes() != raw:
-                        raise ValueError('FORWARD_DESCRIPTOR_IDENTITY_CONFLICT')
-            finally:
-                temporary.unlink(missing_ok=True)
-        return dict(path=path.relative_to(self.root).as_posix(), sha256=digest(raw), bytes=len(raw))
+        # The locator is descriptive only. The exact PG descriptor travels
+        # inline with its Head-bound binding; no local descriptor file is
+        # created or consulted by a consumer.
+        return dict(path=path.relative_to(self.root).as_posix(), sha256=digest(raw),
+                    bytes=len(raw), pg_descriptor=descriptor)
 
     def append(self, kind, key, value, *, migration_timeout_seconds=30):
         if type(migration_timeout_seconds) is not int or not 30<=migration_timeout_seconds<=120:
@@ -107,14 +94,38 @@ class ForwardFactStore:
     def read(self, binding):
         path = (self.root / binding['path']).resolve()
         if not path.is_relative_to(self.folder):
-            # A bound immutable input is source evidence, not a Forward store.
-            from focus_tracker.v4_path_adapter import checked
-            return json.loads(checked(self.root, binding).read_bytes())
+            # External historical/source bytes are resolved from the shared
+            # PG ingress store after their one-time exact-source admission.
+            from .v4_historical_source_ingress_pg_r1 import read_bound
+            source = read_bound(self.root, binding['path'], binding['sha256'])
+            if len(source['raw']) != binding.get('bytes', len(source['raw'])):
+                raise ValueError('FORWARD_SOURCE_INGRESS_SIZE_MISMATCH')
+            return json.loads(source['raw'])
         if path.name.endswith('.pg.json'):
-            raw = path.read_bytes()
-            if digest(raw) != binding['sha256']:
+            descriptor = binding.get('pg_descriptor')
+            if descriptor is None:
+                # Legacy Head bindings may omit the inline locator. Resolve
+                # their exact descriptor from PG rows, never from disk.
+                kind = path.parent.name
+                with connection(self.schema, dsn=configured_reader_dsn(), read_only=True) as pg:
+                    rows = pg.execute('SELECT fact_key,payload_sha256 FROM forward_facts WHERE kind=%s',
+                                      (kind,)).fetchall()
+                matches = []
+                for fact_key, payload_sha in rows:
+                    candidate = dict(contract_id=CONTRACT, engine='postgresql',
+                        database_identity=self.database_identity, schema=self.schema,
+                        kind=kind, fact_key=fact_key, payload_sha256=payload_sha)
+                    raw_candidate = canonical(candidate)
+                    candidate_path = self.folder / kind / (digest(str(fact_key).encode()) + '.pg.json')
+                    if (candidate_path == path and digest(raw_candidate) == binding.get('sha256')
+                            and len(raw_candidate) == binding.get('bytes')):
+                        matches.append(candidate)
+                if len(matches) != 1:
+                    raise ValueError('FORWARD_INLINE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
+                descriptor = matches[0]
+            raw = canonical(descriptor)
+            if digest(raw) != binding.get('sha256') or len(raw) != binding.get('bytes'):
                 raise ValueError('FORWARD_DESCRIPTOR_DIGEST_MISMATCH')
-            descriptor = json.loads(raw)
             if descriptor.get('contract_id') != CONTRACT or descriptor.get('schema') != self.schema or descriptor.get('engine') != 'postgresql' or descriptor.get('database_identity') != self.database_identity:
                 raise ValueError('FORWARD_DESCRIPTOR_IDENTITY_MISMATCH')
             kind, key, expected = descriptor['kind'], descriptor['fact_key'], descriptor['payload_sha256']

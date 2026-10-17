@@ -23,6 +23,8 @@
 
 续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器。`research_bff.py` 新增 `/api/v4/candidates/cohort` 的 PG snapshot 只读路由，复用同一个 Forward projection，明确关闭生产接受、正式入组和 PIT 资格。
 
+2026-10-18 继续实修 Owner descriptor：`ForwardFactStore._binding()` 将数据库身份、schema、kind、fact key 和 payload digest 以内嵌 `pg_descriptor` 返回，不再写本地 `.pg.json` descriptor 文件；`ForwardFactStore.read()` 使用内嵌 descriptor，兼容旧 Head 时通过 PG `forward_facts` 精确解析，外部历史 binding 经 exact-digest PG ingress 读取。`v4_operational_owner_pg_closeout.inline_descriptor()` 只验证 PG 返回的 inline descriptor，不再打开本地 descriptor 路径。实际 `market_research` 只读事务验证读回 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1`，数据库 OID 646711，inline descriptor 存在，payload 字节数读回一致；读事务保持 PostgreSQL `READ ONLY`。
+
 2026-10-18 继续实修：新增 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1`，将确切路径和字节摘要绑定的历史业务输入固化到同一个 `market_research` PostgreSQL 的 append-only Forward fact store，并提供 PG-only 后续读取及 G 盘临时物化。已从现有 V4 绑定图导入并读回 **643 条**来源事实（Forward facts 表约 **38.3 MB**）；没有导入或切换 Accepted publication/Head。稳定来源 ID 使用规范相对路径 SHA-256，运行消费者不再内嵌 evidence/report 路径。
 
 续作增量实修：Operational Owner 对旧 Head 直接绑定的 source payload 增加 `PG ingress → 精确字节解析 → 新 Head-bound PG Owner fact` 迁移路径；历史 Owner authority 文件缺失时，以旧 Head 的日期/Owner 精确 binding 作为一次性 source selector，不再要求该 authority JSON 存在。`v4_operational_owner_pg_closeout.py` predecessor 入口也改为从 PG ingress 读，不再另开本地读取口。DM-01 stage-state 复用既有历史 ingress Forward facts schema，避免新增未预置的 workspace schema；对应已有共享表增加路径+摘要与 source ID 索引。两索引在 `market_research` 实例 `v4_forward_213e535c50ad7135` 创建并读回；Stage authority 的 12 项 PG 绑定读取由约 29 秒降至约 2.9 秒。现存 `data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json`、其 predecessor archive 和已删除的 Owner authority 文件路径尚无历史 ingress 行；当前代码会在合法 source ingress 时固化前两者，缺失文件不被伪造。
@@ -71,7 +73,7 @@
 - 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。冻结矩阵原始计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；冻结摘要出现 53/10/203 的一项分类差异，本轮未改分母。只按原矩阵与本分支源码路径做 delta，发现 **66 个稳定 ID 的主 source_file 落在本分支已改路径**（冻结状态分布：40 PG-only pending、6 ingress open、20 OPEN）；“路径被改”不代表这 66 项都迁移或关闭，未逐 ID 精确核销者仍全部保持未关闭。活跃残留包括 `v4_operational_owner_authority_v2.py` / `v4_operational_owner_pg_closeout.py` 中历史 Head/authority 初次导入边界、`operational_successor_release_v1.py` 对 Operational Research Head 的文件 CAS/恢复、`v4_current_stage_authority.py` 的冻结 Stage/Head 读取，以及 Owner/Head/Publication 缺正式 PG accepted row 导致的下游阻断。非 V4 引用只登记。
 - 7 份导入合同均为 DRAFT，没有批准事件；publication/head 表仍为空。不得将其称为正式接受或 Head 切换。
 - 仍需单独授权：正式 Head CAS/切换、生产 28765 部署、物理删除及 Git 强推/历史重写。正常提交和推送不包含上述操作。
-- GitHub Issue/PR 状态更新连接器此前返回 HTTP 403，本轮不通过 GitHub CLI 绕过。
+- GitHub Issue body 和 Draft PR Conversation 写入连接器在本轮最终摘要更新时均返回 HTTP 403 `Resource not accessible by integration`；未用 GitHub CLI 绕过。只读 fetch 可用。
 
 稳定 ID 对照说明：现有冻结 inventory 中 **85 条**记录的 `source_file` 出现在从 `4a69c4c` 到当前 HEAD 的改动路径中；此数字不是修复数或关闭数。实际代码修复按上列 10 组和本报告具体改动描述统计，稳定 ID 正式关闭仍为 0/266；未逐条完成语义证据核销的记录均保持未关闭。
 

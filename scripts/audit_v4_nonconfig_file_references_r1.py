@@ -1,7 +1,7 @@
 """V4_NONCONFIG_EXTERNAL_FILE_REFERENCE_AUDIT_R1: read-only Git-tracked file reference inventory."""
 from __future__ import annotations
 import argparse, ast, hashlib, json, os, re, subprocess, sys
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 CONTRACT_ID = "V4_NONCONFIG_EXTERNAL_FILE_REFERENCE_AUDIT_R1"
@@ -66,6 +66,11 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
         raw=resolved.read_bytes()
         if expected_sha and (_sha(raw)!=expected_sha or expected_bytes is not None and len(raw)!=expected_bytes): return "ACTUAL_MISMATCH","P1",str(resolved),_sha(raw),len(raw),True
         return "KNOWN_VALID_CURRENT_REFERENCE","INFO",str(resolved),_sha(raw),len(raw),True
+    # Windows drive-rooted literals remain absolute/stale when the audit runs
+    # on Linux CI. pathlib.Path on POSIX treats ``E:/...`` as a relative name.
+    if PureWindowsPath(target).is_absolute() and os.name != "nt":
+        priority="P2" if historical_tool or caller in {"scripts/v4_closeout_v41011_sql_fixture.py","scripts/workbench_tray.ps1"} else "P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/","data/v4/V4_")) else "P2"
+        return "ABSOLUTE_STALE_ROOT",priority,target,None,None,False
     candidate=Path(target)
     candidate=Path(target)
     if not candidate.is_absolute() and "/" not in target and "\\" not in target and candidate.suffix.lower() in {".exe", ".com", ".bat", ".cmd"}:

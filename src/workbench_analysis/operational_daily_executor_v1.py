@@ -129,8 +129,8 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     now=datetime.now(timezone.utc)
     time_check=source_readiness(day,now)
     if not time_check['time_eligible']:return time_check
-    snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
-    from common.paths import resolve_tdx_root
+    from common.paths import resolve_tdx_root, resolve_tdx_snapshot_root
+    snapshot=resolve_tdx_snapshot_root(root)
     tdx_root=resolve_tdx_root(root)
     package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root)
     if not package.get('download'):

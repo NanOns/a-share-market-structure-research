@@ -1,11 +1,32 @@
 from pathlib import Path
-from common.paths import resolve_tdx_root
+from common.paths import resolve_configured_path, resolve_tdx_root, configured_path_source
 
-def test_configured_tdx_root_has_priority_over_environment(tmp_path,monkeypatch):
-    configured=tmp_path/"configured";configured.mkdir();fallback=tmp_path/"environment";fallback.mkdir()
+def test_environment_tdx_root_overrides_config(tmp_path,monkeypatch):
+    configured=tmp_path/"configured";configured.mkdir();environment=tmp_path/"environment";environment.mkdir()
     (tmp_path/"config").mkdir();(tmp_path/"config/paths.yaml").write_text(f'tdx:\n  root: "{configured.as_posix()}"\n',encoding="utf8")
-    monkeypatch.setenv("TDX_ROOT",str(fallback))
-    assert resolve_tdx_root(tmp_path)==configured.resolve()
+    monkeypatch.setenv("TDX_ROOT",str(environment))
+    assert resolve_tdx_root(tmp_path)==environment.resolve()
+
+def test_explicit_tdx_root_overrides_environment_and_config(tmp_path,monkeypatch):
+    configured=tmp_path/"configured";configured.mkdir();environment=tmp_path/"environment";environment.mkdir();explicit=tmp_path/"explicit";explicit.mkdir()
+    (tmp_path/"config").mkdir();(tmp_path/"config/paths.yaml").write_text(f'tdx:\n  source_root: "{configured.as_posix()}"\n',encoding="utf8")
+    monkeypatch.setenv("TDX_ROOT",str(environment))
+    assert resolve_tdx_root(tmp_path,explicit)==explicit.resolve()
+
+def test_configured_market_data_paths_use_environment_then_yaml(tmp_path,monkeypatch):
+    configured=tmp_path/"yaml-download";environment=tmp_path/"env-download";explicit=tmp_path/"explicit-download"
+    (tmp_path/"config").mkdir()
+    (tmp_path/"config/paths.yaml").write_text(f"tdx:\n  daily_download_root: '{configured.as_posix()}'\n",encoding="utf8")
+    monkeypatch.delenv("TDX_DAILY_DOWNLOAD_ROOT",raising=False)
+    assert resolve_configured_path(tmp_path,"tdx.daily_download_root")==configured.resolve()
+    monkeypatch.setenv("TDX_DAILY_DOWNLOAD_ROOT",str(environment))
+    assert resolve_configured_path(tmp_path,"tdx.daily_download_root")==environment.resolve()
+    assert configured_path_source(tmp_path,"tdx.daily_download_root")=="ENVIRONMENT:TDX_DAILY_DOWNLOAD_ROOT"
+    assert resolve_configured_path(tmp_path,"tdx.daily_download_root",explicit=explicit)==explicit.resolve()
+
+def test_missing_optional_ingest_path_is_not_invented(tmp_path,monkeypatch):
+    monkeypatch.delenv("V4_INGEST_TEMP_ROOT",raising=False)
+    assert resolve_configured_path(tmp_path,"ingest.temp_root",required=False) is None
 
 def test_environment_is_used_when_config_has_no_root(tmp_path,monkeypatch):
     candidate=tmp_path/"environment";candidate.mkdir();monkeypatch.setenv("TDX_ROOT",str(candidate))

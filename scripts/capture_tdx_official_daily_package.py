@@ -16,14 +16,17 @@ from workbench_analysis.tdx_official_daily_source import capture_tdx_official_da
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capture the official TDX daily page and validated package if published.")
     parser.add_argument("--target-date", default=datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat())
-    parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
+    parser.add_argument("--snapshot-root", type=Path, default=None,
+                        help="Override TDX_SNAPSHOT_ROOT/config/paths.yaml")
+    parser.add_argument("--daily-download-root", type=Path, default=None,
+                        help="Override TDX_DAILY_DOWNLOAD_ROOT/config/paths.yaml")
     parser.add_argument("--timeout", type=int, default=30)
     args = parser.parse_args()
     try:
         result = capture_tdx_official_daily_package(
             target_date=args.target_date,
             snapshot_root=args.snapshot_root,
-            tdx_root=Path("D:/new_tdx"),
+            daily_download_root=args.daily_download_root,
             timeout=args.timeout,
         )
         print(json.dumps({

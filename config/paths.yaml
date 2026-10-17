@@ -1,6 +1,18 @@
 tdx:
   # Corrected from the initially supplied D:/new/_tdx after read-only discovery.
-  root: "D:/new_tdx"
+  source_root: "D:/new_tdx"
+  # Optional. Set these in deployment configuration when the corresponding route is used.
+  # daily_download_root: "G:/market_data/tdx/daily"
+  snapshot_root: "data/v4/dynamic_daily_sources"
+
+baostock:
+  # Optional; BaoStock API calls need no download directory unless responses are persisted.
+  # download_root: "G:/market_data/baostock/downloads"
+  cache_root: "data/v4/source_snapshots"
+
+ingest:
+  # Optional temporary source files, never inside a TDX read-only root.
+  # temp_root: "G:/codex_tmp/market_ingest"
 
 project:
   phase0_output: "reports/phase0/TDX_DATA_AUDIT.json"

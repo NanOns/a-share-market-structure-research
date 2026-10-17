@@ -8,6 +8,7 @@ import workbench_analysis.operational_daily_executor_v1 as module
                                               '2026-10-09T18:36:00+08:00,1'.split(',')])
 def test_missing_target_refreshes_pre_gate_capture_once(tmp_path,monkeypatch,downloaded,expected):
     monkeypatch.setenv('TDX_ROOT',str(tmp_path/'readonly-tdx-root'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(tmp_path/'snapshots'))
     class Clock(datetime):
         @classmethod
         def now(cls,tz=None):return datetime.fromisoformat('2026-10-09T18:40:00+08:00').astimezone(tz)

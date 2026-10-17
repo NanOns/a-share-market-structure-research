@@ -75,9 +75,11 @@ def load_runtime_acceptance_manifest(
     path: Path,
     *,
     project_root: Path,
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ) -> dict[str, Any]:
     """Load an accepted manifest and verify its append-only live-smoke receipt."""
+    from common.paths import resolve_tdx_root
+    tdx_root = resolve_tdx_root(project_root, tdx_root)
     ensure_outside_tdx(path, tdx_root)
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))

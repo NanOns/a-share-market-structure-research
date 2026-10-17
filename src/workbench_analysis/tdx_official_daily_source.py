@@ -317,7 +317,8 @@ def _tdx_root_or_configured(tdx_root: Path | None) -> Path:
 def capture_tdx_official_daily_package(
     *,
     target_date: str,
-    snapshot_root: Path,
+    snapshot_root: Path | None = None,
+    daily_download_root: Path | None = None,
     tdx_root: Path | None = None,
     timeout: int = 30,
     max_page_bytes: int = DEFAULT_MAX_PAGE_BYTES,
@@ -329,7 +330,19 @@ def capture_tdx_official_daily_package(
         date.fromisoformat(target_date)
     except ValueError as exc:
         raise TDXSourceError("TARGET_DATE_INVALID") from exc
+    root = Path(__file__).resolve().parents[2]
+    from common.paths import configured_path_source
+    path_sources = {
+        "source_root": configured_path_source(root, "tdx.source_root", explicit=tdx_root),
+        "snapshot_root": configured_path_source(root, "tdx.snapshot_root", explicit=snapshot_root),
+        "daily_download_root": configured_path_source(root, "tdx.daily_download_root", explicit=daily_download_root),
+    }
     tdx_root = _tdx_root_or_configured(tdx_root)
+    from common.paths import resolve_tdx_snapshot_root, resolve_configured_path
+    snapshot_root = resolve_tdx_snapshot_root(root, snapshot_root)
+    configured_download = resolve_configured_path(root, "tdx.daily_download_root",
+                                                   explicit=daily_download_root, required=False)
+    package_root = configured_download or snapshot_root
     ensure_outside_tdx(snapshot_root, tdx_root)
     observed_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     response = _request(PAGE_URL, timeout=timeout)
@@ -383,6 +396,12 @@ def capture_tdx_official_daily_package(
         "zip_validation": None,
         "snapshot_id": None,
         "tdx_root_write_count": 0,
+        "path_configuration": {
+            "source_root": path_sources["source_root"],
+            "snapshot_root": path_sources["snapshot_root"],
+            "daily_download_root": path_sources["daily_download_root"]
+                if configured_download else "FALLBACK_TO_CONFIGURED_SNAPSHOT_ROOT",
+        },
     }
     if update_date == target_date:
         temporary_archive = capture_dir / "download.part"
@@ -426,7 +445,7 @@ def capture_tdx_official_daily_package(
             receipt.pop('error_type', None)
         package_sha = download_headers.pop("sha256")
         snapshot_id = f"sha256-{package_sha}"
-        package_dir = snapshot_root / "tdx" / target_date.replace("-", "") / snapshot_id
+        package_dir = package_root / "tdx" / target_date.replace("-", "") / snapshot_id
         ensure_outside_tdx(package_dir, tdx_root)
         package_dir.mkdir(parents=True, exist_ok=True)
         archive_path = package_dir / "hsjday.zip"
@@ -443,7 +462,7 @@ def capture_tdx_official_daily_package(
             if not candidate.exists():
                 _atomic_write(candidate, source.read_bytes(), tdx_root=tdx_root)
         prior_revisions = [
-            path for path in (snapshot_root / "tdx" / target_date.replace("-", "")).glob("sha256-*")
+            path for path in (package_root / "tdx" / target_date.replace("-", "")).glob("sha256-*")
             if path != package_dir and (path / "hsjday.zip").is_file()
         ]
         prior_receipt = package_dir / "capture_receipt.json"

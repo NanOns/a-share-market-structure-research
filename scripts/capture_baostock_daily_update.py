@@ -17,12 +17,17 @@ from workbench_analysis.baostock_runtime_acceptance import load_runtime_acceptan
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capture BaoStock DailyUpdates through the bounded shared client.")
     parser.add_argument("--target-date", required=True)
-    parser.add_argument("--ledger", type=Path, default=ROOT / "reports/v4_baostock/request_ledger.json")
-    parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
+    parser.add_argument("--ledger", type=Path, default=None,
+                        help="Override BAOSTOCK_CACHE_ROOT/request_ledger.json")
+    parser.add_argument("--snapshot-root", type=Path, default=None,
+                        help="Override BAOSTOCK_CACHE_ROOT/config/paths.yaml")
     parser.add_argument("--hard-limit", type=int, default=45_000)
     parser.add_argument("--soft-limit", type=int, default=40_000)
     args = parser.parse_args()
     try:
+        from common.paths import resolve_baostock_cache_root
+        cache_root = resolve_baostock_cache_root(ROOT, args.snapshot_root)
+        ledger_path = args.ledger or cache_root / "request_ledger.json"
         date.fromisoformat(args.target_date)
         source_contract = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))
         dm01_contract = source_contract.get("dm01_daily_updates", {})
@@ -35,20 +40,18 @@ def main() -> int:
         manifest_path = ROOT / dm01_contract["runtime_acceptance_manifest_template"].replace(
             "{YYYYMMDD}", args.target_date.replace("-", "")
         )
-        runtime_manifest = load_runtime_acceptance_manifest(manifest_path, project_root=ROOT,
-                                                             tdx_root=Path("D:/new_tdx"))
+        runtime_manifest = load_runtime_acceptance_manifest(manifest_path, project_root=ROOT)
         if runtime_manifest.get("live_smoke", {}).get("target_date") != args.target_date:
             print(json.dumps({"status": "WAIT_BAOSTOCK_DAILY_UPDATE",
                               "reason": "BAOSTOCK_RUNTIME_ACCEPTANCE_TARGET_DATE_MISMATCH"}, ensure_ascii=False))
             return 2
-        budget = RequestBudget(args.ledger, hard_limit=args.hard_limit, soft_limit=args.soft_limit)
+        budget = RequestBudget(ledger_path, hard_limit=args.hard_limit, soft_limit=args.soft_limit)
         with BaoStockClient(budget, auth_mode=runtime_manifest["auth_mode"],
                             runtime_acceptance_manifest=runtime_manifest) as client:
             result = capture_baostock_daily_update(
                 trade_date=args.target_date,
                 client=client,
-                snapshot_root=args.snapshot_root,
-                tdx_root=Path("D:/new_tdx"),
+                snapshot_root=cache_root,
                 runtime_acceptance_manifest=runtime_manifest,
             )
         print(json.dumps({key: result.get(key) for key in (

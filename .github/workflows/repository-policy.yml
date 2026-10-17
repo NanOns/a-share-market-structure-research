@@ -1,12 +1,7 @@
 name: Repository content policy
 
 on:
-  pull_request:
-  push:
-    branches:
-      - main
-      - codex/v4-unified-development
-      - codex/v4-workspace-cleanup
+  workflow_dispatch:
 
 permissions:
   contents: read

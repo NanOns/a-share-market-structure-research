@@ -6425,7 +6425,7 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
+      "blocker": "Runtime now requires native_daily_evidence and reads the exact dated fact from PG without local evidence fallback; current accepted Head binding, live Reader identity/readback and business source reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
         "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
@@ -6466,6 +6466,21 @@
           "publication_id": null,
           "namespace": null
         }
+      ],
+      "follow_up_evidence": [
+        {
+          "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+          "code_evidence": "OperationalSuccessorV1._daily_evidence requires native_daily_evidence and calls the Head-bound PG reader only; missing authority is a fail-closed error. Membership/identity and period artifact readers likewise require their PG authorities.",
+          "test_evidence": [
+            "test_v4_operational_daily_evidence_pg",
+            "test_v4_embedded_owner_reader_integration",
+            "test_v4_operational_period_artifact_pg_r47",
+            "test_v4_product_catalog_pg_r48",
+            "test_v4_r21_owner_manifest_pg_binding"
+          ],
+          "formal_status": "OPEN_PENDING_LIVE_HEAD_BINDING_AND_PG_READBACK",
+          "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+        }
       ]
     },
     {
@@ -6502,7 +6517,7 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
+      "blocker": "Runtime now requires native_daily_evidence and reads the exact dated fact from PG without local evidence fallback; current accepted Head binding, live Reader identity/readback and business source reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
         "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
@@ -6543,6 +6558,21 @@
           "publication_id": null,
           "namespace": null
         }
+      ],
+      "follow_up_evidence": [
+        {
+          "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+          "code_evidence": "OperationalSuccessorV1._daily_evidence requires native_daily_evidence and calls the Head-bound PG reader only; missing authority is a fail-closed error. Membership/identity and period artifact readers likewise require their PG authorities.",
+          "test_evidence": [
+            "test_v4_operational_daily_evidence_pg",
+            "test_v4_embedded_owner_reader_integration",
+            "test_v4_operational_period_artifact_pg_r47",
+            "test_v4_product_catalog_pg_r48",
+            "test_v4_r21_owner_manifest_pg_binding"
+          ],
+          "formal_status": "OPEN_PENDING_LIVE_HEAD_BINDING_AND_PG_READBACK",
+          "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+        }
       ]
     },
     {
@@ -6579,7 +6609,7 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
+      "blocker": "Runtime now requires native_daily_evidence and reads the exact dated fact from PG without local evidence fallback; current accepted Head binding, live Reader identity/readback and business source reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
         "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
@@ -6620,6 +6650,21 @@
           "publication_id": null,
           "namespace": null
         }
+      ],
+      "follow_up_evidence": [
+        {
+          "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+          "code_evidence": "OperationalSuccessorV1._daily_evidence requires native_daily_evidence and calls the Head-bound PG reader only; missing authority is a fail-closed error. Membership/identity and period artifact readers likewise require their PG authorities.",
+          "test_evidence": [
+            "test_v4_operational_daily_evidence_pg",
+            "test_v4_embedded_owner_reader_integration",
+            "test_v4_operational_period_artifact_pg_r47",
+            "test_v4_product_catalog_pg_r48",
+            "test_v4_r21_owner_manifest_pg_binding"
+          ],
+          "formal_status": "OPEN_PENDING_LIVE_HEAD_BINDING_AND_PG_READBACK",
+          "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+        }
       ]
     },
     {
@@ -6656,7 +6701,7 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
+      "blocker": "Runtime now requires native_daily_evidence and reads the exact dated fact from PG without local evidence fallback; current accepted Head binding, live Reader identity/readback and business source reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
         "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
@@ -6697,6 +6742,21 @@
           "publication_id": null,
           "namespace": null
         }
+      ],
+      "follow_up_evidence": [
+        {
+          "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+          "code_evidence": "OperationalSuccessorV1._daily_evidence requires native_daily_evidence and calls the Head-bound PG reader only; missing authority is a fail-closed error. Membership/identity and period artifact readers likewise require their PG authorities.",
+          "test_evidence": [
+            "test_v4_operational_daily_evidence_pg",
+            "test_v4_embedded_owner_reader_integration",
+            "test_v4_operational_period_artifact_pg_r47",
+            "test_v4_product_catalog_pg_r48",
+            "test_v4_r21_owner_manifest_pg_binding"
+          ],
+          "formal_status": "OPEN_PENDING_LIVE_HEAD_BINDING_AND_PG_READBACK",
+          "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
+        }
       ]
     },
     {
@@ -6733,7 +6793,7 @@
         "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
+      "blocker": "Runtime now requires native_daily_evidence and reads the exact dated fact from PG without local evidence fallback; current accepted Head binding, live Reader identity/readback and business source reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
         "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
@@ -6773,6 +6833,21 @@
           "T0": null,
           "publication_id": null,
           "namespace": null
+        }
+      ],
+      "follow_up_evidence": [
+        {
+          "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+          "code_evidence": "OperationalSuccessorV1._daily_evidence requires native_daily_evidence and calls the Head-bound PG reader only; missing authority is a fail-closed error. Membership/identity and period artifact readers likewise require their PG authorities.",
+          "test_evidence": [
+            "test_v4_operational_daily_evidence_pg",
+            "test_v4_embedded_owner_reader_integration",
+            "test_v4_operational_period_artifact_pg_r47",
+            "test_v4_product_catalog_pg_r48",
+            "test_v4_r21_owner_manifest_pg_binding"
+          ],
+          "formal_status": "OPEN_PENDING_LIVE_HEAD_BINDING_AND_PG_READBACK",
+          "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS"
         }
       ]
     },
@@ -16677,6 +16752,7 @@
       "docs/upgrade/V4_R21_R4_DM01_LIFECYCLE_STAGE_PG_R69_20261017.md",
       "docs/upgrade/V4_R21_R4_DM01_STAGE_STATE_PG_WRITER_R68_20261017.md",
       "docs/upgrade/V4_R21_R4_PRODUCT_CATALOG_PG_ONLY_R70_20261017.md",
+      "docs/upgrade/V4_R21_R4_SUCCESSOR_PG_ONLY_EVIDENCE_R71_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
@@ -16685,6 +16761,7 @@
       "scripts/probe_v4_dm01_gbbq_revision.py",
       "src/workbench_analysis/contract_registry_pg_v1.py",
       "src/workbench_analysis/operational_daily_executor_v1.py",
+      "src/workbench_analysis/operational_successor_v1.py",
       "src/workbench_db/v4_baostock_runtime_acceptance_pg_r1.py",
       "src/workbench_db/v4_dm01_stage_state_pg_r1.py",
       "src/workbench_db/v4_membership_reference_pg_v1.py",
@@ -16700,7 +16777,9 @@
       "tests/test_v4_contract_registry_pg_v1.py",
       "tests/test_v4_dm01_lifecycle_pg_stage.py",
       "tests/test_v4_dm01_stage_state_pg_r1.py",
-      "tests/test_v4_head_embedded_product_catalog.py"
+      "tests/test_v4_embedded_owner_reader_integration.py",
+      "tests/test_v4_head_embedded_product_catalog.py",
+      "tests/test_v4_operational_daily_evidence_pg.py"
     ],
     "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
     "follow_up_batches": [
@@ -17942,6 +18021,37 @@
         "reference_edges_unmapped": 22,
         "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
         "next": "Reconcile live accepted Head authority and full PG reads per exact ID, then continue Owner/Head/BFF and DM-01 stage consumers."
+      },
+      {
+        "batch_id": "R21-R4-successor-evidence-pg-only-r71",
+        "files": [
+          "docs/upgrade/V4_R21_R4_SUCCESSOR_PG_ONLY_R71_20261017.md",
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "src/workbench_analysis/operational_successor_v1.py",
+          "tests/test_v4_operational_daily_evidence_pg.py",
+          "tests/test_v4_embedded_owner_reader_integration.py"
+        ],
+        "evidence": [
+          "OperationalSuccessorV1 now rejects missing native_daily_evidence, native_membership_reference, and native_period_artifacts authorities rather than opening local runtime evidence. The explicit preparation/ingress paths remain separate.",
+          "Per-ID notes were added to the five daily-evidence baseline rows; no status count was changed in this batch."
+        ],
+        "verification": "26 selected operational daily evidence, membership/identity, period artifact, Owner manifest, and product catalogue tests passed. PG boundaries are controlled; no live readback.",
+        "baseline_callsite_ids_observed": [
+          "V4-BCA-R2-0f29980023f2eee60e7d",
+          "V4-BCA-R2-7eb67954b0a971f913e0",
+          "V4-BCA-R2-a13b2a1ff5bb9cf61b5a",
+          "V4-BCA-R2-ba7c26e6e599746976e6",
+          "V4-BCA-R2-fc9fef585ec2c4fd6c8f"
+        ],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 208,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 50
+        },
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
+        "next": "Continue exact Head/Authority/descriptor/BFF consumers; complete the main DM-01 report-backed inter-stage state migration and reconcile live PG identities."
       }
     ]
   }

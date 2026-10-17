@@ -23,28 +23,23 @@ def _validate_owner_bindings(root, candidate, pg_owner_authority=None):
 
 def _validate_membership_inputs(root,candidate):
     from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY
-    if MEMBERSHIP_KEY in candidate:
-        from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read,read_identity
-        snapshot=context_snapshot(root,candidate)
-        if (snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id']
-                or snapshot.get('PIT_ELIGIBLE') is not False):
-            raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
-        read(root,candidate)
-        read_identity(root,candidate)
-        return snapshot
-    snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
-    if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
+    if MEMBERSHIP_KEY not in candidate:
+        raise ValueError('SUCCESSOR_MEMBERSHIP_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read,read_identity
+    snapshot=context_snapshot(root,candidate)
+    if (snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id']
+            or snapshot.get('PIT_ELIGIBLE') is not False):
         raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
-    checked(root,snapshot['memberships']);checked(root,snapshot['identity_source'])
+    read(root,candidate)
+    read_identity(root,candidate)
     return snapshot
 
 
 def _daily_evidence(root,candidate,name,source_binding=None):
     from workbench_db.v4_operational_daily_evidence_pg_v1 import KEY as EVIDENCE_KEY,read
-    if EVIDENCE_KEY in candidate:
-        return read(root,candidate,name,source_binding=source_binding)
-    binding=source_binding if source_binding is not None else candidate[name]
-    return json.loads(checked(root,binding).read_bytes())
+    if EVIDENCE_KEY not in candidate:
+        raise ValueError('SUCCESSOR_DAILY_EVIDENCE_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    return read(root,candidate,name,source_binding=source_binding)
 
 
 def validate(root, candidate, *, pg_owner_authority=None):
@@ -102,11 +97,10 @@ def validate(root, candidate, *, pg_owner_authority=None):
     if period.get('input_history')!=target_owners[0]['history']:
         raise ValueError('SUCCESSOR_PERIOD_HISTORY_BINDING_MISMATCH')
     from workbench_db.v4_operational_period_artifact_pg_v1 import KEY as PERIOD_ARTIFACT_KEY,attest as attest_period_artifact
-    if PERIOD_ARTIFACT_KEY in candidate:
-        attest_period_artifact(root,candidate,'input_history',period['input_history'])
-        attest_period_artifact(root,candidate,'verifier',period['verifier'])
-    else:
-        checked(root,period['input_history']);checked(root,period['verifier'])
+    if PERIOD_ARTIFACT_KEY not in candidate:
+        raise ValueError('SUCCESSOR_PERIOD_ARTIFACT_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    attest_period_artifact(root,candidate,'input_history',period['input_history'])
+    attest_period_artifact(root,candidate,'verifier',period['verifier'])
     _validate_membership_inputs(root,candidate)
     from workbench_db.v4_operational_registry_pg_v1 import read_registry
     registry=read_registry(root,candidate)

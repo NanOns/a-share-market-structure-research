@@ -139,6 +139,16 @@ def test_successor_validation_uses_pg_membership_and_identity_authorities_withou
     assert calls==['memberships','identity']
 
 
+def test_successor_membership_requires_pg_authority_without_local_fallback(tmp_path,monkeypatch):
+    from workbench_analysis import operational_successor_v1 as module
+    data={'membership_snapshot':{'path':'data/v4/membership.json','sha256':'a'*64,'bytes':1}}
+    monkeypatch.setattr(module,'checked',lambda *args,**kwargs:(_ for _ in ()).throw(AssertionError('MEMBERSHIP_FILE_OPENED')))
+
+    import pytest
+    with pytest.raises(ValueError,match='SUCCESSOR_MEMBERSHIP_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK'):
+        module._validate_membership_inputs(tmp_path,data)
+
+
 def test_candidate_preparation_owner_validation_keeps_exact_file_binding_check(tmp_path,monkeypatch):
     from workbench_analysis import operational_successor_v1 as module
     binding={'path':'owner.json','sha256':'a'*64}

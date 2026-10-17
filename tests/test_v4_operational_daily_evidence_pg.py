@@ -72,3 +72,10 @@ def test_daily_evidence_reader_rejects_source_binding_substitution(tmp_path,monk
 
     with pytest.raises(ValueError,match='SOURCE_BINDING_MISMATCH'):
         evidence.read(tmp_path,candidate,'numeric_core_oracle',source_binding={'path':'other.json','sha256':'d'*64,'bytes':4})
+
+
+def test_successor_daily_evidence_requires_pg_authority_without_local_fallback(tmp_path,monkeypatch):
+    candidate={'day_receipt':{'path':'reports/v4_dm01/day.json','sha256':'a'*64,'bytes':1}}
+    monkeypatch.setattr(successor,'checked',lambda *_:pytest.fail('DAILY_EVIDENCE_LOCAL_FALLBACK'))
+    with pytest.raises(ValueError,match='SUCCESSOR_DAILY_EVIDENCE_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK'):
+        successor._daily_evidence(tmp_path,candidate,'day_receipt')

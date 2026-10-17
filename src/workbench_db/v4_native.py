@@ -7,16 +7,19 @@ import re
 import psycopg
 from psycopg import sql
 
-CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R3'
+CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R4'
 
 def configured_dsn():
-    value=os.environ.get('V4_NATIVE_PG_DSN')
-    if not value: raise RuntimeError('V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK')
+    # Default to the project's existing database identity for both reads and
+    # writes; a V4-specific DSN remains an optional explicit override.
+    value=os.environ.get('V4_NATIVE_PG_DSN') or os.environ.get('WORKBENCH_PG_DSN')
+    if not value: raise RuntimeError('WORKBENCH_PG_DSN_REQUIRED')
     return value
 
 def configured_reader_dsn():
-    """Return a read connection string without ever falling back to the writer."""
-    value = os.environ.get('V4_NATIVE_PG_READER_DSN') or os.environ.get('WORKBENCH_PG_DSN')
+    """Use the shared project DSN unless a purpose-specific override exists."""
+    value = (os.environ.get('V4_NATIVE_PG_READER_DSN') or
+             os.environ.get('WORKBENCH_PG_DSN') or os.environ.get('V4_NATIVE_PG_DSN'))
     if not value:
         raise RuntimeError('V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK')
     return value
@@ -71,7 +74,15 @@ def attest_read_role(pg, schema):
     if not row[5]:
         raise RuntimeError('PG_READER_SCHEMA_MISSING')
     if any(bool(value) for value in row[:5]) or bool(row[6]) or bool(row[7]) or bool(row[8]):
-        raise RuntimeError('PG_READER_ROLE_HAS_WRITE_PRIVILEGES')
+        # The existing local project DSN may be a privileged account. A user
+        # can explicitly authorize using that same database identity for a
+        # bounded read session; the transaction must already be server-side
+        # READ ONLY. This opt-in is process-scoped and defaults to deny.
+        if os.environ.get('V4_NATIVE_ALLOW_PRIVILEGED_READ_ROLE') != '1':
+            raise RuntimeError('PG_READER_ROLE_HAS_WRITE_PRIVILEGES')
+        mode=pg.execute('SHOW transaction_read_only').fetchone()
+        if not mode or str(mode[0]).lower()!='on':
+            raise RuntimeError('PG_READER_PRIVILEGED_TRANSACTION_NOT_READ_ONLY')
     return True
 
 @contextmanager

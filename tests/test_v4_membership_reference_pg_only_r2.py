@@ -13,8 +13,8 @@ def test_membership_reference_loads_authority_and_rows_from_pg_only(tmp_path,mon
     day='2026-10-12';source={'path':'missing/members.jsonl.gz','sha256':'a'*64,'bytes':200}
     snapshot={'path':'missing/snapshot.json','sha256':'b'*64,'bytes':120}
     rows=[{'sector_id':'INDUSTRY:FIXTURE','security_id':'SH.600000'}]
-    token='c'*64
-    fact_payload=dict(contract_id=owner_pg.OWNER,head_token=token,T0=day,
+    context_key='c'*64
+    fact_payload=dict(contract_id=owner_pg.OWNER,head_token=context_key,T0=day,
         domain='reference_memberships',source_binding=source,rows=rows,
         PIT_ELIGIBLE=False,AS_RECORDED=False)
     fact_raw=canonical(fact_payload).decode();fact_sha=digest(fact_raw.encode())
@@ -28,7 +28,7 @@ def test_membership_reference_loads_authority_and_rows_from_pg_only(tmp_path,mon
         sha256=digest(fact_descriptor_raw),bytes=len(fact_descriptor_raw),pg_descriptor=fact_descriptor)
     authority=dict(contract_id=reference_pg.CONTRACT,T0=day,membership_snapshot=snapshot,
         source=source,identity_source=None,membership_snapshot_id=None,descriptor=fact_binding,
-        fact_token=token,rows=len(rows),AS_RECORDED=False,PIT_ELIGIBLE=False)
+        fact_token=context_key,rows=len(rows),AS_RECORDED=False,PIT_ELIGIBLE=False)
     authority_raw=canonical(authority).decode();authority_sha=digest(authority_raw.encode())
     authority_key=digest(canonical(authority));authority_schema='v4_forward_abcdef0123456789'
     candidate={
@@ -112,6 +112,28 @@ def test_core_product_bff_rejects_identity_file_fallback_when_pg_authority_missi
     bff=object.__new__(CoreProductBFFR1);bff.api=api
     with pytest.raises(ValueError,match='NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK'):
         bff.identity_records()
+
+def test_core_product_bff_cohort_route_does_not_open_owner_json(tmp_path,monkeypatch):
+    from types import SimpleNamespace
+    import workbench_service.core_product_bff_r1 as product_bff
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+
+    day='2026-10-12';context_key='fixture-token'
+    owner={'path':'data/v4/cohort_owner.json','sha256':'a'*64,'bytes':10}
+    candidate={'accepted_trade_date':day,'data_cutoff_date':day,'published_sessions':[day],
+        'observed_at':day,'membership_observed_at':'2026-10-12T09:00:00+08:00',
+        'owners':{day:{'validation_cohort':owner}}}
+    api=SimpleNamespace(root=tmp_path,candidate=candidate,
+        context=lambda:dict(context_token=context_key,production_accepted=True))
+    setattr(api,'token',context_key)
+    bff=object.__new__(CoreProductBFFR1);bff.api=api;bff.isolated_history=None
+    calls=[]
+    monkeypatch.setattr(product_bff,'checked',lambda *_:pytest.fail('cohort Owner file opened by runtime BFF'))
+    monkeypatch.setattr(product_bff,'read_authorized_statistics',lambda *args,**kwargs:
+        (calls.append((args,kwargs)) or dict(status='READY',items=[],observed_count=0,matured_count=None)))
+    code,response=bff._get_product('/api/v4/forward',{'trade_date':day,'context_token':context_key})
+    assert code==200 and response['status']=='READY'
+    assert response['data']['observed_count']==0 and len(calls)==1
 
 
 def test_prepare_search_identity_uses_same_candidate_pg_identity_owner(tmp_path,monkeypatch):

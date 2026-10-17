@@ -119,10 +119,25 @@ def context_snapshot(root,candidate):
 
 
 def current_identity_binding(root,candidate):
+    """Resolve the current identity source from the Head-bound PG authority."""
+    day=candidate['accepted_trade_date'];lifecycle=candidate['owners'][day]['lifecycle']
+    authority=_load_authority(root,candidate)
+    current=authority.get('current_identity')
+    if (current is None or current.get('source_type')!='CURRENT_LIFECYCLE_IDENTITY_R1'
+            or current.get('lifecycle')!=lifecycle
+            or current.get('source')!=identity_source(root,candidate)):
+        raise ValueError('CURRENT_IDENTITY_PG_SOURCE_REQUIRED_NO_FILE_FALLBACK')
+    return current['source'],lifecycle
+
+def _current_identity_source_ingress(root,candidate):
+    """Read an exact dated identity source only while preparing its PG Owner."""
     day=candidate['accepted_trade_date'];lifecycle=candidate['owners'][day]['lifecycle']
     document=json.loads(checked(root,lifecycle).read_bytes())
-    if document.get('trade_date',document.get('target_session',day))!=day:raise ValueError('CURRENT_IDENTITY_LIFECYCLE_DATE_MISMATCH')
-    source=document['identity'];checked(root,source)
+    if document.get('trade_date',document.get('target_session',day))!=day:
+        raise ValueError('CURRENT_IDENTITY_LIFECYCLE_DATE_MISMATCH')
+    source=document.get('identity')
+    if not isinstance(source,dict):raise ValueError('CURRENT_IDENTITY_SOURCE_INGRESS_REQUIRED')
+    checked(root,source)
     return source,lifecycle
 
 
@@ -150,7 +165,7 @@ def prepare_identity(root,candidate):
     content=rows(root,source);descriptor=append(root,fact_key,day,'reference_identity',source,content)
     if canonical(read_fact(root,descriptor,fact_key,day,'reference_identity',source))!=canonical(content):raise ValueError('IDENTITY_REFERENCE_FULL_PG_PAYLOAD_DIFFERENCE')
     authority['identity']=dict(source=source,descriptor=descriptor,fact_token=fact_key,rows=len(content))
-    current,lifecycle=current_identity_binding(root,candidate)
+    current,lifecycle=_current_identity_source_ingress(root,candidate)
     current_content=rows(root,current)
     prior={r['security_id']:r for r in content};now={r['security_id']:r for r in current_content}
     if len(now)!=len(current_content) or any(now.get(sid)!=row for sid,row in prior.items()):raise ValueError('CURRENT_IDENTITY_PREDECESSOR_CHANGED')

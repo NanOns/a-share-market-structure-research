@@ -42,9 +42,15 @@ class ResearchBFF:
         with snapshot_request_scope():
             return self._get(path,query)
 
-    def _get(self,path,query):
+    def get_with_reader(self,path,query,reader):
+        """Serve one route through an explicitly injected candidate reader."""
+        from .production_v4 import snapshot_request_scope
+        with snapshot_request_scope():
+            return self._get(path,query,reader=reader)
+
+    def _get(self,path,query,reader=None):
         try:
-            r=self.current()
+            r=reader or self.current()
             # Validate context and parameter contracts even for singleton/diagnostic routes.
             parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p]
             chart_route=len(parts)==3 and parts[0]=='stocks' and parts[2]=='chart'
@@ -59,9 +65,14 @@ class ResearchBFF:
             if not parts:return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             name=parts[0]
             if name=='context':
-                progress=refresh_status(self.root)
-                control={k:progress[k] for k in ('status','next_completed_session','source_requests','data_preserved')}
-                control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
+                if getattr(r,'pg_candidate_schema',None):
+                    control=dict(status='SNAPSHOT_ONLY',next_completed_session=None,source_requests=0,
+                        data_preserved=True,scope='PG_SNAPSHOT_ONLY_NO_DAILY_WORKER_STATUS',
+                        accepted_input_date=r.context['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
+                else:
+                    progress=refresh_status(self.root)
+                    control={k:progress[k] for k in ('status','next_completed_session','source_requests','data_preserved')}
+                    control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
             if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):

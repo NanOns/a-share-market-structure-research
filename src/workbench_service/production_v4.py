@@ -25,9 +25,9 @@ def snapshot_request_scope():
         yield
         return
     with ExitStack() as stack:
-        token=_request_reads.set((stack,{}))
+        context_token_handle=_request_reads.set((stack,{}))
         try:yield
-        finally:_request_reads.reset(token)
+        finally:_request_reads.reset(context_token_handle)
 
 def numeric_sort_expressions(field,descending):
     # Preserve the accepted SQLite JSON value ordering: NULL, numeric, text.
@@ -429,7 +429,10 @@ def rollback_snapshot(root,expected_pointer):
 
 
 class ProductionV4ResearchReader:
-    def __init__(self, root, *, snapshot_authority=None):
+    def __init__(self, root, *, snapshot_authority=None, pg_candidate_schema=None):
+        if pg_candidate_schema is not None:
+            self._init_pg_candidate(root, pg_candidate_schema)
+            return
         self.root=Path(root).resolve();verifier=CurrentAcceptedV4Reader(root)
         from .joint_release import load
         joint=load(self.root) if snapshot_authority is None else None
@@ -445,7 +448,7 @@ class ProductionV4ResearchReader:
         self.series_signature=None
         if stocks:
             verifier._verify(stocks['series']);stat=verifier._path(stocks['series']['path']).stat();self.series_signature=(stat.st_size,stat.st_mtime_ns)
-        self.token='research-v4-'+self.authority['manifest']['sha256']
+        self.context_key='research-v4-'+self.authority['manifest']['sha256']
         self.context=dict(release_id=self.manifest['release_id'],model_namespace='V4_RESEARCH_SNAPSHOT_V1',
             source_mode='SCOPED_OPERATIONAL_RELEASE' if joint else 'EXISTING_REAL_SNAPSHOT_PENDING_RELEASE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
             core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest['sources'].get('advanced',{}).get('sha256'),
@@ -475,14 +478,96 @@ class ProductionV4ResearchReader:
                 earliest_valid_date=focus.get('earliest_valid_date'),
                 debt=['UNRESOLVED_PATH_PREDICATE_OWNERS','LEGACY_PG_RECONCILIATION'])
 
+    def _init_pg_candidate(self, root, schema):
+        """Bind the development UI to one verified immutable PG snapshot.
+
+        The schema is injected by the 28766 development launcher. This path
+        reads the snapshot descriptor and manifest from their PG relations and
+        never consults the local snapshot pointer or files.
+        """
+        from workbench_db.v4_native import connection
+        from workbench_db.v4_snapshot_pg_r2 import verify
+        self.root=Path(root).resolve()
+        if not isinstance(schema,str) or not schema.startswith('v4_research_'):
+            raise SourceInvalid('PG_CANDIDATE_SCHEMA_INVALID')
+        try:
+            with connection(schema,read_only=True) as pg:
+                rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
+                if len(rows)!=1:
+                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_NOT_UNIQUE')
+                digest_value,contract_id,raw_descriptor=rows[0]
+                descriptor=json.loads(raw_descriptor)
+                if digest_value!=descriptor.get('logical_digest') or contract_id!='V4_PG_RESEARCH_SNAPSHOT_R2':
+                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_DESCRIPTOR_INVALID')
+                verify(pg,descriptor)
+                metadata_rows=pg.execute("SELECT value FROM metadata WHERE key='snapshot'").fetchall()
+                if len(metadata_rows)!=1:
+                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_MANIFEST_NOT_UNIQUE')
+                self.manifest=json.loads(metadata_rows[0][0])
+                identity=pg.execute('SELECT current_database(),(SELECT oid::int FROM pg_database WHERE datname=current_database()),coalesce(inet_server_addr()::text,\'local\'),inet_server_port()').fetchone()
+                from workbench_db.v4_snapshot_pg_r2 import database_identity
+                cluster=database_identity(pg)
+            metadata=validate_release_metadata(self.manifest)
+            if (descriptor.get('schema')!=schema or descriptor.get('T0')!=self.manifest.get('context',{}).get('accepted_trade_date')
+                    or descriptor.get('release_id')!=self.manifest.get('release_id')
+                    or metadata.get('trading_date')!=descriptor.get('T0')):
+                raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_CONTEXT_MISMATCH')
+        except SourceInvalid:
+            raise
+        except Exception as error:
+            raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_READ_FAILED:'+type(error).__name__) from error
+        self.pg_candidate_schema=schema
+        self.pg_descriptor=descriptor
+        self.path=None
+        self.file_signature=None
+        self.series_signature=None
+        self.authority={'manifest':{'sha256':descriptor['logical_digest']}}
+        self.context_key='research-v4-pg-candidate-'+descriptor['logical_digest']
+        self.context=dict(self.manifest['context'],release_id=descriptor['release_id'],
+            model_namespace='V4_RESEARCH_SNAPSHOT_V1',source_mode='PG_CANDIDATE_SNAPSHOT',
+            publication_id=descriptor['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
+            core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest.get('sources',{}).get('advanced',{}).get('sha256'),
+            turnover_as_of=None,quality=self.manifest['quality'],source_contract_id='V4_RESEARCH_SNAPSHOT_V1',
+            factor_contract_id=None,state_contract_id='PG_SNAPSHOT_IDENTITY',parameter_set_id=None,
+            trade_date=descriptor['T0'],release_metadata=metadata,database_identity=cluster,
+            scoped_release=False,operational_release_scope=[],full_product_release=False,
+            joint_release_digest=None,candidate_status=metadata.get('evidence_state','VALIDATION_ONGOING'))
+        self.context['domain_readiness']={key:dict(released=False,scope='PG_CANDIDATE_SNAPSHOT',debt=[])
+            for key in ('stocks','sectors','market','focus','forward','strict_pit','fep')}
+
     def envelope(self, **payload):
-        return dict(context=self.context,context_token=self.token,**payload)
+        return dict(context=self.context,context_token=self.context_key,**payload)
 
     def known_identity(self,entity):
         with self.connect() as db:
             return db.execute('SELECT 1 FROM aliases WHERE id=? OR alias=? LIMIT 1',(entity,entity.casefold())).fetchone() is not None
 
     def connect(self):
+        if getattr(self,'pg_candidate_schema',None):
+            from workbench_db.v4_native import connection
+            from workbench_db.v4_snapshot_pg_r1 import ReadTransaction
+            scope=_request_reads.get()
+            if scope is not None:
+                stack,transactions=scope
+                key=(self.pg_descriptor['schema'],self.pg_descriptor['logical_digest'])
+                if key not in transactions:
+                    @contextmanager
+                    def candidate_read():
+                        with connection(self.pg_candidate_schema,read_only=True) as pg:
+                            rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
+                            expected=[(self.pg_descriptor['logical_digest'],'V4_PG_RESEARCH_SNAPSHOT_R2',json.dumps(self.pg_descriptor,sort_keys=True,ensure_ascii=False,separators=(',',':')))]
+                            if rows!=expected:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                            yield ReadTransaction(pg)
+                    transactions[key]=stack.enter_context(candidate_read())
+                return nullcontext(transactions[key])
+            @contextmanager
+            def candidate_read():
+                with connection(self.pg_candidate_schema,read_only=True) as pg:
+                    rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
+                    expected=[(self.pg_descriptor['logical_digest'],'V4_PG_RESEARCH_SNAPSHOT_R2',json.dumps(self.pg_descriptor,sort_keys=True,ensure_ascii=False,separators=(',',':')))]
+                    if rows!=expected:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                    yield ReadTransaction(pg)
+            return candidate_read()
         if (self.path.stat().st_size,self.path.stat().st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
         from workbench_db.v4_snapshot_pg_r1 import read
         scope=_request_reads.get()
@@ -495,12 +580,13 @@ class ProductionV4ResearchReader:
         return read(self.pg_descriptor)
 
     def query(self, domain, query=None, *, entity=None, sector=None, summary=False):
-        stat=self.path.stat()
-        if (stat.st_size,stat.st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
+        if not getattr(self,'pg_candidate_schema',None):
+            stat=self.path.stat()
+            if (stat.st_size,stat.st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
         q=query or {}
         allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace','type','maturity','health','rotation','quality','eligibility'}
         if set(q)-allowed:raise ValueError('UNKNOWN_PARAMETER')
-        for key, expected in [('context_token',self.token),('trade_date',self.context['accepted_trade_date']),('release_id',self.context['release_id']),('model_namespace',self.context['model_namespace'])]:
+        for key, expected in [('context_token',self.context_key),('trade_date',self.context['accepted_trade_date']),('release_id',self.context['release_id']),('model_namespace',self.context['model_namespace'])]:
             if key in q and q[key]!=expected:raise SourceInvalid('CONTEXT_CONFLICT:'+key)
         if domain not in DOMAINS:raise ValueError('UNKNOWN_DOMAIN')
         limit=int(q.get('limit',30));offset=int(q.get('offset',0));needle=q.get('q','').strip().casefold()
@@ -529,8 +615,8 @@ class ProductionV4ResearchReader:
         if sector:where.append('id IN (SELECT security FROM members WHERE sector=?)');args.append(sector)
         clause=' AND '.join(where)
         with self.connect() as db:
-            total=db.execute('SELECT count(*) FROM objects WHERE '+clause,args).fetchone()[0]
-            rows=db.execute('SELECT payload FROM objects WHERE '+clause+' ORDER BY '+','.join(sort)+' LIMIT ? OFFSET ?',args+[limit,offset]).fetchall()
+            total=db.execute(''.join(('SELECT count(*) FROM objects WHERE ',clause)),args).fetchone()[0]
+            rows=db.execute(''.join(('SELECT payload FROM objects WHERE ',clause,' ORDER BY ',','.join(sort),' LIMIT ? OFFSET ?')),args+[limit,offset]).fetchall()
         gap=next((g for g in self.manifest['gaps'] if g['domain']==domain),None)
         items=[json.loads(r[0]) for r in rows]
         if summary and domain in ('stocks','sectors'):

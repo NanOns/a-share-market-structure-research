@@ -34,13 +34,35 @@ def selected(reader,query):
     day=query.get('as_of',reader.context['trade_date']);date.fromisoformat(day)
     if day>reader.context['trade_date']:raise ValueError('FUTURE_AS_OF_FORBIDDEN')
     if not authority:return None,None,day
+    if getattr(reader,'pg_candidate_schema',None):
+        # Candidate replay can select only the exact PG snapshot currently read.
+        # Older local replay JSON paths are never consulted by this branch.
+        sources={key:{'contract_id':'PG_SNAPSHOT_BOUND_SOURCE_R1','sha256':value.get('sha256')}
+            for key,value in authority.get('sources',{}).items() if isinstance(value,dict)}
+        candidate=dict(authority,sources=sources,catalog=[])
+        if day!=reader.context['trade_date']:
+            return candidate,None,day
+        binding={'as_of':day,'snapshot':{'sha256':reader.pg_descriptor['logical_digest'],'contract_id':'V4_PG_RESEARCH_SNAPSHOT_R2'},
+            'first_available_proven':False,'pit_status':'PIT_NOT_AVAILABLE','corrected_status':'READY'}
+        candidate['catalog']=[dict(as_of=day,first_available_proven=False,pit_status='PIT_NOT_AVAILABLE',corrected_status='READY',
+            model_namespace='V4_PG_RESEARCH_SNAPSHOT_R2',snapshot=binding['snapshot'])]
+        return candidate,binding,day
     binding=next((x for x in authority['catalog'] if x['as_of']==day),None)
     if not binding:return authority,None,day
-    token='fp12-'+binding['snapshot']['sha256']
-    if query.get('snapshot_token') not in (None,token):raise SourceInvalid('CONTEXT_CONFLICT:SNAPSHOT_DATE_OR_VERSION')
+    snapshot_context_key='fp12-'+binding['snapshot']['sha256']
+    if query.get('snapshot_token') not in (None,snapshot_context_key):raise SourceInvalid('CONTEXT_CONFLICT:SNAPSHOT_DATE_OR_VERSION')
     return authority,binding,day
 
 def read_snapshot(reader,binding):
+    if getattr(reader,'pg_candidate_schema',None):
+        items=[];offset=0
+        while True:
+            page=reader.query('stocks',{'limit':'200','offset':str(offset)})
+            items.extend(page['items']);offset+=len(page['items'])
+            if offset>=page['total'] or not page['items']:break
+        return dict(items=items,AS_RECORDED=False,first_available_proven=False,model_known_at=None,
+            knowledge_lineage=reader.context.get('knowledge_lineage','RECONSTRUCTED_CORRECTED'),sources={},
+            reason='PG_CANDIDATE_SNAPSHOT_HAS_NO_FIRST_AVAILABLE_AT_T0_PROOF')
     from .current_v4_context import CurrentAcceptedV4Reader
     return CurrentAcceptedV4Reader(reader.root)._read(binding['snapshot'])
 def envelope(reader,binding,day,**payload):
@@ -57,13 +79,15 @@ def replay(reader,query):
     offset=int(query.get('offset',0));limit=int(query.get('limit',30));total=len(items)
     followup=None;history=None
     if view=='corrected' and entity and items:
-        bars=chart(reader,dict(entity_id=items[0]['entity_id']),{'price_basis':'RAW','limit':200})['items']
-        history=dict(items=[b for b in bars if b['trade_date']<=day][-120:],price_basis='RAW',as_of=day,source=authority['sources']['series'],AS_RECORDED=False)
+        chart_data=chart(reader,dict(entity_id=items[0]['entity_id']),{'price_basis':'RAW','limit':200})
+        bars=chart_data.get('items',[])
+        history=dict(items=[b for b in bars if b['trade_date']<=day][-120:],price_basis='RAW',as_of=day,
+            source=chart_data.get('source'),AS_RECORDED=False,reason=chart_data.get('reason'))
     if query.get('followup'):
         if query['followup']!='1' or not entity:raise ValueError('FOLLOWUP_REQUIRES_EXPLICIT_ENTITY')
         if view!='corrected':raise ValueError('UNADMITTED_FROZEN_FOLLOWUP_SOURCE')
         sid=items[0]['entity_id'] if items else None
-        bars=chart(reader,dict(entity_id=sid),{'limit':200})['items'] if sid else [];by={x['trade_date']:x for x in bars};sessions=authority['session_dates'];i=sessions.index(day);targets=[]
+        chart_data=chart(reader,dict(entity_id=sid),{'limit':200}) if sid else {'items':[]};bars=chart_data.get('items',[]);by={x['trade_date']:x for x in bars};sessions=authority['session_dates'];i=sessions.index(day);targets=[]
         for n in (1,3,5):
             target=sessions[i+n] if i+n<len(sessions) else None;bar=by.get(target);targets.append(dict(horizon=n,target_trade_date=target,status='OBSERVED_AFTER_T0' if bar else 'PENDING_NO_ACCEPTED_LATER_SESSION',bar=bar))
         followup=dict(scope='POST_T0_OBSERVATIONS_EXCLUDED_FROM_T0_HASH',AS_RECORDED=False,items=targets,coordinate_date=reader.context['trade_date'])

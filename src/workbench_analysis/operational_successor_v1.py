@@ -124,23 +124,15 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
             # must use the manifest embedded in the accepted Head.
             raise ValueError('PG_OPERATIONAL_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
         validate(root,candidate,pg_owner_authority=self.pg_owner_authority)
-        from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY,context_snapshot
-        if MEMBERSHIP_KEY in candidate:
-            self.snapshot=context_snapshot(root,candidate)
-        else:
-            self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
+        from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
+        self.snapshot=context_snapshot(root,candidate)
         self.user_authorized_cutover=True;self.independent_external_acceptance=False
         self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
-        from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY
         day=self.candidate['accepted_trade_date']
-        if MEMBERSHIP_KEY in self.candidate:
-            current=self.snapshot
-        else:
-            current=json.loads(checked(self.root,self.candidate['membership_snapshot']).read_bytes())
-        return dict(metadata(current,day),contract_id=CONTRACT,context_token=self.context_digest,publication_id=self.context_digest,
+        return dict(metadata(self.snapshot,day),contract_id=CONTRACT,context_token=self.context_digest,publication_id=self.context_digest,
                     accepted_trade_date=day,data_cutoff_date=day,available_trade_dates=self.candidate['published_sessions'],
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,
                     read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY',production_accepted=True,

@@ -1301,19 +1301,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,self.envelope(day,status='READY',left=a,right=b,mode=mode,as_of=asof,PIT_ELIGIBLE=False,comparison_scope='CORRECTED_RECONSTRUCTED; NOT_STRICT_PIT',items=[],total=0)
         if path=='/api/v4/forward':
             ref=self.api.candidate['owners'][day].get('validation_cohort')
-            owner=None
             if ref:
-                owner=json.loads(checked(self.api.root,ref).read_bytes())
-                if owner.get('contract_id')!='VALIDATION_COHORT_READ_R3_V2' or owner.get('trade_date')!=day:
-                    raise ValueError('COHORT_OWNER_CONTRACT_OR_DATE_MISMATCH')
-            if owner:
                 statistics=read_authorized_statistics(self.api.root,
                     accepted_head={'path':'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json','sha256':self.api.token},
                     owner_binding=ref,trade_date=day)
+                owner_present=True
             else:
                 statistics=read_statistics(None,cutoff=None,trade_date=day)
-            return 200,self.envelope(day,status='READY' if owner else 'SOURCE_INCOMPLETE',data=statistics,
+                owner_present=False
+            return 200,self.envelope(day,status='READY' if owner_present else 'SOURCE_INCOMPLETE',data=statistics,
                 source=ref,contract_id='VALIDATION_COHORT_STATISTICS_BFF_R3_V1',
-                reason=None if owner else 'NO_AUTHORIZED_COHORT_OWNER',
+                reason=None if owner_present else 'NO_AUTHORIZED_COHORT_OWNER',
                 focus_is_validation_cohort=False,write_authorized=False,PIT_ELIGIBLE=False)
         return super().get(path,self._base_query(q))

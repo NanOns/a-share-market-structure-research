@@ -1,6 +1,7 @@
 """Immutable PG history packs preserving accepted raw/QFQ payload semantics."""
 import hashlib
 import json
+import re
 from psycopg.types.json import Jsonb
 from .v4_native import connection, create_schema, workspace_schema, configured_dsn
 import psycopg
@@ -50,7 +51,7 @@ def build(root,rows,*,head_token,t0,source_digest):
         # Canonical order removes source iteration order from version identity.
         with pg.cursor(name='history_digest') as cur:
             cur.execute('SELECT security,payload FROM stage_history ORDER BY security')
-            for sid,series in cur: logical.update(canonical(dict(security_id=sid,bars=series))+b'\n')
+            for sid,series in cur: logical.extend(canonical(dict(security_id=sid,bars=series))+b'\n')
         digest=logical.hexdigest()
         expected=(digest,symbols,bars,head_token,t0,source_digest)
         if existing and existing!=expected: raise ValueError('HISTORY_VERSION_IDENTITY_CONFLICT')
@@ -64,8 +65,9 @@ def read(root,binding,day,sid):
         from .v4_history_corrections_pg_v2 import read as corrected_read
         return corrected_read(root,binding,day,sid)
     if binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql': raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
-    if binding.get('schema')!=workspace_schema(root,'history') or binding.get('T0')!=day: raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
-    with connection(binding['schema'],read_only=True) as pg:
+    schema=binding.get('schema')
+    if not isinstance(schema,str) or not re.fullmatch(r'v4_history_[a-f0-9]{16}',schema) or binding.get('T0')!=day: raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
+    with connection(schema,read_only=True) as pg:
         version=pg.execute('SELECT head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count FROM history_versions WHERE version=%s',(binding['version'],)).fetchone()
         if version!=(binding['head_token'],day,binding['source_digest'],binding['logical_digest'],binding['symbol_count'],binding['bar_count']): raise ValueError('PG_HISTORY_IDENTITY_MISMATCH')
         row=pg.execute('SELECT payload FROM history WHERE version=%s AND security=%s',(binding['version'],sid)).fetchone()

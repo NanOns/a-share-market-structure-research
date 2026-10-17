@@ -1,12 +1,12 @@
 # V4_R21_R5 全模块文件引用与 Workspace 集中实修收尾报告
 
 - 执行分支：`codex/v4-workspace-cleanup`（基础 `4a69c4cd0841c9fbb83e730c2e4f9a910d8628d2`）
-- 状态：`CODE_REPAIR_AND_PG_CANDIDATE_BROWSER_ACCEPTANCE; FORMAL_HEAD_CLOSURE_PENDING`
+- 状态：`CODE_SCOPE_PARTIAL; BROWSER_PARTIAL; LIVE_PG_VERIFIED; FORMAL_HEAD_CLOSURE_PENDING`
 - 本次范围：现役 V4 的 PG 读取链、Owner/Membership、合同 Registry、股票历史、回放、研究 BFF/UI、开发候选服务及 Workspace 引用。
 
 ## 实际代码修复
 
-改动 **15 个运行时代码文件、1 个 PostgreSQL 迁移、4 个聚焦测试文件**。按功能链计，实际修复 10 组：
+相对任务卡冻结 HEAD，本分支累计修改 **26 个现役 V4 运行时代码文件**、1 个 PostgreSQL 迁移及 4 个聚焦测试文件；本轮新增修改其中 17 个运行时代码文件。按功能链计，实际替换/收紧 10 组：
 
 1. V4 原生连接使用现有 `WORKBENCH_PG_DSN` 连接同一数据库；保留显式 V4 覆盖项，不再要求额外 Reader DSN。
 2. 开发候选服务直接绑定 PG snapshot schema，`/api/v4/*` 经 PG reader/BFF 读取；该分支不构造文件型 accepted-Head reader，不读取 UI authority 文件来选入口，也不启动日更 worker。
@@ -18,6 +18,10 @@
 8. 回放/比较新增候选快照路径：正确标注事后重建、严格 PIT 证明不足时不显示为 PIT；后续观察保持独立区。
 9. `/api/operations/status` 和诊断 Jobs 页面展示 PG snapshot 的 T0、记录数及“无日更 worker/无作业进度”真实状态。
 10. 新增合同版本与审批事件 PG Registry 迁移，落实 append-only 约束及 Accepted publication 的合同绑定校验。
+
+本轮增量实修：日更 Owner/生命周期、Membership、Sector、Calendar、Predecessor 读取统一走 PG 绑定；在线 operational Head 缺失时停止读取冻结文件回退；read-index R2 authority 改为 candidate/Head 内嵌的 PG binding；Core BFF 与服务缓存不再用 workspace Head 文件或 R2 JSON 选择运行入口；source capture 的 calendar 由 PG publication Head/contract binding 提供；日更路径与 TDX source/cache roots 复用中央路径解析器；更新日更候选绑定后的 transport 再进入 CAS；修复 PG 板块名查询以同时匹配 canonical `display_name`。这些改动覆盖真实读链，但不等同于稳定 ID 正式核销。
+
+续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器；其历史 evidence/report 输入仍未完成 PG化，暂不能称日更链 PG-only。
 
 ## PostgreSQL 实例操作
 
@@ -33,10 +37,13 @@
 - 板块：检索“煤炭开采”返回真实 PG 结果；详情成员及字段可读。
 - 个股：检索 `600675` 显示“中华企业”；详情、行情值可读。历史图在 Head/source 不匹配时显式停止拼接。
 - Focus/Forward：显示 Focus 469 条锚点、Forward 117 个样本、585 条期限计划、5 条已发布结果及 0 个成熟样本；未宣称胜率或收益分布。
+- Focus 真实搜索 `600675` 后返回 1 条中华企业（SH.600675）；市场页展开上证指数真实历史图，页面显示指数收盘 3842.19、原始成交量单位待核实。
 - 市场：2344 涨、2712 跌、155 平、13 未知，市场分母 5224、实际行情 5213；指数、涨跌停和事件区域显示。
 - 诊断：health 4 项真实记录；Jobs 页显示 `PG_CANDIDATE_SNAPSHOT`、T0 和计数，并明确没有启动日更 worker。
 - 回放：真实操作选择中华企业和“事后重建对照”，显示实际收盘 2.520、成交额 323885760、成交量 135013893；页面明确声明这不是 PIT。严格 PIT 可用日为 0，且未伪造 PIT 结果。
 - 比较：真实操作运行“股票 vs 市场”，中华企业收益来源标为不完整；同窗 Universe 基准显示 -0.136%，并标注共同起止日。
+- 本轮重启后再次在内置浏览器打开“煤炭开采”详情：实际 URL `/v4/research/sectors/INDUSTRY%3AT010101`，读取 25 个成员、当前宽度/相对强度及成员详情。缺少前序 PIT 成分股的历史轮动值显示“来源能力不足”，页面明确未用当前成员回填。
+- 同一现场再次确认首页仍显示 PG 候选快照、T0 `2026-09-30`；Compare 严格 PIT 可用日期 0。Shadow 路由显示 `NO_REAL_SHADOW_DATA`、真实样本 0，故浏览器验收为部分通过，不能报告全模块 PASS。
 
 以上为候选 UI 功能验收，不是生产验收。开发服务端口为 28766，未触碰 28765。
 
@@ -48,7 +55,7 @@
 
 ## 未完成项与单独授权边界
 
-- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。既有矩阵最新保存计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；任务卡冻结摘要为 53/10/203，差异是一行已在既有矩阵中从 ingress-open 归入 code-pending。本轮没有重复全仓扫描或逐 ID 关闭核销，因此上述存量均作为未关闭处理。被明确识别的活跃点包括 `core_product_server_r1.py` 的 accepted API/Head 签名装载、`producer_bootstrap_v1.py` 的 Head/producer 输入、`operational_successor_release_v1.py` 的 Head JSON 写入和 `v4_current_stage_authority.py` 的 authority 文件读取。非 V4 引用仅登记。
+- 任务卡原始稳定 ID 总数 **266**，正式关闭数仍为 **0/266**。冻结矩阵原始计数为 PG-only code pending **54**、ingress adapter open **9**、OPEN **203**、未映射引用边 **22**；冻结摘要出现 53/10/203 的一项分类差异，本轮未改分母。只按原矩阵与本分支源码路径做 delta，发现 **66 个稳定 ID 的主 source_file 落在本分支已改路径**（冻结状态分布：40 PG-only pending、6 ingress open、20 OPEN）；“路径被改”不代表这 66 项都迁移或关闭，未逐 ID 精确核销者仍全部保持未关闭。活跃残留包括 `v4_operational_owner_authority_v2.py` / `v4_operational_owner_pg_closeout.py` 中历史 Head/authority 初次导入边界、`operational_successor_release_v1.py` 对 Operational Research Head 的文件 CAS/恢复、`v4_current_stage_authority.py` 的冻结 Stage/Head 读取，以及 Owner/Head/Publication 缺正式 PG accepted row 导致的下游阻断。非 V4 引用只登记。
 - 7 份导入合同均为 DRAFT，没有批准事件；publication/head 表仍为空。不得将其称为正式接受或 Head 切换。
 - 仍需单独授权：正式 Head CAS/切换、生产 28765 部署、物理删除及 Git 强推/历史重写。正常提交和推送不包含上述操作。
 - GitHub Issue/PR 状态更新连接器此前返回 HTTP 403，本轮不通过 GitHub CLI 绕过。

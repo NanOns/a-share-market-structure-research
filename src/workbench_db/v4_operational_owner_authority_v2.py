@@ -4,11 +4,9 @@ HTTP uses the full accepted Head fact_key. Stored facts bind exact dated source
 owners; their immutable fact fact_key can be reused across successive Heads.
 This module prepares candidates only and never moves an accepted pointer.
 """
-import json
 from pathlib import Path
 from .v4_forward_pg_r1 import ForwardFactStore,canonical,digest
 from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,read_authority_manifest,attest_cached,descriptor_metadata,inline_descriptor,OWNER,FOLDER
-from workbench_analysis.r43_owner_replay import checked
 
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
@@ -16,7 +14,13 @@ KEY='native_pg_owner_authority'
 def prepare_successor(root,candidate,*,predecessor_authority_binding=None):
     """Append dated facts and bind their authority before the single Head CAS."""
     root=Path(root).resolve()
-    predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes())
+    # Import the predecessor exactly once through the dedicated PG ingress if
+    # this candidate has not already been bound to its PG fact. All subsequent
+    # selection and reads use that immutable fact, not the mutable Head path.
+    from .v4_operational_predecessor_pg_v1 import KEY as PREDECESSOR_KEY, prepare as prepare_predecessor, read_predecessor
+    if PREDECESSOR_KEY not in candidate:
+        prepare_predecessor(root,candidate)
+    predecessor=read_predecessor(root,candidate)
     if KEY in predecessor:
         prior=load(root,predecessor)
     else:
@@ -77,7 +81,6 @@ def prepare(root,candidate,predecessor=None):
     for day,domains in candidate['owners'].items():
         owners[day]={}
         for domain,binding in domains.items():
-            checked(root,binding)
             if predecessor and predecessor['source_owners'].get(day,{}).get(domain)==binding:
                 old=predecessor['owners'][day][domain]
                 entry=old if predecessor['contract_id']==CONTRACT else dict(descriptor=old,fact_token=predecessor['head_token'])
@@ -86,6 +89,12 @@ def prepare(root,candidate,predecessor=None):
                 read_fact(root,entry['descriptor'],entry['fact_token'],day,domain,binding)
                 counts['reused']+=1
             else:
+                # A new source payload is a deliberate ingress operation. A
+                # reused PG Owner only needs its immutable source binding and
+                # live PG digest; it must remain readable after workspace files
+                # are moved or retired.
+                from .v4_operational_owner_pg_closeout import validate_source_binding
+                validate_source_binding(binding)
                 fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,domain=domain,source_binding=binding)))
                 content=rows(root,binding)
                 descriptor=append(root,fact_key,day,domain,binding,content)

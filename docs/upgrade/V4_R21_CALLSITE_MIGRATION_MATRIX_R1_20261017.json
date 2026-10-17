@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 239,
+    "migration_open": 234,
     "statuses": {
-      "OPEN": 231,
+      "OPEN": 226,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 27
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 32
     },
-    "code_level_pg_read_paths_implemented": 27,
-    "remaining_open_or_ingress": 239,
+    "code_level_pg_read_paths_implemented": 32,
+    "remaining_open_or_ingress": 234,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -6384,20 +6384,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_daily_evidence_pg_v1 Head-bound T0 evidence fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "document": "day_receipt",
+        "implemented_code": "OperationalSuccessorReaderV1.validate routes this exact daily document through v4_operational_daily_evidence_pg_v1.read when native_daily_evidence is embedded. The PG branch binds T0, source identity, document name, fact token and descriptor, with no file fallback.",
+        "test_evidence": [
+          "test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles",
+          "test_daily_evidence_reader_rejects_source_binding_substitution"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_DAILY_EVIDENCE_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160135",
@@ -6450,20 +6461,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_daily_evidence_pg_v1 Head-bound T0 evidence fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "document": "numeric_core_oracle",
+        "implemented_code": "OperationalSuccessorReaderV1.validate routes this exact daily document through v4_operational_daily_evidence_pg_v1.read when native_daily_evidence is embedded. The PG branch binds T0, source identity, document name, fact token and descriptor, with no file fallback.",
+        "test_evidence": [
+          "test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles",
+          "test_daily_evidence_reader_rejects_source_binding_substitution"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_DAILY_EVIDENCE_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160136",
@@ -6516,20 +6538,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_daily_evidence_pg_v1 Head-bound T0 evidence fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "document": "sector_oracle",
+        "implemented_code": "OperationalSuccessorReaderV1.validate routes this exact daily document through v4_operational_daily_evidence_pg_v1.read when native_daily_evidence is embedded. The PG branch binds T0, source identity, document name, fact token and descriptor, with no file fallback.",
+        "test_evidence": [
+          "test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles",
+          "test_daily_evidence_reader_rejects_source_binding_substitution"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_DAILY_EVIDENCE_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160137",
@@ -6582,20 +6615,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_daily_evidence_pg_v1 Head-bound T0 evidence fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "document": "source_freeze",
+        "implemented_code": "OperationalSuccessorReaderV1.validate routes this exact daily document through v4_operational_daily_evidence_pg_v1.read when native_daily_evidence is embedded. The PG branch binds T0, source identity, document name, fact token and descriptor, with no file fallback.",
+        "test_evidence": [
+          "test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles",
+          "test_daily_evidence_reader_rejects_source_binding_substitution"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_DAILY_EVIDENCE_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160138",
@@ -6648,20 +6692,31 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "v4_operational_owner_authority_v2 and domain typed Owner reader",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "v4_operational_daily_evidence_pg_v1 Head-bound T0 evidence fact",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_daily_evidence; live Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "document": "period_numeric_oracle",
+        "implemented_code": "OperationalSuccessorReaderV1.validate routes this exact daily document through v4_operational_daily_evidence_pg_v1.read when native_daily_evidence is embedded. The PG branch binds T0, source identity, document name, fact token and descriptor, with no file fallback.",
+        "test_evidence": [
+          "test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles",
+          "test_daily_evidence_reader_rejects_source_binding_substitution"
+        ],
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "NO_NATIVE_DAILY_EVIDENCE_AUTHORITY"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160139",
@@ -17288,6 +17343,32 @@
         "p1_formally_remaining": 266,
         "status": "FOUR_MEMBERSHIP_AND_REGISTRY_OWNER_CALLSITES_RECONCILED_TO_PG_CODE; all remain formally open.",
         "next": "Migrate daily QA receipts/oracles and predecessor Head authority readers where exact source contracts are available."
+      },
+      {
+        "batch_id": "R21-R4-daily-qa-evidence-pg-reader-r44",
+        "files": [
+          "src/workbench_db/v4_operational_daily_evidence_pg_v1.py",
+          "src/workbench_analysis/operational_successor_v1.py",
+          "tests/test_v4_operational_daily_evidence_pg.py",
+          "docs/upgrade/V4_R21_R4_DAILY_QA_PG_READER_R44_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-a13b2a1ff5bb9cf61b5a",
+          "V4-BCA-R2-0f29980023f2eee60e7d",
+          "V4-BCA-R2-fc9fef585ec2c4fd6c8f",
+          "V4-BCA-R2-ba7c26e6e599746976e6",
+          "V4-BCA-R2-7eb67954b0a971f913e0"
+        ],
+        "evidence": [
+          "Daily receipt, core numeric oracle, sector oracle, source freeze and period numeric oracle now have one T0-bound PG evidence reader and candidate preparation contract.",
+          "Successor validation routes these exact five reads through the PG authority when native_daily_evidence is present; no local fallback in PG mode.",
+          "Current Head lacks this authority; five rows are code-implemented only and remain formally open. Period history/verifier and other exact inputs remain open."
+        ],
+        "verification": "Focused daily evidence/Reader/registry selection: 13 passed. Controlled PG-reader boundaries only; no live DB, service, source capture or Head update.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "FIVE_DAILY_QA_EVIDENCE_CALLSITES_HAVE_HEAD_BOUND_PG_READ_CODE_PENDING_LIVE_RECONCILIATION; no formal row closed.",
+        "next": "Continue period source and predecessor authority reads; require approved same-T0 PG readback before formal closure."
       }
     ]
   }

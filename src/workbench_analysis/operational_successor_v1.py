@@ -39,6 +39,14 @@ def _validate_membership_inputs(root,candidate):
     return snapshot
 
 
+def _daily_evidence(root,candidate,name,source_binding=None):
+    from workbench_db.v4_operational_daily_evidence_pg_v1 import KEY as EVIDENCE_KEY,read
+    if EVIDENCE_KEY in candidate:
+        return read(root,candidate,name,source_binding=source_binding)
+    binding=source_binding if source_binding is not None else candidate[name]
+    return json.loads(checked(root,binding).read_bytes())
+
+
 def validate(root, candidate, *, pg_owner_authority=None):
     root=Path(root)
     if candidate.get('contract_id')!=CONTRACT:
@@ -67,10 +75,10 @@ def validate(root, candidate, *, pg_owner_authority=None):
         raise ValueError('SUCCESSOR_REQUIRED_OWNER_MISSING')
     _validate_owner_bindings(root,candidate,pg_owner_authority)
     for binding in candidate['source_registry'][day].values():checked(root,binding)
-    qa=json.loads(checked(root,candidate['day_receipt']).read_bytes())
+    qa=_daily_evidence(root,candidate,'day_receipt')
     if qa.get('target_session')!=day or qa.get('acceptance')!='DERIVED_READY' or qa.get('owners')!=owners:
         raise ValueError('SUCCESSOR_NUMERIC_DAY_RECEIPT_REQUIRED')
-    core=json.loads(checked(root,qa['numeric_core_oracle']).read_bytes())
+    core=_daily_evidence(root,candidate,'numeric_core_oracle',qa['numeric_core_oracle'])
     target_oracles=[row for row in core['oracle'] if row['trade_date']==day]
     if len(target_oracles)!=1 or target_oracles[0].get('result')!='PASS' or target_oracles[0].get('errors'):
         raise ValueError('SUCCESSOR_CORE_ORACLE_NOT_VERIFIED')
@@ -79,13 +87,13 @@ def validate(root, candidate, *, pg_owner_authority=None):
         raise ValueError('SUCCESSOR_SOURCE_BAR_CONSERVATION')
     if any(target_owners[0][name]!=owners[name] for name in ('raw','adjusted','core')):
         raise ValueError('SUCCESSOR_CORE_OWNER_BINDING_MISMATCH')
-    sector=json.loads(checked(root,qa['sector_oracle']).read_bytes())
+    sector=_daily_evidence(root,candidate,'sector_oracle',qa['sector_oracle'])
     if not any(row.get('trade_date')==day for row in sector.get('oracle',[])) or any(row.get('passed') is not True for row in sector['oracle']):
         raise ValueError('SUCCESSOR_SECTOR_ORACLE_NOT_VERIFIED')
-    freeze=json.loads(checked(root,qa['source_freeze']).read_bytes())
+    freeze=_daily_evidence(root,candidate,'source_freeze',qa['source_freeze'])
     if freeze.get('target_session')!=day:raise ValueError('SUCCESSOR_SOURCE_FREEZE_DATE_MISMATCH')
     checked(root,qa['period_kernel'])
-    period=json.loads(checked(root,candidate['period_numeric_oracle']).read_bytes())
+    period=_daily_evidence(root,candidate,'period_numeric_oracle')
     if period.get('target_session')!=day or period.get('acceptance')!='PASS' or period.get('errors') or period.get('checks',0)<=0:
         raise ValueError('SUCCESSOR_PERIOD_ORACLE_NOT_VERIFIED')
     if period.get('owners')!={k:owners[k] for k in ('period_raw','period_adjusted')}:

@@ -37,19 +37,23 @@ def _runtime_acceptance_manifest_path(root, day):
     return path
 
 
-def _tdx_gbbq_source_path():
+def _tdx_gbbq_source_path(project_root=None):
     """Load the configured, read-only TDX source input path."""
-    contract_path = Path(__file__).resolve().parents[2] / 'config/v4_daily_tdx_readonly_source_v1.json'
+    repository_root = Path(__file__).resolve().parents[2]
+    project_root = Path(project_root or repository_root).resolve()
+    contract_path = repository_root / 'config/v4_daily_tdx_readonly_source_v1.json'
     contract = json.loads(contract_path.read_bytes())
     if (contract.get('contract_id') != 'V4_DAILY_TDX_READONLY_SOURCE_R1'
-            or contract.get('contract_version') != '1.0.0'
+            or contract.get('contract_version') != '1.1.0'
             or contract.get('source_mode') != 'READ_ONLY_INPUT'):
         raise ValueError('DAILY_TDX_SOURCE_PATH_CONTRACT_INVALID')
-    raw_path = contract.get('gbbq_path', '')
-    path = Path(raw_path)
-    if not path.is_absolute() and not PureWindowsPath(raw_path).is_absolute():
-        raise ValueError('DAILY_TDX_SOURCE_PATH_MUST_BE_ABSOLUTE')
-    return path
+    raw_path = contract.get('gbbq_relative_path', '')
+    relative = Path(raw_path)
+    if (not raw_path or relative.is_absolute() or PureWindowsPath(raw_path).is_absolute()
+            or '..' in relative.parts or relative.as_posix() != 'T0002/hq_cache/gbbq'):
+        raise ValueError('DAILY_TDX_RELATIVE_SOURCE_PATH_INVALID')
+    from common.paths import resolve_tdx_root
+    return (resolve_tdx_root(project_root) / relative).resolve()
 
 
 def _accepted_trade_date(root):
@@ -531,7 +535,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
             status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
             scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
             new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
-        gbbq=_tdx_gbbq_source_path()
+        gbbq=_tdx_gbbq_source_path(root)
         before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
         if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
         dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],

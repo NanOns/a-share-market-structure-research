@@ -125,3 +125,15 @@ def test_active_runtime_receipt_path_comes_from_versioned_contract(tmp_path):
 
 def test_tdx_gbbq_is_configured_as_read_only_input():
     assert PureWindowsPath(str(_tdx_gbbq_source_path())).is_absolute()
+
+
+def test_tdx_gbbq_path_uses_central_configured_root(tmp_path):
+    from common.paths import resolve_tdx_root
+
+    configured = tmp_path / "configured-tdx"
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/paths.yaml").write_text(
+        f"tdx:\n  source_root: {configured.as_posix()}\n", encoding="utf-8"
+    )
+
+    assert _tdx_gbbq_source_path(tmp_path) == resolve_tdx_root(tmp_path) / "T0002/hq_cache/gbbq"

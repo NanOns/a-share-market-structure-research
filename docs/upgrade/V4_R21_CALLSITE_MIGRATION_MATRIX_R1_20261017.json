@@ -17,8 +17,9 @@
     "without_reference_ids": 22,
     "migration_open": 0,
     "statuses": {
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 265,
-      "OUT_OF_SCOPE_NON_V4_REGISTERED": 1
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 264,
+      "OUT_OF_SCOPE_NON_V4_REGISTERED": 1,
+      "IMPLEMENTED_PG_ONLY_NO_FILE_FALLBACK": 1
     },
     "code_level_pg_read_paths_implemented": 265,
     "remaining_open_or_ingress": 0,
@@ -16473,7 +16474,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+      "migration_status": "IMPLEMENTED_PG_ONLY_NO_FILE_FALLBACK",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -16484,17 +16485,20 @@
         "status": "IMPLEMENTED_PG_PATH_PENDING_LIVE_READBACK"
       },
       "acceptance_evidence": null,
-      "blocker": "PG-only consumer code is wired; live same-T0 database readback and inventory reconciliation remain open.",
+      "blocker": "Code now requires the candidate Head-bound PG product catalog for all online reads. Only formal accepted-Head/source-edge reconciliation remains open.",
       "baseline_function": "dated_product_manifest",
       "migration_evidence": {
-        "batch_id": "R21-R4-product-catalog-bff-manifest-helper-r50",
-        "implemented_code": "dated_product_manifest accepts the validated Head-bound PG catalog and re-reads it through native_product_catalog_v3.load using the exact candidate. CoreProductBFFR1.chart_history_pack and pack route PG catalog manifests through this helper; that branch performs no manifest-path read.",
+        "batch_id": "R21-R5-continuation-product-catalog-no-file-fallback-20261018",
+        "implemented_code": "dated_product_manifest accepts only V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1, requires the PG candidate descriptor, reloads exact facts through native_product_catalog_v3.load, and verifies catalog/Owner digest identity. exact_candidate_chart_r3 now resolves the same catalog from accepted_api candidate PG facts instead of config/core_product_read_authority_r1.json.",
         "test_evidence": [
           "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
           "test_pg_product_catalog_rejects_owner_binding_substitution"
         ],
         "formal_status": "OPEN",
-        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "read_mode": "PG_HEAD_BOUND_CATALOG_ONLY_NO_LOCAL_AUTHORITY_FALLBACK",
+        "status": "CODE_REPLACED_AND_PG_CANDIDATE_PATH_WIRED",
+        "verification": "Python syntax compile and git diff --check passed; active routes were browser-verified on 28766. The running backend predates this helper change; the changed isolated exact-candidate route was not represented as browser-verified."
       },
       "reference_evidence": [
         {

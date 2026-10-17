@@ -67,7 +67,7 @@ def home_summary(row, fields):
     return result
 
 def product_manifest_bindings(authority):
-    """Versioned authority: R1 singleton or R2 exact date catalogue."""
+    """Return dated bindings only from the versioned PG catalogue."""
     if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
         dates=authority.get('dates');scopes=authority.get('scopes')
         if not isinstance(dates,dict) or not dates or not isinstance(scopes,dict) or set(dates)!=set(scopes):
@@ -75,41 +75,21 @@ def product_manifest_bindings(authority):
         if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED','historical_PIT_permission')):
             raise ValueError('PRODUCT_AUTHORITY_PIT_ESCALATION')
         return list(dates.values())
-    if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R1':
-        return [authority['manifest']]
-    if authority.get('contract_id') == 'CORE_PRODUCT_READ_AUTHORITY_R2':
-        if set(authority) != {'contract_id', 'dates'} or not isinstance(authority['dates'], dict):
-            raise ValueError('PRODUCT_AUTHORITY_CATALOG_INVALID')
-        return list(authority['dates'].values())
-    raise ValueError('PRODUCT_AUTHORITY_CONTRACT_REQUIRED')
+    raise ValueError('PRODUCT_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
 
 
 def dated_product_manifest(root, authority, day, *, candidate=None):
     product_manifest_bindings(authority)
-    if candidate is not None:
-        from .native_product_catalog_v3 import PG_KEY
-        if PG_KEY in candidate and authority.get('contract_id') != 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
-            raise ValueError('PRODUCT_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
-    if authority.get('contract_id') == 'V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_PG_R1':
-        from .native_product_catalog_v3 import PG_KEY,load
-        if not isinstance(candidate,dict) or PG_KEY not in candidate:
-            raise ValueError('PRODUCT_PG_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
-        verified=load(root,candidate)
-        if (verified.get('owner_source_digest')!=authority.get('owner_source_digest')
-                or verified.get('catalog_source_binding')!=authority.get('catalog_source_binding')):
-            raise ValueError('PRODUCT_PG_AUTHORITY_SUBSTITUTION')
-        manifest=verified['dates'].get(day)
-        if manifest is not None and manifest.get('T0')!=day:
-            raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
-        return manifest
-    binding = authority.get('dates', {}).get(day) if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2' else authority['manifest']
-    if binding is None:
-        return None
-    manifest = json.loads(checked(root, binding).read_bytes())
-    if manifest['T0'] != day:
-        if authority['contract_id'] == 'CORE_PRODUCT_READ_AUTHORITY_R2':
-            raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
-        return None
+    from .native_product_catalog_v3 import PG_KEY,load
+    if not isinstance(candidate,dict) or PG_KEY not in candidate:
+        raise ValueError('PRODUCT_PG_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    verified=load(root,candidate)
+    if (verified.get('owner_source_digest')!=authority.get('owner_source_digest')
+            or verified.get('catalog_source_binding')!=authority.get('catalog_source_binding')):
+        raise ValueError('PRODUCT_PG_AUTHORITY_SUBSTITUTION')
+    manifest=verified['dates'].get(day)
+    if manifest is not None and manifest.get('T0')!=day:
+        raise ValueError('PRODUCT_AUTHORITY_DATE_MISMATCH')
     return manifest
 
 def prioritize_home_changes(changes):

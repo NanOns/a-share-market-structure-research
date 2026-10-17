@@ -11,6 +11,7 @@
 - `v4_operational_owner_authority_v2.py`：支持旧 `V4_DATED_OPERATIONAL_RECONSTRUCTED_OWNER_V1` predecessor，按精确 Owner binding 从 PG ingress 读取；新增 `prepare_legacy_candidate` 生成 candidate-only authority/descriptor。
 - `v4_operational_predecessor_pg_v1.py::prepare`：PG current predecessor 保留精确 CAS identity check；当 successor candidate 精确绑定旧文件时，在一次性 ingress 边界导入其 SHA/bytes 校验源至 PG fact 并 readback，再由现有 `prepare_successor` 继续处理。该 legacy predecessor 不被标成 accepted Head。
 - 直接调用 `prepare_successor` 全链路通过：PG predecessor fact、88 个 Owner domain payload 和 authority manifest 校验完成，`publication=false`、`accepted_head_changed=false`。
+- 继续定向检查发现 `core_product_bff_r1.py::dated_product_manifest` 仍保留 legacy R1/R2 JSON authority 回退；已收紧为只接受 Head-bound PG catalog，要求 candidate 含 PG descriptor，并从 PG readback 后核对 Owner/catalog digest。隔离行情候选路由 `exact_candidate_chart_r3.py` 改为从 `accepted_api` candidate 载入 PG catalog，不再读取本地 `core_product_read_authority_r1.json`。
 
 ## 共享 PostgreSQL 实际读写
 
@@ -22,10 +23,12 @@
 ## 28766 真实浏览器验收
 
 - 开发服务 `127.0.0.1:28766`；生产 `28765` 未触碰。首页、个股列表/详情、板块列表/详情、Focus/Forward、市场与事件、Diagnostics Health/Jobs/Sources/Contracts、比较和冻结回放均真实打开。所有数据页均标记 `PG 候选快照 · 不代表正式 Head`。
+- 本轮复开 Codex 内置浏览器核验首页、个股列表及搜索（“中华企业”精确 1 条，SH.600675，2.520）、板块列表、关注/Forward、市场与事件、Diagnostics；页面加载真实记录并未停留在加载态。此前已验证个股日/周线交互、比较和冻结回放。
 - 板块详情「区域地产」43 名成员；交互搜索「中华企业」精确返回 1 条（SH.600675，收盘 2.520），可进入个股详情。
 - 个股日线实际显示截至 `2026-09-30`、120/253 根及蜡烛图；通过浏览器周期控件选周线后显示 54/54 根周线蜡烛图，`/api/v4/stocks/{id}/chart?period=W` 实测 HTTP 200、状态 READY；再切回日线正常。行情周期交互验收通过。
 - 比较页显示严格 PIT 可用日期 0、模型为重建版本。冻结回放缺口抽屉显示 `PG_CANDIDATE_SNAPSHOT`、`AS_RECORDED=false`，原因是缺少 first-available-at-T0 证明；页面正确阻止将重建数据伪报为 PIT。
 - 28766 PID `42876` 于本轮 Owner/predecessor 后端改动前启动；停止该精确 PID 的操作被自动审查拒绝，未通过其他命令绕过。Owner/predecessor 新路径由直连 PG 的 `prepare_successor` 全链路 readback 验证；浏览器覆盖该进程当前服务的 V4 页面和 API 行为。当前网页服务只有 `127.0.0.1:28766` 在监听；`28765` 未监听；PostgreSQL 仍为 `5432`。
+- 当前 28766 进程也早于最后这次 BFF helper 修复启动；活跃页面浏览器验收覆盖该服务版本中原本已走 PG 的正常 BFF 路由。最后收紧的 helper 与隔离 exact-candidate 路由完成语法和 diff 验证，但没有把这两个新代码路径冒称为已在此旧进程上运行验证。
 
 ## 剩余开放点
 

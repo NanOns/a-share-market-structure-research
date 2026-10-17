@@ -38,8 +38,9 @@ def candidate(root,query,*,engineering_enable=False):
     if query.get('context_token')!=api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
     day=query.get('trade_date',api.candidate['accepted_trade_date']);sid=query.get('security_id')
     if day not in api.candidate['owners'] or not sid:raise ValueError('EXACT_DATED_IDENTITY_REQUIRED')
-    authority=json.loads((root/'config/core_product_read_authority_r1.json').read_bytes())
-    manifest=dated_product_manifest(root,authority,day)
+    from .native_product_catalog_v3 import load as load_product_catalog
+    authority=load_product_catalog(root,api.candidate)
+    manifest=dated_product_manifest(root,authority,day,candidate=api.candidate)
     if not manifest or manifest.get('authority_scope')!='ISOLATED_ENGINEERING_ONLY':
         raise ValueError('EXACT_ENGINEERING_AUTHORITY_REQUIRED')
     history=read(root,manifest['history_index'],day,sid)

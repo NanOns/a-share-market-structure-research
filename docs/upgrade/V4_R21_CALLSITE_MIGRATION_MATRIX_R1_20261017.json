@@ -3628,15 +3628,22 @@
         "status": "IMPLEMENTED_CODE_PENDING_LIVE_REGISTRATION_AND_NAMESPACE_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "The two runtime contract versions have not been registered/approved in the current PG namespace, and compliant read identity/catalog verification is pending. PG mode fails closed; no file fallback.",
+      "blocker": "Code path is now wired through the active executor; approved runtime acceptance fact/contract registration and compliant live PG readback are not available, so the original P1 row remains formally open.",
       "baseline_function": "execute_sources",
       "migration_evidence": {
-        "batch_id": "R21-R4-daily-runtime-contracts-pg-reader-r56",
-        "implemented_code": "The operational daily executor now defaults to v4.contract_versions and the latest APPROVED/REVOKED event in a read-only repeatable-read snapshot for the exact runtime contract id/version/namespace. It attests database identity and read-role privileges, verifies approval source revision and raw SHA, and fails closed without registry state. Both the TDX GBBQ path contract and BaoStock runtime acceptance path contract use this reader; file mode must be explicitly selected.",
+        "batch_id": "R21-R4-baostock-runtime-acceptance-executor-pg-r66",
+        "implemented_code": "The operational daily executor now defaults to v4.contract_versions and the latest APPROVED/REVOKED event in a read-only repeatable-read snapshot for the exact runtime contract id/version/namespace. It attests database identity and read-role privileges, verifies approval source revision and raw SHA, and fails closed without registry state. Both the TDX GBBQ path contract and BaoStock runtime acceptance path contract use this reader; file mode must be explicitly selected. R66 also wires the active operational daily executor default to load the exact date-bound runtime-acceptance fact and native BaoStock response bytes from PG; it emits a digest-bound PG authority record into the daily source freeze. A PG-origin derived cache supplies the existing freeze file contract; PG failure has no disk fallback. Explicit FILE mode remains for historical fixtures/development only.",
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
-        "current_head": "RUNTIME_CONTRACT_REGISTRATION_NOT_VERIFIED",
-        "verification": "32 focused registry/runtime-executor tests passed using controlled PG boundaries; no live catalog query or registry import."
+        "current_head": "Runtime acceptance facts/contracts remain unregistered or unverified in approved production namespace.",
+        "verification": "PG-default executor call path and exact native-response digest/tamper checks covered by controlled boundary tests; selected V4 workflow 314 passed after R66; no live PG, source capture or accepted business publication.",
+        "test_evidence": [
+          "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
+          "tests/test_operational_daily_executor_v1.py",
+          "tests/test_pre_next_t0_executor_chain.py",
+          "tests/test_next_t0_old_identity_preflight.py"
+        ],
+        "live_write": "NOT_RUN_NO_WRITE_AUTHORIZATION"
       },
       "reference_evidence": [
         {
@@ -16642,17 +16649,22 @@
       ".github/workflows/repository-policy.yml",
       "docs/upgrade/V4_R21_R4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R64_20261017.md",
       "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_XML_ENCODING_GUARD_R65_20261017.md",
+      "docs/upgrade/V4_R21_R4_DAILY_RUNTIME_ACCEPTANCE_EXECUTOR_PG_R66_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
       "scripts/capture_baostock_daily_update.py",
       "src/workbench_analysis/contract_registry_pg_v1.py",
+      "src/workbench_analysis/operational_daily_executor_v1.py",
       "src/workbench_db/v4_baostock_runtime_acceptance_pg_r1.py",
       "src/workbench_db/v4_membership_reference_pg_v1.py",
       "src/workbench_db/v4_operational_owner_authority_v2.py",
       "src/workbench_db/v4_operational_owner_pg_closeout.py",
       "src/workbench_service/core_product_bff_r1.py",
       "src/workbench_service/operational_successor_bff_v1.py",
+      "tests/test_next_t0_old_identity_preflight.py",
+      "tests/test_operational_daily_executor_v1.py",
+      "tests/test_pre_next_t0_executor_chain.py",
       "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
       "tests/test_v4_contract_registry_pg_v1.py"
     ],
@@ -17755,6 +17767,24 @@
         },
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "next": "Continue approval lifecycle and SQL compatibility after authorized read-only catalog reconciliation; continue actual PG consumer migrations."
+      },
+      {
+        "batch_id": "R21-R4-baostock-runtime-acceptance-executor-pg-r66",
+        "files": [
+          "src/workbench_analysis/operational_daily_executor_v1.py",
+          "src/workbench_db/v4_baostock_runtime_acceptance_pg_r1.py",
+          "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
+          "tests/test_operational_daily_executor_v1.py",
+          "tests/test_pre_next_t0_executor_chain.py",
+          "tests/test_next_t0_old_identity_preflight.py",
+          "docs/upgrade/V4_R21_R4_DAILY_RUNTIME_ACCEPTANCE_EXECUTOR_PG_R66_20261017.md"
+        ],
+        "evidence": [
+          "The active daily executor defaults to the date-bound PG runtime acceptance reader; exact native provider-response bytes are stored and verified with source SHA, receipt binding, date and observation time. The resulting daily freeze records the PG database identity, schema, acceptance-fact payload digest and native response binding. PG absence or validation errors do not fall back to local acceptance files. Explicit FILE mode is retained for historical fixtures/development."
+        ],
+        "verification": "R66 focused tests 13 passed; selected V4 PG/consumer workflow 314 passed (including the unchanged accepted R19/R20 and Universe tests). Controlled PG fixtures only. No live PG catalog/read/write, BaoStock source acquisition, Head CAS or complete business acceptance.",
+        "accounting": "Original P1 baseline remains 266; formal complete 0/266, formal remaining 266/266. Status counts remain 210 OPEN, 48 implemented PG-only read paths pending live reconciliation, 8 ingress adapters open; 218 open or ingress; 22 unmapped edges. Priority 28 other-business rows: 4 code-level PG paths pending live reconciliation, 23 OPEN, 1 ingress. Owner 200: 44 code-level PG paths pending live reconciliation, 149 OPEN, 7 ingress. R66 improves an existing mapped runtime-contract/daily call chain and does not add a separate baseline ID or formally close a row.",
+        "live_pg": "NOT_RUN_NO_COMPLIANT_READ_DSN; no actual PG writes authorized or attempted."
       }
     ]
   }

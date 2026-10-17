@@ -30,7 +30,7 @@ P1 rows remain open. Of the dynamic/unresolved paths, 331 are write callsites wh
 - Removed implicit drive-specific TDX-root fallback from `src/common/paths.py`; callers must use `config/paths.yaml` or the `TDX_ROOT` environment setting.
 - Removed the obsolete E-drive disposable-root allowance; the destination boundary now requires an explicit temp-root environment setting (`CODEX_DISPOSABLE_TEMP_ROOT` or `TMPDIR`), which local agent commands set to the user-mandated G: root.
 - Added regression coverage that an Owner read is classified as requiring database migration, business data reads/writes are not treated as configuration, API routes are not filesystem absolute paths, and TDX roots cannot silently fall back to a coded drive.
-- Focused CI test set: 224 passed. Scanner and inventory validator: PASS at the recorded local HEAD.
+- Focused CI test set: 221 passed. Scanner and inventory validator: PASS at commit `b340e32636e5edb0ba5825b0b2d02ab01078ac38`.
 - Local runtime evidence remains read-only and is separate from this code inventory. No database writes, Head changes, production deployment, or production-port checks were performed in this audit pass.
 
 ## Next stage

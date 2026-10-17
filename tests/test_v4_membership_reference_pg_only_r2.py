@@ -67,3 +67,33 @@ def test_membership_reference_rejects_file_authority_binding(tmp_path):
         reference_pg.KEY:{'path':'old-authority.json','sha256':'d'*64,'bytes':20}}
     with pytest.raises(ValueError,match='PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK'):
         reference_pg._load_authority(tmp_path,candidate)
+
+
+def test_core_product_bff_identity_records_calls_pg_reader_without_file_fallback(tmp_path,monkeypatch):
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+
+    candidate={'accepted_trade_date':'2026-10-12',reference_pg.KEY:{'engine':'postgresql'}}
+    rows=[{'security_id':'SID-1','source_security_key':'SH.600000','security_name':'Fixture'}]
+    binding={'contract_id':'V4_NATIVE_IDENTITY_REFERENCE_FIXTURE_R1','sha256':'a'*64}
+    calls=[]
+    def read_search_identity(root,selected,*,workspace_root=None):
+        calls.append((root,selected,workspace_root))
+        return rows,binding
+    monkeypatch.setattr(reference_pg,'read_search_identity',read_search_identity)
+    api=SimpleNamespace(root=tmp_path,candidate=candidate,cache={},pg_owner_workspace_root=None)
+    bff=object.__new__(CoreProductBFFR1);bff.api=api
+    assert bff.identity_records()==(rows,binding)
+    assert calls==[(tmp_path,candidate,None)]
+    assert bff.identity_records()==(rows,binding)
+    assert len(calls)==1
+
+
+def test_core_product_bff_rejects_identity_file_fallback_when_pg_authority_missing(tmp_path):
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+
+    api=SimpleNamespace(root=tmp_path,candidate={'accepted_trade_date':'2026-10-12'},cache={},pg_owner_workspace_root=None)
+    bff=object.__new__(CoreProductBFFR1);bff.api=api
+    with pytest.raises(ValueError,match='NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK'):
+        bff.identity_records()

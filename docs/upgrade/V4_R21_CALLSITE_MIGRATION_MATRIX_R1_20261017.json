@@ -15244,9 +15244,18 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": "New R21 targeted test assertions; current R20 inventory has not been regenerated. Live PG readback remains unavailable.",
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "BFF invocation is now covered by a PG-shaped success and no-authority rejection path; actual accepted candidate, identity dataset SHA, reader role and live PG readback remain unverified.",
       "baseline_function": "CoreProductBFFR1.identity_records",
-      "migration_evidence": "The runtime/authority consumer no longer opens the business payload; its typed PostgreSQL binding is validated and read in a read-only transaction.",
+      "migration_evidence": {
+        "batch_id": "R21-R4-core-product-bff-pg-identity-r10",
+        "implemented_code": "CoreProductBFFR1.identity_records invokes v4_membership_reference_pg_v1.read_search_identity using the candidate PG authority binding, and caches only the returned rows/binding.",
+        "test_evidence": [
+          "test_core_product_bff_identity_records_calls_pg_reader_without_file_fallback",
+          "test_core_product_bff_rejects_identity_file_fallback_when_pg_authority_missing"
+        ],
+        "formal_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+        "live_pg_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160815",
@@ -16523,6 +16532,25 @@
         "p1_formally_remaining": 266,
         "status": "SQL_ROLLBACK_DRAFT_AND_OFFLINE_TESTED; live catalog compatibility remains open.",
         "next": "Continue exact PG business consumers and complete contract approval/revocation lifecycle verification against the verified schema."
+      },
+      {
+        "batch_id": "R21-R4-core-product-bff-pg-identity-r10",
+        "files": [
+          "tests/test_v4_membership_reference_pg_only_r2.py"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-f50330e115a40dfbb290"
+        ],
+        "evidence": [
+          "The existing CoreProductBFFR1 identity_records consumer directly invokes the PG-only read_search_identity API and returns the authority binding with rows.",
+          "Missing PG authority raises NATIVE_SEARCH_IDENTITY_REQUIRED_NO_FILE_FALLBACK; no identity file reader is called.",
+          "Formal callsite count is unchanged pending live database and source identity reconciliation."
+        ],
+        "verification": "70 focused membership reference, BFF candidate, PG publication and contract registry tests passed; diff check passed.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "EXISTING_BFF_TO_PG_CONSUMER_CALL_VERIFIED_OFFLINE; LIVE_IDENTITY_AND_INVENTORY_RECONCILIATION_OPEN.",
+        "next": "Continue daily source/identity Owner migration using publication-bound source identity semantics; then exact 28 other-business consumers."
       }
     ]
   }

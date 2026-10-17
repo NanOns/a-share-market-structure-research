@@ -36,3 +36,17 @@ def test_provider_mismatch_blocks_fallback(tmp_path):
     latest,extracted,row,out,native=fixture(tmp_path);row['close']='1.21'
     with pytest.raises(ValueError,match='OHLCV_MISMATCH'):
         fallback(latest,extracted,'2026-10-08',[row],snapshot_root=out,tdx_root=tmp_path/'readonly')
+
+
+def test_default_source_root_comes_from_central_configuration_and_is_recorded(tmp_path,monkeypatch):
+    import json
+    from workbench_analysis import tdx_local_daily_fallback_v1 as module
+    latest,extracted,row,out,native=fixture(tmp_path)
+    monkeypatch.setattr(module,'resolve_tdx_root',lambda root,explicit=None:tmp_path/'readonly')
+    monkeypatch.setattr(module,'configured_path_source',lambda root,setting,explicit=None:'CONFIG:config/paths.yaml')
+
+    _,_,receipt=fallback(latest,extracted,'2026-10-08',[row],snapshot_root=out)
+
+    stored=json.loads((tmp_path/receipt['path']).read_bytes())
+    assert stored['tdx_source_root']==str((tmp_path/'readonly').resolve())
+    assert stored['tdx_root_configuration_source']=='CONFIG:config/paths.yaml'

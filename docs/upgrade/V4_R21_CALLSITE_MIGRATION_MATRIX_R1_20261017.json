@@ -9589,9 +9589,16 @@
         "status": "INGRESS_CONTRACT_REQUIRED"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
       "baseline_function": "fallback",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
+        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
+        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
+        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
+        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
+        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160287",
@@ -9633,9 +9640,16 @@
         "status": "INGRESS_CONTRACT_REQUIRED"
       },
       "acceptance_evidence": null,
-      "blocker": "No exact caller-path/line reference edge; requires source-edge crosswalk review.",
+      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
       "baseline_function": "fallback",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
+        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
+        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
+        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
+        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
+        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+      },
       "reference_evidence": []
     },
     {
@@ -9671,9 +9685,16 @@
         "status": "INGRESS_CONTRACT_REQUIRED"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
       "baseline_function": "fallback",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
+        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
+        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
+        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
+        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
+        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160289",
@@ -9723,9 +9744,16 @@
         "status": "INGRESS_CONTRACT_REQUIRED"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The daily fallback reads configured local TDX source bytes as a first-source-ingress candidate; source contract, accepted PG append, and downstream same-T0 publication readback remain open.",
       "baseline_function": "fallback",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-tdx-local-fallback-configured-source-r24",
+        "code_path": "src/workbench_analysis/tdx_local_daily_fallback_v1.py::fallback resolves explicit tdx_root -> TDX_ROOT -> config/paths.yaml via common.paths.resolve_tdx_root",
+        "source_boundary": "The selected root is used read-only for dated native bars; derived bytes are written to the supplied snapshot_root outside the source root.",
+        "provenance": "Fallback receipt records tdx_source_root and tdx_root_configuration_source.",
+        "positive_and_negative_tests": "tests/test_tdx_local_daily_fallback_v1.py verifies explicit root, central-config root, overlap/value checks, and source-byte preservation.",
+        "status_boundary": "PATH_CONFIGURATION_CODE_VERIFIED; source-to-PG ingestion and accepted consumer readback remain OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160288",
@@ -16814,6 +16842,30 @@
         "p1_formally_remaining": 266,
         "status": "ADJACENT_CURRENT_WORKER_REGRESSION_FIXTURE_ALIGNED; no baseline consumer count changed.",
         "next": "Continue exact production Head/Owner and business consumer migrations; keep live PG acceptance and all 266 baseline reconciliations open."
+      },
+      {
+        "batch_id": "R21-R4-tdx-local-fallback-configured-source-r24",
+        "files": [
+          "src/workbench_analysis/tdx_local_daily_fallback_v1.py",
+          "tests/test_tdx_local_daily_fallback_v1.py",
+          "docs/upgrade/V4_R21_R4_TDX_LOCAL_FALLBACK_PATH_R24_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-d85b9178c81b9f1f62fe",
+          "V4-BCA-R2-b27ea1de27ada027ba55",
+          "V4-BCA-R2-99269cbe5cf6215f9d67",
+          "V4-BCA-R2-f6c8d8313ae78fe2a109"
+        ],
+        "evidence": [
+          "Removed the fallback function’s hardcoded D:/new_tdx default; source root now resolves by explicit argument, TDX_ROOT, then config/paths.yaml.",
+          "Fallback receipt records the resolved source root and configuration source; writes remain under the caller-supplied snapshot_root, rejected when it is inside the source root.",
+          "The source bytes remain first-ingress evidence and have not been imported into an accepted PG source fact or read back through a same-T0 publication."
+        ],
+        "verification": "16 focused configured TDX path, latest official package and local dated fallback tests passed; compile and diff checks passed. No external acquisition or live PG.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "TDX_LOCAL_FALLBACK_PATH_CONFIGURATION_CODE_COMPLETE; source ingestion and accepted PG readback remain OPEN.",
+        "next": "Continue exact source contract and PG append/readback wiring for TDX and BaoStock; retain all P1 items until accepted publication and row-level reconciliation."
       }
     ]
   }

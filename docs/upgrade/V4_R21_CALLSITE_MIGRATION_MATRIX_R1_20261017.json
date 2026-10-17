@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 243,
+    "migration_open": 239,
     "statuses": {
-      "OPEN": 235,
+      "OPEN": 231,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 23
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 27
     },
-    "code_level_pg_read_paths_implemented": 23,
-    "remaining_open_or_ingress": 243,
+    "code_level_pg_read_paths_implemented": 27,
+    "remaining_open_or_ingress": 239,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -6714,7 +6714,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -6725,9 +6725,15 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head does not contain the corresponding PG authority; approved Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-reader-startup-pg-membership-validation-r37",
+        "implemented_code": "OperationalSuccessorReaderV1.validate now routes membership snapshot and identity validation through the versioned Head-bound PG membership authority when native_membership_reference is present; it validates snapshot ID and non-PIT flags without opening membership source files.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "PG_AUTHORITY_NOT_PRESENT"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160140",
@@ -6780,7 +6786,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -6791,9 +6797,15 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head does not contain the corresponding PG authority; approved Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-operational-registry-pg-reader-r39",
+        "implemented_code": "Successor admission reads the exact builder registry via v4_operational_registry_pg_v1.read_registry when native_operational_registry is present; the branch checks the Head/T0-bound source binding, inline descriptor and fact token without opening registry JSON.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "PG_AUTHORITY_NOT_PRESENT"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160141",
@@ -6846,7 +6858,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -6857,17 +6869,14 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "The production Operational Head still stores file-backed candidate and only the embedded-PG-owner branch can read this manifest; current Head is not migrated and no compliant PG Reader DSN is configured.",
+      "blocker": "Current accepted Head does not contain the corresponding PG authority; approved Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "OperationalSuccessorReaderV1.__init__",
       "migration_evidence": {
-        "batch": "R21-R4-operational-owner-no-file-fallback-r22",
-        "code_path": "src/workbench_analysis/operational_successor_v1.py::OperationalSuccessorReaderV1.__init__ -> v4_operational_owner_authority_v2.load -> PostgreSQL authority_manifest",
-        "bff_path": "src/workbench_service/core_product_server_r1.py ignores inline PG descriptor paths for local file cache/stat and reads database_identity from the accepted Head descriptor bytes",
-        "positive_and_negative_tests": "tests/test_v4_embedded_owner_reader_integration.py and tests/test_v4_bff_pg_descriptor_binding.py; fixture PG owner read path and legacy-head fallback rejection",
-        "status_boundary": "PARTIAL_CODE_WIRING; current accepted Head has no native_pg_owner_authority, live Reader DSN is unavailable, and baseline row remains OPEN",
-        "runtime_validation_path": "OperationalSuccessorReaderV1 loads the Head-embedded PG authority manifest before validate(); Owner dates/domains/source digest are validated from that manifest and descriptors, without opening target Owner payload files.",
-        "preparation_path": "Without embedded PG authority, candidate preparation retains the exact file-binding check.",
-        "live_status": "OPEN: current accepted operational Head still lacks native_pg_owner_authority; no live PG Reader DSN or same-T0 readback."
+        "batch_id": "R21-R4-bff-pg-membership-descriptor-r36",
+        "implemented_code": "OperationalSuccessorReaderV1 initialization obtains its metadata and membership descriptor from context_snapshot using the Head-bound PG authority when present; it does not reopen the membership snapshot file in that branch.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "PG_AUTHORITY_NOT_PRESENT"
       },
       "reference_evidence": [
         {
@@ -6921,7 +6930,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -6932,9 +6941,15 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head does not contain the corresponding PG authority; approved Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "OperationalSuccessorReaderV1.context",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-owner-membership-context-pg-wiring-r34",
+        "implemented_code": "OperationalSuccessorReaderV1.context uses the retained Head-bound PG metadata snapshot when native_membership_reference is present; the PG context branch has no local snapshot reopen.",
+        "formal_status": "OPEN",
+        "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "current_head": "PG_AUTHORITY_NOT_PRESENT"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160152",
@@ -17245,6 +17260,34 @@
         "p1_formally_remaining": 266,
         "status": "TDX_BAOSTOCK_CONFIGURED_PATH_REGRESSIONS_PASS; no P1 callsite formally closed.",
         "next": "Continue PG consumer migration; source ingress still requires approved manifest and authorized append/readback."
+      },
+      {
+        "batch_id": "R21-R4-membership-registry-callsite-reconciliation-r43",
+        "files": [
+          "src/workbench_analysis/operational_successor_v1.py",
+          "src/workbench_db/v4_membership_reference_pg_v1.py",
+          "src/workbench_db/v4_operational_registry_pg_v1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "tests/test_v4_native_membership_reference.py",
+          "tests/test_v4_operational_registry_pg.py",
+          "docs/upgrade/V4_R21_R4_MEMBERSHIP_REGISTRY_CALLSITE_RECONCILIATION_R43_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-47795b612d4ae4d06d1b",
+          "V4-BCA-R2-ce030238606ae3e34b44",
+          "V4-BCA-R2-8c8d9130fd8ad10bc41f",
+          "V4-BCA-R2-0a049f1b9db3690e759d"
+        ],
+        "evidence": [
+          "Mapped four exact original Owner read IDs to the R34/R36/R37 membership authority/context branches and R39 registry reader.",
+          "The code paths are PG-only when the explicit Head authority key is present; each retains fail-closed identity/lineage checks and has no file fallback in PG mode.",
+          "Current Head does not contain the PG authorities. These rows remain formally open pending approved live readback and inventory reconciliation."
+        ],
+        "verification": "Focused Reader/context/membership/BFF descriptor/registry selection: 10 passed, 10 deselected. Controlled reader boundaries only; no live PG, service or current Head readback.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "FOUR_MEMBERSHIP_AND_REGISTRY_OWNER_CALLSITES_RECONCILED_TO_PG_CODE; all remain formally open.",
+        "next": "Migrate daily QA receipts/oracles and predecessor Head authority readers where exact source contracts are available."
       }
     ]
   }

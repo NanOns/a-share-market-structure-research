@@ -11,7 +11,10 @@ from .v4_forward_pg_r1 import ForwardFactStore, canonical, digest
 
 CONTRACT = "V4_DM01_STAGE_STATE_PG_R1"
 VERSION = "1.0.0"
-FOLDER = "data/v4/dm01_stage_state_pg_r1"
+# DM-01 stage results share the already-provisioned immutable Forward fact
+# store used by V4 historical SourceIngress. Separate path-derived schemas
+# created an unprovisioned writer namespace and broke the daily orchestration.
+FOLDER = "data/v4/historical_source_ingress_pg_r1"
 KIND = "stage_state"
 DATA_HEAD_IMPORT_CONTRACT = "V4_DM01_DATA_HEAD_IMPORT_R1"
 STAGES = frozenset({
@@ -59,8 +62,8 @@ def _store(root) -> ForwardFactStore:
     if not folder.is_relative_to(project_root):
         raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
     # Do not construct ForwardFactStore here: its constructor creates schemas,
-    # installs DDL, and imports local JSON. Stage-state calls may only use the
-    # separately provisioned relation and the explicitly configured writer.
+    # installs DDL, and imports local JSON. Stage-state appends use only the
+    # existing shared fact relation and the explicitly configured writer.
     store = ForwardFactStore.__new__(ForwardFactStore)
     store.root = project_root
     store.folder = folder

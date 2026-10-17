@@ -21,7 +21,17 @@
 
 本轮增量实修：日更 Owner/生命周期、Membership、Sector、Calendar、Predecessor 读取统一走 PG 绑定；在线 operational Head 缺失时停止读取冻结文件回退；read-index R2 authority 改为 candidate/Head 内嵌的 PG binding；Core BFF 与服务缓存不再用 workspace Head 文件或 R2 JSON 选择运行入口；source capture 的 calendar 由 PG publication Head/contract binding 提供；日更路径与 TDX source/cache roots 复用中央路径解析器；更新日更候选绑定后的 transport 再进入 CAS；修复 PG 板块名查询以同时匹配 canonical `display_name`。这些改动覆盖真实读链，但不等同于稳定 ID 正式核销。
 
-续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器；其历史 evidence/report 输入仍未完成 PG化，暂不能称日更链 PG-only。
+续作增量实修：`v4_operational_owner_authority_v2.prepare_successor()` 现在先通过专用 predecessor PG ingress 固化一次候选 predecessor，再从 PG 读取用于 Owner 复用；相同来源绑定的 Owner 复用路径仅检查 PG fact 和摘要，不再要求旧 payload 文件仍存在。新日期/新来源仍只在明确 ingress 分支读取原始 payload 后写入 PG。`operational_daily_owner_v1.py` 与 `r43_operational_sources.py` 的 TDX root、BaoStock request-ledger 改为 `config/paths.yaml` 中央解析器。
+
+2026-10-18 继续实修：新增 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1`，将确切路径和字节摘要绑定的历史业务输入固化到同一个 `market_research` PostgreSQL 的 append-only Forward fact store，并提供 PG-only 后续读取及 G 盘临时物化。已从现有 V4 绑定图导入并读回 **643 条**来源事实（Forward facts 表约 **38.3 MB**）；没有导入或切换 Accepted publication/Head。稳定来源 ID 使用规范相对路径 SHA-256，运行消费者不再内嵌 evidence/report 路径。
+
+续作增量实修：Operational Owner 对旧 Head 直接绑定的 source payload 增加 `PG ingress → 精确字节解析 → 新 Head-bound PG Owner fact` 迁移路径；历史 Owner authority 文件缺失时，以旧 Head 的日期/Owner 精确 binding 作为一次性 source selector，不再要求该 authority JSON 存在。`v4_operational_owner_pg_closeout.py` predecessor 入口也改为从 PG ingress 读，不再另开本地读取口。DM-01 stage-state 复用既有历史 ingress Forward facts schema，避免新增未预置的 workspace schema；对应已有共享表增加路径+摘要与 source ID 索引。两索引在 `market_research` 实例 `v4_forward_213e535c50ad7135` 创建并读回；Stage authority 的 12 项 PG 绑定读取由约 29 秒降至约 2.9 秒。现存 `data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json`、其 predecessor archive 和已删除的 Owner authority 文件路径尚无历史 ingress 行；当前代码会在合法 source ingress 时固化前两者，缺失文件不被伪造。
+
+本次真实代码改动覆盖 5 个运行时模块及 2 个 PG ingress/CLI 模块：`r43_owner_replay.py` 与 `v4_current_stage_authority.py` 的现行/冻结 Head、来源绑定、采集合同及历史 owner 输入改为 PG ingress 读；R43 replay 输出 workspace 移至 `data/v4/workspaces/r43_owner_replay_v1`，TDX root 经中央解析器；日更 Owner 与 R4.3 来源重建通过 PG 来源事实读取 acquisition、phase-0、V4.02 acceptance、stage manifest、事件、策略和分日 typed-delta；Lifecycle 产物改追加到 DM-01 stage-state PG 并由其 descriptor 绑定进入 special-phase manifest。正式 Head 未移动。
+
+本次最小实际验收：`CurrentStageAuthority` 从 PG ingress 重建当前 V4-15 authority view，返回 T0 `2026-09-30`、8 个不可变 Owner 绑定；真实 V4.02 acceptance/stage、22 条特殊阶段事件和策略从 PG 组装 special-phase manifest，返回 `READY`；6 个修改 Python 模块及一个 CLI 脚本 `py_compile` 通过，暂存区 repository policy 通过，`git diff --cached --check` 通过。未执行大测试套件。
+
+本轮新增最小验证：9 个变更 Python 模块及 CLI `py_compile` 通过；`CurrentStageAuthority` 当前 PG ingress 读回 12 个绑定（约 2.856 秒）；旧 Operational Head 绑定下 `diagnostic` Owner 实际通过 PG SourceIngress 解析为 10 行；未运行全量测试。
 
 ## PostgreSQL 实例操作
 
@@ -44,6 +54,7 @@
 - 比较：真实操作运行“股票 vs 市场”，中华企业收益来源标为不完整；同窗 Universe 基准显示 -0.136%，并标注共同起止日。
 - 本轮重启后再次在内置浏览器打开“煤炭开采”详情：实际 URL `/v4/research/sectors/INDUSTRY%3AT010101`，读取 25 个成员、当前宽度/相对强度及成员详情。缺少前序 PIT 成分股的历史轮动值显示“来源能力不足”，页面明确未用当前成员回填。
 - 同一现场再次确认首页仍显示 PG 候选快照、T0 `2026-09-30`；Compare 严格 PIT 可用日期 0。Shadow 路由显示 `NO_REAL_SHADOW_DATA`、真实样本 0，故浏览器验收为部分通过，不能报告全模块 PASS。
+- 本轮代码更新后重启的 28766 服务再次在 Focus 页面实际搜索 `600675`，呈现中华企业 1 条 Focus 结果、Forward 117 样本及 585 期限计划；数据为同一 PG 候选快照。单独 `/api/v4/candidates/cohort` 在当前候选服务注册表中返回 `ROUTE_NOT_FOUND`；候选状态目前由 Focus/Forward 组合页呈现，不报告独立候选 API 已验收。
 
 以上为候选 UI 功能验收，不是生产验收。开发服务端口为 28766，未触碰 28765。
 

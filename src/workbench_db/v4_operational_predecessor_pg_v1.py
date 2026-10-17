@@ -7,7 +7,6 @@ from .v4_operational_owner_pg_closeout import (
     prepare as append_owner_fact,
     read as read_owner_fact,
 )
-from workbench_analysis.r43_owner_replay import checked
 
 KEY = 'native_predecessor_head'
 CONTRACT = 'V4_OPERATIONAL_PREDECESSOR_HEAD_PG_R1'
@@ -24,7 +23,14 @@ def prepare(root, candidate):
     root = Path(root).resolve()
     day = candidate['accepted_trade_date']
     source_binding = candidate['predecessor']
-    value = json.loads(checked(root, source_binding).read_bytes())
+    # This is the one-time historical Head ingress boundary. Prefer the exact
+    # PG fact and admit the bound source bytes only when that fact is absent.
+    from .v4_historical_source_ingress_pg_r1 import ingress_path
+    source = ingress_path(root,source_binding['path'],
+        expected_sha256=source_binding['sha256'])
+    if len(source['raw'])!=source_binding['bytes']:
+        raise ValueError('PREDECESSOR_HEAD_SOURCE_SIZE_MISMATCH')
+    value = json.loads(source['raw'])
     if value.get('contract_id') != OPERATIONAL_CONTRACT:
         raise ValueError('PREDECESSOR_OPERATIONAL_HEAD_REQUIRED')
     fact_key = _fact_key(day, source_binding)

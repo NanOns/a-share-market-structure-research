@@ -8,7 +8,7 @@ import os
 import tempfile
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from workbench_analysis.daily_source_freeze import ensure_outside_tdx
 from workbench_analysis.security_identity_event_discovery import discover_identity_events
@@ -245,6 +245,11 @@ def build_special_phase_source_manifest(
     v402_stage_manifest: Mapping[str, Any] | None = None,
     v402_pg_binding: Mapping[str, Any] | None = None,
     lifecycle_pg_binding: Mapping[str, Any] | None = None,
+    event_records: Sequence[Mapping[str, Any]] | None = None,
+    policy_contract: Mapping[str, Any] | None = None,
+    event_source_binding: Mapping[str, Any] | None = None,
+    policy_source_binding: Mapping[str, Any] | None = None,
+    v402_source_bindings: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Bind the accepted event store and policy even when no new event starts on T."""
     try:
@@ -257,9 +262,11 @@ def build_special_phase_source_manifest(
     root = project_root.resolve()
     from common.paths import resolve_tdx_root
     tdx_root = resolve_tdx_root(root, tdx_root)
-    for path in (event_store_path, policy_path):
-        ensure_outside_tdx(path, tdx_root)
-    if v402_external_acceptance is None or v402_stage_manifest is None or v402_pg_binding is None:
+    if event_records is None or policy_contract is None or event_source_binding is None or policy_source_binding is None:
+        for path in (event_store_path, policy_path):
+            ensure_outside_tdx(path, tdx_root)
+    if (v402_external_acceptance is None or v402_stage_manifest is None
+            or (v402_pg_binding is None and v402_source_bindings is None)):
         for path in (v402_external_acceptance_path, v402_stage_manifest_path):
             ensure_outside_tdx(path, tdx_root)
         acceptance = json.loads(v402_external_acceptance_path.read_text(encoding="utf-8"))
@@ -271,7 +278,7 @@ def build_special_phase_source_manifest(
             "accepted_v402_stage_manifest": {"path": v402_stage_manifest_path.relative_to(root).as_posix(),
                                                "sha256": accepted_manifest_sha},
         }
-    else:
+    elif v402_pg_binding is not None:
         acceptance = dict(v402_external_acceptance)
         stage_manifest = dict(v402_stage_manifest)
         accepted_manifest_sha = v402_pg_binding.get("stage_manifest_source_sha256")
@@ -287,6 +294,24 @@ def build_special_phase_source_manifest(
                 "descriptor_sha256": v402_pg_binding.get("descriptor_sha256"),
                 "source_sha256": accepted_manifest_sha},
         }
+    else:
+        acceptance = dict(v402_external_acceptance)
+        stage_manifest = dict(v402_stage_manifest)
+        source_acceptance = v402_source_bindings.get("acceptance", {})
+        source_stage = v402_source_bindings.get("stage_manifest", {})
+        accepted_manifest_sha = source_stage.get("sha256")
+        if (v402_source_bindings.get("contract_id") != "V4_HISTORICAL_SOURCE_INGRESS_PG_R1"
+                or source_acceptance.get("path") != v402_external_acceptance_path.relative_to(root).as_posix()
+                or source_stage.get("path") != v402_stage_manifest_path.relative_to(root).as_posix()
+                or not isinstance(source_acceptance.get("sha256"), str)
+                or not isinstance(accepted_manifest_sha, str)):
+            raise ValueError("SPECIAL_PHASE_V402_SOURCE_INGRESS_BINDING_INVALID")
+        accepted_refs = {
+            "accepted_v402_external_acceptance": {"pg_source": "historical_source_ingress",
+                "path": source_acceptance.get("path"), "sha256": source_acceptance.get("sha256")},
+            "accepted_v402_stage_manifest": {"pg_source": "historical_source_ingress",
+                "path": source_stage.get("path"), "sha256": accepted_manifest_sha},
+        }
     if acceptance.get("acceptance_result", {}).get("external_acceptance") != "EXTERNALLY_ACCEPTED":
         raise ValueError("SPECIAL_PHASE_V402_ACCEPTANCE_NOT_EXTERNAL_PASS")
     accepted_manifest_ref = acceptance.get("evidence", {}).get("manifest", {})
@@ -294,13 +319,19 @@ def build_special_phase_source_manifest(
         raise ValueError("SPECIAL_PHASE_V402_MANIFEST_DIGEST_MISMATCH")
     components = stage_manifest.get("components", {})
     required_components = {
-        "R6_EVENTS": event_store_path,
-        "R6_POLICY": policy_path,
+        "R6_EVENTS": (event_store_path, event_source_binding),
+        "R6_POLICY": (policy_path, policy_source_binding),
     }
-    for component, path in required_components.items():
+    for component, (path, source_binding) in required_components.items():
         record = components.get(component)
         if not isinstance(record, Mapping) or record.get("path") != path.relative_to(root).as_posix():
             raise ValueError("SPECIAL_PHASE_ACCEPTED_COMPONENT_BINDING_MISMATCH:" + component)
+        if event_records is not None and policy_contract is not None and source_binding is not None:
+            if (source_binding.get("path") != record.get("path")
+                    or source_binding.get("sha256") != record.get("sha256")
+                    or source_binding.get("bytes") != record.get("bytes")):
+                raise ValueError("SPECIAL_PHASE_ACCEPTED_COMPONENT_PG_BINDING_MISMATCH:" + component)
+            continue
         if _sha(path) != record.get("sha256") or path.stat().st_size != int(record.get("bytes", -1)):
             raise ValueError("SPECIAL_PHASE_ACCEPTED_COMPONENT_DIGEST_MISMATCH:" + component)
     if (lifecycle_snapshot.get("contract_id") != LIFECYCLE_MANIFEST_CONTRACT
@@ -323,8 +354,10 @@ def build_special_phase_source_manifest(
                          "descriptor_sha256": lifecycle_pg_binding.get("binding", {}).get("sha256"),
                          "payload_sha256": lifecycle_pg_binding.get("payload_sha256")}
     # Reuse the accepted runtime's event/policy validators; do not add a second phase implementation.
-    events = SpecialPhaseEventStore.from_jsonl(event_store_path).events
-    policies = PhasePolicyRegistry.from_json(policy_path)
+    events = (SpecialPhaseEventStore(event_records).events if event_records is not None
+              else SpecialPhaseEventStore.from_jsonl(event_store_path).events)
+    policies = (PhasePolicyRegistry(policy_contract) if policy_contract is not None
+                else PhasePolicyRegistry.from_json(policy_path))
     active_ids = set(str(item) for item in lifecycle_snapshot.get("active_security_ids", []))
     active_events = [
         event for event in events
@@ -342,9 +375,9 @@ def build_special_phase_source_manifest(
         "observed_at": parsed_observed.isoformat(),
         "system_available_at": parsed_observed.isoformat(),
         **accepted_refs,
-        "event_store": {"path": event_store_path.relative_to(root).as_posix(), "sha256": _sha(event_store_path),
+        "event_store": {"path": event_source_binding.get("path") if event_source_binding else event_store_path.relative_to(root).as_posix(), "sha256": event_source_binding.get("sha256") if event_source_binding else _sha(event_store_path),
                         "event_count": len(events)},
-        "policy": {"path": policy_path.relative_to(root).as_posix(), "sha256": _sha(policy_path),
+        "policy": {"path": policy_source_binding.get("path") if policy_source_binding else policy_path.relative_to(root).as_posix(), "sha256": policy_source_binding.get("sha256") if policy_source_binding else _sha(policy_path),
                    "contract_id": policies.contract.get("contract_id")},
         "lifecycle_snapshot": lifecycle_ref,
         "active_event_count": len(active_events),

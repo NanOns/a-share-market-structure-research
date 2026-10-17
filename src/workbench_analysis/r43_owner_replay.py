@@ -19,11 +19,23 @@ from .market_source_acquisition import official_sessions, write, now, is_stock_c
 from .tdx_official_daily_source import sha256_file, _atomic_write
 
 CONTRACT = 'config/v4_r43_corrected_owner_replay_v3.json'
-OUT = 'docs/evidence/r4_3_four_session_closeout_20261009/owner_v3'
+OUT = 'data/v4/workspaces/r43_owner_replay_v1'
+_SOURCE_IDS = {
+    'acquisition': '0ea5b6c8b6edc554398ebcfb36fda732958e1b9b40260f08efd125c28d0595f8',
+    'capture_audit': '462c84b4c0f38c0bf8004b79d15adfb4f6be90a6dee2e234d17549b154d73c79',
+    'core_replay': '7943e8d30b8c3ef4494ab69653d99da03f5541e75d17260c0be2fcdf0be1966e',
+    'member_snapshot': '7eef000c2eaa7aef5aece5177516181bf293ae26575e102a433e8c30070bb0a7',
+    'typed_receipt': '81e97c29fa72275c653d09cec6dc37ac89b0b3ea0f38aa456ca81839528fe6ab',
+}
 
 
 def load(path):
     return json.loads(Path(path).read_bytes())
+
+
+def historical_source(root, key):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    return read_source(root, _SOURCE_IDS[key])
 
 
 def ref(root, path):
@@ -32,16 +44,17 @@ def ref(root, path):
 
 
 def checked(root, binding):
-    p = (Path(root) / binding['path']).resolve()
-    p.relative_to(Path(root).resolve())
-    if sha256_file(p) != binding['sha256']:
-        raise ValueError('CORRECTED_INPUT_DIGEST_MISMATCH:' + binding['path'])
-    return p
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    try:
+        return materialize_path(root, binding['path'], expected_sha256=binding['sha256'])
+    except ValueError as exc:
+        raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:' + binding['path'] + ':' + str(exc)) from exc
 
 
 def gzwrite(root, path, rows):
     raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
-    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=resolve_tdx_root(root))
     return ref(root, path)
 
 
@@ -150,31 +163,35 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
     required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
-    acquisition = load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    acquisition = historical_source(root,'acquisition')['value']
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
         if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock','validated_daily_universe'):
-            payload=load(q['path']); rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
+            from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+            qpath=Path(q['path']).resolve()
+            payload=ingress_path(root,qpath.relative_to(root).as_posix())['value']; rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
             bao_queries.append(q)
-    source_pointer=load(root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json')
+    source_pointer=historical_source(root,'capture_audit')['value']
     capture=load(checked(root,source_pointer['capture_receipt'])); package=checked(root,capture['package'])
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
-    frozen_previous=load(root/'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json')['owners'][0]
+    frozen_previous=historical_source(root,'core_replay')['value']['owners'][0]
     source_gbbq=checked(root,frozen_previous['sources']['gbbq']); blob=source_gbbq.read_bytes()
     gpath=root/'data/v4/corrected_owner_sources'/hashlib.sha256(blob).hexdigest()/'gbbq'
-    _atomic_write(gpath,blob,tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    _atomic_write(gpath,blob,tdx_root=resolve_tdx_root(root))
     events=defaultdict(list)
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
                  identity=identity_binding,contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
-    snapshot=root/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json'
-    sources['latest_tdx_member_snapshot']=ref(root,snapshot)
+    snapshot_source=historical_source(root,'member_snapshot')['record']
+    sources['latest_tdx_member_snapshot']=dict(path=snapshot_source['source_path'],sha256=snapshot_source['source_sha256'],bytes=snapshot_source['source_bytes'])
     sources['r43_producer']=ref(root,Path(__file__))
-    sources['typed_delta_v2']=ref(root,root/'docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json')
+    typed_source=historical_source(root,'typed_receipt')['record']
+    sources['typed_delta_v2']=dict(path=typed_source['source_path'],sha256=typed_source['source_sha256'],bytes=typed_source['source_bytes'])
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
     historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']

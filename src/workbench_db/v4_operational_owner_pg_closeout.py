@@ -28,8 +28,10 @@ def read_schema(root,binding,descriptor,workspace_root=None):
     return schema
 
 def prepare(root,head_token,day,domain,source_binding,rows):
-    from workbench_analysis.r43_owner_replay import checked
-    checked(root,source_binding)
+    from .v4_historical_source_ingress_pg_r1 import ingress_path
+    source=ingress_path(root,source_binding['path'],expected_sha256=source_binding['sha256'])
+    if len(source['raw'])!=source_binding.get('bytes'):
+        raise ValueError('PG_OPERATIONAL_OWNER_SOURCE_SIZE_MISMATCH')
     payload=dict(contract_id=OWNER,head_token=head_token,T0=day,domain=domain,
                  source_binding=source_binding,rows=rows,PIT_ELIGIBLE=False,AS_RECORDED=False)
     binding=ForwardFactStore(root,FOLDER).append(domain,head_token+'_'+day+'_'+domain,payload,migration_timeout_seconds=120)
@@ -124,12 +126,18 @@ def read_authority_manifest(root,binding,*,workspace_root=None):
     return payload
 
 def load_authority(root,candidate,head_token,*,authority_binding=None):
-    from workbench_analysis.r43_owner_replay import checked
     if not isinstance(authority_binding,dict):
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_BINDING_REQUIRED')
     if authority_binding.get('path')!='config/v4_operational_owner_pg_closeout_r1.json':
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_MIGRATION_SOURCE_INVALID')
-    authority=json.loads(checked(root,authority_binding).read_bytes())
+    # The binding identifies the one-time historical source ingress. Resolve
+    # its bytes from the shared PG fact store; after ingress the workspace file
+    # is never an authority or a runtime fallback.
+    from .v4_historical_source_ingress_pg_r1 import read_bound
+    source=read_bound(root,authority_binding['path'],authority_binding['sha256'])
+    if len(source['raw'])!=authority_binding['bytes']:
+        raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_SOURCE_SIZE_MISMATCH')
+    authority=json.loads(source['raw'])
     if authority.get('contract_id')!=OWNER or authority.get('head_token')!=head_token:
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_HEAD_MISMATCH')
     if any(authority.get(name) is not False for name in ('historical_PIT_permission','PIT_ELIGIBLE','AS_RECORDED')):

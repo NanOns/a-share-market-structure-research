@@ -5,11 +5,35 @@ owners; their immutable fact fact_key can be reused across successive Heads.
 This module prepares candidates only and never moves an accepted pointer.
 """
 from pathlib import Path
+from io import BytesIO,TextIOWrapper
+import gzip,json
 from .v4_forward_pg_r1 import ForwardFactStore,canonical,digest
 from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact,read_authority_manifest,attest_cached,descriptor_metadata,inline_descriptor,OWNER,FOLDER
 
 CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
+
+def _rows_from_source_ingress(root,binding):
+    """Parse owner rows only from an exact PG-ingressed source revision."""
+    from .v4_historical_source_ingress_pg_r1 import ingress_path
+    source=ingress_path(root,binding['path'],expected_sha256=binding['sha256'])
+    if len(source['raw'])!=binding.get('bytes'):
+        raise ValueError('PG_OWNER_SOURCE_INGRESS_SIZE_MISMATCH')
+    name=Path(binding['path']).name
+    raw=source['raw']
+    if name.endswith('.gz'):
+        with gzip.GzipFile(fileobj=BytesIO(raw),mode='rb') as compressed:
+            text=TextIOWrapper(compressed,encoding='utf-8')
+            if '.jsonl.' in name:return [json.loads(line) for line in text if line.strip()]
+            value=json.load(text)
+    elif name.endswith('.jsonl'):
+        value=[json.loads(line) for line in raw.decode('utf-8').splitlines() if line.strip()]
+    else:
+        value=json.loads(raw)
+    if isinstance(value,dict):
+        for key in ('rows','target_bars','sectors'):
+            if isinstance(value.get(key),list):return value[key]
+    return value
 
 def prepare_successor(root,candidate,*,predecessor_authority_binding=None):
     """Append dated facts and bind their authority before the single Head CAS."""
@@ -24,9 +48,17 @@ def prepare_successor(root,candidate,*,predecessor_authority_binding=None):
     if KEY in predecessor:
         prior=load(root,predecessor)
     else:
-        from .v4_operational_owner_pg_closeout import load_authority
-        prior=load_authority(root,predecessor,candidate['predecessor']['sha256'],
-                             authority_binding=predecessor_authority_binding)
+        # Older operational Heads bind Owner payload files directly and have
+        # no separate authority JSON. The Head's exact bindings are the
+        # one-time ingress selectors; materialize payloads as PG Owner facts
+        # before producing the successor authority manifest.
+        legacy_owners=predecessor.get('owners')
+        if not isinstance(legacy_owners,dict) or not legacy_owners:
+            from .v4_operational_owner_pg_closeout import load_authority
+            prior=load_authority(root,predecessor,candidate['predecessor']['sha256'],
+                                 authority_binding=predecessor_authority_binding)
+        else:
+            prior=dict(contract_id=OWNER,source_owners=legacy_owners,owners=legacy_owners)
     binding,receipt=prepare(root,candidate,prior)
     candidate[KEY]=binding
     if KEY not in predecessor:
@@ -77,12 +109,24 @@ def prepare(root,candidate,predecessor=None):
     root=Path(root).resolve();owners={};counts=dict(reused=0,created=0)
     if predecessor and predecessor.get('contract_id') not in (CONTRACT,OWNER):
         raise ValueError('PG_OWNER_PREDECESSOR_CONTRACT_REQUIRED')
-    from workbench_analysis.r43_operational_publication import rows
     for day,domains in candidate['owners'].items():
         owners[day]={}
         for domain,binding in domains.items():
             if predecessor and predecessor['source_owners'].get(day,{}).get(domain)==binding:
                 old=predecessor['owners'][day][domain]
+                if predecessor['contract_id']==OWNER and isinstance(old,dict) and set(old)=={'path','sha256','bytes'}:
+                    # Import legacy Head-bound rows into immutable PG facts;
+                    # never treat the old workspace payload as a live Owner.
+                    from .v4_operational_owner_pg_closeout import validate_source_binding
+                    validate_source_binding(old)
+                    content=_rows_from_source_ingress(root,old)
+                    fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,domain=domain,source_binding=binding)))
+                    descriptor=append(root,fact_key,day,domain,binding,content)
+                    if canonical(read_fact(root,descriptor,fact_key,day,domain,binding))!=canonical(content):
+                        raise ValueError('PG_OWNER_EMBEDDED_FULL_PAYLOAD_DIFFERENCE')
+                    owners[day][domain]=dict(descriptor=descriptor,fact_token=fact_key)
+                    counts['created']+=1
+                    continue
                 entry=old if predecessor['contract_id']==CONTRACT else dict(descriptor=old,fact_token=predecessor['head_token'])
                 # Read validates live cluster, whole payload SHA, exact date,
                 # domain, source binding and original fact fact_key before reuse.
@@ -96,7 +140,7 @@ def prepare(root,candidate,predecessor=None):
                 from .v4_operational_owner_pg_closeout import validate_source_binding
                 validate_source_binding(binding)
                 fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,domain=domain,source_binding=binding)))
-                content=rows(root,binding)
+                content=_rows_from_source_ingress(root,binding)
                 descriptor=append(root,fact_key,day,domain,binding,content)
                 if canonical(read_fact(root,descriptor,fact_key,day,domain,binding))!=canonical(content):
                     raise ValueError('PG_OWNER_EMBEDDED_FULL_PAYLOAD_DIFFERENCE')

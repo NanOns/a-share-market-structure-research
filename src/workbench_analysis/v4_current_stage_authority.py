@@ -1,21 +1,20 @@
 """Versioned current governance with explicit immutable V4-14 publication authority."""
 import json
 from pathlib import Path
-from .v4_14_replay_io import exact,ref
 
 class CurrentStageAuthority:
     def __init__(self,root,exact_reader=None):
         self.root=Path(root).resolve();self.portability_receipts=[]
-        if exact_reader is None:
-            from .v4_portable_exact import PortableExact
-            exact_reader=PortableExact(self.root)
-        self.exact_reader=exact_reader
-        stage=json.loads((self.root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+        stage=ingress_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
         self.is_v15=stage['accepted_stage_range']=='V4_00_TO_V4_15_ACCEPTED'
         name='v4_current_stage_authority_v2.json' if self.is_v15 else 'v4_current_stage_authority_v1.json'
-        self.contract=json.loads((self.root/'config'/name).read_bytes())
+        contract_source=ingress_path(self.root,'config/'+name)
+        self.contract=contract_source['value']
+        self.contract_ref={'path':contract_source['record']['source_path'],'sha256':contract_source['record']['source_sha256'],'bytes':contract_source['record']['source_bytes']}
         if self.contract['V4_15_accepted'] is not self.is_v15:raise ValueError('CURRENT_ACCEPTANCE_COHERENCE')
-        self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+        stage_source=ingress_path(self.root,self.contract['stage_namespace'])
+        self.stage_ref={'path':stage_source['record']['source_path'],'sha256':stage_source['record']['source_sha256'],'bytes':stage_source['record']['source_bytes']};self.stage=stage_source['value']
         expected='V4_00_TO_V4_15_ACCEPTED' if self.is_v15 else 'V4_00_TO_V4_14_ACCEPTED'
         if self.stage['accepted_stage_range']!=expected or self.contract['accepted_stage_range']!=expected:raise ValueError('CURRENT_STAGE_MISMATCH')
         if self.stage['v4_14_entry']!='COMPLETED_EXTERNALLY_ACCEPTED_CAPABILITY_SCOPED_REPLAY_GATE_B':raise ValueError('CURRENT_V4_14_ENTRY_INCOHERENT')
@@ -59,14 +58,14 @@ class CurrentStageAuthority:
         seal=json.loads(self.read(self.replay_head['bindings']['runtime_seal']))
         self.allowed_publications=seal['replay_publications']
     def read(self,binding):
-        # New promotion bytes use literal identity; historical registry stays immutable.
-        if binding['path'] in ['data/v4/V4_STAGE_ACCEPTED_HEAD.json','data/v4/V4_15_ACCEPTED_HEAD.json','config/v4_15_accepted_entry_contract_v1.json','config/v4_current_stage_authority_v2.json']:
-            return exact(self.root,binding)
-        if self.exact_reader is None:return exact(self.root,binding)
-        raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+        source=ingress_path(self.root,binding['path'],expected_sha256=binding['sha256'])
+        if len(source['raw'])!=binding.get('bytes',len(source['raw'])):
+            raise ValueError('CURRENT_AUTHORITY_PG_SOURCE_BYTES_MISMATCH')
+        return source['raw']
     def bindings(self):
         result=dict(current_v4_14=self.replay_head_ref,stage=self.stage_ref,data=self.data_ref,calendar=self.calendar_ref,membership=self.membership_ref,identity=self.identity_ref,owners=self.owners,contract_package=self.package_ref,external_audit=self.external_audit_ref)
-        if self.is_v15:result.update(current_stage_head=self.current_head,replay_predecessor_v4_14=self.replay_head_ref,current_authority_contract=ref(self.root,'config/v4_current_stage_authority_v2.json'))
+        if self.is_v15:result.update(current_stage_head=self.current_head,replay_predecessor_v4_14=self.replay_head_ref,current_authority_contract=self.contract_ref)
         return result
     def publication(self,binding):
         if binding not in self.allowed_publications:raise ValueError('PUBLICATION_NOT_SEALED_BY_ACCEPTED_V4_14')

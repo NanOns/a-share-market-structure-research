@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 214,
+    "migration_open": 213,
     "statuses": {
-      "OPEN": 204,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 52,
+      "OPEN": 203,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 53,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 10
     },
-    "code_level_pg_read_paths_implemented": 52,
-    "remaining_open_or_ingress": 214,
+    "code_level_pg_read_paths_implemented": 53,
+    "remaining_open_or_ingress": 213,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -12863,7 +12863,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -12871,12 +12871,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Live accepted Head, database identity, namespace/publication, T0 and source digest reconciliation remains pending; no formal P1 closure.",
       "baseline_function": "read",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-focus-projection-bff-callsite-r81",
+        "read_path": "CoreProductBFFR1.focus_projection -> Head-bound native_product_read_authority_pg catalogue -> v4_focus_projection_pg_closeout.read -> typed operational Owner fact",
+        "binding": "T0, Head token, projection source binding, embedded PostgreSQL descriptor and full payload digest are validated; missing/mismatched authority fails closed.",
+        "verification": "tests/test_v4_product_catalog_pg_r48.py::test_bff_focus_reads_head_bound_catalog_and_postgresql_fact_without_config_fallback; tests/test_v4_product_catalog_pg_r48.py::test_pg_product_catalog_upgrades_legacy_focus_projection_into_owner_fact (controlled fixtures)",
+        "live_acceptance": "not performed; accepted Head/database identity, namespace/publication and source digest reconciliation remain pending."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160518",
@@ -18204,6 +18210,47 @@
         "reference_edges_unmapped": 22,
         "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
         "next": "Map accepted predecessor Head identity in PG and reconcile these five IDs against live namespace/publication/T0/source evidence; continue DM-01 runtime-state and remaining Owner/other-business consumers."
+      },
+      {
+        "batch_id": "R21-R4-focus-projection-bff-callsite-r81",
+        "files": [
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "docs/upgrade/V4_R21_R4_FOCUS_PROJECTION_BFF_CALLSITE_R81_20261017.md",
+          "src/workbench_db/v4_focus_projection_pg_closeout.py",
+          "src/workbench_service/core_product_bff_r1.py",
+          "src/workbench_service/native_product_catalog_v3.py",
+          "tests/test_v4_product_catalog_pg_r48.py"
+        ],
+        "evidence": [
+          "V4-BCA-R2-f0873417056c47ed4f1e maps to the current Core Product BFF -> Head-bound PG catalogue -> typed Focus projection Owner fact call chain.",
+          "Reader validates Head token, T0, source binding, inline descriptor and full payload digest; negative/missing authority paths fail closed."
+        ],
+        "verification": "2 focused consumer tests passed with controlled PG-shaped fixtures; no live PG or business acceptance.",
+        "baseline_callsite_ids_observed": [
+          "V4-BCA-R2-f0873417056c47ed4f1e"
+        ],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_after_batch": {
+          "OPEN": 203,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 10,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 53
+        },
+        "owner_subcount_after_batch": {
+          "total": 200,
+          "code_paths_pending_live_reconciliation": 49,
+          "OPEN": 142,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 9
+        },
+        "other_business_subcount_after_batch": {
+          "total": 28,
+          "code_paths_pending_live_reconciliation": 4,
+          "OPEN": 23,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 1
+        },
+        "reference_edges_unmapped": 22,
+        "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
+        "next": "Reconcile Focus projection against the exact accepted Head, live database identity, namespace/publication, T0 and source digest; continue other exact-mapped Owner consumers."
       }
     ]
   }

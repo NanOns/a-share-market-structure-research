@@ -50,7 +50,22 @@ def _store(root) -> ForwardFactStore:
     project_root = Path(root).resolve()
     if project_root.drive.upper() != "G:":
         raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
-    store = ForwardFactStore(project_root, FOLDER)
+    folder = (project_root / FOLDER).resolve()
+    if not folder.is_relative_to(project_root):
+        raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
+    # Do not construct ForwardFactStore here: its constructor creates schemas,
+    # installs DDL, and imports local JSON. Stage-state calls may only use the
+    # separately provisioned relation and the explicitly configured writer.
+    store = ForwardFactStore.__new__(ForwardFactStore)
+    store.root = project_root
+    store.folder = folder
+    store.schema = v4_native.workspace_schema(folder, "forward")
+    store.dsn = v4_native.configured_dsn()
+    with v4_native.connection(store.schema, dsn=store.dsn) as pg:
+        relation = pg.execute("SELECT to_regclass('forward_facts')").fetchone()
+        if not relation or relation[0] is None:
+            raise ValueError("DM01_STAGE_STATE_SCHEMA_NOT_PROVISIONED")
+        store.database_identity = ForwardFactStore._database_identity(pg)
     if store.database_identity != _expected_identity():
         raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
     return store
@@ -110,7 +125,10 @@ def append_stage(root, trade_date: str, stage: str, payload: dict) -> dict:
         "payload": payload,
     }
     fact_key = digest(canonical(record))
-    binding = _store(root).append(KIND, fact_key, record, migration_timeout_seconds=120)
+    store = _store(root)
+    if store.database_identity != _expected_identity():
+        raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
+    binding = store.append(KIND, fact_key, record, migration_timeout_seconds=120)
     return {
         "contract_id": CONTRACT,
         "contract_version": VERSION,

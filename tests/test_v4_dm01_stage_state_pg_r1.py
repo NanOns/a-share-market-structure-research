@@ -32,11 +32,12 @@ class MemoryFactStore:
 
 
 @pytest.fixture(autouse=True)
-def isolated_memory_store(monkeypatch):
+def isolated_memory_store(monkeypatch, request):
     from workbench_db import v4_dm01_stage_state_pg_r1 as state
 
     MemoryFactStore.records = {}
-    monkeypatch.setattr(state, "ForwardFactStore", MemoryFactStore)
+    if not request.node.name.startswith("test_stage_writer_"):
+        monkeypatch.setattr(state, "_store", lambda root: MemoryFactStore(root, state.FOLDER))
     real_read_fact = state._read_fact
 
     def read_fact(root, binding):
@@ -80,6 +81,68 @@ def test_stage_fact_append_rejects_database_identity_drift(tmp_path, monkeypatch
     with pytest.raises(ValueError, match="DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH"):
         state.append_stage(tmp_path, "2026-10-16", "gbbq_revision_probe",
                            {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "trade_date": "2026-10-16"})
+
+
+def test_stage_writer_requires_preprovisioned_schema_without_auto_ddl_or_import(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+    from workbench_db.v4_native import workspace_schema
+
+    identity = MemoryFactStore.database_identity
+    schema = workspace_schema(tmp_path / state.FOLDER, "forward")
+    calls = []
+
+    class Result:
+        def __init__(self, row): self.row = row
+        def fetchone(self): return self.row
+
+    class PG:
+        def execute(self, statement, params=()):
+            calls.append((statement, params))
+            if "to_regclass" in statement: return Result(("forward_facts",))
+            if "current_database()" in statement:
+                return Result((identity["database"], identity["database_oid"], identity["host"], identity["port"]))
+            raise AssertionError(statement)
+
+    @contextmanager
+    def connection(received_schema, *, dsn=None):
+        assert received_schema == schema
+        assert dsn == "explicit-writer-dsn"
+        yield PG()
+
+    monkeypatch.setattr(ForwardFactStore, "__init__", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("AUTO_MIGRATION_FORBIDDEN")))
+    monkeypatch.setattr(state.v4_native, "configured_dsn", lambda: "explicit-writer-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    store = state._store(tmp_path)
+
+    assert store.database_identity == identity
+    assert [statement for statement, _ in calls] == [
+        "SELECT to_regclass('forward_facts')",
+        "SELECT current_database(),(SELECT oid FROM pg_database WHERE datname=current_database()),inet_server_addr()::text,inet_server_port()",
+    ]
+
+
+def test_stage_writer_fails_when_schema_is_not_preprovisioned(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    identity = MemoryFactStore.database_identity
+
+    class Result:
+        def fetchone(self): return (None,)
+
+    class PG:
+        def execute(self, statement, params=()): return Result()
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield PG()
+
+    monkeypatch.setattr(state.v4_native, "configured_dsn", lambda: "explicit-writer-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_SCHEMA_NOT_PROVISIONED"):
+        state._store(tmp_path)
 
 
 def test_stage_fact_reader_uses_readonly_dsn_and_verifies_pg_payload(tmp_path, monkeypatch):

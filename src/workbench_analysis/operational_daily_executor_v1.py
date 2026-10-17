@@ -593,14 +593,22 @@ def verify_source_gate(root,day,artifact,result,now=None):
     from .operational_new_listing_r1 import classify_codes
     code_changes=classify_codes(expected_codes,daily,native,day)
     from .native_source_reconciliation_r3 import reconcile
-    policy_path=root/'config/tdx_a_stock_delta_scope_policy_v2.json'
-    scoped_reconciliation=reconcile(native,daily,expected_codes,json.loads(policy_path.read_bytes()),day)
-    scoped_reconciliation['scope_policy']=ref(root,policy_path)
+    policy_contract=_load_daily_contract_record_from_pg('TDX_A_STOCK_DELTA_SCOPE_POLICY_V2','2.0.0')
+    scope_policy=policy_contract.parsed_json
+    if (not isinstance(scope_policy,dict)
+            or scope_policy.get('contract_id')!='TDX_A_STOCK_DELTA_SCOPE_POLICY_V2'
+            or scope_policy.get('version')!='2.0.0'):
+        raise ValueError('DAILY_SCOPE_POLICY_REGISTRY_IDENTITY_INVALID')
+    policy_binding=dict(contract_id=policy_contract.contract_id,version=policy_contract.version,
+        sha256=policy_contract.raw_sha256,namespace=policy_contract.namespace,
+        source_revision=policy_contract.source_revision)
+    scoped_reconciliation=reconcile(native,daily,expected_codes,scope_policy,day)
+    scoped_reconciliation['scope_policy']=policy_binding
     scoped_reconciliation['dated_identity']=life['identity']
     # Provider arithmetic agreement and canonical identity admission are
     # distinct gates. A correctly reconciled new/delisted roster still waits
     # for dated identity authority below; it is not a bad price source.
-    provider_reconciliation=reconcile(native,daily,actual_codes,json.loads(policy_path.read_bytes()),day)
+    provider_reconciliation=reconcile(native,daily,actual_codes,scope_policy,day)
     reconciled=provider_reconciliation['status']=='SCOPED_REQUIRED_PROVIDER_FACTS_RECONCILED'
     scoped_reconciliation['provider_facts']=provider_reconciliation
     for family in ('baostock_daily','baostock_factor'):

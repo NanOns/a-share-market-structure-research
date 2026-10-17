@@ -41,9 +41,18 @@
 ## 本轮续做：DM01 Head、合同和共享 PG 读链
 
 - 新增 `v4.dm01_data_accepted_heads` 及 append-only history/CAS migration（045），接入应用 Phase 0 migration ledger。已在同一 `market_research` 实例执行该 DDL，并按现有已入库 Head 的精确原始字节 bootstrap generation 1；Head SHA 为 `38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40`、日期仍为 `2026-09-30`。未执行 CAS，未改变 accepted Head 内容。
-- 对当前 Registry 中 14 个合同版本完成批准事件 readback；包括 Full Closeout 4.2、Head schema 2.0、promotion policy 4.1、已接受 R4R1 4.1 与现行日更运行合同。该操作为本轮用户授权的 DB Registry 状态写入，不代表第三方外部验收，也未放宽 Head/生产权限。
+- 对当前 Registry 中 15 个合同版本完成批准事件 readback；包括 Full Closeout 4.2、Head schema 2.0、promotion policy 4.1、已接受 R4R1 4.1 与现行日更运行合同。该操作为本轮用户授权的 DB Registry 状态写入，不代表第三方外部验收，也未放宽 Head/生产权限。
 - DM01 运行合同、日历 Head、source ingress、calendar 来源、历史 Head archive 和组件 receipts 统一在共享数据库读快照中读取。验证同一 RR/RO connection 嵌套复用；当前 parent 为 9 个组件，R4 acceptance envelope、4.2 Registry contract 和 calendar readback 通过。`2026-10-19` 的 session gate 因缺少 `2026-10-08` 中间交易日而拒绝捕获，未启动日更或采集器。
 - 修正新增 Head 查询未限定 `v4` schema 的运行错误；修正只读连接包装器把业务校验异常误报为 `PG_READ_FAILED` 的错误映射。历史 Git ingress 现在校验精确 `git:<commit>:<path>` blob 字节后才接收入库。
 - 历史 R3.3 链的源冻结重建不再在当前源码写入 `D:/new_tdx`；从 Head 合同指定、已精确导入 PG 的历史 builder blob 解析该次历史运行的 `TDX_ROOT`，保持原有接受链摘要可复核，同时现役采集/构建路径仍走中央 `resolve_tdx_root` 配置。
 - 13 个变更 Python 文件定向编译通过，`git diff --check` 通过。没有运行完整测试集、GitHub CLI/Actions 或重复全仓扫描。
 - 浏览器上一轮覆盖的页面和交互仍对当前旧 28766 服务有效；但服务入口 `G:/codex_tmp/v4_r21_r5_dev_candidate_28766.py` 直接导入服务模块，PID `42876` 在最终代码修改前启动。停止该精确进程的操作被自动审查拒绝，本轮没有通过其它方式绕过。故最新修改后的浏览器验收记为 `BROWSER_PARTIAL`，需在允许安全重启 28766 后复验。
+
+## 本轮续做：日更合同 Registry 与 TDX 成员重建
+
+- `operational_daily_executor_v1.verify_source_gate` 去掉读取 `config/tdx_a_stock_delta_scope_policy_v2.json` 的运行时文件依赖，改从同一共享 PostgreSQL 的批准合同 Registry 读取 `TDX_A_STOCK_DELTA_SCOPE_POLICY_V2/2.0.0`；按精确合同 ID、版本、SHA-256、namespace 和源 revision 校验。Registry/批准事件在同一 `market_research` 实例提交，SHA-256 为 `f7e1134867f2ec771d2ebcc21fec12d6b616e41efb68b6b1d6e0b932e8582647`；只读 RR 运行时 readback 通过。
+- `tdx_member_retro_r43.py` 选择器和重解析路径不再用 `MEMBER_SNAPSHOT_S.json` 本地指针选快照；改由 PG `tdx_membership_candidate` 精确候选驱动，从已接受 PG identity projection 的 `records` 读取身份，校验唯一来源键/实体键。历史接受 membership artifact 仅在明确 source-ingress 边界导入并读回 PG。解析器冻结副本写入 `G:/codex_tmp` 临时目录；移除未使用的整棵 TDX `block_*.dat` 扫描。
+- 使用现有入口实际生成当前诊断候选 `TDX_MEMBER_SNAPSHOT_S_20261018_5fddbc66d45184b1bfecc1f0bbff414c0d77856d475adf7df388dcea70962fca`：55,136 条成员关系、54,613 条映射、523 条隔离；完整冻结源重解析结果 `FROZEN_SOURCE_REPARSE_V2_PASS`，原始/标准化成员摘要均为 `5fddbc66d45184b1bfecc1f0bbff414c0d77856d475adf7df388dcea70962fca`。仅新增诊断 PG candidate，未切换正式 Head。
+- 验证期间首先发现接受 identity projection 使用 `records` 而非旧文件的 `rows` 字段，随后按其 `ACCEPTED_IDENTITY_NORMALIZED_VIEW_R3` 合同适配；又发现接受 membership `facts` 是明确 ingress 绑定，不是历史 ingress 中现成对象，改为边界导入再读取。最终 capture + reparse 全流程通过。
+- Codex 内置浏览器本轮直接访问 `127.0.0.1:28766`：首页有 5,213 只股票 / 378 个板块；股票模块 5,213 条、板块模块 378 条；Focus 469 条、Forward 117 条；市场宽度/指数/事件真实加载；Diagnostics 健康源表 4 组（ADJUSTED_DAILY 5,213、IDENTITY_UNIVERSE 5,224、RAW_DAILY 5,213、TRADING_STATUS 5,224）。页面均显示当前候选截至 2026-09-30。
+- 以上浏览器页面运行于既有 PID `42876`。该进程在本轮最后两处后端编辑前启动，读取了旧 Python 模块；停止该精确进程曾被自动审查拒绝。因此本轮浏览器页面验证的是 28766 现存服务版本，不能声称本轮新增日更合同和成员捕获代码已由该 Web 进程加载。上述两处分别由 Registry RR readback、真实 PG capture/reparse 端到端验证；待 28766 可重载后复验前端集成。

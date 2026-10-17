@@ -20,7 +20,9 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
 from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
 from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
-from common.paths import resolve_baostock_cache_root, resolve_tdx_root  # noqa: E402
+from common.paths import (  # noqa: E402
+    resolve_baostock_cache_root, resolve_tdx_root, resolve_tdx_snapshot_root,
+)
 from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
     _daily_runtime_contract, _load_daily_contract_record_from_pg,
 )
@@ -130,7 +132,8 @@ def _accepted_gbbq_snapshot(target_date: str, stage_binding: dict | None = None)
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the source-gated V4-DM-01 daily increment entrypoint.")
     parser.add_argument("--target-date", required=True)
-    parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
+    parser.add_argument("--snapshot-root", type=Path,
+                        help="Explicit TDX snapshot root; otherwise use TDX_SNAPSHOT_ROOT/config/paths.yaml")
     parser.add_argument("--v402-pg-stage-state", help="Exact accepted V4-02 PG ingress descriptor JSON")
     parser.add_argument("--active-source-policy", action="store_true",
                         help="Run versioned R4 corrected source capture independently of canonical admission.")
@@ -139,6 +142,12 @@ def main() -> int:
     parser.add_argument('--typed-scope-v2',action='store_true',
                         help='Versioned typed source and corrected-only capture; cannot promote old PIT head.')
     args = parser.parse_args()
+    try:
+        snapshot_root = resolve_tdx_snapshot_root(ROOT, args.snapshot_root)
+    except (FileNotFoundError, ValueError) as error:
+        print(json.dumps(dict(status="BLOCKED_PATH_CONFIGURATION", reason=str(error),
+                              source_requests=0, data_head_moved=False)))
+        return 2
     if args.corrected_owner_repair:
         from workbench_analysis.corrected_owner_pipeline import run_corrected_owner_pipeline
         try:
@@ -164,7 +173,8 @@ def main() -> int:
     if args.active_source_policy and args.target_date in official_sessions:
         from workbench_analysis.market_source_acquisition import acquire
         try:
-            acquisition = acquire(ROOT, [args.target_date], args.receipt_dir / args.target_date / 'active_source_capture')
+            receipt_root = snapshot_root / "source_evidence" / "active_source_capture"
+            acquisition = acquire(ROOT, [args.target_date], receipt_root / args.target_date)
         except (ValueError, OSError) as error:
             acquisition = dict(status='SOURCE_CAPTURE_BLOCKED', reason=str(error))
     candidate_result = None
@@ -195,7 +205,7 @@ def main() -> int:
             try:
                 tdx = capture_tdx_official_daily_package(
                     target_date=args.target_date,
-                    snapshot_root=args.snapshot_root,
+                    snapshot_root=snapshot_root,
                     tdx_root=resolve_tdx_root(ROOT),
                 )
             except (ValueError, OSError) as error:
@@ -214,7 +224,7 @@ def main() -> int:
             if delta_code == 0 and tdx_delta_build.get("status") == "READY":
                 if args.typed_scope_v2:
                     from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
-                    source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
+                    source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
                     if source:
                         bao=_read_baostock_daily_update_from_pg(args.target_date,str(source['snapshot_id']),source.get('source_revision_id'))
                         bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')

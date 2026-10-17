@@ -56,3 +56,10 @@
 - 验证期间首先发现接受 identity projection 使用 `records` 而非旧文件的 `rows` 字段，随后按其 `ACCEPTED_IDENTITY_NORMALIZED_VIEW_R3` 合同适配；又发现接受 membership `facts` 是明确 ingress 绑定，不是历史 ingress 中现成对象，改为边界导入再读取。最终 capture + reparse 全流程通过。
 - Codex 内置浏览器本轮直接访问 `127.0.0.1:28766`：首页有 5,213 只股票 / 378 个板块；股票模块 5,213 条、板块模块 378 条；Focus 469 条、Forward 117 条；市场宽度/指数/事件真实加载；Diagnostics 健康源表 4 组（ADJUSTED_DAILY 5,213、IDENTITY_UNIVERSE 5,224、RAW_DAILY 5,213、TRADING_STATUS 5,224）。页面均显示当前候选截至 2026-09-30。
 - 以上浏览器页面运行于既有 PID `42876`。该进程在本轮最后两处后端编辑前启动，读取了旧 Python 模块；停止该精确进程曾被自动审查拒绝。因此本轮浏览器页面验证的是 28766 现存服务版本，不能声称本轮新增日更合同和成员捕获代码已由该 Web 进程加载。上述两处分别由 Registry RR readback、真实 PG capture/reparse 端到端验证；待 28766 可重载后复验前端集成。
+
+## 本轮续做：每日入口路径配置与诊断交互
+
+- `scripts/run_v4_dm01_daily_increment.py` 修正两个现役入口问题：`--active-source-policy` 曾引用不存在的 `args.receipt_dir`；`--snapshot-root` 默认值绕过中央配置。现在显式参数仍优先，否则使用 `TDX_SNAPSHOT_ROOT/config/paths.yaml`，并在该快照根下按日期写入 active source capture；TDX 源根保持只读。配置缺失在发出 source request 前返回 `BLOCKED_PATH_CONFIGURATION`。校正分支共用解析后的 snapshot root。
+- 对该入口完成 `py_compile` 与 `git diff --check`。没有启动采集器或日更 worker。
+- 28766 新增交互实测：Focus 搜索“中华企业”返回 1 条；Forward 搜索同对象返回 1 条并展开来源详情；市场页展开上证指数，展示真实行情蜡烛图并标注指数成交量单位待核实；Diagnostics/Jobs 展示 `SNAPSHOT_ONLY`、source requests=0 和两项明确缺口；Sources 与 Contracts 展开后读取同一候选快照身份（`market_research` / OID `646711`，T0 `2026-09-30`，`PG_CANDIDATE_SNAPSHOT`）。页面未运行日更 worker。
+- 28766 仍由旧服务 PID `42876` 提供。尝试停止这一精确 PID 以载入最新 Python 代码被自动审查拒绝；没有通过其它进程控制方式绕过。故本轮新路径代码尚未在浏览器服务器进程内重新载入，浏览器集成验收仍记为 `BROWSER_PARTIAL_28766_OLD_PROCESS`。进程/端口核验：28766 由 PID `42876` 监听，28765 未监听，PostgreSQL 5432 仍在监听。

@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 233,
+    "migration_open": 229,
     "statuses": {
-      "OPEN": 225,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 33,
+      "OPEN": 221,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 37,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 8
     },
-    "code_level_pg_read_paths_implemented": 33,
-    "remaining_open_or_ingress": 233,
+    "code_level_pg_read_paths_implemented": 37,
+    "remaining_open_or_ingress": 229,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -15492,20 +15492,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_product_catalog_v3 Head-embedded PG manifest and scope fact reader",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.chart_history_pack",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
+        "document": "manifest",
+        "implemented_code": "CoreProductBFFR1.chart_history_pack reads the Head-bound native_product_read_authority_pg manifest through the read-only PG Owner fact reader; this branch does not reopen the local manifest file.",
+        "test_evidence": [
+          "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
+          "test_pg_product_catalog_rejects_owner_binding_substitution"
+        ],
+        "formal_status": "OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160828",
@@ -15558,20 +15567,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_product_catalog_v3 Head-embedded PG manifest and scope fact reader",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.chart_history_pack",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
+        "document": "scope",
+        "implemented_code": "CoreProductBFFR1.chart_history_pack validates the fact-bound scope from PG and skips local Head-scope file reads when native_product_read_authority_pg is embedded.",
+        "test_evidence": [
+          "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
+          "test_pg_product_catalog_rejects_owner_binding_substitution"
+        ],
+        "formal_status": "OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160830",
@@ -15624,20 +15642,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_product_catalog_v3 Head-embedded PG manifest and scope fact reader",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.pack",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
+        "document": "manifest",
+        "implemented_code": "CoreProductBFFR1.pack resolves date manifests from the Head-bound native_product_read_authority_pg catalogue through read-only PG Owner facts; no local manifest fallback occurs in this branch.",
+        "test_evidence": [
+          "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
+          "test_pg_product_catalog_rejects_owner_binding_substitution"
+        ],
+        "formal_status": "OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160832",
@@ -15689,20 +15716,29 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
         "namespace": []
       },
       "candidate_pg_mapping": {
-        "candidate": "operational_successor_reader + v4_read_index_r2 typed PG consumer",
-        "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
+        "candidate": "native_product_catalog_v3 Head-embedded PG manifest and scope fact reader",
+        "status": "IMPLEMENTED_PG_READ_PATH_PENDING_CURRENT_HEAD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Current accepted Head lacks native_product_read_authority_pg; live Reader identity/readback, exact inventory reconciliation and full BFF business acceptance remain open.",
       "baseline_function": "CoreProductBFFR1.pack",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R4-product-catalog-pg-bff-r48",
+        "document": "scope",
+        "implemented_code": "CoreProductBFFR1.pack validates its PG-bound product scope and does not reopen the local Head-scope artifact when the embedded PG catalogue is present.",
+        "test_evidence": [
+          "test_pg_product_catalog_reads_manifest_and_scope_without_local_fallback",
+          "test_pg_product_catalog_rejects_owner_binding_substitution"
+        ],
+        "formal_status": "OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160834",

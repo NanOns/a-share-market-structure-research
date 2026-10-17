@@ -34,6 +34,16 @@ def test_registry_reader_rejects_descriptor_not_bound_to_candidate(tmp_path,monk
         registry.read(tmp_path,candidate)
 
 
+def test_registry_reader_requires_pg_authority_without_opening_legacy_file(tmp_path,monkeypatch):
+    candidate={'accepted_trade_date':'2026-10-12','owners':{},
+        'registry':{'path':'archive/BUILDER_REGISTRY.json','sha256':'a'*64,'bytes':17}}
+    monkeypatch.setattr(registry,'checked',lambda *args,**kwargs:pytest.fail('REGISTRY_FILE_FALLBACK_USED'))
+    monkeypatch.setattr(registry,'read_owner_fact',lambda *args,**kwargs:pytest.fail('PG_READ_WITHOUT_AUTHORITY'))
+
+    with pytest.raises(ValueError,match='AUTHORITY_REQUIRED_NO_FALLBACK'):
+        registry.read_registry(tmp_path,candidate)
+
+
 def test_registry_prepare_appends_exact_payload_and_embeds_pg_descriptor(tmp_path,monkeypatch):
     source={'path':'archive/BUILDER_REGISTRY.json','sha256':'a'*64,'bytes':17}
     value={'owner_bindings':{'2026-10-12':{'raw':{'path':'raw.json','sha256':'d'*64}}},'bindings':[]}

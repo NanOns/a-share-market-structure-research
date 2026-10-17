@@ -59,7 +59,7 @@ def read(root, candidate, *, workspace_root=None):
 
 
 def read_registry(root, candidate, *, workspace_root=None):
-    """Use PG when explicitly bound; retain exact legacy file ingress otherwise."""
-    if KEY in candidate:
-        return read(root, candidate, workspace_root=workspace_root)
-    return json.loads(checked(Path(root).resolve(), candidate['registry']).read_bytes())
+    """Read only the Head-bound PG registry; legacy JSON is ingress-only."""
+    if KEY not in candidate:
+        raise ValueError('OPERATIONAL_REGISTRY_PG_AUTHORITY_REQUIRED_NO_FALLBACK')
+    return read(root, candidate, workspace_root=workspace_root)

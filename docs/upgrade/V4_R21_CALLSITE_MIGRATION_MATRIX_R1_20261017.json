@@ -6865,11 +6865,12 @@
       "blocker": "Current accepted Head does not contain the corresponding PG authority; approved Reader identity, same-T0 readback and exact inventory reconciliation remain open.",
       "baseline_function": "validate",
       "migration_evidence": {
-        "batch_id": "R21-R4-operational-registry-pg-reader-r39",
-        "implemented_code": "Successor admission reads the exact builder registry via v4_operational_registry_pg_v1.read_registry when native_operational_registry is present; the branch checks the Head/T0-bound source binding, inline descriptor and fact token without opening registry JSON.",
+        "batch_id": "R21-R4-operational-registry-pg-only-consumer-r54",
+        "implemented_code": "The operational successor and both service registry routes now require native_operational_registry and read only the Head/T0-bound PG Owner fact. Candidates lacking the PG authority fail closed before opening the legacy registry JSON; file loading remains confined to explicit prepare ingress.",
         "formal_status": "OPEN",
         "live_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
-        "current_head": "PG_AUTHORITY_NOT_PRESENT"
+        "current_head": "PG_AUTHORITY_NOT_PRESENT",
+        "verification": "247 selected repository-CI tests passed, including a no-file-fallback registry test; no live PG or accepted Head update."
       },
       "reference_evidence": [
         {
@@ -17478,6 +17479,30 @@
         },
         "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
         "next": "Continue exact-mapped Owner and other-business callsites; keep formal closure at zero pending live accepted same-T0 reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-operational-registry-pg-only-consumer-r54",
+        "files": [
+          "src/workbench_db/v4_operational_registry_pg_v1.py",
+          "tests/test_v4_operational_registry_pg.py",
+          "tests/test_v4_r8_real_daily_executor_pg_bridge.py"
+        ],
+        "evidence": [
+          "The operational successor admission and daily service registry routes now fail closed when the candidate lacks native_operational_registry; the reader never opens legacy registry JSON. Exact PG descriptor, T0, source-binding and Owner scopes continue to be validated.",
+          "The TDX GBBQ path contract test now checks the fixed read-only suffix and an absolute resolved path without assuming a Windows host, so the configured-root behavior is also verifiable in Linux CI."
+        ],
+        "verification": "247 selected repository-CI tests passed locally; the prior R53 Linux CI failure was an obsolete Windows-only assertion. Live PG readback and accepted Head publication were not performed.",
+        "baseline_callsite_id": "V4-BCA-R2-0a049f1b9db3690e759d",
+        "baseline_callsite_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 219,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 39,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8
+        },
+        "live_pg_catalog_or_readback": "NOT_RUN_NO_COMPLIANT_READ_DSN",
+        "next": "Continue migrating exact-mapped business and Owner callers; reconcile current Head/PG identity and live same-T0 evidence before formal closure."
       }
     ]
   }

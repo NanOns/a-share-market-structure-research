@@ -5,6 +5,7 @@ import base64
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any
 from datetime import datetime, timezone
@@ -108,7 +109,8 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
 
 
 def _query(root: str | Path, *, source_id: str | None = None,
-           source_path: str | None = None, expected_sha256: str | None = None) -> tuple[dict[str, Any], bytes]:
+           source_path: str | None = None, expected_sha256: str | None = None,
+           pg: Any | None = None) -> tuple[dict[str, Any], bytes]:
     project = _root(root)
     if (source_id is None) == (source_path is None):
         raise ValueError("HISTORICAL_SOURCE_SELECTOR_REQUIRED")
@@ -119,11 +121,11 @@ def _query(root: str | Path, *, source_id: str | None = None,
         expected = json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", "{}"))
     except ValueError as exc:
         raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
-    with _same_instance_read(schema) as pg:
-        identity = ForwardFactStore._database_identity(pg)
+    def query(connection):
+        identity = ForwardFactStore._database_identity(connection)
         if expected and identity != expected:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH")
-        rows = pg.execute(
+        return connection.execute(
             "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_id'=%s) "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_path'=%s) "
@@ -131,6 +133,11 @@ def _query(root: str | Path, *, source_id: str | None = None,
             "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
             (KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256),
         ).fetchall()
+    if pg is None:
+        with _same_instance_read(schema) as connection:
+            rows = query(connection)
+    else:
+        rows = query(pg)
     if len(rows) != 1:
         raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE" if rows else "HISTORICAL_SOURCE_INGRESS_NOT_FOUND")
     payload_raw, payload_sha = rows[0]
@@ -198,6 +205,41 @@ def read_bound(root: str | Path, source_path: str, expected_sha256: str) -> dict
             pass
     return {"record": record, "raw": raw, "value": record.get("source_json"),
             "text": text}
+
+
+def read_bound_many(root: str | Path, bindings: list[dict[str, Any]]) -> list[dict[str, Any] | None]:
+    """Resolve exact bindings under one read-only repeatable-read PG snapshot."""
+    project = _root(root)
+    folder = (project / FOLDER).resolve()
+    schema = v4_native.workspace_schema(folder, "forward")
+    results: list[dict[str, Any] | None] = []
+    with _same_instance_read(schema) as pg:
+        for binding in bindings:
+            if not isinstance(binding, dict):
+                results.append(None)
+                continue
+            source_path = binding.get("path")
+            expected_sha256 = binding.get("sha256")
+            if (not isinstance(source_path, str) or not source_path
+                    or not isinstance(expected_sha256, str)
+                    or not re.fullmatch(r"[0-9a-f]{64}", expected_sha256)):
+                results.append(None)
+                continue
+            try:
+                record, raw = _query(project, source_path=source_path,
+                                     expected_sha256=expected_sha256, pg=pg)
+            except ValueError:
+                results.append(None)
+                continue
+            text = record.get("source_text_utf8")
+            if text is None:
+                try:
+                    text = raw.decode("utf-8")
+                except UnicodeDecodeError:
+                    pass
+            results.append({"record": record, "raw": raw,
+                            "value": record.get("source_json"), "text": text})
+    return results
 
 
 def read_path(root: str | Path, source_path: str) -> dict[str, Any]:

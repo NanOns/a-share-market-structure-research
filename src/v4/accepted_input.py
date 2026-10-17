@@ -41,15 +41,17 @@ def _json(root: Path, relative: str, digest: str | None = None) -> dict:
 
 
 def _find_bound_document(root: Path, bindings: dict, contract_id: str) -> tuple[dict, dict]:
-    """Resolve one receipt by its typed PG-ingressed identity, never by a report path."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    """Resolve one typed receipt from a single immutable PG snapshot."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound_many
+    candidates = [binding for binding in bindings.values()
+                  if isinstance(binding, dict) and binding.get("path") and binding.get("sha256")]
+    sources = read_bound_many(root, candidates)
     matches = []
-    for binding in bindings.values():
-        if not isinstance(binding, dict) or not binding.get("path") or not binding.get("sha256"):
+    for binding, source in zip(candidates, sources):
+        if source is None:
             continue
         try:
-            raw = read_bound(root, binding["path"], binding["sha256"])["raw"]
-            value = json.loads(raw)
+            value = source["value"] if isinstance(source.get("value"), dict) else json.loads(source["raw"])
         except (OSError, UnicodeDecodeError, ValueError, TypeError):
             continue
         if isinstance(value, dict) and value.get("contract_id") == contract_id:

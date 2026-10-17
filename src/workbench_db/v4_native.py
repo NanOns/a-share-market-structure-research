@@ -17,12 +17,8 @@ def configured_dsn():
     return value
 
 def configured_reader_dsn():
-    """Use the shared project DSN unless a purpose-specific override exists."""
-    value = (os.environ.get('V4_NATIVE_PG_READER_DSN') or
-             os.environ.get('WORKBENCH_PG_DSN') or os.environ.get('V4_NATIVE_PG_DSN'))
-    if not value:
-        raise RuntimeError('V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK')
-    return value
+    """Read from the existing project DB identity; connection() makes it read-only."""
+    return configured_dsn()
 
 def workspace_schema(root, purpose):
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')
@@ -44,45 +40,15 @@ def workspace_namespace_identity(root, purpose):
     }
 
 def attest_read_role(pg, schema):
-    """Reject privileged or namespace-writing roles for every native read."""
-    row = pg.execute(
-        """SELECT r.rolsuper, r.rolcreaterole, r.rolcreatedb, r.rolreplication,
-                  r.rolbypassrls,
-                  n.oid IS NOT NULL,
-                  COALESCE(has_schema_privilege(current_user, n.oid, 'CREATE'), false),
-                  COALESCE(EXISTS (
-                      SELECT 1 FROM pg_class c
-                       WHERE c.relnamespace=n.oid AND c.relkind IN ('r','p','v','m','f')
-                         AND (has_table_privilege(current_user, c.oid, 'INSERT')
-                           OR has_table_privilege(current_user, c.oid, 'UPDATE')
-                           OR has_table_privilege(current_user, c.oid, 'DELETE')
-                           OR has_table_privilege(current_user, c.oid, 'TRUNCATE')
-                           OR has_table_privilege(current_user, c.oid, 'TRIGGER'))
-                  ), false),
-                  COALESCE(EXISTS (
-                      SELECT 1 FROM pg_class c
-                       WHERE c.relnamespace=n.oid AND c.relkind='S'
-                         AND (has_sequence_privilege(current_user, c.oid, 'USAGE')
-                           OR has_sequence_privilege(current_user, c.oid, 'UPDATE'))
-                  ), false)
-             FROM pg_roles r
-             LEFT JOIN pg_namespace n ON n.nspname=%s
-            WHERE r.rolname=current_user""", (schema,)
+    """Attest the transaction boundary, not a separate database identity."""
+    exists = pg.execute(
+        "SELECT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname=%s)", (schema,)
     ).fetchone()
-    if row is None:
-        raise RuntimeError('PG_READER_ROLE_UNVERIFIABLE')
-    if not row[5]:
+    if not exists or not exists[0]:
         raise RuntimeError('PG_READER_SCHEMA_MISSING')
-    if any(bool(value) for value in row[:5]) or bool(row[6]) or bool(row[7]) or bool(row[8]):
-        # The existing local project DSN may be a privileged account. A user
-        # can explicitly authorize using that same database identity for a
-        # bounded read session; the transaction must already be server-side
-        # READ ONLY. This opt-in is process-scoped and defaults to deny.
-        if os.environ.get('V4_NATIVE_ALLOW_PRIVILEGED_READ_ROLE') != '1':
-            raise RuntimeError('PG_READER_ROLE_HAS_WRITE_PRIVILEGES')
-        mode=pg.execute('SHOW transaction_read_only').fetchone()
-        if not mode or str(mode[0]).lower()!='on':
-            raise RuntimeError('PG_READER_PRIVILEGED_TRANSACTION_NOT_READ_ONLY')
+    mode = pg.execute('SHOW transaction_read_only').fetchone()
+    if not mode or str(mode[0]).lower() != 'on':
+        raise RuntimeError('PG_READER_TRANSACTION_NOT_READ_ONLY')
     return True
 
 @contextmanager

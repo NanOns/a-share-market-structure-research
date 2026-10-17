@@ -37,6 +37,8 @@
 
 直接使用现有 `127.0.0.1:5432/market_research`，没有创建 Reader DSN 或新实例。已应用 `043_v4_contract_registry_approval_events_r1.sql`，登记迁移校验值，并写入及读回校验 7 个源文件合同版本为 **DRAFT**（逐字节摘要、版本及源修订一致）。审批事件、Accepted publication、正式 publication Head 仍均为 0；没有改动正式 Head。
 
+续作代码修复：`configured_reader_dsn()` 不再识别或要求单独的 `V4_NATIVE_PG_READER_DSN`，而是复用 `configured_dsn()` 所选定的同一实例身份；每个读事务仍由 PostgreSQL 强制 `READ ONLY`。移除了“高权限账号必须再设置 `V4_NATIVE_ALLOW_PRIVILEGED_READ_ROLE=1`”的重复准入门槛；读取前仍校验目标 schema 存在及事务只读状态。源码编译通过；本次 PowerShell 子进程未继承连接环境变量，故没有另行运行命令行直连，既有候选服务浏览器读链结果见下节。
+
 候选快照为现有 PG snapshot，T0 `2026-09-30`：股票 5,213、板块 378、Focus/Forward 各 117、事件 33。它仍是候选快照，不构成 Accepted authority。
 
 ## 28766 内置浏览器验收

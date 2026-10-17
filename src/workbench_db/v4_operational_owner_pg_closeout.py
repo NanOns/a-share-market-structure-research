@@ -60,6 +60,12 @@ def inline_descriptor(root,binding):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_IDENTITY_REQUIRED')
     return dict(binding,pg_descriptor=descriptor)
 
+def append_authority_manifest(root,authority):
+    """Store business authority in PG and return its Head-embeddable locator."""
+    manifest_key=digest(canonical(authority))
+    binding=ForwardFactStore(root,FOLDER).append('authority_manifest',manifest_key,authority)
+    return inline_descriptor(root,binding)
+
 def descriptor_metadata(root,binding):
     """Validate a publisher-supplied PG locator without opening business files."""
     descriptor=binding.get('pg_descriptor') if isinstance(binding,dict) else None

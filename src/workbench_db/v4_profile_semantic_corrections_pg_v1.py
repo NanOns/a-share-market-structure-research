@@ -1,11 +1,13 @@
 """Native thin Profile corrections with immutable original row conservation."""
 import json
 from pathlib import Path
-from workbench_analysis.r43_owner_replay import checked,ref
+from workbench_analysis.r43_owner_replay import checked
 from workbench_analysis.r43_operational_publication import digest
 from v4.state_identity import digest as row_digest
-from workbench_analysis.operational_daily_storage_v1 import atomic_json
-from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact
+from .v4_operational_owner_pg_closeout import (
+    append_authority_manifest, descriptor_metadata, inline_descriptor, prepare as append,
+    read as read_fact, read_authority_manifest,
+)
 
 CONTRACT='V4_PROFILE_BRANCH_SEMANTIC_THIN_CORRECTION_R1'
 KEY='native_profile_semantic_corrections'
@@ -32,12 +34,13 @@ def prepare(root,candidate,patches):
         if document.get('contract_id')!=CONTRACT or document.get('T0')!=day or document.get('original_profile')!=candidate['owners'][day]['profile']:
             raise ValueError('PROFILE_CORRECTION_SOURCE_SCOPE_MISMATCH')
         if any(document.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED','publication_ready')):raise ValueError('PROFILE_CORRECTION_CAPABILITY_ESCALATION')
-        checked(root,document['source']);token=digest(dict(contract_id=CONTRACT,T0=day,source=source))
-        domain='reference_profile_semantic_corrections';descriptor=append(root,token,day,domain,source,document['rows'])
-        if read_fact(root,descriptor,token,day,domain,source)!=document['rows']:raise ValueError('PROFILE_CORRECTION_FULL_PG_PAYLOAD_DIFFERENCE')
-        entries[day]=dict(source=source,descriptor=descriptor,fact_token=token,original_profile=document['original_profile'],security_ids=[r['security_id'] for r in document['rows']],producing_source=document['source'])
+        checked(root,document['source']);fact_identity=digest(dict(contract_id=CONTRACT,T0=day,source=source))
+        domain='reference_profile_semantic_corrections';descriptor=append(root,fact_identity,day,domain,source,document['rows'])
+        if read_fact(root,descriptor,fact_identity,day,domain,source)!=document['rows']:raise ValueError('PROFILE_CORRECTION_FULL_PG_PAYLOAD_DIFFERENCE')
+        descriptor=inline_descriptor(root,descriptor)
+        entries[day]=dict(source=source,descriptor=descriptor,fact_token=fact_identity,original_profile=document['original_profile'],security_ids=[r['security_id'] for r in document['rows']],producing_source=document['source'])
     authority=dict(contract_id=CONTRACT,dates=entries,source_profiles={d:o['profile'] for d,o in candidate['owners'].items()},PIT_ELIGIBLE=False,AS_RECORDED=False)
-    target=root/'data/v4/profile_semantic_corrections_pg_v1'/digest(authority)/'AUTHORITY.json';atomic_json(root,target,authority);candidate[KEY]=ref(root,target)
+    candidate[KEY]=append_authority_manifest(root,authority)
     return dict(rows=sum(len(e['security_ids']) for e in entries.values()),dates=len(entries),publication=False)
 
 def conserved_dates(root,candidate,key,actual,expected):
@@ -63,7 +66,9 @@ def conserved_dates(root,candidate,key,actual,expected):
 
 
 def load(root,candidate):
-    authority=json.loads(checked(root,candidate[KEY]).read_bytes())
+    binding=candidate.get(KEY)
+    if not isinstance(binding,dict):raise ValueError('PROFILE_CORRECTION_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
+    authority=read_authority_manifest(root,binding)
     expected={d:o['profile'] for d,o in candidate['owners'].items()}
     dates=conserved_dates(root,candidate,KEY,authority.get('source_profiles',{}),expected)
     if authority.get('contract_id')!=CONTRACT or set(authority.get('dates',{}))!=dates:
@@ -71,6 +76,7 @@ def load(root,candidate):
     if any(authority.get(k) is not False for k in ('PIT_ELIGIBLE','AS_RECORDED')):raise ValueError('PROFILE_CORRECTION_PIT_ESCALATION')
     for day,entry in authority['dates'].items():
         if entry['original_profile']!=expected[day]:raise ValueError('PROFILE_CORRECTION_OWNER_CONSERVATION_REQUIRED')
+        descriptor_metadata(root,entry['descriptor'])
     return authority
 
 def apply(root,candidate,day,original,*,workspace_root=None):

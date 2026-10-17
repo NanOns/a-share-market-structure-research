@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 216,
+    "migration_open": 214,
     "statuses": {
-      "OPEN": 208,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 50,
-      "ACTIVE_INGRESS_ADAPTER_OPEN": 8
+      "OPEN": 204,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 52,
+      "ACTIVE_INGRESS_ADAPTER_OPEN": 10
     },
-    "code_level_pg_read_paths_implemented": 50,
-    "remaining_open_or_ingress": 216,
+    "code_level_pg_read_paths_implemented": 52,
+    "remaining_open_or_ingress": 214,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -14537,7 +14537,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14545,12 +14545,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "ACTIVE_SOURCE_BOUND_PG_APPEND_INGRESS_LIVE_RECONCILIATION_PENDING"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source identity, accepted publication/namespace binding and live PG reconciliation remain pending; patch JSON is read only as explicit ingress.",
       "baseline_function": "prepare",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-profile-correction-owner-manifest-r80",
+        "read_path": "explicit prepare source ingress -> append-only PG correction facts and authority_manifest",
+        "source_T0_publication_namespace": "T0 is validated; current accepted publication/namespace identity still unresolved",
+        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
+        "evidence": "prepare remains an explicit source-bound focus/prewatch patch ingress, appends correction rows and an authority_manifest, and verifies PG row readback; source identity/live publication reconciliation is still open."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160594",
@@ -14603,7 +14609,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14611,12 +14617,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Live accepted Head, database identity, publication/namespace, T0 and source identity reconciliation remains pending.",
       "baseline_function": "load",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-profile-correction-owner-manifest-r80",
+        "read_path": "Head inline native_profile_* binding -> v4_forward authority_manifest -> typed correction fact descriptors",
+        "source_T0_publication_namespace": "T0/domain preserved in PG payload; current accepted publication/namespace identity still unresolved",
+        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
+        "evidence": "load now resolves the Head-embedded authority_manifest via read_authority_manifest; dated focus/prewatch PG descriptors are inline and validated without opening AUTHORITY.json."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160592",
@@ -14669,7 +14681,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "ACTIVE_INGRESS_ADAPTER_OPEN",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14677,12 +14689,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "ACTIVE_SOURCE_BOUND_PG_APPEND_INGRESS_LIVE_RECONCILIATION_PENDING"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Source identity, accepted publication/namespace binding and live PG reconciliation remain pending; patch JSON is read only as explicit ingress.",
       "baseline_function": "prepare",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-profile-correction-owner-manifest-r80",
+        "read_path": "explicit prepare source ingress -> append-only PG correction facts and authority_manifest",
+        "source_T0_publication_namespace": "T0 is validated; current accepted publication/namespace identity still unresolved",
+        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
+        "evidence": "prepare remains an explicit source-bound correction-patch ingress, appends correction rows and an authority_manifest, and verifies PG row readback; source identity/live publication reconciliation is still open."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160597",
@@ -14801,7 +14819,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -14809,12 +14827,18 @@
       },
       "candidate_pg_mapping": {
         "candidate": "existing typed PostgreSQL owner/publication relation in workbench_db",
-        "status": "PROPOSED_REQUIRES_RELATION_AND_NAMESPACE_BINDING"
+        "status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Live accepted Head, database identity, publication/namespace, T0 and source identity reconciliation remains pending.",
       "baseline_function": "load",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-profile-correction-owner-manifest-r80",
+        "read_path": "Head inline native_profile_* binding -> v4_forward authority_manifest -> typed correction fact descriptors",
+        "source_T0_publication_namespace": "T0/domain preserved in PG payload; current accepted publication/namespace identity still unresolved",
+        "verification": "controlled offline consumer-boundary tests; no live PG or business acceptance",
+        "evidence": "load now resolves the Head-embedded authority_manifest via read_authority_manifest; dated row PG descriptors are inline and validated without opening AUTHORITY.json."
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160596",
@@ -18134,6 +18158,52 @@
         "reference_edges_unmapped": 22,
         "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
         "next": "Continue PG stage consumption in continuous-maintenance orchestration, resolve its accepted Head mapping, and continue mapped Owner/BFF migrations."
+      },
+      {
+        "batch_id": "R21-R4-profile-correction-owner-manifest-r80",
+        "files": [
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "docs/upgrade/V4_R21_R4_PROFILE_CORRECTION_OWNER_MANIFEST_PG_R80_20261017.md",
+          "src/workbench_db/v4_operational_owner_pg_closeout.py",
+          "src/workbench_db/v4_profile_semantic_corrections_pg_v1.py",
+          "src/workbench_db/v4_profile_dependent_corrections_pg_v1.py",
+          "tests/test_v4_correction_append_scope_r11.py",
+          "tests/test_v4_profile_correction_authority_pg_manifest.py"
+        ],
+        "evidence": [
+          "Semantic and dependent Profile correction authority manifests are stored and read through the existing append-only PG authority_manifest relation; Head candidate bindings contain inline PG descriptors. Runtime no longer reads correction AUTHORITY.json.",
+          "Two load IDs are code-level PG reads pending live reconciliation. Two prepare IDs are classified as explicit source-bound PG append ingress. One conserved_dates ID stays OPEN because predecessor candidate-file ancestry still needs accepted-Head PG mapping."
+        ],
+        "verification": "39 passed across controlled offline authority-manifest, Owner-manifest, append-scope, and contract-registry reader tests. SQL parser test collection was unavailable because local pglast is missing. No live PG read/write or business acceptance.",
+        "baseline_callsite_ids_observed": [
+          "V4-BCA-R2-a34870ce71af215d5654",
+          "V4-BCA-R2-4d72177931ccbfb8c6ff",
+          "V4-BCA-R2-4e514a570663cb85be60",
+          "V4-BCA-R2-a6637a1d93d5420c9ca1",
+          "V4-BCA-R2-760f46c21c917c652420"
+        ],
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_after_batch": {
+          "OPEN": 204,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 10,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 52
+        },
+        "owner_subcount_after_batch": {
+          "total": 200,
+          "code_paths_pending_live_reconciliation": 48,
+          "OPEN": 143,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 9
+        },
+        "other_business_subcount_after_batch": {
+          "total": 28,
+          "code_paths_pending_live_reconciliation": 4,
+          "OPEN": 23,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 1
+        },
+        "reference_edges_unmapped": 22,
+        "live_pg_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS",
+        "next": "Map accepted predecessor Head identity in PG and reconcile these five IDs against live namespace/publication/T0/source evidence; continue DM-01 runtime-state and remaining Owner/other-business consumers."
       }
     ]
   }

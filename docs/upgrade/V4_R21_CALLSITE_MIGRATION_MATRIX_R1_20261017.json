@@ -16648,16 +16648,20 @@
   "code_batch": {
     "files": [
       ".github/workflows/repository-policy.yml",
+      "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
       "docs/upgrade/V4_R21_R4_BAOSTOCK_RUNTIME_ACCEPTANCE_PG_R64_20261017.md",
       "docs/upgrade/V4_R21_R4_CONTRACT_REGISTRY_XML_ENCODING_GUARD_R65_20261017.md",
       "docs/upgrade/V4_R21_R4_DAILY_RUNTIME_ACCEPTANCE_EXECUTOR_PG_R66_20261017.md",
+      "docs/upgrade/V4_R21_R4_DM01_STAGE_STATE_PG_WRITER_R68_20261017.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R22.md",
       "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R23.md",
       "scripts/accept_dynamic_daily_baostock_v2.py",
       "scripts/capture_baostock_daily_update.py",
+      "scripts/probe_v4_dm01_gbbq_revision.py",
       "src/workbench_analysis/contract_registry_pg_v1.py",
       "src/workbench_analysis/operational_daily_executor_v1.py",
       "src/workbench_db/v4_baostock_runtime_acceptance_pg_r1.py",
+      "src/workbench_db/v4_dm01_stage_state_pg_r1.py",
       "src/workbench_db/v4_membership_reference_pg_v1.py",
       "src/workbench_db/v4_operational_owner_authority_v2.py",
       "src/workbench_db/v4_operational_owner_pg_closeout.py",
@@ -16667,7 +16671,8 @@
       "tests/test_operational_daily_executor_v1.py",
       "tests/test_pre_next_t0_executor_chain.py",
       "tests/test_v4_baostock_runtime_acceptance_pg_r1.py",
-      "tests/test_v4_contract_registry_pg_v1.py"
+      "tests/test_v4_contract_registry_pg_v1.py",
+      "tests/test_v4_dm01_stage_state_pg_r1.py"
     ],
     "note": "Per-row implementation statuses describe code paths, not a recomputed P1 count or live PG acceptance.",
     "follow_up_batches": [
@@ -17817,6 +17822,33 @@
         "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write was attempted",
         "next": "Map lifecycle/special-phase/source-freeze and historical inputs to their actual Owner/source PG relation, then remove the report-file consumer dependency; in parallel continue Head/descriptor/Owner/BFF batches.",
         "admission": "Six in-progress DM-01 orchestration script blobs rejected by tools/git_repository_policy.py with PROCESS_DATA_DEPENDENCY; retained as code-open pending real relation mapping and consumer read migration."
+      },
+      {
+        "batch_id": "R21-R4-dm01-stage-state-pg-writer-r68",
+        "files": [
+          "docs/upgrade/V4_R21_R4_DM01_STAGE_STATE_PG_WRITER_R68_20261017.md",
+          "docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json",
+          "scripts/probe_v4_dm01_gbbq_revision.py",
+          "src/workbench_db/v4_dm01_stage_state_pg_r1.py",
+          "tests/test_v4_dm01_stage_state_pg_r1.py"
+        ],
+        "evidence": [
+          "Added a date/stage-bound append-only PG fact writer with explicit writer DSN and expected database identity checks; GBBQ probe now appends its exact result and returns the fact binding.",
+          "The reader resolves only the exact local PG descriptor and uses the configured Reader DSN in a read-only repeatable-read transaction; it verifies database identity, payload digest, date and stage without report fallback.",
+          "Main-orchestrator PG consumer wiring exists only in the working tree because that full script still has other reports/v4_* business reads and fails repository admission. Lifecycle, special-phase and source-freeze state remain unmigrated."
+        ],
+        "verification": "42 selected committed stage-state/DM-01/contract-registry tests passed; expanded working-tree selection including the uncommitted consumer check: 43 passed. Live PG was not accessed. A separate operational job-state selection had 16 failures because V4_NATIVE_PG_DSN is absent, while 37 other selected tests passed.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "migration_status_counts_unchanged": {
+          "OPEN": 210,
+          "ACTIVE_INGRESS_ADAPTER_OPEN": 8,
+          "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 48
+        },
+        "baseline_callsite_ids_matched": [],
+        "live_pg_catalog_read_or_write": "NOT_RUN_NO_COMPLIANT_RUNTIME_ACCESS; no write attempted",
+        "next": "Complete PG producer/consumer handoff for the main DM-01 orchestrator, lifecycle, special-phase and source-freeze; clear real report-backed business-state reads before admission; continue exact-mapped Owner/Head/BFF batches.",
+        "admission": "The stage-fact producer and store are staged and pass repository admission. Main-orchestrator PG reader integration remains in the working tree; that full script still reads reports/v4_* state and is not admitted."
       }
     ]
   }

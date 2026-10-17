@@ -197,3 +197,14 @@ def test_historical_reference_review_preserves_per_edge_identity_and_status():
     assert item["reachability_chain"]==["data/v4/HEAD.json","config/x.json"]
     assert item["runtime_traced"] is False
     assert item["status"]=="RETAIN_AND_REPORT_STALE_BINDING"
+    assert reviewed["contract_id"]=="V4_R20_R19_352_92_ITEM_REVIEW_R2"
+
+
+def test_policy_severity_requires_confirmed_static_loader_chain():
+    edge={"risk_type":"ACTUAL_MISMATCH","caller_path":"config/operational_daily_exact_release_policy_v2.json","reachability_class":"POSSIBLE_CURRENT_SCOPE","reachability_chain_id":None}
+    possible=history_reviewer.classify(edge,{})
+    assert possible["review_priority"]=="P2"
+    assert possible["disposition"]=="NEEDS_POLICY_LOADER_CHAIN_EVIDENCE"
+    confirmed=history_reviewer.classify({**edge,"reachability_class":"CONFIRMED_STATIC_CHAIN","reachability_chain_id":"chain"},{})
+    assert confirmed["review_priority"]=="P1"
+    assert confirmed["disposition"]=="BLOCKED_NO_SAFE_REBINDING_EVIDENCE"

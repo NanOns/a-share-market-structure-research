@@ -10,7 +10,6 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
 from workbench_analysis.gbbq_source_revision_probe import probe_gbbq_source_revision  # noqa: E402
 from common.paths import resolve_tdx_root  # noqa: E402
 
@@ -41,12 +40,9 @@ def main() -> int:
             ],
             tdx_root=tdx_root,
         )
-    receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
     from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage
     stage_binding = append_stage(ROOT, args.target_date, "gbbq_revision_probe", result)
-    digest = write_json_atomic(receipt_path, result, tdx_root=resolve_tdx_root(ROOT))
     print(json.dumps({"status": result["status"], "target_date": args.target_date,
-                      "receipt": str(receipt_path), "receipt_sha256": digest,
                       "pg_stage_state": stage_binding,
                       "tdx_root_write_count": result.get("tdx_root_write_count", 0)}, ensure_ascii=False))
     return 0 if result["status"] in {"REUSE_ACCEPTED_GBBQ_SNAPSHOT", "WAIT_MARKET_CLOSE"} else 2

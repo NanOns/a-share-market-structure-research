@@ -19,6 +19,7 @@ STAGES = frozenset({
     "special_phase_manifest",
     "daily_source_freeze",
     "source_readiness",
+    "v402_acceptance",
 })
 
 

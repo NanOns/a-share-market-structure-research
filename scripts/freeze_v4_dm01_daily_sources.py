@@ -10,20 +10,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
 from workbench_analysis.daily_source_freeze import (  # noqa: E402
     build_source_freeze_manifest_v2,
     file_record,
     source_freeze_complete_v2,
 )
 from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
-    load_runtime_acceptance_manifest,
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
+from common.paths import resolve_tdx_root  # noqa: E402
+from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
+    _daily_runtime_contract, _load_pg_runtime_acceptance,
+)
 
 
-TDX_ROOT = Path("D:/new_tdx")
+TDX_ROOT = resolve_tdx_root(ROOT)
 
 
 def sha256(path: Path) -> str:
@@ -44,7 +46,9 @@ def main() -> int:
     parser.add_argument("--target-date", required=True)
     parser.add_argument("--tdx-capture-receipt", type=Path, required=True)
     parser.add_argument("--bao-snapshot-id", required=True)
-    parser.add_argument("--gbbq-probe-receipt", type=Path, required=True)
+    parser.add_argument("--gbbq-pg-stage-state", required=True)
+    parser.add_argument("--lifecycle-pg-stage-state", required=True)
+    parser.add_argument("--special-phase-pg-stage-state", required=True)
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     try:
@@ -97,17 +101,31 @@ def main() -> int:
         ).hexdigest()
         if expected_bao_snapshot_id != args.bao_snapshot_id:
             raise ValueError("FREEZE_BAOSTOCK_CONTENT_ADDRESSED_ID_MISMATCH")
-        runtime_template = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))[
-            "dm01_daily_updates"]["runtime_acceptance_manifest_template"]
+        runtime_template = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+            "config/baostock_supplemental_contract_v1.json")["dm01_daily_updates"]["runtime_acceptance_manifest_template"]
         runtime_path = ROOT / runtime_template.replace("{YYYYMMDD}", args.target_date.replace("-", ""))
-        runtime_manifest = load_runtime_acceptance_manifest(runtime_path, project_root=ROOT, tdx_root=TDX_ROOT)
+        runtime_bundle = _load_pg_runtime_acceptance(ROOT, args.target_date)
+        runtime_manifest = runtime_bundle["manifest"]
+        runtime_path = runtime_bundle["manifest_path"]
         runtime_error = runtime_acceptance_error(
             runtime_manifest, sdk=package_metadata(), auth_mode=str(runtime_manifest.get("auth_mode") or "")
         )
         if runtime_error or runtime_manifest.get("live_smoke", {}).get("target_date") != args.target_date:
             raise ValueError("FREEZE_BAOSTOCK_RUNTIME_ACCEPTANCE_INVALID:" + str(runtime_error or "TARGET_DATE_MISMATCH"))
 
-        gbbq_probe = json.loads(args.gbbq_probe_receipt.read_text(encoding="utf-8"))
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_stage, append_stage
+        stage_bindings = {
+            "gbbq_revision_probe": json.loads(args.gbbq_pg_stage_state),
+            "lifecycle_snapshot": json.loads(args.lifecycle_pg_stage_state),
+            "special_phase_manifest": json.loads(args.special_phase_pg_stage_state),
+        }
+        for stage, binding in stage_bindings.items():
+            if (not isinstance(binding, dict) or binding.get("contract_id") != "V4_DM01_STAGE_STATE_PG_R1"
+                    or binding.get("trade_date") != args.target_date or binding.get("stage") != stage
+                    or not isinstance(binding.get("binding"), dict)):
+                raise ValueError("FREEZE_DM01_PG_STAGE_BINDING_REQUIRED:" + stage)
+        gbbq_probe = read_stage(ROOT, stage_bindings["gbbq_revision_probe"]["binding"],
+            trade_date=args.target_date, stage="gbbq_revision_probe")
         if gbbq_probe.get("trade_date") != args.target_date:
             raise ValueError("FREEZE_GBBQ_TARGET_DATE_MISMATCH")
         if gbbq_probe.get("status") == "REUSE_ACCEPTED_GBBQ_SNAPSHOT":
@@ -133,16 +151,21 @@ def main() -> int:
         cal = accepted_calendar(ROOT)
         calendar_path = ROOT / cal['binding']['path']
         calendar = dict(status='PASS', calendar_revision=cal['publication_id'], official_sessions_after_base_cutoff=cal['session_dates'])
-        lifecycle_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
-        lifecycle = json.loads(lifecycle_path.read_text(encoding="utf-8"))
+        lifecycle = read_stage(ROOT, stage_bindings["lifecycle_snapshot"]["binding"],
+            trade_date=args.target_date, stage="lifecycle_snapshot")
         if lifecycle.get("trade_date") != args.target_date or lifecycle.get("status") not in {"READY", "DEGRADED_PASS"}:
             raise ValueError("FREEZE_CURRENT_LIFECYCLE_SNAPSHOT_NOT_READY")
-        special_receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "special_phase_source_manifest_receipt_v1.json"
-        special_receipt = json.loads(special_receipt_path.read_text(encoding="utf-8"))
-        special_path = Path(str(special_receipt.get("manifest_path") or ""))
-        if (special_receipt.get("trade_date") != args.target_date or special_receipt.get("status") not in {"READY", "DEGRADED_PASS"}
-                or not special_path.is_file() or sha256(special_path) != special_receipt.get("manifest_sha256")):
+        special_manifest = read_stage(ROOT, stage_bindings["special_phase_manifest"]["binding"],
+            trade_date=args.target_date, stage="special_phase_manifest")
+        if (special_manifest.get("trade_date") != args.target_date
+                or special_manifest.get("status") not in {"READY", "DEGRADED_PASS"}):
             raise ValueError("FREEZE_SPECIAL_PHASE_MANIFEST_NOT_READY")
+
+        def stage_file_record(binding, payload, source_family):
+            locator = binding["binding"]
+            return dict(path=locator["path"], sha256=locator["sha256"], bytes=locator["bytes"],
+                        source_revision=binding.get("payload_sha256"), source_family=source_family,
+                        pg_stage=binding["stage"], pg_payload_sha256=binding.get("payload_sha256"))
 
         page_capture_record = file_record(
             args.tdx_capture_receipt, source_revision="sha256:" + sha256(args.tdx_capture_receipt),
@@ -168,8 +191,8 @@ def main() -> int:
                 "field_scope": "adjustment_factor_rows_only",
             },
             "GBBQ": file_record(gbbq_manifest_path, source_revision=str(gbbq_manifest.get("snapshot_id")), source_family="V4_02_GBBQ_FORWARD_SNAPSHOT_V1"),
-            "IDENTITY_LIFECYCLE": file_record(lifecycle_path, source_revision=str(lifecycle.get("source_revision")), source_family="CURRENT_LIFECYCLE_SNAPSHOT_V1"),
-            "SPECIAL_PRICE_PHASE": file_record(special_path, source_revision=str(json.loads(special_path.read_text(encoding="utf-8")).get("manifest_sha256")), source_family="SPECIAL_PHASE_SOURCE_MANIFEST_V1"),
+            "IDENTITY_LIFECYCLE": stage_file_record(stage_bindings["lifecycle_snapshot"], lifecycle, "CURRENT_LIFECYCLE_SNAPSHOT_V1"),
+            "SPECIAL_PRICE_PHASE": stage_file_record(stage_bindings["special_phase_manifest"], special_manifest, "SPECIAL_PHASE_SOURCE_MANIFEST_V1"),
         }
         freeze = build_source_freeze_manifest_v2(
             trade_date=args.target_date,
@@ -181,19 +204,17 @@ def main() -> int:
         )
         if not source_freeze_complete_v2(freeze):
             raise ValueError("FREEZE_SOURCE_MANIFEST_INCOMPLETE")
-        output = ROOT / "reports/v4_dm01" / args.target_date / "daily_source_freeze_v2.json"
-        digest = write_json_atomic(output, freeze, tdx_root=TDX_ROOT)
+        freeze_stage_binding = append_stage(ROOT, args.target_date, "daily_source_freeze", freeze)
         result = {"contract_id": "V4_DAILY_SOURCE_FREEZE_V2", "status": "SOURCE_FREEZE_READY",
-                  "trade_date": args.target_date, "manifest_path": str(output), "manifest_sha256": digest,
+                  "trade_date": args.target_date, "manifest_sha256": freeze.get("manifest_sha256"),
+                  "pg_stage_state": freeze_stage_binding,
                   "source_family_count": len(family_sources), "changed_tdx_file_count": len(delta.get("changed_file_manifest", [])),
                   "tdx_root_write_count": 0}
     except (OSError, IndexError, KeyError, TypeError, ValueError) as exc:
         result = {"contract_id": "V4_DAILY_SOURCE_FREEZE_V2", "status": "WAIT_OR_BLOCKED",
                   "trade_date": args.target_date, "reason": str(exc)[:240], "observed_at": now,
                   "tdx_root_write_count": 0}
-    receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "daily_source_freeze_receipt_v2.json"
-    receipt_sha = write_json_atomic(receipt_path, result, tdx_root=TDX_ROOT)
-    print(json.dumps({**result, "receipt_path": str(receipt_path), "receipt_sha256": receipt_sha}, ensure_ascii=False))
+    print(json.dumps(result, ensure_ascii=False))
     return 0 if result.get("status") == "SOURCE_FREEZE_READY" else 2
 
 

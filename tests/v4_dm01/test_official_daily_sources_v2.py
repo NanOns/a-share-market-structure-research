@@ -843,6 +843,30 @@ def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
     assert result["active_event_count"] == 0
     assert len(result["manifest_sha256"]) == 64
 
+    v402_binding = {"contract_id": "V4_DM01_V402_ACCEPTANCE_INGRESS_R1", "trade_date": TARGET,
+                    "stage_manifest_source_sha256": hashlib.sha256(stage_manifest_bytes).hexdigest(),
+                    "acceptance_source_sha256": "b" * 64, "descriptor_sha256": "c" * 64}
+    pg_lifecycle = {key: value for key, value in lifecycle.items() if key != "artifact_path"}
+    pg_lifecycle.pop("artifact_sha256")
+    pg_result = build_special_phase_source_manifest(
+        trade_date=TARGET,
+        project_root=tmp_path,
+        v402_external_acceptance_path=acceptance_path,
+        v402_stage_manifest_path=stage_manifest_path,
+        event_store_path=event_path,
+        policy_path=policy_path,
+        lifecycle_snapshot=pg_lifecycle,
+        observed_at="2026-09-28T07:00:00+00:00",
+        v402_external_acceptance=json.loads(acceptance_path.read_text(encoding="utf-8")),
+        v402_stage_manifest=stage_manifest,
+        v402_pg_binding=v402_binding,
+        lifecycle_pg_binding={"contract_id": "V4_DM01_STAGE_STATE_PG_R1", "trade_date": TARGET,
+                              "stage": "lifecycle_snapshot", "binding": {"sha256": "d" * 64}},
+    )
+    assert pg_result["status"] == "READY"
+    assert pg_result["accepted_v402_stage_manifest"]["pg_stage"] == "v402_acceptance"
+    assert pg_result["lifecycle_snapshot"]["pg_stage"] == "lifecycle_snapshot"
+
 
 def test_no_identity_event_still_produces_valid_lifecycle_snapshot():
     identities = [

@@ -14,25 +14,26 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
 from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness  # noqa: E402
 from workbench_analysis.tdx_official_daily_source import capture_tdx_official_daily_package  # noqa: E402
-from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
 from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
-    load_runtime_acceptance_manifest,
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
 from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
 from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
+from common.paths import resolve_tdx_root  # noqa: E402
+from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract  # noqa: E402
+from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baostock_runtime_pg  # noqa: E402
 
 
 def _runtime_acceptance(target_date: str) -> tuple[dict | None, str | None]:
-    contract = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))
+    contract = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+                                       "config/baostock_supplemental_contract_v1.json")
     settings = contract.get("dm01_daily_updates", {})
     template = settings.get("runtime_acceptance_manifest_template")
     if not template:
         return None, "BAOSTOCK_RUNTIME_ACCEPTANCE_PATH_NOT_CONFIGURED"
-    manifest_path = ROOT / str(template).replace("{YYYYMMDD}", target_date.replace("-", ""))
     try:
-        manifest = load_runtime_acceptance_manifest(manifest_path, project_root=ROOT, tdx_root=Path("D:/new_tdx"))
+        manifest = load_baostock_runtime_pg(ROOT, target_date, sdk=package_metadata())["manifest"]
     except ValueError as exc:
         return None, str(exc)
     error = runtime_acceptance_error(manifest, sdk=package_metadata(), auth_mode=str(manifest.get("auth_mode") or ""))
@@ -59,7 +60,9 @@ def _run_json_cli(*args: str) -> tuple[int, dict]:
 
 
 def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | None, str | None]:
-    smoke_code, smoke = _run_json_cli("scripts/accept_v4_dm01_baostock_runtime.py", "--target-date", target_date)
+    # The active DM-01 lane uses the adapter that captures exact native response
+    # bytes and appends the date-bound acceptance fact to PG before returning.
+    smoke_code, smoke = _run_json_cli("scripts/accept_dynamic_daily_baostock_v2.py", "--target-date", target_date)
     if smoke_code != 0 or smoke.get("status") != "ACCEPTED":
         return None, smoke, str(smoke.get("reason") or smoke.get("status") or "BAOSTOCK_RUNTIME_SMOKE_NOT_ACCEPTED")
     manifest, error = _runtime_acceptance(target_date)
@@ -77,11 +80,18 @@ def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | N
     return record, smoke, None
 
 
-def _accepted_gbbq_snapshot(target_date: str) -> dict | None:
-    probe_path = ROOT / "reports/v4_dm01" / target_date / "gbbq_revision_probe_receipt_v1.json"
+def _accepted_gbbq_snapshot(target_date: str, stage_binding: dict | None = None) -> dict | None:
+    if (not isinstance(stage_binding, dict)
+            or stage_binding.get("contract_id") != "V4_DM01_STAGE_STATE_PG_R1"
+            or stage_binding.get("trade_date") != target_date
+            or stage_binding.get("stage") != "gbbq_revision_probe"
+            or not isinstance(stage_binding.get("binding"), dict)):
+        return None
     try:
-        probe = json.loads(probe_path.read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError):
+        from workbench_db.v4_dm01_stage_state_pg_r1 import read_stage
+        probe = read_stage(ROOT, stage_binding["binding"], trade_date=target_date,
+                           stage="gbbq_revision_probe")
+    except (OSError, ValueError, TypeError, KeyError):
         return None
     if probe.get("trade_date") != target_date or probe.get("status") != "REUSE_ACCEPTED_GBBQ_SNAPSHOT":
         return probe
@@ -101,7 +111,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Run the source-gated V4-DM-01 daily increment entrypoint.")
     parser.add_argument("--target-date", required=True)
     parser.add_argument("--snapshot-root", type=Path, default=ROOT / "data/v4/source_snapshots")
-    parser.add_argument("--receipt-dir", type=Path, default=ROOT / "reports/v4_dm01")
+    parser.add_argument("--v402-pg-stage-state", help="Exact accepted V4-02 PG ingress descriptor JSON")
     parser.add_argument("--active-source-policy", action="store_true",
                         help="Run versioned R4 corrected source capture independently of canonical admission.")
     parser.add_argument('--corrected-owner-repair', action='store_true',
@@ -145,7 +155,10 @@ def main() -> int:
     runtime_manifest = None
     runtime_error = None
     gbbq_probe = None
+    gbbq_stage_binding = None
     tdx_delta_build = None
+    lifecycle_pg_state = None
+    special_pg_state = None
     lifecycle_snapshot = None
     lifecycle_receipt = None
     special_phase_snapshot = None
@@ -163,15 +176,13 @@ def main() -> int:
                 tdx = capture_tdx_official_daily_package(
                     target_date=args.target_date,
                     snapshot_root=args.snapshot_root,
-                    tdx_root=Path("D:/new_tdx"),
+                    tdx_root=resolve_tdx_root(ROOT),
                 )
             except (ValueError, OSError) as error:
                 tdx = dict(status='SOURCE_CAPTURE_BLOCKED', reason=str(error), target_date=args.target_date)
         if local.date().isoformat() == args.target_date and local.time() >= datetime.strptime("15:00:00", "%H:%M:%S").time():
-            _run_json_cli("scripts/probe_v4_dm01_gbbq_revision.py", "--target-date", args.target_date)
-            gbbq_probe_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
-            if gbbq_probe_path.is_file():
-                gbbq_probe = json.loads(gbbq_probe_path.read_text(encoding="utf-8"))
+            _, gbbq_probe = _run_json_cli("scripts/probe_v4_dm01_gbbq_revision.py", "--target-date", args.target_date)
+            gbbq_stage_binding = gbbq_probe.get("pg_stage_state")
         if tdx and tdx.get("status") in {"TDX_PACKAGE_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
             delta_code, tdx_delta_build = _run_json_cli(
                 "scripts/build_dm01_r4_tdx_delta.py", "--target-date", args.target_date,
@@ -183,12 +194,13 @@ def main() -> int:
             if delta_code == 0 and tdx_delta_build.get("status") == "READY":
                 if args.typed_scope_v2:
                     from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
-                    source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.receipt_dir/args.target_date/'baostock_v2')
+                    source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
                     if source:
                         snapshot=ROOT/'data/v4/source_snapshots/baostock'/args.target_date.replace('-','')/source['snapshot_id']/'daily_update.json'
                         bao=json.loads(snapshot.read_bytes());bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
                     else:bao_smoke=dict(status='BLOCKED',reason=bao_error)
                     probe_code,gbbq_probe=_run_json_cli('-m','scripts.probe_v4_dm01_gbbq_revision','--target-date',args.target_date)
+                    gbbq_stage_binding=gbbq_probe.get('pg_stage_state')
                 else:
                     bao, bao_smoke, bao_error = _run_baostock_daily_capture(args.target_date)
                     runtime_manifest, runtime_error = _runtime_acceptance(args.target_date)
@@ -200,9 +212,8 @@ def main() -> int:
                         lifecycle_receipt=dict(status=lifecycle_snapshot['status'],consumer_scope='CORRECTED_ONLY',AS_RECORDED=False)
                     except (ValueError,OSError,KeyError) as error:
                         lifecycle_receipt=dict(status='BLOCKED_CORRECTED_LIFECYCLE',reason=str(error))
-                    special_code,special_phase_receipt=_run_json_cli('-m','scripts.build_v4_dm01_special_phase_manifest','--target-date',args.target_date)
-                    if special_code==0 and special_phase_receipt.get('manifest_path'):
-                        special_phase_snapshot=json.loads(Path(special_phase_receipt['manifest_path']).read_bytes())
+                    # Corrected-only staging has no accepted lifecycle PG owner; it
+                    # cannot feed the production special-phase stage reader.
                 else:
                     lifecycle_snapshot = None
                 # Legacy source commands retain their original accepted manifest gate.
@@ -211,17 +222,25 @@ def main() -> int:
                     "scripts/build_v4_dm01_lifecycle_snapshot.py", "--target-date", args.target_date,
                     "--baostock-snapshot-id", str(bao.get("snapshot_id") or ""),
                 )
-                lifecycle_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
-                if lifecycle_code == 0 and lifecycle_path.is_file():
-                    lifecycle_snapshot = json.loads(lifecycle_path.read_text(encoding="utf-8"))
-                    _run_json_cli("scripts/build_v4_dm01_special_phase_manifest.py", "--target-date", args.target_date)
-                    special_receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "special_phase_source_manifest_receipt_v1.json"
-                    if special_receipt_path.is_file():
-                        special_phase_receipt = json.loads(special_receipt_path.read_text(encoding="utf-8"))
-                        if special_phase_receipt.get("status") in {"READY", "DEGRADED_PASS"}:
-                            special_manifest_path = Path(str(special_phase_receipt.get("manifest_path") or ""))
-                            if special_manifest_path.is_file():
-                                special_phase_snapshot = json.loads(special_manifest_path.read_text(encoding="utf-8"))
+                lifecycle_pg_state = lifecycle_receipt.get("pg_stage_state")
+                if lifecycle_code == 0 and isinstance(lifecycle_pg_state, dict):
+                    from workbench_db.v4_dm01_stage_state_pg_r1 import read_stage
+                    lifecycle_snapshot = read_stage(ROOT, lifecycle_pg_state["binding"],
+                        trade_date=args.target_date, stage="lifecycle_snapshot")
+                    if args.v402_pg_stage_state:
+                        _, special_phase_receipt = _run_json_cli(
+                            "scripts/build_v4_dm01_special_phase_manifest.py", "--target-date", args.target_date,
+                            "--lifecycle-pg-stage-state", json.dumps(lifecycle_pg_state, separators=(",", ":")),
+                            "--v402-pg-stage-state", args.v402_pg_stage_state,
+                        )
+                        special_pg_state = special_phase_receipt.get("pg_stage_state")
+                        if (isinstance(special_pg_state, dict)
+                                and special_pg_state.get("contract_id") == "V4_DM01_STAGE_STATE_PG_R1"
+                                and special_pg_state.get("trade_date") == args.target_date
+                                and special_pg_state.get("stage") == "special_phase_manifest"):
+                            from workbench_db.v4_dm01_stage_state_pg_r1 import read_stage
+                            special_phase_snapshot = read_stage(ROOT, special_pg_state["binding"],
+                                trade_date=args.target_date, stage="special_phase_manifest")
         readiness = evaluate_daily_source_readiness(
             trade_date=args.target_date,
             observed_at=now.isoformat(),
@@ -230,7 +249,7 @@ def main() -> int:
             baostock_capture=bao,
             baostock_capability_accepted=(runtime_manifest is not None and bao_smoke is not None
                                           and bao_smoke.get("status") == "ACCEPTED"),
-            gbbq_snapshot=_accepted_gbbq_snapshot(args.target_date),
+            gbbq_snapshot=_accepted_gbbq_snapshot(args.target_date, gbbq_stage_binding),
             lifecycle_snapshot=lifecycle_snapshot,
             special_phase_snapshot=special_phase_snapshot,
         )
@@ -245,18 +264,32 @@ def main() -> int:
         if (not args.typed_scope_v2 and readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
                 and builder_registry_result.get('status') != 'BLOCKED_BUILDER_REGISTRY'):
             tdx_capture_path = Path(str(tdx.get("receipt_path") or ""))
-            gbbq_probe_path = ROOT / "reports/v4_dm01" / args.target_date / "gbbq_revision_probe_receipt_v1.json"
-            freeze_code, source_freeze = _run_json_cli(
-                "scripts/freeze_v4_dm01_daily_sources.py", "--target-date", args.target_date,
-                "--tdx-capture-receipt", str(tdx_capture_path),
-                "--bao-snapshot-id", str(bao.get("snapshot_id") or ""),
-                "--gbbq-probe-receipt", str(gbbq_probe_path),
-            )
+            if not all((gbbq_stage_binding, lifecycle_pg_state, special_pg_state)):
+                readiness = dict(readiness, status="BLOCKED_DM01_PG_STAGE_BINDING_MISSING",
+                                 reason="GBBQ_LIFECYCLE_SPECIAL_PHASE_PG_BINDINGS_REQUIRED", head_moved=False)
+                freeze_code, source_freeze = 2, {"reason": "DM01_PG_STAGE_BINDING_MISSING"}
+            else:
+                freeze_code, source_freeze = _run_json_cli(
+                    "scripts/freeze_v4_dm01_daily_sources.py", "--target-date", args.target_date,
+                    "--tdx-capture-receipt", str(tdx_capture_path),
+                    "--bao-snapshot-id", str(bao.get("snapshot_id") or ""),
+                    "--gbbq-pg-stage-state", json.dumps(gbbq_stage_binding, separators=(",", ":")),
+                    "--lifecycle-pg-stage-state", json.dumps(lifecycle_pg_state, separators=(",", ":")),
+                    "--special-phase-pg-stage-state", json.dumps(special_pg_state, separators=(",", ":")),
+                )
             if freeze_code == 0 and source_freeze.get("status") == "SOURCE_FREEZE_READY":
-                freeze_path = Path(source_freeze['manifest_path'])
-                freeze = json.loads(freeze_path.read_bytes())
+                from workbench_db.v4_dm01_stage_state_pg_r1 import read_stage
+                freeze_pg_state = source_freeze.get("pg_stage_state")
+                if (not isinstance(freeze_pg_state, dict)
+                        or freeze_pg_state.get("contract_id") != "V4_DM01_STAGE_STATE_PG_R1"
+                        or freeze_pg_state.get("trade_date") != args.target_date
+                        or freeze_pg_state.get("stage") != "daily_source_freeze"):
+                    raise ValueError("DAILY_SOURCE_FREEZE_PG_STAGE_BINDING_REQUIRED")
+                freeze = read_stage(ROOT, freeze_pg_state["binding"], trade_date=args.target_date,
+                    stage="daily_source_freeze")
                 bao_path = ROOT / 'data/v4/source_snapshots/baostock' / args.target_date.replace('-','') / str(bao['snapshot_id']) / 'daily_update.json'
-                settings = json.loads((ROOT/'config/baostock_supplemental_contract_v1.json').read_bytes())['dm01_daily_updates']
+                settings = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+                    "config/baostock_supplemental_contract_v1.json")['dm01_daily_updates']
                 runtime_path = ROOT / settings['runtime_acceptance_manifest_template'].replace('{YYYYMMDD}',args.target_date.replace('-',''))
                 try:
                     freeze,parent,cal,identity = project_source_freeze(ROOT,freeze,ref(ROOT,tdx_capture_path),ref(ROOT,bao_path),ref(ROOT,runtime_path))
@@ -312,11 +345,9 @@ def main() -> int:
                        if readiness["status"] == "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED"
                        else "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY"),
     }
-    receipt_dir = args.receipt_dir / args.target_date
-    path = receipt_dir / "source_readiness_receipt_r2.json"
-    digest = write_json_atomic(path, result, tdx_root=Path("D:/new_tdx"))
-    print(json.dumps({"status": readiness["status"], "target_date": args.target_date,
-                      "receipt": str(path), "receipt_sha256": digest}, ensure_ascii=False))
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage
+    result["pg_stage_state"] = append_stage(ROOT, args.target_date, "source_readiness", result)
+    print(json.dumps(result, ensure_ascii=False))
     return 0 if readiness["status"].startswith("WAIT_") or readiness["status"] in ("PROMOTED_V2", "NOOP_IDENTICAL_PROMOTION") else 2
 
 

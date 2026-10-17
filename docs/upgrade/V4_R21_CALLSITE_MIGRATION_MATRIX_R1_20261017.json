@@ -16797,6 +16797,23 @@
         "p1_formally_remaining": 266,
         "status": "PARTIAL_OWNER_READER_CODE_WIRING; current accepted Head migration and live PG readback remain open.",
         "next": "Migrate the current operational Head and Owner payloads into the approved PG publication transaction, then continue exact daily, descriptor and other-business callsites. Keep 266 baseline items open until live per-ID reconciliation."
+      },
+      {
+        "batch_id": "R21-R4-worker-exact-policy-fixture-r23",
+        "files": [
+          "tests/test_v4_runtime_source_modes_r11.py",
+          "docs/upgrade/V4_R21_R4_WORKER_POLICY_FIXTURE_R23_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The worker activation fixture now supplies a G-local, digest-bound exact daily policy and a matching package resource identity, reflecting the current worker admission contract.",
+          "The fixture still proves producer workers do not acquire the desktop workspace lease."
+        ],
+        "verification": "17 focused Owner manifest, Reader fallback, BFF descriptor, shadow cache and runtime-source-mode tests passed; compile and diff checks passed.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "ADJACENT_CURRENT_WORKER_REGRESSION_FIXTURE_ALIGNED; no baseline consumer count changed.",
+        "next": "Continue exact production Head/Owner and business consumer migrations; keep live PG acceptance and all 266 baseline reconciliations open."
       }
     ]
   }

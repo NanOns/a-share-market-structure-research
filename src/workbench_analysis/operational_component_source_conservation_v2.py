@@ -1,6 +1,6 @@
 """Explicit single-function math correction over the original 604-source scope."""
 import ast,json
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 
 CONTRACT='V4_EXACT_COMPONENT_SOURCE_CONSERVATION_WITH_PROFILE_CORRECTION_R2'
 KEY='component_source_conservation'

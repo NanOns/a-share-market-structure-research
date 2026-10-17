@@ -6,7 +6,7 @@ producer is preserved for independent review, not independently admitted here.
 import json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 from .v4_14_replay_io import publish, digest
 from .validation_cohort_read_contract_r3 import instant, validate_frozen
 from .cohort_first_capture_producer_r1 import freeze_source_candidate, extract_candidate

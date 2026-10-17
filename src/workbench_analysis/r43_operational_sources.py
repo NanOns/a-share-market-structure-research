@@ -30,17 +30,25 @@ def ref(root,path):
 
 def checked(root,binding):
     """Materialize the exact V4 source binding from PG SourceIngress."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
     try:
-        return materialize_path(root,binding['path'],expected_sha256=binding['sha256'])
+        return materialize_bound(root,binding)
     except ValueError as exc:
         raise ValueError('R43_PG_SOURCE_INGRESS_UNAVAILABLE:'+binding['path']) from exc
 
+def read_source_bytes(root,binding):
+    """Read an exact bound input in memory from the shared PG ingress store."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    source=read_bound(root,binding['path'],binding['sha256'])
+    if len(source['raw'])!=binding.get('bytes',len(source['raw'])):
+        raise ValueError('R43_PG_SOURCE_INGRESS_SIZE_MISMATCH')
+    return source['raw']
+
 def run_sources(root,out):
     root=Path(root);out=Path(out);out.mkdir(parents=True,exist_ok=True)
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound,read_path
     def historical_fact(path):
-        return ingress_path(root,Path(path).resolve().relative_to(root.resolve()).as_posix())
+        return read_path(root,Path(path).resolve().relative_to(root.resolve()).as_posix())
     def historical_json(source_id):
         from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
         value=read_source(root,source_id)['value']
@@ -48,8 +56,8 @@ def run_sources(root,out):
         return value
     def historical_special_inputs(components):
         event=components['R6_EVENTS'];policy=components['R6_POLICY']
-        event_fact=ingress_path(root,event['path'],expected_sha256=event['sha256'])
-        policy_fact=ingress_path(root,policy['path'],expected_sha256=policy['sha256'])
+        event_fact=read_bound(root,event['path'],event['sha256'])
+        policy_fact=read_bound(root,policy['path'],policy['sha256'])
         records=[json.loads(line) for line in (event_fact['text'] or '').splitlines() if line.strip()]
         contract=policy_fact['value']
         if not isinstance(contract,dict):raise ValueError('SPECIAL_PHASE_POLICY_PG_JSON_REQUIRED')
@@ -75,8 +83,8 @@ def run_sources(root,out):
     if sha(actual)!=sha(frozen):raise ValueError('GBBQ_CHANGED_REQUIRES_NEW_CORRECTED_OWNER_REVISION')
     events=read_gbbq(frozen)
     classification=root/'config/v4_02_gbbq_price_impact_classification_v1.json'
-    identity=ingress_path(root,sources['sources']['identity']['path'],
-                          expected_sha256=sources['sources']['identity']['sha256'])['value']['rows']
+    identity=read_bound(root,sources['sources']['identity']['path'],
+                        sources['sources']['identity']['sha256'])['value']['rows']
     bycode={r.get('source_security_key',r.get('symbol','')).upper():r for r in identity if r.get('security_id')}
     from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
     acceptance_fact=read_source(root,_SOURCE_IDS['acceptance'])

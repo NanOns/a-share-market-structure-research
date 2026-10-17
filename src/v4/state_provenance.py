@@ -20,7 +20,9 @@ UNKNOWN='UNKNOWN'
 PUBLICATION_ID=re.compile(r'^[A-Za-z0-9][A-Za-z0-9_.:\-/]{0,511}$')
 
 def _read(name):
-    return json.loads((ROOT/f'config/v4_10_{name}_r1_2.json').read_text(encoding='utf8'))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    path=materialize_path(ROOT,f'config/v4_10_{name}_r1_2.json')
+    return json.loads(path.read_text(encoding='utf8'))
 
 def publication_ids(ids):
     if type(ids) is not list or not ids or any(type(v) is not str or not PUBLICATION_ID.fullmatch(v) for v in ids) or len(set(ids))!=len(ids):

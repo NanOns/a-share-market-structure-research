@@ -23,9 +23,8 @@ def file_ref(root, path):
 
 
 def exact(root, binding):
-    root=Path(root).resolve();path=(root/binding['path']).resolve()
-    if not path.is_relative_to(root):raise ValueError('ACCEPTED_PATH_OUTSIDE_WORKSPACE')
-    b=path.read_bytes()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    b=read_bound(Path(root).resolve(),binding['path'],binding['sha256'])['raw']
     if hashlib.sha256(b).hexdigest()!=binding['sha256']:raise ValueError('ACCEPTED_SOURCE_DIGEST_MISMATCH')
     size=binding.get('bytes',binding.get('byte_count',binding.get('actual_byte_count')))
     if size is not None and len(b)!=size:raise ValueError('ACCEPTED_SOURCE_BYTES_MISMATCH')
@@ -38,7 +37,8 @@ def available(value, cutoff):
 
 def rows(root, binding):
     exact(root,binding)
-    path=Path(root)/binding['path']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    path=materialize_bound(Path(root).resolve(),binding)
     opener=gzip.open if path.suffix=='.gz' else open
     with opener(path,'rt',encoding='utf8') as stream:
         for line in stream:
@@ -67,14 +67,20 @@ def atomic(root,path,payload,append_only=False):
 
 class FrozenContracts:
     def __init__(self, root):
-        self.root=Path(root);self.refs=json.loads((self.root/'reports/v4_13_r1_1/V4_13_CONTRACT_AMENDMENT_R1_1.json').read_bytes())['contracts']
+        self.root=Path(root)
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        self.refs=read_path(self.root,'reports/v4_13_r1_1/V4_13_CONTRACT_AMENDMENT_R1_1.json')['value']['contracts']
         self.config={}
         for r in self.refs:
             name=Path(r['path']).stem.removeprefix('v4_13_').removesuffix('_v1_1')
             self.config[name]=json.loads(exact(self.root,r))
-        decision=self.root/'reports/v4_13_runtime_r16r1/contract_amendment_decision.json'
-        if decision.exists():
-            amendment=json.loads(decision.read_bytes())['amendment']
+        try:
+            decision=read_path(self.root,'reports/v4_13_runtime_r16r1/contract_amendment_decision.json')['value']
+        except ValueError as error:
+            if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+            decision=None
+        if decision is not None:
+            amendment=decision['amendment']
             projection=json.loads(exact(self.root,amendment))
             previous=next(r for r in self.refs if r['path']=='config/v4_13_projection_v1_1.json')
             if projection['contract_id']!=self.config['projection']['contract_id'] or projection['version']!='1.2.0' or projection['supersedes']!=previous:raise ValueError('PROJECTION_SAME_FAMILY_LINEAGE_REQUIRED')

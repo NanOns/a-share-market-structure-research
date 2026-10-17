@@ -11,10 +11,13 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
     before={str(p):sha(p) for p in head_paths};stage=None;receipts={}
     try:
         from workbench_analysis.daily_source_freeze import ensure_outside_tdx
-        for root in (Path('D:/new_tdx'),*[Path(p) for p in source_freeze.get('tdx_roots',[])]):
-            ensure_outside_tdx(Path(staging_root),root)
+        from common.paths import resolve_tdx_root
+        tdx_root=resolve_tdx_root(ROOT)
+        for source_root in dict.fromkeys((tdx_root,*[Path(p) for p in source_freeze.get('tdx_roots',[])])):
+            ensure_outside_tdx(Path(staging_root),source_root)
         target=resolve_target_session(parent_data_head['head']['accepted_trade_date'],calendar_binding,source_freeze['observed_at'],source_freeze['trade_date'])
-        contract_sha=sha(ROOT/CONTRACT_PATH)
+        from .dm01_accepted_builder_registry import _pg_path
+        contract_sha=sha(_pg_path(ROOT,CONTRACT_PATH))
         run_id=digest(dict(target=target,parent=parent_data_head['binding']['sha256'],source=source_freeze['manifest_sha256'],contract=contract_sha))
         stage=Path(staging_root)/run_id
         marker=stage/'PROMOTION_CANDIDATE.json'
@@ -48,5 +51,5 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
         if stage is not None:
             # Failures remain inspectable, with no marker making partial components consumable.
             from workbench_analysis.daily_increment_builder import _atomic_json
-            _atomic_json(stage/'failure.json',result,tdx_root=Path('D:/new_tdx'))
+            _atomic_json(stage/'failure.json',result,tdx_root=tdx_root)
         return result

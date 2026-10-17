@@ -28,13 +28,18 @@ EXPECTED_CALLABLES = {
     "SPECIAL_PHASE": "build_special_phase",
 }
 
+def _pg_path(root: Path, path_or_binding):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound, materialize_path
+    return (materialize_bound(root, path_or_binding) if isinstance(path_or_binding, Mapping)
+            else materialize_path(root, Path(path_or_binding).as_posix()))
+
 
 def validate_incremental_registry(*, project_root: Path) -> dict[str, Any]:
     """R1 engineering exports; the immutable V1 missing-API assessment remains historical evidence."""
     root = project_root.resolve()
-    contract_path = root / 'config/dm01_incremental_builders_contract_r1.json'
     errors = []
     try:
+        contract_path = _pg_path(root, 'config/dm01_incremental_builders_contract_r1.json')
         contract = json.loads(contract_path.read_text(encoding='utf8'))
         from workbench_analysis.dm01_incremental_component_builders import BUILDERS
         if set(contract['capabilities']) != set(CAPABILITIES) or set(BUILDERS) != set(CAPABILITIES):
@@ -46,12 +51,12 @@ def validate_incremental_registry(*, project_root: Path) -> dict[str, Any]:
             if contract['capabilities'][cap]['builder_callable'] != name:
                 errors.append('CONTRACT_EXPORT_MISMATCH:' + cap)
         for ref in contract['runtime_bindings']:
-            if sha256_file(root / ref['path']) != ref['sha256']:
+            if sha256_file(_pg_path(root, ref)) != ref['sha256']:
                 errors.append('RUNTIME_DIGEST_MISMATCH:' + ref['path'])
         # Historical Data Head retains its publication-time Stage Head. A later engineering
         # promotion does not justify rebinding or mutating that Data Head.
         for ref in contract['stage_entry_protected_heads']:
-            if sha256_file(root / ref['path']) != ref['sha256']:
+            if sha256_file(_pg_path(root, ref)) != ref['sha256']:
                 errors.append('STAGE_ENTRY_HEAD_CHANGED:' + ref['path'])
     except (OSError,KeyError,TypeError,ValueError) as exc:
         errors.append('INCREMENTAL_REGISTRY_UNREADABLE:' + type(exc).__name__)
@@ -71,7 +76,7 @@ def sha256_file(path: Path) -> str:
 
 
 def _read_json(root: Path, relative: str) -> dict[str, Any]:
-    value = json.loads((root / relative).read_text(encoding="utf-8"))
+    value = json.loads(_pg_path(root, relative).read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise ValueError("ACCEPTED_BUILDER_EVIDENCE_SHAPE_INVALID:" + relative)
     return value
@@ -99,8 +104,8 @@ def validate_registry(
     root = project_root.resolve()
     errors: list[str] = []
     runtime_api_blockers: list[dict[str, str]] = []
-    path = root / REGISTRY_PATH
     try:
+        path = _pg_path(root, REGISTRY_PATH)
         registry_raw = path.read_bytes()
         registry = json.loads(registry_raw.decode("utf-8"))
     except (OSError, ValueError) as exc:

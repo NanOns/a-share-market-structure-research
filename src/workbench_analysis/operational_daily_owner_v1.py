@@ -35,10 +35,10 @@ def historical_json(root, key):
     return value
 
 def historical_special_inputs(root, components):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
     event=components['R6_EVENTS'];policy=components['R6_POLICY']
-    event_fact=ingress_path(root,event['path'],expected_sha256=event['sha256'])
-    policy_fact=ingress_path(root,policy['path'],expected_sha256=policy['sha256'])
+    event_fact=read_bound(root,event['path'],event['sha256'])
+    policy_fact=read_bound(root,policy['path'],policy['sha256'])
     records=[json.loads(line) for line in (event_fact['text'] or '').splitlines() if line.strip()]
     contract=policy_fact['value']
     if not isinstance(contract,dict):raise ValueError('SPECIAL_PHASE_POLICY_PG_JSON_REQUIRED')
@@ -251,11 +251,11 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
     acceptance=root/acceptance_source_record['source_path']
     acceptance_value=historical_source(root,'acceptance')['value']
     stage=root/acceptance_value['evidence']['manifest']['path']
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
-    stage_fact=ingress_path(root,stage.relative_to(root).as_posix())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    stage_fact=read_path(root,stage.relative_to(root).as_posix())
     stage_value=stage_fact['value'];components=stage_value['components']
     event_records,policy_contract,event_binding,policy_binding=historical_special_inputs(root,components)
-    acceptance_source=ingress_path(root,acceptance.relative_to(root).as_posix())['record']
+    acceptance_source=historical_source(root,'acceptance')['record']
     stage_source=stage_fact['record']
     special=build_special_phase_source_manifest(trade_date=day,project_root=root,v402_external_acceptance_path=acceptance,
         v402_stage_manifest_path=stage,event_store_path=root/components['R6_EVENTS']['path'],policy_path=root/components['R6_POLICY']['path'],

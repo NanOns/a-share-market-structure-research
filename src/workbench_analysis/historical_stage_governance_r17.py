@@ -7,8 +7,9 @@ REGISTRY='config/v4_historical_moving_head_registry_r17_v1.json'
 REGISTRY_SHA='3926d58b3953597e10c4619f442b910c853d229c61e4b4b65bd58f3c05679e4d'
 class HistoricalBindingError(ValueError):pass
 def exact(root,ref):
-    root=Path(root).resolve();p=(root/ref['path']).resolve()
-    if not p.is_relative_to(root) or not p.is_file():raise HistoricalBindingError('ARCHIVE_MISSING_OR_OUTSIDE_PROJECT')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    try:p=materialize_bound(Path(root).resolve(),ref)
+    except (OSError,KeyError,ValueError) as error:raise HistoricalBindingError('PG_ARCHIVE_MISSING_OR_INVALID') from error
     raw=p.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=ref['sha256'] or any(len(raw)!=ref[k] for k in ('bytes','byte_count') if k in ref):raise HistoricalBindingError('EXACT_ARCHIVE_SHA_OR_BYTES_INVALID')
     return p
@@ -59,7 +60,8 @@ def accepted_static_binding(root,ref):
     if (Path(root)/ref['path']).read_bytes().replace(b'\r\n',b'\n')!=git_raw:raise HistoricalBindingError('CURRENT_STATIC_HEAD_CONTENT_CHANGED')
     return p
 def current_state(root):
-    root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    root=Path(root);s=read_path(root,STAGE)['value'];d=read_path(root,'data/v4/V4_DATA_ACCEPTED_HEAD.json')['value']
     match=re.fullmatch(r'V4_00_TO_V4_(\d+)_ACCEPTED',s.get('accepted_stage_range',''))
     if not match or not 12<=int(match[1])<=15:raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
     if d['accepted_trade_date']!='2026-09-30' or any(d['permissions'].values()):raise HistoricalBindingError('CURRENT_DATA_SCOPE_INVALID')

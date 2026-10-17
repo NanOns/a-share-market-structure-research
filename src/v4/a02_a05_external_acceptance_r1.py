@@ -4,6 +4,14 @@ from hashlib import sha256
 import json
 from .rps_pit_history_a02_v1 import read_bound,read_publication,delta,digest
 
+def _pg_path(root, path):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    return materialize_path(root, path)
+
+def _pg_bound_path(root, ref):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    return materialize_bound(root, ref)
+
 BASELINE='66ef2e342dd339cc9795c2d1fd774b8edec4c345'
 AUDIT_PATH='docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md'
 AUDIT_SHA='7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3'
@@ -19,14 +27,14 @@ def accepted_evidence(root,ref,path,expected_sha):
 def validate_authority(root,ref,scope):
     if ref.get('path')!=AUDIT_PATH or ref.get('sha256')!=AUDIT_SHA or ref.get('bytes')!=8244:
         raise ValueError('EXTERNAL_AUTHORITY_PIN_MISMATCH')
-    path=(Path(root)/AUDIT_PATH).resolve();raw=path.read_bytes()
+    path=_pg_bound_path(root,ref);raw=path.read_bytes()
     if sha256(raw).hexdigest()!=AUDIT_SHA or len(raw)!=8244: raise ValueError('EXTERNAL_AUTHORITY_BYTES_MISMATCH')
     text=raw.decode('utf8')
     if BASELINE not in text or scope not in text: raise ValueError('EXTERNAL_SCOPE_NOT_ACCEPTED')
     return path
 
 def read_accepted_rps(root,day):
-    root=Path(root).resolve();head=json.loads((root/RPS_HEAD).read_bytes())
+    root=Path(root).resolve();head=json.loads(_pg_path(root,RPS_HEAD).read_bytes())
     validate_authority(root,head['external_authority'],'PASS_RECONSTRUCTED_INPUT_PRODUCER_SCOPE')
     record=read_bound(root,head['acceptance_record'])
     audited=accepted_evidence(root,record['producer_evidence'],'reports/audits/A02_RPS_HISTORY_BOOTSTRAP_EVIDENCE_R3.json',ACCEPTED_RPS_EVIDENCE_SHA)
@@ -48,7 +56,7 @@ def read_accepted_rps(root,day):
     return dict(head=head,publication=publication,prior_publications=priors,sessions=sessions,deltas={o:delta(publication,p,o,sessions) for o,p in priors.items()})
 
 def validate_a05_record(root):
-    root=Path(root).resolve();record=json.loads((root/A05_RECORD).read_bytes())
+    root=Path(root).resolve();record=json.loads(_pg_path(root,A05_RECORD).read_bytes())
     validate_authority(root,record['external_authority'],'PASS_EXACT_CURRENT_SNAPSHOT_PRODUCER_SCOPE')
     audited=accepted_evidence(root,record['producer_evidence'],'reports/audits/A05_EXACT_RECOVERY_EVIDENCE_R2.json',ACCEPTED_A05_EVIDENCE_SHA)
     if record['real_observations']!=audited['input_binding'] or record['source']!=audited['source_astro']['source']:raise ValueError('A05_UNAUDITED_OBSERVATION_SUBSTITUTION')
@@ -56,8 +64,8 @@ def validate_a05_record(root):
         raise ValueError('A05_SCOPE_OR_ACCEPTANCE_INVALID')
     if any(record.get(k) is not False for k in ('production','shadow','focus','global_mandatory_adoption','historical_membership_acceptance','V4_08_business_head_amendment_accepted')):raise ValueError('A05_PERMISSION_EXPANSION')
     for key in ('source','producer','contract','real_observations'):
-        ref=record[key];p=(root/ref['path']).resolve()
-        if not p.is_relative_to(root) or sha256(p.read_bytes()).hexdigest()!=ref['sha256']: raise ValueError('A05_EXACT_ACCEPTANCE_BINDING')
+        ref=record[key];p=_pg_bound_path(root,ref)
+        if sha256(p.read_bytes()).hexdigest()!=ref['sha256']: raise ValueError('A05_EXACT_ACCEPTANCE_BINDING')
     data=read_bound(root,record['real_observations'])
     if data['trade_date']!=record['accepted_snapshot_trade_date'] or len(data['observations'])!=6188: raise ValueError('A05_SNAPSHOT_SCOPE_MISMATCH')
     return record,data

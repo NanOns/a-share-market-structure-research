@@ -8,7 +8,7 @@ import hashlib
 import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 from .v4_14_replay_io import publish, digest, canonical, path_in
 from .validation_cohort_read_contract_r3 import CONTRACT, enrollment_identity, instant, validate_frozen
 
@@ -93,11 +93,12 @@ def freeze_source_candidate(root, *, source_owner_binding, source_manifest_bindi
                 production_write_authorized=False)
 
 
-def extract_candidate(root, *, candidate_binding, trade_date, cutoff, candidate_directory):
+def extract_candidate(root, *, candidate_binding, trade_date, cutoff, candidate_directory, candidate=None):
     directory = Path(candidate_directory)
     if directory.is_absolute() or '..' in directory.parts or directory.parts[:2] != ('docs', 'evidence'):
         raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
-    head = json.loads(checked(root, candidate_binding).read_bytes())
+    head=candidate if isinstance(candidate,dict) else json.loads(checked(root, candidate_binding).read_bytes())
+    if not isinstance(head,dict):raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
     if head.get('accepted_trade_date') != trade_date:
         raise ValueError('CAPTURE_DAILY_CANDIDATE_DATE_MISMATCH')
     producer_ref = head.get('cohort_signal_producers', {}).get(trade_date)

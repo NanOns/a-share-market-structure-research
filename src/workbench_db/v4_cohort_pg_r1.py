@@ -32,7 +32,7 @@ def _load_source_owner(root, binding):
 
 def load_owner(root, binding):
     """Read a Head-bound PG Owner only; source JSON is never a runtime fallback."""
-    from workbench_analysis.r43_owner_replay import checked
+    from workbench_analysis.r43_owner_replay import checked_pg as checked
     root = Path(root).resolve()
     path = checked(root, binding)
     document = json.loads(path.read_bytes())

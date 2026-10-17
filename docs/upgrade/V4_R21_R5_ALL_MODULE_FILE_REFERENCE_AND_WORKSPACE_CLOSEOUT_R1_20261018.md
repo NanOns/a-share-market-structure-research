@@ -3,51 +3,49 @@
 - 日期：2026-10-18
 - 分支：`codex/v4-workspace-cleanup`
 - 状态：`CODE_SCOPE_PARTIAL; BROWSER_PARTIAL; LIVE_PG_VERIFIED; FORMAL_HEAD_CLOSURE_PENDING`
-- 当前开发服务：`127.0.0.1:28766`；共享 PostgreSQL：`127.0.0.1:5432/market_research`（OID 646711）。未触碰生产网页端口 28765。
+- 开发服务：`127.0.0.1:28766`（候选快照、日更 worker 未启动）；生产端口 `28765` 未触碰。
+- PG 身份：共享实例 `127.0.0.1:5432/market_research`，OID `646711`；当前候选 T0 为 `2026-09-30`，source mode `PG_CANDIDATE_SNAPSHOT`。
 
-## 本轮实际代码修复
+## 实际代码修复
 
-本分支差异含 33 个现役 V4 Python 运行模块（32 个修改、1 个新增）、1 个迁移、配置/脚本更新及聚焦测试更新。真实实现包括：
+本轮在现有分支上修改了 68 个 Python 运行模块、1 个仓库准入策略工具及 V4 日更前端资产，并更新了既有 R21 调用点矩阵和本收尾报告。真实改动包括：
 
-- PG Head/Owner/Membership/合同来源读取；运行路径拒绝本地 Head 回退；Owner predecessor 固化及 PG 事实复用。
-- V4 连接读取复用 `WORKBENCH_PG_DSN` 所指的现有实例，事务保持只读；写路径仍要求显式 `V4_NATIVE_PG_DSN`，未增加独立 Reader DSN/实例。
-- daily、calendar、行情来源、TDX/BaoStock 路径通过 PG 绑定或中央 Workspace 路径解析；候选数据不写入 TDX 源目录。
-- BFF 与 `/api/v4/*` 候选链使用 PG projection；Forward cohort、诊断、市场、股票/板块来源校验绑定 PG；新股与 sealed-resume 的 Operational Head/Owner 父级读取已改走 PG。
-- 新增 Operational Research Head PG 表/读/CAS；应用迁移 044。表已存在但 Head 行数为 0，未从文件导入或切换正式 Head。
+- 将现役 V4 的 Head、Owner、Membership、合同 Registry、历史来源、候选 BFF 和业务消费者改为精确 PG 绑定读取；移除 Head/合同/Owner 的本地文件回退路径。
+- 修正日更 successor control 的 PG payload 适配；候选预览的进度接口不再探测未启用的作业表，返回真实的 `PREVIEW_ONLY`、worker 未启动状态。
+- 将 DM01 增量构建器的运行契约读取改为 Registry 的 PG 绑定物化；Forward、settlement、runtime acceptance、Profile correction ancestry 等剩余已核对消费者也按 PG 绑定读取。
+- TDX 输入根与项目 Workspace 路径继续使用中央解析器；TDX 源目录保持只读，候选产物留在源目录之外。
 
-使用现有 R21 callsite matrix 做差异映射：266 个 P1 稳定 ID 中，114 个 ID 的 `source_file` 出现在当前代码差异路径（覆盖 17 个源文件）；这仅代表进入改动路径，并非逐行修复确认。矩阵仍未正式关闭任何稳定 ID，剩余 266 个都保持未核销状态；不得将行路径交集称为修复数量。
+既有矩阵 266 个稳定 P1 ID 中，当前记录为 **218 个代码级 PG 读取路径已实现、待基线/引用库存核销**，另有 **39 个 OPEN + 9 个 ACTIVE_INGRESS_ADAPTER_OPEN**；**正式 P1 核销仍为 0/266**。这 218 是代码路径改造数，不代表正式 Head/Owner 核销，也不将测试数量作为完成依据。
 
-## PostgreSQL
+## 尚未关闭的调用点
 
-沿用同一 `market_research` 实例。已在现有 PG history schema `v4_history_dbe184da961f97b8` 追加并读回不可变版本 `ba5ac5f7e794deba476c6354efd01a8f15db9059bb7bf8292c759af1ecb41eb2`（T0 `2026-09-30`、Head `38e7c9…`、source `9f7ee9…`）；未更新任何正式 Head。已应用 migration 043/044；043 中 7 个合同版本以 DRAFT 写入，审批事件、Accepted publication 及正式 publication Head 为 0。Operational Head 注册表存在、当前行数 0。没有导入/切换正式 Head，也没有执行生产部署、物理删除或强推。
+48 个未核销项的精确稳定 ID、源行、分类和阻断原因保留在 [V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json](/G:/codex%20work/%E5%A4%A7A%E4%BA%A4%E6%98%93/docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json)。剩余源文件分布：
 
-## 28766 内置浏览器验收
+- TDX 官方包、最新包、TDX 本地日线补缺、只读快照及快照差分入口：`tdx_official_daily_source.py`、`tdx_latest_daily_source_v2.py`、`tdx_local_daily_fallback_v1.py`、`tdx_local_snapshot.py`、`tdx_member_retro_r43.py`、`tdx_snapshot.py`、`tdx_snapshot_delta.py`、`tdx_snapshot_delta_v2.py`。这些点承担原始来源采集/冻结/解析；仍需来源合同、PG append 和同 T0 Owner readback 才能核销。
+- `v4_membership_reference_pg_v1.py`（6）、`v4_operational_owner_authority_v2.py`（1）、`v4_profile_dependent_corrections_pg_v1.py`（1）、`v4_profile_semantic_corrections_pg_v1.py`（1）：首次来源/补丁进入 PG Owner 的 ingress 尚未完成 live identity parity 与 PG append/readback。
+- 其他遗留/候选边界：`operational_revision_guard_r1.py`（2）、`history_170_v3_3.py`（1，非 V4 历史消费者仅登记）、`forward_r7_store.py`（1，G 盘隔离候选 receipt）、`scripts/capture_dm01_a01_r3_tdx_package.py`（1）、`scripts/start_product_attested_r4.py`（1）。
 
-使用 Codex 内置浏览器实际浏览 PG 候选前端，当前快照 T0 `2026-09-30`：
+## 内置浏览器验收（28766）
 
-- 首页：股票 5,213、板块 378、Focus/Forward 117、事件 33；PG 候选标识可见。
-- 个股：搜索 `600675` 返回中华企业，详情字段可读；先前图表因当前仓库内的历史包字节与其绑定 SHA 不一致而没有 PG 版本。已在 G 盘临时基线找到两份摘要精确匹配 `9f7ee9…` 的原始包，只读导入同一 PG，建立 Head `38e7c9…` 绑定的不可变版本（5,224 symbols、1,309,832 bars）；真实 API 返回 `READY`、253 日线/54 周线，QFQ/RAW 与周期切换均可读。
-- Focus：真实搜索 `600675` 返回 1 条中华企业；Forward 117、期限计划 585、已发布期限状态 5、成熟样本 0。
-- 行情/事件：2344 涨、2712 跌、155 平、13 不可判定；指数、涨跌停及 33 条研究状态事件可读。未接入的分钟级炸板和批准新闻源明确显示缺口。
-- 诊断/Jobs：4 个来源健康记录；Jobs 显示快照计数并说明未运行日更 worker。
-- Replay：选择 2026-09-30/中华企业显示 `PIT_NOT_AVAILABLE`、可用严格 PIT 日期 0，未展示为当时已知结果。Compare 选择“事后重建（非 PIT）”并实际运行股票 vs 市场，显示中华企业收益来源不完整、起点 Universe 同窗参考 -0.136%、共同区间 2026-09-29 至 2026-09-30；来源抽屉仍须保留为下次交互复验。
-- 板块详情（前序现场）：煤炭开采详情显示 25 个成员，字段来源抽屉显示来源时间、质量和摘要；缺失字段保留 UNKNOWN。
+更新代码后重启候选服务并用 Codex 内置浏览器访问真实页面：
 
-因此浏览器结果仍为部分通过，不是全模块 PASS。市场页、Focus、Diagnostics、Replay/Compare 与个股详情可交互；严格 PIT 可用日期仍为 0，明确保持 `PIT_NOT_AVAILABLE`，没有冒充正式 Head。
+- 首页：PG 候选标记和股票 5,213、板块 378、雷达/Forward 117 数据均渲染。
+- 行情/事件：市场宽度、指数、合规涨跌停及研究状态事件渲染。
+- 板块：煤炭板块详情及 25 个成员可读；搜索 `600971` 留下 1 条恒源煤电结果。
+- 个股：中华企业详情及实际成交行情可读；交互切换为周线成功，图表显示真实行情。
+- Focus：`600675` 返回 1 条；Forward 样本 117、期限计划 585；打开来源抽屉后显示 PG 候选身份和数据质量说明。
+- Compare / Replay：比较显示 2026-09-29 至 2026-09-30 同窗结果；冻结回放清晰标识为事后重建，严格 PIT 可用日期为 0。
+- Diagnostics / 日更：Jobs 页显示候选快照统计且 worker 未启动；数据更新中心 Status、Progress、Releases、Logs 交互可用，Progress 返回 `PREVIEW_ONLY`，发布版本无正式 Head，日志显示暂无任务。
 
-## 最小验证
+前端可交互链路均成功加载；任务卡最终状态仍为 `BROWSER_PARTIAL`，因为候选样本缺少正式 Head、严格 PIT 日期为 0，并存在明确的来源不完整字段。这些缺口没有被页面伪装成正式发布。
 
-- 先前针对 6 个目标模块的聚焦 pytest：97 passed；本轮图表生产者/BFF及 `v4_history_pg_r1` 哈希缺陷修改通过 `py_compile`。
-- `git diff --check` 通过。
-- 未运行 GitHub CLI 流程测试、全仓基线扫描或 GitHub Actions。
+## 最小验证与交付
 
-## 尚未完成的代码范围与阻断
+- 69 个已修改 Python 文件（含 68 个运行模块及准入策略工具）`py_compile`：通过。
+- `git diff --check`：通过。
+- 未运行 GitHub CLI 流程测试、重复全仓基线扫描或 GitHub Actions。
+- 已修复后的日更 Progress 以真实页面接口验证；各现役页面按上方列表完成浏览器加载/功能操作。
 
-1. 266 个稳定 ID 尚未逐 ID 精确核销。现有矩阵源路径覆盖 114 项，仍需按矩阵继续改造并回填精确调用点；其中 Owner、业务消费者、市场来源及 ingress 都还有可继续编码的点，本报告不把它们标为完成。
-2. PG Operational Head 行为空，因此任何要求当前正式 Operational Head 的日更/发布流程都会按设计失败关闭；接受源 Head 的首次导入、合同批准事件及正式 publication 尚未发生。即使表/消费者代码已完成，候选数据不能当成正式已接受 Head。
-3. Replay 严格 PIT 日期仍为 0；没有首发时刻与历史成分绑定证据，不能升级 PIT。
-4. 当前 Workspace 输入缺失/合同未批准导致的数值与来源缺口须在对应真实 owner/源合同链补齐；非 V4 代码只登记，不在本任务修改。
+实际数据库读回确认同一 `market_research` PG 实例、OID `646711`。本轮没有新增生产 Head 切换或日更任务；当前 `V4_NATIVE_PG_DSN` 未在项目安全配置中设置，且任务卡把正式合同审批/Owner append/Accepted Head CAS/Head 切换与生产部署作为单独边界。不能从 `WORKBENCH_PG_DSN` 推导写权限。正式审批、live ingress append/readback、Head CAS/切换和 28765 部署仍需按其各自合同单独执行；物理删除、强推亦未执行。
 
-需另行授权的事项仍仅限用户原始边界：正式 Head CAS/切换、生产 28765 部署、物理删除及 Git 强推/历史重写。正常 commit/push 不涵盖这些动作。
-
-Google Drive Issue/PR 最终摘要连接器此前返回 HTTP 403 `Resource not accessible by integration`；未用 GitHub CLI 绕过。
+Google Drive Issue/PR 摘要连接器此前返回 HTTP 403 `Resource not accessible by integration`；未使用 GitHub CLI 绕过。

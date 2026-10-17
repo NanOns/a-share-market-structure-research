@@ -5,15 +5,15 @@ from pathlib import Path
 class CurrentStageAuthority:
     def __init__(self,root,exact_reader=None):
         self.root=Path(root).resolve();self.portability_receipts=[]
-        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
-        stage=ingress_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        stage=read_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
         self.is_v15=stage['accepted_stage_range']=='V4_00_TO_V4_15_ACCEPTED'
         name='v4_current_stage_authority_v2.json' if self.is_v15 else 'v4_current_stage_authority_v1.json'
-        contract_source=ingress_path(self.root,'config/'+name)
+        contract_source=read_path(self.root,'config/'+name)
         self.contract=contract_source['value']
         self.contract_ref={'path':contract_source['record']['source_path'],'sha256':contract_source['record']['source_sha256'],'bytes':contract_source['record']['source_bytes']}
         if self.contract['V4_15_accepted'] is not self.is_v15:raise ValueError('CURRENT_ACCEPTANCE_COHERENCE')
-        stage_source=ingress_path(self.root,self.contract['stage_namespace'])
+        stage_source=read_path(self.root,self.contract['stage_namespace'])
         self.stage_ref={'path':stage_source['record']['source_path'],'sha256':stage_source['record']['source_sha256'],'bytes':stage_source['record']['source_bytes']};self.stage=stage_source['value']
         expected='V4_00_TO_V4_15_ACCEPTED' if self.is_v15 else 'V4_00_TO_V4_14_ACCEPTED'
         if self.stage['accepted_stage_range']!=expected or self.contract['accepted_stage_range']!=expected:raise ValueError('CURRENT_STAGE_MISMATCH')
@@ -58,8 +58,8 @@ class CurrentStageAuthority:
         seal=json.loads(self.read(self.replay_head['bindings']['runtime_seal']))
         self.allowed_publications=seal['replay_publications']
     def read(self,binding):
-        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
-        source=ingress_path(self.root,binding['path'],expected_sha256=binding['sha256'])
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+        source=read_bound(self.root,binding['path'],binding['sha256'])
         if len(source['raw'])!=binding.get('bytes',len(source['raw'])):
             raise ValueError('CURRENT_AUTHORITY_PG_SOURCE_BYTES_MISMATCH')
         return source['raw']

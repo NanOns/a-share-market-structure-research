@@ -59,7 +59,7 @@ def seal(publication):
     return dict(material,logical_digest=checksum,publication_id='V4_11_R4_FACTS:'+checksum)
 
 def validate(publication,root,*,expected_sources=None):
-    from scripts.next_round_bundle_r1 import exact
+    from .confirmation import exact,read_active_producer_set
     if publication.get('producer_contract_id')!=CONTRACT:raise ValueError('WRONG_PRODUCER')
     if publication.get('parameter_set_id')!=PARAMETERS:raise ValueError('WRONG_PARAMETER_SET')
     if publication.get('scope')!='REAL_ACCEPTED_SOURCE_CANDIDATE' or publication.get('accepted') is not False:raise ValueError('CANDIDATE_SCOPE_REQUIRED')
@@ -84,7 +84,7 @@ def validate(publication,root,*,expected_sources=None):
     if seal(publication)!=publication:raise ValueError('PUBLICATION_DIGEST_MISMATCH')
     if expected_sources is None:
         import gzip
-        active=json.loads((Path(root)/'reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json').read_bytes())
+        active=read_active_producer_set(root,'reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json')
         ref=active['publications'].get(publication['trade_date'])
         if ref is None or json.loads(gzip.decompress(exact(ref).read_bytes()))!=publication:raise ValueError('NOT_IN_SEALED_PRODUCER_SET')
     return publication

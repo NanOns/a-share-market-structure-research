@@ -1,6 +1,7 @@
 """V4_DEFAULT_WORKBENCH_SERVICE_V1. Product version and permissions are separate."""
 import json
 import hashlib
+import os
 import threading
 from datetime import datetime
 from http.server import ThreadingHTTPServer
@@ -10,7 +11,7 @@ from urllib.parse import parse_qs, urlparse
 from .current_v4_context import CurrentAcceptedV4Reader
 from .shadow_server import make_shadow_handler
 from .research_bff import ResearchBFF
-from .joint_release import load as joint_load,checked_path,recover
+from .joint_release import recover
 
 
 def _require_candidate_contract_proofs(context):
@@ -51,20 +52,28 @@ def _require_candidate_contract_proofs(context):
             raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
 
 
-def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_research_candidate_schema=None):
+def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_research_candidate_schema=None, static_root=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
     recover(root)
     # A PG research candidate is an independent development surface. Do not
     # instantiate the file-backed accepted Head reader on that route: even a
     # harmless context/status request must remain bound to the PG snapshot.
-    reader=(None if pg_research_candidate_schema else
+    reader=(None if pg_research_candidate_schema or pg_current_adapter is not None else
             CurrentAcceptedV4Reader(root,require_runtime=True))
     base=make_shadow_handler(root)
-    static=root/'src/workbench_service/static'
+    static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
     bff=ResearchBFF(root)
     operational_cache={};operational_lock=threading.RLock()
     pg_research_candidate_cache={};pg_research_candidate_lock=threading.RLock()
+    def candidate_reader():
+        with pg_research_candidate_lock:
+            current=pg_research_candidate_cache.get('reader')
+            if current is None:
+                from .production_v4 import ProductionV4ResearchReader
+                current=ProductionV4ResearchReader(root,pg_candidate_schema=pg_research_candidate_schema)
+                pg_research_candidate_cache['reader']=current
+            return current
 
     def operational_reader():
         from workbench_analysis.operational_successor_v1 import CONTRACT as DAILY_CONTRACT, accepted_api
@@ -88,6 +97,61 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path)
+            if pg_research_candidate_schema and parsed.path=='/v4/research/data-update':
+                return self.send(200,(static/'daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
+            if pg_research_candidate_schema and parsed.path=='/v4/daily-update.js':
+                return self.send(200,(static/'daily-update/app.js').read_bytes(),'application/javascript; charset=utf-8')
+            if pg_research_candidate_schema and parsed.path.startswith('/api/v4/operations/daily-update/'):
+                values=parse_qs(parsed.query,keep_blank_values=True)
+                if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
+                tail=parsed.path.removeprefix('/api/v4/operations/daily-update/').strip('/').split('/')
+                try:
+                    if tail==['status']:
+                        context=candidate_reader().context
+                        return self.send(200,dict(contract_id='V4_DAILY_STATUS_CANDIDATE_PREVIEW_R1',
+                            status='PREVIEW_ONLY',last_good_trade_date=context['accepted_trade_date'],
+                            missing_sessions=None,calendar_status='NO_ACCEPTED_MARKET_CALENDAR_HEAD',
+                            context_token=context.get('context_token'),publication_id=context.get('publication_id'),
+                            database_identity=context.get('database_identity'),source_mode='PG_CANDIDATE_SNAPSHOT',
+                            jobs_enabled=False,worker_status='NOT_STARTED',
+                            settings=dict(auto_enabled=False,service_alive=False,
+                                operational_mode='CANDIDATE_PREVIEW_NO_WORKER',publication_ready=False),
+                            last_job=None,active_job=None,last_catch_up_job=None,worker_error=None))
+                    if tail==['settings']:
+                        return self.send(200,dict(auto_enabled=False,service_alive=False,
+                            operational_mode='CANDIDATE_PREVIEW_NO_WORKER',permission_scope='READ_ONLY_PG_SNAPSHOT'))
+                    if tail==['progress']:
+                        # Candidate preview has deliberately disabled the daily
+                        # scheduler and does not provision its job schema. Keep
+                        # polling truthful and deterministic without probing a
+                        # missing table or presenting a transient PG error as
+                        # a broken preview.
+                        return self.send(200,dict(contract_id='V4_DAILY_PROGRESS_R1',
+                            stage_state='PREVIEW_ONLY',mode=None,job_mode=None,
+                            target_trade_date=None,started_at=None,finished_at=None,
+                            error_code=None,stage=None,processed=None,total=None,
+                            unit=None,recent_message='Daily worker is disabled in candidate preview',
+                            eta_seconds=None,error_detail=None,head_unchanged=True,
+                            worker_error=None,last_published_trade_date=None,
+                            jobs_enabled=False,worker_status='NOT_STARTED'))
+                    if len(tail)==2 and tail[0]=='jobs':
+                        from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobsReadOnly
+                        return self.send(200,DailyJobsReadOnly(root).job(tail[1]))
+                    if len(tail)==3 and tail[0]=='jobs' and tail[2]=='events':
+                        from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobsReadOnly
+                        after=int(values.get('after',['0'])[0])
+                        return self.send(200,dict(events=DailyJobsReadOnly(root).events(tail[1],after)))
+                    if tail==['releases']:
+                        return self.send(200,dict(current=None,predecessors=[],
+                            status='NO_OPERATIONAL_HEAD_IN_CANDIDATE_PREVIEW'))
+                    return self.send(404,dict(code='DAILY_ROUTE_NOT_FOUND'))
+                except (ValueError,KeyError,OSError,RuntimeError) as error:
+                    return self.send(503,dict(code='DAILY_PG_STATUS_UNAVAILABLE',fallback=False,reason=str(error)[:160]))
+                except Exception as error:
+                    import psycopg
+                    if isinstance(error,psycopg.Error):
+                        return self.send(503,dict(code='DAILY_PG_STATUS_UNAVAILABLE',fallback=False))
+                    raise
             if parsed.path=='/v4/operational-preview':
                 return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/api/v4/original-0930/'):
@@ -129,29 +193,26 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                     except (ValueError,KeyError) as error:
                         return self.send(409 if str(error)=='CONTEXT_TOKEN_MISMATCH' else 400,dict(code='INVALID_OPERATIONAL_QUERY',reason=str(error)))
             if parsed.path in ('/','/v4','/v4/') or parsed.path.startswith('/v4/research/'):
-                authority=root/'config/v4_research_ui_authority_v1.json'
-                try:
-                    mode=('SIX_ENTRY' if pg_research_candidate_schema else
-                          json.loads(authority.read_bytes())['mode'] if authority.exists() else 'LEGACY_SUMMARY')
-                except (ValueError,OSError,KeyError):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
-                if mode not in ('SIX_ENTRY','LEGACY_SUMMARY'):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
-                page=static/('research/index.html' if mode=='SIX_ENTRY' else 'v4-workbench.html')
-                joint=None if pg_research_candidate_schema else joint_load(root)
-                if joint:page=checked_path(root,joint['ui_assets']['index.html'])
+                # V4's default product page is a shipped frontend asset. Do
+                # not let a workspace JSON pointer choose the live UI shell.
+                page=static/'research/index.html'
                 return self.send(200,page.read_bytes(),'text/html; charset=utf-8')
             if parsed.path=='/v4/legacy-summary':
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/v4/assets/'):
                 name=parsed.path.removeprefix('/v4/assets/')
                 if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
-                joint=None if pg_research_candidate_schema else joint_load(root)
-                asset=checked_path(root,joint['ui_assets'][name]) if joint else static/'research'/name
+                # Frontend source assets are ordinary code resources. An
+                # operational compatibility asset, when present, is instead
+                # selected by the PG Head-bound registry below.
+                asset=static/'research'/name
                 if name in ('api.js','components.js','app.js') and not pg_research_candidate_schema:
                     try:operational=operational_reader()
                     except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                     if operational is not None:
                         relative='src/workbench_service/static/r43-compat/'+name
-                        registry=json.loads((root/operational.candidate['registry']['path']).read_bytes())
+                        from workbench_db.v4_operational_registry_pg_r1 import read_registry
+                        registry=read_registry(root,operational.candidate)
                         binding=next((b for b in registry['bindings'] if b['path']==relative),None)
                         if binding is None:return self.send(503,dict(code='OPERATIONAL_UI_COMPATIBILITY_ASSET_NOT_BOUND'))
                         from workbench_analysis.r43_operational_sources import checked
@@ -186,19 +247,27 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                         return self.send(503,dict(service_state='BLOCKED',service_mode='V4_PG_RESEARCH_CANDIDATE',
                             reason='PG_RESEARCH_CANDIDATE_UNAVAILABLE',detail=type(error).__name__))
                 research={}
-                if (root/'config/v4_research_snapshot_authority_v1.json').exists():
+                try:
+                    current=bff.current()
+                    research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='READY',research_counts=current.manifest['counts'],research_release_id=current.context['release_id'])
+                except (ValueError,OSError,KeyError):
+                    research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='UNAVAILABLE_FROM_PG')
+                if pg_current_adapter is not None:
                     try:
-                        current=bff.current()
-                        research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='READY',research_counts=current.manifest['counts'],research_release_id=current.context['release_id'])
-                    except (ValueError,OSError,KeyError) as error:
-                        return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason='RESEARCH_SNAPSHOT_INVALID',detail=type(error).__name__))
-                if reader is None:return self.send(503,dict(service_state='BLOCKED',reason='CURRENT_ACCEPTED_READER_UNAVAILABLE'))
-                code,payload=reader.read('context')
-                if code!=200:return self.send(code,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason=payload))
+                        payload=pg_current_adapter.read_current_endpoint('/api/v4/current/summary')
+                    except Exception as error:
+                        return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',
+                            reason='PG_CURRENT_PUBLICATION_UNAVAILABLE',detail=type(error).__name__))
+                    legacy_context=payload.get('context',{})
+                    production_permission=legacy_context.get('production_permission',{})
+                else:
+                    if reader is None:return self.send(503,dict(service_state='BLOCKED',reason='CURRENT_ACCEPTED_READER_UNAVAILABLE'))
+                    code,payload=reader.read('context')
+                    if code!=200:return self.send(code,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason=payload))
+                    legacy_context=payload['context'];production_permission=payload['production_permission']
                 try:operational=operational_reader()
                 except (ValueError,KeyError,OSError) as error:
                     return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason='OPERATIONAL_ACCEPTED_SOURCE_INVALID',detail=str(error)))
-                legacy_context=payload['context']
                 control=dict(legacy_context)
                 control.update(current_operational_trade_date=None,strict_pit_legacy_trade_date=legacy_context['accepted_trade_date'],legacy_strict_pit_date=legacy_context['accepted_trade_date'],operational_accepted_trade_date=None,control_date_source='LEGACY_STRICT_PIT_HEAD',strict_pit_context_token=legacy_context.get('context_token'))
                 if operational is not None:
@@ -207,13 +276,36 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                     research.update(research_snapshot_state='OPERATIONAL_SCOPED_READY',legacy_research_release_id=research.get('research_release_id'),research_release_id=context['context_token'],legacy_research_counts=research.pop('research_counts',None))
                 return self.send(200,dict(service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',service_control_contract='V4_DEFAULT_WORKBENCH_SERVICE_V1',product_version='V4',default_ui='V4',
                     current_accepted_reader=True,shadow_diagnostics=True,legacy_v3_default=False,read_only_ui=True,
-                    production_permission=payload['production_permission'],**control,**research))
+                    production_permission=production_permission,**control,**research))
             if parsed.path.startswith('/api/v4/current/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(409,dict(status='BLOCKED',code='DUPLICATE_CONTEXT_PARAMETER'))
                 allowed={'q','state','limit','offset','context_token','source','trade_date','model_namespace_id'}
                 if set(values)-allowed:return self.send(400,dict(status='BLOCKED',code='UNKNOWN_CONTEXT_PARAMETER'))
                 query={k:v[0] for k,v in values.items()}
+                if pg_current_adapter is not None and query.get('source')!='pg_candidate':
+                    try:
+                        payload=pg_current_adapter.read_current_endpoint(parsed.path,
+                            expected_context_token=query.get('context_token'),
+                            trade_date=query.get('trade_date'),
+                            model_namespace_id=query.get('model_namespace_id'))
+                        context=payload.get('context') if isinstance(payload,dict) else None
+                        if isinstance(context,dict):
+                            _require_candidate_contract_proofs(context)
+                            mapping=context.get('workspace_owner_mapping')
+                            if mapping is not None:
+                                if context.get('model_namespace_id')!=mapping.get('model_namespace_id'):
+                                    raise ValueError('WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH')
+                                if context.get('database_identity')!=mapping.get('database_identity'):
+                                    raise ValueError('WORKSPACE_DATABASE_IDENTITY_MISMATCH')
+                                for family,binding in context.get('module_results',{}).items():
+                                    if binding.get('owner_schema')!=mapping.get('owner_schemas',{}).get(family):
+                                        raise ValueError('WORKSPACE_OWNER_SCHEMA_MISMATCH:'+str(family))
+                        return self.send(200,payload)
+                    except Exception as error:
+                        from workbench_db.v4_publication_reader import PublicationReadError
+                        reason=str(error) if isinstance(error,(PublicationReadError,ValueError)) else type(error).__name__
+                        return self.send(409,dict(status='BLOCKED',code='PG_CURRENT_READ_FAILED',reason=reason))
                 if query.get('source')=='pg_candidate':
                     if not allow_pg_candidate:
                         return self.send(404,dict(status='BLOCKED',code='PG_CANDIDATE_MODE_DISABLED'))
@@ -285,11 +377,25 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                 return self.send(code,payload)
             return super().do_GET()
 
+        def do_POST(self):
+            if pg_research_candidate_schema and self.path.startswith('/api/v4/operations/daily-update/'):
+                return self.send(403,dict(code='CANDIDATE_PREVIEW_WRITE_DISABLED',jobs_started=False))
+            return self.send(501,dict(code='METHOD_NOT_SUPPORTED'))
+
+        def do_PUT(self):
+            if pg_research_candidate_schema and self.path.startswith('/api/v4/operations/daily-update/'):
+                return self.send(403,dict(code='CANDIDATE_PREVIEW_WRITE_DISABLED',jobs_started=False))
+            return self.send(501,dict(code='METHOD_NOT_SUPPORTED'))
+
     return Handler
 
 
 def serve_v4(root,host='127.0.0.1',port=28765):
-    ThreadingHTTPServer((host,port),make_v4_handler(root)).serve_forever()
+    adapter=pg_candidate_adapter_from_environment(workspace_root=root)
+    from workbench_db.v4_native import workspace_schema
+    research_schema=os.environ.get('V4_PG_RESEARCH_CANDIDATE_SCHEMA') or workspace_schema(root,'research')
+    ThreadingHTTPServer((host,port),make_v4_handler(root,adapter,allow_pg_candidate=True,
+        pg_research_candidate_schema=research_schema)).serve_forever()
 
 
 def pg_candidate_adapter_from_environment(environ=None, *, workspace_root=None):

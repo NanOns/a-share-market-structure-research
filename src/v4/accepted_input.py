@@ -20,9 +20,8 @@ class AcceptedInput:
 
 
 def _verify(root: Path, relative: str, digest: str) -> Path:
-    path = (root / relative).resolve()
-    if not path.is_relative_to(root.resolve()) or not path.is_file():
-        raise ValueError(f"accepted input path invalid: {relative}")
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    path = materialize_bound(root, {"path": relative, "sha256": digest})
     h = sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
@@ -33,9 +32,11 @@ def _verify(root: Path, relative: str, digest: str) -> Path:
 
 
 def _json(root: Path, relative: str, digest: str | None = None) -> dict:
-    path = _verify(root, relative, digest) if digest else (root / relative).resolve()
-    if not path.is_relative_to(root.resolve()) or not path.is_file():
-        raise ValueError(f"accepted authority path invalid: {relative}")
+    if digest:
+        path = _verify(root, relative, digest)
+    else:
+        from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+        path = materialize_path(root, relative)
     return json.loads(path.read_text(encoding="utf-8"))
 
 

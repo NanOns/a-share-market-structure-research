@@ -7,6 +7,7 @@ integration test) and has no artifact, SQLite, or Authority-file fallback.
 from __future__ import annotations
 
 from typing import Any
+import os
 
 from workbench_db.v4_publication_reader import PgPublicationReader, PublicationReadError
 from workbench_db.v4_publication_contract import PAGE_PROJECTIONS
@@ -311,6 +312,26 @@ class PgV4CurrentAdapter:
             "field_coverage": field_coverage,
             "business_result_state": business_result_state,
         }
+
+    def read_current_endpoint(self, endpoint: str, *, expected_context_token: str | None = None,
+                              trade_date: str | None = None,
+                              model_namespace_id: str | None = None) -> dict[str, Any]:
+        """Resolve the current accepted PG Head and fence readback against Head races."""
+        before=PgPublicationReader.startup_head_tuple(connection_factory=self.reader.connection_factory)
+        namespace=(model_namespace_id or os.environ.get('V4_PG_MODEL_NAMESPACE_ID','')).strip()
+        heads=before.get('heads',[])
+        matches=[row for row in heads if not namespace or row.get('model_namespace_id')==namespace]
+        if trade_date:
+            matches=[row for row in matches if row.get('trade_date')==trade_date]
+        if len(matches)!=1:
+            raise PublicationReadError('PG_CURRENT_HEAD_SELECTION_NOT_UNIQUE')
+        selected=matches[0]
+        result=self.read_endpoint(endpoint,trade_date=selected['trade_date'],
+            model_namespace_id=selected['model_namespace_id'],expected_context_token=expected_context_token)
+        after=PgPublicationReader.startup_head_tuple(connection_factory=self.reader.connection_factory)
+        if before.get('database_identity')!=after.get('database_identity') or before.get('heads')!=after.get('heads'):
+            raise PublicationReadError('PG_CURRENT_HEAD_CHANGED_DURING_READ')
+        return result
 
 
 def _project_fields(row: dict[str, Any], fields: tuple[str, ...], source_path: str):

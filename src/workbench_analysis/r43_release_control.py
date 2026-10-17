@@ -6,7 +6,7 @@ This module never creates an acceptance record.
 """
 import json
 from datetime import datetime,timezone
-from .r43_operational_sources import checked
+from .r43_operational_sources import read_source_bytes
 CONTRACT='R43_SCOPED_EXTERNAL_ADMISSION_V2'
 BASE_DOMAINS=('raw','core','profile','sector','relative_sector','market')
 DOMAINS=BASE_DOMAINS+('rotation','focus','forward','events','diagnostic','lifecycle','special_phase')
@@ -16,7 +16,7 @@ def verify_user_authorization(root,candidate,record):
     if record.get('status')!='USER_AUTHORIZED_OPERATIONAL_CUTOVER' or record.get('contract_id')!=USER_CONTRACT or record.get('candidate_digest')!=digest(candidate):raise ValueError('EXACT_USER_AUTHORIZATION_REQUIRED')
     if record.get('historical_PIT_permission') is not False or record.get('independent_external_acceptance') is not False:raise ValueError('USER_AUTHORITY_CANNOT_CLAIM_EXTERNAL_OR_PIT_ACCEPTANCE')
     if record.get('request_origin')!='DIRECT_HUMAN_USER_MESSAGE' or record.get('request_text')!='不需要等待什么批准生产准入 ,我现在要求你  进行生产数据切换':raise ValueError('ACTUAL_USER_REQUEST_PROVENANCE_REQUIRED')
-    checked(root,record['request_evidence'])
+    read_source_bytes(root,record['request_evidence'])
     if record.get('domain_disposition')!={k:('VALIDATION_ONGOING' if k=='rotation' else 'USER_AUTHORIZED') for k in DOMAINS}:raise ValueError('USER_DOMAIN_SCOPE_MISMATCH')
     return record
 def verify_record(root,candidate,record):
@@ -34,15 +34,15 @@ def verify_record(root,candidate,record):
     if timestamp.tzinfo is None or timestamp>datetime.now(timezone.utc):raise ValueError('AUDIT_TIMESTAMP_INVALID')
     proof=record.get('review_evidence')
     if not isinstance(proof,dict):raise ValueError('ACTUAL_INDEPENDENT_REVIEW_EVIDENCE_REQUIRED')
-    checked(root,proof)
+    read_source_bytes(root,proof)
     refs=record.get('reviewed_files',[])
     if not refs:raise ValueError('REVIEWED_FILE_BINDINGS_REQUIRED')
-    for b in refs:checked(root,b)
+    for b in refs:read_source_bytes(root,b)
     scoped=record.get('domain_disposition',{})
     if set(scoped)!=set(DOMAINS) or any(v not in ('ACCEPTED','VALIDATION_ONGOING','NOT_VERIFIABLE','SOURCE_INCOMPLETE') for v in scoped.values()):raise ValueError('EXPLICIT_DOMAIN_DISPOSITION_REQUIRED')
     if any(scoped.get(k)!='ACCEPTED' for k in BASE_DOMAINS):raise ValueError('BASE_RESEARCH_DOMAINS_NOT_INDEPENDENTLY_ACCEPTED')
     if scoped['rotation']=='ACCEPTED' and not record.get('full_rotation_independent_oracle'):raise ValueError('FULL_ROTATION_ORACLE_REQUIRED')
-    if scoped['rotation']=='ACCEPTED':checked(root,record['full_rotation_independent_oracle'])
+    if scoped['rotation']=='ACCEPTED':read_source_bytes(root,record['full_rotation_independent_oracle'])
     # Reviewed-file declarations must bind all actual granted owner bytes, not LFS pointers.
     by_path={b['path']:b for b in refs}
     needed=[candidate['membership_snapshot'],candidate['registry']]

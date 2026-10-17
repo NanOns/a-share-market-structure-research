@@ -2,21 +2,30 @@
 from datetime import datetime, timezone
 from pathlib import Path
 import json
-from .r43_owner_replay import checked, ref
+from .r43_owner_replay import source_ingress, ref
 from .source_capture_candidate_v1 import capture
 from .full_state_signal_candidate_v1 import produce
 
 
 def _pg_owner_rows(root, head, day, domain):
-    from workbench_db.v4_operational_owner_authority_v2 import load, read
-    authority=load(root,head)
-    binding=head['owners'][day][domain]
-    return read(root,authority,day,domain,binding,workspace_root=str(root))
+    from workbench_db.v4_operational_owner_authority_v2 import read_domain
+    return read_domain(root,head,day,domain,workspace_root=str(root))
+
+
+def _candidate_document(value, day):
+    """Accept an in-memory candidate envelope only; never reopen its workspace copy."""
+    if not isinstance(value, dict):
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    if value.get('contract_id') != 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_CONTRACT_REQUIRED')
+    if value.get('accepted_trade_date') != day:
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_T0_MISMATCH')
+    return value
 
 
 def capture_daily_sources(root, day, freeze_binding, *, pg_head_candidate=None, research_replay=False):
     root = Path(root)
-    artifact = json.loads(checked(root, freeze_binding).read_bytes())
+    artifact = json.loads(source_ingress(root, freeze_binding).read_bytes())
     # Candidate transport can provide the binding envelope, while all Owner,
     # membership and predecessor payloads are re-read from PG below. It does
     # not confer accepted Head authority.
@@ -40,11 +49,11 @@ def capture_daily_sources(root, day, freeze_binding, *, pg_head_candidate=None, 
     active_security_ids=sorted({row['security_id'] for row in lifecycle_rows if row.get('security_id')})
     if not active_security_ids:raise ValueError('PG_LIFECYCLE_ACTIVE_UNIVERSE_EMPTY')
     native = artifact['native_baostock']
-    native_doc = json.loads(checked(root, native).read_bytes())
+    native_doc = json.loads(source_ingress(root, native).read_bytes())
     native_time = native_doc['observed_at']
     transport=native_doc.get('source_transport_v2',{})
     native_requested = native_doc.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at')
-    target_doc=json.loads(checked(root,artifact['tdx']).read_bytes())
+    target_doc=json.loads(source_ingress(root,artifact['tdx']).read_bytes())
     sources = [dict(name='daily_freeze', path=freeze_binding['path'], sha256=freeze_binding['sha256'],
                     trade_date=day, requested_at=native_requested, received_at=artifact['observed_at']),
                dict(name='native_baostock', path=native['path'], sha256=native['sha256'], trade_date=day,
@@ -66,7 +75,7 @@ def capture_daily_sources(root, day, freeze_binding, *, pg_head_candidate=None, 
 
 def produce_daily_state(root, day, candidate_binding):
     root = Path(root)
-    head = json.loads(checked(root, candidate_binding).read_bytes())
+    head = _candidate_document(candidate_binding, day)
     owner = head['owners'][day]
     from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
     snapshot=context_snapshot(root,head)
@@ -91,10 +100,10 @@ def produce_daily_state(root, day, candidate_binding):
         frozen_clock_basis='ACTUAL_CANDIDATE_FREEZE_TIME'))
 
 
-def build_review_and_display_candidates(root,day,candidate_binding,capture_result,*,research_replay=False):
+def build_review_and_display_candidates(root,day,candidate,capture_result,*,candidate_binding,research_replay=False):
     """Build the exact-daily candidate handoff in memory for the PG Owner writer."""
     from .producer_candidate_index_pg_v1 import build_review_and_display_candidates as build_pg_index
-    return build_pg_index(root, day, candidate_binding, capture_result,
+    return build_pg_index(root, day, candidate, capture_result, candidate_binding=candidate_binding,
                           research_replay=research_replay)
 
 
@@ -105,9 +114,7 @@ def produce_first_observed_state(root, day, candidate_binding):
     The optional input must bind all three source versions for this exact day.
     """
     root=Path(root)
-    head=json.loads(checked(root,candidate_binding).read_bytes())
-    if head.get('accepted_trade_date')!=day:
-        raise ValueError('FIRST_OBSERVED_STATE_TARGET_DATE_REQUIRED')
+    head=_candidate_document(candidate_binding, day)
     inputs=head.get('first_observed_state_sources',{}).get(day)
     if not inputs:
         return dict(status='SOURCE_INCOMPLETE',formal_status='BLOCKED',
@@ -124,7 +131,7 @@ def produce_daily_sector(root, day, candidate_binding):
     from sector.operational_candidate_v1 import compute
     from .v4_14_replay_io import publish
     root = Path(root)
-    head = json.loads(checked(root,candidate_binding).read_bytes())
+    head = _candidate_document(candidate_binding, day)
     owner = head['owners'][day]
     from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read as read_memberships
     membership_context=context_snapshot(root,head)

@@ -217,9 +217,9 @@ def read_candidates(root, *, head, token, day, sector_id=None):
                     raise ValueError('RESEARCH_ROW_SCOPE_REQUIRED')
                 for cell in row['inputs'].values():
                     if cell.get('source'):
-                        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
-                        receipt=json.loads(ingress_path(root,cell['source']['path'],
-                            expected_sha256=cell['source']['sha256'])['raw'])
+                        from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+                        receipt=json.loads(read_bound(root,cell['source']['path'],
+                            cell['source']['sha256'])['raw'])
                         if receipt['T0']!=day or receipt['sector_id']!=sector_id:raise ValueError('RANK_SOURCE_SCOPE_REQUIRED')
                         for source in receipt['sources']:
                             if source not in head['owners'][day].values():
@@ -242,9 +242,9 @@ def read_candidates(root, *, head, token, day, sector_id=None):
         if strict:
             if (strict['T0']!=day or strict['production'] is not False or strict['candidate_head']!=entry['head']
                     or strict['source_capture']!=bindings['source_capture']):raise ValueError('STRICT_CANDIDATE_SCOPE_REQUIRED')
-            from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
             for key in ('frozen_scanner_inputs','calendar'):
-                ingress_path(root,strict[key]['path'],expected_sha256=strict[key]['sha256'])
+                read_bound(root,strict[key]['path'],strict[key]['sha256'])
             for key in ('model','config','implementation','state_implementation'):checked_dependency(root,strict[key])
             for name,source in strict['input_bindings'].items():
                 if source!=head['owners'][day][name]:raise ValueError('STRICT_INPUT_BINDING_MISMATCH')
@@ -252,10 +252,10 @@ def read_candidates(root, *, head, token, day, sector_id=None):
         capture=docs.get('source_capture')
         if capture:
             if capture['T0']!=day or capture['production'] is not False:raise ValueError('CAPTURE_SCOPE_REQUIRED')
-            from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
             for source in capture['sources']:
-                ingress_path(root,source['original_bytes']['path'],
-                    expected_sha256=source['original_bytes']['sha256'])
+                read_bound(root,source['original_bytes']['path'],
+                    source['original_bytes']['sha256'])
         next_session=entry.get('next_session')
         return dict(result,candidate_status='RESEARCH_CANDIDATE_FROZEN' if state else 'NOT_CAPTURED',
             universe_count=state.get('universe_count'),research_signal_count=state.get('signal_count'),

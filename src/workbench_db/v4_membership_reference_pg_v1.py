@@ -5,7 +5,6 @@ from pathlib import Path
 from .v4_forward_pg_r1 import canonical,digest,ForwardFactStore
 from .v4_native import connection,workspace_schema
 from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact
-from workbench_analysis.r43_owner_replay import checked
 
 KEY='native_membership_reference'
 CONTRACT='V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1'
@@ -52,7 +51,9 @@ def _load_authority(root,candidate):
     return authority
 
 def prepare(root,candidate):
-    root=Path(root).resolve();snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
+    root=Path(root).resolve()
+    from .v4_historical_source_ingress_pg_r1 import read_bound
+    snapshot=read_bound(root,candidate['membership_snapshot']['path'],candidate['membership_snapshot']['sha256'])['value']
     source=snapshot['memberships'];day=candidate['accepted_trade_date']
     fact_key=digest(canonical(dict(contract_id=CONTRACT,T0=day,source=source,membership_snapshot=candidate['membership_snapshot'])))
     from workbench_analysis.r43_operational_publication import rows
@@ -135,12 +136,13 @@ def current_identity_binding(root,candidate):
 def _current_identity_source_ingress(root,candidate):
     """Read an exact dated identity source only while preparing its PG Owner."""
     day=candidate['accepted_trade_date'];lifecycle=candidate['owners'][day]['lifecycle']
-    document=json.loads(checked(root,lifecycle).read_bytes())
+    from .v4_historical_source_ingress_pg_r1 import read_bound
+    document=read_bound(root,lifecycle['path'],lifecycle['sha256'])['value']
     if document.get('trade_date',document.get('target_session',day))!=day:
         raise ValueError('CURRENT_IDENTITY_LIFECYCLE_DATE_MISMATCH')
     source=document.get('identity')
     if not isinstance(source,dict):raise ValueError('CURRENT_IDENTITY_SOURCE_INGRESS_REQUIRED')
-    checked(root,source)
+    read_bound(root,source['path'],source['sha256'])
     return source,lifecycle
 
 
@@ -235,7 +237,8 @@ def prepare_research(root,candidate,input_candidate,index):
     if (index.get('contract_id')!='PRODUCER_CANDIDATE_INDEX_V2' or not entry
             or entry['head']!=input_candidate or entry.get('production') is not False):
         raise ValueError('NATIVE_RESEARCH_INPUT_CANDIDATE_REQUIRED')
-    original=json.loads(checked(root,input_candidate).read_bytes())
+    from .v4_historical_source_ingress_pg_r1 import read_bound
+    original=read_bound(root,input_candidate['path'],input_candidate['sha256'])['value']
     for name in ('owners','source_registry','day_receipt','exact_daily_generation_scope','membership_snapshot'):
         if original.get(name)!=candidate.get(name):raise ValueError('NATIVE_RESEARCH_OWNER_CONSERVATION_REQUIRED:'+name)
     input_candidate_key=digest(canonical(dict(contract_id=CONTRACT,domain='research_input_candidate',T0=day,source=input_candidate)))
@@ -247,7 +250,7 @@ def prepare_research(root,candidate,input_candidate,index):
     for name in ('sector','full_state','strict_source','source_capture'):
         source=entry.get(name)
         if not source:continue
-        content=json.loads(checked(root,source).read_bytes())
+        content=read_bound(root,source['path'],source['sha256'])['value']
         if content.get('production') is not False:raise ValueError('NATIVE_RESEARCH_PERMISSION_ESCALATION')
         fact_key=digest(canonical(dict(contract_id=CONTRACT,domain='research_'+name,T0=day,source=source)))
         descriptor=append(root,fact_key,day,'reference_research_'+name,source,content)

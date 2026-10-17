@@ -6,7 +6,7 @@ Historical replay and live source observation cannot silently interchange.
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import json
-from .r43_owner_replay import checked, gzrows, ref
+from .r43_owner_replay import checked_pg as checked, gzrows, ref
 from .v4_14_replay_io import digest, publish
 from .full_state_signal_candidate_v1 import produce
 from .source_capture_candidate_v1 import instant
@@ -25,15 +25,20 @@ def validate_cutoff(value, trade_date):
         for item in value:validate_cutoff(item, trade_date)
 
 
-def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, research_replay=False):
+def freeze_for_review(root, *, capture_binding, candidate, candidate_binding, trade_date, research_replay=False):
     root=Path(root);capture=json.loads(checked(root,capture_binding).read_bytes())
-    head=json.loads(checked(root,candidate_binding).read_bytes());owner=head['owners'][trade_date]
+    if not isinstance(candidate,dict) or candidate.get('contract_id')!='V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    head=candidate;owner=head['owners'][trade_date]
     now=datetime.now(timezone.utc);today=now.astimezone(timezone(timedelta(hours=8))).date().isoformat()
     if head['accepted_trade_date']!=trade_date or capture['T0']!=trade_date:
         raise ValueError('ASOF_SOURCE_DATE_MISMATCH')
     if not research_replay and (trade_date!=today or capture['evidence_class']!='CURRENT_OBSERVATION_CANDIDATE'):
         raise ValueError('NO_HISTORICAL_FIRST_CAPTURE_BACKFILL')
-    calendar=json.loads(checked(root,capture['calendar']).read_bytes())
+    from workbench_db.v4_market_calendar_reader_r1 import from_environment
+    calendar=from_environment().calendar()
+    if calendar.get('status')!='ACCEPTED' or capture.get('calendar')!=calendar.get('binding'):
+        raise ValueError('PG_ACCEPTED_CALENDAR_BINDING_MISMATCH')
     if trade_date not in calendar['session_dates']:raise ValueError('BOUND_CALENDAR_SESSION_REQUIRED')
     if instant(capture['captured_at'])>now:raise ValueError('FUTURE_CAPTURE_CLOCK')
     for source in capture['sources']:
@@ -41,17 +46,20 @@ def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, r
         if source.get('requested_at') and instant(source['requested_at'])>instant(source['received_at']):
             raise ValueError('SOURCE_TIMESTAMP_ORDER_REQUIRED')
         if instant(source['received_at'])>instant(capture['captured_at']):raise ValueError('CAPTURE_PRECEDES_INPUT_RECEIPT')
-    life=json.loads(checked(root,owner['lifecycle']).read_bytes())
-    snapshot=json.loads(checked(root,head['membership_snapshot']).read_bytes())
-    rows=gzrows(checked(root,owner['prewatch']))
-    raw=gzrows(checked(root,owner['raw']))
-    core=gzrows(checked(root,owner['core']))
+    from workbench_db.v4_operational_owner_authority_v2 import read_domain
+    life=read_domain(root,head,trade_date,'lifecycle',workspace_root=str(root))
+    rows=read_domain(root,head,trade_date,'prewatch',workspace_root=str(root))
+    raw=read_domain(root,head,trade_date,'raw',workspace_root=str(root))
+    core=read_domain(root,head,trade_date,'core',workspace_root=str(root))
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
+    snapshot=context_snapshot(root,head)
     gaps=list(capture['gaps'])
     from .source_scope_reconciliation_v1 import reconcile
-    reconciliation_binding=reconcile(root,capture_binding=capture_binding,candidate_binding=candidate_binding,trade_date=trade_date)
+    reconciliation_binding=reconcile(root,capture_binding=capture_binding,candidate=head,candidate_binding=candidate_binding,trade_date=trade_date)
     reconciliation=json.loads(checked(root,reconciliation_binding).read_bytes())
     gaps.extend(reconciliation['source_gaps'])
-    if set(r['security_id'] for r in core)!=set(life['active_security_ids']):gaps.append('FULL_CORE_SCOPE_INCOMPLETE')
+    active_ids=sorted({r['security_id'] for r in life if r.get('security_id')})
+    if set(r['security_id'] for r in core)!=set(active_ids):gaps.append('FULL_CORE_SCOPE_INCOMPLETE')
     for group in (raw,core,rows):
         if len({r['security_id'] for r in group})!=len(group):raise ValueError('DUPLICATE_STATE_INPUT')
     for row in raw+core+rows:
@@ -63,8 +71,8 @@ def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, r
     config=ref(root,root/'config/research_attention_v3.yaml')
     implementation=ref(root,root/'src/workbench_analysis/strict_source_candidate_v2.py')
     state_implementation=ref(root,root/'src/workbench_analysis/full_state_signal_candidate_v1.py')
-    document=produce(rows,universe=life['active_security_ids'],trade_date=trade_date,source_binding=owner['prewatch'],
-        membership_binding=head['membership_snapshot'],model_binding=model,config_binding=config,captured_at=now.isoformat())
+    document=produce(rows,universe=active_ids,trade_date=trade_date,source_binding=owner['prewatch'],
+        membership_binding=snapshot['memberships'],model_binding=model,config_binding=config,captured_at=now.isoformat())
     if document['missing_state_count']:gaps.append('STATE_UNIVERSE_HAS_MISSING_OUTPUT')
     # Every numerical scanner input and predicate stays frozen verbatim. A later
     # corrected source cannot rewrite these values or their capture clock.
@@ -73,8 +81,8 @@ def freeze_for_review(root, *, capture_binding, candidate_binding, trade_date, r
                                     confirmation=r['confirmation'],normal_evidence=r['normal_evidence']) for r in rows]))
     bindings={k:owner[k] for k in ('raw','core','prewatch','lifecycle')}
     document.update(contract_id=CONTRACT,source_capture=capture_binding,candidate_head=candidate_binding,
-        frozen_scanner_inputs=inputs,input_bindings=bindings,calendar=capture['calendar'],
-        scope_reconciliation=dict(universe_count=len(life['active_security_ids']),core_count=len(core),raw_traded_count=len(raw),
+        frozen_scanner_inputs=inputs,input_bindings=bindings,calendar=calendar['binding'],
+        scope_reconciliation=dict(universe_count=len(active_ids),core_count=len(core),raw_traded_count=len(raw),
             receipt=reconciliation_binding,status=reconciliation['status']),
         evidence_class='RECONSTRUCTED_RESEARCH_ONLY' if research_replay else 'ASOF_OBSERVATION_SOURCE_CANDIDATE',
         review_readiness='HISTORICAL_RESEARCH_ONLY' if research_replay else 'SOURCE_GAPS' if gaps else 'READY_FOR_INDEPENDENT_SOURCE_REVIEW',

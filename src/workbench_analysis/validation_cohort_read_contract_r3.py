@@ -11,10 +11,9 @@ _COHORT_GRANT_CONTRACT_ID='VALIDATION_COHORT_READ_GRANT_R4_V1'
 
 
 def _read_accepted_grant(root, grant_ref, *, pg_only):
-    """Resolve an exact Head-bound grant; PG candidates never fall back to files."""
+    """Resolve an exact Head-bound grant from the approved PG contract registry."""
     if not pg_only:
-        from .r43_owner_replay import checked
-        return json.loads(checked(root,grant_ref).read_bytes())
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK')
     if not isinstance(grant_ref,dict) or not isinstance(grant_ref.get('sha256'),str):
         raise ValueError('COHORT_PG_GRANT_REGISTRY_BINDING_REQUIRED')
     namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
@@ -91,9 +90,11 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
     R4 prepares this interface; it does not issue grants or enroll production.
     """
     from pathlib import Path
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     root=Path(root)
-    head=accepted_head_data if accepted_head_data is not None else json.loads(checked(root,accepted_head).read_bytes())
+    if accepted_head_data is None:
+        raise ValueError('COHORT_PG_ACCEPTED_HEAD_REQUIRED_NO_FILE_FALLBACK')
+    head=accepted_head_data
     if not isinstance(head,dict):raise ValueError('COHORT_ACCEPTED_HEAD_REQUIRED')
     if accepted_head_data is not None:
         from .r43_operational_publication import digest as candidate_digest
@@ -103,8 +104,7 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
         raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
     grant_ref=head.get('cohort_read_grants',{}).get(trade_date)
     if not grant_ref:raise ValueError('COHORT_READ_GRANT_MISSING')
-    grant=_read_accepted_grant(root,grant_ref,
-        pg_only=accepted_head_data is not None)
+    grant=_read_accepted_grant(root,grant_ref,pg_only=True)
     from workbench_db.v4_cohort_pg_r1 import load_owner
     owner=owner_reader(owner_binding) if owner_reader is not None else load_owner(root,owner_binding)
     if not isinstance(owner,dict):raise ValueError('COHORT_PG_OWNER_PAYLOAD_REQUIRED')
@@ -122,7 +122,7 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
 
 def validate_source_receipt(root,head,grant,row):
     """Require exact issuance provenance, not an owner-local assertion of PIT."""
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     binding=grant.get('source_manifest')
     if not binding or head.get('cohort_source_manifests',{}).get(row['T0'])!=binding:
         raise ValueError('COHORT_ACCEPTED_SOURCE_MANIFEST_REQUIRED')
@@ -148,7 +148,7 @@ def validate_source_receipt(root,head,grant,row):
     if len(matches)!=1 or matches[0]!=row:raise ValueError('COHORT_FROZEN_SOURCE_EVENT_MISMATCH')
 
 def publish_isolated_candidate(root, *, accepted_head, owner_binding, trade_date,
-                               candidate_directory, sessions):
+                               candidate_directory, sessions, accepted_head_data=None):
     """Prepare a no-clobber candidate; never changes Heads or production stores.
 
     Existing RadarCohortRuntime remains the enrollment producer. This adapter
@@ -158,12 +158,15 @@ def publish_isolated_candidate(root, *, accepted_head, owner_binding, trade_date
     from pathlib import Path
     from .v4_14_replay_io import publish,digest
     from .v4_15_settlement import due_plan
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     directory=Path(candidate_directory)
     if directory.is_absolute() or '..' in directory.parts or directory.parts[:2]!=('docs','evidence'):
         raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
-    result=read_authorized_statistics(root,accepted_head=accepted_head,owner_binding=owner_binding,trade_date=trade_date)
-    head=json.loads(checked(root,accepted_head).read_bytes())
+    if accepted_head_data is None:
+        raise ValueError('COHORT_PG_ACCEPTED_HEAD_REQUIRED_NO_FILE_FALLBACK')
+    result=read_authorized_statistics(root,accepted_head=accepted_head,accepted_head_data=accepted_head_data,
+        owner_binding=owner_binding,trade_date=trade_date)
+    head=accepted_head_data
     calendar_ref=head.get('cohort_calendar')
     if not calendar_ref:raise ValueError('COHORT_ACCEPTED_CALENDAR_REQUIRED')
     calendar=json.loads(checked(root,calendar_ref).read_bytes())

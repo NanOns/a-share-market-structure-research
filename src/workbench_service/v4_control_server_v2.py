@@ -9,24 +9,13 @@ from urllib.parse import parse_qs, urlparse
 from .current_v4_context import CurrentAcceptedV4Reader
 from .shadow_server import make_shadow_handler
 from .research_bff import ResearchBFF
-from .joint_release import load as joint_load,checked_path,recover
-
-
-def _ui_asset(root, static, name, joint, *, source_override=False):
-    """Use checkout assets in an explicit isolated preview; production stays bound."""
-    if source_override or not joint:
-        return Path(static)/'research'/name
-    return checked_path(root,joint['ui_assets'][name])
+from .joint_release import recover
 
 
 def make_v4_handler(root, *, static_root=None):
     root=Path(root)
     static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
     source_override=static_root is not None
-    from workbench_analysis.r43_operational_sources import checked
-    adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
-    for binding in adapter['source_bindings']:
-        checked(root,binding)
     recover(root)
     reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     base=make_shadow_handler(root)
@@ -73,13 +62,10 @@ def make_v4_handler(root, *, static_root=None):
                     except (ValueError,KeyError) as error:
                         return self.send(409 if str(error)=='CONTEXT_TOKEN_MISMATCH' else 400,dict(code='INVALID_OPERATIONAL_QUERY',reason=str(error)))
             if parsed.path in ('/','/v4','/v4/') or parsed.path.startswith('/v4/research/'):
-                authority=root/'config/v4_research_ui_authority_v1.json'
-                try:mode=json.loads(authority.read_bytes())['mode'] if authority.exists() else 'LEGACY_SUMMARY'
-                except (ValueError,OSError,KeyError):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
-                if mode not in ('SIX_ENTRY','LEGACY_SUMMARY'):return self.send(503,dict(code='UI_AUTHORITY_INVALID'))
-                page=static/('research/index.html' if mode=='SIX_ENTRY' else 'v4-workbench.html')
-                joint=joint_load(root)
-                if joint and not source_override:page=checked_path(root,joint['ui_assets']['index.html'])
+                # The V4 product shell is code, not mutable business state.
+                # Runtime configuration JSON must not select a page on behalf
+                # of an accepted Owner or Publication.
+                page=static/'research/index.html'
                 return self.send(200,page.read_bytes(),'text/html; charset=utf-8')
             if parsed.path=='/v4/legacy-summary':
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
@@ -87,23 +73,33 @@ def make_v4_handler(root, *, static_root=None):
                 name=parsed.path.removeprefix('/v4/assets/')
                 if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
                 if name=='app.js':
-                    from workbench_analysis.r43_operational_sources import checked
-                    adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
-                    asset=checked(root,adapter['ui_assets'][name])
+                    if source_override:
+                        asset=static/'research'/name
+                    else:
+                        try:
+                            operational=operational_reader()
+                            if operational is None:raise ValueError('OPERATIONAL_PG_UI_ASSET_BINDING_REQUIRED')
+                            relative='src/workbench_service/static/r43-compat/app.js'
+                            binding=next((b for b in operational_cache['registry']['bindings']
+                                          if b.get('path')==relative),None)
+                            if binding is None:raise ValueError('OPERATIONAL_UI_COMPATIBILITY_ASSET_NOT_BOUND')
+                            from workbench_analysis.r43_operational_sources import checked
+                            asset=checked(root,binding)
+                        except (ValueError,KeyError,OSError) as error:
+                            return self.send(503,dict(code='OPERATIONAL_UI_ASSET_UNAVAILABLE',reason=str(error)))
                     return self.send(200,asset.read_bytes(),'application/javascript; charset=utf-8')
-                joint=joint_load(root)
-                asset=_ui_asset(root,static,name,joint,source_override=source_override)
-                if not source_override and name in ('api.js','components.js','app.js'):
+                asset=static/'research'/name
+                if not source_override and name in ('api.js','components.js'):
                     try:operational=operational_reader()
-                    except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
+                    except (ValueError,KeyError,OSError):operational=None
                     if operational is not None:
                         relative='src/workbench_service/static/r43-compat/'+name
                         from workbench_db.v4_operational_registry_pg_v1 import read_registry
                         registry=read_registry(root,operational.candidate)
                         binding=next((b for b in registry['bindings'] if b['path']==relative),None)
-                        if binding is None:return self.send(503,dict(code='OPERATIONAL_UI_COMPATIBILITY_ASSET_NOT_BOUND'))
-                        from workbench_analysis.r43_operational_sources import checked
-                        asset=checked(root,binding)
+                        if binding is not None:
+                            from workbench_analysis.r43_operational_sources import checked
+                            asset=checked(root,binding)
                 return self.send(200,asset.read_bytes(),'text/css; charset=utf-8' if name.endswith('.css') else 'application/javascript; charset=utf-8')
             if parsed.path=='/v4/workbench.js':
                 return self.send(200,(static/'v4-workbench.js').read_bytes(),'application/javascript; charset=utf-8')
@@ -111,12 +107,11 @@ def make_v4_handler(root, *, static_root=None):
                 return self.send(200,b'<!doctype html><meta charset="utf-8"><title>V3 historical diagnostics</title><h1>V3 historical diagnostics</h1><p>The legacy database was intentionally retired. V4 current accepted research is available at <a href="/v4">V4</a>.</p>','text/html; charset=utf-8')
             if parsed.path=='/api/operations/status':
                 research={}
-                if (root/'config/v4_research_snapshot_authority_v1.json').exists():
-                    try:
-                        current=bff.current()
-                        research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='READY',research_counts=current.manifest['counts'],research_release_id=current.context['release_id'])
-                    except (ValueError,OSError,KeyError) as error:
-                        return self.send(503,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason='RESEARCH_SNAPSHOT_INVALID',detail=type(error).__name__))
+                try:
+                    current=bff.current()
+                    research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='READY',research_counts=current.manifest['counts'],research_release_id=current.context['release_id'])
+                except (ValueError,OSError,KeyError):
+                    research=dict(research_ui_contract='V4_SIX_ENTRY_SHELL_V1',research_snapshot_state='UNAVAILABLE_FROM_PG')
                 code,payload=reader.read('context')
                 if code!=200:return self.send(code,dict(service_state='BLOCKED',service_mode='V4_DEFAULT_WORKBENCH',reason=payload))
                 try:operational=operational_reader()

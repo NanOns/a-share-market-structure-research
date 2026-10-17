@@ -268,7 +268,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     """Revalidate frozen bytes at the final boundary before any Owner work."""
     from .v4_daily_pipeline_progress_r1 import instrument_progress
     progress=instrument_progress(progress)
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import source_ingress
     root=Path(root)
     if candidate_only_exact and readback_url is not None:
         raise ValueError('EXACT_CANDIDATE_ONLY_CANNOT_PROMOTE')
@@ -279,7 +279,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
                 or not isolation_root
                 or not root.resolve().is_relative_to(Path(isolation_root).resolve())):
             raise ValueError('ENGINEERING_REPLAY_CANNOT_PROMOTE')
-    artifact=json.loads(checked(root,result['source_freeze']).read_bytes())
+    artifact=json.loads(source_ingress(root,result['source_freeze']).read_bytes())
     from .producer_bootstrap_v1 import optional_step
     if not result.get('first_capture_source_candidate',{}).get('candidate'):
         result=dict(result,first_capture_source_candidate=optional_step(
@@ -314,14 +314,14 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
         atomic_json(root,context['folder']/'NATIVE_PRODUCT_PACK_PREPARATION_V3.json',pack_receipt)
     candidate_path=root/binding['path'];atomic_json(root,candidate_path,candidate);binding=ref(root,candidate_path)
     from .producer_bootstrap_v1 import produce_daily_state, produce_daily_sector, optional_step
-    result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,binding),
-                sector_operational_candidate=optional_step(produce_daily_sector,root,day,binding))
+    result=dict(result,full_state_signal_candidate=optional_step(produce_daily_state,root,day,candidate),
+                sector_operational_candidate=optional_step(produce_daily_sector,root,day,candidate))
     if context.get('exact_daily_policy'):
         from .producer_candidate_index_pg_v1 import build_review_and_display_candidates
     else:
         from .producer_bootstrap_v1 import build_review_and_display_candidates
-    result=dict(result,producer_review_candidates=optional_step(build_review_and_display_candidates,root,day,binding,
-            result.get('first_capture_source_candidate',{})))
+    result=dict(result,producer_review_candidates=optional_step(build_review_and_display_candidates,root,day,candidate,
+            result.get('first_capture_source_candidate',{}),candidate_binding=binding))
     if context.get('exact_daily_policy'):
         from workbench_db.v4_membership_reference_pg_v1 import prepare_research
         review=result.get('producer_review_candidates',{})
@@ -335,7 +335,7 @@ def derive_ready_sources(root,day,result,*,cancelled=lambda:False,readback_url=N
     # Observe the exact sealed daily candidate. This never grants authority,
     # enrolls corrected events or blocks publication of otherwise usable domains.
     from .cohort_capture_readiness_r1 import inspect_daily_candidate
-    capture_readiness=inspect_daily_candidate(root,candidate_binding=binding,
+    capture_readiness=inspect_daily_candidate(root,candidate_binding=binding,candidate=candidate,
         trade_date=day,cutoff=datetime.now(timezone.utc).isoformat())
     result=dict(result,cohort_capture_readiness=capture_readiness)
     from workbench_db.v4_read_index_r1 import prepare_bff as prepare_read_index_r1
@@ -483,14 +483,22 @@ def persist_daily_core_result_candidate(pg, candidate):
 def verify_source_gate(root,day,artifact,result,now=None):
     """Single audited gate shared by execution and isolated receipt replay."""
     root=Path(root)
-    raw_path=root/artifact['native_baostock']['path']
+    from .r43_owner_replay import source_ingress
+    def pg_source(binding):
+        relative=Path(binding['path'])
+        if relative.is_absolute():relative=relative.resolve().relative_to(root.resolve())
+        return source_ingress(root,dict(binding,path=relative.as_posix()))
+    freeze_binding=result.get('source_freeze')
+    if isinstance(freeze_binding,dict):
+        frozen=json.loads(pg_source(freeze_binding).read_bytes())
+        if frozen!=artifact:raise ValueError('SOURCE_FREEZE_PG_READBACK_MISMATCH')
+    raw_path=pg_source(artifact['native_baostock'])
     if tdx.sha256_file(raw_path)!=artifact['native_baostock']['sha256']:raise ValueError('NATIVE_RESPONSE_DIGEST_MISMATCH')
     raw=json.loads(raw_path.read_bytes());normalized=artifact['normalized'];package=artifact['effective_package']
     bars=dict(artifact=artifact['tdx'],source_available_at=artifact.get('tdx_source_available_at',artifact['observed_at']))
     snapshot=root/'data/v4/dynamic_daily_sources'
     observed=raw['observed_at'];daily=normalized['daily']['rows'];factors=normalized['adjustment_factor']['rows']
-    native_path=Path(bars['artifact']['path'])
-    if not native_path.is_absolute():native_path=root/native_path
+    native_path=pg_source(bars['artifact'])
     if tdx.sha256_file(native_path)!=bars['artifact']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
     native_document=json.loads(native_path.read_bytes());native=native_document['target_bars']
     bycode={r['source_security_key'].upper():r for r in native}

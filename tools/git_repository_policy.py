@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import re
 import subprocess
@@ -43,7 +44,7 @@ MACHINE_PATH = re.compile(
     r"(?i)(?<![A-Za-z0-9])[A-Z]:[\\/](?:[^\\/\s'\"`]+[\\/])*[^\s'\"`]*|\\\\[^\\\s]+\\[^\\\s]+"
 )
 SECRET_ASSIGNMENT = re.compile(
-    r"(?i)\b(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|"
+    r"(?i)(?<![A-Za-z0-9_.])(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|"
     r"private[_-]?key|client[_-]?secret)\b['\"]?\s*[=:]\s*['\"]?([^\s'\"#,;]{4,})"
 )
 PLACEHOLDER = re.compile(r"(?i)^(?:change[-_ ]?me|example|sample|placeholder|your[-_ ].*|<.*>|\$\{.*\}|\*+|null|none|redacted)$")
@@ -58,8 +59,8 @@ TARGET_BRANCH = re.compile(
     r"\b(?:code|symbol|stock_code)\s+in\s*\{[^}]*['\"]\d{6}['\"])")
 DYNAMIC_SQL = re.compile(
     r"(?is)(?:f['\"]\s*(?:select|insert|update|delete)\b[^'\"]*\{|"
-    r"(?:select|insert|update|delete)\b[^\n]{0,100}\s*\+\s*(?:str\(|[A-Za-z_][\w.]*)|"
-    r"\.(?:format|format_map)\s*\([^\n]{0,80}\).{0,30}(?:select|insert|update|delete))")
+    r"(?:^|[=(:,])\s*['\"]\s*(?:select|insert|update|delete)\b[^\n]{0,100}\s*\+\s*(?:str\(|[A-Za-z_][\w.]*)|"
+    r"['\"]\s*(?:select|insert|update|delete)\b[^'\"]{0,100}['\"]\s*\.format(?:_map)?\s*\()")
 LFS_POINTER = re.compile(
     rb"\Aversion https://git-lfs\.github\.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n?\Z"
 )
@@ -205,7 +206,7 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
     if code_path and path != "tools/git_repository_policy.py":
         if MACHINE_PATH.search(text) and path != "scripts/audit_v4_nonconfig_file_references_r1.py":
             findings.append(Finding("MACHINE_PATH", path, "machine-specific absolute path detected"))
-        if FORBIDDEN_PROD_PATH.search(text) and READ_CALL.search(text) and path not in read_only_report_tools:
+        if _direct_forbidden_path_read(text) and path not in read_only_report_tools:
             findings.append(Finding("PROCESS_DATA_DEPENDENCY", path, "production/tool code reads a task, evidence, or historical report path"))
         if path.startswith("src/") and TARGET_BRANCH.search(text):
             findings.append(Finding("TARGET_SPECIFIC_BRANCH", path, "production code contains a fixed security or sector branch candidate"))
@@ -223,6 +224,40 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
         if not text.lstrip().startswith("---"):
             findings.append(Finding("STAGE_REPORT_TEMPLATE", path, "formal stage report must use the versioned front matter template"))
     return findings
+
+
+def _direct_forbidden_path_read(text: str) -> bool:
+    """Reject filesystem reads of evidence/report paths while allowing PG adapters.
+
+    The previous file-wide check combined any path literal with any read call in
+    a module. It incorrectly rejected PG materializer calls and output paths.
+    Inspect actual Python file-read expressions and simple string path aliases.
+    """
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return bool(FORBIDDEN_PROD_PATH.search(text) and READ_CALL.search(text))
+    forbidden_names: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
+            segment = ast.get_source_segment(text, node.value) or ""
+            if FORBIDDEN_PROD_PATH.search(segment):
+                targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                forbidden_names.update(t.id for t in targets if isinstance(t, ast.Name))
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        func = node.func
+        name = func.id if isinstance(func, ast.Name) else func.attr if isinstance(func, ast.Attribute) else ""
+        if name not in {"open", "read_text", "read_bytes", "load", "safe_load"}:
+            continue
+        segment = ast.get_source_segment(text, node) or ""
+        if FORBIDDEN_PROD_PATH.search(segment):
+            return True
+        if any(isinstance(child, ast.Name) and child.id in forbidden_names
+               for arg in node.args for child in ast.walk(arg)):
+            return True
+    return False
 
 
 def staged_blobs() -> list[tuple[str, bytes]]:

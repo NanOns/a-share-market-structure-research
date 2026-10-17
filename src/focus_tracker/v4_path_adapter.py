@@ -20,11 +20,12 @@ ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
 
 
 def checked(root, binding):
-    root = Path(root).resolve()
-    path = (root / binding['path']).resolve()
-    if not path.is_relative_to(root) or digest(path.read_bytes()) != binding['sha256']:
-        raise SourceInvalid('FOCUS_INPUT_DIGEST_OR_PATH_INVALID')
-    return path
+    """Materialize a bound source only after exact PG ingress readback."""
+    try:
+        from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+        return materialize_bound(Path(root).resolve(),binding)
+    except (OSError,KeyError,ValueError) as error:
+        raise SourceInvalid('FOCUS_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))) from error
 
 
 class AcceptedPaths:

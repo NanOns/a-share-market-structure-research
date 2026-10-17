@@ -40,9 +40,10 @@ class CurrentAcceptedV4Reader:
         return path
 
     def _read(self, ref):
-        path=self._path(ref['path'])
-        try:raw=path.read_bytes()
-        except OSError as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
+        try:
+            from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+            path=materialize_bound(self.root,ref);raw=path.read_bytes()
+        except (OSError,ValueError) as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
         if len(raw)!=ref.get('bytes',ref.get('byte_count')) or digest(raw)!=ref['sha256']:
             raise SourceInvalid('BOUND_ARTIFACT_DIGEST_MISMATCH:'+ref['path'])
         key=(ref['path'],ref['sha256'])
@@ -54,24 +55,30 @@ class CurrentAcceptedV4Reader:
         return self._cache[key]
 
     def _verify(self,ref):
-        path=self._path(ref['path']);h=hashlib.sha256();size=0
         try:
-            with path.open('rb') as stream:
-                while chunk:=stream.read(8*1024*1024):h.update(chunk);size+=len(chunk)
-        except OSError as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
-        if size!=ref.get('bytes',ref.get('byte_count')) or h.hexdigest()!=ref['sha256']:raise SourceInvalid('BOUND_ARTIFACT_DIGEST_MISMATCH:'+ref['path'])
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+            source=read_bound(self.root,ref['path'],ref['sha256'])
+        except ValueError as exc:raise SourceInvalid('BOUND_ARTIFACT_MISSING:'+ref['path']) from exc
+        size=len(source['raw'])
+        if size!=ref.get('bytes',ref.get('byte_count')) or digest(source['raw'])!=ref['sha256']:raise SourceInvalid('BOUND_ARTIFACT_DIGEST_MISMATCH:'+ref['path'])
 
     def _contract(self):
         try:
-            runtime_path=self.root/'config/v4_production_runtime_authority_v1.json'
-            if self.require_runtime and not runtime_path.is_file():raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
-            if self.follow_runtime and runtime_path.is_file() and self.contract_path=='config/v4_current_accepted_read_contract_v1.json':
+            from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+            if self.follow_runtime and self.contract_path=='config/v4_current_accepted_read_contract_v1.json':
+                try: runtime_path=materialize_path(self.root,'config/v4_production_runtime_authority_v1.json')
+                except ValueError:
+                    if self.require_runtime:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
+                    runtime_path=None
+            else:runtime_path=None
+            if self.require_runtime and runtime_path is None:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
+            if runtime_path is not None:
                 runtime=json.loads(runtime_path.read_bytes())
                 if runtime['contract_id']!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1' or not runtime['ui_read_only'] or runtime['tdx_write_authorized'] or runtime['trading_action_authorized']:raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
                 ref=runtime['read_authority'];contract=self._read(ref);contract_digest=ref['sha256']
                 if runtime['data_head_binding']['sha256']!=contract['anchors']['data_head']['sha256'] or runtime['stage_authority_binding']['sha256']!=contract['anchors']['stage_authority']['sha256']:raise SourceInvalid('RUNTIME_READ_AUTHORITY_INCONSISTENT')
             else:
-                raw=self._path(self.contract_path).read_bytes();contract=json.loads(raw);contract_digest=digest(raw)
+                raw=materialize_path(self.root,self.contract_path).read_bytes();contract=json.loads(raw);contract_digest=digest(raw)
             if contract['contract_id']!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1' or contract['source_discovery'] or contract['fallback']!='NONE':raise SourceInvalid('READ_CONTRACT_INVALID')
             return contract,contract_digest
         except (OSError,KeyError,json.JSONDecodeError) as exc:raise SourceInvalid('READ_CONTRACT_INVALID') from exc
@@ -116,8 +123,8 @@ class CurrentAcceptedV4Reader:
             source_revision=d['source_revision'],canonical_data_revision=d['canonical_data_revision'],read_contract_digest=contract_digest,
             data_updated_at=d['promoted_at_utc'],freshness_state='WAIT_NEXT_ACCEPTED_INPUT' if today>d['accepted_trade_date'] else 'CURRENT_ACCEPTED_INPUT',
             knowledge_lineage=d['knowledge_lineage'],historical_pit_effectiveness='NOT_GRANTED')
-        token='current-v4-'+digest(canonical({k:v for k,v in context.items() if k!='freshness_state'}))
-        return dict(status='READY_CURRENT_ACCEPTED',context=context,context_token=token,production_permission=self._permission_map(heads),focus_write=False,source_mode=context['source_mode'])
+        context_signature='current-v4-'+digest(canonical({k:v for k,v in context.items() if k!='freshness_state'}))
+        return dict(status='READY_CURRENT_ACCEPTED',context=context,context_token=context_signature,production_permission=self._permission_map(heads),focus_write=False,source_mode=context['source_mode'])
 
     def _source(self,contract,key):
         return self._read(contract['sources'][key])

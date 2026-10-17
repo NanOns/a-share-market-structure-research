@@ -1,19 +1,21 @@
 """Future first-capture preflight only; never issues production authority."""
 import json
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 from .validation_cohort_read_contract_r3 import enrollment_identity, instant, validate_frozen
 
 CONTRACT = 'COHORT_FIRST_CAPTURE_READINESS_R1'
 
 
-def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
+def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff, candidate=None):
     """Observe DD's sealed candidate without enrollment, grant issuance or CAS.
 
     This boundary deliberately requires the real producer's Head-bound artifacts.
     Ordinary derived events and a source-ready receipt cannot replace them.
     A candidate is not yet an accepted Head and can only pass isolated preflight.
     """
-    candidate = json.loads(checked(root, candidate_binding).read_bytes())
+    if candidate is None:
+        candidate = json.loads(checked(root, candidate_binding).read_bytes())
+    if not isinstance(candidate,dict):raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
     if candidate.get('accepted_trade_date') != trade_date:
         raise ValueError('CAPTURE_DAILY_CANDIDATE_DATE_MISMATCH')
     owner = candidate.get('owners', {}).get(trade_date, {}).get('validation_cohort')
@@ -34,7 +36,7 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
         from .cohort_first_capture_producer_r1 import extract_candidate
         try:
             result['first_capture_extraction'] = extract_candidate(
-                root, candidate_binding=candidate_binding, trade_date=trade_date,
+                root, candidate_binding=candidate_binding, candidate=candidate, trade_date=trade_date,
                 cutoff=cutoff, candidate_directory='docs/evidence/cohort_first_capture_candidates_r1')
         except (ValueError, KeyError, TypeError, OSError, AttributeError, IndexError) as exc:
             result['first_capture_extraction'] = dict(status='CAPTURE_PRODUCER_REJECTED',
@@ -43,8 +45,9 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
         return dict(result, status='SOURCE_INCOMPLETE', missing_inputs=missing,
                     preflight_invoked=False, reason='REAL_FULL_SIGNAL_PRODUCER_AND_ADMISSION_REQUIRED')
     try:
-        owner_document = json.loads(checked(root, owner).read_bytes())
-        preflight = prepare_capture(root, accepted_head=candidate_binding,
+        from workbench_db.v4_cohort_pg_r1 import load_owner
+        owner_document = load_owner(root,owner)
+        preflight = prepare_capture(root, accepted_head=candidate_binding, candidate=candidate,
                                     owner_binding=owner, trade_date=trade_date,
                                     revision=owner_document['revision'], cutoff=cutoff)
     except (ValueError, KeyError, TypeError, OSError, AttributeError, IndexError) as exc:
@@ -55,13 +58,14 @@ def inspect_daily_candidate(root, *, candidate_binding, trade_date, cutoff):
                 next_gate='INDEPENDENT_OWNER_ADMISSION_AND_DD_R22_CAS')
 
 
-def prepare_capture(root, *, accepted_head, owner_binding, trade_date, revision, cutoff):
+def prepare_capture(root, *, accepted_head, owner_binding, trade_date, revision, cutoff, candidate=None):
     """Validate independently bound full signal ledger and a separate writer grant.
 
     accepted_head must come from the verified daily-job context, never HTTP input.
     A successful preflight is an isolated candidate, not permission to mutate Head.
     """
-    head = json.loads(checked(root, accepted_head).read_bytes())
+    head=candidate if isinstance(candidate,dict) else json.loads(checked(root, accepted_head).read_bytes())
+    if not isinstance(head,dict):raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
     if head.get('owners', {}).get(trade_date, {}).get('validation_cohort') != owner_binding:
         raise ValueError('CAPTURE_OWNER_BINDING_REQUIRED')
     receipt_ref = head.get('cohort_capture_receipts', {}).get(trade_date)
@@ -115,7 +119,8 @@ def prepare_capture(root, *, accepted_head, owner_binding, trade_date, revision,
             raise ValueError('CAPTURE_INELIGIBILITY_REASON_REQUIRED')
         if row['eligible_at_T0']:
             eligible.append(row)
-    owner = json.loads(checked(root, owner_binding).read_bytes())
+    from workbench_db.v4_cohort_pg_r1 import load_owner
+    owner = load_owner(root,owner_binding)
     if (owner.get('revision') != revision or owner.get('trade_date') != trade_date
             or owner.get('enrollments') != eligible):
         raise ValueError('CAPTURE_OWNER_FULL_ELIGIBLE_SET_REQUIRED')

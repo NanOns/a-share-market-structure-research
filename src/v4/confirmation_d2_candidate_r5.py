@@ -31,13 +31,13 @@ PERMISSIONS = dict(production=False, shadow=False, focus=False, global_mandatory
 
 @lru_cache(maxsize=8)
 def _read(name):
-    return json.loads((ROOT / f"config/v4_10_{name}_r1_2.json").read_bytes())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    return json.loads(materialize_path(ROOT, f"config/v4_10_{name}_r1_2.json").read_bytes())
 
 
 def exact(ref):
-    path = (ROOT / ref["path"]).resolve()
-    if not path.is_relative_to(ROOT) or not path.is_file():
-        raise ValueError("CANDIDATE_BINDING_OUTSIDE_WORKSPACE_OR_MISSING")
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    path = materialize_bound(ROOT, ref)
     data = path.read_bytes()
     if hashlib.sha256(data).hexdigest() != ref["sha256"] or len(data) != ref.get("bytes", ref.get("byte_count")):
         raise ValueError("CANDIDATE_SOURCE_BYTE_BINDING_MISMATCH")
@@ -108,7 +108,8 @@ def admission_context(producer_set, *, prior_binding=None, lineage_seen=None):
     _read.cache_clear()
     candidate_policy.cache_clear()
     _candidate_package.cache_clear()
-    config = json.loads((ROOT / CONFIG).read_bytes())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    config = json.loads(materialize_path(ROOT, CONFIG).read_bytes())
     if config.get("contract_id") != CONTRACT or config.get("permissions") != PERMISSIONS:
         raise ValueError("CANDIDATE_D2_AUTHORITY_CONTRACT_INVALID")
     if producer_set not in config.get("authorized_source_sets", []):

@@ -13,15 +13,20 @@ CONTRACT = 'RESEARCH_STATE_V1'
 PARAMETERS = 'V4_10_STATE_REDUCER_PARAMETER_SET_V1'
 TRI = {'TRUE', 'FALSE', 'UNKNOWN'}
 
+def _pg_path(relative_path, *, sha256=None):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    return materialize_path(ROOT, relative_path, expected_sha256=sha256)
+
 def load_package():
-    freeze=json.loads((ROOT/'reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    freeze_path=_pg_path('reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json')
+    freeze=json.loads(freeze_path.read_text(encoding='utf8'))
     if freeze['status']!='PASS_R1_2_AUTHORITY_FREEZE' or freeze['contract_id']!='V4_10_R1_2_CONTRACT_FREEZE':
         raise ValueError('STATE_FREEZE_IDENTITY_MISMATCH')
     for binding in freeze['bindings'].values():
-        if hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()!=binding['sha256']:
+        if hashlib.sha256(_pg_path(binding['path'],sha256=binding['sha256']).read_bytes()).hexdigest()!=binding['sha256']:
             raise ValueError('STATE_FREEZE_BINDING_MISMATCH')
     def read(name):
-        return json.loads((ROOT/('config/v4_10_'+name+'_r1_2.json')).read_text(encoding='utf8'))
+        return json.loads(_pg_path('config/v4_10_'+name+'_r1_2.json').read_text(encoding='utf8'))
     c, a, p = read('research_state_contract'), read('machine_ast'), read('parameter_set')
     if c['contract_id']!=CONTRACT or p['parameter_set_id']!=PARAMETERS or a['rule_order']!=c['rule_order']:
         raise ValueError('STATE_CONTRACT_IDENTITY_MISMATCH')

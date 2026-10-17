@@ -78,15 +78,13 @@ def _read_json(path: Path) -> Any:
 
 
 def _repo_path(root: Path, relative: str) -> Path:
-    root = root.resolve()
-    path = (root / relative).resolve()
-    if not path.is_relative_to(root) or not path.is_file():
-        raise ValueError(f"accepted input path is missing or escapes repository: {relative}")
-    return path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    return materialize_path(root, relative)
 
 
 def _verify_file_binding(root: Path, binding: Mapping[str, Any], label: str) -> tuple[Path, str]:
-    path = _repo_path(root, str(binding["path"]))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    path = materialize_path(root, str(binding["path"]), expected_sha256=str(binding["sha256"]).lower())
     actual = sha256_file(path)
     expected = str(binding["sha256"]).lower()
     if actual != expected:
@@ -97,11 +95,11 @@ def _verify_file_binding(root: Path, binding: Mapping[str, Any], label: str) -> 
 
 
 def _validate_frozen_package(root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
-    contract_path = root / "config/v4_07_base_seed_contract_v1.json"
-    params_path = root / "config/v4_07_parameter_set_v1.json"
-    fields_path = root / "config/v4_07_field_registry_v1.json"
-    vectors_path = root / "config/v4_07_machine_vectors_v1.json"
-    receipt_path = root / "reports/v4_07/V4_07_CONTRACT_FREEZE_RECEIPT.json"
+    contract_path = _repo_path(root, "config/v4_07_base_seed_contract_v1.json")
+    params_path = _repo_path(root, "config/v4_07_parameter_set_v1.json")
+    fields_path = _repo_path(root, "config/v4_07_field_registry_v1.json")
+    vectors_path = _repo_path(root, "config/v4_07_machine_vectors_v1.json")
+    receipt_path = _repo_path(root, "reports/v4_07/V4_07_CONTRACT_FREEZE_RECEIPT.json")
     contract, params, fields, vectors, receipt = map(_read_json, (contract_path, params_path, fields_path, vectors_path, receipt_path))
     if receipt.get("status") != "PASS_CONTRACT_FREEZE_CANDIDATE":
         raise ValueError("BASE_SEED_V1 contract freeze receipt is not PASS")
@@ -121,8 +119,12 @@ def _validate_frozen_package(root: Path) -> tuple[dict[str, Any], dict[str, Any]
         raise ValueError("relative_change_strong AST is not bound to its registered parameter")
     _parameter_values(params)
     frozen = receipt.get("config_sha256", {})
-    for path in (contract_path, params_path, fields_path, vectors_path):
-        relative = path.relative_to(root).as_posix()
+    for relative, path in (
+        ("config/v4_07_base_seed_contract_v1.json", contract_path),
+        ("config/v4_07_parameter_set_v1.json", params_path),
+        ("config/v4_07_field_registry_v1.json", fields_path),
+        ("config/v4_07_machine_vectors_v1.json", vectors_path),
+    ):
         if sha256_file(path) != frozen.get(relative):
             raise ValueError(f"frozen contract package changed after freeze: {relative}")
     return contract, params, fields, receipt
@@ -132,7 +134,9 @@ def _load_accepted_source_context(
     root: Path, accepted_inputs_root: Path | None = None
 ) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
     root = root.resolve()
-    source_root = (accepted_inputs_root or root).resolve()
+    # Accepted bytes are sourced from this repository's shared PG ingress regardless
+    # of legacy caller-provided filesystem roots.
+    source_root = root.resolve()
     contract, params, _fields, freeze = _validate_frozen_package(root)
     stage_head = _read_json(_repo_path(source_root, "data/v4/V4_STAGE_ACCEPTED_HEAD.json"))
     accepted_head = _read_json(_repo_path(source_root, "data/v4/V4_05_ACCEPTED_HEAD.json"))
@@ -227,8 +231,8 @@ def _load_accepted_source_context(
         "exact_ledger_binding_sha256": ledger_sha,
         "model_contract_id": contract["contract_id"],
         "parameter_set_id": PARAMETER_SET_ID,
-        "contract_sha256": sha256_file(root / "config/v4_07_base_seed_contract_v1.json"),
-        "parameter_set_sha256": sha256_file(root / "config/v4_07_parameter_set_v1.json"),
+        "contract_sha256": sha256_file(_repo_path(root, "config/v4_07_base_seed_contract_v1.json")),
+        "parameter_set_sha256": sha256_file(_repo_path(root, "config/v4_07_parameter_set_v1.json")),
         "accepted_identity_count": expected_identity_count,
         "expected_board_counts": dict(sorted(board_counts.items())),
     }

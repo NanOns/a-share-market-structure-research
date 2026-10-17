@@ -70,7 +70,8 @@ def validate(root, candidate, *, pg_owner_authority=None):
     if not REQUIRED<=set(owners):
         raise ValueError('SUCCESSOR_REQUIRED_OWNER_MISSING')
     _validate_owner_bindings(root,candidate,pg_owner_authority)
-    for binding in candidate['source_registry'][day].values():checked(root,binding)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    for binding in candidate['source_registry'][day].values():read_bound(root,binding['path'],binding['sha256'])
     qa=_daily_evidence(root,candidate,'day_receipt')
     if qa.get('target_session')!=day or qa.get('acceptance')!='DERIVED_READY' or qa.get('owners')!=owners:
         raise ValueError('SUCCESSOR_NUMERIC_DAY_RECEIPT_REQUIRED')

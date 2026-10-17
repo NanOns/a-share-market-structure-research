@@ -3,7 +3,7 @@ from collections import defaultdict, Counter
 import hashlib,json
 from pathlib import Path
 from statistics import fmean, median
-from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import load, checked_pg as checked, gzrows, gzwrite, ref, OUT
 from .market_source_acquisition import official_sessions, write
 from .v4_13_descendant_contracts import DescendantContracts
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package

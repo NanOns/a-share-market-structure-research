@@ -7,7 +7,8 @@ from sector.native_r5 import build_native
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package
 from .v4_13_descendant_contracts import DescendantContracts
 from .v4_13_loo_runtime import relative_sector
-from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .corrected_owner_replay import load, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import checked_pg as checked
 from .market_source_acquisition import write, official_sessions
 from .tdx_member_retro_r43 import EVIDENCE, capture, metadata, validate_snapshot, digest
 from .rotation_reconstructed_r43 import advance as advance_reconstructed

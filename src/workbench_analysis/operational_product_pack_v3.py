@@ -4,7 +4,7 @@ import sqlite3,tempfile
 from contextlib import closing
 from pathlib import Path
 from collections import Counter
-from .r43_owner_replay import checked,ref
+from .r43_owner_replay import checked_pg as checked,ref
 from .r43_operational_publication import rows
 from .operational_daily_storage_v1 import atomic_json
 from workbench_db.v4_forward_pg_r1 import canonical,digest
@@ -74,9 +74,18 @@ def prepare(root,candidate,owner,*,historical_indices=None):
     if KEY in predecessor:previous=load_catalog(root,predecessor)['dates']
     else:
         if historical_indices is None:raise ValueError('INITIAL_HISTORICAL_EXACT_CORRECTION_ADMISSION_REQUIRED')
-        old=json.loads((root/'config/core_product_read_authority_r1.json').read_bytes())
-        if old['contract_id']!='CORE_PRODUCT_READ_AUTHORITY_R2':raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
-        previous=old['dates']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path,read_bound
+        old=read_path(root,'config/core_product_read_authority_r1.json')['value']
+        if old.get('contract_id')=='CORE_PRODUCT_READ_AUTHORITY_R2':
+            previous=old['dates']
+        elif old.get('contract_id')=='CORE_PRODUCT_READ_AUTHORITY_R1':
+            legacy=old.get('manifest')
+            if not isinstance(legacy,dict):raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
+            manifest=json.loads(read_bound(root,legacy['path'],legacy['sha256'])['raw'])
+            if manifest.get('contract_id')!='CORE_PRODUCT_DATED_READ_PACK_R1' or not manifest.get('T0'):
+                raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
+            previous={manifest['T0']:legacy}
+        else:raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
     if set(previous)!=set(candidate['published_sessions'][:-1]):raise ValueError('PRODUCT_PACK_PREDECESSOR_DATE_DENOMINATOR')
     folder=root/'data/v4/native_product_catalog_v3'/digest(canonical(dict(owners=candidate['owners'],history=owner['history'])))
     dates={}

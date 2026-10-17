@@ -131,7 +131,11 @@ def _context(cap,target,parent,freeze,calendar,identity,staging):
     try:stage.relative_to((ROOT/'data/v4/artifact_store').resolve())
     except ValueError:pass
     else:raise ComponentBuildError('CANDIDATE_IN_ACCEPTED_NAMESPACE')
-    contract=json.loads((ROOT/CONTRACT_PATH).read_text(encoding='utf8'))
+    # Runtime authority is the PG-ingested registry binding. Materialize its
+    # exact bytes into the bounded temp cache; the workspace copy is never an
+    # acceptance source.
+    from .dm01_accepted_builder_registry import _pg_path
+    contract=json.loads(_pg_path(ROOT,CONTRACT_PATH).read_text(encoding='utf8'))
     for ref in contract['runtime_bindings']:bound_path(ref)
     if not freeze.get('fixture_scope'):
         # Real-source callers cannot mint accepted calendar/identity/parent authority by labeling a file.

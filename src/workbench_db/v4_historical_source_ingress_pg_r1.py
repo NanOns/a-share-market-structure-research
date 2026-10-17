@@ -40,12 +40,13 @@ def _root(root: str | Path) -> Path:
 @contextmanager
 def _same_instance_read(schema: str):
     """Read on the shared configured PG role inside an explicit read-only transaction."""
-    dsn = v4_native.configured_dsn()
+    dsn = v4_native.configured_reader_dsn()
     with psycopg.connect(dsn, connect_timeout=5) as pg:
         pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         pg.execute("SET LOCAL statement_timeout='30s'")
         pg.execute("SET LOCAL lock_timeout='5s'")
         pg.execute(sql.SQL("SET LOCAL search_path TO {}, pg_catalog").format(sql.Identifier(schema)))
+        v4_native.attest_read_role(pg, schema)
         yield pg
 
 
@@ -122,20 +123,13 @@ def _query(root: str | Path, *, source_id: str | None = None,
         identity = ForwardFactStore._database_identity(pg)
         if expected and identity != expected:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH")
-        clauses = ["kind=%s"]
-        params: list[Any] = [KIND]
-        if source_id is not None:
-            clauses.append("payload::jsonb->>'source_id'=%s")
-            params.append(source_id)
-        if source_path is not None:
-            clauses.append("payload::jsonb->>'source_path'=%s")
-            params.append(source_path)
-        if expected_sha256 is not None:
-            clauses.append("payload::jsonb->>'source_sha256'=%s")
-            params.append(expected_sha256)
         rows = pg.execute(
-            "SELECT payload,payload_sha256 FROM forward_facts WHERE " + " AND ".join(clauses) +
-            " ORDER BY fact_key COLLATE \"C\" LIMIT 2", tuple(params)
+            "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s "
+            "AND (%s::text IS NULL OR payload::jsonb->>'source_id'=%s) "
+            "AND (%s::text IS NULL OR payload::jsonb->>'source_path'=%s) "
+            "AND (%s::text IS NULL OR payload::jsonb->>'source_sha256'=%s) "
+            "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
+            (KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256),
         ).fetchall()
     if len(rows) != 1:
         raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE" if rows else "HISTORICAL_SOURCE_INGRESS_NOT_FOUND")

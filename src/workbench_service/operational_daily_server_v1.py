@@ -5,7 +5,7 @@ from urllib.parse import urlparse,parse_qs
 from collections import deque
 import json,threading,time
 import psycopg
-from .v4_control_server_v2 import make_v4_handler
+from .v4_server import make_v4_handler
 from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
 from workbench_analysis.operational_daily_executor_v1 import execute_sources
 
@@ -30,18 +30,31 @@ def _local_successor_source_paths(root,candidate):
 def successor_control(api,legacy):
     from .operational_control_status import control_status
     current=api.context();current['authorization_mode']='DIRECT_HUMAN_USER'
-    control=control_status(legacy,current,api.context_digest)
+    # The PG current endpoint returns a projection payload with ``context``;
+    # the frozen control adapter expects the legacy reader envelope. Normalize
+    # both shapes at this boundary so status never silently falls back to an
+    # empty context or a file-backed reader.
+    legacy_context=legacy.get('context',legacy) if isinstance(legacy,dict) else {}
+    legacy_payload={
+        'context':legacy_context,
+        'context_token':legacy_context.get('context_token',legacy_context.get('publication_id','')),
+        'production_permission':legacy.get('production_permission',{}) if isinstance(legacy,dict) else {},
+    }
+    control=control_status(legacy_payload,current,api.context_digest)
     control['data_updated_at']=api.candidate['observed_at']
     return dict(control,context=current)
 
 
 def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
-    root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_v4_handler(root,static_root=static) if static_root is not None else make_v4_handler(root);writes={};mutex=threading.Lock()
+    root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
+    from workbench_db.v4_native import workspace_schema
+    from .v4_server import pg_candidate_adapter_from_environment
+    pg_adapter=pg_candidate_adapter_from_environment(workspace_root=root)
+    base=make_v4_handler(root,pg_adapter,allow_pg_candidate=True,
+        pg_research_candidate_schema=workspace_schema(root,'research'),static_root=static);writes={};mutex=threading.Lock()
     if status_reader is None:
         from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobsReadOnly
         status_reader=DailyJobsReadOnly(root)
-    from .current_v4_context import CurrentAcceptedV4Reader
-    strict_reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     successor_cache={};successor_lock=threading.RLock()
     def successor_reader():
         from workbench_analysis.operational_successor_v1 import accepted_api
@@ -67,8 +80,7 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
                         if path=='/api/operations/status':
                             request_context=params.get('context_token',[api.context_digest])[0]
                             if request_context!=api.context_digest:raise ValueError('CONTEXT_TOKEN_MISMATCH')
-                            code,legacy=strict_reader.read('context')
-                            if code!=200:raise ValueError('STRICT_CONTEXT_NOT_VERIFIED')
+                            legacy=pg_adapter.read_current_endpoint('/api/v4/current/summary')
                             from .operational_control_status import CONTRACT as CONTROL_CONTRACT
                             return self.send(200,dict(successor_control(api,legacy),service_state='READY',service_mode='V4_DEFAULT_WORKBENCH',
                                 service_control_contract=CONTROL_CONTRACT,product_version='V4',default_ui='V4',
@@ -84,14 +96,23 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
             if path=='/v4/daily-update.js':
                 return self.send(200,(static/'daily-update/app.js').read_bytes(),'application/javascript; charset=utf-8')
             if path=='/v4/assets/app.js':
-                from workbench_analysis.r43_operational_sources import checked
-                adapter=json.loads((root/'config/v4_control_adapter_v2.json').read_bytes())
-                raw=checked(root,adapter['ui_assets']['app.js']).read_bytes()
+                from workbench_analysis.operational_successor_v1 import accepted_api
+                from workbench_db.v4_operational_registry_pg_r1 import read_registry
+                try:
+                    api=accepted_api(root)
+                    registry=read_registry(root,api.candidate)
+                    binding=next(b for b in registry['bindings']
+                                 if b.get('path')=='src/workbench_service/static/r43-compat/app.js')
+                    from workbench_analysis.r43_operational_sources import checked
+                    raw=checked(root,binding).read_bytes()
+                except (ValueError,KeyError,OSError,StopIteration) as error:
+                    return self.send(503,dict(code='OPERATIONAL_UI_ASSET_UNAVAILABLE',
+                        reason=str(error)[:160],fallback=False))
                 enhancement=(static/'daily-update/entry.js').read_bytes()
                 return self.send(200,raw+b'\n'+enhancement,'application/javascript; charset=utf-8')
             if path in ('/v4/assets/api.js','/v4/assets/components.js'):
                 from workbench_analysis.operational_successor_v1 import CONTRACT
-                from workbench_analysis.r43_owner_replay import checked
+                from workbench_analysis.r43_owner_replay import checked_pg as checked
                 from workbench_db.v4_operational_registry_pg_v1 import read_registry
                 head=accepted_api(root).candidate
                 if head.get('contract_id')==CONTRACT:

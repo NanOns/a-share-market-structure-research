@@ -1,14 +1,10 @@
 """Build the exact-daily candidate index for direct PG Owner handoff."""
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
-from .r43_owner_replay import checked
-
-
-def build_review_and_display_candidates(root, day, candidate_binding, capture_result,
-                                        *, research_replay=False):
+def build_review_and_display_candidates(root, day, candidate, capture_result,
+                                        *, candidate_binding, research_replay=False):
     """Run exact-daily optional producers and return a current-T0 index document.
 
     The returned document is passed directly to the existing PG Owner writer.
@@ -23,16 +19,19 @@ def build_review_and_display_candidates(root, day, candidate_binding, capture_re
     from .full_market_state_publisher_v1 import build as publish_state
 
     root = Path(root)
-    candidate = json.loads(checked(root, candidate_binding).read_bytes())
-    sector = optional_step(produce_daily_sector, root, day, candidate_binding)
-    state = optional_step(produce_daily_state, root, day, candidate_binding)
-    publisher = optional_step(publish_state, root, candidate_binding=candidate_binding,
+    if not isinstance(candidate, dict) or candidate.get('contract_id') != 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    if candidate.get('accepted_trade_date') != day:
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_T0_MISMATCH')
+    sector = optional_step(produce_daily_sector, root, day, candidate)
+    state = optional_step(produce_daily_state, root, day, candidate)
+    publisher = optional_step(publish_state, root, candidate=candidate, candidate_binding=candidate_binding,
                               trade_date=day, revision="daily-r1")
     first_observed = optional_step(produce_first_observed_state, root, day,
-                                   candidate_binding)
+                                   candidate)
     strict = (optional_step(freeze_for_review, root,
                             capture_binding=capture_result["candidate"],
-                            candidate_binding=candidate_binding, trade_date=day,
+                            candidate=candidate, candidate_binding=candidate_binding, trade_date=day,
                             research_replay=research_replay)
               if capture_result.get("candidate") else
               dict(status="CANDIDATE_FAILED", reason="INITIAL_CAPTURE_FAILED",

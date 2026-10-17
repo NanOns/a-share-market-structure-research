@@ -50,9 +50,9 @@ def ingress_bytes(root, binding):
     ingressed, the path and digest identify the immutable fact; consumers no
     longer reopen the workspace copy as a second source of business state.
     """
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
 
-    source = ingress_path(root, binding['path'], expected_sha256=binding['sha256'])
+    source = read_bound(root, binding['path'], binding['sha256'])
     raw = source['raw']
     if len(raw) != binding.get('bytes', len(raw)):
         raise ValueError('DM01_PG_SOURCE_INGRESS_SIZE_MISMATCH')
@@ -126,13 +126,28 @@ def calendar(root=ROOT):
 
 def current_parent(root=ROOT):
     root = Path(root)
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
-    source = ingress_path(root, HEAD)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    source = read_path(root, HEAD)
     binding = dict(path=source['record']['source_path'],
                    sha256=source['record']['source_sha256'],
                    bytes=source['record']['source_bytes'])
     head = read(root, binding)
-    schema = json.loads((ROOT / 'config/v4_data_accepted_head_v2.json').read_bytes())
+    import os
+    try:
+        expected_identity = json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON', '{}'))
+    except ValueError as error:
+        raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from error
+    namespace = os.environ.get('V4_PG_MODEL_NAMESPACE_ID', '').strip()
+    if (os.environ.get('V4_DAILY_CONTRACT_SOURCE', 'PG') != 'PG'
+            or not namespace or not isinstance(expected_identity, dict)):
+        raise ValueError('DM01_ACCEPTED_HEAD_CONTRACT_PG_BINDING_REQUIRED')
+    from .contract_registry_pg_v1 import load_current_approved_contract
+    from workbench_db.v4_publication_reader import readonly_connection
+    with readonly_connection() as pg:
+        schema = load_current_approved_contract(pg, 'V4_DATA_ACCEPTED_HEAD_V2', '2.0.0', namespace,
+            expected_database_identity=expected_identity).parsed_json
+    if schema.get('contract_id') != 'V4_DATA_ACCEPTED_HEAD_V2' or schema.get('version') != '2.0.0':
+        raise ValueError('DM01_ACCEPTED_HEAD_CONTRACT_INVALID')
     require(head.get('contract_id') == 'V4_DATA_ACCEPTED_HEAD_V2', 'V1_PARENT_HISTORY_ONLY')
     require(set(schema['required_fields']) <= set(head), 'V2_PARENT_SCHEMA_INCOMPLETE')
     require(head['external_acceptance'] in ('EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN', 'ACCEPTED_UNDER_DM01_R4_MACHINE_POLICY'), 'V2_PARENT_NOT_ACCEPTED')

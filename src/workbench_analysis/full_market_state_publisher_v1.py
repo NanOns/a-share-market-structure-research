@@ -10,7 +10,7 @@ import os
 import tempfile
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
-from .r43_owner_replay import checked, gzrows, ref
+from .r43_owner_replay import checked_pg as checked, gzrows, ref
 from .v4_14_replay_io import digest, publish
 from .r43_focus_replay import confirmation
 from .validation_cohort_read_contract_r3 import instant
@@ -18,20 +18,29 @@ from .validation_cohort_read_contract_r3 import instant
 CONTRACT = 'FULL_MARKET_STATE_PRODUCER_OUTPUT_V1'
 
 
-def build(root, *, candidate_binding, trade_date, revision,
+def build(root, *, candidate, candidate_binding, trade_date, revision,
           observation_binding=None, clock=lambda: datetime.now(timezone.utc)):
     from v4.confirmation import package
-    head = json.loads(checked(root, candidate_binding).read_bytes())
+    if not isinstance(candidate, dict) or candidate.get('contract_id') != 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    head = candidate
     if head['accepted_trade_date'] != trade_date:
         raise ValueError('STATE_TARGET_DATE_MISMATCH')
     owner = head['owners'][trade_date]
-    checked(root, owner['core'])
-    checked(root, head['membership_snapshot'])
-    life = json.loads(checked(root, owner['lifecycle']).read_bytes())
-    universe = life['active_security_ids']
+    from workbench_db.v4_operational_owner_authority_v2 import read_domain
+    life = read_domain(root,head,trade_date,'lifecycle',workspace_root=str(root))
+    core = read_domain(root,head,trade_date,'core',workspace_root=str(root))
+    inputs = read_domain(root,head,trade_date,'prewatch',workspace_root=str(root))
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read as read_memberships
+    membership_context=context_snapshot(root,head)
+    member_rows=read_memberships(root,head,workspace_root=str(root))
+    membership_binding=membership_context['memberships']
+    universe = sorted({row['security_id'] for row in life if row.get('security_id')})
+    active_ids=set(universe)
+    if any(not row.get('security_id') or row['security_id'] not in active_ids for row in member_rows):
+        raise ValueError('STATE_MEMBERSHIP_OWNER_IDENTITY_MISMATCH')
     if not universe or len(set(universe)) != len(universe):
         raise ValueError('STATE_UNIVERSE_INVALID')
-    inputs = gzrows(checked(root, owner['prewatch']))
     by_id = {}
     for row in inputs:
         sid = row['security_id']
@@ -94,14 +103,14 @@ def build(root, *, candidate_binding, trade_date, revision,
                 episode_id=None, event_type=None, benchmark=None,
                 unavailable={'episode_id': 'NO_PRIOR_EPISODE', 'event_type': 'SOURCE_PRODUCER_NOT_IMPLEMENTED',
                              'benchmark': 'SOURCE_PRODUCER_NOT_IMPLEMENTED'},
-                membership_version=head['membership_snapshot']['sha256'], model_sha256=model['sha256'],
+                membership_version=membership_binding.get('payload_sha256',membership_binding.get('fact_key')), model_sha256=model['sha256'],
                 parameters_sha256=dependencies['parameters']['sha256'],
                 source_owners={k: owner[k]['sha256'] for k in ('prewatch', 'lifecycle', 'core')},
                 source_window=(row or {}).get('normal_evidence')))
     document = dict(contract_id=CONTRACT, T0=trade_date, revision=revision,
-        publication_id='STATE_PUBLISHER:' + digest([candidate_binding, model, observation_binding, revision]),
+        publication_id='STATE_PUBLISHER:' + digest([candidate, model, observation_binding, revision]),
         scope='ALL_ELIGIBLE_AND_INELIGIBLE_SIGNALS', scenario_outputs=outputs,
-        membership=head['membership_snapshot'], model=model, candidate_head=candidate_binding,
+        membership=membership_binding, model=model, candidate_head=candidate_binding,
         source_owners={k: owner[k] for k in ('prewatch', 'lifecycle', 'core')},
         frozen_computation_dependencies=dependency_archive,
         observation=observation_binding, first_available=available.isoformat() if available else None,
@@ -110,7 +119,7 @@ def build(root, *, candidate_binding, trade_date, revision,
         observed_count=None, adapter_ready=False,
         adapter_gap='INDEPENDENT_ADMISSION_REQUIRED; EPISODE_EVENT_BENCHMARK_REQUIRED',
         next_gate='INDEPENDENT_STATE_SOURCE_OWNER_ADMISSION')
-    slot = digest([candidate_binding, model, observation_binding, revision])
+    slot = digest([candidate, model, observation_binding, revision])
     path = 'docs/evidence/state_publisher_outputs_v1/' + slot + '/output.json.gz'
     # Retry preserves the original actual clock and exact bytes.
     if (Path(root) / path).exists():

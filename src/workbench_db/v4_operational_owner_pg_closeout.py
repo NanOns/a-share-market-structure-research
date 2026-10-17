@@ -28,8 +28,8 @@ def read_schema(root,binding,descriptor,workspace_root=None):
     return schema
 
 def prepare(root,head_token,day,domain,source_binding,rows):
-    from .v4_historical_source_ingress_pg_r1 import ingress_path
-    source=ingress_path(root,source_binding['path'],expected_sha256=source_binding['sha256'])
+    from .v4_historical_source_ingress_pg_r1 import read_bound
+    source=read_bound(root,source_binding['path'],source_binding['sha256'])
     if len(source['raw'])!=source_binding.get('bytes'):
         raise ValueError('PG_OPERATIONAL_OWNER_SOURCE_SIZE_MISMATCH')
     payload=dict(contract_id=OWNER,head_token=head_token,T0=day,domain=domain,

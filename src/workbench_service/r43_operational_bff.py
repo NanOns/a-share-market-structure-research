@@ -2,7 +2,6 @@
 Missing domains fail explicitly; no cross-date research fallback is permitted.
 """
 from urllib.parse import unquote
-from workbench_analysis.r43_operational_publication import rows
 from workbench_analysis.tdx_member_retro_r43 import normalized_frozen_rows
 from .production_v4 import compact_cell
 
@@ -24,19 +23,21 @@ class OperationalResearchBFF:
     def __init__(self,api,legacy):
         self.api=api;self.legacy=legacy
     def membership_rows(self):
-        from workbench_db.v4_membership_reference_pg_v1 import KEY,read
-        if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-            return normalized_frozen_rows(read(self.api.root,self.api.candidate,
-                workspace_root=getattr(self.api,'pg_owner_workspace_root',None)))
-        return normalized_frozen_rows(rows(self.api.root,self.api.snapshot['memberships']))
+        from workbench_db.v4_membership_reference_pg_v1 import read
+        return normalized_frozen_rows(read(self.api.root,self.api.candidate,
+            workspace_root=getattr(self.api,'pg_owner_workspace_root',None)))
     def identity_rows(self):
-        from workbench_db.v4_membership_reference_pg_v1 import KEY,read_identity
-        if KEY in self.api.candidate or self.api.candidate.get('exact_daily_adjustment_contract'):
-            return read_identity(self.api.root,self.api.candidate,
-                workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
-        return rows(self.api.root,self.api.snapshot['identity_source'])
+        from workbench_db.v4_membership_reference_pg_v1 import read_identity
+        return read_identity(self.api.root,self.api.candidate,
+            workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
     def envelope(self,day,**payload):
-        c=self.api.context();c.update(trade_date=day,accepted_trade_date='2026-10-08',release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':'2026-09-28'}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)
+        c=self.api.context();publication=self.api.candidate.get('publication_binding') or {}
+        c.update(trade_date=day,accepted_trade_date=self.api.candidate['accepted_trade_date'],
+            release_id=self.api.token,model_namespace=publication.get('namespace','OPERATIONAL_RESEARCH_HEAD'),
+            data_updated_at=self.api.candidate.get('observed_at'),scoped_release=False,
+            operational_release_scope=self.api.candidate.get('production_eligible_scope',[]),
+            domain_readiness={'focus':{'earliest_valid_date':self.api.candidate['published_sessions'][0]}},
+            read_source_label='Head-bound PostgreSQL Owner / membership facts',bff_contract_id=CONTRACT)
         return dict(context=c,context_token=self.api.token,production_accepted=c.get('production_accepted',False),**payload)
     def counts(self,day):
         admitted=getattr(self.api,'domain_disposition',None)
@@ -176,14 +177,18 @@ class OperationalResearchBFF:
                 page=self.page('stocks',day,q,entity=parts[1])
                 if not page['items']:return 404,self.envelope(day,status='NOT_FOUND',code='ENTITY_NOT_FOUND')
                 item=page['items'][0];fields=item['fields'];relations=[]
-                for member in normalized_frozen_rows(rows(self.api.root,self.api.snapshot['memberships'])):
+                for member in self.membership_rows():
                     if member.get('security_id')!=item['entity_id']:continue
                     if member['sector_type']=='INDUSTRY' and member['industry_level']!='LEAF':continue
-                    relations.append(dict(role='primary_industry' if member['sector_type']=='INDUSTRY' else 'supporting_concepts',entity_id=member['sector_id'],display_name=member['sector_name'],sector_type=member['sector_type'],href='/v4/research/sectors/'+member['sector_id'],source=self.api.snapshot['memberships']))
+                    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
+                    membership_binding=context_snapshot(self.api.root,self.api.candidate)['memberships']
+                    relations.append(dict(role='primary_industry' if member['sector_type']=='INDUSTRY' else 'supporting_concepts',entity_id=member['sector_id'],display_name=member['sector_name'],sector_type=member['sector_type'],href='/v4/research/sectors/'+member['sector_id'],source=membership_binding))
                 fkeys={'open','high','low','close','amount','volume'}
                 debt=[dict(field=k,reason='NO_OPERATIONAL_EXPLANATION_OWNER') for k in ('why_now','waiting_for','invalid_if','hypothesis')]
                 explanations={k:dict(value=None,source=dict(quality='UNKNOWN',reason='NO_OPERATIONAL_EXPLANATION_OWNER'),basis='MISSING_OWNER') for k in ('why_now','waiting_for','invalid_if','hypothesis')}
-                return 200,self.envelope(day,status='READY',item=item,F={k:v for k,v in fields.items() if k in fkeys},R={k:v for k,v in fields.items() if k not in fkeys},membership_relations=dict(items=relations,owner_gap=[] if relations else ['primary_industry','supporting_concepts'],source=self.api.snapshot['memberships'],membership_mode='TDX_LATEST_MEMBER_RETRO_V1',PIT_ELIGIBLE=False),owner_explanations=explanations,owner_specific_debt=debt)
+                from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
+                membership_binding=context_snapshot(self.api.root,self.api.candidate)['memberships']
+                return 200,self.envelope(day,status='READY',item=item,F={k:v for k,v in fields.items() if k in fkeys},R={k:v for k,v in fields.items() if k not in fkeys},membership_relations=dict(items=relations,owner_gap=[] if relations else ['primary_industry','supporting_concepts'],source=membership_binding,membership_mode='PG_HEAD_BOUND_MEMBERSHIP_REFERENCE',PIT_ELIGIBLE=False),owner_explanations=explanations,owner_specific_debt=debt)
             if len(parts)>2 and name=='sectors' and parts[2]=='members':return 200,self.page('stocks',day,q,sector=parts[1])
             if len(parts)>2:return self.missing(day,'/'.join(parts))
             page=self.page(name,day,q,entity=parts[1] if len(parts)>1 else None)

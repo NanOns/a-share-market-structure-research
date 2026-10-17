@@ -6,13 +6,15 @@ import hashlib
 import json
 import re
 from sector.membership_snapshot import build_snapshot
-from .corrected_owner_replay import load, ref, checked, gzrows, gzwrite, OUT
+from .corrected_owner_replay import load, ref, gzrows, gzwrite, OUT
+from .r43_owner_replay import source_ingress as checked
 from .market_source_acquisition import write
 from .tdx_official_daily_source import _atomic_write
+from common.paths import resolve_tdx_root
 
 MODE='TDX_LATEST_MEMBER_RETRO_V1'
-EVIDENCE='docs/evidence/r4_3_four_session_closeout_20261009'
-REPAIR_EVIDENCE='docs/evidence/r4_3_r1_targeted_repair_20261009'
+EVIDENCE='data/v4/tdx_member_retro/r4_3_four_session_closeout_20261009'
+REPAIR_EVIDENCE='data/v4/tdx_member_retro/r4_3_r1_targeted_repair_20261009'
 ROW_NORMALIZATION_CONTRACT='TDX_MEMBER_ROW_NORMALIZATION_V2'
 
 
@@ -114,7 +116,7 @@ def reparse_verification(root, output=None):
     if legacy_projection!=original or digest(legacy_projection)!=s['member_digest']:raise ValueError('FROZEN_S_COMPLETE_SCHEMA_DIGEST_MISMATCH')
     code=root/'src/workbench_analysis/tdx_member_retro_r43.py';sha=hashlib.sha256(code.read_bytes()).hexdigest()
     frozen_code=out/'capture_builder_versions'/sha/'tdx_member_retro_r43.py'
-    _atomic_write(frozen_code,code.read_bytes(),tdx_root=Path('D:/new_tdx'))
+    _atomic_write(frozen_code,code.read_bytes(),tdx_root=resolve_tdx_root(root))
     receipt=dict(contract_id=ROW_NORMALIZATION_CONTRACT,original_capture=ref(root,root/EVIDENCE/'01_LATEST_TDX_INDUSTRY_CONCEPT_CAPTURE_LEDGER.json'),
         verification_observed_at=datetime.now(timezone(timedelta(hours=8))).isoformat(),snapshot=ref(root,root/EVIDENCE/'MEMBER_SNAPSHOT_S.json'),
         frozen_sources=s['sources'],executed_parser=ref(root,root/'src/sector/membership_snapshot.py'),executed_block_reader=ref(root,root/'src/tdx/block_reader.py'),
@@ -133,7 +135,7 @@ def capture(root):
     root=Path(root).resolve();out=root/EVIDENCE;pointer=out/'MEMBER_SNAPSHOT_S.json'
     if pointer.exists():
         snapshot=load(pointer);validate_snapshot(snapshot,root);return snapshot
-    now=datetime.now(timezone(timedelta(hours=8))).isoformat();tdx=Path('D:/new_tdx')
+    now=datetime.now(timezone(timedelta(hours=8))).isoformat();tdx=resolve_tdx_root(root)
     sources=[]
     for name in ('tdxhy.cfg','tdxzs.cfg','infoharbor_block.dat'):
         source=tdx/'T0002/hq_cache'/name;raw=source.read_bytes();sha=hashlib.sha256(raw).hexdigest()

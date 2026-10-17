@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 import json
 from .operational_daily_storage_v1 import atomic_json,exclusive_lock
-from .r43_owner_replay import checked,ref
+from .r43_owner_replay import checked_pg as checked,ref
 from .tdx_official_daily_source import sha256_file,_atomic_write
 from .operational_successor_v1 import validate,digest
 

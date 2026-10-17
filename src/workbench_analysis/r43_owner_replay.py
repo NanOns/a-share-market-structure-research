@@ -51,6 +51,25 @@ def checked(root, binding):
         raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:' + binding['path'] + ':' + str(exc)) from exc
 
 
+def checked_pg(root, binding):
+    """Read an already-ingressed exact source revision; do not admit disk bytes here."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    try:
+        return materialize_bound(root,binding)
+    except (OSError,ValueError) as exc:
+        raise ValueError('PG_BOUND_INPUT_UNAVAILABLE:'+str(binding.get('path'))+':'+str(exc)) from exc
+
+
+def source_ingress(root, binding):
+    """Explicitly admit one bounded historical/provider source, then parse PG bytes."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path, materialize_bound
+    try:
+        admitted=ingress_path(root,binding['path'],expected_sha256=binding['sha256'])
+        return materialize_bound(root,dict(path=binding['path'],sha256=admitted['record']['source_sha256']))
+    except ValueError as exc:
+        raise ValueError('SOURCE_INGRESS_UNAVAILABLE:' + binding['path'] + ':' + str(exc)) from exc
+
+
 def gzwrite(root, path, rows):
     raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
     from common.paths import resolve_tdx_root
@@ -167,9 +186,9 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
         if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock','validated_daily_universe'):
-            from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
             qpath=Path(q['path']).resolve()
-            payload=ingress_path(root,qpath.relative_to(root).as_posix())['value']; rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
+            payload=read_path(root,qpath.relative_to(root).as_posix())['value']; rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
             bao_queries.append(q)

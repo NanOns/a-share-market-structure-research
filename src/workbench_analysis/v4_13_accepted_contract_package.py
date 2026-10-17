@@ -5,36 +5,47 @@ from copy import deepcopy
 from .v4_13_io import FrozenContracts,exact,digest
 HEAD='data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json'
 MANIFEST_SHA='a02e7918826627c2b496d89e546d3f5a408e4c68a1a89bc93946e152e7ca42ec'
+
+def _pg_exact(root,binding):
+    """Resolve an accepted contract revision from the shared PG source registry."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    result=read_bound(root,binding['path'],binding['sha256'])
+    raw=result['raw']
+    size=binding.get('bytes',binding.get('byte_count',binding.get('actual_byte_count')))
+    if size is not None and len(raw)!=size:raise ValueError('ACCEPTED_SOURCE_BYTES_MISMATCH')
+    return raw
+
 class AcceptedContracts(FrozenContracts):
     def __init__(self,root):
         self.root=Path(root)
         from scripts.validate_r17r1_active_closure import validate
         try: validate(self.root)
         except (AssertionError, KeyError, TypeError) as error: raise ValueError('ACTIVE_CONTRACT_FAMILY_CLOSURE_REQUIRED') from error
-        stage=json.loads((self.root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        stage=read_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
         if stage['accepted_stage_range']!='V4_00_TO_V4_13_ACCEPTED' or stage['v4_13_binding']['path']!=HEAD:raise ValueError('FORMAL_V4_13_ACCEPTED_AUTHORITY_REQUIRED')
-        head=json.loads(exact(self.root,stage['v4_13_binding']))
+        head=json.loads(_pg_exact(self.root,stage['v4_13_binding']))
         if head['external_acceptance']!='EXTERNALLY_ACCEPTED_ENGINEERING_SCOPE' or any(head[k] for k in ['production','shadow','focus','global_mandatory_adoption']):raise ValueError('ACCEPTED_ENGINEERING_SCOPE_REQUIRED')
         if head['candidate']['sha256']!=MANIFEST_SHA:raise ValueError('EXACT_AUDITED_R6_REQUIRED')
         if head['audited_sealed_head']!='f12315bf8e3142aa44e9068c5895004c35c4e23c' or head['tested_runtime_source']!='d370788688c7e1be0fe2e3c9b0b160d93374b4ee' or head['external_authority']['sha256']!='652621971b019a383d387cef2ba40b78eb1000993b55bb6418f5378c80c52222':raise ValueError('EXTERNAL_AUTHORITY_IDENTITY_CHANGED')
-        exact(self.root,head['external_authority'])
-        gate=json.loads(exact(self.root,head['r17a_gate']))
+        _pg_exact(self.root,head['external_authority'])
+        gate=json.loads(_pg_exact(self.root,head['r17a_gate']))
         if gate['R17A_CROSS_STAGE_GOVERNANCE_REPAIR']!='PASS' or head['ALGORITHM_STATE_REPLAY_PASS']!='NOT_GRANTED' or head['capabilities']['V4_13_REAL_SIGNAL_CAPABILITY']!='DEGRADED_BY_ACCEPTED_UPSTREAM_CAPABILITY':raise ValueError('FORMAL_ACCEPTANCE_GATE_OR_CAPABILITY_OVERCLAIM')
-        candidate=json.loads(exact(self.root,head['candidate']))
-        entry=json.loads(exact(self.root,head['formal_entry_contract']))
+        candidate=json.loads(_pg_exact(self.root,head['candidate']))
+        entry=json.loads(_pg_exact(self.root,head['formal_entry_contract']))
         if entry['authority_namespace']!=HEAD or entry['amendment_receipt_presence_is_authority'] or head['historical_lineage']['original_publication_contract_refs']!=candidate['contract_refs'] or entry['contract_refs']!=head['contract_refs']:raise ValueError('ACCEPTED_PACKAGE_BINDING_MISMATCH')
         self.refs=head['contract_refs'];self.digest=digest(self.refs)
         if self.digest!=head['contract_digest'] or head['historical_lineage']['original_publication_contract_digest']!=candidate['contract_digest']:raise ValueError('ACCEPTED_PACKAGE_DIGEST_MISMATCH')
-        self.config={Path(r['path']).stem.removeprefix('v4_13_').rsplit('_v',1)[0]:json.loads(exact(self.root,r)) for r in self.refs}
+        self.config={Path(r['path']).stem.removeprefix('v4_13_').rsplit('_v',1)[0]:json.loads(_pg_exact(self.root,r)) for r in self.refs}
         projection=self.config['projection']
         if projection['version']!='1.2.0' or projection['supersedes']['path']!='config/v4_13_projection_v1_1.json':raise ValueError('PROJECTION_V1_2_LINEAGE_REQUIRED')
-        predecessor=json.loads(exact(self.root,projection['supersedes']))
+        predecessor=json.loads(_pg_exact(self.root,projection['supersedes']))
         if predecessor['contract_id']!=projection['contract_id']:raise ValueError('PROJECTION_FAMILY_CHANGED')
         self.owner_refs=self.config['loo_context']['accepted_owner_bindings']
-        self.owners={k:json.loads(exact(self.root,r)) for k,r in self.owner_refs.items()}
-        self.dependencies={k:json.loads(exact(self.root,r)) for k,r in self.config['loo_context']['accepted_sector_dependencies'].items()}
-        for k in ['native_producer','rotation_producer','b2_producer']:exact(self.root,self.owners['V4_08'][k])
-        exact(self.root,self.config['loo_context']['relative_state']['owner'])
+        self.owners={k:json.loads(_pg_exact(self.root,r)) for k,r in self.owner_refs.items()}
+        self.dependencies={k:json.loads(_pg_exact(self.root,r)) for k,r in self.config['loo_context']['accepted_sector_dependencies'].items()}
+        for k in ['native_producer','rotation_producer','b2_producer']:_pg_exact(self.root,self.owners['V4_08'][k])
+        _pg_exact(self.root,self.config['loo_context']['relative_state']['owner'])
         self.authority=head;self.authority_ref=stage['v4_13_binding']
         # Only the filesystem location of the historical moving namespace is
         # resolved. Frozen contract bytes, identities and business rules stay exact.
@@ -87,7 +98,8 @@ class CurrentOwnerContracts(FrozenContracts):
 
 def current_contracts(root):
     """Stage-aware regression/entry selection; no informal post-promotion fallback."""
-    stage=json.loads((Path(root)/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    stage=read_path(root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
     if stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED':return AcceptedContracts(root)
     if stage['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED':return FrozenContracts(root)
     if stage['accepted_stage_range'] in ('V4_00_TO_V4_14_ACCEPTED','V4_00_TO_V4_15_ACCEPTED'):return CurrentOwnerContracts(root)

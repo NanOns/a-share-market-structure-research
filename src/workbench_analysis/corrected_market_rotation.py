@@ -2,7 +2,8 @@
 from collections import defaultdict, Counter
 from pathlib import Path
 from statistics import fmean, median
-from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .corrected_owner_replay import load, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import checked_pg as checked
 from .market_source_acquisition import official_sessions, write
 from .v4_13_descendant_contracts import DescendantContracts
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package

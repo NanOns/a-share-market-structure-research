@@ -1,6 +1,6 @@
 """Strict target Market context correction; never generic numeric source admission."""
 import ast,json,copy,hashlib
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 KEY='market_context_correction_preparation_r1'
 CONTRACT='V4_MARKET_CONTEXT_CORRECTION_R1'
 DRIVERS={'src/workbench_analysis/r43_market_replay.py':'materialize_market','src/workbench_analysis/operational_owner_adapter_v1.py':'replay'}

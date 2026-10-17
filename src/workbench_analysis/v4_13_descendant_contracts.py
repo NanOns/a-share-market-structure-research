@@ -18,15 +18,18 @@ class DescendantContracts:
     contract_id = 'V4_13_DESCENDANT_STAGE_ENGINEERING_READER_V1'
 
     def __init__(self, root):
-        self.root=Path(root).resolve(); stage=json.loads((self.root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
+        self.root=Path(root).resolve()
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        stage=read_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
         self.historical_git_repository=self.root
         repository=os.environ.get('R4_ENGINEERING_HISTORICAL_GIT_ROOT')
         if repository:
             import subprocess
-            if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not self.root.is_relative_to(Path('G:/codex_tmp').resolve()):
+            from common.paths import resolve_ingest_temp_root
+            if os.environ.get('R4_NATIVE_ISOLATION')!='1' or not self.root.is_relative_to(resolve_ingest_temp_root(self.root)):
                 raise ValueError('HISTORICAL_GIT_ROOT_REQUIRES_ISOLATED_ENGINEERING')
             repository=Path(repository).resolve()
-            if not repository.is_relative_to(Path('G:/codex work').resolve()):
+            if not repository.is_relative_to(self.root.parent):
                 raise ValueError('HISTORICAL_GIT_ROOT_OUTSIDE_G_WORKSPACE')
             actual=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],cwd=repository,text=True).strip()).resolve()
             if actual!=repository:raise ValueError('EXACT_HISTORICAL_GIT_REPOSITORY_REQUIRED')
@@ -62,7 +65,7 @@ class DescendantContracts:
                 try:p=accepted_static_binding(self.root,binding)
                 except ValueError:
                     import subprocess
-                    book=json.loads((self.root/'config/v4_corrected_historical_archives_v1.json').read_bytes())
+                    book=read_path(self.root,'config/v4_corrected_historical_archives_v1.json')['value']
                     row=next((r for r in book['entries'] if r['original']==binding),None)
                     if row is None:raise ValueError('UNREGISTERED_CORRECTED_HISTORICAL_IDENTITY')
                     raw=exact(self.root,row['archive'])

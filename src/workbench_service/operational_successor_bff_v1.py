@@ -10,7 +10,7 @@ def read_pg_validation_cohort_statistics(api, owner_binding, trade_date):
     owner = load_owner(api.root, owner_binding)
     return read_authorized_statistics(
         api.root,
-        accepted_head={'path': 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json', 'sha256': api.token},
+        accepted_head={'path': 'pg://v4/operational_research_heads/current', 'sha256': api.token},
         owner_binding=owner_binding,
         trade_date=trade_date,
         accepted_head_data=api.candidate,

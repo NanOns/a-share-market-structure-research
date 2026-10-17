@@ -14,9 +14,15 @@ CONTRACT='V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2'
 KEY='native_pg_owner_authority'
 
 def _rows_from_source_ingress(root,binding):
-    """Parse owner rows only from an exact PG-ingressed source revision."""
-    from .v4_historical_source_ingress_pg_r1 import ingress_path
-    source=ingress_path(root,binding['path'],expected_sha256=binding['sha256'])
+    """Ingest an explicitly Head-bound source once, then parse bytes read from PG."""
+    from .v4_historical_source_ingress_pg_r1 import read_bound,ingest_file,source_id_for_path
+    try:
+        source=read_bound(root,binding['path'],binding['sha256'])
+    except ValueError as exc:
+        if str(exc)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+        path=Path(root).resolve()/binding['path']
+        ingest_file(root,source_id_for_path(binding['path']),path,expected_sha256=binding['sha256'])
+        source=read_bound(root,binding['path'],binding['sha256'])
     if len(source['raw'])!=binding.get('bytes'):
         raise ValueError('PG_OWNER_SOURCE_INGRESS_SIZE_MISMATCH')
     name=Path(binding['path']).name
@@ -98,6 +104,13 @@ def read(root,authority,day,domain,source_binding,*,workspace_root=None):
     entry=authority['owners'][day][domain]
     return read_fact(root,entry['descriptor'],entry['fact_token'],day,domain,source_binding,
         workspace_root=workspace_root)
+
+def read_domain(root,candidate,day,domain,*,workspace_root=None):
+    """Resolve a typed Owner payload from the candidate's embedded PG authority."""
+    binding=candidate.get('owners',{}).get(day,{}).get(domain)
+    if not isinstance(binding,dict):raise ValueError('PG_OWNER_DOMAIN_BINDING_REQUIRED:'+domain)
+    authority=load(root,candidate)
+    return read(root,authority,day,domain,binding,workspace_root=workspace_root)
 
 def attest(root,authority,day,domain,source_binding,*,workspace_root=None):
     if authority['source_owners'].get(day,{}).get(domain)!=source_binding:

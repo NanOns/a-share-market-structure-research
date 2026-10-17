@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 import hashlib
+import json
 
 import pytest
 
@@ -12,6 +13,7 @@ from workbench_db.v4_publication_candidate import (
 from workbench_db.v4_publication_contract import CONTRACT_ID, OWNER_FAMILIES, effective_module_contract, required_module_keys, supported_owner_keys
 from workbench_db.v4_publication_reader import PgPublicationReader, PublicationReadError, reader_dsn
 from workbench_db.v4_source_manifest import CONTRACT_ID as SOURCE_MANIFEST_CONTRACT_ID, source_manifest_digest
+from workbench_db.v4_native import workspace_namespace_identity
 from workbench_service.v4_pg_current_adapter import ENDPOINT_MODULES, PgV4CurrentAdapter
 
 
@@ -32,7 +34,7 @@ def publication_row(**changes):
         "prior_session_state_head": None, "prior_session_state_logical_digest": None,
         "prior_session_gap_reason": "INITIAL_BOUNDARY", "state_head_id": "state-20261015-r1",
         "state_logical_digest": "c" * 64, "verified_state_digest": "c" * 64,
-        "contract_bindings": {"V4_PUBLICATION_TEST_CONTRACT": {"version": "r1", "raw_sha256": hashlib.sha256(b"{}").hexdigest()}},
+        "contract_bindings": {"V4_PUBLICATION_TEST_CONTRACT": {"version": "1", "raw_sha256": hashlib.sha256(b"{}").hexdigest()}},
     }
     row.update(changes)
     return row
@@ -88,7 +90,7 @@ class Cursor:
 
 
 class FakeConnection:
-    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None, core_snapshot=None, core_rows=None):
+    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None, core_snapshot=None, core_rows=None, contract_documents=None):
         self.head = head
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
@@ -99,6 +101,7 @@ class FakeConnection:
         self.page_data = page_data or {}
         self.core_snapshot = core_snapshot
         self.core_rows = core_rows or []
+        self.contract_documents = contract_documents or {}
         self.statements = []
 
     def __enter__(self):
@@ -124,7 +127,8 @@ class FakeConnection:
         if "JOIN v4.model_namespaces" in statement and "contract_bindings" in statement:
             return Cursor(one=(self.head.get("contract_bindings"), "v4-main", "ACCEPTED", ACCEPTED_AT, TARGET_DATE))
         if "FROM v4.contract_versions c" in statement:
-            raw = b"{}"
+            contract_id = params[2]
+            raw = self.contract_documents.get(contract_id, b"{}")
             raw_digest = hashlib.sha256(raw).hexdigest()
             return Cursor(one=(raw, raw_digest, "JSON", "1", "v4-main", "contract-source-r1",
                               "APPROVED", "test-approver", "test-approval-ref", ACCEPTED_AT,
@@ -237,6 +241,56 @@ def test_reader_returns_final_schema_identity_and_preserves_owner_quality():
     assert "sp.accepted_scope AS source_package_accepted_scope" in source_sql
     event_sql = next(sql for sql, _ in connection.statements if "FROM v4.event_observations" in sql)
     assert "row_number() OVER" in event_sql and "ORDER BY observation_revision DESC" in event_sql
+
+
+def test_real_publication_reader_to_current_bff_uses_publication_bound_workspace_mapping(tmp_path):
+    mapping_contract_id = "V4_PG_WORKSPACE_OWNER_MAPPING_REGISTRY_R1"
+    identity = workspace_namespace_identity(tmp_path, "publication")
+    mapping_document = {
+        "contract_id": mapping_contract_id,
+        "contract_version": "1.0.0",
+        "status": "ACTIVE",
+        "mappings": [{
+            "status": "APPROVED",
+            "root_identity_sha256": identity["root_identity_sha256"],
+            "model_namespace_id": "v4-main",
+            "valid_from": "2026-10-01",
+            "valid_to": None,
+            "authorized_by": "test-approver",
+            "authorization_reference": "test-approval-reference",
+            "database_identity": DATABASE_IDENTITY,
+            "owner_schemas": {
+                "research_priority": "v4_research_priority_aaaaaaaaaaaaaaaa",
+                "operational_risk": "v4_operational_risk_aaaaaaaaaaaaaaaa",
+                "sector_lifecycle": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa",
+            },
+        }],
+    }
+    raw_mapping = json.dumps(mapping_document, sort_keys=True).encode("utf-8")
+    mapping_digest = hashlib.sha256(raw_mapping).hexdigest()
+    head = publication_row(contract_bindings={
+        "V4_PUBLICATION_TEST_CONTRACT": {
+            "version": "1", "raw_sha256": hashlib.sha256(b"{}").hexdigest(),
+        },
+        mapping_contract_id: {"version": "1", "raw_sha256": mapping_digest},
+    })
+    connection = FakeConnection(head=head, contract_documents={mapping_contract_id: raw_mapping})
+    reader = reader_for(connection, workspace_root=tmp_path)
+
+    response = PgV4CurrentAdapter(reader).read_endpoint(
+        "/api/v4/current/summary", trade_date=TARGET_DATE.isoformat(), model_namespace_id="v4-main",
+    )
+
+    mapping = response["context"]["workspace_owner_mapping"]
+    assert response["context"]["publication_id"] == head["publication_id"]
+    assert mapping["model_namespace_id"] == "v4-main"
+    assert mapping["database_identity"] == DATABASE_IDENTITY
+    assert mapping["owner_schemas"]["research_priority"] == "v4_research_priority_aaaaaaaaaaaaaaaa"
+    assert response["context"]["contracts"][mapping_contract_id]["raw_sha256"] == mapping_digest
+    contract_lookup = next((sql, params) for sql, params in connection.statements
+                           if "FROM v4.contract_versions c" in sql
+                           and params[2] == mapping_contract_id)
+    assert contract_lookup[1][2:] == (mapping_contract_id, "1", mapping_digest)
 
 
 def test_metadata_only_is_marked_unverified_and_is_not_the_default():

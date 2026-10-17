@@ -21,8 +21,18 @@ def main():
                     if b['volume']<0 or b['amount']<0:raise ValueError('STOCK_NEGATIVE_TURNOVER')
                     yield row['security_id'],b['trade_date'],b
     index=build(ROOT,path,rows(),t0=market['trade_date'],source_digest=market['history']['sha256'])
+    # The stock chart route reads immutable PG history by the accepted data
+    # Head and exact history artifact digest.  Keep that version alongside
+    # the stock authority so the snapshot consumer can prove the same scope.
+    from workbench_db.v4_history_pg_r1 import build as build_history
+    def history_rows():
+        with gzip.open(verified(market['history']),'rt',encoding='utf8') as f:
+            for line in f:
+                yield json.loads(line)
+    history_index=build_history(ROOT,history_rows(),head_token=market['input_data_head']['sha256'],
+        t0=market['trade_date'],source_digest=market['history']['sha256'])
     count=index['bar_count'];entities=index['symbol_count']
-    authority=dict(contract_id='FP07_STOCK_OPERATIONAL_AUTHORITY_V1',trade_date=market['trade_date'],input_data_head=market['input_data_head'],factors=sector['factors'],profiles=sector['profiles'],series=ref(path),sources=sources,price_basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,volume_unit='SHARES',amount_unit='CNY',intraday='NOT_AVAILABLE_NO_FAKE_MINUTE_BARS')
+    authority=dict(contract_id='FP07_STOCK_OPERATIONAL_AUTHORITY_V1',trade_date=market['trade_date'],input_data_head=market['input_data_head'],factors=sector['factors'],profiles=sector['profiles'],series=ref(path),history_index=history_index,sources=sources,price_basis='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,volume_unit='SHARES',amount_unit='CNY',intraday='NOT_AVAILABLE_NO_FAKE_MINUTE_BARS')
     write(operational_path('v4_stock_operational_authority_v1.json',for_write=True),authority);write(out/'REAL_MATERIALIZATION.json',dict(authority=authority,bars=count,entities=entities,status='READY_REAL_SOURCE_INDEX'))
     print(json.dumps(dict(status='READY',bars=count,entities=entities)))
 if __name__=='__main__':main()

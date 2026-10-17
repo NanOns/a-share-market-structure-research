@@ -34,14 +34,28 @@ def chart(reader,item,query):
         # Resolve existing history by immutable PG lineage keys, never by a
         # repository-root-derived schema name or a local pointer file.
         matches=[]
-        with connection('v4_meta',read_only=True) as pg:
-            schemas=[row[0] for row in pg.execute("SELECT schemaname FROM pg_tables WHERE schemaname LIKE 'v4_history_%' AND tablename='history_versions' ORDER BY schemaname").fetchall()]
-            for schema in schemas:
-                rows=pg.execute(sql.SQL(
-                    'SELECT version,head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count '
-                    'FROM {}.history_versions WHERE t0=%s AND head_token=%s AND source_digest=%s ORDER BY version'
-                ).format(sql.Identifier(schema)),(reader.context['trade_date'],head,source_digest)).fetchall()
-                matches.extend((schema,*row) for row in rows)
+        declared=authority.get('history_index')
+        if isinstance(declared,dict):
+            # New stock authorities carry the immutable history version
+            # directly. Older accepted snapshots can still resolve the exact
+            # same PG lineage tuple without consulting any local index file.
+            if (declared.get('contract_id')=='V4_PG_DATED_HISTORY_INDEX_R1'
+                    and declared.get('engine')=='postgresql'
+                    and declared.get('T0')==reader.context['trade_date']
+                    and declared.get('head_token')==head
+                    and declared.get('source_digest')==source_digest):
+                matches=[(declared.get('schema'),declared.get('version'),declared.get('head_token'),
+                    declared.get('T0'),declared.get('source_digest'),declared.get('logical_digest'),
+                    declared.get('symbol_count'),declared.get('bar_count'))]
+        else:
+            with connection('v4_meta',read_only=True) as pg:
+                schemas=[row[0] for row in pg.execute("SELECT schemaname FROM pg_tables WHERE schemaname LIKE 'v4_history_%' AND tablename='history_versions' ORDER BY schemaname").fetchall()]
+                for schema in schemas:
+                    rows=pg.execute(sql.SQL(
+                        'SELECT version,head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count '
+                        'FROM {}.history_versions WHERE t0=%s AND head_token=%s AND source_digest=%s ORDER BY version'
+                    ).format(sql.Identifier(schema)),(reader.context['trade_date'],head,source_digest)).fetchall()
+                    matches.extend((schema,*row) for row in rows)
         if len(matches)!=1:
             return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='NO_UNIQUE_PG_HISTORY_VERSION_MATCHING_SNAPSHOT_HEAD_AND_SOURCE',
                 history_versions_found=len(matches),as_of=reader.context['trade_date'],

@@ -40,7 +40,7 @@ def build(root,rows,*,head_token,t0,source_digest):
         existing=pg.execute('SELECT logical_digest,symbol_count,bar_count,head_token,t0::text,source_digest FROM history_versions WHERE version=%s',(version,)).fetchone()
         # Temporary staging remains PG and is transaction-local; no file index.
         pg.execute('CREATE TEMP TABLE stage_history(security text PRIMARY KEY,payload jsonb NOT NULL) ON COMMIT DROP')
-        logical=hashlib.sha256();symbols=bars=0
+        logical=hashlib.sha256();append_digest=logical.update;symbols=bars=0
         for row in rows:
             sid=row['security_id'];series=row['bars']
             if any(b['trade_date']>t0 for b in series): raise ValueError('FUTURE_CHART_BAR')
@@ -51,7 +51,7 @@ def build(root,rows,*,head_token,t0,source_digest):
         # Canonical order removes source iteration order from version identity.
         with pg.cursor(name='history_digest') as cur:
             cur.execute('SELECT security,payload FROM stage_history ORDER BY security')
-            for sid,series in cur: logical.extend(canonical(dict(security_id=sid,bars=series))+b'\n')
+            for sid,series in cur: append_digest(canonical(dict(security_id=sid,bars=series))+b'\n')
         digest=logical.hexdigest()
         expected=(digest,symbols,bars,head_token,t0,source_digest)
         if existing and existing!=expected: raise ValueError('HISTORY_VERSION_IDENTITY_CONFLICT')

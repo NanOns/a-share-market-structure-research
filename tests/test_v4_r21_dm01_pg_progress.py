@@ -56,6 +56,37 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
 def test_dm01_published_receipt_poll_has_partial_index():
     assert "update_job_days_published_trade_date" in daily_pg.DDL
     assert "WHERE state='PUBLISHED'" in daily_pg.DDL
+    assert "ADD COLUMN IF NOT EXISTS heartbeat_at timestamptz" in daily_pg.DDL
+
+
+def test_dm01_pg_progress_upsert_persists_real_heartbeat(monkeypatch, tmp_path):
+    class RecordingConnection:
+        def __init__(self):
+            self.statements = []
+
+        def execute(self, query, params=()):
+            self.statements.append((query, params))
+
+    pg = RecordingConnection()
+
+    @contextmanager
+    def write_connection(schema, *, dsn, row_factory):
+        assert schema == "v4_jobs_test"
+        yield pg
+
+    monkeypatch.setattr(daily_pg, "connection", write_connection)
+    jobs = object.__new__(daily_pg.DailyJobs)
+    jobs.schema = "v4_jobs_test"
+    jobs.dsn = "writer-dsn-placeholder"
+    jobs.active_job_id = "job-1"
+    jobs.lock_key = 42
+
+    jobs.record_progress("2026-10-16", "SOURCE_CHECKING", {"processed": 2, "total": 5, "unit": "rows"})
+
+    query, params = pg.statements[1]
+    assert "heartbeat_at" in query.split("ON CONFLICT", 1)[0]
+    assert "heartbeat_at=EXCLUDED.heartbeat_at" in query
+    assert params == ("job-1", "2026-10-16", "SOURCE_CHECKING", 2, 5, "rows", "SOURCE_CHECKING", None)
 
 
 def test_dm01_gap_plan_uses_pg_accepted_head_and_calendar_without_file_head(monkeypatch, tmp_path):

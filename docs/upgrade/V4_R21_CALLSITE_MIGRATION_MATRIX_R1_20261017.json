@@ -16618,6 +16618,24 @@
         "p1_formally_remaining": 266,
         "status": "READONLY_CATALOG_PROBE_READY_NOT_EXECUTED; no baseline callsite is closed.",
         "next": "Continue DM-01 state and daily Owner source mapping code; execute this catalog probe only when the compliant reader DSN is configured."
+      },
+      {
+        "batch_id": "R21-R4-dm01-pg-progress-heartbeat-r14",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R14.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The native PG update_job_progress upsert now writes heartbeat_at alongside last_progress_at for every recorded job stage.",
+          "Idempotent workspace schema setup already adds heartbeat_at on existing progress tables; the regression captures the emitted PG SQL and verifies the persisted column/update clause."
+        ],
+        "verification": "20 focused DM-01 PG progress and contract registry tests passed; compile and diff checks passed. Fake SQL capture only; no live DB state transition was run.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PG_STATUS_WRITE_CODE_CORRECTED_OFFLINE; live persisted heartbeat and end-to-end daily job acceptance remain unverified.",
+        "next": "Continue the actual DM-01 job lifecycle and accepted Head/source-state migration, then reconcile exact Owner and business callsites."
       }
     ]
   }

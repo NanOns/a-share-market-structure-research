@@ -146,11 +146,11 @@ class DailyJobs(StateMachine):
         if processed is not None and (type(processed) is not int or processed<0):raise ValueError('INVALID_PROGRESS_COUNT')
         if total is not None and (type(total) is not int or total<0 or processed is not None and processed>total):raise ValueError('INVALID_PROGRESS_TOTAL')
         with self.connect() as db:
-            db.execute("""INSERT INTO update_job_progress(job_id,trade_date,stage,stage_started_at,last_progress_at,processed,total,unit,recent_message,mode) VALUES(?,?,?,clock_timestamp(),clock_timestamp(),?,?,?,?,?)
+            db.execute("""INSERT INTO update_job_progress(job_id,trade_date,stage,stage_started_at,last_progress_at,heartbeat_at,processed,total,unit,recent_message,mode) VALUES(?,?,?,clock_timestamp(),clock_timestamp(),clock_timestamp(),?,?,?,?,?)
                 ON CONFLICT(job_id) DO UPDATE SET trade_date=EXCLUDED.trade_date,stage=EXCLUDED.stage,
                 stage_started_at=CASE WHEN update_job_progress.stage=EXCLUDED.stage AND update_job_progress.trade_date=EXCLUDED.trade_date THEN update_job_progress.stage_started_at ELSE EXCLUDED.stage_started_at END,
                 last_progress_at=EXCLUDED.last_progress_at,processed=EXCLUDED.processed,total=EXCLUDED.total,
-                unit=EXCLUDED.unit,recent_message=EXCLUDED.recent_message,mode=COALESCE(EXCLUDED.mode,update_job_progress.mode)""",
+                heartbeat_at=EXCLUDED.heartbeat_at,unit=EXCLUDED.unit,recent_message=EXCLUDED.recent_message,mode=COALESCE(EXCLUDED.mode,update_job_progress.mode)""",
                 (self.active_job_id,day,stage,processed,total,detail.get('unit'),str(detail.get('message',stage))[:500],detail.get('mode')))
             if stage in {'FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED'}:
                 db.execute("UPDATE update_jobs SET finished_at=COALESCE(finished_at,?) WHERE job_id=? AND status IN ('FAILED_TERMINAL','CANCELLED','CANCELLED_SYSTEM','INTERRUPTED','QA_BLOCKED')",(self.clock().isoformat(),self.active_job_id))

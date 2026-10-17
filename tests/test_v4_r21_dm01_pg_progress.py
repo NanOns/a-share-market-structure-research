@@ -61,6 +61,21 @@ def test_dm01_published_receipt_poll_has_partial_index():
     assert "ADD COLUMN IF NOT EXISTS heartbeat_at timestamptz" in daily_pg.DDL
 
 
+def test_dm01_status_catalog_preflight_is_select_only_and_covers_heartbeat():
+    import re
+    from pathlib import Path
+
+    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R4_DM01_PG_STATUS_PREFLIGHT_READONLY_20261017.sql").read_text(encoding="utf-8")
+    statements = re.sub(r"--[^\n]*", "", sql)
+    statements = [part.strip().upper() for part in statements.split(";") if part.strip()]
+    assert statements[0] == "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"
+    assert statements[-1] == "COMMIT"
+    assert all(statement.startswith(("SELECT ", "WITH ")) for statement in statements[1:-1])
+    assert "CURRENT_SCHEMA()" in sql.upper()
+    assert "('UPDATE_JOB_PROGRESS','HEARTBEAT_AT')" in sql.upper()
+    assert "UPDATE_JOB_DAYS_PUBLISHED_TRADE_DATE" in sql.upper()
+
+
 def test_dm01_pg_progress_upsert_persists_real_heartbeat(monkeypatch, tmp_path):
     class RecordingConnection:
         def __init__(self):

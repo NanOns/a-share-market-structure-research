@@ -16730,6 +16730,24 @@
         "p1_formally_remaining": 266,
         "status": "APPROVAL_EVENT_TIME_AND_SOURCE_PROOF_REACHES_BFF_OFFLINE; actual approval lifecycle remains unverified.",
         "next": "Continue real Owner/business code migrations and run publication/approval readback after the compliant Reader identity is configured."
+      },
+      {
+        "batch_id": "R21-R4-dm01-readonly-status-catalog-preflight-r20",
+        "files": [
+          "docs/upgrade/R21R4_DM01_PG_STATUS_PREFLIGHT_READONLY_20261017.sql",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R20.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Added a repeatable-read, read-only preflight for the configured workspace schema's DM-01 job, attempt, rearm, day, event, progress and source-probe columns, including heartbeat_at and published-receipt index presence.",
+          "The probe reports job/day status counts without creating, repairing or starting the scheduler."
+        ],
+        "verification": "DM-01 status preflight SELECT-only contract test and focused PG status/registry regressions passed. No live workspace catalog query.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DM01_LIVE_SCHEMA_PROBE_READY_NOT_EXECUTED; actual job state remains unverified.",
+        "next": "Continue daily state/Head/Owner migration and execute the preflight only with an approved Reader identity."
       }
     ]
   }

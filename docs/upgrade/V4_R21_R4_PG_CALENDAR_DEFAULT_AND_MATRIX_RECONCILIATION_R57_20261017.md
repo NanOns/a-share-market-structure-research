@@ -23,9 +23,9 @@ Date: 2026-10-17 (Asia/Shanghai). Reviewed the R21-R4 execution card and the lat
 
 ## Verification and limits
 
-- Focused local selection: **51 passed** across PG calendar, DM-01 progress, source acquisition, executor-chain and contract-registry tests. The repository-policy CI test selection also passed locally: **300 passed**.
+- Focused local selection: **51 passed** across PG calendar, DM-01 progress, source acquisition, executor-chain and contract-registry tests. The exact repository-policy pytest selection after excluding the Baostock-SDK-dependent acquisition module passed locally: **293 passed**.
 - The PG path was exercised with controlled fake boundaries. No live catalog read, Registry import, database write, server start, accepted Head update, or provider capture occurred. These tests are not business acceptance.
-- R56 CI initially failed in two legacy executor-chain tests because those fixtures had not explicitly selected file-contract mode. R57 makes that test boundary explicit. CI for this R57 commit is the authoritative post-push result.
+- R56 CI initially failed in two legacy executor-chain tests because those fixtures had not explicitly selected file-contract mode; R57 makes that test boundary explicit. The first R57 CI attempt then showed that the acquisition module requires Baostock package metadata that repository CI does not install. The module is removed from the CI command; the PG calendar and DM-01 regression modules remain included. Current pushed CI is authoritative.
 
 ## Accounting
 

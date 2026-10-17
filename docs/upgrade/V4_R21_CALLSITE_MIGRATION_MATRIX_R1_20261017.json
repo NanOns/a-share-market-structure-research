@@ -16654,6 +16654,24 @@
         "p1_formally_remaining": 266,
         "status": "READER_IDENTITY_GUARD_WIRED; live least-privilege reader and status query remain unverified.",
         "next": "Continue PG job lifecycle and daily Owner/Head input migration; use the separately authorized reader identity once configured."
+      },
+      {
+        "batch_id": "R21-R4-forward-owner-reader-dsn-guard-r16",
+        "files": [
+          "src/workbench_db/v4_forward_pg_r1.py",
+          "tests/test_v4_forward_pg_closeout.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R16.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Shared ForwardFactStore.read and refs now open read-only transactions only with configured_reader_dsn instead of the object's native Writer DSN.",
+          "Regression tests capture the actual shared-store read call and prove missing reader configuration fails before connection."
+        ],
+        "verification": "2 focused shared Owner store reader identity tests and 23 native reader/DM-01 progress tests passed; compile and diff checks passed. No live PG read.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "SHARED_PG_OWNER_READ_DSN_GUARD_WIRED; no baseline row is formally reconciled or closed.",
+        "next": "Continue exact Owner/API callsite migrations and full daily state lifecycle; retain 266 formal remaining until live accepted readback."
       }
     ]
   }

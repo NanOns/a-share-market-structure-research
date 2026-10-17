@@ -5,7 +5,7 @@ import json
 import os
 import re
 import uuid
-from .v4_native import connection, create_schema, configured_dsn, workspace_schema
+from .v4_native import connection, create_schema, configured_dsn, configured_reader_dsn, workspace_schema
 
 CONTRACT = 'V4_FORWARD_PG_FACT_STORE_R1'
 DDL = '''
@@ -100,7 +100,7 @@ class ForwardFactStore:
         return self._binding(kind, key, existing[1])
 
     def refs(self, kind):
-        with connection(self.schema, dsn=self.dsn, read_only=True) as pg:
+        with connection(self.schema, dsn=configured_reader_dsn(), read_only=True) as pg:
             rows = pg.execute('SELECT fact_key,payload_sha256 FROM forward_facts WHERE kind=%s ORDER BY fact_key COLLATE "C"', (kind,)).fetchall()
         return [self._binding(kind, key, sha) for key, sha in rows]
 
@@ -120,7 +120,7 @@ class ForwardFactStore:
             kind, key, expected = descriptor['kind'], descriptor['fact_key'], descriptor['payload_sha256']
         else:
             kind, key, expected = path.parent.name, path.stem, binding['sha256']
-        with connection(self.schema, dsn=self.dsn, read_only=True) as pg:
+        with connection(self.schema, dsn=configured_reader_dsn(), read_only=True) as pg:
             if self._database_identity(pg) != self.database_identity:
                 raise ValueError('FORWARD_DATABASE_IDENTITY_MISMATCH')
             row = pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s', (kind, key)).fetchone()

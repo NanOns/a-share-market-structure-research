@@ -260,3 +260,5 @@ def test_dm01_readonly_status_client_needs_no_writer_and_cannot_start_work(monke
     with pytest.raises(RuntimeError,match='V4_PG_DAILY_JOBS_READ_ONLY'):
         with reader.connect():
             pass
+    with pytest.raises(RuntimeError,match='V4_PG_DAILY_JOBS_READ_ONLY'):
+        reader.set_settings(False)

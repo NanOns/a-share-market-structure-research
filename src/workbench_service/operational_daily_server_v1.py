@@ -137,7 +137,7 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
                 tail=path.removeprefix(PREFIX).strip('/').split('/')
                 if self.command=='PUT' and tail==['settings']:
                     if set(body)!={'auto_enabled'}:raise ValueError('SETTINGS_FIELD_NOT_ALLOWED')
-                    jobs.settings(body['auto_enabled'])
+                    jobs.set_settings(body['auto_enabled'])
                     return self.send(200,status_reader.settings())
                 if self.command=='POST' and tail in (['jobs'],['probe']):
                     if set(body)-{'mode','through_date'}:raise ValueError('JOB_FIELD_NOT_ALLOWED')

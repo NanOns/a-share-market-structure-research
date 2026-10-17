@@ -16994,7 +16994,7 @@
           "If both old and configured ledger files exist, the adapter rejects the ambiguous dual history; no ledger contents were read, copied or changed during source review.",
           "The path is not present as an exact row in this 266-callsite baseline, so no synthetic baseline ID or count change is recorded."
         ],
-        "verification": "46 focused new-listing and configured-TDX/BaoStock path tests passed. GitHub CI runs 39014320988 and 39014318610 are still in progress as of R32 preparation; no provider call, source capture, PG access or service startup.",
+        "verification": "46 focused new-listing and configured-TDX/BaoStock path tests passed. GitHub CI runs 39014320988 and 39014318610 both passed; no provider call, source capture, PG access or service startup.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "status": "BAOSTOCK_NEW_LISTING_REQUEST_BUDGET_USES_CONFIGURED_CACHE_WITH_LEGACY_CONTINUITY; no baseline row reconciled.",
@@ -17021,6 +17021,27 @@
         "p1_formally_remaining": 266,
         "status": "BAOSTOCK_RUNTIME_ACCEPTANCE_PATHS_USE_CONFIGURED_ROOTS; no baseline row reconciled.",
         "next": "Continue exact source-ingress contract and accepted PG append/readback wiring; keep live acceptance gated by its explicit operational conditions."
+      },
+      {
+        "batch_id": "R21-R4-dm01-settings-writer-reader-split-r33",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "src/workbench_service/operational_daily_server_v1.py",
+          "tests/test_v4_daily_server_reader_wiring_r30.py",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "docs/upgrade/V4_R21_R4_DM01_SETTINGS_WRITER_READER_SPLIT_R33_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "DM-01 settings mutation is now a Writer-only set_settings operation; the HTTP response reads the committed setting through its separate Reader-only client.",
+          "The Reader-only status client rejects set_settings. Handler-level regression verifies one Writer mutation followed by one Reader readback.",
+          "No baseline row is formally reconciled; this does not assert an accepted daily business state."
+        ],
+        "verification": "13 focused HTTP route and DM-01 state tests passed; Python compilation and diff check passed. No live PG or service.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "DM01_HTTP_SETTINGS_WRITE_AND_READBACK_SEPARATED; no baseline row reconciled.",
+        "next": "Continue actual daily Head/Authority/descriptor and Owner/BFF call chains; retain 266 formal remaining pending approved live readback."
       }
     ]
   }

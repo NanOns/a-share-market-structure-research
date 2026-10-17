@@ -200,11 +200,7 @@ class DailyJobs(StateMachine):
 
     def settings(self,enabled=None):
         if enabled is not None:
-            if not isinstance(enabled,bool):raise ValueError('ENABLED_BOOLEAN_REQUIRED')
-            with self.connect() as db:
-                db.execute('UPDATE scheduler_policy SET enabled=?,revision=revision+1,updated_at=? WHERE id=1',
-                           (int(enabled),self.clock().isoformat()))
-                self.event(db,None,'SETTINGS','AUTO_RESUMED' if enabled else 'AUTO_PAUSED_BY_USER',{})
+            self.set_settings(enabled)
         with self.read_connect() as db:
             row=dict(db.execute('SELECT * FROM scheduler_policy WHERE id=1').fetchone())
         return dict(contract_id='READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1',
@@ -215,6 +211,14 @@ class DailyJobs(StateMachine):
             permission_scope='READ_ONLY_OPERATIONAL_RESEARCH',
             publication_ready=(json.loads((self.root/self.policy_binding['path']).read_bytes()).get('publication_ready',False) if self.policy_binding else False),
             policy_binding=self.policy_binding)
+
+    def set_settings(self,enabled):
+        """Apply the setting mutation only; HTTP callers read it back via Reader."""
+        if not isinstance(enabled,bool):raise ValueError('ENABLED_BOOLEAN_REQUIRED')
+        with self.connect() as db:
+            db.execute('UPDATE scheduler_policy SET enabled=?,revision=revision+1,updated_at=? WHERE id=1',
+                       (int(enabled),self.clock().isoformat()))
+            self.event(db,None,'SETTINGS','AUTO_RESUMED' if enabled else 'AUTO_PAUSED_BY_USER',{})
 
     def status(self):
         plan=self._gap_plan()
@@ -254,4 +258,7 @@ class DailyJobsReadOnly(DailyJobs):
         raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')
 
     def tick(self):
+        raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')
+
+    def set_settings(self,enabled):
         raise RuntimeError('V4_PG_DAILY_JOBS_READ_ONLY')

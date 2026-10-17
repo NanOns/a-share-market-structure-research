@@ -62,3 +62,61 @@ def test_daily_status_routes_use_injected_read_only_client(monkeypatch, tmp_path
     assert reader.calls == [
         ("progress",), ("status",), ("settings",), ("job", "job-1"), ("events", "job-1", 4),
     ]
+
+
+def test_settings_put_uses_writer_mutation_then_reader_readback(monkeypatch, tmp_path):
+    import io
+    import json
+    from workbench_service import operational_daily_server_v1 as server
+    from workbench_service import current_v4_context
+
+    class Base:
+        pass
+
+    class StrictReader:
+        def __init__(self, *args, **kwargs):
+            pass
+
+    class Writer:
+        def __init__(self):
+            self.calls = []
+
+        def set_settings(self, enabled):
+            self.calls.append(("set_settings", enabled))
+
+        def settings(self, *args):
+            raise AssertionError("HTTP write route must not read through Writer controller")
+
+    class Reader:
+        def __init__(self):
+            self.calls = []
+
+        def settings(self):
+            self.calls.append("settings")
+            return {"auto_enabled": False, "revision": 8}
+
+    monkeypatch.setattr(server, "make_v4_handler", lambda *args, **kwargs: Base)
+    monkeypatch.setattr(current_v4_context, "CurrentAcceptedV4Reader", StrictReader)
+    writer = Writer()
+    reader = Reader()
+    handler_class = server.make_daily_handler(tmp_path, writer, status_reader=reader)
+    handler = handler_class.__new__(handler_class)
+    handler.path = server.PREFIX + "/settings"
+    handler.command = "PUT"
+    handler.client_address = ("127.0.0.1", 12345)
+    handler.server = SimpleNamespace(server_port=28766)
+    body = json.dumps({"auto_enabled": False}).encode()
+    handler.rfile = io.BytesIO(body)
+    handler.headers = {
+        "Origin": "http://127.0.0.1:28766",
+        "X-V4-Operation": "daily-update",
+        "Content-Length": str(len(body)),
+    }
+    sent = []
+    handler.send = lambda code, payload, *args: sent.append((code, payload))
+
+    handler.do_PUT()
+
+    assert writer.calls == [("set_settings", False)]
+    assert reader.calls == ["settings"]
+    assert sent == [(200, {"auto_enabled": False, "revision": 8})]

@@ -31,6 +31,7 @@
 - 内置浏览器请求 `http://127.0.0.1:28766/v4?source=pg_candidate` 返回 `net::ERR_CONNECTION_REFUSED`。开发服务未运行；缺少 Reader DSN 和 Head-bound PG 身份也不能安全启动。
 - 因此 7 个 candidate UI 模块（summary、radar、entity、sector、cohort、settlement、health）均未取得真实页面或 API 结果，浏览器功能验收状态为 **BLOCKED / 未通过**，没有使用 mock。
 - `28765` 未触碰；`28766` 无监听。仅查询确认 PG 端口 `5432` 的现有实例。
+- GitHub Issue #2 与 Draft PR #3 的任务卡要求状态更新已尝试通过官方连接器提交；两次写操作均返回 HTTP 403 `Resource not accessible by integration`，因此远端讨论区未更新。
 
 ## 仍未修调用点及授权边界
 

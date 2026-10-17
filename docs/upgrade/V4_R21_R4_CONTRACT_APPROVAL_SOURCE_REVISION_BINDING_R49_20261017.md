@@ -33,6 +33,8 @@ Date: 2026-10-17 (Asia/Shanghai).
 ## Verification and limits
 
 - **33 passed** across `test_v4_contract_registry_pg_v1.py`, `test_v4_pg_publication_contract_static.py`, and `v4_publication_reader_di_r1/test_explicit_views.py`.
+- The first GitHub CI run exposed one stale publication-reader fixture whose approval event used `approval-source-r1` while its contract version used `contract-source-r1`. Updated the fixture to bind the same exact source revision; the application check was correctly rejecting that mismatch.
+- Re-ran the full repository workflow selection locally, including publication candidate, Owner, source-manifest, daily-ingest, executor, R8 bridge, reader-DSN, and current-reader suites: **169 passed in 29.44s**. The successful run used the workflow's test list and dependencies stored only under `G:/codex_tmp`.
 - The tests establish code and contract behavior only; they do not establish live database approval state, migration execution, or complete business acceptance.
 - No PG DDL/DML, contract import, Head switch, source acquisition, service start, or production deployment was performed. No compliant reader/writer DSN is available in this environment.
 

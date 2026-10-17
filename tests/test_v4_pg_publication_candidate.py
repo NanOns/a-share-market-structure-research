@@ -128,7 +128,7 @@ class FakeConnection:
             raw_digest = hashlib.sha256(raw).hexdigest()
             return Cursor(one=(raw, raw_digest, "JSON", "1", "v4-main", "contract-source-r1",
                               "APPROVED", "test-approver", "test-approval-ref", ACCEPTED_AT,
-                              "approval-source-r1", raw_digest, ACCEPTED_AT))
+                              "contract-source-r1", raw_digest, ACCEPTED_AT))
         if "inet_server_addr()" in statement:
             return Cursor(one=self.identity)
         if "FROM pg_roles r" in statement:

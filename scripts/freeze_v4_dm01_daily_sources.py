@@ -19,7 +19,7 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
-from common.paths import resolve_tdx_root  # noqa: E402
+from common.paths import resolve_baostock_cache_root, resolve_tdx_root  # noqa: E402
 from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
     _daily_runtime_contract, _load_pg_runtime_acceptance,
 )
@@ -76,7 +76,7 @@ def main() -> int:
                 or delta.get("target_date") != args.target_date):
             raise ValueError("FREEZE_TDX_PACKAGE_DELTA_BINDING_MISMATCH")
 
-        bao_path = ROOT / "data/v4/source_snapshots/baostock" / args.target_date.replace("-", "") / args.bao_snapshot_id / "daily_update.json"
+        bao_path = resolve_baostock_cache_root(ROOT) / "baostock" / args.target_date.replace("-", "") / args.bao_snapshot_id / "daily_update.json"
         bao = json.loads(bao_path.read_text(encoding="utf-8"))
         if (bao.get("snapshot_id") != args.bao_snapshot_id or bao.get("trade_date") != args.target_date
                 or bao.get("provider_date") != args.target_date

@@ -24,6 +24,7 @@ def test_dm01_daily_orchestrator_calls_pg_appending_runtime_acceptor(monkeypatch
     from scripts import run_v4_dm01_daily_increment as daily
 
     monkeypatch.setattr(daily, "ROOT", tmp_path)
+    monkeypatch.setenv("BAOSTOCK_CACHE_ROOT", str(tmp_path / "data/v4/source_snapshots"))
     observed = []
 
     def run_cli(*args):

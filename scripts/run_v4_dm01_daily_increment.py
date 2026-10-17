@@ -20,7 +20,7 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
 from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
 from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
-from common.paths import resolve_tdx_root  # noqa: E402
+from common.paths import resolve_baostock_cache_root, resolve_tdx_root  # noqa: E402
 from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract  # noqa: E402
 from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baostock_runtime_pg  # noqa: E402
 
@@ -71,7 +71,7 @@ def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | N
     capture_code, capture = _run_json_cli("scripts/capture_baostock_daily_update.py", "--target-date", target_date)
     if capture_code != 0 or capture.get("status") not in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
         return None, smoke, str(capture.get("reason") or capture.get("status") or "BAOSTOCK_DAILY_CAPTURE_NOT_READY")
-    folder = ROOT / "data/v4/source_snapshots/baostock" / target_date.replace("-", "")
+    folder = resolve_baostock_cache_root(ROOT) / "baostock" / target_date.replace("-", "")
     snapshot_file = folder / capture["snapshot_id"] / "daily_update.json"
     try:
         record = json.loads(snapshot_file.read_text(encoding="utf-8"))
@@ -196,7 +196,7 @@ def main() -> int:
                     from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
                     source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,args.snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
                     if source:
-                        snapshot=ROOT/'data/v4/source_snapshots/baostock'/args.target_date.replace('-','')/source['snapshot_id']/'daily_update.json'
+                        snapshot=resolve_baostock_cache_root(ROOT)/'baostock'/args.target_date.replace('-','')/source['snapshot_id']/'daily_update.json'
                         bao=json.loads(snapshot.read_bytes());bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
                     else:bao_smoke=dict(status='BLOCKED',reason=bao_error)
                     probe_code,gbbq_probe=_run_json_cli('-m','scripts.probe_v4_dm01_gbbq_revision','--target-date',args.target_date)
@@ -287,7 +287,7 @@ def main() -> int:
                     raise ValueError("DAILY_SOURCE_FREEZE_PG_STAGE_BINDING_REQUIRED")
                 freeze = read_stage(ROOT, freeze_pg_state["binding"], trade_date=args.target_date,
                     stage="daily_source_freeze")
-                bao_path = ROOT / 'data/v4/source_snapshots/baostock' / args.target_date.replace('-','') / str(bao['snapshot_id']) / 'daily_update.json'
+                bao_path = resolve_baostock_cache_root(ROOT) / 'baostock' / args.target_date.replace('-','') / str(bao['snapshot_id']) / 'daily_update.json'
                 settings = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
                     "config/baostock_supplemental_contract_v1.json")['dm01_daily_updates']
                 runtime_path = ROOT / settings['runtime_acceptance_manifest_template'].replace('{YYYYMMDD}',args.target_date.replace('-',''))

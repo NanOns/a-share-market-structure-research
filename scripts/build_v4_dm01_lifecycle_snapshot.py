@@ -20,6 +20,7 @@ from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E
 from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
     _daily_runtime_contract, _load_pg_runtime_acceptance,
 )
+from common.paths import resolve_baostock_cache_root  # noqa: E402
 
 
 SHANGHAI = ZoneInfo("Asia/Shanghai")
@@ -65,7 +66,7 @@ def accepted_parent_rows(path: Path, baseline_date: str) -> list[dict]:
 
 
 def select_baostock_snapshot(target_date: str, snapshot_id: str | None) -> tuple[dict, Path]:
-    folder = ROOT / "data/v4/source_snapshots/baostock" / target_date.replace("-", "")
+    folder = resolve_baostock_cache_root(ROOT) / "baostock" / target_date.replace("-", "")
     matches = []
     for path in folder.glob("sha256-*/daily_update.json") if folder.is_dir() else []:
         try:

@@ -66,7 +66,7 @@ def test_frontend_relative_assets_api_routes_and_download_names_are_not_false_mi
     _git(root, "init", "-q")
     (root / "src/ui").mkdir(parents=True)
     (root / "src/ui/chunk.js").write_text("export const ok = true;\n", encoding="utf-8")
-    (root / "src/ui/app.js").write_text("import './chunk.js';\nfetch('/api/v4/rows.csv');\nlink.download='export.csv';\n", encoding="utf-8")
+    (root / "src/ui/app.js").write_text("import './chunk.js';\nasync function load(){const r=await fetch('/api/v4/rows.csv');return r.json()}\nlink.download='export.csv';\n", encoding="utf-8")
     static = root / "src/workbench_service/static"
     (static / "v2").mkdir(parents=True)
     (static / "daily-update").mkdir(parents=True)
@@ -97,3 +97,8 @@ def test_runtime_writes_are_output_paths_not_missing_inputs(tmp_path):
     result = audit.scan_repository(root)
     output = next(x for x in result["reference_edges"] if x["literal_or_resolved_target"] == "generated.csv")
     assert output["risk_type"] == "OUTPUT_PATH_DECLARATION" and output["priority"] == "INFO"
+
+
+def test_optional_tray_python_override_is_not_a_blocking_stale_root():
+    risk, priority, *_ = audit._risk("E:/python/python.exe", ROOT, "scripts/workbench_tray.ps1", None, None)
+    assert risk == "ABSOLUTE_STALE_ROOT" and priority == "P2"

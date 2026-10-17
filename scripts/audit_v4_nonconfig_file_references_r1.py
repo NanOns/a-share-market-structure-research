@@ -43,6 +43,7 @@ def _kind(path: str) -> str:
     return "CONFIG_ONLY" if ext in CONFIG_EXTS else ("NONCONFIG_FILE" if ext in NONCONFIG_EXTS else "OTHER_FILE")
 def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, expected_bytes: int|None) -> tuple[str,str,str|None,int|None,str|None,bool|None]:
     if not target: return "DYNAMIC_UNRESOLVED","P2",None,None,None,None
+    historical_tool=caller.startswith("scripts/") and any(k in Path(caller).name.lower() for k in ("r4_next", "next_stage_delivery", "v41011", "r43_r2_cloud_archive"))
     if target.startswith(("/api/", "api/")):
         return "API_ROUTE_NOT_LOCAL_FILE","INFO",None,None,None,None
     static_root=root/"src/workbench_service/static"
@@ -71,7 +72,7 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
         return "EXTERNAL_TOOL_LOOKUP","P2",None,None,None,None
     if candidate.is_absolute():
         resolved=candidate.resolve(strict=False)
-        if not resolved.is_relative_to(root): return "ABSOLUTE_STALE_ROOT","P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/","data/v4/V4_")) else "P2",str(resolved),None,None,False
+        if not resolved.is_relative_to(root): return "ABSOLUTE_STALE_ROOT","P2" if historical_tool or caller in {"scripts/v4_closeout_v41011_sql_fixture.py","scripts/workbench_tray.ps1"} else "P1" if caller.startswith(("src/","scripts/","frontend/","web/","ui/","client/",".github/","data/v4/V4_")) else "P2",str(resolved),None,None,False
     else:
         ui_caller=caller.startswith(("frontend/","web/","ui/","client/")) or caller.startswith("src/workbench_service/static/") and Path(caller).suffix.lower() in {".html", ".css"}
         if caller.startswith(("src/workbench_service/static/r43-compat/","src/workbench_service/static/r43-control-v2/")) and target.startswith("./"):
@@ -297,6 +298,7 @@ def scan_repository(root: Path, edges_spool: Path|None=None) -> dict[str,Any]:
                 if ext in {".js",".mjs",".cjs",".ts",".tsx",".jsx"} and not re.search(r"\b(?:fetch|import|require|src|href|download|screenshot|writeFile|createWriteStream)\b|\burl\s*\(",line,re.I): continue
                 for match in LITERAL_PATH_RE.finditer(line):
                     target=match.group(0).rstrip(".,;:)")
+                    if target.lower().endswith(".json") and re.search(r"\b"+re.escape(Path(target).stem)+r"\.json\s*\(",line,re.I): continue
                     output_name=bool(re.search(r"\bdownload\s*=|\.download\s*=|screenshot|writeFile|createWriteStream",line,re.I))
                     runner_output=rel.startswith(".github/workflows/") and ("--output" in line or "runner.temp" in line)
                     emit(rel,line_no,"path_literal",_entry(rel),"STATIC",target,"source/UI/SQL/shell literal","browser-generated download filename" if output_name else "runtime output path" if runner_output else "external file or asset path literal")

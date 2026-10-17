@@ -105,5 +105,5 @@ def test_optional_tray_python_override_is_not_a_blocking_stale_root():
 
 
 def test_oversized_document_literal_is_retained_without_filesystem_stat():
-    risk, priority, resolved, *_ = audit._risk("#" + "x" * 5000, ROOT, "scripts/example.py", None, None)
+    risk, priority, resolved, *_ = audit._risk("# " + "x" * 300, ROOT, "scripts/example.py", None, None)
     assert risk == "NON_PATH_LITERAL" and priority == "INFO" and resolved is None

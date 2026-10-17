@@ -45,7 +45,8 @@ def _risk(target: str|None, root: Path, caller: str, expected_sha: str|None, exp
     if not target: return "DYNAMIC_UNRESOLVED","P2",None,None,None,None
     # A string longer than the OS path-component limit cannot be a file path.
     # Keep the edge in the inventory, but do not pass document/code payloads to stat().
-    if len(target.encode("utf-8", "surrogatepass")) > 4096:
+    path_parts=target.replace("\\", "/").split("/")
+    if len(target.encode("utf-8", "surrogatepass")) > 4096 or any(len(part.encode("utf-8", "surrogatepass")) > 255 for part in path_parts):
         return "NON_PATH_LITERAL","INFO",None,None,None,None
     historical_tool=caller.startswith("scripts/") and any(k in Path(caller).name.lower() for k in ("r4_next", "next_stage_delivery", "v41011", "r43_r2_cloud_archive"))
     if target.startswith(("/api/", "api/")):

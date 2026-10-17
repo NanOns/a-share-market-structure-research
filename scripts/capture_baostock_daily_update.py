@@ -14,6 +14,17 @@ from workbench_analysis.baostock_supplemental import BaoStockClient, BaoStockErr
 from workbench_analysis.baostock_runtime_acceptance import load_runtime_acceptance_manifest  # noqa: E402
 
 
+def load_source_contract(project_root=ROOT):
+    """Resolve the active BaoStock source contract through the approved PG registry."""
+    from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
+    return _daily_runtime_contract(
+        project_root,
+        "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+        "1.1.0",
+        "config/baostock_supplemental_contract_v1.json",
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capture BaoStock DailyUpdates through the bounded shared client.")
     parser.add_argument("--target-date", required=True)
@@ -29,7 +40,7 @@ def main() -> int:
         cache_root = resolve_baostock_cache_root(ROOT, args.snapshot_root)
         ledger_path = args.ledger or cache_root / "request_ledger.json"
         date.fromisoformat(args.target_date)
-        source_contract = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))
+        source_contract = load_source_contract(ROOT)
         dm01_contract = source_contract.get("dm01_daily_updates", {})
         if dm01_contract.get("runtime_acceptance_contract") != "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1":
             print(json.dumps({

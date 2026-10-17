@@ -123,6 +123,17 @@ def mark_stock_d2_semantics(response):
             reason=reason,source=(fields.get('final_eligibility') or {}).get('source'))
     return response
 
+def membership_source_binding(api):
+    """Return the current membership locator, requiring its PG descriptor in PG mode."""
+    from workbench_db.v4_membership_reference_pg_v1 import KEY
+    snapshot=getattr(api,'snapshot',None)
+    source=snapshot.get('memberships') if isinstance(snapshot,dict) else None
+    if not isinstance(source,dict):
+        raise ValueError('MEMBERSHIP_SOURCE_LOCATOR_REQUIRED')
+    if KEY in api.candidate and not isinstance(source.get('pg_descriptor'),dict):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
+    return source
+
 def d2_selection_explanation(fields,source):
     fields=fields or {}
     def owner_field(name):
@@ -637,7 +648,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     sector_type=sector.get('fields',{}).get('sector_type',{}).get('value'),count=count,denominator=len(active),
                     share=count/len(active) if active else None,href='/v4/research/sectors/'+sid,
                     name_source=sector.get('display_name_source'),name_quality='KNOWN' if display_name else 'UNKNOWN'))
-            data['sector_exposure']=dict(denominator=len(active),unknown_industry=unknown,items=items,source=self.api.snapshot['memberships'],scope='Unique active research objects under latest reconstructed primary industry; not holdings, not a probability')
+            data['sector_exposure']=dict(denominator=len(active),unknown_industry=unknown,items=items,source=membership_source_binding(self.api),scope='Unique active research objects under latest reconstructed primary industry; not holdings, not a probability')
         if pack:
             old=self.api.candidate['owners'][day]['forward'];new=pack[0]['projection']
             def rebind(value):

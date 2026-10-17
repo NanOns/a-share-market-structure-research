@@ -28,3 +28,26 @@ def test_file_binding_remains_a_local_input():
     _collect_local_binding_paths(root,{'path':'config/contract.json','sha256':'c'*64},paths)
 
     assert paths=={root/'config/contract.json'}
+
+
+def test_pg_membership_source_locator_requires_pg_descriptor_and_never_returns_file_ref():
+    import pytest
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import membership_source_binding
+    from workbench_db.v4_membership_reference_pg_v1 import KEY
+    locator={'path':'data/v4/membership_reference_pg_v1/members.pg.json','sha256':'a'*64,
+        'pg_descriptor':{'engine':'postgresql','kind':'reference_memberships','fact_key':'f'*64}}
+    api=SimpleNamespace(candidate={KEY:{'contract_id':'V4_NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_R2'}},
+        snapshot={'memberships':locator})
+    assert membership_source_binding(api)==locator
+    api.snapshot={'memberships':{'path':'data/v4/members.json','sha256':'b'*64}}
+    with pytest.raises(ValueError,match='DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK'):
+        membership_source_binding(api)
+
+
+def test_legacy_membership_source_locator_remains_available_only_without_pg_authority():
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import membership_source_binding
+    locator={'path':'data/v4/members.json','sha256':'c'*64}
+    api=SimpleNamespace(candidate={},snapshot={'memberships':locator})
+    assert membership_source_binding(api)==locator

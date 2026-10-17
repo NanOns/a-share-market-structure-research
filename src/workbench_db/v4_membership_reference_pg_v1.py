@@ -77,9 +77,7 @@ def read(root,candidate,*,workspace_root=None):
     return content
 
 
-def context_metadata(root,candidate):
-    """Return dated membership context metadata from the Head-bound PG authority."""
-    authority=_load_authority(root,candidate)
+def _context_metadata(authority,candidate):
     if (authority.get('contract_id')!=CONTRACT or authority.get('T0')!=candidate['accepted_trade_date']
             or authority.get('membership_snapshot')!=candidate['membership_snapshot']
             or authority.get('membership_snapshot_id')!=candidate.get('membership_snapshot_id')):
@@ -100,6 +98,21 @@ def context_metadata(root,candidate):
             or authority.get('AS_RECORDED') is not False or authority.get('PIT_ELIGIBLE') is not False):
         raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_LINEAGE_MISMATCH')
     return metadata
+
+
+def context_metadata(root,candidate):
+    """Return dated membership context metadata from the Head-bound PG authority."""
+    return _context_metadata(_load_authority(root,candidate),candidate)
+
+
+def context_snapshot(root,candidate):
+    """Return API metadata plus its exact PG membership descriptor locator."""
+    authority=_load_authority(root,candidate)
+    metadata=_context_metadata(authority,candidate)
+    descriptor=authority.get('descriptor')
+    if not isinstance(descriptor,dict) or not isinstance(descriptor.get('pg_descriptor'),dict):
+        raise ValueError('NATIVE_MEMBERSHIP_CONTEXT_DESCRIPTOR_REQUIRED')
+    return dict(metadata,memberships=descriptor)
 
 
 def current_identity_binding(root,candidate):

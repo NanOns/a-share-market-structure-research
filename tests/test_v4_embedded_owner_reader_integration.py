@@ -105,7 +105,8 @@ def test_successor_http_context_uses_head_bound_pg_membership_metadata_without_f
         membership_observed_at='2026-10-12T18:00:00+08:00',member_set_asof='2026-10-12',knowledge_lineage='CURRENT_DAY')
     monkeypatch.setattr(module,'validate',lambda root,data,**kwargs:True)
     monkeypatch.setattr('workbench_db.v4_operational_owner_authority_v2.load',lambda root,data:{})
-    monkeypatch.setattr(membership,'context_metadata',lambda root,candidate:metadata)
+    pg_membership_descriptor={'path':'membership.json','sha256':'a'*64,'pg_descriptor':{'kind':'reference_memberships'}}
+    monkeypatch.setattr(membership,'context_snapshot',lambda root,candidate:dict(metadata,memberships=pg_membership_descriptor))
     monkeypatch.setattr(module,'checked',lambda *args,**kwargs:(_ for _ in ()).throw(AssertionError('MEMBERSHIP_FILE_OPENED')))
 
     reader=module.OperationalSuccessorReaderV1(tmp_path,data)
@@ -115,6 +116,7 @@ def test_successor_http_context_uses_head_bound_pg_membership_metadata_without_f
     assert context['taxonomy']=='TDX'
     assert context['PIT_ELIGIBLE'] is False
     assert context['membership_snapshot']==data['membership_snapshot']
+    assert reader.snapshot['memberships']==pg_membership_descriptor
 
 
 def test_candidate_preparation_owner_validation_keeps_exact_file_binding_check(tmp_path,monkeypatch):

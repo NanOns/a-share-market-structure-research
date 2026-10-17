@@ -100,9 +100,9 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
             # must use the manifest embedded in the accepted Head.
             raise ValueError('PG_OPERATIONAL_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
         validate(root,candidate,pg_owner_authority=self.pg_owner_authority)
-        from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY,context_metadata
+        from workbench_db.v4_membership_reference_pg_v1 import KEY as MEMBERSHIP_KEY,context_snapshot
         if MEMBERSHIP_KEY in candidate:
-            self.snapshot=context_metadata(root,candidate)
+            self.snapshot=context_snapshot(root,candidate)
         else:
             self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
         self.user_authorized_cutover=True;self.independent_external_acceptance=False

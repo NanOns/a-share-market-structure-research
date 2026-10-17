@@ -17078,11 +17078,33 @@
           "The Reader fails closed on missing/other context metadata contract ID or version, wrong field shape, mismatched Head T0/snapshot identity or PIT flags; it has no file fallback.",
           "No exact P1 baseline row is formally reconciled; current operational Head still lacks both PG Owner and PG membership authorities."
         ],
-        "verification": "Four focused metadata preparation/context route/lineage tests passed; Python compile and diff check passed. R34 GitHub CI was still in progress; no live PG or service.",
+        "verification": "Four focused metadata preparation/context route/lineage tests passed; Python compile and diff check passed. GitHub Actions run 39014920812 passed; run 39014918051 was still in progress at R36 preparation. No live PG or service.",
         "p1_formally_closed": 0,
         "p1_formally_remaining": 266,
         "status": "MEMBERSHIP_CONTEXT_METADATA_SUBCONTRACT_VERSIONED; current Head and live readback remain open.",
         "next": "Continue accepted operational Head/Authority/descriptor runtime mapping; preserve all formal P1 counts until approved same-T0 readback."
+      },
+      {
+        "batch_id": "R21-R4-bff-pg-membership-descriptor-r36",
+        "files": [
+          "src/workbench_analysis/operational_successor_v1.py",
+          "src/workbench_service/core_product_bff_r1.py",
+          "src/workbench_db/v4_membership_reference_pg_v1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "tests/test_v4_bff_pg_descriptor_binding.py",
+          "docs/upgrade/V4_R21_R4_BFF_PG_MEMBERSHIP_DESCRIPTOR_R36_20261017.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "Head-bound PG membership context snapshots carry the PG descriptor locator, and the Core Product BFF sector-exposure source field now resolves it through a single validated binding helper.",
+          "With native_membership_reference present, BFF rejects a file-only membership source locator; legacy file source locators remain limited to candidates without that PG authority.",
+          "The current accepted Head has no PG membership or Owner authority; the code path is not live-accepted and no P1 row is closed."
+        ],
+        "verification": "Six focused metadata preparation, PG descriptor propagation/fail-closed, Reader context and Owner validation tests passed; compile and diff checks passed. No live BFF or PG request.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "BFF_ACCEPTS_HEAD_BOUND_PG_MEMBERSHIP_DESCRIPTOR_AND_REJECTS_FILE_FALLBACK; current Head unmapped.",
+        "next": "Continue accepted Head/Authority/descriptor/BFF invocation mapping and retain exact per-ID reconciliation as open."
       }
     ]
   }

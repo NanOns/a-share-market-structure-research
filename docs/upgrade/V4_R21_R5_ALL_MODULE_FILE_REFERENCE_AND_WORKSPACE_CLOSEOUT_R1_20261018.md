@@ -69,4 +69,4 @@
 
 实际数据库读回确认同一 `market_research` PG 实例、OID `646711`。本轮没有新增生产 Head 切换或日更任务；当前 `V4_NATIVE_PG_DSN` 未在安全配置或进程环境设置。Forward 写入器现仅接受该显式 writer DSN，不再从 reader DSN 回退取写权限。任务卡把正式合同审批/Owner append/Accepted Head CAS/Head 切换与生产部署作为单独边界；正式审批、live ingress append/readback、Head CAS/切换和 28765 部署仍需按各自合同单独执行；物理删除、强推亦未执行。
 
-Google Drive Issue/PR 摘要连接器此前返回 HTTP 403 `Resource not accessible by integration`；未使用 GitHub CLI 绕过。
+本轮尝试更新 GitHub Issue #2 和 PR #3 摘要时，集成连接器两次均返回 HTTP 403 `Resource not accessible by integration`；按任务卡要求未使用 GitHub CLI 绕过。提交和推送已完成。

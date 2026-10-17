@@ -40,21 +40,20 @@ def summarize_settlement_schedule(trade_date, lane, horizon, scheduled):
 
 
 def _configured_forward_dsn(root: Path):
-    """Use the project's existing PostgreSQL setting without duplicating it."""
-    for key in ("V4_NATIVE_PG_DSN", "WORKBENCH_PG_DSN"):
-        if os.environ.get(key):
-            return os.environ[key]
+    """Writers require the explicit native PostgreSQL DSN; reader DSNs never grant writes."""
+    if os.environ.get("V4_NATIVE_PG_DSN"):
+        return os.environ["V4_NATIVE_PG_DSN"]
     project_root = Path(__file__).resolve().parents[2]
     for env_path in (root / "config/.env", project_root / "config/.env"):
         if not env_path.is_file():
             continue
         for raw in env_path.read_text(encoding="utf-8-sig").splitlines():
             key, sep, value = raw.partition("=")
-            if sep and key.strip() in ("V4_NATIVE_PG_DSN", "WORKBENCH_PG_DSN"):
+            if sep and key.strip() == "V4_NATIVE_PG_DSN":
                 value = value.strip().strip('"').strip("'")
                 if value:
                     return value
-    raise RuntimeError("EXISTING_WORKBENCH_POSTGRES_DSN_REQUIRED")
+    raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED_FOR_FORWARD_WRITES")
 
 
 class ForwardR7Store:

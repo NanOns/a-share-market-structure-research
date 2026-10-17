@@ -15,14 +15,14 @@
     "external_market_source": 38,
     "with_reference_ids": 244,
     "without_reference_ids": 22,
-    "migration_open": 48,
+    "migration_open": 46,
     "statuses": {
-      "OPEN": 39,
-      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 218,
+      "OPEN": 37,
+      "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION": 220,
       "ACTIVE_INGRESS_ADAPTER_OPEN": 9
     },
-    "code_level_pg_read_paths_implemented": 218,
-    "remaining_open_or_ingress": 48,
+    "code_level_pg_read_paths_implemented": 220,
+    "remaining_open_or_ingress": 46,
     "reference_evidence_linked": 244,
     "unmapped_reference_edges": 22,
     "p1_reconciliation_open": 266,
@@ -5316,7 +5316,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -5327,9 +5327,14 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Business contract and generation inputs are read through the PG-bound checked adapter; executable kernel identity is verified against its accepted PG binding. Candidate scope root now resolves through configured ingest temp root. Formal P1 reconciliation remains pending.",
       "baseline_function": "detect",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-operational-revision-guard-pg-r1",
+        "implemented_code": "Accepted generation/policy and accepted executable bindings use the PG-bound checked materializer; isolated candidate root uses resolve_ingest_temp_root.",
+        "formal_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+        "production_head_mutation": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160090",
@@ -5382,7 +5387,7 @@
         "DYNAMIC_UNRESOLVED"
       ],
       "handler_classification": "UNCERTAIN_CALL_CHAIN_REVIEW_REQUIRED",
-      "migration_status": "OPEN",
+      "migration_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
       "source_T0_publication_namespace": {
         "T0": [],
         "publication_id": [],
@@ -5393,9 +5398,14 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "Business contract and generation inputs are read through the PG-bound checked adapter; executable kernel identity is verified against its accepted PG binding. Candidate scope root now resolves through configured ingest temp root. Formal P1 reconciliation remains pending.",
       "baseline_function": "detect",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch_id": "R21-R5-operational-revision-guard-pg-r1",
+        "implemented_code": "Accepted generation/policy and accepted executable bindings use the PG-bound checked materializer; isolated candidate root uses resolve_ingest_temp_root.",
+        "formal_status": "IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION",
+        "production_head_mutation": false
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160090",

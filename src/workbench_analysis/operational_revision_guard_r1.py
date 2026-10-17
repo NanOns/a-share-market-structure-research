@@ -70,7 +70,8 @@ def isolated_day_baseline(root,parent,generation):
     """A numerically verified isolated day may precede the next isolated day."""
     from pathlib import Path
     root=Path(root).resolve()
-    if not root.is_relative_to(Path('G:/codex_tmp').resolve()):
+    from common.paths import resolve_ingest_temp_root
+    if not root.is_relative_to(resolve_ingest_temp_root(Path(__file__).resolve().parents[2])):
         raise ValueError('ISOLATED_CANDIDATE_REVISION_SCOPE_REQUIRED')
     proof=load(checked(root,parent['r8_isolated_day_acceptance']))
     if (proof.get('contract_id')!='R8_ISOLATED_DAY_NUMERIC_ACCEPTANCE_R1'
@@ -96,7 +97,8 @@ def isolated_day_baseline(root,parent,generation):
 def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidate_only=False):
     from pathlib import Path
     root=Path(root);previous=parent['accepted_trade_date']
-    if candidate_only and not root.resolve().is_relative_to(Path('G:/codex_tmp').resolve()):
+    from common.paths import resolve_ingest_temp_root
+    if candidate_only and not root.resolve().is_relative_to(resolve_ingest_temp_root(Path(__file__).resolve().parents[2])):
         raise ValueError('ISOLATED_CANDIDATE_REVISION_SCOPE_REQUIRED')
     registry=parent.get('source_registry',{}).get(previous,{})
     if not registry.get('generation'):raise ValueError('RANGE_REPAIR_REQUIRED:ACCEPTED_GENERATION_MISSING')
@@ -114,7 +116,7 @@ def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidat
             if execution_bindings is not None:
                 if name not in executed:raise ValueError('RANGE_REPAIR_REQUIRED:EXECUTED_NUMERIC_BINDING_MISSING:'+name)
                 actual=sha256_file(checked(root,executed[name]))
-            else:actual=sha256_file(root/name)
+            else:actual=sha256_file(checked(root,binding))
             kernels.append(dict(module_path=name,accepted_sha256=binding['sha256'],actual_sha256=actual,executed_binding=executed.get(name),unchanged=actual==binding['sha256']))
             if actual!=binding['sha256']:
                 admitted=(candidate_only and name=='src/workbench_analysis/operational_owner_adapter_v1.py'

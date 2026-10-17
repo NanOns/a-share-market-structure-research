@@ -15,11 +15,32 @@ def _pg_exact(root,binding):
     if size is not None and len(raw)!=size:raise ValueError('ACCEPTED_SOURCE_BYTES_MISMATCH')
     return raw
 
+
+def _pg_historical_archive(root,binding):
+    """Resolve one frozen historical namespace to its exact PG archive binding."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound,read_path
+    from .historical_stage_governance_r17 import REGISTRY
+    registry=read_path(root,REGISTRY)['value']
+    row=next((item for key in ('entries','source_archives','static_byte_archives')
+              for item in registry.get(key,[])
+              if (item.get('original_namespace',{}).get('path'),
+                  item.get('original_namespace',{}).get('sha256'))==(binding.get('path'),binding.get('sha256'))),None)
+    if row is None:raise ValueError('UNREGISTERED_HISTORICAL_PG_BINDING')
+    original=row['original_namespace'];archive=row['archive']
+    if any(binding[k]!=original['bytes'] for k in ('bytes','byte_count') if k in binding):
+        raise ValueError('HISTORICAL_PG_NAMESPACE_BYTES_INVALID')
+    if archive['sha256']!=binding['sha256'] or archive['bytes']!=original['bytes']:
+        raise ValueError('HISTORICAL_PG_ARCHIVE_IDENTITY_INVALID')
+    raw=read_bound(root,archive['path'],archive['sha256'])['raw']
+    if len(raw)!=archive['bytes']:
+        raise ValueError('HISTORICAL_PG_ARCHIVE_BYTES_INVALID')
+    return dict(binding,path=archive['path'],sha256=archive['sha256'],bytes=archive['bytes'])
+
 class AcceptedContracts(FrozenContracts):
     def __init__(self,root):
         self.root=Path(root)
-        from scripts.validate_r17r1_active_closure import validate
-        try: validate(self.root)
+        from scripts.validate_r17r1_active_closure import validate_pg
+        try: validate_pg(self.root)
         except (AssertionError, KeyError, TypeError) as error: raise ValueError('ACTIVE_CONTRACT_FAMILY_CLOSURE_REQUIRED') from error
         from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
         stage=read_path(self.root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
@@ -49,10 +70,9 @@ class AcceptedContracts(FrozenContracts):
         self.authority=head;self.authority_ref=stage['v4_13_binding']
         # Only the filesystem location of the historical moving namespace is
         # resolved. Frozen contract bytes, identities and business rules stay exact.
-        from .historical_stage_governance_r17 import resolve,REGISTRY
+        from .historical_stage_governance_r17 import REGISTRY
         original=self.config['membership_consumer_route']['stage_binding']
-        resolved=resolve(self.root,original)
-        archive=dict(original,path=resolved.relative_to(self.root).as_posix())
+        archive=_pg_historical_archive(self.root,original)
         exact(self.root,archive)
         self.frozen_config=deepcopy(self.config)
         self.config['membership_consumer_route']['stage_binding']=archive
@@ -62,21 +82,21 @@ class CurrentOwnerContracts(FrozenContracts):
     """Read immutable V4-13 contracts through the accepted successor authority."""
     def __init__(self,root):
         from .v4_current_stage_authority import CurrentStageAuthority
-        from scripts.validate_r17r1_active_closure import walk
-        from .historical_stage_governance_r17 import resolve,REGISTRY
+        from scripts.validate_r17r1_active_closure import validate_pg
+        from .historical_stage_governance_r17 import REGISTRY
         authority=CurrentStageAuthority(root)
         self.root=authority.root;head=authority.predecessor
         if authority.predecessor_ref['path']!=HEAD or head['candidate']['sha256']!=MANIFEST_SHA:
             raise ValueError('EXACT_ACCEPTED_V4_13_PREDECESSOR_REQUIRED')
+        try:validate_pg(self.root)
+        except (AssertionError,KeyError,TypeError) as error:raise ValueError('ACTIVE_CONTRACT_FAMILY_CLOSURE_REQUIRED') from error
         entry=json.loads(authority.read(head['formal_entry_contract']))
         if entry['authority_namespace']!=HEAD or entry['contract_refs']!=head['contract_refs']:
             raise ValueError('ACCEPTED_PACKAGE_BINDING_MISMATCH')
-        closure=json.loads(authority.read(head['active_family_closure']))
         self.refs=head['contract_refs'];self.digest=digest(self.refs)
         if self.digest!=head['contract_digest'] or self.digest!=entry['contract_digest']:
             raise ValueError('ACCEPTED_PACKAGE_DIGEST_MISMATCH')
         self.config={Path(r['path']).stem.removeprefix('v4_13_').rsplit('_v',1)[0]:json.loads(authority.read(r)) for r in self.refs}
-        for value in self.config.values():walk(value,closure['families'],self.root)
         self.owner_refs=self.config['loo_context']['accepted_owner_bindings']
         self.owners={k:json.loads(authority.read(r)) for k,r in self.owner_refs.items()}
         self.dependencies={k:json.loads(authority.read(r)) for k,r in self.config['loo_context']['accepted_sector_dependencies'].items()}
@@ -90,7 +110,7 @@ class CurrentOwnerContracts(FrozenContracts):
         self.authority=head;self.authority_ref=authority.predecessor_ref
         self.frozen_config=deepcopy(self.config)
         original=self.config['membership_consumer_route']['stage_binding']
-        archive=dict(original,path=resolve(self.root,original).relative_to(self.root).as_posix())
+        archive=_pg_historical_archive(self.root,original)
         exact(self.root,archive)
         self.config['membership_consumer_route']['stage_binding']=archive
         self.binding_resolution_receipt=dict(original_namespace=original,archive=archive,registry_path=REGISTRY,

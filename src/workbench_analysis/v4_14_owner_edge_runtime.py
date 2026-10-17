@@ -36,7 +36,7 @@ def prepare(a,e,previous):
     if choice.get('unknown'):seed_facts['price_identity_READY'].update(value=None,reason='EXPLICIT_SYNTHETIC_UNKNOWN')
     stock=deepcopy(next(v['facts'] for v in c_book['vectors'] if v['id']==fixture['prewatch']['vector_id']))
     stock.pop('base_seed_state');core=dict(seed_facts=seed_facts,stock_core=stock,d0_facts=deepcopy(fixture['confirmation']['values']),structure_fixture=dict(source=fixture['structure']['source'],vector_id=choice.get('structure_vector','S01')))
-    seed=evaluate_facts(core['seed_facts'],json.loads((root/'config/v4_07_parameter_set_v1.json').read_bytes()))
+    seed=evaluate_facts(core['seed_facts'],json.loads(a.read_by_path('config/v4_07_parameter_set_v1.json')))
     cf=dict(core['stock_core'],base_seed_state=seed['base_seed_state']);prewatch=evaluate(cf,load_package(root))
     cp=projection(core['d0_facts'],cutoff=e['cutoff']);cp['trade_date']=target
     for row in cp['rows']:

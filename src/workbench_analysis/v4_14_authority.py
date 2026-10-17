@@ -55,6 +55,7 @@ class ReplayAuthority:
         if target not in dates or dates.index(target)==0:raise ValueError('REPLAY_EXACT_PREVIOUS_MARKET_SESSION_REQUIRED')
         return dates[dates.index(target)-1]
     def bindings(self):return self.current_authority.bindings()
+    def read_by_path(self,path):return self.current_authority.read_by_path(path)
     @staticmethod
     def historical(root):
         """Caller supplies an explicit archived prepromotion repository context."""

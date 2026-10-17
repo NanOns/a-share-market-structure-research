@@ -5,18 +5,22 @@ from functools import lru_cache
 from copy import deepcopy
 from .v4_14_replay_io import ref
 @lru_cache(maxsize=4)
-def state_book(root):return {v['id']:v for v in json.loads((Path(root)/'config/v4_10_machine_vectors_r1_2.json').read_bytes())['vectors']}
-def state_vector(root,name):
+def _state_book_bytes(raw):return {v['id']:v for v in json.loads(raw)['vectors']}
+def state_book(root,authority=None):
+    if authority is None:raise ValueError('ACCEPTED_PG_AUTHORITY_REQUIRED_FOR_STATE_BOOK')
+    return _state_book_bytes(authority.read_by_path('config/v4_10_machine_vectors_r1_2.json'))
+def state_vector(root,name,authority=None):
     from src.v4.research_state import reduce_state
-    return reduce_state(deepcopy(state_book(str(root))[name]['input']))
+    return reduce_state(deepcopy(state_book(str(root),authority)[name]['input']))
 def structure_trace(root,names):
     from .v4_12_structure_io import FrozenContracts
     from .v4_12_ast_runtime import ASTEngine
     c=FrozenContracts(root);book=c.config['machine_vectors'];rows={v['vector_id']:v for v in book['vectors']}
     return [ASTEngine(c.config,{**book['defaults'],**rows[n]['inputs']}).target(rows[n]['target']).value for n in names]
-def rotation_acceptance(root,name='R1B'):
+def rotation_acceptance(root,name='R1B',authority=None):
     from src.sector.v4_08_rotation_vectors import evaluate_rotation_vector
-    book=json.loads((Path(root)/'config/v4_08_rotation_machine_vectors_v2.json').read_bytes())
+    if authority is None:raise ValueError('ACCEPTED_PG_AUTHORITY_REQUIRED_FOR_ROTATION_VECTORS')
+    book=json.loads(authority.read_by_path('config/v4_08_rotation_machine_vectors_v2.json'))
     return evaluate_rotation_vector(next(v['scenario'] for v in book['vectors'] if v['id']==name))
 
 def synthetic_confirmation(publication):

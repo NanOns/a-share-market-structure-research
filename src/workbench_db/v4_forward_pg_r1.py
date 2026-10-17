@@ -91,6 +91,15 @@ class ForwardFactStore:
             rows = pg.execute('SELECT fact_key,payload_sha256 FROM forward_facts WHERE kind=%s ORDER BY fact_key COLLATE "C"', (kind,)).fetchall()
         return [self._binding(kind, key, sha) for key, sha in rows]
 
+    def binding(self, kind, key):
+        if not re.fullmatch('[a-z][a-z0-9_]{0,60}',kind):
+            raise ValueError('FORWARD_FACT_KIND_INVALID')
+        with connection(self.schema, dsn=configured_reader_dsn(), read_only=True) as pg:
+            row=pg.execute('SELECT payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
+                           (kind,key)).fetchone()
+        if row is None:raise ValueError('FORWARD_PG_FACT_NOT_FOUND')
+        return self._binding(kind,key,row[0])
+
     def read(self, binding):
         path = (self.root / binding['path']).resolve()
         if not path.is_relative_to(self.folder):

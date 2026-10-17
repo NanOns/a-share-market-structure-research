@@ -456,6 +456,9 @@ class ProductionV4ResearchReader:
             factor_contract_id=None,state_contract_id='ACCEPTED_OWNER_SCOPED',parameter_set_id=None)
         self.context={**self.manifest['context'],**self.context}
         self.context['trade_date']=self.context['accepted_trade_date']
+        # The accepted snapshot owns exactly one available date until a
+        # calendar relation is bound into this release.
+        self.context['available_trade_dates']=[self.context['trade_date']]
         self.context['release_metadata']=metadata
         self.context.update(scoped_release=bool(joint),operational_release_scope=joint['operational_release_scope'] if joint else [],full_product_release=joint.get('full_product_release',False) if joint else False,joint_release_digest=digest(canonical(joint)) if joint else None)
         self.context['domain_readiness']={
@@ -532,6 +535,7 @@ class ProductionV4ResearchReader:
             trade_date=descriptor['T0'],release_metadata=metadata,database_identity=cluster,
             scoped_release=False,operational_release_scope=[],full_product_release=False,
             joint_release_digest=None,candidate_status=metadata.get('evidence_state','VALIDATION_ONGOING'))
+        self.context['available_trade_dates']=[descriptor['T0']]
         self.context['domain_readiness']={key:dict(released=False,scope='PG_CANDIDATE_SNAPSHOT',debt=[])
             for key in ('stocks','sectors','market','focus','forward','strict_pit','fep')}
 

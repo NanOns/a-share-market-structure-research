@@ -1,6 +1,7 @@
 """Exact immutable contract/source IO for scoped V4-13 engineering."""
 import gzip
 import hashlib
+import io
 import json
 import os
 import tempfile
@@ -37,11 +38,10 @@ def available(value, cutoff):
 
 
 def rows(root, binding):
-    exact(root,binding)
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    path=materialize_bound(Path(root).resolve(),binding)
-    opener=gzip.open if path.suffix=='.gz' else open
-    with opener(path,'rt',encoding='utf8') as stream:
+    payload=exact(root,binding)
+    source=io.BytesIO(payload)
+    binary=gzip.GzipFile(fileobj=source,mode='rb') if binding['path'].endswith('.gz') else source
+    with io.TextIOWrapper(binary,encoding='utf8') as stream:
         for line in stream:
             if line.strip():yield json.loads(line)
 

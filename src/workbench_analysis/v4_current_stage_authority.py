@@ -57,12 +57,47 @@ class CurrentStageAuthority:
         self.allowed_publications=[]
         seal=json.loads(self.read(self.replay_head['bindings']['runtime_seal']))
         self.allowed_publications=seal['replay_publications']
+        self._authority_objects=[self.contract,self.stage,self.head,self.entry,self.replay_head,self.data,self.calendar,
+                                 self.package,*self.contracts.values(),self.predecessor,
+                                 *[json.loads(self.read(binding)) for binding in self.owners.values()]]
     def read(self,binding):
         from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
         source=read_bound(self.root,binding['path'],binding['sha256'])
         if len(source['raw'])!=binding.get('bytes',len(source['raw'])):
             raise ValueError('CURRENT_AUTHORITY_PG_SOURCE_BYTES_MISMATCH')
         return source['raw']
+    def read_by_path(self,path):
+        """Read a contract/source only when an accepted PG authority binds its exact identity."""
+        matches=[];seen=set()
+        def collect(value):
+            if isinstance(value,dict):
+                if {'path','sha256'}<=value.keys() and value['path']==path:
+                    identity=(value['path'],value['sha256'],value.get('bytes',value.get('byte_count')))
+                    if identity not in seen:seen.add(identity);matches.append(value)
+                for child in value.values():collect(child)
+            elif isinstance(value,list):
+                for child in value:collect(child)
+        for value in self._authority_objects:collect(value)
+        if len(matches)==1:return self.read(matches[0])
+        if matches:raise ValueError('AMBIGUOUS_ACCEPTED_PG_BINDING:'+path)
+        # Some scoped replay and label-time contracts are independently
+        # approved pre-publication contracts rather than Head descendants.
+        # Resolve those by exact identity from the PG contract Registry.
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        source=read_path(self.root,path)
+        value=source.get('value')
+        if not isinstance(value,dict) or not value.get('contract_id') or not value.get('version'):
+            raise ValueError('PG_CONTRACT_IDENTITY_REQUIRED:'+path)
+        from workbench_db import v4_native
+        from workbench_db.v4_publication_reader import PgPublicationReader
+        from .contract_registry_pg_v1 import load_current_approved_contract
+        with v4_native.connection('v4',read_only=True) as pg:
+            identity=PgPublicationReader._read_database_identity(pg)
+            registered=load_current_approved_contract(pg,value['contract_id'],value['version'],path,
+                                                       expected_database_identity=identity)
+        if registered.raw_content!=source['raw']:
+            raise ValueError('PG_APPROVED_CONTRACT_SOURCE_BYTES_MISMATCH:'+path)
+        return registered.raw_content
     def bindings(self):
         result=dict(current_v4_14=self.replay_head_ref,stage=self.stage_ref,data=self.data_ref,calendar=self.calendar_ref,membership=self.membership_ref,identity=self.identity_ref,owners=self.owners,contract_package=self.package_ref,external_audit=self.external_audit_ref)
         if self.is_v15:result.update(current_stage_head=self.current_head,replay_predecessor_v4_14=self.replay_head_ref,current_authority_contract=self.contract_ref)

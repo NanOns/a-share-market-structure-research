@@ -9,6 +9,17 @@ from .operational_daily_server_v1 import make_daily_handler, PREFIX
 from .core_product_bff_r1 import CoreProductBFFR1, product_manifest_bindings
 from workbench_analysis.operational_successor_v1 import accepted_api
 
+def _collect_local_binding_paths(root,value,paths):
+    """Collect file inputs while treating inline PG descriptors as locators."""
+    if isinstance(value,dict):
+        if value.get('pg_descriptor') is not None:
+            _collect_local_binding_paths(root,value['pg_descriptor'],paths)
+            return
+        if value.get('path') and value.get('sha256'):paths.add(Path(root)/value['path'])
+        for item in value.values():_collect_local_binding_paths(root,item,paths)
+    elif isinstance(value,list):
+        for item in value:_collect_local_binding_paths(root,item,paths)
+
 def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None,operational_owner_index_root=None,static_root=None):
     root=Path(root);static=Path(static_root) if static_root is not None else root/'src/workbench_service/static';base=make_daily_handler(root,jobs,static_root=static) if static_root is not None else make_daily_handler(root,jobs);lock=threading.RLock();published={}
     chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
@@ -20,18 +31,15 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         authority=root/'config/core_product_read_authority_r1.json'
         read_index_r2_authority=root/'config/v4_read_index_authority_r2.json'
         focus_authority=root/'config/core_product_focus_read_authority_r2.json'
-        owner_authority=root/'config/v4_operational_owner_pg_closeout_r1.json'
         api=accepted_api(root);paths=set();external_paths=set()
+        def collect(value):_collect_local_binding_paths(root,value,paths)
         if operational_owner_index_root is not None:
             api.pg_owner_workspace_root=operational_owner_index_root
-        def collect(x):
-            if isinstance(x,dict):
-                if x.get('path') and x.get('sha256'):paths.add(root/x['path'])
-                for v in x.values():collect(v)
-            elif isinstance(x,list):
-                for v in x:collect(v)
         def collect_external(base_root,x):
             if isinstance(x,dict):
+                if x.get('pg_descriptor') is not None:
+                    collect_external(base_root,x['pg_descriptor'])
+                    return
                 if x.get('path') and x.get('sha256'):
                     from workbench_analysis.r43_owner_replay import checked
                     external_paths.add(checked(base_root,x))
@@ -54,7 +62,6 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
             catalog=load_catalog(root,api.candidate);collect(catalog)
             for binding in catalog['dates'].values():
                 collect(json.loads((root/binding['path']).read_bytes()))
-        if owner_authority.exists():collect(json.loads(owner_authority.read_bytes()))
         identity_head=root/'data/v4/V4_DATA_ACCEPTED_HEAD.json'
         paths.add(identity_head);collect(json.loads(identity_head.read_bytes())['identity'])
         collect(json.loads((root/api.candidate['registry']['path']).read_bytes()))
@@ -77,9 +84,9 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         if native is not None:
             collect(native)
             cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
-            identities=[json.loads((root/binding['path']).read_bytes())['database_identity']
+            identities=[entry['descriptor']['pg_descriptor']['database_identity']
                         for owners in native['owners'].values() for entry in owners.values()
-                        for binding in [entry['descriptor'] if getattr(api,'embedded_pg_owner_authority',False) else entry]]
+                        if entry['descriptor'].get('pg_descriptor') is not None]
             if not identities or any(value!=identities[0] for value in identities):
                 raise RuntimeError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
             cache['operational_database_identity']=identities[0]
@@ -102,7 +109,6 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         signed=[root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',
                 root/'config/core_product_read_authority_r1.json',
                 root/'config/core_product_focus_read_authority_r2.json',
-                root/'config/v4_operational_owner_pg_closeout_r1.json',
                 root/'config/v4_read_index_authority_r1.json',
                 root/'config/v4_read_index_authority_r2.json',
                 root/'config/v4_current_native_joint_authority_v3.json']
@@ -111,27 +117,27 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
             external_roots='\0'.join(str(path or '') for path in (chart_history_index_root,market_fact_index_root,operational_owner_index_root)).encode()
             return hashlib.sha256(external_roots+b'\0'+b''.join(p.read_bytes() if p.exists() else b'' for p in signed)).hexdigest()
         while True:
-            token=signature();prior=published
+            generation_signature=signature();prior=published
             changed=any(not p.exists() or (p.stat().st_size,p.stat().st_mtime_ns)!=stat
                         for p,stat in prior.get('sources',{}).items())
-            if token==prior.get('signature') and not changed:return prior
+            if generation_signature==prior.get('signature') and not changed:return prior
             with lock:
-                flight=flights.get(token)
+                flight=flights.get(generation_signature)
                 leader=flight is None
-                if leader:flight=threading.Event();flights[token]=flight
+                if leader:flight=threading.Event();flights[generation_signature]=flight
             if not leader:
                 if not flight.wait(30):raise RuntimeError('PRODUCT_BIND_TIMEOUT')
                 continue
             try:
-                fresh=build(token)
+                fresh=build(generation_signature)
                 # Never install a generation assembled across a publication or source change.
-                stable=signature()==token and all(p.exists() and
+                stable=signature()==generation_signature and all(p.exists() and
                     (p.stat().st_size,p.stat().st_mtime_ns)==stat for p,stat in fresh['sources'].items())
                 if stable:
                     with lock:published=fresh
                     return fresh
             finally:
-                with lock:flights.pop(token,None);flight.set()
+                with lock:flights.pop(generation_signature,None);flight.set()
 
     class Handler(base):
         PREFLIGHT_PRODUCT_CONTEXT=True
@@ -179,7 +185,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                     # Each request owns its date snapshot/cache container. Immutable
                     # cached values may be shared; dated readers never share mutable state.
                     bff=copy(cache['bff']);api=copy(bff.api);api.cache=dict(getattr(api,"cache",{}));bff.api=api
-                    if path!='/api/v4/context' and hasattr(api,'token') and params.get('context_token',[''])[0]!=api.token:
+                    expected_context=api.context().get('context_token') if path!='/api/v4/context' else None
+                    if expected_context is not None and params.get('context_token',[''])[0]!=expected_context:
                         raise ValueError('CONTEXT_TOKEN_MISMATCH')
                     current_joint=cache.get('joint')
                     joint_token=hashlib.sha256(json.dumps(current_joint,sort_keys=True).encode()).hexdigest() if current_joint else None

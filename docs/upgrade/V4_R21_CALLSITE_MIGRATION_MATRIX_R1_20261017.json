@@ -6866,9 +6866,15 @@
         "status": "PROPOSED_REQUIRES_DOMAIN_FIELD_RECONCILIATION"
       },
       "acceptance_evidence": null,
-      "blocker": "No per-callsite migration evidence recorded yet.",
+      "blocker": "The production Operational Head still stores file-backed candidate and only the embedded-PG-owner branch can read this manifest; current Head is not migrated and no compliant PG Reader DSN is configured.",
       "baseline_function": "OperationalSuccessorReaderV1.__init__",
-      "migration_evidence": null,
+      "migration_evidence": {
+        "batch": "R21-R4-operational-owner-no-file-fallback-r22",
+        "code_path": "src/workbench_analysis/operational_successor_v1.py::OperationalSuccessorReaderV1.__init__ -> v4_operational_owner_authority_v2.load -> PostgreSQL authority_manifest",
+        "bff_path": "src/workbench_service/core_product_server_r1.py ignores inline PG descriptor paths for local file cache/stat and reads database_identity from the accepted Head descriptor bytes",
+        "positive_and_negative_tests": "tests/test_v4_embedded_owner_reader_integration.py and tests/test_v4_bff_pg_descriptor_binding.py; fixture PG owner read path and legacy-head fallback rejection",
+        "status_boundary": "PARTIAL_CODE_WIRING; current accepted Head has no native_pg_owner_authority, live Reader DSN is unavailable, and baseline row remains OPEN"
+      },
       "reference_evidence": [
         {
           "reference_id": "V4-NCFR-0160151",
@@ -16766,6 +16772,31 @@
         "p1_formally_remaining": 266,
         "status": "BFF_APPROVAL_PROOF_BOUND_TO_EXACT_HEAD_ACCEPTED_AT_OFFLINE; formal baseline unchanged.",
         "next": "Continue actual business and Owner callsite code migrations and test against live accepted publication when the compliant Reader identity is available."
+      },
+      {
+        "batch_id": "R21-R4-operational-owner-no-file-fallback-r22",
+        "files": [
+          "src/workbench_analysis/operational_successor_v1.py",
+          "src/workbench_service/core_product_server_r1.py",
+          "tests/test_v4_embedded_owner_reader_integration.py",
+          "tests/test_v4_bff_pg_descriptor_binding.py",
+          "docs/upgrade/V4_R21_R4_OPERATIONAL_OWNER_PG_NO_FALLBACK_R22_20261017.md"
+        ],
+        "callsite_ids": [
+          "V4-BCA-R2-ce030238606ae3e34b44",
+          "V4-BCA-R2-5fc637717724bb649d31",
+          "V4-BCA-R2-cb66f2ca511317f7b881"
+        ],
+        "evidence": [
+          "The current operational Owner Reader now accepts the Head-embedded PG authority manifest only; a legacy Head without that binding fails closed instead of opening config/v4_operational_owner_pg_closeout_r1.json.",
+          "Core Product BFF cache collection treats inline PG descriptors as locators and does not stat or parse their descriptor path; database identity comes from the descriptor carried by the accepted Head.",
+          "The canonical current operational Head in this checkout has no native_pg_owner_authority binding, and config/v4_operational_owner_pg_closeout_r1.json is absent; complete live Owner reads remain blocked pending an accepted PG-backed Head and compliant Reader DSN."
+        ],
+        "verification": "13 focused Owner-manifest, Reader fallback and BFF descriptor-path tests passed; Python compile and diff checks passed. All PG cases are fixtures; no live PG read/write.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PARTIAL_OWNER_READER_CODE_WIRING; current accepted Head migration and live PG readback remain open.",
+        "next": "Migrate the current operational Head and Owner payloads into the approved PG publication transaction, then continue exact daily, descriptor and other-business callsites. Keep 266 baseline items open until live per-ID reconciliation."
       }
     ]
   }

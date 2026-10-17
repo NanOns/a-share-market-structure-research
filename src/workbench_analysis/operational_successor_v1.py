@@ -80,7 +80,7 @@ def validate(root, candidate):
 class OperationalSuccessorReaderV1(CandidateReadV2):
     def __init__(self,root,candidate):
         self.root=Path(root);self.candidate=candidate;validate(root,candidate)
-        self.token=digest(candidate);self.cache={}
+        self.context_digest=digest(candidate);self.cache={}
         self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
         self.user_authorized_cutover=True;self.independent_external_acceptance=False
         self.domain_disposition={'rotation':'VALIDATION_ONGOING','forward':'VALIDATION_ONGOING'}
@@ -89,21 +89,28 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         if self.embedded_pg_owner_authority or candidate.get('exact_daily_adjustment_contract'):
             self.pg_owner_authority=load(root,candidate)
         else:
-            from workbench_db.v4_operational_owner_pg_closeout import load_authority
-            self.pg_owner_authority=load_authority(root,candidate,self.token)
+            # A legacy authority JSON is valid only as an explicit one-time
+            # predecessor ingress while preparing a successor. Runtime reads
+            # must use the manifest embedded in the accepted Head.
+            raise ValueError('PG_OPERATIONAL_OWNER_EMBEDDED_AUTHORITY_REQUIRED_NO_FALLBACK')
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
         day=self.candidate['accepted_trade_date']
         current=json.loads(checked(self.root,self.candidate['membership_snapshot']).read_bytes())
-        return dict(metadata(current,day),contract_id=CONTRACT,context_token=self.token,publication_id=self.token,
+        return dict(metadata(current,day),contract_id=CONTRACT,context_token=self.context_digest,publication_id=self.context_digest,
                     accepted_trade_date=day,data_cutoff_date=day,available_trade_dates=self.candidate['published_sessions'],
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,
                     read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY',production_accepted=True,
                     independent_external_acceptance=False,external_domain_disposition=self.domain_disposition,
                     rotation_validation_state='VALIDATION_ONGOING')
 
-    def read(self,domain,day,token):
+    @property
+    def token(self):
+        """Compatibility name used by HTTP adapters for the context digest."""
+        return self.context_digest
+
+    def read(self,domain,day,context_token):
         # Reuse frozen field/forward slicing in a private per-instance date scope.
         original=CandidateReadV2.read
         scope=dict(original.__globals__,DATES=self.candidate['published_sessions'])
@@ -126,7 +133,7 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                         content=apply_dependent(root,self.candidate,day,selected,content,
                             workspace_root=getattr(self,'pg_owner_workspace_root',None))
                     return content
-                return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.token,day,selected,binding,
+                return pg_read(root,self.pg_owner_authority['owners'][day][selected],self.context_digest,day,selected,binding,
                     workspace_root=getattr(self,'pg_owner_workspace_root',None))
             scope['rows']=pg_rows
             # Cached owners were fully verified by pg_rows on first access.
@@ -149,13 +156,13 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                     else:
                         attest_cached(self.root,self.pg_owner_authority['owners'][day][name],name,self.candidate['owners'][day][name],
                             workspace_root=getattr(self,'pg_owner_workspace_root',None))
-        return FunctionType(original.__code__,scope)(self,domain,day,token)
+        return FunctionType(original.__code__,scope)(self,domain,day,context_token)
 
-    def dispatch(self,url,token=None):
+    def dispatch(self,url,context_token=None):
         from urllib.parse import urlparse,parse_qs,urlencode
         parsed=urlparse(url);q=parse_qs(parsed.query,keep_blank_values=True)
         if 'trade_date' not in q:q['trade_date']=[self.candidate['accepted_trade_date']]
-        return super().dispatch(parsed.path+'?'+urlencode(q,doseq=True),token)
+        return super().dispatch(parsed.path+'?'+urlencode(q,doseq=True),context_token)
 
 
 def accepted_api(root):

@@ -81,6 +81,59 @@ def test_baostock_download_root_uses_explicit_environment_yaml_precedence(tmp_pa
     assert resolve_baostock_download_root(tmp_path,explicit)==explicit.resolve()
 
 
+def test_continuous_maintenance_capture_readers_use_configured_snapshot_roots(tmp_path,monkeypatch):
+    import hashlib
+    import json
+    from scripts import run_v4_continuous_data_maintenance as maintenance
+
+    tdx_root=tmp_path/'custom-tdx-snapshots'
+    bao_root=tmp_path/'custom-bao-cache'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'tdx:\n  snapshot_root: "{tdx_root.as_posix()}"\n'
+        f'baostock:\n  cache_root: "{bao_root.as_posix()}"\n',encoding='utf-8')
+    monkeypatch.setattr(maintenance,'ROOT',tmp_path)
+    day='2026-10-16'
+    bao_folder=bao_root/'baostock'/day.replace('-','')/'sha256-configured'
+    bao_folder.mkdir(parents=True)
+    bao_record={'trade_date':day,'provider_date':day,'status':'BAOSTOCK_DAILY_SNAPSHOT_READY',
+                'received_at':'2026-10-16T17:00:00+08:00','daily_rows':[{'code':'sh.600000'}],
+                'adjustment_factor_rows':[]}
+    (bao_folder/'daily_update.json').write_text(json.dumps(bao_record),encoding='utf-8')
+
+    package=b'configured official TDX package'
+    package_path=tdx_root/'tdx'/day.replace('-','')/'capture-1'/'package.zip'
+    package_path.parent.mkdir(parents=True)
+    package_path.write_bytes(package)
+    tdx_receipt={'target_date':day,'observed_at':'2026-10-16T16:00:00+08:00',
+                 'status':'TDX_PACKAGE_READY','download':{'path':str(package_path),
+                 'sha256':hashlib.sha256(package).hexdigest()},'zip_validation':{'crc_integrity':'PASS'}}
+    receipt_path=package_path.parent/'capture_receipt.json'
+    receipt_path.write_text(json.dumps(tdx_receipt),encoding='utf-8')
+
+    assert maintenance.discover_baostock_daily_capture(day)==bao_record
+    assert maintenance.discover_official_tdx_capture(day)==tdx_receipt
+
+
+def test_dm01_lifecycle_reader_selects_baostock_snapshot_from_configured_cache(tmp_path,monkeypatch):
+    import json
+    from scripts import build_v4_dm01_lifecycle_snapshot as lifecycle
+
+    cache=tmp_path/'relocated-cache'
+    (tmp_path/'config').mkdir()
+    (tmp_path/'config/paths.yaml').write_text(
+        f'baostock:\n  cache_root: "{cache.as_posix()}"\n',encoding='utf-8')
+    monkeypatch.setattr(lifecycle,'ROOT',tmp_path)
+    day='2026-10-16';snapshot_id='sha256-'+('a'*64)
+    folder=cache/'baostock'/day.replace('-','')/snapshot_id
+    folder.mkdir(parents=True)
+    record={'trade_date':day,'provider_date':day,'status':'BAOSTOCK_DAILY_SNAPSHOT_READY',
+            'daily_rows':[{'code':'sh.600000'}],'adjustment_factor_rows':[],
+            'snapshot_id':snapshot_id}
+    path=folder/'daily_update.json';path.write_text(json.dumps(record),encoding='utf-8')
+    assert lifecycle.select_baostock_snapshot(day,snapshot_id)==(record,path)
+
+
 def test_dm01_source_capture_entrypoints_resolve_central_roots(tmp_path):
     from scripts.capture_dm01_a01_r3_tdx_package import capture_roots
     from workbench_analysis.dm01_corrected_source_capture_v2 import resolve_source_paths
@@ -124,6 +177,20 @@ def test_live_baostock_acceptance_adapter_uses_resolved_roots():
     assert "resolve_tdx_root(root)" in source
     assert "resolve_baostock_request_ledger(root)" in source
     assert "D:/new_tdx" not in source
+
+
+def test_dm01_baostock_runtime_acceptance_uses_pg_calendar_and_configured_ledger(tmp_path):
+    from scripts.accept_v4_dm01_baostock_runtime import _target_is_official_session
+    assert _target_is_official_session(
+        tmp_path, '2026-10-16', sessions_reader=lambda root: ['2026-10-15', '2026-10-16'],
+    )
+    assert not _target_is_official_session(
+        tmp_path, '2026-09-24', sessions_reader=lambda root: ['2026-09-24'],
+    )
+    source=(Path(__file__).resolve().parents[2]/'scripts/accept_v4_dm01_baostock_runtime.py').read_text(encoding='utf-8')
+    assert 'resolve_baostock_request_ledger(ROOT, args.ledger)' in source
+    assert '_target_is_official_session(ROOT, args.target_date)' in source
+    assert 'reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json' not in source
 
 
 def test_dm01_runtime_entrypoints_resolve_tdx_root_from_central_config():

@@ -20,3 +20,114 @@ def test_daily_orchestrator_loads_gbbq_probe_from_bound_pg_stage(monkeypatch, tm
 
     assert actual["status"] == "REUSE_ACCEPTED_GBBQ_SNAPSHOT"
     assert actual["accepted_snapshot_id"] == "sha256-accepted"
+
+
+def test_continuous_reader_resolves_one_date_stage_directly_from_pg(monkeypatch, tmp_path):
+    import json
+    from contextlib import contextmanager
+    from scripts import run_v4_continuous_data_maintenance as maintenance
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+
+    day = "2026-10-16"
+    payload = {"contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1", "trade_date": day, "status": "READY"}
+    record = {"contract_id": state.CONTRACT, "contract_version": state.VERSION,
+              "trade_date": day, "stage": "lifecycle_snapshot",
+              "payload_sha256": digest(canonical(payload)), "payload": payload}
+    raw = canonical(record).decode("utf-8")
+    identity = {"database": "market_research", "database_oid": 42, "host": "127.0.0.1", "port": 5432}
+
+    class Cursor:
+        def __init__(self, rows): self.rows = rows
+        def fetchone(self): return self.rows[0] if self.rows else None
+        def fetchall(self): return self.rows
+
+    class FakePg:
+        def execute(self, query, params=None):
+            if "current_database()" in query: return Cursor([(identity["database"], identity["database_oid"], identity["host"], identity["port"])])
+            assert params == (state.KIND, day, "lifecycle_snapshot")
+            return Cursor([(raw, digest(raw.encode("utf-8")))])
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield FakePg()
+
+    monkeypatch.setattr(state, "_expected_identity", lambda: identity)
+    monkeypatch.setattr(state.v4_native, "configured_reader_dsn", lambda: "controlled-test-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setattr(maintenance, "ROOT", tmp_path)
+
+    assert maintenance.discover_lifecycle_snapshot(day) == payload
+
+
+def test_continuous_pg_stage_reader_fails_closed_on_duplicate_facts(monkeypatch, tmp_path):
+    import json
+    from contextlib import contextmanager
+    import pytest
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+
+    day = "2026-10-16"
+    payload = {"trade_date": day, "stage": "lifecycle_snapshot"}
+    record = {"contract_id": state.CONTRACT, "contract_version": state.VERSION,
+              "trade_date": day, "stage": "lifecycle_snapshot",
+              "payload_sha256": digest(canonical(payload)), "payload": payload}
+    raw = canonical(record).decode("utf-8")
+    identity = {"database": "market_research", "database_oid": 42, "host": "127.0.0.1", "port": 5432}
+
+    class Cursor:
+        def __init__(self, rows): self.rows = rows
+        def fetchone(self): return self.rows[0] if self.rows else None
+        def fetchall(self): return self.rows
+
+    class FakePg:
+        def execute(self, query, params=None):
+            if "current_database()" in query:
+                return Cursor([(identity["database"], identity["database_oid"], identity["host"], identity["port"])])
+            return Cursor([(raw, digest(raw.encode("utf-8"))), (raw, digest(raw.encode("utf-8")))])
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield FakePg()
+
+    monkeypatch.setattr(state, "_expected_identity", lambda: identity)
+    monkeypatch.setattr(state.v4_native, "configured_reader_dsn", lambda: "controlled-test-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_NOT_UNIQUE"):
+        state.read_unique_stage(tmp_path, trade_date=day, stage="lifecycle_snapshot")
+
+
+def test_continuous_bootstrap_baselines_are_loaded_from_pg_stage_facts(monkeypatch):
+    from scripts import run_v4_continuous_data_maintenance as maintenance
+    facts = {
+        "phase0_acceptance": {"phase0_status": "FULL_PASS"},
+        "v401_acceptance": {"required_scope_status": "PASS", "status": "PASS"},
+        "v401_postcheck": {"status": "PASS"},
+        "v402_acceptance": {"external_acceptance": "EXTERNALLY_ACCEPTED", "required_scope_result": "PASS"},
+    }
+    calls = []
+
+    def read_stage(root, *, trade_date, stage):
+        calls.append((trade_date, stage))
+        return facts[stage]
+
+    monkeypatch.setattr(maintenance, "sha", lambda _path: maintenance.TDX_ARCHIVE_SHA256)
+    monkeypatch.setattr("workbench_db.v4_dm01_stage_state_pg_r1.read_unique_stage", read_stage)
+    result = maintenance.accepted_stage_bindings()
+
+    assert calls == [(maintenance.BASE_CUTOFF, name) for name in facts]
+    assert result["phase0"]["authority"] == "PG_FORWARD_FACT"
+    assert result["v4_02_accepted_head"]["external_acceptance"] == "EXTERNALLY_ACCEPTED"
+    assert result["accepted_stage_facts"]["v402_acceptance"]["payload"] == facts["v402_acceptance"]
+
+
+def test_continuous_bootstrap_does_not_fallback_when_baseline_stage_fact_is_missing(monkeypatch):
+    import pytest
+    from scripts import run_v4_continuous_data_maintenance as maintenance
+
+    def read_stage(_root, *, trade_date, stage):
+        if stage == "v402_acceptance":
+            raise ValueError("DM01_STAGE_STATE_NOT_UNIQUE")
+        return {"phase0_status": "FULL_PASS", "required_scope_status": "PASS", "status": "PASS"}
+
+    monkeypatch.setattr("workbench_db.v4_dm01_stage_state_pg_r1.read_unique_stage", read_stage)
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_NOT_UNIQUE"):
+        maintenance.accepted_stage_bindings()

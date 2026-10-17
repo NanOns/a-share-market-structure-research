@@ -14,6 +14,10 @@ VERSION = "1.0.0"
 FOLDER = "data/v4/dm01_stage_state_pg_r1"
 KIND = "stage_state"
 STAGES = frozenset({
+    "phase0_acceptance",
+    "v401_acceptance",
+    "v401_postcheck",
+    "v402_acceptance",
     "gbbq_revision_probe",
     "lifecycle_snapshot",
     "special_phase_manifest",
@@ -135,5 +139,41 @@ def read_stage(root, binding: dict, *, trade_date: str, stage: str) -> dict:
             or record.get("stage") != stage
             or not isinstance(payload, dict)
             or digest(canonical(payload)) != record.get("payload_sha256")):
+        raise ValueError("DM01_STAGE_STATE_BINDING_MISMATCH")
+    return payload
+
+
+def read_unique_stage(root, *, trade_date: str, stage: str) -> dict:
+    """Resolve one date/stage fact directly in PG; duplicate revisions fail closed."""
+    day = _day(trade_date)
+    if stage not in STAGES:
+        raise ValueError("DM01_STAGE_STATE_STAGE_INVALID")
+    project_root = Path(root).resolve()
+    folder = (project_root / FOLDER).resolve()
+    if project_root.drive.upper() != "G:" or not folder.is_relative_to(project_root):
+        raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
+    schema = v4_native.workspace_schema(folder, "forward")
+    expected = _expected_identity()
+    with v4_native.connection(schema, read_only=True, dsn=v4_native.configured_reader_dsn()) as pg:
+        if ForwardFactStore._database_identity(pg) != expected:
+            raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
+        rows = pg.execute(
+            """SELECT payload,payload_sha256 FROM forward_facts
+                 WHERE kind=%s
+                   AND payload::jsonb->>'trade_date'=%s
+                   AND payload::jsonb->>'stage'=%s
+                 ORDER BY fact_key COLLATE \"C\" LIMIT 2""",
+            (KIND, day, stage),
+        ).fetchall()
+    if len(rows) != 1:
+        raise ValueError("DM01_STAGE_STATE_NOT_UNIQUE")
+    raw, expected_sha = rows[0]
+    if digest(raw.encode("utf-8")) != expected_sha:
+        raise ValueError("DM01_STAGE_STATE_PG_PAYLOAD_DIGEST_MISMATCH")
+    record = json.loads(raw)
+    payload = record.get("payload") if isinstance(record, dict) else None
+    if (record.get("contract_id") != CONTRACT or record.get("contract_version") != VERSION
+            or record.get("trade_date") != day or record.get("stage") != stage
+            or not isinstance(payload, dict) or digest(canonical(payload)) != record.get("payload_sha256")):
         raise ValueError("DM01_STAGE_STATE_BINDING_MISMATCH")
     return payload

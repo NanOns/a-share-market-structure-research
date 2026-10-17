@@ -16690,6 +16690,24 @@
         "p1_formally_remaining": 266,
         "status": "APPROVAL_AND_ACCEPTED_IDENTITY_SQL_GUARD_STRENGTHENED_OFFLINE; database trigger acceptance remains open.",
         "next": "Continue other-business and Owner callsite implementations and run approved catalog/migration validation when a compliant PG environment is available."
+      },
+      {
+        "batch_id": "R21-R4-contract-proof-bff-edge-r18",
+        "files": [
+          "src/workbench_service/v4_server.py",
+          "tests/test_v4_server_pg_candidate_mode.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R18.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "The explicit PG candidate BFF now rejects a Reader payload without contract proofs and validates each proof's exact publication, trade date, namespace, version, raw digest, acceptance and approval identifiers before responding.",
+          "The HTTP regression asserts that the returned candidate context exposes the verified contract approval proof alongside publication identity."
+        ],
+        "verification": "Focused server candidate, publication reader/contract and Owner BFF suites passed. Adapter fixtures only; no live PG BFF request.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "PG_CANDIDATE_BFF_REQUIRES_PUBLICATION_BOUND_CONTRACT_PROOF_OFFLINE; formal baseline unchanged.",
+        "next": "Continue exact DM-01 and business/Owner callsites, then verify the connected BFF against a real accepted PG publication."
       }
     ]
   }

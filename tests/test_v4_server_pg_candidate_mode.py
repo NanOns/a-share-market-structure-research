@@ -36,6 +36,15 @@ class _Adapter:
         return {"candidate_only": True, "endpoint": endpoint, "context": {
             "context_token": kwargs["expected_context_token"],
             "model_namespace_id": kwargs["model_namespace_id"],
+            "publication_id": "pub-20261016-r1",
+            "trade_date": "2026-10-16",
+            "contracts": {"V4_PUBLICATION_TEST_CONTRACT": {
+                "version": "r1", "raw_sha256": "a" * 64,
+                "schema_version": "1", "namespace": kwargs["model_namespace_id"],
+                "publication_id": "pub-20261016-r1", "trade_date": "2026-10-16",
+                "accepted_at": "2026-10-16T16:00:00+00:00", "approved_by": "reviewer",
+                "approval_ref": "approval-1", "approval_source_revision": "approval-source-r1",
+            }},
             "database_identity": {"database": "market_research", "database_oid": 16384,
                                   "host": "127.0.0.1", "port": 5432},
             "module_results": {
@@ -113,6 +122,10 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
             assert body["workspace_identity"]["contract_id"] == "V4_PG_WORKSPACE_NAMESPACE_ID_R1"
             assert body["workspace_identity"]["purpose"] == "publication"
             assert body["workspace_mapping"]["model_namespace_id"] == "workspace-main"
+            proof=body["context"]["contracts"]["V4_PUBLICATION_TEST_CONTRACT"]
+            assert proof["publication_id"] == body["context"]["publication_id"]
+            assert proof["trade_date"] == body["context"]["trade_date"]
+            assert proof["approval_ref"] == "approval-1"
             assert str(tmp_path) not in json.dumps(body["workspace_identity"])
         assert [call[0] for call in adapter.calls] == [f"/api/v4/current/{page}" for page in pages]
         assert all(call[1] == {
@@ -126,6 +139,13 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
         adapter.read_endpoint=lambda endpoint, **kwargs: {
             'candidate_only':True,'context':{'context_token':kwargs['expected_context_token'],
                'model_namespace_id':'other-workspace',
+               'publication_id':'pub-20261016-r1','trade_date':'2026-10-16',
+               'contracts':{'V4_PUBLICATION_TEST_CONTRACT':{
+                   'version':'r1','raw_sha256':'a'*64,'schema_version':'1','namespace':'other-workspace',
+                   'publication_id':'pub-20261016-r1','trade_date':'2026-10-16',
+                   'accepted_at':'2026-10-16T16:00:00+00:00','approved_by':'reviewer',
+                   'approval_ref':'approval-1','approval_source_revision':'approval-source-r1',
+               }},
                'database_identity':{'database':'market_research','database_oid':16384,'host':'127.0.0.1','port':5432},
                'module_results':{}},
         }
@@ -188,3 +208,12 @@ def test_candidate_server_factory_requires_explicit_database_identity(monkeypatc
     assert adapter.reader.expected_database_identity == {
         "database": "market_research", "database_oid": 16384, "host": "127.0.0.1", "port": 5432,
     }
+
+
+def test_candidate_bff_rejects_missing_contract_approval_proof():
+    from workbench_db.v4_publication_reader import PublicationReadError
+
+    with pytest.raises(PublicationReadError, match="PG_CANDIDATE_CONTRACT_PROOF_REQUIRED"):
+        v4_server._require_candidate_contract_proofs({
+            "publication_id": "pub-1", "trade_date": "2026-10-16", "model_namespace_id": "workspace-main",
+        })

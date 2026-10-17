@@ -12,6 +12,31 @@ from .research_bff import ResearchBFF
 from .joint_release import load as joint_load,checked_path,recover
 
 
+def _require_candidate_contract_proofs(context):
+    """Require exact publication-bound contract approval evidence at the BFF edge."""
+    from workbench_db.v4_publication_reader import PublicationReadError
+
+    contracts=context.get('contracts') if isinstance(context,dict) else None
+    if not isinstance(contracts,dict) or not contracts:
+        raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_REQUIRED')
+    publication_id=context.get('publication_id')
+    trade_date=context.get('trade_date')
+    namespace=context.get('model_namespace_id')
+    for contract_id,proof in contracts.items():
+        digest=proof.get('raw_sha256') if isinstance(proof,dict) else None
+        if (not isinstance(contract_id,str) or not contract_id
+                or not isinstance(proof,dict)
+                or not isinstance(digest,str) or len(digest)!=64
+                or any(ch not in '0123456789abcdef' for ch in digest)
+                or proof.get('publication_id')!=publication_id
+                or proof.get('trade_date')!=trade_date
+                or proof.get('namespace')!=namespace
+                or not proof.get('version') or not proof.get('schema_version')
+                or not proof.get('accepted_at') or not proof.get('approved_by')
+                or not proof.get('approval_ref') or not proof.get('approval_source_revision')):
+            raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
+
+
 def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, workspace_mapping_registry_path=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
@@ -165,6 +190,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                         )
                         context=payload.get('context') if isinstance(payload,dict) else None
                         if isinstance(context,dict):
+                            _require_candidate_contract_proofs(context)
                             if context.get('model_namespace_id') != workspace_mapping['model_namespace_id']:
                                 raise WorkspaceOwnerMappingError('WORKSPACE_PUBLICATION_NAMESPACE_MISMATCH')
                             if context.get('database_identity') != workspace_mapping['database_identity']:

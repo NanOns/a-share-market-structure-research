@@ -94,18 +94,14 @@ def _tdx_gbbq_source_path(project_root=None):
 
 
 def _accepted_trade_date(root):
-    """Resolve the last-good trade date from the selected authority source."""
+    """Resolve the last-good trade date from the accepted PG calendar Head."""
     mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
-    if mode=='PG':
-        from workbench_db.v4_market_calendar_reader_r1 import from_environment
-        calendar=from_environment().calendar()
-        if calendar.get('status')!='ACCEPTED' or calendar.get('source')!='PG_ACCEPTED_PUBLICATION_HEAD':
-            raise ValueError('PG_ACCEPTED_PUBLICATION_HEAD_REQUIRED')
-        return calendar['accepted_trade_date']
-    if mode!='FILE':
-        raise ValueError('MARKET_CALENDAR_SOURCE_UNSUPPORTED')
-    head=json.loads((Path(root)/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
-    return head['accepted_trade_date']
+    if mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+    from workbench_db.v4_market_calendar_reader_r1 import from_environment
+    calendar=from_environment().calendar()
+    if calendar.get('status')!='ACCEPTED' or calendar.get('source')!='PG_ACCEPTED_PUBLICATION_HEAD':
+        raise ValueError('PG_ACCEPTED_PUBLICATION_HEAD_REQUIRED')
+    return calendar['accepted_trade_date']
 
 
 def _pg_source_ingest_plan_diagnostic(root, day, result):

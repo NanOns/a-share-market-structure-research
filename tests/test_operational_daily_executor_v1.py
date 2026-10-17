@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 import workbench_analysis.operational_daily_executor_v1 as module
 from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
+from daily_contract_pg_fixture import install_calendar as install_daily_calendar_pg_fixture
 
 
 def test_daily_runtime_contract_rejects_file_authority_mode(monkeypatch):
@@ -37,6 +38,15 @@ def test_daily_runtime_contract_reads_approved_registry_with_identity(monkeypatc
     assert result['gbbq_relative_path']=='T0002/hq_cache/gbbq'
     assert calls==[('V4_DAILY_TDX_READONLY_SOURCE_R1','1.1.0','daily_ns',
                     {'expected_database_identity':identity})]
+
+
+def test_accepted_trade_date_rejects_file_head_authority(tmp_path,monkeypatch):
+    (tmp_path/'data/v4').mkdir(parents=True)
+    (tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').write_text(
+        '{"accepted_trade_date":"2026-10-16"}',encoding='utf-8')
+    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
+    with pytest.raises(ValueError,match='MARKET_CALENDAR_PG_ONLY'):
+        module._accepted_trade_date(tmp_path)
 
 
 @pytest.mark.parametrize('downloaded,expected',['2026-10-09T17:45:00+08:00,2'.split(','),
@@ -79,7 +89,7 @@ def test_execute_sources_uses_pg_acceptance_and_freezes_its_binding(tmp_path,mon
     schema.write_text('{}')
     for key in ('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','V4_DAILY_CONTRACT_SOURCE'):
         monkeypatch.delenv(key,raising=False)
-    monkeypatch.setenv('V4_MARKET_CALENDAR_SOURCE','FILE')
+    install_daily_calendar_pg_fixture(monkeypatch,prior)
     monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx'))
     monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'data/v4/snapshots'))
     monkeypatch.setattr(module,'source_readiness',lambda *_a,**_k:{'time_eligible':True})

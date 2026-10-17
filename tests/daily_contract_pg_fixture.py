@@ -22,3 +22,15 @@ def install(monkeypatch, executor):
         return contract
 
     monkeypatch.setattr(executor, "_load_daily_contract_from_pg", load)
+
+
+def install_calendar(monkeypatch, accepted_trade_date):
+    """Supply one accepted PG publication calendar for controlled executor tests."""
+    from types import SimpleNamespace
+    from workbench_db import v4_market_calendar_reader_r1 as calendar_reader
+
+    calendar={"status":"ACCEPTED","source":"PG_ACCEPTED_PUBLICATION_HEAD",
+              "accepted_trade_date":accepted_trade_date}
+    monkeypatch.setenv("V4_MARKET_CALENDAR_SOURCE","PG")
+    monkeypatch.setattr(calendar_reader,"from_environment",
+                        lambda:SimpleNamespace(calendar=lambda:calendar))

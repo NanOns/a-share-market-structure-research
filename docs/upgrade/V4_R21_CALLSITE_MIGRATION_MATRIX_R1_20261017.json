@@ -16636,6 +16636,24 @@
         "p1_formally_remaining": 266,
         "status": "PG_STATUS_WRITE_CODE_CORRECTED_OFFLINE; live persisted heartbeat and end-to-end daily job acceptance remain unverified.",
         "next": "Continue the actual DM-01 job lifecycle and accepted Head/source-state migration, then reconcile exact Owner and business callsites."
+      },
+      {
+        "batch_id": "R21-R4-dm01-progress-reader-dsn-guard-r15",
+        "files": [
+          "src/workbench_analysis/operational_daily_jobs_pg_r1.py",
+          "tests/test_v4_r21_dm01_pg_progress.py",
+          "reports/stage/V4_R21R4_COMPREHENSIVE_TEST_REPORT_20261017_R15.md"
+        ],
+        "callsite_ids": [],
+        "evidence": [
+          "DailyJobs.progress now obtains its connection only through configured_reader_dsn (V4_NATIVE_PG_READER_DSN or WORKBENCH_PG_DSN) and remains a read-only transaction.",
+          "Missing reader configuration fails before opening a connection; the writer DSN is no longer passed as a read-only fallback."
+        ],
+        "verification": "23 focused DM-01 PG progress and native reader DSN tests passed; compile and diff checks passed. No live PG connection.",
+        "p1_formally_closed": 0,
+        "p1_formally_remaining": 266,
+        "status": "READER_IDENTITY_GUARD_WIRED; live least-privilege reader and status query remain unverified.",
+        "next": "Continue PG job lifecycle and daily Owner/Head input migration; use the separately authorized reader identity once configured."
       }
     ]
   }

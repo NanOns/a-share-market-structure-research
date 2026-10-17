@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import threading
 import psycopg
-from workbench_db.v4_native import connection, configured_dsn, create_schema, workspace_schema
+from workbench_db.v4_native import connection, configured_dsn, configured_reader_dsn, create_schema, workspace_schema
 from .operational_daily_calendar_v2 import SHANGHAI
 from .operational_daily_jobs_v1 import DailyJobs as StateMachine
 
@@ -157,7 +157,7 @@ class DailyJobs(StateMachine):
 
     def progress(self):
         # One small row; no gap planner or Owner decoding on this polling path.
-        with connection(self.schema,dsn=os.environ.get('V4_NATIVE_PG_READER_DSN') or self.dsn,read_only=True,row_factory=row_factory) as db:
+        with connection(self.schema,dsn=configured_reader_dsn(),read_only=True,row_factory=row_factory) as db:
             row=db.execute("""SELECT j.job_id,COALESCE(p.mode,j.mode) AS mode,j.mode AS job_mode,j.through_date AS target_trade_date,j.status AS stage_state,
                 j.created_at AS started_at,j.finished_at,j.error AS error_code,p.stage,p.stage_started_at,p.last_progress_at,
                 p.processed,p.total,p.unit,p.recent_message,p.heartbeat_at,

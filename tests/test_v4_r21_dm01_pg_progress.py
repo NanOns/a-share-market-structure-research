@@ -35,10 +35,12 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
     @contextmanager
     def read_connection(schema, *, dsn, read_only, row_factory):
         assert schema == "v4_jobs_test"
+        assert dsn == "reader-dsn-placeholder"
         assert read_only is True
         yield pg
 
     monkeypatch.setattr(daily_pg, "connection", read_connection)
+    monkeypatch.setattr(daily_pg, "configured_reader_dsn", lambda: "reader-dsn-placeholder")
     jobs = object.__new__(daily_pg.DailyJobs)
     jobs.schema = "v4_jobs_test"
     jobs.dsn = "reader-dsn-placeholder"
@@ -153,9 +155,12 @@ def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, t
 
     @contextmanager
     def read_connection(schema, *, dsn, read_only, row_factory):
+        assert dsn == "reader-dsn-placeholder"
+        assert read_only is True
         yield pg
 
     monkeypatch.setattr(daily_pg, "connection", read_connection)
+    monkeypatch.setattr(daily_pg, "configured_reader_dsn", lambda: "reader-dsn-placeholder")
     jobs = object.__new__(daily_pg.DailyJobs)
     jobs.schema = "v4_jobs_test"
     jobs.dsn = "reader-dsn-placeholder"
@@ -165,3 +170,25 @@ def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, t
     result = jobs.progress()
     assert result["stage_state"] == "IDLE"
     assert result["last_published_trade_date"] is None
+
+
+def test_dm01_progress_does_not_fall_back_to_writer_dsn(monkeypatch, tmp_path):
+    import pytest
+
+    def forbidden_connection(*args, **kwargs):
+        raise AssertionError("reader configuration must fail before opening a connection")
+
+    monkeypatch.setattr(daily_pg, "connection", forbidden_connection)
+    monkeypatch.setattr(
+        daily_pg,
+        "configured_reader_dsn",
+        lambda: (_ for _ in ()).throw(RuntimeError("V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK")),
+    )
+    jobs = object.__new__(daily_pg.DailyJobs)
+    jobs.schema = "v4_jobs_test"
+    jobs.dsn = "writer-dsn-placeholder"
+    jobs.root = tmp_path
+    jobs.worker_error = None
+
+    with pytest.raises(RuntimeError, match="V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK"):
+        jobs.progress()

@@ -34,3 +34,6 @@
 - 诊断页移除旧 `run_fp02_research_snapshot.py --daily` 指令（该入口会进入本地 accepted-head/receipt 流程），改为引导到日更状态/任务页面。
 - 续行浏览器复验 28766：Diagnostics 显示新入口文案；Jobs 实际显示 `PG_CANDIDATE_SNAPSHOT`、T0 `2026-09-30`、stocks 5,213、sectors 378、focus 469、forward 117，且明确标出本次未启动 worker、无作业进度。没有触发任何写作业。
 - 本续行改动共 2 个现役代码文件；定向 Python 编译、Node 语法检查和 `git diff --check` 通过。
+- 再修 DM-01 R1 候选链：`dm01_incremental_component_builders._context` 与 `dm01_candidate_orchestrator_r1` 对 accepted Data Head、日历/身份绑定和受保护 Head 的读取/比对现从共享 PG ingress 的精确 path+SHA 完成；`run_dm01_a01_next_session_r1.real_probe` 对 Data/Stage/Dev 和 GO-FORWARD Head 使用 PG `read_path`，calendar/GBBQ 小型绑定使用 PG `read_bound`/显式首次 admission，目标日期探测的保护校验比较数据库 SHA。官方 TDX ZIP 仅在明确 source-ingress 边界校验 PG Head 指定的 SHA、长度及 Git LFS 对象身份，再消费派生候选；未把 551 MB 压成约 735 MB base64 冗余入库，也未修改通达信源根。
+- 该追加改动涉及 3 个 V4 Python 文件；本续行三个提交合计修复 5 个现役代码文件/调用链（另改本报告），与前序已实现的 265/266 V4 调用点修复分开计数。
+- 同库实读/写核对：GO-FORWARD accepted Head 精确入 PG 4,057 bytes；GBBQ manifest 1,333 bytes；其成员 `gbbq` 5,607,212 bytes、`gbbq.map` 96,585 bytes 均按 Head SHA ingress 后 PG 回读匹配；官方 TDX ZIP 在 LFS source boundary 核验 SHA `70b798…fce52bf0c`、长度 551,001,603。对整包 base64 入库的尝试在 ForwardFactStore 的 120 秒 bounded append 中被 PostgreSQL 取消且未成功，不重试该冗余副本；candidate 仍由验证后的 TDX 输入构建并写入 PG。

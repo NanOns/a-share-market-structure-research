@@ -8,7 +8,14 @@ from workbench_analysis.dm01_incremental_component_builders import (
 from workbench_analysis.dm01_independent_postcheck_r1 import check_cross_components
 
 def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_binding,staging_root,head_paths):
-    before={str(p):sha(p) for p in head_paths};stage=None;receipts={}
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    def head_state():
+        state={}
+        for path in head_paths:
+            logical=Path(path).resolve().relative_to(ROOT).as_posix()
+            state[logical]=read_path(ROOT,logical)['record']['source_sha256']
+        return state
+    before=head_state();stage=None;receipts={}
     try:
         from workbench_analysis.daily_source_freeze import ensure_outside_tdx
         from common.paths import resolve_tdx_root
@@ -26,14 +33,14 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
             existing=manifest['components'];post=check_cross_components(existing,source_freeze,parent_data_head,calendar_binding,identity_binding)
             if post['status']!='PASS' or manifest['postcheck_digest']!=digest(post) or manifest['candidate_id']!=run_id:
                 raise ComponentBuildError('CANDIDATE_DIGEST_MISMATCH')
-            if any(sha(Path(p))!=s for p,s in before.items()):raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
+            if head_state()!=before:raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
             return dict(status='NOOP_IDENTICAL_CANDIDATE',candidate_path=str(marker),candidate_sha256=sha(marker),data_head_moved=False)
         for cap in BUILD_ORDER:
             receipts[cap]=BUILDERS[cap](target,parent_data_head,source_freeze,calendar_binding,identity_binding,stage)
         post=check_cross_components(receipts,source_freeze,parent_data_head,calendar_binding,identity_binding)
         _write_immutable(stage/'independent_cross_postcheck.json',post,source_freeze.get('tdx_roots',[]))
         if post['status']!='PASS':raise ComponentBuildError('CROSS_COMPONENT_POSTCHECK_FAILED:'+str(post['errors']))
-        if any(sha(Path(p))!=s for p,s in before.items()):raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
+        if head_state()!=before:raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
         manifest=dict(contract_id='DM01_ATOMIC_PROMOTION_CANDIDATE_R1',status='CANDIDATE_READY_EXTERNAL_ACCEPTANCE_REQUIRED',
             candidate_id=run_id,target_trade_date=target,parent_data_head_digest=parent_data_head['binding']['sha256'],
             source_freeze_digest=source_freeze['manifest_sha256'],contract_sha256=contract_sha,
@@ -47,7 +54,7 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
     except (ValueError,KeyError,OSError,TypeError) as exc:
         result=dict(contract_id='DM01_ATOMIC_FAILURE_R1',status='BLOCKED',reason=str(exc),
             completed_components=list(receipts),accepted_namespace_visible=False,data_head_moved=False,
-            protected_heads_unchanged=all(sha(Path(p))==s for p,s in before.items()))
+            protected_heads_unchanged=head_state()==before)
         if stage is not None:
             # Failures remain inspectable, with no marker making partial components consumable.
             from workbench_analysis.daily_increment_builder import _atomic_json

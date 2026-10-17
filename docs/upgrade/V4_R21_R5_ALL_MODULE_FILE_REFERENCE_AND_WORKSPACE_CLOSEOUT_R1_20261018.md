@@ -26,6 +26,7 @@
 
 - 基线 266 个 P1 的正式 source-edge、T0、namespace 与 accepted publication Head 对账仍是 0/266；22 条历史 reference edge 未精确映射（21 个唯一调用点）。这些是历史 inventory join，不是声称尚有未实现的 V4 PG candidate consumer。不得伪造边 ID 或 Head 身份。
 - 当前数据库没有 accepted operational publication Head。正式 Head 切换、生产部署/网页 28765、物理删除及强推未执行；需要相应单独授权。非 V4 调用点 `src/workbench_analysis/history_170_v3_3.py:13` 仅登记，未改。
+- 基线对账细节：22 条历史 reference-edge 记录各自保留稳定 `V4-BCA-R2-*` 调用点 ID，但原始 `reference_ids` 为空，不能伪造边号；另 3 条 `src/workbench_analysis/historical_stage_governance_r17.py`（基线行 16/32/62）共享观测 blob SHA `3760c386…7d727b88`，历史清单没有 expected SHA，无法作 exact-blob join。当前 PG operational Head 表无 singleton accepted row，因此不能据此伪造 266/266 的 publication/T0/namespace closure。
 - 保留原有 5 个无关 untracked 文件，未纳入本次提交。
 
 ## 继续实修（本次续行）

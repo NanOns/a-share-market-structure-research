@@ -96,7 +96,7 @@ def test_native_connection_marks_transaction_read_only_before_role_query(monkeyp
     monkeypatch.setattr(v4_native.psycopg,"connect",lambda *args,**kwargs:Connection())
     with v4_native.connection("v4_workspace_0123456789abcdef",read_only=True) as received:
         assert received is pg
-    assert pg.queries[0][0] == "SET TRANSACTION READ ONLY"
+    assert pg.queries[0][0] == "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY"
     assert "pg_roles" in pg.queries[-1][0]
 
 

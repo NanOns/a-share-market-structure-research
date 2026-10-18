@@ -413,3 +413,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 当前 R1/R2 Python API 作为兼容入口统一委托到 `V4_PG_SHADOW_READBACK_R3` 固定 `v4` writer/reader；已移除旧每次导出 `CREATE SCHEMA` 写实现。descriptor 只接受 `schema='v4'` 并核验完整数据库身份、导出内容 digest、每条事实 digest 和完整身份。Shadow UI 读取器也只接受精确 R3/v4 descriptor 并查询固定 R3 事实关系，旧通用表/旧 Schema 路径不再留作 fallback。后续纯负向验收以完整且签名绑定的历史 R2 descriptor 为输入，确认在触碰 PG 前以 `PG_SHADOW_R3_FIXED_V4_BINDING_REQUIRED` 拒绝其物理 Schema locator；测试 `11 passed`。
 - 真实 PG 工程事务内通过该 writer 插入单条 `ACTIVATION_SIMULATION` 探针、执行完整 descriptor/content/fact 校验并确认更新被不可变触发器拒绝；外层事务显式回滚。独立 RR/RO 连接显示迁移后的 identity/facts 探针行数均为 0，`transaction_read_only=on`。没有写入 REAL/PIT Shadow 数据、没有创建 Schema。
 - 28766 内置浏览器实际打开 `/v4/shadow`：页面显示 `NO_REAL_SHADOW_DATA`、真实样本 0、完整字段 UNKNOWN，并说明等待独立接受的真实 Shadow 发布；六个域均明确无已接受真实数据。该固定存储和浏览器 fail-closed 证据关闭“Shadow Schema 未迁移”的架构缺口，但缺少签发来源、接受 readback manifest 及真实 PIT 输入，Shadow 业务模块仍为 `PARTIAL`；不计为模块验收通过。
+
+### 本续行的现场复核与清理策略拒绝
+
+- 再次使用 `REPEATABLE READ READ ONLY` 查询确认当前 PG 为 `market_research` / OID `646711` / `127.0.0.1:5432`，事务只读，V4 命名空间仅 `v4`；目录当前计数 123 表、85 例程、184 个非内部触发器。端口监听为 PostgreSQL `5432`、开发服务 `28766`；没有 `28765` 监听。现有 28766 浏览器仍在个股详情页，显示候选 T0 `2026-09-30`、日线 QFQ `120/253` 根及未具备来源的字段状态。
+- 依用户本轮“按任务卡继续完成”要求，尝试仅删除本仓库内与同目录 `.py` 源文件对应的 `.pyc`（此前清点为 2,159 项、28,981,840 字节），保留 6 个无对应源码文件；执行工具策略在 PowerShell 命令启动前拒绝该精确操作。未删除文件，未改用其他删除通道，DB-11 Workspace 物理清理仍为 `PARTIAL`。
+- 已补齐“全模块缺口与可执行验收路径”矩阵，将现有 PG/UI 工程状态、缺失的真实来源/Owner/日历/PIT 输入以及输入到位后的数值和浏览器验收路径逐模块对应。该报告变更已按暂存区策略检查后推送；本次未写入业务 PG、未重启服务、未改动 28765。

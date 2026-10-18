@@ -81,6 +81,30 @@ def test_corrected_owner_candidate_json_is_registered_in_pg(monkeypatch, tmp_pat
     assert json.loads(ingested[0][2]) == {"candidate": "DEV"}
 
 
+def test_corrected_owner_json_ambiguity_selects_latest_dev_revision(monkeypatch, tmp_path):
+    from workbench_analysis import corrected_owner_replay
+
+    def ambiguous(*_args, **_kwargs):
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE")
+
+    selected = []
+    monkeypatch.setattr(
+        "workbench_db.v4_historical_source_ingress_pg_r1.read_path", ambiguous
+    )
+    monkeypatch.setattr(
+        "workbench_db.v4_historical_source_ingress_pg_r1.read_latest_candidate_path",
+        lambda root, path, *, source_origin: selected.append((root, path, source_origin))
+        or {"value": {"candidate": "LATEST_DEV"}},
+    )
+
+    assert corrected_owner_replay.pg_json_source(tmp_path, "data/candidate.json") == {
+        "candidate": "LATEST_DEV"
+    }
+    assert selected == [
+        (tmp_path, "data/candidate.json", "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT")
+    ]
+
+
 def test_focus_contract_uses_json_compatible_pg_text_without_yaml(monkeypatch, tmp_path):
     from workbench_analysis import r43_focus_replay
 

@@ -502,6 +502,46 @@ def read_source(root: str | Path, source_id: str) -> dict[str, Any]:
             "text": text}
 
 
+def read_latest_candidate_path(root: str | Path, source_path: str, *,
+                               source_origin: str) -> dict[str, Any]:
+    """Resolve the latest immutable revision only for an explicitly named DEV producer."""
+    project=_root(root);relative=Path(source_path).as_posix()
+    if not isinstance(source_origin,str) or not source_origin.startswith('V4_') or not source_origin.endswith('_CANDIDATE_OUTPUT'):
+        raise ValueError('HISTORICAL_SOURCE_CANDIDATE_ORIGIN_INVALID')
+    folder=(Path(project)/FOLDER).resolve();schema=v4_native.workspace_schema(folder,'forward')
+    def query(pg):
+        expected={}
+        try:expected=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+        except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
+        identity=ForwardFactStore._database_identity(pg)
+        if expected and identity!=expected:raise ValueError('HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH')
+        rows=pg.execute(sql.SQL(
+            "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
+            "AND payload::jsonb->>'source_path'=%s AND payload::jsonb->>'source_origin'=%s "
+            "ORDER BY (payload::jsonb->>'first_ingested_at')::timestamptz DESC, "
+            "payload::jsonb->>'source_sha256' DESC LIMIT 2"
+        ).format(sql.Identifier(schema)),(KIND,relative,source_origin)).fetchall()
+        if not rows:raise ValueError('HISTORICAL_SOURCE_INGRESS_NOT_FOUND')
+        payload,payload_sha=rows[0];encoded=payload.encode('utf-8')
+        if digest(encoded)!=payload_sha:raise ValueError('HISTORICAL_SOURCE_INGRESS_PG_DIGEST_MISMATCH')
+        record=json.loads(payload)
+        if (record.get('contract_id')!=CONTRACT or record.get('contract_version') not in LEGACY_VERSIONS
+                or record.get('source_path')!=relative or record.get('source_origin')!=source_origin
+                or not re.fullmatch(r'[0-9a-f]{64}',str(record.get('source_sha256') or ''))):
+            raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_BINDING_INVALID')
+        if len(rows)>1:
+            prior=json.loads(rows[1][0])
+            if prior.get('first_ingested_at')==record.get('first_ingested_at'):
+                raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_REVISION_TIE')
+        selected_record,raw=_query(project,source_path=relative,
+            expected_sha256=record['source_sha256'],pg=pg)
+        return {'record':selected_record,'raw':raw,'value':selected_record.get('source_json'),
+                'text':selected_record.get('source_text_utf8')}
+    active=v4_native.current_read_snapshot()
+    if active is not None:return query(active)
+    with _same_instance_read(schema) as pg:return query(pg)
+
+
 class PGSourceBytes(io.BytesIO):
     """Exact PG-bound source exposed as an in-memory, seekable file object."""
 

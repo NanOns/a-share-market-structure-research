@@ -163,7 +163,17 @@
 - `corrected_owner_replay.materialize_core` 的 `ENTRY.json`、`SOURCE_BINDINGS.json`、逐日 `OWNER.json` 与 `CORE_REPLAY.json` 此前只写本地；现改为原子落盘后立即进入 Historical SourceIngress，按精确 SHA/字节数从 PG 读回校验。来源标识为 `V4_CORRECTED_OWNER_CANDIDATE_OUTPUT`，不产生 accepted publication 或生产 Head。Core、prior core、history、raw、adjusted gzip 产物原已执行同样 PG ingress。
 - `tests/remainder_isolation_plugin.py` 的只读共享库测试 allowlist 新增该 R6 定向模块；仍强制将 `127.0.0.1:5432/market_research` 事务设为只读，只针对精确测试路径启用。此前未设置该模式时 5 项测试在导入期被隔离插件拒绝，补上明确 allowlist 后定向模块 6 passed；修改文件 `py_compile` 通过。
 - 真实 PG 写入验证使用唯一 DEV receipt（128 bytes，SHA-256 `f667265764786e8513e254920c9d152cc4cc9acd56023c0dcf49d5f072a6c6d0`）；本地临时副本删除后，`read_path` 仍读回完全相同 JSON。临时工作区文件已删除，PG 中保留此不可变开发 SourceIngress 记录作为精确读回证据，`production_admission=false`。
-- 本修复仅闭合 Corrected Owner Core 收据的文件→PG读取断点；尚未实际运行该旧支线完整 Core 算法，也不改变报告中 Focus 自动写入、正式来源/PIT、28766 服务重载、完整浏览器矩阵等未完成项。
+- 本批第一步仅闭合 Corrected Owner Core 收据的文件→PG读取断点；随后实际 Core 运行结果见下一节。此项不改变报告中 Focus 自动写入、正式来源/PIT、28766 服务重载、完整浏览器矩阵等未完成项。
+
+## Corrected Owner 单日 Core DEV 实跑续验
+
+- 先前单日实跑发现历史 GBBQ 解码把 `PGSourceBytes` 错当映射并引用未定义 `gbbq_path`；已修为解码 PG 校验后的实际字节，并从精确 GBBQ binding 获取来源路径。官方 TDX ZIP 走 R43 已有 PG 分块读取器和 seekable ZIP wrapper，不再重复构造 `BytesIO` 全包副本。
+- 为降低峰值，420 根窗口缓存改存固定宽度 `.day` 原始字节片段、逐证券解码；全市场 `history` 字典改为惰性第二遍重建，不再同时常驻全部股票的 bar dictionaries。单日完整证券计算最终峰值约 2.27 GB；相同旧代码第一次达到约 3.65 GB 后被中止，本次计算完成。数值窗口及逐行 oracle 未降采样。
+- 使用任务卡允许的 `DM01_ACCEPTED_BASE_PLUS_R4_CALENDAR_DIAGNOSTIC_CANDIDATE` 上下文实际运行 2026-09-30 单日：Core 5,224 行、原始行情 5,213 行，独立数值 oracle `errors=0`；publication 为 `STAGING_NOT_ACCEPTED`，`production_admission=false`。pipeline 续跑入口从 PG 读取并返回 `CORRECTED_CORE_READY`，receipt 为 `data/v4/workspaces/owner_repair_v1/CORE_REPLAY.json`，SHA-256 `0efacf969c6a1eab2cde05018cfaae59c9cf80d915c59918c6e1940715eb6636`。
+- JSON Entry/Bindings/Core/Owner receipts 与 core、prior-core、history、raw、adjusted 五个压缩产物均逐项以精确 SHA/长度从 PG 读回匹配；history 压缩包 67,389,707 bytes 由 PG 分块 package 保存并精确读回。accepted Data Head SHA 未变。
+- 运行重试产生的 Corrected Owner Entry 同路径存在多条不可变 DEV revisions；新增 `read_latest_candidate_path`，只对显式 `V4_*_CANDIDATE_OUTPUT` 来源按 PG `first_ingested_at` 选最新 revision，再按选中 SHA 读回；普通 source/config 仍要求唯一且 fail-closed。真实 PG 路径与纯 mock 均验证通过。
+- 尝试清理 6 条本次中断产生的旧 Entry revisions 和 1 条 smoke DEV receipt 时，数据库触发器实际拒绝 `DELETE`：`FORWARD_FACTS_APPEND_ONLY`，事务未提交；没有修改/绕过触发器。上述 7 条不可变开发记录仍在 PG，其中 1 条是成功 Entry、6 条中断残留，另有 1 条 smoke SourceIngress；对应本地 smoke 文件已删除。下游只选最新 candidate Entry，不消费中断记录。
+- 修订后的 Corrected Core/R6 定向测试合计 14 passed，相关源码 `py_compile` 通过。该实跑补齐一个 DEV Core 端到端链，不等于全模块/最新 T0/正式 publication 或生产验收。
 
 ## R4.12 冻结合同消费者改为 PG-only（2026-10-18）
 

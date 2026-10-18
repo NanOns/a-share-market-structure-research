@@ -71,8 +71,14 @@ def checked_pg(root, binding):
 
 def pg_json_source(root, relative_path):
     """Read an exact, previously ingressed project source; never fall back to disk."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-    source = read_path(root, Path(relative_path).as_posix())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path, read_latest_candidate_path
+    relative=Path(relative_path).as_posix()
+    try:
+        source=read_path(root,relative)
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':raise
+        source=read_latest_candidate_path(root,relative,
+            source_origin='V4_CORRECTED_OWNER_CANDIDATE_OUTPUT')
     if not isinstance(source.get('value'), dict):
         raise ValueError('PG_JSON_SOURCE_NOT_OBJECT:' + str(relative_path))
     return source['value']
@@ -194,7 +200,7 @@ def materialize_core(root, dates=None):
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
     required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
-    from .r43_owner_replay import historical_source
+    from .r43_owner_replay import historical_source, _ZipReader, checked as checked_r43
     acquisition = historical_source(root,'acquisition')['value']
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
@@ -207,18 +213,18 @@ def materialize_core(root, dates=None):
     source_pointer=historical_source(root,'capture_audit')['value']
     capture=load(checked_pg(root,source_pointer['capture_receipt']))
     from io import BytesIO
-    package=BytesIO(checked_pg(root,capture['package']))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    package=checked_r43(root,capture['package'])
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
     frozen_previous=historical_source(root,'core_replay')['value']['owners'][0]
     gbbq_binding=frozen_previous['sources']['gbbq']
-    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     exact_gbbq=bound_bytes(root,gbbq_binding)
     blob=exact_gbbq.read_bytes()
     if hashlib.sha256(blob).hexdigest()!=gbbq_binding['sha256']:
         raise ValueError('CORRECTED_GBBQ_PG_INGRESS_READBACK_MISMATCH')
     from tdx.gbbq_reader import decode_gbbq_bytes
     events=defaultdict(list)
-    for e in decode_gbbq_bytes(exact_gbbq['raw'],source=gbbq_path):events[e.security_id.lower()].append(e)
+    for e in decode_gbbq_bytes(blob,source=gbbq_binding['path']):events[e.security_id.lower()].append(e)
     dispositions=pg_json_source(root,'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=gbbq_binding,
                  identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
@@ -248,7 +254,7 @@ def materialize_core(root, dates=None):
             if code in ids:status[ids[code]['security_id']][day]='SUSPENDED' if r.get('tradestatus')=='0' else 'ACTUAL_TRADED'
     for day,rows in universes.items():dated_identity[day]={ids[c]['security_id'] for c in rows if c in ids}
     cache={}; unknown_codes=[]
-    with zipfile.ZipFile(package) as z:
+    with zipfile.ZipFile(_ZipReader(package)) as z:
         for name in z.namelist():
             parts=name.lower().replace('\\','/').split('/');leaf=parts[-1]
             market=next((p for p in parts if p in ('sh','sz','bj')),None)
@@ -257,21 +263,27 @@ def materialize_core(root, dates=None):
             if not is_stock_code(code):continue
             if code not in ids:
                 unknown_codes.append(code);continue
-            raw=[v for v in struct.iter_unpack('<IIIIIfII',z.read(name)) if v[0]<=int(max(dates).replace('-',''))]
+            packed=z.read(name)
+            eligible=0
+            for bar in struct.iter_unpack('<IIIIIfII',packed):
+                if bar[0]>int(max(dates).replace('-','')):break
+                eligible+=1
+            # Retain compact fixed-width source bytes; decode one security at a time.
             # Preserve enough actual bars for the original 250-bar Profile and period windows.
-            cache[ids[code]['security_id']]=(code,raw[-420:])
+            start=max(0,eligible-420)*struct.calcsize('<IIIIIfII')
+            cache[ids[code]['security_id']]=(code,packed[start:eligible*struct.calcsize('<IIIIIfII')])
     write_candidate_json(root,out/'SOURCE_BINDINGS.json',dict(sources=sources,unknown_canonical_identity=unknown_codes,
           query_receipts=bao_queries,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
     rps={}; receipts=[]; oracle=[]
     for target in required:
-        rows=[]; histories={}; prior_rows=[]; checks=Counter(); errors=[]; sample=[]; raw_rows=[]; adjusted_rows=[]
+        rows=[]; prior_rows=[]; checks=Counter(); errors=[]; sample=[]; raw_rows=[]; adjusted_rows=[]
         previous=sessions[sessions.index(target)-1]
         members=dated_identity.get(target)
         if members is None:raise ValueError('NO_DATED_IDENTITY_UNIVERSE:'+target)
         for i in identity:
             sid=i['security_id']
             if sid not in members or sid not in cache:continue
-            code,raw=cache[sid];bs=transform_window(raw,events[code],dispositions,target)
+            code,packed=cache[sid];raw=list(struct.iter_unpack('<IIIIIfII',packed));bs=transform_window(raw,events[code],dispositions,target)
             if not bs:continue
             revision=hashlib.sha256(json.dumps(dict(code=code,gbbq=sources['gbbq']['sha256'],
                 events=[(e.event_date,e.category,e.c1,e.c2,e.c3,e.c4) for e in events[code]
@@ -287,7 +299,6 @@ def materialize_core(root, dates=None):
             rows.append(dict(security_id=sid,source_security_key=code.upper(),board_scope=i['board_scope'],
                  trade_date=target,price_basis_id=basis,fields=values,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
             if target not in dates:continue
-            histories[sid]=bs
             pv={k:asdict(v) for k,v in compute_core(obs,sid,asof=previous).items()} if obs[0].trade_date<=previous else {}
             prior_rows.append(dict(security_id=sid,trade_date=previous,coordinate_target=target,price_basis_id=basis,fields=pv))
             b=by.get(target)
@@ -326,9 +337,16 @@ def materialize_core(root, dates=None):
                 prior=sessions[sessions.index(target)-k];a=rps.get((prior,h),{}).get(sid);b=rps[target,h].get(sid);v=b-a if a is not None and b is not None else None
                 row['fields'][f'rps{h}_delta{k}']=dict(value=v,quality_state='OBSERVED' if v is not None else 'UNKNOWN',unknown_reason=None if v is not None else 'EXACT_DATED_RPS_ENDPOINT_UNKNOWN',prior_endpoint=prior,contract_id='RPS_MIDRANK_V1')
         folder=out/'owners'/target
+        def history_rows():
+            for identity_row in identity:
+                sid=identity_row['security_id']
+                if sid not in members or sid not in cache:continue
+                code,packed=cache[sid]
+                bars=transform_window(list(struct.iter_unpack('<IIIIIfII',packed)),events[code],dispositions,target)
+                if bars:yield dict(security_id=sid,bars=bars)
         receipt=dict(trade_date=target,rows=len(rows),source_digest=source_digest,sources=sources,
              core=gzwrite(root,folder/'core.jsonl.gz',rows,pg_ingress=True),prior_core=gzwrite(root,folder/'prior_core_target_coordinate.jsonl.gz',prior_rows,pg_ingress=True),
-             history=gzwrite(root,folder/'history.jsonl.gz',[dict(security_id=sid,bars=bs) for sid,bs in histories.items()],pg_ingress=True),
+             history=gzwrite(root,folder/'history.jsonl.gz',history_rows(),pg_ingress=True),
              raw=gzwrite(root,folder/'raw.jsonl.gz',raw_rows,pg_ingress=True),adjusted=gzwrite(root,folder/'adjusted.jsonl.gz',adjusted_rows,pg_ingress=True),
              actual_raw_rows=len(raw_rows),adjustment_current_ready=sum(r['adjustment_readiness']=='READY' for r in adjusted_rows),
              known_fields=dict(Counter(k for r in rows for k,v in r['fields'].items() if v.get('value') is not None)),

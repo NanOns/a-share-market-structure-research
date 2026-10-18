@@ -515,3 +515,12 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - Journal writer 固定将 `registry_schema` 绑定为 `v4`；初始化不再调用 `workspace_schema()`/`create_schema()` 或运行 `CREATE TABLE`，而是校验中央迁移 061 部署的 `v4.journal_heads` 与迁移映射表。Journal 仍使用 PostgreSQL 事务内临时表暂存版本数据，不创建第二个业务 Schema。
 - 修复 Journal 从精确旧 descriptor 读取临时表时 `with read(previous)` 代码块的缩进错误；该错误此前会使整个模块无法导入。新旧 descriptor 的数据库读取及历史迁移映射语义保持不变。
 - Python 编译成功，开发 PG RR/RO 对中央关系的现场校验通过；真实 `JournalConnection` 构造探针使用 G 盘临时目录并显式回滚，独立只读事务核验 `journal_heads` 对应唯一键 0 行，`transaction_read_only=on`。临时目录已清理；源码持久表 DDL、`create_schema()` 和 `workspace_schema()` 调用均已移除。
+
+### 2026-10-19 10-15 日更复跑与 PG 回执读回续修
+
+- 按用户纠正以 `2026-10-15` 为目标交易日、冻结的官方 TDX `2026-10-16` 包为回溯包重跑日更采集。验证 Accepted 基础日历与 R4 本地审计候选日历的精确 SourceIngress 绑定后，诊断会话确含 10-15；候选日历保持 `LOCAL_READY_FOR_EXTERNAL_AUDIT`，仅在进程上下文内使用，`production_admission=false`。
+- 复跑暴露 BaoStock 回执写入/读回哈希口径错误：Forward 事实保存原始 smoke receipt 文件摘要，而 loader 误用 PG JSON 重编码后的摘要比较。改为把原始 receipt 按绑定路径与 SHA 导入固定 PG SourceIngress，并在只读 loader 中精确读回原始字节、核对 SHA 和解析值；同时修正日更证据路径对内存 `PGSourceBytes` 使用 `Path.relative_to` 的不兼容。
+- 真实复跑读取 `market_research` / OID `646711` / `127.0.0.1:5432` 的固定 `v4` BaoStock runtime fact：目标日 `2026-10-15`，日行情 5,226 行，复权因子 22 行，PG 接受运行时回执读回通过。使用 TDX 10-16 包 SHA `c0ea0dffad66e06351596fb3855ffde0d80536e3d962867a09f42ddf32448219` 生成的目标日 TDX 候选 PG 读回状态为 `DIAGNOSTIC_ONLY`、5,565 行。落盘日更冻结绑定 SHA `a28b104e65714fb0be3b3c4a8145c45c2f06a4e0d7949823e26085e45d693870`，`AS_RECORDED=false`、`PIT_ELIGIBLE=false`，不构成 Accepted 日更。
+- 入口随后停在严格的 Owner 依赖校验：`v4_operational_live_head_pg_r1.read_current()` 返回 `PG_ACCEPTED_OPERATIONAL_HEAD_REQUIRED_NO_FILE_FALLBACK`。开发库目前无 Accepted Operational Head；未创建/伪造 Head、未发布 Owner/Publication 或生产 Head。当前唯一 Accepted Data Head 仍是 9-30 候选，10-15 日更没有发布完成。
+- `tests/test_v4_baostock_runtime_acceptance_pg_r1.py` 定向回归 7 项通过；合并执行的日更 executor 套件共 14 项中 12 项通过、2 项受测试环境阻断：一项 mock PG 对象缺少真实 `execute()` 接口；另一项导入路径试图访问非 disposable 本地 PG，被测试隔离插件拒绝。真实日更入口已越过回执与证据路径两处错误，并在缺少 Accepted Operational Head 的设计门禁处停止。
+- 本次开发只使用当前 `market_research` 数据库与 `v4`，没有新建 Schema；28766 是当前唯一监听的项目网页端口，28765 未监听且未操作。后续需补齐真实接受日历/Universe 身份和 Operational Head 的完整前置证据，才能继续 Owner 与当日日更验收；不能将 10-15 冻结候选或 9-30 页面 T0 表述为已发布 10-15。

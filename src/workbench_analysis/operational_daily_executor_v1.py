@@ -551,11 +551,12 @@ def verify_source_gate(root,day,artifact,result,now=None):
         if row['tradestatus']=='0' and bar:reconciled=False
     sources={}
     for name,rows in [('baostock_daily',daily),('baostock_factor',factors)]:
+        raw_source_path=getattr(raw_path,'source_path',raw_path)
         sources[name]=dict(status='VERIFIED',target_session=day,provider_date=day,
             source_sha256=_canonical_rows_digest(rows),observed_at=observed,
             row_count=len(rows),identity_reconciliation_passed=reconciled,
             provider='BaoStock',artifact_family=name,capture_method='ACCEPTED_NATIVE_RESPONSE',
-            evidence_path=raw_path.relative_to(root).as_posix(),captured_at=observed,
+            evidence_path=Path(raw_source_path).resolve().relative_to(root.resolve()).as_posix(),captured_at=observed,
             verified_at=datetime.now(timezone.utc).isoformat())
         sources[name]['provider_observed_at']=observed
     factor_proved=(raw.get('target_date')==day and 'adjustment_factor_rows' in raw

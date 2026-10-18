@@ -189,6 +189,11 @@ def append_from_files(root: Path, day: str, manifest_path: Path) -> dict[str, An
     if manifest.get("contract_id") == "OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2":
         evidence = _zero_change_evidence(root, manifest)
     receipt_raw = receipt_path.read_bytes()
+    # Keep the exact receipt bytes in the immutable source-ingress ledger so
+    # PG readers can verify the raw-byte digest without reopening workspace
+    # files. The manifest's SHA is already checked by the loader.
+    from .v4_historical_source_ingress_pg_r1 import ingress_path
+    ingress_path(root, receipt_ref["path"], expected_sha256=receipt_ref["sha256"])
     receipt = json.loads(receipt_raw.decode("utf-8"))
     native_ref = receipt.get("native_response")
     if not isinstance(native_ref, Mapping):
@@ -244,10 +249,22 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
     if (record.get("contract_id") != CONTRACT or record.get("contract_version") != "1.0.0"
             or record.get("trade_date") != key
             or hashlib.sha256(canonical(record.get("manifest", {}))).hexdigest() != record.get("manifest_sha256")
-            or hashlib.sha256(canonical(record.get("smoke_receipt", {}))).hexdigest() != record.get("smoke_receipt_sha256")):
+            or record.get("manifest", {}).get("smoke_receipt", {}).get("sha256")
+                != record.get("smoke_receipt_sha256")):
         raise ValueError("BAOSTOCK_PG_RUNTIME_RECORD_BINDING_INVALID")
     manifest = record["manifest"]
     receipt = record["smoke_receipt"]
+    receipt_binding = manifest.get("smoke_receipt", {})
+    try:
+        from .v4_historical_source_ingress_pg_r1 import read_bound
+        receipt_source = read_bound(root, receipt_binding.get("path", ""),
+                                    receipt_binding.get("sha256", ""))
+    except ValueError as exc:
+        raise ValueError("BAOSTOCK_PG_RUNTIME_SMOKE_RECEIPT_SOURCE_NOT_FOUND") from exc
+    receipt_raw = receipt_source["raw"]
+    if (hashlib.sha256(receipt_raw).hexdigest() != record.get("smoke_receipt_sha256")
+            or json.loads(receipt_raw.decode("utf-8")) != receipt):
+        raise ValueError("BAOSTOCK_PG_RUNTIME_SMOKE_RECEIPT_SOURCE_MISMATCH")
     # The ingress digest uses original receipt bytes. Canonical PG JSON is the
     # stored representation, so validate its semantic binding independently.
     smoke = manifest.get("live_smoke")

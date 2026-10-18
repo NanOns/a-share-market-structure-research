@@ -82,6 +82,10 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
     monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4")
     monkeypatch.setattr(pg_acceptance.ForwardFactStore, "_database_identity", staticmethod(lambda _pg: identity))
     monkeypatch.setattr(pg_acceptance, "_expected_identity", lambda: identity)
+    monkeypatch.setattr(
+        "workbench_db.v4_historical_source_ingress_pg_r1.read_bound",
+        lambda _root, _path, _sha: {"raw": canonical(record["smoke_receipt"])},
+    )
 
     result = pg_acceptance.load("G:/codex work/大A交易", day, sdk=runtime)
     assert result["source"] == "PG_ACCEPTED_DAILY_RUNTIME_FACT"

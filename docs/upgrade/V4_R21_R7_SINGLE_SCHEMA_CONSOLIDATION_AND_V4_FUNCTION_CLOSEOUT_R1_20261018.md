@@ -498,3 +498,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 在 `market_research` 使用项目只读连接、`REPEATABLE READ READ ONLY` 现场读取 `v4.jobs_update_jobs_r1`、`jobs_update_job_days_r1` 与事件：Scheduler job `83a9fbbfafde4402ad0da97846481a1d` 的 through_date 为 2026-10-15、状态 `QA_BLOCKED`；同一 job 下 2026-10-14 为 `QA_BLOCKED`（`SOURCE_EXECUTION_FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED`，attempt_count=2），2026-10-15 为 `QUEUED`（attempt_count=0）。因此没有证据表明 10-15 已完成日更发布。10-13 的 `PUBLISHED_FULL` 是此前手动作业，不会改变上述结论。
 - 按用户最后更正将 `2026-10-15` 作为本轮目标交易日，实际调用 `execute_sources(root,'2026-10-15','CATCH_UP',capture_only=True)`。入口返回 `BLOCKED / OFFICIAL_SESSION_NOT_VERIFIED`，细节 `PG_MARKET_CALENDAR_IDENTITY_REQUIRED`；流程没有转为 Accepted，也没有发布日更、Publication 或 Head。阻断发生于 PostgreSQL 日历身份验证，故不应把该结果说成 TDX/日更任务完成。
 - 当前 28766 浏览器候选 T0 仍为 2026-09-30；此前 2026-10-16 官方 TDX 包中抽取的 10-15 原始记录仍只作为 `RECONSTRUCTED_CORRECTED`、非 PIT、非 Accepted 的开发 SourceIngress。它们并未自动接入该网页候选快照，也不能替代 PG 接受日历、Source Package、Owner/Universe 或正式 Head。
+
+### 2026-10-19 28766 日更诊断页日期口径浏览器复验
+
+- 在真实 `127.0.0.1:28766/v4/research/diagnostics/jobs` 浏览器页面核对静态资产更新后的完整异步渲染。页面明确标注 `研究候选快照 T0：2026-09-30（此日期不代表日更任务账本最新日期）`，并将“worker 未启动”限定为当前没有运行中的 worker，说明本页面不展示日更任务记录；按钮也标注只查看本页快照诊断。顶部仍标示“PG 候选快照 · 不代表正式 Head”。
+- 该修正不硬编码或伪造任务日期、不改研究数据/日更账本/Head；没有重启 28766，没有启动 worker，也未触碰 28765。数据库日更账本仍以此前 RR/RO 实读结果为准（10-15 任务日期记录存在但当日 `QUEUED`）。

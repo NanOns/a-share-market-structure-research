@@ -338,3 +338,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 在 `market_research` / OID `646711` / `127.0.0.1:5432` 以 `REPEATABLE READ READ ONLY` 事务重新查询最终目录。当前用户 `postgres`，事务 `read_only=on`；`v4`/`v4_*` 命名空间结果仅 `v4`。目录中固定表 121、索引 219、序列 5；视图/物化视图 0；例程 84、非内部触发器 182、用户定义类型 244（含 PostgreSQL 自动数组类型）。该组是 FEP 068 后的当前 `pg_class`/`pg_proc`/`pg_trigger` 口径，覆盖并更新此前 FEP 迁移前的 86 表及 232 关系类快照。
 - `public` 用户关系 0，`v4` 到其他非系统业务 Schema 的目录依赖 0。`v4` ACL 精确列出的额外 FEP 角色为 `fep_application`、`fep_deployer`、`fep_adapter`、`fep_auditor`、`fep_cas_owner`、`fep_schema_owner`，均 `NOLOGIN` 且仅有 `USAGE`、没有 `CREATE`；当前唯一可登录的 `postgres` 同时有 `USAGE/CREATE`。未调整 ACL 或角色。
+
+### 2026-10-19 Operational Head DEV-only CAS 回滚核验
+
+- 在当前 `market_research` 上对空的 `v4.operational_research_heads` 执行事务内工程 CAS 核验；先以 `EXCLUSIVE` 表锁确认目标无当前行。插入并精确读回 payload bytes、JSONB、SHA-256、generation 1；用旧 SHA 条件更新到不同候选并读回 generation 2；再次以过期旧 SHA 更新返回 0 行，确认 stale CAS 被拒。
+- 候选仅含 `ENGINEERING_CAS_ROLLBACK_TEST` / `not_accepted=true` 标记；整个写入事务显式 rollback。后续独立 `REPEATABLE READ READ ONLY` 事务确认 `operational_research_heads` 仍 0 行、只读开启。没有签发或持久化 DEV/Accepted Head、Publication、Owner 或日更回执；没有改动其他业务表。该实测补足固定 `v4` 行上的 CAS 正/负路径机制证据，DB-10 与完整日更产品验收仍为 `PARTIAL`。

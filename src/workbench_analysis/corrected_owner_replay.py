@@ -176,9 +176,12 @@ def materialize_core(root, dates=None):
     chain=load(checked(root,head['accepted_chain']))
     dated_identity={}
     for node in chain['nodes']:
-        d=node['trade_date']; rs=load(root/node['components']['IDENTITY_UNIVERSE']['artifact_path'])['rows']
+        d=node['trade_date'];component=node['components']['IDENTITY_UNIVERSE']
+        rs=load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']
         dated_identity[d]={r['security_id'] for r in rs}
-        for r in load(root/node['components']['TRADING_STATUS']['artifact_path'])['rows']:status[r['security_id']][d]=r['status']
+        component=node['components']['TRADING_STATUS']
+        for r in load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']:
+            status[r['security_id']][d]=r['status']
     historical_universe=load(checked(root,load(root/'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
     historical_universe_bytes=admit_source_binding_bytes(root,historical_universe,
         source_origin='V4_CORRECTED_OWNER_HISTORICAL_UNIVERSE')

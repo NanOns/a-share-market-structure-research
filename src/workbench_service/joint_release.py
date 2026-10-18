@@ -23,12 +23,26 @@ def checked_path(root,binding):
     if content_hash.hexdigest()!=binding['sha256']:raise SourceInvalid('JOINT_SOURCE_DIGEST_MISMATCH:'+binding['path'])
     return path
 
-def validate(root,candidate):
+def checked_bytes(root,binding,cache=None):
+    """Read an exact release binding from PG, admitting only its declared bytes once."""
+    key=(str(Path(root).resolve()),binding.get('path'),binding.get('sha256'))
+    if cache is not None and key in cache:return cache[key]
+    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_source_binding_bytes
+    try:
+        raw=admit_source_binding_bytes(root,binding,
+            source_origin='V4_JOINT_RELEASE_HEAD_BOUND_SOURCE_R1')
+    except (OSError,ValueError) as exc:
+        raise SourceInvalid('JOINT_PG_SOURCE_INVALID:'+str(binding.get('path',''))) from exc
+    if cache is not None:cache[key]=raw
+    return raw
+
+def validate(root,candidate,*,source_cache=None):
     if candidate.get('contract_id') not in CONTRACTS:raise SourceInvalid('JOINT_CONTRACT_INVALID')
-    manifest=json.loads(checked_path(root,candidate['snapshot']['manifest']).read_bytes())
-    checked_path(root,manifest['database'])
-    for binding in manifest['sources'].values():checked_path(root,binding)
-    for binding in candidate['ui_assets'].values():checked_path(root,binding)
+    source_cache={} if source_cache is None else source_cache
+    manifest=json.loads(checked_bytes(root,candidate['snapshot']['manifest'],source_cache))
+    checked_bytes(root,manifest['database'],source_cache)
+    for binding in manifest['sources'].values():checked_bytes(root,binding,source_cache)
+    for binding in candidate['ui_assets'].values():checked_bytes(root,binding,source_cache)
     if manifest['context']['accepted_trade_date']!=candidate['trade_date']:raise SourceInvalid('JOINT_DATE_MISMATCH')
     # Production owner bindings must describe this exact snapshot, not merely
     # individually readable files from another accepted day or input head.
@@ -50,10 +64,10 @@ def validate(root,candidate):
             for key in keys:
                 if owners[name].get(key)!=features.get(name,{}).get(key):
                     raise SourceInvalid('JOINT_OWNER_SNAPSHOT_BINDING_MISMATCH:'+name+':'+key)
-                checked_path(root,owners[name][key])
+                checked_bytes(root,owners[name][key],source_cache)
         for name,key in (('market','market'),('market_center','publication'),('forward','publication')):
             binding=owners[name].get(key)
-            if not binding or json.loads(checked_path(root,binding).read_bytes())!=features.get(name):
+            if not binding or json.loads(checked_bytes(root,binding,source_cache))!=features.get(name):
                 raise SourceInvalid('JOINT_OWNER_SNAPSHOT_BINDING_MISMATCH:'+name+':'+key)
     if not candidate['operational_release_scope'] or candidate.get('trading') is not False:raise SourceInvalid('JOINT_SCOPE_INVALID')
     if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':
@@ -64,7 +78,7 @@ def validate(root,candidate):
         journal=manifest.get('sources',{}).get('focus_journal')
         if journal:bindings.append(journal)
         for binding in bindings:
-            descriptor=json.loads(checked_path(root,binding).read_bytes())
+            descriptor=json.loads(checked_bytes(root,binding,source_cache))
             with read(descriptor):pass
     return manifest
 
@@ -75,22 +89,23 @@ def activate(root,candidate,expected,health):
     except FileExistsError:raise SourceInvalid('JOINT_RELEASE_BUSY')
     os.write(fd,canonical(dict(pid=os.getpid())));os.fsync(fd);os.close(fd)
     before=path.read_bytes() if path.exists() else None
-    run=uuid.uuid4().hex;folder=root/'runtime/joint_release'/run
+    run=uuid.uuid4().hex;folder=root/'runtime/joint_release'/run;source_cache={}
     try:
         if (digest(before) if before else None)!=expected:raise SourceInvalid('JOINT_CAS_CONFLICT')
-        validate(root,candidate)
+        validate(root,candidate,source_cache=source_cache)
         raw=canonical(candidate)
         if before==raw:return dict(result='NOOP',activation_performed=False,authority_digest=digest(raw))
         # An exact pointer restore is insufficient if its live dependencies have
         # become unreadable. Reject before CAS while the old authority is intact.
-        if before is not None:validate(root,json.loads(before))
+        if before is not None:validate(root,json.loads(before),source_cache=source_cache)
         folder.mkdir(parents=True)
         atomic_bytes(folder/'PREDECESSOR.json',canonical(dict(existed=before is not None,raw=before.decode() if before else None)))
         atomic_bytes(folder/'TRANSACTION.json',canonical(dict(state='PREPARED',candidate_digest=digest(raw))))
         atomic_bytes(path,raw)
         try:
             readback=health(candidate)
-            if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':validate(root,candidate)
+            if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':
+                validate(root,candidate,source_cache=source_cache)
             if path.read_bytes()!=raw:raise SourceInvalid('JOINT_READBACK_CONFLICT')
             if not readback.get('pass'):raise SourceInvalid('JOINT_HEALTH_FAILED')
         except BaseException:

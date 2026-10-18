@@ -2,7 +2,7 @@
 import copy,json,urllib.request
 from pathlib import Path
 from .current_v4_context import SourceInvalid,canonical,digest
-from .joint_release import AUTHORITY,activate,checked_path,load,validate
+from .joint_release import AUTHORITY,activate,checked_bytes,load,validate
 from .production_v4 import ProductionV4ResearchReader
 from .pit_observation import freeze
 from .v4_daily_refresh import atomic_bytes
@@ -38,7 +38,7 @@ def promote(root,staged,health=None):
         owner=staged['owner_authorities'][key]
         if owner['trade_date']!=day or owner['input_data_head']['sha256']!=manifest['context']['data_head_digest']:
             raise SourceInvalid('DAILY_OWNER_CONTEXT_MISMATCH_'+key)
-    raw=json.loads(checked_path(root,manifest['sources']['RAW_DAILY']).read_bytes())['rows']
+    raw=json.loads(checked_bytes(root,manifest['sources']['RAW_DAILY']))['rows']
     if any(row['trade_date']!=day for row in raw):raise SourceInvalid('DAILY_RAW_DATE_CONFLICT')
     expected={r['security_id']:r for r in raw};comparisons=0
     with reader.connect() as db:
@@ -62,7 +62,7 @@ def promote(root,staged,health=None):
     if publication.get('adapter_contract_id'):
         def check_bindings(value):
             if isinstance(value,dict):
-                if {'path','sha256'}<=value.keys():checked_path(root,value)
+                if {'path','sha256'}<=value.keys():checked_bytes(root,value)
                 else:
                     for item in value.values():check_bindings(item)
             elif isinstance(value,list):
@@ -70,11 +70,11 @@ def promote(root,staged,health=None):
         check_bindings(publication['sources'])
         if publication['sources']['accepted_data_head']['sha256']!=manifest['context']['data_head_digest']:
             raise SourceInvalid('DAILY_FORWARD_EVALUATION_HEAD_MISMATCH')
-        calendar=json.loads(checked_path(root,publication['sources']['evaluation_inputs']['calendar']).read_bytes())['session_dates']
+        calendar=json.loads(checked_bytes(root,publication['sources']['evaluation_inputs']['calendar']))['session_dates']
         for outcome in publication['outcomes']:
             if outcome.get('adapter_contract_id')!=publication['adapter_contract_id']:raise SourceInvalid('DAILY_FORWARD_ADAPTER_MISMATCH')
             if outcome['report_cutoff']!=day:raise SourceInvalid('DAILY_FORWARD_EVALUATION_CUTOFF_MISMATCH')
-            source=outcome['evaluation_source'];frozen=json.loads(checked_path(root,outcome['frozen_t0']).read_bytes())
+            source=outcome['evaluation_source'];frozen=json.loads(checked_bytes(root,outcome['frozen_t0']))
             expected=digest(canonical(dict(inputs=publication['sources']['evaluation_inputs'],t0=frozen['T0'],cutoff=day,
                 calendar=calendar,kernel=publication['sources']['kernel'])))
             if source['sha256']!=expected:raise SourceInvalid('DAILY_FORWARD_EVALUATION_SOURCE_IDENTITY_MISMATCH')

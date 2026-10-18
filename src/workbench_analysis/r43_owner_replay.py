@@ -13,7 +13,7 @@ from decimal import Decimal, ROUND_HALF_UP, localcontext
 from pathlib import Path
 
 from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq
-from tdx.gbbq_reader import read_gbbq
+from tdx.gbbq_reader import decode_gbbq_bytes
 from v4.factors.core import Bar, Observation, compute_core, market_reference
 from .market_source_acquisition import official_sessions, write, now, is_stock_code
 from .tdx_official_daily_source import sha256_file, _atomic_write
@@ -203,12 +203,10 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     capture=load(checked(root,source_pointer['capture_receipt'])); package=checked(root,capture['package'])
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
     frozen_previous=historical_source(root,'core_replay')['value']['owners'][0]
-    source_gbbq=checked(root,frozen_previous['sources']['gbbq']); blob=source_gbbq.read_bytes()
-    gpath=root/'data/v4/corrected_owner_sources'/hashlib.sha256(blob).hexdigest()/'gbbq'
-    from common.paths import resolve_tdx_root
-    _atomic_write(gpath,blob,tdx_root=resolve_tdx_root(root))
+    gbbq_binding=frozen_previous['sources']['gbbq']
+    source_gbbq=checked(root,gbbq_binding); blob=source_gbbq.read_bytes()
     events=defaultdict(list)
-    for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
+    for e in decode_gbbq_bytes(blob,source=gbbq_binding['path']):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
                  identity=identity_binding,contract=ref(root,root/CONTRACT),
@@ -226,9 +224,12 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     chain=load(checked(root,head['accepted_chain']))
     dated_identity={}
     for node in chain['nodes']:
-        d=node['trade_date']; rs=load(root/node['components']['IDENTITY_UNIVERSE']['artifact_path'])['rows']
+        d=node['trade_date'];component=node['components']['IDENTITY_UNIVERSE']
+        rs=load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']
         dated_identity[d]={r['security_id'] for r in rs}
-        for r in load(root/node['components']['TRADING_STATUS']['artifact_path'])['rows']:status[r['security_id']][d]=r['status']
+        component=node['components']['TRADING_STATUS']
+        for r in load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']:
+            status[r['security_id']][d]=r['status']
     historical_universe=load(checked(root,load(root/'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
     for r in gzrows(checked(root,historical_universe)):
         if r['trade_date'] in required and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):

@@ -75,3 +75,11 @@
 - 本日 `2026-09-30` 没有真实到期计划：`settlement_gate=NO_REAL_DUE`、due_count 0、actual_price_reads 0。585 个 horizon 当前均为 PENDING，mature eligible 为 0，胜率/收益分位不计算；历史权限未变，严格 PIT 未授予。此为真实生命周期推进结果，不是业务验收通过。
 - 所有本轮 R2 过程回执（含成功的 FP10 readback 和前次中断/重跑入口）均已移至 `G:\\codex_tmp\\r6_daily_evidence`，不提交原始证据或过程输出。
 - FP10 缓存改动回归复验 `tests/test_r2_forward_daily.py` 与 `tests/test_v4_21_forward_observation_contract.py`：32 passed（0.20 秒）。此前首次复验中发现的 `__new__` 测试工厂兼容问题已修复。
+
+## 日更准入与补充业务读链（2026-10-18 续行）
+
+- `continuous_daily_release.promote` 与 `activate_r2_daily_successor` 现在按 Joint Head 中的 admission 路径/SHA 读取精确 PG SourceIngress 字节；配置、证据和实现 binding 不再由该调用点直接打开工作区文件。SourceIngress helper 支持既有 authority 只提供 path+SHA 的紧凑 binding；PG readback SHA 与 Head 一致。此次读取将当前 admission 及其证据/实现事实写入唯一开发 PG，所有记录均按原始 SHA 定位，没有提升外部签发或生产接受状态。
+- `joint_release.validate` 对快照 manifest、数据源、UI 资源、Owner publications 和 PG descriptor 改为按精确 binding 从 PG 校验/读回。发现并修复了一处实际 workspace drift：`reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz` 的仓内副本与 Head SHA 不同；PG 保有 Head 指定的 37,627,535 字节原版本。全候选 PG-bound validation 最终读验了 50 个 manifest source，T0=`2026-09-30`、七个 domain feature 完整，`full_product_release=false`、`trading=false`。
+- 尝试把同一 admission 刷新进 Joint control authority 并使用 28766 做 CAS 健康读回时，健康门发现候选 manifest token 与正在服务的 PG candidate schema token 不同而拒绝；Joint CAS 按契约恢复了原 authority，admission 文件也恢复到提交版本。具体现状：authority 指向 manifest digest `d9d052…e72f3`，28766 提供 token `research-v4-pg-candidate-7461…9e6a`。因此没有报告开发 Head 刷新成功；该处仍是实际的 28766 Head/namespace 集成缺口。28765 未访问。
+- 修复 `corrected_owner_replay.materialize_core`、`r43_owner_replay.materialize_core` 对 accepted-chain `IDENTITY_UNIVERSE`/`TRADING_STATUS` artifact 的直接文件读取，改为按链内 artifact SHA 读取 PG bytes。R43 GBBQ 下游由 PG 精确 bytes 直接解析，取消原本的仓内临时镜像和二次文件读取。实测当前链 3 个日期、6 份 artifact 共 31,338 行，两生产器读到完全相同 payload；R43 GBBQ 5,613,070 字节解码 193,554 条事件，摘要与 PG binding 一致。
+- 本续行新增验证：Forward/Joint 定向测试 13 passed；Forward 子集 5 passed；上述 Head-bound PG validation 通过。28766 的全候选健康 CAS 未通过，原因是服务注入 schema 与联合 authority manifest 不一致，已按 CAS 机制回滚而非强行改写。

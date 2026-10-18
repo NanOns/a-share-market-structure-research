@@ -27,9 +27,12 @@ def _dsn() -> str:
             if sep and key.strip() == "V4_NATIVE_PG_DSN":
                 value = val.strip().strip('"').strip("'")
                 break
-    if not value:
-        raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED")
-    return value
+    if value:
+        return value
+    import sys
+    sys.path.insert(0, str(ROOT / "src"))
+    from workbench_db.v4_native import configured_dsn
+    return configured_dsn()
 
 
 def install(*, apply: bool) -> dict[str, object]:

@@ -76,7 +76,9 @@ def resolve_workspace_owner_mapping_document(
     if not isinstance(entries, list):
         raise WorkspaceOwnerMappingError("WORKSPACE_OWNER_MAPPING_REGISTRY_INVALID")
     matches = [entry for entry in entries if isinstance(entry, Mapping)
-               and entry.get("root_identity_sha256") == identity["root_identity_sha256"]]
+               and ((entry.get("logical_workspace_id") == identity["logical_workspace_id"])
+                    or (not entry.get("logical_workspace_id")
+                        and entry.get("root_identity_sha256") == identity["root_identity_sha256"]))]
     if not matches:
         raise WorkspaceOwnerMappingError("WORKSPACE_OWNER_MAPPING_UNAVAILABLE")
     if len(matches) != 1:
@@ -110,6 +112,7 @@ def resolve_workspace_owner_mapping_document(
     return {
         "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
         "root_identity_sha256": identity["root_identity_sha256"],
+        "logical_workspace_id": identity["logical_workspace_id"],
         "model_namespace_id": entry["model_namespace_id"],
         "database_identity": dict(database_identity), "owner_schemas": dict(owner_schemas),
         "valid_from": valid_from.isoformat(), "valid_to": valid_to.isoformat() if valid_to else None,

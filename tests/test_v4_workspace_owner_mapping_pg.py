@@ -53,3 +53,27 @@ def test_pg_contract_mapping_fails_closed_for_namespace_mismatch(tmp_path):
             root=tmp_path, trade_date="2026-10-16", selected_model_namespace_id="other-workspace",
             registry=_registry(tmp_path),
         )
+
+
+def test_pg_contract_mapping_survives_checkout_relocation(monkeypatch, tmp_path):
+    first = tmp_path / "drive-a" / "repo"
+    moved = tmp_path / "drive-b" / "repo"
+    for checkout in (first, moved):
+        (checkout / ".git").mkdir(parents=True)
+        (checkout / ".git" / "config").write_text(
+            '[remote "origin"]\n\turl = https://github.com/NanOns/a-share-market-structure-research.git\n',
+            encoding="utf-8",
+        )
+    from workbench_db import v4_native
+    monkeypatch.setattr(v4_native, "workspace_schema", v4_native._legacy_workspace_schema)
+    registry = _registry(first)
+    registry["mappings"][0]["logical_workspace_id"] = workspace_namespace_identity(
+        first, "publication"
+    )["logical_workspace_id"]
+
+    mapping = resolve_workspace_owner_mapping_document(
+        root=moved, trade_date="2026-10-16", selected_model_namespace_id="workspace-main",
+        registry=registry,
+    )
+
+    assert mapping["logical_workspace_id"] == workspace_namespace_identity(moved, "publication")["logical_workspace_id"]

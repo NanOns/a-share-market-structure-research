@@ -37,6 +37,8 @@ VERSIONS={
     "042_market_universe_persistence_r1.sql":"V4_MARKET_UNIVERSE_PERSISTENCE_R1",
     "044_operational_research_live_head_r1.sql":"V4_OPERATIONAL_RESEARCH_LIVE_HEAD_R1",
     "045_dm01_data_accepted_head_pg_r1.sql":"V4_DM01_DATA_ACCEPTED_HEAD_PG_R1",
+    "046_v4_workspace_namespace_alias_r1.sql":"V4_PG_WORKSPACE_NAMESPACE_ALIAS_R1",
+    "047_v4_workspace_namespace_alias_central_schema_r1.sql":"V4_PG_WORKSPACE_NAMESPACE_ALIAS_CENTRAL_SCHEMA_R1",
 }
 
 def dsn():
@@ -50,8 +52,11 @@ def dsn():
         for raw in lines:
             key,sep,val=raw.partition("=")
             if sep and key.strip()=="V4_NATIVE_PG_DSN": value=val.strip().strip('"').strip("'"); break
-    if not value: raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED")
-    return value
+    if value: return value
+    import sys
+    sys.path.insert(0,str(ROOT/"src"))
+    from workbench_db.v4_native import configured_dsn
+    return configured_dsn()
 
 def apply():
     applied=[]

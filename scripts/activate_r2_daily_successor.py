@@ -6,7 +6,7 @@ from scripts.fp01_evidence import write,ref
 from scripts.activate_v4_full_product import health
 from workbench_service.joint_release import AUTHORITY,activate,validate,checked_path
 from workbench_service.current_v4_context import SourceInvalid,digest
-from workbench_service.continuous_daily_release import ADMISSION
+from workbench_service.continuous_daily_release import ADMISSION,_admitted_bytes
 OUT=ROOT/'docs/evidence/r2_continuous_daily_20261008'
 
 def prepare():
@@ -52,8 +52,9 @@ def prepare():
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--activate',action='store_true');parser.add_argument('--expected-authority-digest');args=parser.parse_args()
     if not args.activate:return prepare()
-    candidate=json.loads((OUT/'CANDIDATE.json').read_bytes());admission=json.loads(checked_path(ROOT,candidate['daily_pipeline_admission']).read_bytes())
-    for binding in admission['evidence']+list(admission['implementations'].values()):checked_path(ROOT,binding)
+    candidate=json.loads((OUT/'CANDIDATE.json').read_bytes());admission_binding=candidate['daily_pipeline_admission']
+    admission=json.loads(_admitted_bytes(ROOT,admission_binding))
+    for binding in admission['evidence']+list(admission['implementations'].values()):_admitted_bytes(ROOT,binding)
     if not args.expected_authority_digest:raise SourceInvalid('EXPECTED_JOINT_DIGEST_REQUIRED')
     receipt=activate(ROOT,candidate,args.expected_authority_digest,health)
     if receipt['result']!='NOOP':write(OUT/'RELEASE_FINAL.json',receipt)

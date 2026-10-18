@@ -372,10 +372,11 @@ def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
     project=_root(root)
     if (not isinstance(binding,dict) or not isinstance(binding.get('path'),str)
             or not re.fullmatch(r'[0-9a-f]{64}',str(binding.get('sha256') or ''))
-            or type(binding.get('bytes')) is not int or binding['bytes']<1
+            or (binding.get('bytes') is not None and
+                (type(binding.get('bytes')) is not int or binding['bytes']<1))
             or not isinstance(source_origin,str) or not source_origin.strip()):
         raise ValueError('HISTORICAL_SOURCE_BINDING_INVALID')
-    relative=Path(binding['path']).as_posix();expected_sha=binding['sha256'];expected_bytes=binding['bytes']
+    relative=Path(binding['path']).as_posix();expected_sha=binding['sha256'];expected_bytes=binding.get('bytes')
     try:
         exact=read_bound(project,relative,expected_sha)
         raw=exact['raw']
@@ -390,14 +391,15 @@ def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
             if not source.is_relative_to(project) or not source.is_file():
                 raise ValueError('HISTORICAL_SOURCE_INGRESS_PATH_INVALID')
             raw=source.read_bytes()
-            if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+            if ((expected_bytes is not None and len(raw)!=expected_bytes) or digest(raw)!=expected_sha):
                 try:pointer=raw.decode('ascii').splitlines()
                 except UnicodeDecodeError:pointer=[]
                 oid=next((line.removeprefix('oid sha256:') for line in pointer if line.startswith('oid sha256:')),None)
                 declared=next((int(line.removeprefix('size ')) for line in pointer
                                if line.startswith('size ') and line.removeprefix('size ').isdigit()),None)
-                if oid!=expected_sha or declared!=expected_bytes:
+                if oid!=expected_sha or (expected_bytes is not None and declared!=expected_bytes):
                     raise ValueError('HISTORICAL_SOURCE_INGRESS_DIGEST_MISMATCH')
+                expected_bytes=declared
                 git_dir=project/'.git'
                 if git_dir.is_file():
                     marker=git_dir.read_text(encoding='utf-8').strip()
@@ -407,7 +409,7 @@ def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
                 object_path=git_dir/'lfs'/'objects'/oid[:2]/oid[2:4]/oid
                 if not object_path.is_file():raise ValueError('HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_UNAVAILABLE')
                 raw=object_path.read_bytes()
-            if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+            if ((expected_bytes is not None and len(raw)!=expected_bytes) or digest(raw)!=expected_sha):
                 raise ValueError('HISTORICAL_SOURCE_INGRESS_SOURCE_IDENTITY_MISMATCH')
             if len(raw)>MAX_INLINE_SOURCE_BYTES:
                 ingest_package_bytes(project,relative,raw,expected_sha256=expected_sha,
@@ -418,7 +420,7 @@ def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
                 ingest_file(project,source_id_for_path(relative),source,
                     expected_sha256=expected_sha)
                 raw=read_bound(project,relative,expected_sha)['raw']
-    if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+    if ((expected_bytes is not None and len(raw)!=expected_bytes) or digest(raw)!=expected_sha):
         raise ValueError('HISTORICAL_SOURCE_INGRESS_SOURCE_IDENTITY_MISMATCH')
     return raw
 

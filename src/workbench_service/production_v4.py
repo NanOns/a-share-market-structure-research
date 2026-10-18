@@ -292,6 +292,77 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 for field,cell in raw_turnover_cells(row,date,authority['volume_unit'],authority['amount_unit']).items():
                     result['fields'][field]=compact_cell(cell,sources['RAW_DAILY'],field,date)
                 db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
+        structure_authority=(authority_overrides or {}).get('stock_structure_timeline')
+        if structure_authority is not None:
+            if (structure_authority.get('contract_id')!='V4_STOCK_STRUCTURE_TIMELINE_CANDIDATE_R1'
+                    or structure_authority.get('trade_date')!=date
+                    or structure_authority.get('input_data_head',{}).get('sha256')!=context['context']['data_head_digest']
+                    or structure_authority.get('AS_RECORDED') is not False
+                    or structure_authority.get('PIT_ELIGIBLE') is not False
+                    or structure_authority.get('knowledge_lineage')!='RECONSTRUCTED_CORRECTED'):
+                raise SourceInvalid('STOCK_STRUCTURE_CANDIDATE_IDENTITY_INVALID')
+            manifest_binding=structure_authority.get('runtime_manifest')
+            if not isinstance(manifest_binding,dict):raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_MANIFEST_REQUIRED')
+            manifest_source=admit_bound(root,manifest_binding)
+            if len(manifest_source['raw'])!=manifest_binding.get('bytes') or digest(manifest_source['raw'])!=manifest_binding['sha256']:
+                raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_MANIFEST_BINDING_MISMATCH')
+            structure_manifest=json.loads(manifest_source['raw'])
+            owner_inputs=structure_manifest.get('owner_inputs',{})
+            if (structure_manifest.get('contract_id')!='V4_12_R13_RUNTIME_CANDIDATE_MANIFEST'
+                    or structure_manifest.get('formal_accepted') is not False
+                    or structure_manifest.get('status')!='ENGINEERING_CANDIDATE_NOT_ACCEPTED'
+                    or structure_manifest.get('knowledge_lineage')!='RECONSTRUCTED_CORRECTED'
+                    or owner_inputs.get('trade_date')!=date
+                    or owner_inputs.get('AS_RECORDED') is not False):
+                raise SourceInvalid('STOCK_STRUCTURE_OWNER_CANDIDATE_NOT_EXACT')
+            artifacts={Path(ref['path']).name:ref for ref in structure_manifest.get('artifacts',[])}
+            runtime_ref=artifacts.get('runtime_security.jsonl.gz')
+            if not runtime_ref:raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_SECURITY_MISSING')
+            admit_bound(root,runtime_ref);sources['stock_structure_runtime_manifest']=manifest_binding
+            sources['stock_structure_runtime_security']=runtime_ref
+            domain_features['stock_structure_timeline']=dict(structure_authority,
+                runtime_security=runtime_ref,owner_contract=structure_manifest.get('contract_id'),
+                owner_status=structure_manifest.get('status'))
+            rows_seen=indexed=unmatched=0
+            for row in jsonl_rows(runtime_ref):
+                rows_seen+=1
+                identity=row.get('identity',{});sid=identity.get('security_id')
+                if identity.get('trade_date')!=date or not isinstance(sid,str):
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_IDENTITY_INVALID')
+                if row.get('AS_RECORDED') is not False or row.get('PIT_ELIGIBLE') is not False:
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_LINEAGE_INVALID')
+                events=row.get('events')
+                projection=row.get('active_projection')
+                if not isinstance(events,list) or not isinstance(projection,dict):
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_SHAPE_INVALID')
+                for event in events:
+                    if event.get('created_trade_date','')>date or event.get('candidate_only') is not True:
+                        raise SourceInvalid('STOCK_STRUCTURE_EVENT_CUTOFF_OR_CANDIDATE_INVALID')
+                active_quality=projection.get('active_anchor_selection_quality')
+                anchor_value=projection.get('anchor_view_asof_t')
+                anchor_quality='KNOWN' if active_quality=='KNOWN' else 'UNKNOWN'
+                anchor_reason=projection.get('active_anchor_selection_reason') or projection.get('reason')
+                old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(sid,)).fetchone()
+                if not old:
+                    unmatched+=1
+                    continue
+                result=json.loads(old[0])
+                result['fields']['structure_events']=compact_cell(dict(value=events,quality='KNOWN',
+                    contract_id=structure_manifest['contract_id']),runtime_ref,'structure_events',date)
+                result['fields']['anchor_view_asof_t']=compact_cell(dict(value=anchor_value,quality=anchor_quality,
+                    reason=None if anchor_quality=='KNOWN' else anchor_reason,
+                    contract_id=structure_manifest['contract_id']),runtime_ref,'anchor_view_asof_t',date)
+                db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(sid,));put('stocks',result)
+                indexed+=1
+            if rows_seen!=int(owner_inputs.get('rows',rows_seen)) or indexed==0:
+                raise SourceInvalid('STOCK_STRUCTURE_OWNER_ROW_COUNT_MISMATCH')
+            domain_features['stock_structure_timeline'].update(rows_read=rows_seen,
+                securities_matched=indexed,securities_outside_current_universe=unmatched)
+            owners['stock_structure_timeline']=dict(contract_id=structure_authority['contract_id'],
+                trade_date=date,input_data_head=structure_authority['input_data_head'],
+                runtime_manifest=manifest_binding,runtime_security=runtime_ref,
+                rows_read=rows_seen,securities_matched=indexed,securities_outside_current_universe=unmatched,
+                knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,PIT_ELIGIBLE=False)
         focus_authority=root/'config/v4_focus_operational_authority_v1.json'
         focus_ingress=operational('focus',focus_authority)
         if focus_override is not None or focus_ingress is not None:

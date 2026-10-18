@@ -84,6 +84,15 @@
 - 实际 28766 当前 context token 与其服务 PG schema 的 snapshot logical digest 一致（`research-v4-pg-candidate-7461…9e6a`）。服务仍是 2026-09-30 的候选预览，operational scope 未绑定；这次修复解决校验格式差异，不把候选 preview 提升为发布验收。完整验证与 Head/namespace 联调继续进行。
 - 对 28766 真实运行 44 条 HTTP 功能矩阵，所有请求 HTTP 200，覆盖六入口、来源/诊断、Forward、Replay/Compare、个股图表六种 D/W/M×RAW/QFQ 组合，以及个股/板块/Focus 详情。发现 8 个仍准确标为缺源或候选状态的能力：FEP 当前日 inference Owner、媒体/官方事实事件源、日更 worker receipts、严格 PIT 与 Compare 证明、个股结构 timeline 字段、Sector 历史成员轨迹、Focus 到期 outcomes。原始矩阵在 `G:\codex_tmp\v4_28766_function_matrix_20261018.json`，仅过程证据不入 Git。
 
+## Structure Owner 时间线与完整候选重建（2026-10-18 续行）
+
+- 新增 `scripts/build_v4_stock_structure_candidate.py` 与 `build_snapshot` 的候选 Owner 投影：七个日更模块 authority 与 Owner runtime manifest 首次按原字节进入 SourceIngress 并精确 PG 读回；构建时继续从 PG 解压/读取候选 Structure runtime rows，校验 manifest、日期、Head、每行 lineage 与 event 候选标记。
+- Structure Owner 输入为 `V4_12_R13_RUNTIME_CANDIDATE_MANIFEST`，manifest 7,758 字节（SHA-256 `55ad2c6d…ba2afc82`）；`runtime_security.jsonl.gz` 36,899,143 字节（SHA-256 `b46386ae…650243bf`）。读取 5,224 行，其中 5,213 条绑定当前证券 Universe，11 条明确计为非当前 Universe；输出保留 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`。
+- 生成完整不可变 PG 候选 schema `v4_research_7f5f6c66a4681999ca5420f5`，logical digest `91b4066e…2ec116935`；包含 stocks 5,213、sectors 378、focus 469、forward 117、settlement 585、events 33、market 1，以及 stocks/sectors/market/focus/forward/replay/Structure 共 8 个 PG domain features。未移动 Data Head、Joint authority 或 accepted Head。
+- 仅将开发端口 28766 重启并绑定该 schema（PID 33460）。实际 46 条 API 功能矩阵 0 个 HTTP 失败；股票日/周/月×RAW/QFQ 六种图表全部 `READY`。有 Structure 事件样本返回 2 个事件+1 个锚点、`READY`；已知无事件样本返回 `EMPTY_VALID`，不再误报缺源。12 个前端页面/脚本资源 HTTP 200。过程矩阵保存在 `G:\codex_tmp\v4_28766_function_matrix_20261018_r2.json`。
+- 清理本轮失败试跑产生且未被任何 authority/alias/服务引用的候选 schema `v4_research_a2c230b897102db46262f9e0`；活动 28766 schema 保留。端口复核仍只有 PG 5432 与开发 28766，28765 未监听、未访问。
+- 剩余 7 项业务态保持准确关闭：FEP 没有当前日模型推断 Owner；无已批准官方/媒体事实事件数据集；候选不含日更 worker receipts；严格 PIT/Compare 首次可知证明未授予；Sector 历史成员篮子未发布；Focus outcomes 尚无到期发布。当前 UI 是完整开发候选，不是全模块验收或生产切换。
+
 ## 日更准入与补充业务读链（2026-10-18 续行）
 
 - `continuous_daily_release.promote` 与 `activate_r2_daily_successor` 现在按 Joint Head 中的 admission 路径/SHA 读取精确 PG SourceIngress 字节；配置、证据和实现 binding 不再由该调用点直接打开工作区文件。SourceIngress helper 支持既有 authority 只提供 path+SHA 的紧凑 binding；PG readback SHA 与 Head 一致。此次读取将当前 admission 及其证据/实现事实写入唯一开发 PG，所有记录均按原始 SHA 定位，没有提升外部签发或生产接受状态。

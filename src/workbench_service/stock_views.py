@@ -134,6 +134,8 @@ def timeline(reader,item,query):
     rows=[];debts=[]
     for field,kind in [('structure_events','STRUCTURE_EVENT'),('anchor_view_asof_t','ANCHOR')]:
         cell=item['fields'].get(field)
+        if cell and cell.get('quality')=='KNOWN' and cell.get('value') is None:
+            continue
         if not cell or cell.get('quality')=='UNKNOWN' or cell.get('value') is None:
             debts.append(dict(field=field,owner='V4_12',reason=cell.get('reason') if cell else 'OWNER_FIELD_NOT_BOUND'))
             continue

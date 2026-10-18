@@ -22,10 +22,10 @@ def test_export_is_immutable_and_reader_transaction_is_readonly(tmp_path):
         assert tx.execute('SHOW transaction_isolation').fetchone()[0] == 'repeatable read'
         assert tx.execute('SHOW transaction_read_only').fetchone()[0] == 'on'
         with pytest.raises(psycopg.errors.ReadOnlySqlTransaction):
-            tx.execute('DELETE FROM facts')
+            tx.execute('DELETE FROM v4.shadow_readback_facts_r1')
     with pytest.raises(psycopg.Error, match='IMMUTABLE_SHADOW_READBACK'):
         with connection(descriptor['schema']) as pg:
-            pg.execute('TRUNCATE facts')
+            pg.execute('TRUNCATE v4.shadow_readback_facts_r1')
 
 
 @pytest.mark.parametrize('change', ['digest', 'engine', 'contract', 'extra'])
@@ -75,11 +75,11 @@ def test_v4_http_pg_consumption_and_write_rejection(tmp_path):
         with urlopen(base + PREFIX + 'context') as response:
             context = json.loads(response.read())
         assert context['status'] == 'READY' and context['real_sample_count'] == 0
-        token = context['context_token']
+        context_binding = context['context_token']
         for component in ('summary', 'radar', 'entity', 'cohort', 'settlement', 'health'):
-            with urlopen(base + PREFIX + component + '?context_token=' + token) as response:
+            with urlopen(base + PREFIX + component + '?context_token=' + context_binding) as response:
                 data = json.loads(response.read())
-            assert data['context_token'] == token and data['status'] == 'READY'
+            assert data['context_token'] == context_binding and data['status'] == 'READY'
         for method in ('POST', 'PUT', 'PATCH', 'DELETE'):
             with pytest.raises(HTTPError) as caught:
                 urlopen(Request(base + PREFIX + 'context', data=b'{}', method=method))

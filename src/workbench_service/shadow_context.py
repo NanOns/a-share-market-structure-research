@@ -91,13 +91,28 @@ class ShadowContextReader:
         require(path.suffix=='.json','PG_SHADOW_BINDING_REQUIRED_NO_FALLBACK')
         require('database_binding' in manifest and manifest['database_binding']['path'] == manifest['database_path'],
                 'EXACT_PG_SHADOW_BINDING_REQUIRED')
-        with read(self._exact(manifest['database_binding'])) as connection:
-            require(connection.execute('SELECT environment,evidence_origin FROM storage_identity WHERE singleton=1').fetchall()
-                    == [('REAL', 'PIT_OBSERVED')], 'STORAGE_ORIGIN_MISMATCH')
+        descriptor = self._exact(manifest['database_binding'])
+        with read(descriptor) as connection:
+            if descriptor.get('contract_id') == 'V4_PG_SHADOW_READBACK_R3':
+                identity_rows = connection.execute(
+                    'SELECT environment,evidence_origin FROM v4.shadow_readback_identity_r1 '
+                    'WHERE logical_digest=?', (descriptor['logical_digest'],)).fetchall()
+                require(identity_rows == [('REAL', 'PIT_OBSERVED')], 'STORAGE_ORIGIN_MISMATCH')
+            else:
+                identity_rows = connection.execute(
+                    'SELECT environment,evidence_origin FROM storage_identity WHERE singleton=1').fetchall()
+                require(identity_rows == [('REAL', 'PIT_OBSERVED')], 'STORAGE_ORIGIN_MISMATCH')
             facts = {}
             for name, binding in manifest['facts'].items():
-                row = connection.execute('SELECT namespace,execution_mode,evidence_origin,payload,digest FROM facts WHERE kind=? AND id=?',
-                                         (binding['kind'], binding['id'])).fetchone()
+                if descriptor.get('contract_id') == 'V4_PG_SHADOW_READBACK_R3':
+                    row = connection.execute(
+                        'SELECT namespace,execution_mode,evidence_origin,payload,digest '
+                        'FROM v4.shadow_readback_facts_r1 WHERE logical_digest=? AND kind=? AND id=?',
+                        (descriptor['logical_digest'], binding['kind'], binding['id'])).fetchone()
+                else:
+                    row = connection.execute(
+                        'SELECT namespace,execution_mode,evidence_origin,payload,digest FROM facts WHERE kind=? AND id=?',
+                        (binding['kind'], binding['id'])).fetchone()
                 require(row is not None, 'EXACT_FACT_MISSING')
                 require(row[:3] == ('SHADOW_V4', 'SHADOW', 'PIT_OBSERVED'), 'FACT_ORIGIN_MISMATCH')
                 value = json.loads(row[3])

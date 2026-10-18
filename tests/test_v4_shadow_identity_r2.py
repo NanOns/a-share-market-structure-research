@@ -1,32 +1,58 @@
+"""Pure R3 Shadow identity and fixed-schema locator checks."""
 from copy import deepcopy
+
 import pytest
-from workbench_db.v4_shadow_pg_r2 import build_readback, read, digest
-from workbench_db.v4_native import connection
+
+from workbench_db import v4_shadow_pg_r3 as r3
 
 
-def vector(root):
-    payload=dict(namespace='SHADOW_V4',execution_mode='SHADOW',evidence_origin='PIT_OBSERVED',value=None)
-    return build_readback(root,[dict(kind='vector',id='one',payload=payload)],environment='REAL',evidence_origin='PIT_OBSERVED')
+def descriptor():
+    value = dict(contract_id=r3.CONTRACT, engine='postgresql', schema='v4',
+                 content_digest='a' * 64,
+                 database_identity=dict(system_identifier='1', database='market_research', database_oid='646711'))
+    value['logical_digest'] = r3.digest(value)
+    return value
 
 
-@pytest.mark.parametrize('mutation', ['payload','delete','origin'])
-def test_shadow_admin_content_corruption_rejected(tmp_path,mutation):
-    descriptor=vector(tmp_path)
-    with connection(descriptor['schema']) as pg:
-        pg.execute('ALTER TABLE facts DISABLE TRIGGER immutable_shadow')
-        pg.execute('ALTER TABLE storage_identity DISABLE TRIGGER immutable_shadow')
-        if mutation=='payload':pg.execute("UPDATE facts SET payload='{}'")
-        elif mutation=='delete':pg.execute('DELETE FROM facts')
-        else:pg.execute("UPDATE storage_identity SET environment='ACTIVATION_SIMULATION'")
-    with pytest.raises(ValueError,match='MISMATCH'):
-        with read(descriptor):pass
-    with pytest.raises(ValueError,match='MISMATCH'):
-        vector(tmp_path)  # idempotent path also verifies full content
+def test_shadow_descriptor_rejects_per_export_schema_before_connection(monkeypatch):
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError('legacy physical Schema must be rejected before connecting')
+    monkeypatch.setattr(r3, 'connection', forbidden)
+    value = descriptor()
+    value['schema'] = 'v4_shadow_r2_0123456789abcdef'
+    value['logical_digest'] = r3.digest({k: v for k, v in value.items() if k != 'logical_digest'})
+    with pytest.raises(ValueError, match='PG_SHADOW_R3_FIXED_V4_BINDING_REQUIRED'):
+        with r3.read(value):
+            pytest.fail('noncanonical schema must never yield a reader')
 
 
-def test_shadow_resigned_database_mismatch(tmp_path):
-    descriptor=deepcopy(vector(tmp_path))
-    descriptor['database_identity']['system_identifier']='0'
-    descriptor['logical_digest']=digest({k:v for k,v in descriptor.items() if k!='logical_digest'})
-    with pytest.raises(ValueError,match='DATABASE_IDENTITY_MISMATCH'):
-        with read(descriptor):pass
+def test_shadow_fact_payload_must_bind_exact_origin():
+    payload = dict(namespace='SHADOW_V4', execution_mode='SHADOW',
+                   evidence_origin='PIT_OBSERVED', value='x')
+    assert r3._records([dict(kind='vector', id='one', payload=payload)], 'PIT_OBSERVED')
+    payload['evidence_origin'] = 'ACTIVATION_SIMULATION'
+    with pytest.raises(ValueError, match='SHADOW_FACT_IDENTITY_MISMATCH'):
+        r3._records([dict(kind='vector', id='one', payload=payload)], 'PIT_OBSERVED')
+
+
+def test_shadow_export_rejects_duplicate_and_wrong_origin():
+    payload = dict(namespace='SHADOW_V4', execution_mode='SHADOW',
+                   evidence_origin='PIT_OBSERVED')
+    with pytest.raises(ValueError, match='SHADOW_DUPLICATE_FACT'):
+        r3._records([dict(kind='vector', id='one', payload=payload)] * 2, 'PIT_OBSERVED')
+    with pytest.raises(ValueError, match='SHADOW_FACT_IDENTITY_MISMATCH'):
+        r3._records([dict(kind='vector', id='one', payload=payload)], 'ACTIVATION_SIMULATION')
+
+
+def test_shadow_descriptor_rejects_wrong_database_identity():
+    class Cursor:
+        def fetchone(self):
+            return ('1', 'market_research', '646711')
+    class FakePG:
+        def execute(self, *_args, **_kwargs):
+            return Cursor()
+    value = deepcopy(descriptor())
+    value['database_identity']['system_identifier'] = '0'
+    value['logical_digest'] = r3.digest({k: v for k, v in value.items() if k != 'logical_digest'})
+    with pytest.raises(ValueError, match='SHADOW_DATABASE_IDENTITY_MISMATCH'):
+        r3.verify(FakePG(), value)

@@ -25,7 +25,7 @@ production_changed: false
 | S1 停止动态 Schema 生成 | PASS | `workspace_schema()` 固定返回 `v4`；应用连接拒绝任何其他 Schema；Schema 创建边界拒绝非 `v4`；Alias 注册禁用；旧 Shadow 写入/导出在访问数据库前关闭。 |
 | S2 固定表结构 | PASS | 最终目录中 232 个关系对象、57 个例程、86 个类型、123 个非内部触发器，均在 `v4`。这些触发器是现役版本化表的约束，不是旧 Schema 残留。 |
 | S3 精确迁移与旧 Schema 清理 | PASS | 只读目录确认 `v4_*` Schema 为 0，跨 Schema 目录依赖为 0。所有删除使用 `RESTRICT`。Forward 映射 11 个来源 Schema 的 9,256 条精确映射均为 `VERIFIED`。 |
-| S4 全部运行时消费者切换 | PARTIAL | 主研究、股票图表、板块成员、Focus/Forward、诊断、Owner 精确 SourceIngress、日更仓储均经唯一 `v4` 边界；历史引用只通过固定表中的精确迁移回执解析。Native Shadow 仍 fail-closed，尚未迁入统一存储。 |
+| S4 全部运行时消费者切换 | PARTIAL | 主研究、股票图表、板块成员、Focus/Forward、诊断、Owner 精确 SourceIngress、日更仓储和 Shadow 导出/读回均经唯一 `v4` 边界；历史引用只通过固定表中的精确迁移回执解析。Shadow 固定存储已部署，真实接受清单仍缺失并 fail-closed。 |
 | S5 全模块续修 | PARTIAL | 可执行的消费者修复和 28766 浏览器检查已推进。候选快照未发布为正式 Head；缺少接受交易日历及若干模块历史输入，不能将候选可读视为模块验收完成。 |
 | S6 DB-01..12 与 28766 浏览器验收 | PARTIAL | 已完成的受控数据库及浏览器检查见下表；待到期、PIT 历史、日更作业回执和真实上游输入仍未满足全部验收门。 |
 
@@ -57,7 +57,7 @@ production_changed: false
 | DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；另用 64 MiB+1 字节事务内工程负载验证 5 块写入、重组读回、长度/SHA 与回滚。未把真实 551 MB TDX ZIP Base64 复制到 Forward facts；其真实包/独立接受合同仍未验，历史 1,678 项未导入。 |
 | DB-10 | PARTIAL | 日更和 Jobs 只读/幂等路径可运行；`market_calendar_sessions` 与正式 publication Head 为空、没有 worker 回执，故不签发 Accepted/DEV Head、不宣称重试/增量真实作业通过。 |
 | DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。旧 baseline、治理恢复证据及其他历史目录经实际计量；存在未提交/独有内容或不可替代恢复证据，保留，物理工作区清理未完成。 |
-| DB-12 | PASS | 当前库目录仅 `v4`，交叉 Schema 依赖 0；最终目录核对 232 关系、57 例程、86 类型、123 触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |
+| DB-12 | PASS | 当前 RR/RO 库目录仅 `v4`，交叉 Schema 依赖 0；FEP 后追加 Shadow 固定表迁移后现场复核为 123 张表、85 例程、184 个非内部触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |
 
 ## 原 266 项与 R7 Delta
 
@@ -383,3 +383,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 ### 当前接受来源与日更 Head 阻断事实复核
 
 - 配置 `config/v4_daily_source_acceptance_authorities_r1.json` 现场仍为 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED`，`issuers` 为空。当前 DB RR/RO 只读计数 `market_calendar_sessions=0`、`source_packages=0`、`source_package_facts=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`；`v4.daily_core_result_snapshots` 与 `v4.daily_core_result_rows` 固定表已部署；RR/RO `COUNT(*)` 确认为 0。相同事务内 `market_calendar_sessions`、`source_packages`、`source_package_facts`、`publications`、`publication_heads`、`operational_research_heads` 的精确计数也全为 0。缺失的独立签发来源与日历/Head 无法由本机工程探针代替，日更/Accepted 门继续关闭。
+
+### 2026-10-19 Shadow 导出器固定 v4 迁移
+
+- 审查发现 `v4_shadow_pg_r1/r2` 的真实 builder 仍含每次导出创建物理 Schema 的实现，虽然以运行时异常提前停用；相应读回 descriptor 也原先绑定独立 Schema。为关闭单 Schema 消费者缺口，新增中央登记迁移 `069_v4_shadow_fixed_schema_storage_r1.sql` 与 `070_v4_shadow_fact_origin_binding_r1.sql`，在 `v4` 中部署 `shadow_readback_identity_r1` 和 `shadow_readback_facts_r1` 两个版本化固定表，绑定数据库身份、完整内容摘要、来源环境及逐事实 evidence origin，并以 FK 和不可变触发器保护。中央迁移 runner 对目标 `market_research` 成功应用两项；目录仍只有业务 Schema `v4`，固定表数由 121 增至 123。全量业务表数口径包含此次新增表。
+- 当前 R1/R2 Python API 作为兼容入口统一委托到 `V4_PG_SHADOW_READBACK_R3` 固定 `v4` writer/reader；已移除旧每次导出 `CREATE SCHEMA` 写实现。descriptor 只接受 `schema='v4'` 并核验完整数据库身份、导出内容 digest、每条事实 digest 和完整身份。Shadow UI 精确清单适配固定 R3 事实关系；旧 Schema descriptor 无法借别名或 fallback 恢复。
+- 真实 PG 工程事务内通过该 writer 插入单条 `ACTIVATION_SIMULATION` 探针、执行完整 descriptor/content/fact 校验并确认更新被不可变触发器拒绝；外层事务显式回滚。独立 RR/RO 连接显示迁移后的 identity/facts 探针行数均为 0，`transaction_read_only=on`。固定 Schema 守卫和 Shadow 纯验证向量合计 `10 passed`。没有写入 REAL/PIT Shadow 数据、没有创建 Schema。
+- 28766 内置浏览器实际打开 `/v4/shadow`：页面显示 `NO_REAL_SHADOW_DATA`、真实样本 0、完整字段 UNKNOWN，并说明等待独立接受的真实 Shadow 发布；六个域均明确无已接受真实数据。该固定存储和浏览器 fail-closed 证据关闭“Shadow Schema 未迁移”的架构缺口，但缺少签发来源、接受 readback manifest 及真实 PIT 输入，Shadow 业务模块仍为 `PARTIAL`；不计为模块验收通过。

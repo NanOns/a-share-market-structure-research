@@ -53,14 +53,15 @@ def test_application_connection_rejects_legacy_schemas_before_connect(monkeypatc
             pass
 
 
-def test_dynamic_shadow_exports_are_disabled_before_database_access():
+def test_shadow_compatibility_builders_use_fixed_v4_exporter(monkeypatch):
     from workbench_db.v4_shadow_pg_r1 import build_readback_r1
     from workbench_db.v4_shadow_pg_r2 import build_readback
-
-    with pytest.raises(RuntimeError, match='V4_SINGLE_SCHEMA_SHADOW_EXPORT_MIGRATION_REQUIRED'):
-        build_readback_r1('.', [], environment='REAL', evidence_origin='PIT_OBSERVED')
-    with pytest.raises(RuntimeError, match='V4_SINGLE_SCHEMA_SHADOW_EXPORT_MIGRATION_REQUIRED'):
-        build_readback('.', [], environment='REAL', evidence_origin='PIT_OBSERVED')
+    from workbench_db import v4_shadow_pg_r3
+    calls=[]
+    monkeypatch.setattr(v4_shadow_pg_r3,'build_readback',lambda *a,**kw:calls.append((a,kw)) or {'schema':'v4'})
+    assert build_readback_r1('.',[],environment='REAL',evidence_origin='PIT_OBSERVED')=={'schema':'v4'}
+    assert build_readback('.',[],environment='REAL',evidence_origin='PIT_OBSERVED')=={'schema':'v4'}
+    assert len(calls)==2
 
 
 def test_research_builder_stages_locally_and_targets_fixed_schema(monkeypatch, tmp_path):

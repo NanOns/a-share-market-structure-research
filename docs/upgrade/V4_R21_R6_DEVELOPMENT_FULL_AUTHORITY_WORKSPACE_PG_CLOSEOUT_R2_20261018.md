@@ -90,3 +90,9 @@
 - 市场页实测显示盘后截面、宽度分母5,224/实际行情5,213、上涨2,344/下跌2,712/平盘155/未知13及成交额14,378.36亿元；点击展开上证指数后真实走势图可见，收盘3,842.19，并明确显示指数成交量原始单位待核实。页面继续标注 `PG 候选快照·不代表正式 Head`。
 - 这补齐了日更诊断抽屉与市场图表两个实际交互点；它们仍是候选态功能核验。没有启动日更写入进程，没有改动 Joint authority，也没有触碰28765。
 - 另从实际 DM-01 运行入口调用 `current_parent()` 做只读全链核验：PG 返回 accepted trade date `2026-09-30`、Head SHA `38e7c9b6…bae08`、9项组件；accepted chain、机器接受记录、组件权限、9个组件产物与回执均校验通过，状态 `DM01_PG_PARENT_READ=PASS`。这证明现行DM-01接受Head读链在PG端实际可用，不等于本次下一交易日已接受；目标增量仍受中间交易日官方源包缺失门禁约束。
+
+## 首次观察冻结改为 PG SourceIngress
+
+- `src/workbench_service/pit_observation.py` 不再把当前源复制到工作区作为 PIT 冻结档案；5类 manifest 源按精确 path/SHA 从 PG SourceIngress 读取，观察收据也以内容绑定写入/读回 PG。历史本地收据只在 PG 缺失时按原字节做一次导入；已有 18 个本地归档文件保留，实测前后文件集合、大小和时间戳均未变化。
+- 用28766正在服务的同一 PG 候选 schema 实跑冻结两次：T0=`2026-09-30`、5个源、同一 receipt 与 source identity，`idempotent=true`；随后对5个 path/SHA 再经 PG SourceIngress/package binding 精确读回，共75,180,686字节。PG 收据为1,569字节、SHA `6de3d849…42a828`，合同 `R2_FIRST_OBSERVED_FREEZE_V1`。按合同仍返回 `strict_t0_pit_ready=false`、`AS_RECORDED=false`。
+- 定向验证 `tests/test_r2_csv_pit.py`：3 passed。该改动只消除了首次观察模块对业务源文件的重复回读和新档案落盘，没有授予历史 PIT、改变任何 Head 或发布范围。

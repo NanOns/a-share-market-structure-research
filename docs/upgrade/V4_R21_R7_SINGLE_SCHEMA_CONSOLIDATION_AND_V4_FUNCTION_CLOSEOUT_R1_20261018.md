@@ -491,3 +491,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 对 `src/workbench_db` 与 `src/workbench_analysis` 的运行时源码扫描显示，V4 仍有 `create_schema` 调用点，但中央 `v4_native.create_schema` 只允许名称为 `v4` 且仅核验该 Schema 已存在；任何其他名称均以 `V4_SINGLE_SCHEMA_ONLY_SCHEMA_CREATION_BLOCKED` 拒绝，运行时不会建业务 Schema。历史只读目录唯一命中动态 Schema 关键词的函数为 `v4.reject_forward_legacy_schema_retirement_mutation_r1()`；RR/RO 读回定义确认其只是阻止旧退役账目修改的触发器函数，不含 Schema DDL。业务 Schema 目录仍仅有 `v4`。
 - 真实 28766 个股详情页再次显示候选 T0 `2026-09-30`，提示 `PG 候选快照 · 不代表正式 Head`；指标来源缺失仍展示为“来源能力不足”，页面未把 10-15 回溯 SourceIngress 误展示为新日更数据。当前浏览器渲染和数据模型尚未接上 10-15 DEV 回溯行，日更仍需接受日历、Universe/身份映射、Source Package 与 Head 才能完整验收。
 - 当前开发分支仅固定业务 Schema `v4`；本次没有运行 DDL、清理旧 Schema、改变数据库行或启动服务。下一步按固定迁移与消费者矩阵，逐一将运行时表/保护器 DDL 收敛到版本化中央迁移，再继续 10-15 DEV 日更和模块验收；Accepted/生产切换仍关闭。
+
+### 2026-10-19 10-15 日更目标口径纠正与真实任务账本复核
+
+- 更正前文日期表述：`2026-09-30` 仅是 28766 当前个股/诊断页使用的旧 PG 候选快照 T0，不能代表日更流水线的最新任务日期。日更账本确有 `through_date=2026-10-15` 的任务，但任务日期上界不等于该日已发布。
+- 在 `market_research` 使用项目只读连接、`REPEATABLE READ READ ONLY` 现场读取 `v4.jobs_update_jobs_r1`、`jobs_update_job_days_r1` 与事件：Scheduler job `83a9fbbfafde4402ad0da97846481a1d` 的 through_date 为 2026-10-15、状态 `QA_BLOCKED`；同一 job 下 2026-10-14 为 `QA_BLOCKED`（`SOURCE_EXECUTION_FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED`，attempt_count=2），2026-10-15 为 `QUEUED`（attempt_count=0）。因此没有证据表明 10-15 已完成日更发布。10-13 的 `PUBLISHED_FULL` 是此前手动作业，不会改变上述结论。
+- 按用户最后更正将 `2026-10-15` 作为本轮目标交易日，实际调用 `execute_sources(root,'2026-10-15','CATCH_UP',capture_only=True)`。入口返回 `BLOCKED / OFFICIAL_SESSION_NOT_VERIFIED`，细节 `PG_MARKET_CALENDAR_IDENTITY_REQUIRED`；流程没有转为 Accepted，也没有发布日更、Publication 或 Head。阻断发生于 PostgreSQL 日历身份验证，故不应把该结果说成 TDX/日更任务完成。
+- 当前 28766 浏览器候选 T0 仍为 2026-09-30；此前 2026-10-16 官方 TDX 包中抽取的 10-15 原始记录仍只作为 `RECONSTRUCTED_CORRECTED`、非 PIT、非 Accepted 的开发 SourceIngress。它们并未自动接入该网页候选快照，也不能替代 PG 接受日历、Source Package、Owner/Universe 或正式 Head。

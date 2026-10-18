@@ -64,6 +64,7 @@ VERSIONS={
     "069_v4_shadow_fixed_schema_storage_r1.sql":"V4_SHADOW_FIXED_SCHEMA_STORAGE_R1",
     "070_v4_shadow_fact_origin_binding_r1.sql":"V4_SHADOW_FACT_ORIGIN_BINDING_R1",
     "071_v4_publication_owner_canonical_schema_r1.sql":"V4_PUBLICATION_OWNER_CANONICAL_SCHEMA_R1",
+    "073_v4_history_immutability_fixed_schema_r1.sql":"V4_HISTORY_IMMUTABILITY_FIXED_SCHEMA_R1",
 }
 
 def dsn():

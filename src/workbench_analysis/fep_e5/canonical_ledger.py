@@ -1,8 +1,5 @@
 """Explicit canonical reconstruction fixture adapter; no default production DSN."""
-import hashlib, json
-from pathlib import Path
 from datetime import datetime, timezone, timedelta
-from psycopg import sql
 from psycopg.types.json import Jsonb
 from workbench_analysis.fep_e1.contracts import digest
 
@@ -21,23 +18,8 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 def apply(pg, root, paths):
-    """Install an explicit frozen allocation list, atomically per migration."""
-    result=[]
-    for relative in paths:
-        path=Path(root)/relative; raw=path.read_text(encoding='utf8'); checksum=hashlib.sha256(raw.encode()).hexdigest()
-        version='FEP_E5_CANONICAL_'+path.stem.upper()
-        with pg.transaction():
-            pg.execute("select pg_advisory_xact_lock(hashtextextended('v4.fep.migration',0))")
-            exists=pg.execute("select to_regclass('v4_meta.schema_migrations')").fetchone()[0]
-            old=pg.execute('select checksum_sha256 from v4_meta.schema_migrations where version=%s',(version,)).fetchone() if exists else None
-            if old:
-                if old[0].strip()!=checksum:raise ValueError('CANONICAL_MIGRATION_CHECKSUM_CONFLICT')
-                state='ALREADY_APPLIED'
-            else:
-                pg.execute(raw)
-                pg.execute('insert into v4_meta.schema_migrations values (%s,%s,clock_timestamp(),%s)',(version,checksum,VERSION));state='APPLIED'
-            result.append(dict(path=relative,sha256=checksum,status=state))
-    return result
+    """Refuse legacy FEP schema migrations until their v4 table migration exists."""
+    raise RuntimeError('V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED')
 
 def contract(pg, name, body, *, family=None):
     pg.execute('insert into fep.contracts values (%s,%s,%s,%s,%s,clock_timestamp())',
@@ -145,8 +127,45 @@ def accept(pg, prior_record, mapping, model, cutoff, activation, *, fail_before_
         pg.execute("insert into fep.acceptance_receipts values (%s,%s,%s,%s,%s,'FEP_E5_ENGINEERING_POLICY_V1',%s)",
             ('ACCEPT:'+pid,rid,accepted,model['grant_id'],activation['activation_id'],Jsonb(dict(engineering_only=True,model_display=False,priority_use=False))))
         payload=dict(source_slot_id=prior_record['slot_id'],prediction_id=pid,projection_state=prior_record['projection_state'])
-        pg.execute("insert into fep.slot_receipts values (%s,%s,%s,'ACCEPTED',%s,%s)",(slot,'RECEIPT:'+pid,accepted,Jsonb(payload),digest(payload)))
+        pg.execute(
+            "insert into fep.slot_receipts values (%s,%s,%s,'ACCEPTED',%s,%s)",
+            (slot,'RECEIPT:'+pid,accepted,Jsonb(payload),digest(payload)))
     return dict(prediction_id=pid,run_id=rid,slot_id=slot,model_id=model['model_id'],model_set_id=model['canonical_model_set_id'],source_prediction_id=prior_record['prediction_id'],source_slot_id=prior_record['slot_id'],output_digest=output_sha,outputs=outputs,**mapping)
 
 def inventory(pg):
-    return {n:pg.execute(sql.SQL('select count(*) from fep.{}').format(sql.Identifier(n))).fetchone()[0] for n, in pg.execute("select tablename from pg_tables where schemaname='fep' order by tablename")}
+    rows=pg.execute('''SELECT 'acceptance_receipts',count(*) FROM fep.acceptance_receipts
+        UNION ALL SELECT 'activations',count(*) FROM fep.activations
+        UNION ALL SELECT 'contracts',count(*) FROM fep.contracts
+        UNION ALL SELECT 'dataset_eligibility_ledger',count(*) FROM fep.dataset_eligibility_ledger
+        UNION ALL SELECT 'dataset_fold_cutoffs',count(*) FROM fep.dataset_fold_cutoffs
+        UNION ALL SELECT 'dataset_fold_label_selection',count(*) FROM fep.dataset_fold_label_selection
+        UNION ALL SELECT 'dataset_rows',count(*) FROM fep.dataset_rows
+        UNION ALL SELECT 'datasets',count(*) FROM fep.datasets
+        UNION ALL SELECT 'deployment_change_receipts',count(*) FROM fep.deployment_change_receipts
+        UNION ALL SELECT 'deployment_heads',count(*) FROM fep.deployment_heads
+        UNION ALL SELECT 'feature_values',count(*) FROM fep.feature_values
+        UNION ALL SELECT 'field_registry',count(*) FROM fep.field_registry
+        UNION ALL SELECT 'field_scope',count(*) FROM fep.field_scope
+        UNION ALL SELECT 'label_revisions',count(*) FROM fep.label_revisions
+        UNION ALL SELECT 'label_source_bindings',count(*) FROM fep.label_source_bindings
+        UNION ALL SELECT 'model_set_members',count(*) FROM fep.model_set_members
+        UNION ALL SELECT 'model_sets',count(*) FROM fep.model_sets
+        UNION ALL SELECT 'models',count(*) FROM fep.models
+        UNION ALL SELECT 'observation_revisions',count(*) FROM fep.observation_revisions
+        UNION ALL SELECT 'observations',count(*) FROM fep.observations
+        UNION ALL SELECT 'permission_keys',count(*) FROM fep.permission_keys
+        UNION ALL SELECT 'predictions',count(*) FROM fep.predictions
+        UNION ALL SELECT 'prediction_runs',count(*) FROM fep.prediction_runs
+        UNION ALL SELECT 'prediction_slots',count(*) FROM fep.prediction_slots
+        UNION ALL SELECT 'priority_projection',count(*) FROM fep.priority_projection
+        UNION ALL SELECT 'priority_projection_grants',count(*) FROM fep.priority_projection_grants
+        UNION ALL SELECT 'reconstruction_authorities',count(*) FROM fep.reconstruction_authorities
+        UNION ALL SELECT 'reports',count(*) FROM fep.reports
+        UNION ALL SELECT 'scopes',count(*) FROM fep.scopes
+        UNION ALL SELECT 'signal_contract_registry',count(*) FROM fep.signal_contract_registry
+        UNION ALL SELECT 'slot_model_bindings',count(*) FROM fep.slot_model_bindings
+        UNION ALL SELECT 'slot_receipts',count(*) FROM fep.slot_receipts
+        UNION ALL SELECT 'snapshots',count(*) FROM fep.snapshots
+        UNION ALL SELECT 'targets',count(*) FROM fep.targets
+        UNION ALL SELECT 'training_runs',count(*) FROM fep.training_runs''').fetchall()
+    return dict(rows)

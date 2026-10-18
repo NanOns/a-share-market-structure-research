@@ -147,6 +147,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 再次现场盘点的清理矩阵为初始 76 个非系统 Schema、已退役 75 个、最终仅 `v4`；最终 PG 目录没有 `v4_*` Schema、public 下没有 V4 业务对象，V4 到其他非系统业务 Schema 依赖为 0。矩阵逐项保存于 `G:\codex_tmp\v4_single_schema_retirement_matrix_20261019.json`。该只读复核没有发起 DROP；之前提交的 Research 32 项和 Forward 3 项 RESTRICT 清理结果分别保存在 `research_cleanup_applied_20261019.json` 与 `forward_remaining_cleanup_apply_r1.json`，本次逐条确认其结果为 `DROP_RESTRICT_SUCCESS`。其余已退役条目以其迁移台账证据与最终目录缺席状态复核。
 - 固定 V4 命名空间中 `model_namespaces` 存在；当前 FEP 运行页仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。本次目录只读盘点未发现 v4 中的 FEP 领域表，因此不能把旧 FEP `fep`/`fep_e5_engineering` fixture 迁移代码算作统一 Schema 完成，也未通过旧 fixture 写入该模块。需在任务合同允许的数据来源及 FEP 固定表迁移方案下继续处理；现有界面保持只读、生产未授权、未训练槽 Pending。
 - 对运行时代码和应用服务代码进行 `CREATE SCHEMA` / Schema 身份静态扫描：常规 Forward、History、Journal、ReadIndex、Owner、Jobs、Research 入口都经 `v4_native.connection/create_schema`，后者仅校验预置 `v4`。发现的旧 Shadow schema 构造器触库前抛错，Shadow 导出入口也 fail-closed；历史迁移 SQL、显式 Phase-0 bootstrap 及隔离测试/脚本未执行。
+- 后续检查 FEP fixture 发现 `fep_e5.canonical_ledger.apply()` 可执行路径传入的旧 SQL migration；standalone `fep_e5/schema.sql` 也可创建旧 engineering Schema。已禁用旧 migration executor（缺少 v4 固定表迁移合同前直接 fail-closed），并在 standalone SQL 顶层拒绝 `market_research`；原 FEP migration rollback 测试不再克隆 PostgreSQL 数据库，改为验证 fail-closed。与单 Schema guard 合跑 9 项纯定向用例，`9 passed`，没有连接或写入 PG。这只停止非统一 FEP fixture 扩张，未迁移或虚构任何 FEP 领域表；现有 FEP 页面仍仅是历史工程证据，模块验收保持 PARTIAL。
 
 ### Workspace 清点续记
 

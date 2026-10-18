@@ -471,3 +471,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - Market Fact、Period Owner 与 Cohort Reader 对旧来源 locator 的前置门原先只判断 `v4_forward_` 前缀；虽然下游 migration-map resolver 会再次用严格正则拒绝非法值，但入口本身允许非合同格式进入后续逻辑。新增共享纯函数，只接受冻结的 `v4_forward_<16位小写hex>` 与 `v4_r8_forward_<16位小写hex>` 格式，并用于三个消费者及精确迁移/只读解析入口；实际历史内容仍只能凭 `v4` 固定表的 `VERIFIED` 精确映射回执读回。
 - 新增纯单测覆盖两种合法历史定位、畸形/大小写/尾缀/其他模块/空 locator 拒绝，以及无效 locator 在建立 PG 连接前 fail-closed。定向 Forward locator + History locator 回归 `3 passed`；5 个变更 Python 文件 `py_compile` 通过，变更文件 `git diff --check` 通过。测试临时目录与字节码缓存均置于 `G:\codex_tmp`。
 - 未触碰数据库、28766 或 28765；该改动是 locator 格式收紧，不改变已验证映射、数据行或模块来源状态。
+
+### 2026-10-19 续修后数据库与分支实测
+
+- 在代码推送后再次由项目连接层建立 `REPEATABLE READ READ ONLY` 事务并读回：`market_research` / OID `646711` / `127.0.0.1:5432`，用户 `postgres`，`transaction_read_only=on`；`v4` 与 `v4_*` 名称查询仅返回 `v4`，目录 123 张表、5 个序列、0 个视图，`v4` 到其他非系统用户 Schema 依赖为 0。
+- 实测监听端口为 PostgreSQL `5432` 与开发服务 `28766`；`28765` 当前未监听，未启动或操作生产服务。续修提交 `f529970b8`（移除退役 Shadow writer）和 `67b88781a`（精确校验旧 Forward locator）均已推送到 `origin/codex/v4-workspace-cleanup`，远端 ref 与本地 HEAD 相等。
+- 这次目录核验确认单 Schema 实际结果仍成立，不追补缺失的历史 DROP 收据，也不改变 S3/DB-05、DB-07、外部来源、日更或全模块状态。

@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from .v4_native import connection, workspace_schema
-from .v4_forward_pg_r1 import ForwardFactStore, CONTRACT, digest
+from .v4_forward_pg_r1 import ForwardFactStore, CONTRACT, digest, resolve_migrated_legacy_fact
 
 COHORT_KIND = 'validation_cohort'
 
@@ -40,12 +40,16 @@ def load_owner(root, binding):
         raise ValueError('COHORT_PG_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
     folder = path.parent.parent
     expected_schema = workspace_schema(folder, 'forward')
-    if document.get('engine') != 'postgresql' or document.get('schema') != expected_schema or document.get('kind') != COHORT_KIND:
+    source_schema=document.get('schema')
+    if (document.get('engine') != 'postgresql' or source_schema not in ('v4',) and not (isinstance(source_schema,str) and source_schema.startswith('v4_forward_')) or document.get('kind') != COHORT_KIND):
         raise ValueError('COHORT_PG_DESCRIPTOR_IDENTITY_MISMATCH')
-    with connection(expected_schema, read_only=True) as pg:
+    namespace=document.get('workspace_namespace')
+    if source_schema!='v4':namespace=resolve_migrated_legacy_fact(source_schema,COHORT_KIND,document['fact_key'],document['payload_sha256'])
+    elif namespace!=ForwardFactStore.namespace_for(folder):raise ValueError('COHORT_PG_WORKSPACE_NAMESPACE_MISMATCH')
+    with connection('v4', read_only=True) as pg:
         if ForwardFactStore._database_identity(pg) != document.get('database_identity'):
             raise ValueError('COHORT_PG_DATABASE_IDENTITY_MISMATCH')
-        row = pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s', (COHORT_KIND, document['fact_key'])).fetchone()
+        row = pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s', (namespace,COHORT_KIND, document['fact_key'])).fetchone()
     if row is None or row[1] != document['payload_sha256'] or digest(row[0].encode()) != row[1]:
         raise ValueError('COHORT_PG_PAYLOAD_DIGEST_MISMATCH')
     owner = json.loads(row[0])

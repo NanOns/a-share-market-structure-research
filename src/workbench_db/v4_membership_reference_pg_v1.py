@@ -2,7 +2,7 @@
 import json
 import re
 from pathlib import Path
-from .v4_forward_pg_r1 import canonical,digest,ForwardFactStore
+from .v4_forward_pg_r1 import canonical,digest,ForwardFactStore,resolve_migrated_legacy_fact
 from .v4_native import connection,workspace_schema
 from .v4_operational_owner_pg_closeout import prepare as append,read as read_fact
 
@@ -31,18 +31,21 @@ def _load_authority(root,candidate):
     if (binding.get('contract_id'),binding.get('engine'),binding.get('kind'))!=(
             PG_AUTHORITY_CONTRACT,'postgresql',AUTHORITY_KIND):
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_REQUIRED_NO_FILE_FALLBACK')
-    if not isinstance(schema,str) or not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema):
+    if not isinstance(schema,str) or (schema!='v4' and not re.fullmatch(r'v4_(?:forward|r8_forward)_[a-f0-9]{16}',schema)):
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
     fact_key=binding.get('fact_key');expected_sha=binding.get('payload_sha256')
     if (not isinstance(fact_key,str) or len(fact_key)!=64 or any(c not in '0123456789abcdef' for c in fact_key)
             or not isinstance(expected_sha,str) or len(expected_sha)!=64
             or any(c not in '0123456789abcdef' for c in expected_sha)):
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_IDENTITY_REQUIRED')
-    with connection(schema,read_only=True) as pg:
+    namespace=binding.get('workspace_namespace')
+    if schema!='v4':namespace=resolve_migrated_legacy_fact(schema,AUTHORITY_KIND,fact_key,expected_sha)
+    elif namespace is None:raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_NAMESPACE_REQUIRED')
+    with connection('v4',read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=binding.get('database_identity'):
             raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_DATABASE_IDENTITY_MISMATCH')
-        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
-            (AUTHORITY_KIND,fact_key)).fetchone()
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s',
+            (namespace,AUTHORITY_KIND,fact_key)).fetchone()
     if row is None or row[1]!=expected_sha or digest(row[0].encode())!=expected_sha:
         raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PG_AUTHORITY_DIGEST_MISMATCH')
     authority=json.loads(row[0])

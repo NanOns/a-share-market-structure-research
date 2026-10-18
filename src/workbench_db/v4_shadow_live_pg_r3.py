@@ -29,10 +29,15 @@ class NativeShadowDatabase:
     engine='postgresql'
     artifact_prefix='pg-shadow:'
     def __init__(self,controller,path):
+        # This former writer targeted a separately provisioned PostgreSQL
+        # instance and a path-derived schema.  V4 storage is now confined to
+        # market_research.v4; never create the legacy shadow namespace.
+        raise RuntimeError('V4_SINGLE_SCHEMA_SHADOW_STORAGE_MIGRATION_REQUIRED')
         controller.guard();self.controller=controller
         root=Path(controller.root).resolve();self.path=Path(path).resolve()
         require(os.environ.get('R4_NATIVE_ISOLATION')=='1','EXPLICIT_NATIVE_SHADOW_ISOLATION_REQUIRED')
-        require(root==ROOT or root.is_relative_to(Path('G:/codex_tmp').resolve()),'NATIVE_SHADOW_APPROVED_ENGINEERING_ROOT_REQUIRED')
+        temporary_root=os.environ.get('TMPDIR') or os.environ.get('TEMP') or os.environ.get('TMP')
+        require(root==ROOT or (temporary_root and root.is_relative_to(Path(temporary_root).resolve())),'NATIVE_SHADOW_APPROVED_ENGINEERING_ROOT_REQUIRED')
         allowed=(root/controller.storage['simulation_root' if controller.simulation else 'real_root']).resolve()
         require(allowed.is_relative_to(root) and self.path.is_relative_to(allowed) and self.path.name.endswith('.pg.json'),'STORAGE_IDENTITY_NOT_ACCEPTED')
         require(self.path==(root/controller.grant['storage_identity']['database_path']).resolve(),'EXACT_STORAGE_IDENTITY_REQUIRED')
@@ -48,7 +53,9 @@ class NativeShadowDatabase:
         try:
             # The engineering writer cannot interpret an arbitrary deployment DSN.
             require(self.pg.info.host in ('127.0.0.1','localhost') and self.pg.info.port==55791 and self.pg.info.dbname=='postgres' and self.pg.info.user=='r4_isolated_admin','NATIVE_SHADOW_UNAPPROVED_DATABASE')
-            require(self.pg.execute('SHOW data_directory').fetchone()[0].replace('\\','/').casefold()=='g:/codex_tmp/full_system_r4_fbd23a6b/pg_data','NATIVE_SHADOW_UNAPPROVED_DATA_DIRECTORY')
+            data_directory=self.pg.execute('SHOW data_directory').fetchone()[0]
+            approved_data_directory=os.environ.get('R4_NATIVE_SHADOW_DATA_DIRECTORY')
+            require(approved_data_directory and Path(data_directory).resolve()==Path(approved_data_directory).resolve(),'NATIVE_SHADOW_UNAPPROVED_DATA_DIRECTORY')
             require(str(self.pg.execute('SELECT system_identifier FROM pg_control_system()').fetchone()[0])=='7695278778933357404','NATIVE_SHADOW_CLUSTER_IDENTITY_MISMATCH')
             self.pg.execute(sql.SQL('SET search_path TO {},pg_catalog').format(sql.Identifier(self.schema)))
             self.pg.execute("SET statement_timeout='30s'");self.pg.execute("SET lock_timeout='5s'")

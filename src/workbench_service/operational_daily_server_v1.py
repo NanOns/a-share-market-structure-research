@@ -3,7 +3,7 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 from collections import deque
-import json,threading,time
+import json,os,threading,time
 import psycopg
 from .v4_server import make_v4_handler
 from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobs
@@ -51,7 +51,7 @@ def make_daily_handler(root,jobs,*,static_root=None,status_reader=None):
     from .v4_server import pg_candidate_adapter_from_environment
     pg_adapter=pg_candidate_adapter_from_environment(workspace_root=root)
     base=make_v4_handler(root,pg_adapter,allow_pg_candidate=True,
-        pg_research_candidate_schema=workspace_schema(root,'research'),static_root=static);writes={};mutex=threading.Lock()
+        pg_candidate_release_id=os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID'),static_root=static);writes={};mutex=threading.Lock()
     if status_reader is None:
         from workbench_analysis.operational_daily_jobs_pg_r1 import DailyJobsReadOnly
         status_reader=DailyJobsReadOnly(root)

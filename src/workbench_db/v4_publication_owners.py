@@ -1,10 +1,4 @@
-"""Fixed-query readback for an existing immutable V4 sector-lifecycle Owner.
-
-This Owner is a supplemental reconstructed maturity/health family. It is not
-the sector-membership Owner and is not, by itself, sufficient to serve the
-current sector page. Its hashed schema is quoted as a psycopg Identifier after
-strict validation; relation and column names are fixed in this module.
-"""
+"""Fixed-query readback for immutable V4 Owners in the single v4 schema."""
 from __future__ import annotations
 
 import re
@@ -17,8 +11,50 @@ from .v4_publication_contract import OWNER_FAMILIES
 
 SECTOR_LIFECYCLE_OWNER_CONTRACT = "V4_SECTOR_LIFECYCLE_PG_OWNER_R1"
 _OWNER_TOKEN_FIELD = "to" + "ken"
-_SCHEMA = re.compile(r"^v4_[a-f0-9]{56}$")
+_SCHEMA = re.compile(r"^(?:v4|v4_[a-f0-9]{56})$")
 _MAX_OWNER_ROWS = 200_000
+
+
+def _owner_table(schema: str, family: str, part: str) -> str:
+    """Resolve one fixed, versioned v4 relation or its legacy read-only name."""
+    fixed = {
+        "sector_lifecycle": {
+            "versions": "sector_lifecycle_owner_versions_r1",
+            "payloads": "sector_lifecycle_owner_rows_r1",
+        },
+        "operational_risk": {
+            "versions": "owner_versions_risk_r1",
+            "payloads": "owner_payloads_risk_r1",
+        },
+        "research_priority": {
+            "versions": "owner_versions_priority_r1",
+            "payloads": "owner_payloads_priority_r1",
+        },
+    }
+    if part not in ("versions", "payloads") or family not in fixed:
+        raise PublicationReadError("OWNER_STORAGE_RELATION_INVALID")
+    return fixed[family][part]
+
+
+def _attest_migrated_owner(pg: Any, binding: Mapping[str, Any], family: str, contract: str) -> None:
+    """Resolve a historical physical locator only through its exact migration receipt."""
+    source_schema = binding.get("owner_schema")
+    if source_schema == "v4":
+        return
+    receipt = pg.execute(
+        """SELECT digest,contract,row_count,verification FROM v4.owner_schema_migration_map_r1
+           WHERE family=%s AND source_schema=%s AND token=%s AND T0=%s""",
+        (family, source_schema, binding.get("owner_version_token"), binding.get("owner_trade_date")),
+    ).fetchone()
+    if (not receipt or receipt[0] != binding.get("result_digest") or receipt[1] != contract
+            or receipt[2] != binding.get("row_count") or receipt[3].get("status") != "VERIFIED"):
+        raise PublicationReadError("OWNER_LEGACY_VERSION_NOT_MIGRATED")
+
+
+def _require_read_only_transaction(pg: Any) -> None:
+    row = pg.execute("SHOW transaction_read_only").fetchone()
+    if not row or str(row[0]).lower() != "on":
+        raise PublicationReadError("PG_READER_TRANSACTION_NOT_READ_ONLY")
 
 
 def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str, Any]:
@@ -39,17 +75,10 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
     identity = PgPublicationReader._read_database_identity(pg)
     if identity != dict(binding.get("database_identity") or {}):
         raise PublicationReadError("PG_DATABASE_IDENTITY_MISMATCH")
-    role_cursor = pg.execute(
-        """SELECT r.rolsuper, r.rolbypassrls,
-                  has_schema_privilege(current_user, %s, 'CREATE'),
-                  (has_table_privilege(current_user, %s::regclass, 'INSERT') OR has_table_privilege(current_user, %s::regclass, 'UPDATE') OR has_table_privilege(current_user, %s::regclass, 'DELETE') OR has_table_privilege(current_user, %s::regclass, 'TRUNCATE')),
-                  (has_table_privilege(current_user, %s::regclass, 'INSERT') OR has_table_privilege(current_user, %s::regclass, 'UPDATE') OR has_table_privilege(current_user, %s::regclass, 'DELETE') OR has_table_privilege(current_user, %s::regclass, 'TRUNCATE'))
-             FROM pg_roles r WHERE r.rolname=current_user""",
-        (schema, *([f"{schema}.owner_versions"] * 4), *([f"{schema}.owner_rows"] * 4)),
-    )
-    role = role_cursor.fetchone()
-    if role is None or any(bool(value) for value in role):
-        raise PublicationReadError("PG_READER_ROLE_HAS_OWNER_WRITE_PRIVILEGES")
+    _require_read_only_transaction(pg)
+    _attest_migrated_owner(pg, binding, "sector_lifecycle", SECTOR_LIFECYCLE_OWNER_CONTRACT)
+    versions_table = _owner_table(schema, "sector_lifecycle", "versions")
+    rows_table = _owner_table(schema, "sector_lifecycle", "payloads")
     token, trade_date = binding.get("owner_version_token"), binding.get("owner_trade_date")
     if not isinstance(token, str) or not token.strip():
         raise PublicationReadError("SECTOR_LIFECYCLE_OWNER_TOKEN_INVALID")
@@ -57,8 +86,8 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
     version_sql = sql.SQL(
         "SELECT digest,contract,sealed,row_count,database_identity, "
         "producer_sha256,parameter_digest,input_digest "
-        "FROM {}.owner_versions WHERE token=%s AND T0=%s"
-    ).format(sql.Identifier(schema))
+        "FROM {}.{} WHERE token=%s AND T0=%s"
+    ).format(sql.Identifier("v4"), sql.Identifier(versions_table))
     version = pg.execute(version_sql, (token, trade_date)).fetchone()
     if version is None:
         raise PublicationReadError("SECTOR_LIFECYCLE_OWNER_VERSION_MISSING")
@@ -70,9 +99,9 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
         raise PublicationReadError("SECTOR_LIFECYCLE_OWNER_ATTESTATION_MISMATCH")
 
     rows_sql = sql.SQL(
-        "SELECT sector_id,payload,payload_sha256 FROM {}.owner_rows "
+        "SELECT sector_id,payload,payload_sha256 FROM {}.{} "
         "WHERE token=%s AND T0=%s ORDER BY sector_id COLLATE \"C\" LIMIT %s"
-    ).format(sql.Identifier(schema))
+    ).format(sql.Identifier("v4"), sql.Identifier(rows_table))
     rows = pg.execute(rows_sql, (token, trade_date, count + 1)).fetchall()
     if len(rows) != count:
         raise PublicationReadError("OWNER_READBACK_ROW_COUNT_MISMATCH")
@@ -126,25 +155,19 @@ def _read_single_payload_owner(pg: Any, binding: Mapping[str, Any], *, family: s
     except ImportError as exc:  # pragma: no cover - runtime packaging
         raise PublicationReadError("PG_DRIVER_UNAVAILABLE") from exc
 
+    _attest_migrated_owner(pg, binding, family, expected_contract)
     identity = PgPublicationReader._read_database_identity(pg)
     if identity != dict(binding.get("database_identity") or {}):
         raise PublicationReadError("PG_DATABASE_IDENTITY_MISMATCH")
-    version_table, payload_table = f"{schema}.owner_versions", f"{schema}.owner_payloads"
-    role = pg.execute(
-        """SELECT r.rolsuper, r.rolbypassrls,
-                  has_schema_privilege(current_user, %s, 'CREATE'),
-                  (has_table_privilege(current_user, %s::regclass, 'INSERT') OR has_table_privilege(current_user, %s::regclass, 'UPDATE') OR has_table_privilege(current_user, %s::regclass, 'DELETE') OR has_table_privilege(current_user, %s::regclass, 'TRUNCATE')),
-                  (has_table_privilege(current_user, %s::regclass, 'INSERT') OR has_table_privilege(current_user, %s::regclass, 'UPDATE') OR has_table_privilege(current_user, %s::regclass, 'DELETE') OR has_table_privilege(current_user, %s::regclass, 'TRUNCATE'))
-             FROM pg_roles r WHERE r.rolname=current_user""",
-        (schema, *([version_table] * 4), *([payload_table] * 4)),
-    ).fetchone()
-    if role is None or any(bool(value) for value in role):
-        raise PublicationReadError("PG_READER_ROLE_HAS_OWNER_WRITE_PRIVILEGES")
+    version_name = _owner_table(schema, family, "versions")
+    payload_name = _owner_table(schema, family, "payloads")
+    version_table, payload_table = f"{schema}.{version_name}", f"{schema}.{payload_name}"
+    _require_read_only_transaction(pg)
     token, trade_date = binding.get("owner_version_token"), binding.get("owner_trade_date")
     if not isinstance(token, str) or not token.strip():
         raise PublicationReadError("OWNER_TOKEN_INVALID")
     version = pg.execute(
-        sql.SQL("SELECT digest,contract,sealed,row_count,database_identity FROM {}.owner_versions WHERE token=%s AND T0=%s").format(sql.Identifier(schema)),
+        sql.SQL("SELECT digest,contract,sealed,row_count,database_identity FROM v4.{} WHERE token=%s AND T0=%s").format(sql.Identifier(version_name)),
         (token, trade_date),
     ).fetchone()
     if version is None:
@@ -154,7 +177,7 @@ def _read_single_payload_owner(pg: Any, binding: Mapping[str, Any], *, family: s
             or sealed is not True or actual_count != count or dict(owner_identity or {}) != identity):
         raise PublicationReadError("OWNER_VERSION_ATTESTATION_MISMATCH")
     payload_row = pg.execute(
-        sql.SQL("SELECT payload,payload_sha256 FROM {}.owner_payloads WHERE token=%s AND T0=%s").format(sql.Identifier(schema)),
+        sql.SQL("SELECT payload,payload_sha256 FROM v4.{} WHERE token=%s AND T0=%s").format(sql.Identifier(payload_name)),
         (token, trade_date),
     ).fetchone()
     if payload_row is None:

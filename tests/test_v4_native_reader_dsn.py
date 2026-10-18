@@ -126,16 +126,17 @@ def test_native_connection_marks_transaction_read_only_before_attestation(monkey
         def __exit__(self,*args): pass
     monkeypatch.setenv("WORKBENCH_PG_DSN","postgresql://readonly@example.invalid/market_research")
     monkeypatch.setattr(v4_native.psycopg,"connect",lambda *args,**kwargs:Connection())
-    with v4_native.connection("v4_workspace_0123456789abcdef",read_only=True) as received:
+    with v4_native.connection("v4",read_only=True) as received:
         assert received is pg
     assert pg.queries[0][0] == "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY"
     assert pg.queries[-1][0] == "SHOW transaction_read_only"
 
 
-def test_workspace_schema_identity_is_root_scoped(tmp_path):
+def test_workspace_schema_identity_does_not_select_physical_schema(tmp_path):
     first=tmp_path/"workspace-a";second=tmp_path/"workspace-b"
     first.mkdir();second.mkdir()
-    assert v4_native.workspace_schema(first,"workspace") != v4_native.workspace_schema(second,"workspace")
+    assert v4_native.workspace_schema(first,"workspace") == 'v4'
+    assert v4_native.workspace_schema(first,"workspace") == v4_native.workspace_schema(second,"workspace")
     identity=v4_native.workspace_namespace_identity(first,"workspace")
     assert identity["schema"] == v4_native.workspace_schema(first,"workspace")
     assert identity["capabilities"]["owner_mapping"] == "MUST_BE_AUTHORITY_BOUND"
@@ -161,7 +162,7 @@ def test_logical_workspace_id_survives_checkout_relocation(tmp_path):
     assert str(first) not in left and str(second) not in right
 
 
-def test_workspace_schema_resolves_registered_alias_after_relocation(monkeypatch, tmp_path):
+def test_workspace_schema_never_reads_aliases_for_runtime_location(monkeypatch, tmp_path):
     first = tmp_path / "drive-a" / "repo"
     moved = tmp_path / "drive-b" / "repo"
     for checkout in (first, moved):
@@ -170,19 +171,11 @@ def test_workspace_schema_resolves_registered_alias_after_relocation(monkeypatch
             '[remote "origin"]\n\turl = https://github.com/NanOns/a-share-market-structure-research.git\n',
             encoding="utf-8",
         )
-    schema = "v4_history_dbe184da961f97b8"
-    class Result:
-        def fetchone(self): return (schema, "ACTIVE")
-    class Pg:
-        def __enter__(self): return self
-        def __exit__(self, *args): return False
-        def execute(self, query, params=None): return Result()
-    v4_native._WORKSPACE_SCHEMA_CACHE.clear()
-    monkeypatch.setattr(v4_native.psycopg, "connect", lambda *args, **kwargs: Pg())
-    monkeypatch.setattr(v4_native, "configured_reader_dsn", lambda: "postgresql://test/market_research")
+    def forbidden(*_args, **_kwargs): raise AssertionError('runtime workspace lookup must not query aliases')
+    monkeypatch.setattr(v4_native.psycopg, "connect", forbidden)
 
     assert v4_native.workspace_logical_id(first) == v4_native.workspace_logical_id(moved)
-    assert v4_native.workspace_schema(moved, "history") == schema
+    assert v4_native.workspace_schema(moved, "history") == 'v4'
 
 
 def test_workspace_schema_identity_exports_stable_workspace_hash(tmp_path):

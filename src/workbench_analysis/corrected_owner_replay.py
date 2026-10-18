@@ -22,6 +22,8 @@ from .tdx_official_daily_source import sha256_file, _atomic_write
 
 CONTRACT = 'config/v4_corrected_owner_replay_v1.json'
 OUT = 'data/v4/workspaces/owner_repair_v1'
+_JOINT_AUTHORITY_PATH = 'config/v4_joint_release_authority_v1.json'
+_DATA_HEAD_PATH = 'data/v4/V4_DATA_ACCEPTED_HEAD.json'
 
 
 def load(path):
@@ -69,17 +71,38 @@ def checked_pg(root, binding):
         raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))+':'+str(error)) from error
 
 
-def pg_json_source(root, relative_path):
-    """Read an exact, previously ingressed project source; never fall back to disk."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path, read_latest_candidate_path
+def _protected_source_binding(root, relative_path):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
     relative=Path(relative_path).as_posix()
     try:
         source=read_path(root,relative)
     except ValueError as error:
-        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':raise
-        source=read_latest_candidate_path(root,relative,
-            source_origin=('V4_CORRECTED_OWNER_CANDIDATE_OUTPUT',
-                           'V4_R43_OWNER_CANDIDATE_OUTPUT'))
+        if str(error)=='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':
+            raise ValueError('PROTECTED_SOURCE_EXACT_INGRESS_REQUIRED:'+relative) from error
+        raise
+    record=source['record']
+    return dict(path=record['source_path'],sha256=record['source_sha256'],bytes=record['source_bytes'])
+
+
+def protected_state_unchanged(root, protected):
+    """Recheck protected authority and accepted Head through PostgreSQL only."""
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    raw=checked_pg(root,dict(path=_JOINT_AUTHORITY_PATH,sha256=protected[_JOINT_AUTHORITY_PATH]))
+    authority_unchanged=hashlib.sha256(raw).hexdigest()==protected[_JOINT_AUTHORITY_PATH]
+    head_unchanged=read_current(root)['head_sha256']==protected[_DATA_HEAD_PATH]
+    return authority_unchanged and head_unchanged
+
+
+def pg_json_source(root, relative_path):
+    """Read an exact, previously ingressed project source; never fall back to disk."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    relative=Path(relative_path).as_posix()
+    try:
+        source=read_path(root,relative)
+    except ValueError as error:
+        if str(error)=='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':
+            raise ValueError('PG_JSON_SOURCE_EXACT_BINDING_REQUIRED:'+relative) from error
+        raise
     if not isinstance(source.get('value'), dict):
         raise ValueError('PG_JSON_SOURCE_NOT_OBJECT:' + str(relative_path))
     return source['value']
@@ -193,8 +216,13 @@ def materialize_core(root, dates=None):
     from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
     head_state = read_current(root)
     head = head_state['candidate']
-    protected = {'config/v4_joint_release_authority_v1.json': sha256_file(root/'config/v4_joint_release_authority_v1.json'),
-                 'data/v4/V4_DATA_ACCEPTED_HEAD.json': head_state['head_sha256']}
+    authority_binding=_protected_source_binding(root,_JOINT_AUTHORITY_PATH)
+    authority_raw=checked_pg(root,authority_binding)
+    authority_sha=hashlib.sha256(authority_raw).hexdigest()
+    if authority_sha!=authority_binding['sha256']:
+        raise ValueError('PG_PROTECTED_JOINT_AUTHORITY_DIGEST_MISMATCH')
+    protected = {_JOINT_AUTHORITY_PATH: authority_sha,
+                 _DATA_HEAD_PATH: head_state['head_sha256']}
     write_candidate_json(root,out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.1', phase0='DEGRADED_PASS',
           acceptance='IN_PROGRESS', observed_at=now(), protected=protected, next_stage='CORRECTED_STRUCTURE_AND_MEMBER_OWNERS'))
     identity = load(checked_pg(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
@@ -357,6 +385,6 @@ def materialize_core(root, dates=None):
         print(json.dumps(dict(stage='CORE',date=target,rows=len(rows),raw=len(raw_rows),known=receipt['known_fields'],errors=len(errors))),flush=True)
         if errors:raise ValueError('INDEPENDENT_CORE_ORACLE_FAILED:'+target)
     write_candidate_json(root,out/'CORE_REPLAY.json',dict(contract='V4_CORRECTED_OWNER_REPLAY_V1',owners=receipts,oracle=oracle,
-          protected=protected,heads_unchanged=all(sha256_file(root/p)==h for p,h in protected.items()),
+          protected=protected,heads_unchanged=protected_state_unchanged(root, protected),
           acceptance='PASS_CORRECTED_CORE_NUMERIC_ORACLE',next_stage='PROFILE_STRUCTURE_SECTOR_FOCUS_FORWARD'))
     return receipts

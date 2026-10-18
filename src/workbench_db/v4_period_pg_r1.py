@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from .v4_native import connection,workspace_schema,configured_dsn
-from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest
+from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest,resolve_migrated_legacy_fact
 OWNER='CORE_PRODUCT_PERIOD_PG_OWNER_R1'
 
 def prepare(root,payload,key):
@@ -24,10 +24,14 @@ def prepare(root,payload,key):
 def read(root,binding,day,domain,head_token,*,security_id=None):
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);d=json.loads(path.read_bytes());schema=workspace_schema(path.parent.parent,'forward')
-    if d.get('contract_id')!=CONTRACT or d.get('schema')!=schema or d.get('kind')!=domain or d.get('engine')!='postgresql':raise ValueError('PG_PERIOD_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+    source_schema=d.get('schema')
+    if (d.get('contract_id')!=CONTRACT or source_schema not in ('v4',) and not (isinstance(source_schema,str) and source_schema.startswith('v4_forward_'))
+            or d.get('kind')!=domain or d.get('engine')!='postgresql'):raise ValueError('PG_PERIOD_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+    namespace=d.get('workspace_namespace')
+    if source_schema!='v4':namespace=resolve_migrated_legacy_fact(source_schema,domain,d['fact_key'],d['payload_sha256'])
     with connection(schema,read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=d.get('database_identity'):raise ValueError('PG_PERIOD_DATABASE_IDENTITY_MISMATCH')
-        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',(domain,d['fact_key'])).fetchone()
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s',(namespace,domain,d['fact_key'])).fetchone()
     if row is None or row[1]!=d['payload_sha256'] or digest(row[0].encode())!=row[1]:raise ValueError('PG_PERIOD_PAYLOAD_DIGEST_MISMATCH')
     payload=json.loads(row[0])
     if (payload.get('contract_id'),payload.get('T0'),payload.get('domain'),payload.get('head_token'))!=(OWNER,day,domain,head_token):raise ValueError('PG_PERIOD_CONTEXT_MISMATCH')
@@ -36,7 +40,7 @@ def read(root,binding,day,domain,head_token,*,security_id=None):
         # Read-only consumers must never create schemas or run migration DDL.
         store=ForwardFactStore.__new__(ForwardFactStore)
         store.root=Path(root).resolve();store.folder=store.root/'data/v4/core_period_pg_r1'
-        store.schema=schema;store.database_identity=d['database_identity'];store.dsn=configured_dsn();rows=[]
+        store.schema=schema;store.workspace_namespace=namespace;store.database_identity=d['database_identity'];store.dsn=configured_dsn();rows=[]
         selected=list(range(len(payload['chunks'])))
         indexed=security_id is not None and payload['storage_contract']=='ORDERED_PG_PERIOD_CHUNKS_R2'
         if indexed:

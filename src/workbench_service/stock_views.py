@@ -22,10 +22,9 @@ def chart(reader,item,query):
     if not authority:return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='HISTORICAL_INDEX_NOT_BOUND')
     period=query.get('period','D');basis=query.get('price_basis','QFQ');limit=int(query.get('limit',120));offset=int(query.get('offset',0))
     if period not in ('D','W','M') or basis not in ('RAW','QFQ') or not 1<=limit<=200 or offset<0:raise ValueError('CHART_QUERY_INVALID')
-    if getattr(reader,'pg_candidate_schema',None):
+    if getattr(reader,'is_pg_candidate',False):
         from workbench_db.v4_native import connection
         from workbench_db.v4_history_pg_r1 import read as read_pg_history
-        from psycopg import sql
         source=authority.get('sources',{}).get('history',{})
         head=reader.manifest.get('context',{}).get('data_head_digest')
         source_digest=source.get('sha256') if isinstance(source,dict) else None
@@ -48,14 +47,12 @@ def chart(reader,item,query):
                     declared.get('T0'),declared.get('source_digest'),declared.get('logical_digest'),
                     declared.get('symbol_count'),declared.get('bar_count'))]
         else:
-            with connection('v4_meta',read_only=True) as pg:
-                schemas=[row[0] for row in pg.execute("SELECT schemaname FROM pg_tables WHERE schemaname LIKE 'v4_history_%' AND tablename='history_versions' ORDER BY schemaname").fetchall()]
-                for schema in schemas:
-                    rows=pg.execute(sql.SQL(
-                        'SELECT version,head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count '
-                        'FROM {}.history_versions WHERE t0=%s AND head_token=%s AND source_digest=%s ORDER BY version'
-                    ).format(sql.Identifier(schema)),(reader.context['trade_date'],head,source_digest)).fetchall()
-                    matches.extend((schema,*row) for row in rows)
+            with connection('v4',read_only=True) as pg:
+                rows=pg.execute(
+                    'SELECT version,head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count '
+                    'FROM history_versions_r1 WHERE t0=%s AND head_token=%s AND source_digest=%s ORDER BY version',
+                    (reader.context['trade_date'],head,source_digest)).fetchall()
+                matches.extend(('v4',*row) for row in rows)
         if len(matches)!=1:
             return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='NO_UNIQUE_PG_HISTORY_VERSION_MATCHING_SNAPSHOT_HEAD_AND_SOURCE',
                 history_versions_found=len(matches),as_of=reader.context['trade_date'],

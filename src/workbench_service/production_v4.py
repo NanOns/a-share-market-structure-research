@@ -2,6 +2,7 @@
 import gzip
 import json
 import os
+import re
 import time
 import uuid
 from contextlib import ExitStack,contextmanager,nullcontext
@@ -446,11 +447,11 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
             knowledge_lineage=context['context']['knowledge_lineage'])
         db.execute('INSERT INTO metadata VALUES(?,?)',('snapshot',canonical(meta).decode()))
         descriptor=db.seal(meta);db.commit();db.close()
-        check=ProductionV4ResearchReader(root,pg_candidate_schema=descriptor['schema'])
+        check=ProductionV4ResearchReader(root,candidate_release_id=descriptor['release_id'])
         if fail_readback:raise SourceInvalid('INJECTED_READBACK_FAILURE')
         if check.manifest['counts']!=counts:raise SourceInvalid('READBACK_COUNT_MISMATCH')
         return dict(status='STAGED_NOT_PUBLISHED',pointer=descriptor,descriptor=descriptor,
-                    pg_candidate_schema=descriptor['schema'],counts=counts,gaps=gaps,
+                    candidate_release_id=descriptor['release_id'],counts=counts,gaps=gaps,
                     build_seconds=round(time.perf_counter()-started,3),production_changed=False)
     except Exception:
         db.close();raise
@@ -461,43 +462,25 @@ def rollback_snapshot(root,expected_pointer):
 
 
 class ProductionV4ResearchReader:
-    def __init__(self, root, *, snapshot_authority=None, pg_candidate_schema=None):
-        schema=pg_candidate_schema or (snapshot_authority.get('schema') if isinstance(snapshot_authority,dict) else None)
-        schema=schema or os.environ.get('V4_PG_RESEARCH_CANDIDATE_SCHEMA')
-        if not schema:raise SourceInvalid('PG_CANDIDATE_SCHEMA_REQUIRED_NO_WORKSPACE_AUTHORITY')
-        self._init_pg_candidate(root,schema)
+    def __init__(self, root, *, snapshot_authority=None, candidate_release_id=None):
+        requested=(candidate_release_id or os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID')
+                   or (snapshot_authority.get('release_id') if isinstance(snapshot_authority,dict) else None))
+        if not requested:raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_REQUIRED')
+        self._init_pg_candidate(root,requested)
 
-    def _init_pg_candidate(self, root, schema):
-        """Bind the development UI to one verified immutable PG snapshot.
-
-        The schema is injected by the 28766 development launcher. This path
-        reads the snapshot descriptor and manifest from their PG relations and
-        never consults the local snapshot pointer or files.
-        """
+    def _init_pg_candidate(self, root, release_id):
+        """Bind the development UI to one verified, release-keyed v4 snapshot."""
         from workbench_db.v4_native import connection
-        from workbench_db.v4_snapshot_pg_r2 import verify
+        from workbench_db.v4_research_release_pg_r1 import load_snapshot_release
         self.root=Path(root).resolve()
-        if not isinstance(schema,str) or not schema.startswith('v4_research_'):
-            raise SourceInvalid('PG_CANDIDATE_SCHEMA_INVALID')
+        if not isinstance(release_id,str) or not re.fullmatch(r'[a-f0-9]{24,64}',release_id):
+            raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_INVALID')
         try:
-            with connection(schema,read_only=True) as pg:
-                rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
-                if len(rows)!=1:
-                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_NOT_UNIQUE')
-                digest_value,contract_id,raw_descriptor=rows[0]
-                descriptor=json.loads(raw_descriptor)
-                if digest_value!=descriptor.get('logical_digest') or contract_id!='V4_PG_RESEARCH_SNAPSHOT_R2':
-                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_DESCRIPTOR_INVALID')
-                verify(pg,descriptor)
-                metadata_rows=pg.execute("SELECT value FROM metadata WHERE key='snapshot'").fetchall()
-                if len(metadata_rows)!=1:
-                    raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_MANIFEST_NOT_UNIQUE')
-                self.manifest=json.loads(metadata_rows[0][0])
-                identity=pg.execute('SELECT current_database(),(SELECT oid::int FROM pg_database WHERE datname=current_database()),coalesce(inet_server_addr()::text,\'local\'),inet_server_port()').fetchone()
-                from workbench_db.v4_snapshot_pg_r2 import database_identity
-                cluster=database_identity(pg)
+            with connection('v4',read_only=True) as pg:
+                descriptor,self.manifest=load_snapshot_release(pg,release_id)
+                cluster=descriptor['database_identity']
             metadata=validate_release_metadata(self.manifest)
-            if (descriptor.get('schema')!=schema or descriptor.get('T0')!=self.manifest.get('context',{}).get('accepted_trade_date')
+            if (descriptor.get('schema')!='v4' or descriptor.get('T0')!=self.manifest.get('context',{}).get('accepted_trade_date')
                     or descriptor.get('release_id')!=self.manifest.get('release_id')
                     or metadata.get('trading_date')!=descriptor.get('T0')):
                 raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_CONTEXT_MISMATCH')
@@ -505,7 +488,8 @@ class ProductionV4ResearchReader:
             raise
         except Exception as error:
             raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_READ_FAILED:'+type(error).__name__) from error
-        self.pg_candidate_schema=schema
+        self.candidate_release_id=release_id
+        self.is_pg_candidate=True
         self.pg_descriptor=descriptor
         self.path=None
         self.authority={'manifest':{'sha256':descriptor['logical_digest']}}
@@ -532,28 +516,26 @@ class ProductionV4ResearchReader:
 
     def connect(self):
         from workbench_db.v4_native import connection
-        from workbench_db.v4_snapshot_pg_r1 import ReadTransaction
+        from workbench_db.v4_research_release_pg_r1 import ReleaseReadTransaction,load_snapshot_release
         scope=_request_reads.get()
         if scope is not None:
             stack,transactions=scope
-            key=(self.pg_descriptor['schema'],self.pg_descriptor['logical_digest'])
+            key=(self.candidate_release_id,self.pg_descriptor['logical_digest'])
             if key not in transactions:
                 @contextmanager
                 def candidate_read():
-                    with connection(self.pg_candidate_schema,read_only=True) as pg:
-                        rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
-                        expected=[(self.pg_descriptor['logical_digest'],'V4_PG_RESEARCH_SNAPSHOT_R2',json.dumps(self.pg_descriptor,sort_keys=True,ensure_ascii=False,separators=(',',':')))]
-                        if rows!=expected:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
-                        yield ReadTransaction(pg)
+                    with connection('v4',read_only=True) as pg:
+                        descriptor,_=load_snapshot_release(pg,self.candidate_release_id,verify_content=False)
+                        if descriptor!=self.pg_descriptor:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                        yield ReleaseReadTransaction(pg,self.candidate_release_id)
                 transactions[key]=stack.enter_context(candidate_read())
             return nullcontext(transactions[key])
         @contextmanager
         def candidate_read():
-            with connection(self.pg_candidate_schema,read_only=True) as pg:
-                rows=pg.execute('SELECT digest,contract_id,descriptor FROM snapshot_identity').fetchall()
-                expected=[(self.pg_descriptor['logical_digest'],'V4_PG_RESEARCH_SNAPSHOT_R2',json.dumps(self.pg_descriptor,sort_keys=True,ensure_ascii=False,separators=(',',':')))]
-                if rows!=expected:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
-                yield ReadTransaction(pg)
+            with connection('v4',read_only=True) as pg:
+                descriptor,_=load_snapshot_release(pg,self.candidate_release_id,verify_content=False)
+                if descriptor!=self.pg_descriptor:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                yield ReleaseReadTransaction(pg,self.candidate_release_id)
         return candidate_read()
 
     def query(self, domain, query=None, *, entity=None, sector=None, summary=False):

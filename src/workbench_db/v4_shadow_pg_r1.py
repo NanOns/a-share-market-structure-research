@@ -18,7 +18,8 @@ def canonical(value):
 
 
 def build_readback_r1(root, records, *, environment, evidence_origin):
-    """Explicit isolated export builder; never confers external acceptance."""
+    """Former per-export schema writer, disabled by the single-schema contract."""
+    raise RuntimeError('V4_SINGLE_SCHEMA_SHADOW_EXPORT_MIGRATION_REQUIRED')
     if (environment, evidence_origin) not in [('REAL', 'PIT_OBSERVED'),
                                                ('ACTIVATION_SIMULATION', 'ACTIVATION_SIMULATION')]:
         raise ValueError('SHADOW_STORAGE_ORIGIN_INVALID')

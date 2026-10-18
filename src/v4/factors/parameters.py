@@ -6,10 +6,30 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
-PARAMETER_PATH = read_path_bytes(PROJECT_ROOT, "config/v4_03_parameter_set_v1.json")
+# Runtime parameter content is selected by the approved immutable source
+# bindings carried by V4_OPERATIONAL_DAILY_EXACT_RELEASE_POLICY_V2. Resolve
+# those exact content-addressed paths from PostgreSQL; the mutable checkout
+# config path is not a storage locator.
+PARAMETER_SOURCE_PATH = (
+    "data/v4/runtime_repair_sources_r1_1/"
+    "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18/"
+    "config/v4_03_parameter_set_v1.json"
+)
+PARAMETER_SOURCE_SHA256 = "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18"
+PARAMETER_PATH = read_path_bytes(
+    PROJECT_ROOT, PARAMETER_SOURCE_PATH, expected_sha256=PARAMETER_SOURCE_SHA256
+)
 PARAMETERS = json.loads(PARAMETER_PATH.read_text(encoding="utf-8"))
 assert PARAMETERS["parameter_set_id"] == "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
-REGISTRY_PATH = read_path_bytes(PROJECT_ROOT, "config/v4_03_parameter_registry_v1.json")
+REGISTRY_SOURCE_PATH = (
+    "data/v4/runtime_repair_sources_r1_1/"
+    "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3/"
+    "config/v4_03_parameter_registry_v1.json"
+)
+REGISTRY_SOURCE_SHA256 = "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3"
+REGISTRY_PATH = read_path_bytes(
+    PROJECT_ROOT, REGISTRY_SOURCE_PATH, expected_sha256=REGISTRY_SOURCE_SHA256
+)
 REGISTRY = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 REGISTRY_VALUES = {item["parameter_id"]: item["value"] for item in REGISTRY["entries"]}
 

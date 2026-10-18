@@ -10,7 +10,6 @@ import psycopg
 from psycopg import sql
 
 CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R5'
-_SCHEMA = re.compile(r'(?:v4|v4_[a-z0-9_]{1,56})')
 _READ_SNAPSHOT = ContextVar('v4_read_snapshot_connection',default=None)
 _WORKSPACE_SCHEMA_CACHE = {}
 
@@ -66,80 +65,32 @@ def configured_reader_dsn():
     raise RuntimeError('WORKBENCH_PG_DSN_REQUIRED')
 
 def _legacy_workspace_schema(root, purpose):
+    """Return the only V4 application schema.
+
+    Kept under its historical name for import compatibility.  Workspace and
+    purpose are data identities now; neither may choose a PostgreSQL schema.
+    """
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')
-    return 'v4_'+purpose+'_'+hashlib.sha256(str(Path(root).resolve()).casefold().encode()).hexdigest()[:16]
+    return 'v4'
 
 def _resolve_workspace_schema_alias(root, purpose):
-    """Resolve a moved Git workspace to its existing PG namespace, if registered."""
+    """Legacy alias lookup is disabled; aliases cannot locate live storage."""
     if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')
-    path=Path(root).resolve()
-    if not any((candidate/'.git').exists() for candidate in (path,*path.parents)):
-        return None
-    logical_id=workspace_logical_id(path)
-    dsn=configured_reader_dsn()
-    cache_key=(hashlib.sha256(dsn.encode()).hexdigest(),logical_id,purpose)
-    if cache_key in _WORKSPACE_SCHEMA_CACHE:
-        return _WORKSPACE_SCHEMA_CACHE[cache_key]
-    # Namespace lookup is deliberately read-only and path-free. An absent table
-    # means this deployment has not applied migration 046 yet, so legacy
-    # root-bound namespaces remain readable during the one-time transition.
-    try:
-        with psycopg.connect(dsn,connect_timeout=5) as pg:
-            pg.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY')
-            pg.execute("SET LOCAL statement_timeout='5s'")
-            row=pg.execute(
-                "SELECT physical_schema,status FROM v4.workspace_namespace_aliases_r1 "
-                "WHERE logical_workspace_id=%s AND purpose=%s",
-                (logical_id,purpose),
-            ).fetchone()
-    except psycopg.errors.UndefinedTable:
-        row=None
-    if row is None:
-        _WORKSPACE_SCHEMA_CACHE[cache_key]=None
-        return None
-    schema,status=row
-    if status!='ACTIVE' or not isinstance(schema,str) or not _SCHEMA.fullmatch(schema):
-        raise RuntimeError('V4_WORKSPACE_NAMESPACE_ALIAS_INVALID')
-    _WORKSPACE_SCHEMA_CACHE[cache_key]=schema
-    return schema
+    return None
 
 def workspace_schema(root, purpose):
-    legacy=_legacy_workspace_schema(root,purpose)
-    alias=_resolve_workspace_schema_alias(root,purpose)
-    return alias or legacy
+    if not re.fullmatch(r'[a-z][a-z0-9_]{0,24}',purpose): raise ValueError('INVALID_PG_PURPOSE')
+    return 'v4'
 
 def register_workspace_schema_alias(pg, root, purpose, *, physical_schema=None):
-    """Bind a stable workspace key to an existing schema without moving data."""
-    legacy=_legacy_workspace_schema(root,purpose)
-    schema=physical_schema or legacy
-    if not _SCHEMA.fullmatch(schema): raise ValueError('INVALID_V4_PG_SCHEMA')
-    logical_id=workspace_logical_id(root)
-    root_identity=hashlib.sha256(str(Path(root).resolve()).casefold().encode()).hexdigest()
-    exists=pg.execute('SELECT to_regnamespace(%s)',(schema,)).fetchone()
-    if not exists or exists[0] is None: raise RuntimeError('V4_WORKSPACE_ALIAS_TARGET_SCHEMA_MISSING')
-    pg.execute(
-        "INSERT INTO v4.workspace_namespace_aliases_r1 "
-        "(logical_workspace_id,purpose,physical_schema,source_root_identity_sha256) "
-        "VALUES(%s,%s,%s,%s) ON CONFLICT DO NOTHING",
-        (logical_id,purpose,schema,root_identity),
-    )
-    row=pg.execute(
-        "SELECT physical_schema,source_root_identity_sha256,status "
-        "FROM v4.workspace_namespace_aliases_r1 WHERE logical_workspace_id=%s AND purpose=%s",
-        (logical_id,purpose),
-    ).fetchone()
-    if row!=(schema,root_identity,'ACTIVE'):
-        raise RuntimeError('V4_WORKSPACE_NAMESPACE_ALIAS_CONFLICT')
-    _WORKSPACE_SCHEMA_CACHE.clear()
-    return {'logical_workspace_id':logical_id,'purpose':purpose,'physical_schema':schema,
-            'source_root_identity_sha256':root_identity,'status':'ACTIVE'}
+    """Alias creation would reintroduce a second storage locator."""
+    raise RuntimeError('V4_SINGLE_SCHEMA_WORKSPACE_ALIAS_CREATION_DISABLED')
 
 def workspace_logical_id(root):
-    """Return a location-independent project/workspace key for alias migration.
+    """Return a logical workspace identity for versioned data columns.
 
-    Existing physical schemas remain root-bound until an explicit PG alias is
-    registered.  This stable key gives that migration an identity which can be
-    resolved after the checkout moves to another drive or machine.
+    The value may distinguish workspace-owned facts, but it never resolves a
+    PostgreSQL schema, creates an alias, or selects a physical storage path.
     """
     path = Path(root).resolve()
     for repo_root in (path, *path.parents):
@@ -191,7 +142,7 @@ def workspace_namespace_identity(root, purpose):
         "root_identity_sha256": hashlib.sha256(canonical_root.encode()).hexdigest(),
         "logical_workspace_id": workspace_logical_id(root),
         "workspace_identity_sha256": hashlib.sha256(workspace_logical_id(root).encode()).hexdigest(),
-        "schema": workspace_schema(root, purpose),
+        "schema": 'v4',
         "purpose": purpose,
         "capabilities": {
             "read": "SHARED_DATABASE_DSN_AND_READ_ONLY_TRANSACTION_REQUIRED",
@@ -209,7 +160,11 @@ def attest_read_role(pg, schema):
 
 @contextmanager
 def connection(schema, *, read_only=False, dsn=None, row_factory=None):
-    if not _SCHEMA.fullmatch(schema): raise ValueError('INVALID_V4_PG_SCHEMA')
+    # This is the application connection boundary, not just a name validator.
+    # Legacy schema names remain available only to explicit migration/audit
+    # scripts using their own bounded source connection; runtime consumers may
+    # never bind to them.
+    if schema != 'v4': raise ValueError('V4_SINGLE_SCHEMA_CONNECTION_REQUIRED')
     with psycopg.connect(dsn or (configured_reader_dsn() if read_only else configured_dsn()),connect_timeout=5,row_factory=row_factory) as pg:
         if read_only: pg.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY')
         pg.execute("SET LOCAL statement_timeout='30s'")
@@ -219,5 +174,6 @@ def connection(schema, *, read_only=False, dsn=None, row_factory=None):
         yield pg
 
 def create_schema(pg,schema):
-    if not _SCHEMA.fullmatch(schema): raise ValueError('INVALID_V4_PG_SCHEMA')
+    if schema != 'v4':
+        raise RuntimeError('V4_SINGLE_SCHEMA_ONLY_SCHEMA_CREATION_BLOCKED')
     pg.execute(sql.SQL('CREATE SCHEMA IF NOT EXISTS {}').format(sql.Identifier(schema)))

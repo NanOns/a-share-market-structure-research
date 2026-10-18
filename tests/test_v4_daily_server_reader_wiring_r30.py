@@ -54,6 +54,10 @@ def test_daily_status_routes_use_injected_read_only_client(monkeypatch, tmp_path
 
     monkeypatch.setattr(server, "make_v4_handler", lambda *args, **kwargs: Base)
     monkeypatch.setattr(current_v4_context, "CurrentAcceptedV4Reader", StrictReader)
+    monkeypatch.setattr(
+        "workbench_service.v4_server.pg_candidate_adapter_from_environment",
+        lambda **_kwargs: object(),
+    )
     reader = ReadClient()
     handler_class = server.make_daily_handler(tmp_path, ForbiddenWriterReads(), status_reader=reader)
 
@@ -109,6 +113,10 @@ def test_settings_put_uses_writer_mutation_then_reader_readback(monkeypatch, tmp
 
     monkeypatch.setattr(server, "make_v4_handler", lambda *args, **kwargs: Base)
     monkeypatch.setattr(current_v4_context, "CurrentAcceptedV4Reader", StrictReader)
+    monkeypatch.setattr(
+        "workbench_service.v4_server.pg_candidate_adapter_from_environment",
+        lambda **_kwargs: object(),
+    )
     writer = Writer()
     reader = Reader()
     handler_class = server.make_daily_handler(tmp_path, writer, status_reader=reader)

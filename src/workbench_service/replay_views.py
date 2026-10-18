@@ -34,7 +34,7 @@ def selected(reader,query):
     day=query.get('as_of',reader.context['trade_date']);date.fromisoformat(day)
     if day>reader.context['trade_date']:raise ValueError('FUTURE_AS_OF_FORBIDDEN')
     if not authority:return None,None,day
-    if getattr(reader,'pg_candidate_schema',None):
+    if getattr(reader,'is_pg_candidate',False):
         # Candidate replay can select only the exact PG snapshot currently read.
         # Older local replay JSON paths are never consulted by this branch.
         sources={key:{'contract_id':'PG_SNAPSHOT_BOUND_SOURCE_R1','sha256':value.get('sha256')}
@@ -54,7 +54,7 @@ def selected(reader,query):
     return authority,binding,day
 
 def read_snapshot(reader,binding):
-    if getattr(reader,'pg_candidate_schema',None):
+    if getattr(reader,'is_pg_candidate',False):
         items=[];offset=0
         while True:
             page=reader.query('stocks',{'limit':'200','offset':str(offset)})
@@ -75,7 +75,7 @@ def matches_entity(item, query):
 
 def selected_stock(reader, selector, snapshot=None):
     """Resolve one stock without materializing the full universe on PG reads."""
-    if getattr(reader,'pg_candidate_schema',None):
+    if getattr(reader,'is_pg_candidate',False):
         candidates=reader.query('stocks',{'q':selector,'limit':200})['items']
     else:
         candidates=(snapshot or read_snapshot(reader,selected(reader,{'as_of':reader.context['trade_date']})[1]))['items']
@@ -123,7 +123,7 @@ def compare(reader,query):
     mode=query.get('mode','stock-stock');allowed=('stock-stock','stock-previous','stock-market','stock-sector','sector-market','sector-three','sector-lifecycle')
     if mode not in allowed:raise ValueError('INVALID_COMPARE_MODE')
     left=query.get('left','');right=query.get('right','')
-    snapshot=None if getattr(reader,'pg_candidate_schema',None) else read_snapshot(reader,binding)
+    snapshot=None if getattr(reader,'is_pg_candidate',False) else read_snapshot(reader,binding)
     if mode.startswith('sector'):
         if day!=reader.context['trade_date'] or mode in ('sector-three','sector-lifecycle'):return envelope(reader,binding,day,status='PIT_NOT_AVAILABLE',items=[],reason='DATED_PRIOR_MEMBERSHIP_OR_STAGE_OUTPUT_NOT_BOUND_CURRENT_MEMBERS_NOT_BACKFILLED')
         a=reader.query('sectors',{},entity=left)['items']

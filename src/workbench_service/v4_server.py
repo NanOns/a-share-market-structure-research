@@ -52,16 +52,17 @@ def _require_candidate_contract_proofs(context):
             raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
 
 
-def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_research_candidate_schema=None, static_root=None):
+def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_candidate_release_id=None, static_root=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
-    if not pg_research_candidate_schema:
+    candidate_target=pg_candidate_release_id
+    candidate_enabled=bool(candidate_target)
+    if not candidate_enabled:
         recover(root)
-    # A PG research candidate is an independent development surface. Do not
-    # instantiate the file-backed accepted Head reader on that route: even a
-    # harmless context/status request must remain bound to the PG snapshot.
-    reader=(None if pg_research_candidate_schema or pg_current_adapter is not None else
-            CurrentAcceptedV4Reader(root,require_runtime=True))
+    # The six-entry workbench reads the approved current contract, whose
+    # bindings are resolved from the fixed V4 schema. Research-release and
+    # publication candidates remain separate, explicit request modes.
+    reader=CurrentAcceptedV4Reader(root,require_runtime=True)
     base=make_shadow_handler(root)
     static=Path(static_root) if static_root is not None else root/'src/workbench_service/static'
     bff=ResearchBFF(root)
@@ -72,7 +73,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
             current=pg_research_candidate_cache.get('reader')
             if current is None:
                 from .production_v4 import ProductionV4ResearchReader
-                current=ProductionV4ResearchReader(root,pg_candidate_schema=pg_research_candidate_schema)
+                current=ProductionV4ResearchReader(root,candidate_release_id=candidate_target)
                 pg_research_candidate_cache['reader']=current
             return current
 
@@ -98,11 +99,11 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path)
-            if pg_research_candidate_schema and parsed.path=='/v4/research/data-update':
+            if candidate_enabled and parsed.path=='/v4/research/data-update':
                 return self.send(200,(static/'daily-update/index.html').read_bytes(),'text/html; charset=utf-8')
-            if pg_research_candidate_schema and parsed.path=='/v4/daily-update.js':
+            if candidate_enabled and parsed.path=='/v4/daily-update.js':
                 return self.send(200,(static/'daily-update/app.js').read_bytes(),'application/javascript; charset=utf-8')
-            if pg_research_candidate_schema and parsed.path.startswith('/api/v4/operations/daily-update/'):
+            if candidate_enabled and parsed.path.startswith('/api/v4/operations/daily-update/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
                 tail=parsed.path.removeprefix('/api/v4/operations/daily-update/').strip('/').split('/')
@@ -161,7 +162,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                 code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith(('/api/v4/shadow/','/api/v4/current/')):
-                if pg_research_candidate_schema:
+                if candidate_enabled:
                     values=parse_qs(parsed.query,keep_blank_values=True)
                     if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
                     if len(self.path)>4096:return self.send(414,dict(code='REQUEST_TOO_LONG'))
@@ -171,7 +172,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                             candidate=pg_research_candidate_cache.get('reader')
                             if candidate is None:
                                 from .production_v4 import ProductionV4ResearchReader
-                                candidate=ProductionV4ResearchReader(root,pg_candidate_schema=pg_research_candidate_schema)
+                                candidate=ProductionV4ResearchReader(root,candidate_release_id=candidate_target)
                                 pg_research_candidate_cache['reader']=candidate
                         code,payload=bff.get_with_reader(parsed.path.removeprefix('/api/v4/'),{k:v[0] for k,v in values.items()},candidate)
                         return self.send(code,payload)
@@ -207,7 +208,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                 # operational compatibility asset, when present, is instead
                 # selected by the PG Head-bound registry below.
                 asset=static/'research'/name
-                if name in ('api.js','components.js','app.js') and not pg_research_candidate_schema:
+                if name in ('api.js','components.js','app.js') and not candidate_enabled:
                     try:operational=operational_reader()
                     except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                     if operational is not None:
@@ -224,13 +225,13 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
             if parsed.path=='/v3':
                 return self.send(200,b'<!doctype html><meta charset="utf-8"><title>V3 historical diagnostics</title><h1>V3 historical diagnostics</h1><p>The legacy database was intentionally retired. V4 current accepted research is available at <a href="/v4">V4</a>.</p>','text/html; charset=utf-8')
             if parsed.path=='/api/operations/status':
-                if pg_research_candidate_schema:
+                if candidate_enabled:
                     try:
                         with pg_research_candidate_lock:
                             candidate=pg_research_candidate_cache.get('reader')
                             if candidate is None:
                                 from .production_v4 import ProductionV4ResearchReader
-                                candidate=ProductionV4ResearchReader(root,pg_candidate_schema=pg_research_candidate_schema)
+                                candidate=ProductionV4ResearchReader(root,candidate_release_id=candidate_target)
                                 pg_research_candidate_cache['reader']=candidate
                         context=candidate.context
                         return self.send(200,dict(
@@ -284,7 +285,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                 allowed={'q','state','limit','offset','context_token','source','trade_date','model_namespace_id'}
                 if set(values)-allowed:return self.send(400,dict(status='BLOCKED',code='UNKNOWN_CONTEXT_PARAMETER'))
                 query={k:v[0] for k,v in values.items()}
-                if pg_current_adapter is not None and query.get('source')!='pg_candidate':
+                if pg_current_adapter is not None and query.get('source')=='pg_publication':
                     try:
                         payload=pg_current_adapter.read_current_endpoint(parsed.path,
                             expected_context_token=query.get('context_token'),
@@ -379,12 +380,12 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
             return super().do_GET()
 
         def do_POST(self):
-            if pg_research_candidate_schema and self.path.startswith('/api/v4/operations/daily-update/'):
+            if candidate_enabled and self.path.startswith('/api/v4/operations/daily-update/'):
                 return self.send(403,dict(code='CANDIDATE_PREVIEW_WRITE_DISABLED',jobs_started=False))
             return self.send(501,dict(code='METHOD_NOT_SUPPORTED'))
 
         def do_PUT(self):
-            if pg_research_candidate_schema and self.path.startswith('/api/v4/operations/daily-update/'):
+            if candidate_enabled and self.path.startswith('/api/v4/operations/daily-update/'):
                 return self.send(403,dict(code='CANDIDATE_PREVIEW_WRITE_DISABLED',jobs_started=False))
             return self.send(501,dict(code='METHOD_NOT_SUPPORTED'))
 
@@ -393,10 +394,9 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
 
 def serve_v4(root,host='127.0.0.1',port=28765):
     adapter=pg_candidate_adapter_from_environment(workspace_root=root)
-    from workbench_db.v4_native import workspace_schema
-    research_schema=os.environ.get('V4_PG_RESEARCH_CANDIDATE_SCHEMA') or workspace_schema(root,'research')
+    candidate_release_id=os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID')
     ThreadingHTTPServer((host,port),make_v4_handler(root,adapter,allow_pg_candidate=True,
-        pg_research_candidate_schema=research_schema)).serve_forever()
+        pg_candidate_release_id=candidate_release_id)).serve_forever()
 
 
 def pg_candidate_adapter_from_environment(environ=None, *, workspace_root=None):
@@ -427,15 +427,15 @@ def pg_candidate_adapter_from_environment(environ=None, *, workspace_root=None):
     ))
 
 
-def serve_v4_candidate(root, pg_current_adapter=None, *, pg_research_candidate_schema=None):
+def serve_v4_candidate(root, pg_current_adapter=None, *, candidate_release_id=None):
     """Explicit candidate-only BFF on the one development port; never production."""
     if pg_current_adapter is None:
         pg_current_adapter = pg_candidate_adapter_from_environment(workspace_root=root)
-    if pg_research_candidate_schema is None:
-        from workbench_db.v4_native import workspace_schema
-        pg_research_candidate_schema = workspace_schema(root, 'research')
+    candidate_release_id=(candidate_release_id or os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID'))
+    if not candidate_release_id:
+        raise RuntimeError('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID_REQUIRED')
     ThreadingHTTPServer(
         ('127.0.0.1',28766),
         make_v4_handler(root,pg_current_adapter,allow_pg_candidate=True,
-                        pg_research_candidate_schema=pg_research_candidate_schema),
+                        pg_candidate_release_id=candidate_release_id),
     ).serve_forever()

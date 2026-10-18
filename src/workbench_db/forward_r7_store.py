@@ -13,7 +13,6 @@ from psycopg.types.json import Jsonb
 
 from workbench_analysis.forward_r7 import (canonical_bytes, legacy_observation_id,
     make_observation_id, sha256, compute_nominal_settlement)
-from .v4_native import workspace_schema
 
 
 SETTLEMENT_STATUS_STATES = (
@@ -51,83 +50,42 @@ class ForwardR7Store:
     def __init__(self, root: str | Path, *, dsn: str | None = None):
         self.root = Path(root).resolve()
         self.dsn = dsn or _configured_forward_dsn(self.root)
+        self.origin_namespace = self._resolve_origin_namespace()
         self.schema = self._resolve_existing_schema()
         self._generic_facts = True
 
-    def _resolve_existing_schema(self):
-        """Bind to the existing Forward facts namespace for this accepted Head.
-
-        R7 deliberately reuses the current ``forward_facts`` table. It must not
-        create a schema or infer an empty target when the expected namespace is
-        absent. The accepted core fact date uniquely binds the live workspace.
-        """
+    def _resolve_origin_namespace(self):
         candidate_binding=self.root/'config/r8_forward_candidate_namespace_r1.json'
         if candidate_binding.is_file():
             binding=json.loads(candidate_binding.read_bytes())
-            expected=workspace_schema(self.root,'r8_forward')
+            namespace=binding.get('origin_namespace')
+            if (binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
+                    or binding.get('scope')!='CANDIDATE_ONLY'
+                    or not isinstance(namespace,str)
+                    or not namespace.startswith('R8_')
+                    or not namespace.isascii()
+                    or not all(c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in namespace)):
+                raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
+            return namespace
+        return 'R7_ACTIVE'
+
+    def _resolve_existing_schema(self):
+        """Use the fixed R7 relation in v4; legacy schemas are migration sources only."""
+        candidate_binding=self.root/'config/r8_forward_candidate_namespace_r1.json'
+        if candidate_binding.is_file():
+            binding=json.loads(candidate_binding.read_bytes())
             from common.paths import resolve_ingest_temp_root
             if (not self.root.is_relative_to(resolve_ingest_temp_root(Path(__file__).resolve().parents[2]))
                     or binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
                     or binding.get('scope')!='CANDIDATE_ONLY'
                     or Path(binding.get('candidate_root','')).resolve()!=self.root
-                    or binding.get('schema')!=expected):
+                    or binding.get('schema')!='v4'):
                 raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
-            receipt_binding=binding['baseline_receipt']
-            from .v4_historical_source_ingress_pg_r1 import read_bound,ingest_file
-            try:
-                receipt_source=read_bound(self.root,receipt_binding['path'],receipt_binding['sha256'])
-            except ValueError as exc:
-                if str(exc)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':
-                    raise
-                receipt_path=(self.root/receipt_binding['path']).resolve()
-                if not receipt_path.is_relative_to(self.root):
-                    raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_OUTSIDE_WORKSPACE') from exc
-                ingest_file(self.root,hashlib.sha256(receipt_binding['path'].encode()).hexdigest(),
-                    receipt_path,expected_sha256=receipt_binding['sha256'])
-                receipt_source=read_bound(self.root,receipt_binding['path'],receipt_binding['sha256'])
-            if len(receipt_source['raw'])!=receipt_binding.get('bytes'):
-                raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_SIZE_MISMATCH')
-            receipt=json.loads(receipt_source['raw'])
-            if (receipt.get('contract_id')!='R8_FORWARD_ISOLATED_BASELINE_COPY_R1'
-                    or receipt.get('candidate_schema')!=expected or receipt.get('source_unchanged') is not True
-                    or Path(receipt.get('candidate_root','')).resolve()!=self.root
-                    or receipt.get('source_after')!=receipt.get('source_before')
-                    or receipt.get('candidate_baseline')!=receipt.get('source_before')):
-                raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_INVALID')
-            with psycopg.connect(self.dsn,connect_timeout=5) as pg:
-                present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
-            if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
-            return expected
-        from workbench_db.v4_operational_live_head_pg_r1 import read_current
-        current_head=read_current(self.root)
-        head_document=current_head["candidate"]
-        target_date=head_document.get("accepted_trade_date")
-        with psycopg.connect(self.dsn, connect_timeout=5) as pg:
-            candidates = pg.execute("""SELECT s.schema_name
-                FROM information_schema.schemata s
-                JOIN information_schema.tables t ON t.table_schema=s.schema_name
-                WHERE s.schema_name LIKE 'v4_forward_%' AND t.table_name='forward_facts'
-                ORDER BY s.schema_name""").fetchall()
-            matches = []
-            for (schema,) in candidates:
-                if target_date:
-                    exists = pg.execute(sql.SQL("""SELECT 1 FROM {}.forward_facts
-                        WHERE kind='core' AND fact_key LIKE %s LIMIT 1""").format(
-                            sql.Identifier(schema)), (f"%_{target_date}_core",)).fetchone()
-                    if exists:
-                        matches.append(schema)
-            if head_document.get('native_pg_owner_authority'):
-                owned=workspace_schema(self.root/'data/v4/operational_owner_pg_closeout_r1','forward')
-                if owned in matches:return owned
-                raise RuntimeError('FORWARD_ACCEPTED_WORKSPACE_NAMESPACE_REQUIRED')
-            if len(matches) == 1:
-                return matches[0]
-            expected = workspace_schema(self.root, "forward")
-            if any(row[0] == expected for row in candidates):
-                return expected
-            if not target_date and len(candidates) == 1:
-                return candidates[0][0]
-        raise RuntimeError("EXISTING_FORWARD_FACTS_NAMESPACE_NOT_UNIQUELY_BOUND")
+        with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+            present=pg.execute("SELECT 1 FROM information_schema.tables WHERE table_schema='v4' AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'").fetchone()
+        if not present:
+            raise RuntimeError('V4_FORWARD_R7_SINGLE_SCHEMA_MIGRATION_REQUIRED')
+        return 'v4'
 
     def _connect(self):
         return psycopg.connect(self.dsn, connect_timeout=5)
@@ -158,26 +116,32 @@ class ForwardR7Store:
     def verify_existing_storage(self):
         with self._connect() as pg:
             present = pg.execute("""SELECT 1 FROM information_schema.tables
-                WHERE table_schema=%s AND table_name='forward_facts' AND table_type='BASE TABLE'""",
+                WHERE table_schema=%s AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'""",
                 (self.schema,)).fetchone()
             if not present:
                 raise RuntimeError("EXISTING_FORWARD_FACTS_TABLE_REQUIRED_NO_MIGRATION")
-        return dict(status="REUSED_EXISTING_PG_FACTS", schema=self.schema, table="forward_facts")
+        return dict(status="REUSED_EXISTING_PG_FACTS", schema=self.schema, table="forward_r7_facts_r1")
 
     def _append_fact(self, pg, kind: str, fact_key: str, payload: dict,
                      source_sha256: str | None = None):
         """Append one immutable R7 fact using the existing table's contract."""
         raw = canonical_bytes(payload).decode("utf-8")
         digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+        owner_id=payload.get('owner_id')
+        run_id=payload.get('run_id') or payload.get('source_run_id')
+        t0=payload.get('trade_date') or payload.get('T0')
+        if isinstance(t0,str):
+            try:t0=date.fromisoformat(t0) if len(t0)==10 else None
+            except ValueError:t0=None
         pg.execute("SELECT pg_advisory_xact_lock(hashtext(%s))",
-                   ("v4-forward-facts:" + self.schema,))
-        pg.execute(sql.SQL("""INSERT INTO {}.forward_facts
-            (kind,fact_key,payload,payload_sha256,source_sha256)
-            VALUES (%s,%s,%s,%s,%s) ON CONFLICT(kind,fact_key) DO NOTHING""").format(
-                sql.Identifier(self.schema)), (kind, fact_key, raw, digest, source_sha256))
-        saved = pg.execute(sql.SQL("""SELECT payload_sha256 FROM {}.forward_facts
-            WHERE kind=%s AND fact_key=%s""").format(sql.Identifier(self.schema)),
-            (kind, fact_key)).fetchone()
+                   ("v4-forward-r7-facts:" + self.origin_namespace,))
+        pg.execute(sql.SQL("""INSERT INTO {}.forward_r7_facts_r1
+            (origin_namespace,owner_id,run_id,t0,kind,fact_key,payload,payload_sha256,source_sha256)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(origin_namespace,kind,fact_key) DO NOTHING""").format(
+                sql.Identifier(self.schema)), (self.origin_namespace,owner_id,run_id,t0,kind,fact_key,raw,digest,source_sha256))
+        saved = pg.execute(sql.SQL("""SELECT payload_sha256 FROM {}.forward_r7_facts_r1
+            WHERE origin_namespace=%s AND kind=%s AND fact_key=%s""").format(sql.Identifier(self.schema)),
+            (self.origin_namespace,kind, fact_key)).fetchone()
         if not saved or saved[0].strip() != digest:
             raise ValueError("FORWARD_R7_IMMUTABLE_FACT_CONFLICT")
         return digest
@@ -185,8 +149,8 @@ class ForwardR7Store:
     def _read_facts(self, kind: str):
         with self._connect() as pg:
             pg.execute("SET TRANSACTION READ ONLY")
-            rows = pg.execute(sql.SQL("""SELECT fact_key,payload FROM {}.forward_facts
-                WHERE kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (kind,)).fetchall()
+            rows = pg.execute(sql.SQL("""SELECT fact_key,payload FROM {}.forward_r7_facts_r1
+                WHERE origin_namespace=%s AND kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (self.origin_namespace,kind)).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
 
     def _read_day_facts(self, kind: str, trade_date: str, lane: str | None = None):
@@ -207,9 +171,9 @@ class ForwardR7Store:
                     clause, params = prefix_clause(f"v2:{trade_date}:")
                     clauses = ["fact_key=%s", clause]
                     params = [trade_date, *params]
-                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND ({}) ORDER BY ordinal").format(
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_r7_facts_r1 WHERE origin_namespace=%s AND kind=%s AND ({}) ORDER BY ordinal").format(
                     sql.Identifier(self.schema), sql.SQL(" OR ").join(sql.SQL(x) for x in clauses))
-                rows = pg.execute(query, [kind, *params]).fetchall()
+                rows = pg.execute(query, [self.origin_namespace, kind, *params]).fetchall()
             else:
                 clause, prefix_params = prefix_clause(f"v2:{trade_date}:{lane}:" if lane else f"v2:{trade_date}:")
                 legacy_clause, legacy_params = prefix_clause(f"{trade_date}:")
@@ -219,9 +183,9 @@ class ForwardR7Store:
                 if lane:
                     clauses.append("(payload::jsonb->>'lane'=%s OR (payload::jsonb->>'identity_contract' IS NULL AND %s='RETROSPECTIVE_RESEARCH'))")
                     params.extend([lane, lane])
-                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND {} ORDER BY ordinal").format(
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_r7_facts_r1 WHERE origin_namespace=%s AND kind=%s AND {} ORDER BY ordinal").format(
                     sql.Identifier(self.schema), sql.SQL(" AND ").join(sql.SQL(x) for x in clauses))
-                rows = pg.execute(query, [kind, *params]).fetchall()
+                rows = pg.execute(query, [self.origin_namespace, kind, *params]).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
 
     def _daily_facts(self, trade_date: str | None = None, lane: str | None = None):
@@ -454,9 +418,9 @@ class ForwardR7Store:
         own = pg is None
         conn = pg or self._connect()
         try:
-            rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_facts
-                WHERE kind='r7_publish_index' ORDER BY ordinal DESC""").format(
-                    sql.Identifier(self.schema))).fetchall()
+            rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_r7_facts_r1
+                WHERE origin_namespace=%s AND kind='r7_publish_index' ORDER BY ordinal DESC""").format(
+                    sql.Identifier(self.schema)), (self.origin_namespace,)).fetchall()
             decoded = [json.loads(payload) for (payload,) in rows]
             for value in decoded:
                 value_lane = value.get("lane") or "RETROSPECTIVE_RESEARCH"
@@ -616,16 +580,12 @@ class ForwardR7Store:
         with psycopg.connect(_configured_forward_dsn(Path(root)), connect_timeout=5) as pg:
             pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
             pg.execute("SET LOCAL statement_timeout='10s'")
-            schemas = [row[0] for row in pg.execute("""SELECT s.schema_name
-                FROM information_schema.schemata s JOIN information_schema.tables t
-                  ON t.table_schema=s.schema_name
-                WHERE s.schema_name LIKE 'v4_forward_%' AND t.table_name='forward_facts'
-                ORDER BY s.schema_name""").fetchall()]
+            schemas = ['v4']
             eligible = []
             invalid_matching_records = 0
             for schema in schemas:
                 query = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
-                    FROM {}.forward_facts WHERE kind='r7_publish_index'
+                    FROM {}.forward_r7_facts_r1 WHERE origin_namespace='R7_ACTIVE' AND kind='r7_publish_index'
                       AND payload::jsonb->>'trade_date'=%s
                       AND payload::jsonb->>'index_name'='daily_universe'
                     ORDER BY (payload::jsonb->>'generation')::bigint DESC""").format(sql.Identifier(schema))
@@ -652,7 +612,7 @@ class ForwardR7Store:
 
                     def facts(kind, where_sql, params):
                         statement = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
-                            FROM {}.forward_facts WHERE kind=%s AND """ + where_sql).format(sql.Identifier(schema))
+                            FROM {}.forward_r7_facts_r1 WHERE origin_namespace='R7_ACTIVE' AND kind=%s AND """ + where_sql).format(sql.Identifier(schema))
                         return [decode_fact(row) for row in pg.execute(statement, (kind, *params)).fetchall()]
 
                     daily = facts('r7_daily_universe', "payload::jsonb->>'trade_date'=%s AND payload::jsonb->>'lane'='RETROSPECTIVE_RESEARCH' AND payload::jsonb->>'stable_sha256'=%s", (day, expected_payload_sha))

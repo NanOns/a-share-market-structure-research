@@ -222,6 +222,7 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
     root = Path(root).resolve()
     key = _key(day)
     schema = v4_native.workspace_schema(root / FOLDER, "forward")
+    workspace_namespace=ForwardFactStore.namespace_for(root/FOLDER)
     with v4_native.connection(schema, read_only=True) as pg:
         relation = pg.execute("SELECT to_regclass('forward_facts')").fetchone()
         if not relation or relation[0] is None:
@@ -231,8 +232,8 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
         if expected_identity and identity != expected_identity:
             raise ValueError("BAOSTOCK_PG_RUNTIME_DATABASE_IDENTITY_MISMATCH")
         row = pg.execute(
-            "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
-            (KIND, key),
+            "SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+            (workspace_namespace,KIND, key),
         ).fetchone()
     if row is None:
         raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND")

@@ -8,20 +8,19 @@ import psycopg
 
 CONTRACT='V4_PG_DATED_HISTORY_INDEX_R1'
 DDL='''
-CREATE TABLE IF NOT EXISTS history_versions(version text PRIMARY KEY,head_token text NOT NULL,t0 date NOT NULL,source_digest text NOT NULL,logical_digest text NOT NULL,symbol_count bigint NOT NULL,bar_count bigint NOT NULL,created_at timestamptz NOT NULL DEFAULT clock_timestamp());
-CREATE TABLE IF NOT EXISTS history(version text NOT NULL REFERENCES history_versions(version) DEFERRABLE INITIALLY DEFERRED,security text NOT NULL,payload jsonb NOT NULL,PRIMARY KEY(version,security));
-ALTER TABLE history ALTER CONSTRAINT history_version_fkey DEFERRABLE INITIALLY DEFERRED;
-CREATE OR REPLACE FUNCTION reject_history_mutation() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
- IF TG_OP='INSERT' AND NOT EXISTS(SELECT 1 FROM history_versions WHERE version=NEW.version) THEN RETURN NEW; END IF;
+CREATE TABLE IF NOT EXISTS history_versions_r1(version text PRIMARY KEY,head_token text NOT NULL,t0 date NOT NULL,source_digest text NOT NULL,logical_digest text NOT NULL,symbol_count bigint NOT NULL,bar_count bigint NOT NULL,created_at timestamptz NOT NULL DEFAULT clock_timestamp());
+CREATE TABLE IF NOT EXISTS history_bars_r1(version text NOT NULL CONSTRAINT history_bars_r1_version_fkey REFERENCES history_versions_r1(version) DEFERRABLE INITIALLY DEFERRED,security text NOT NULL,payload jsonb NOT NULL,PRIMARY KEY(version,security));
+CREATE OR REPLACE FUNCTION reject_history_r1_mutation() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+ IF TG_OP='INSERT' AND NOT EXISTS(SELECT 1 FROM history_versions_r1 WHERE version=NEW.version) THEN RETURN NEW; END IF;
  RAISE EXCEPTION 'IMMUTABLE_HISTORY_VERSION'; END $$;
-DROP TRIGGER IF EXISTS immutable_history ON history;
-CREATE TRIGGER immutable_history BEFORE INSERT OR UPDATE OR DELETE ON history FOR EACH ROW EXECUTE FUNCTION reject_history_mutation();
-DROP TRIGGER IF EXISTS immutable_history_truncate ON history;
-CREATE TRIGGER immutable_history_truncate BEFORE TRUNCATE ON history FOR EACH STATEMENT EXECUTE FUNCTION reject_history_mutation();
-DROP TRIGGER IF EXISTS immutable_history_version ON history_versions;
-CREATE TRIGGER immutable_history_version BEFORE UPDATE OR DELETE ON history_versions FOR EACH ROW EXECUTE FUNCTION reject_history_mutation();
-DROP TRIGGER IF EXISTS immutable_history_version_truncate ON history_versions;
-CREATE TRIGGER immutable_history_version_truncate BEFORE TRUNCATE ON history_versions FOR EACH STATEMENT EXECUTE FUNCTION reject_history_mutation();
+DROP TRIGGER IF EXISTS immutable_history_r1 ON history_bars_r1;
+CREATE TRIGGER immutable_history_r1 BEFORE INSERT OR UPDATE OR DELETE ON history_bars_r1 FOR EACH ROW EXECUTE FUNCTION reject_history_r1_mutation();
+DROP TRIGGER IF EXISTS immutable_history_r1_truncate ON history_bars_r1;
+CREATE TRIGGER immutable_history_r1_truncate BEFORE TRUNCATE ON history_bars_r1 FOR EACH STATEMENT EXECUTE FUNCTION reject_history_r1_mutation();
+DROP TRIGGER IF EXISTS immutable_history_r1_version ON history_versions_r1;
+CREATE TRIGGER immutable_history_r1_version BEFORE UPDATE OR DELETE ON history_versions_r1 FOR EACH ROW EXECUTE FUNCTION reject_history_r1_mutation();
+DROP TRIGGER IF EXISTS immutable_history_r1_version_truncate ON history_versions_r1;
+CREATE TRIGGER immutable_history_r1_version_truncate BEFORE TRUNCATE ON history_versions_r1 FOR EACH STATEMENT EXECUTE FUNCTION reject_history_r1_mutation();
 '''
 
 def canonical(value): return json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()
@@ -37,7 +36,7 @@ def build(root,rows,*,head_token,t0,source_digest):
         pg.execute("SET LOCAL statement_timeout = '120s'")
         pg.execute('SELECT pg_advisory_xact_lock(hashtextextended(%s,0))',(schema,))
         pg.execute(DDL)
-        existing=pg.execute('SELECT logical_digest,symbol_count,bar_count,head_token,t0::text,source_digest FROM history_versions WHERE version=%s',(version,)).fetchone()
+        existing=pg.execute('SELECT logical_digest,symbol_count,bar_count,head_token,t0::text,source_digest FROM history_versions_r1 WHERE version=%s',(version,)).fetchone()
         # Temporary staging remains PG and is transaction-local; no file index.
         pg.execute('CREATE TEMP TABLE stage_history(security text PRIMARY KEY,payload jsonb NOT NULL) ON COMMIT DROP')
         logical=hashlib.sha256();append_digest=logical.update;symbols=bars=0
@@ -56,8 +55,8 @@ def build(root,rows,*,head_token,t0,source_digest):
         expected=(digest,symbols,bars,head_token,t0,source_digest)
         if existing and existing!=expected: raise ValueError('HISTORY_VERSION_IDENTITY_CONFLICT')
         if not existing:
-            pg.execute('INSERT INTO history SELECT %s,security,payload FROM stage_history',(version,))
-            pg.execute('INSERT INTO history_versions VALUES(%s,%s,%s,%s,%s,%s,%s,clock_timestamp())',(version,head_token,t0,source_digest,digest,symbols,bars))
+            pg.execute('INSERT INTO history_bars_r1 SELECT %s,security,payload FROM stage_history',(version,))
+            pg.execute('INSERT INTO history_versions_r1 VALUES(%s,%s,%s,%s,%s,%s,%s,clock_timestamp())',(version,head_token,t0,source_digest,digest,symbols,bars))
     return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,version=version,head_token=head_token,T0=t0,source_digest=source_digest,logical_digest=digest,symbol_count=symbols,bar_count=bars,price_basis='ACCEPTED_RAW_AND_QFQ_UNCHANGED')
 
 def read(root,binding,day,sid):
@@ -66,9 +65,17 @@ def read(root,binding,day,sid):
         return corrected_read(root,binding,day,sid)
     if binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql': raise ValueError('PG_HISTORY_BINDING_REQUIRED_NO_FALLBACK')
     schema=binding.get('schema')
-    if not isinstance(schema,str) or not re.fullmatch(r'v4_history_[a-f0-9]{16}',schema) or binding.get('T0')!=day: raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
-    with connection(schema,read_only=True) as pg:
-        version=pg.execute('SELECT head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count FROM history_versions WHERE version=%s',(binding['version'],)).fetchone()
+    if (not isinstance(schema,str) or binding.get('T0')!=day
+            or (schema!='v4' and not re.fullmatch(r'v4_history_[a-f0-9]{16}',schema))):
+        raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
+    with connection('v4',read_only=True) as pg:
+        if schema!='v4':
+            mapped=pg.execute('''SELECT canonical_version,T0::text,head_token,source_digest,logical_digest,symbol_count,bar_count
+                FROM history_migration_map_r1 WHERE source_schema=%s AND source_version=%s''',
+                (schema,binding['version'])).fetchone()
+            expected=(binding['version'],day,binding['head_token'],binding['source_digest'],binding['logical_digest'],binding['symbol_count'],binding['bar_count'])
+            if mapped!=expected:raise ValueError('PG_HISTORY_LEGACY_VERSION_NOT_MIGRATED')
+        version=pg.execute('SELECT head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count FROM history_versions_r1 WHERE version=%s',(binding['version'],)).fetchone()
         if version!=(binding['head_token'],day,binding['source_digest'],binding['logical_digest'],binding['symbol_count'],binding['bar_count']): raise ValueError('PG_HISTORY_IDENTITY_MISMATCH')
-        row=pg.execute('SELECT payload FROM history WHERE version=%s AND security=%s',(binding['version'],sid)).fetchone()
+        row=pg.execute('SELECT payload FROM history_bars_r1 WHERE version=%s AND security=%s',(binding['version'],sid)).fetchone()
     return row[0] if row else None

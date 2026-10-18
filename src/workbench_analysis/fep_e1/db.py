@@ -6,6 +6,7 @@ request upstream bootstrap. There is no default DSN or production credential.
 """
 import hashlib
 from pathlib import Path
+import re
 
 
 def apply(pg, root, *, bootstrap=False):
@@ -18,6 +19,10 @@ def apply(pg, root, *, bootstrap=False):
         if number < 28 and not bootstrap:
             continue
         sql = path.read_text(encoding='utf8')
+        schema_targets={m.group(1).strip('"').casefold() for m in re.finditer(
+            r'(?im)^\s*CREATE\s+SCHEMA\s+(?:IF\s+NOT\s+EXISTS\s+)?("?[a-z_][a-z0-9_]*"?)',sql)}
+        if schema_targets-{'v4'}:
+            raise RuntimeError('V4_SINGLE_SCHEMA_MIGRATION_SCHEMA_CREATE_BLOCKED:'+','.join(sorted(schema_targets-{'v4'})))
         checksum = hashlib.sha256(sql.encode()).hexdigest()
         if number >= 28:
             version = 'FEP_E1_' + path.stem.upper()

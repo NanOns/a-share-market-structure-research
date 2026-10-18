@@ -5,6 +5,7 @@ Scalar values retain existing contracts; evidence stays in per-object details.
 """
 import hashlib
 import json
+import re
 from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
@@ -41,34 +42,19 @@ def producer_sha256():
 
 
 def schema_for_revision(root, revision_sha256):
-    """Keep a new immutable index digest in its own schema.
-
-    The unsuffixed schema remains readable as the R2 predecessor. A rebuild
-    after producer code changes must never rewrite its sealed context_id/day rows.
-    """
-    from .v4_native import workspace_schema
+    """Store every immutable R2 read-index revision as rows in fixed schema v4."""
     if not isinstance(revision_sha256,str) or len(revision_sha256)!=64 or any(c not in '0123456789abcdef' for c in revision_sha256):
         raise ValueError('READ_INDEX_REVISION_DIGEST_INVALID')
-    base=workspace_schema(root,'read_index_r2')
-    # The schema identifier limit is shorter than base + a full SHA256. Hash
-    # both the workspace identity and content digest to a 224-bit suffix.
-    # This avoids short-prefix collisions while staying within v4_native's
-    # conservative 59-character identifier limit.
-    revision_key=hashlib.sha256((base+'\0'+revision_sha256).encode()).hexdigest()[:56]
-    return 'v4_'+revision_key
-
+    return 'v4'
 
 def schema_binding_matches(root, binding):
-    from .v4_native import workspace_schema
     schema=binding.get('schema') if isinstance(binding,dict) else None
-    base=workspace_schema(root,'read_index_r2')
-    if schema==base:return True  # immutable pre-revision R2 rows
-    revision=binding.get('digest') if isinstance(binding,dict) else None
-    if not isinstance(revision,str) or len(revision)!=64 or any(c not in '0123456789abcdef' for c in revision):
-        return False
-    revision_key=hashlib.sha256((base+'\0'+revision).encode()).hexdigest()[:56]
-    return schema=='v4_'+revision_key
-
+    legacy=(isinstance(schema,str) and (re.fullmatch(r'v4_read_index_r2_[a-f0-9]{16}',schema)
+            or re.fullmatch(r'v4_[a-f0-9]{56}',schema)))
+    return (isinstance(binding,dict) and (schema=='v4' or legacy)
+            and isinstance(binding.get('digest'),str)
+            and len(binding['digest'])==64
+            and all(c in '0123456789abcdef' for c in binding['digest']))
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',',':')).encode()
@@ -194,50 +180,49 @@ def prepare(root, context_id, day, collections, responses, memberships):
     schema=schema_for_revision(root,digest)
     with connection(schema) as pg:
         create_schema(pg,schema)
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_versions(
+        pg.execute('''CREATE TABLE IF NOT EXISTS read_versions_r2(
             context_id text NOT NULL, day text NOT NULL, digest text NOT NULL,
-            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(context_id,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_items(
-            context_id text NOT NULL, day text NOT NULL, domain text NOT NULL,
+            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(context_id,day,digest))''')
+        pg.execute('''CREATE TABLE IF NOT EXISTS read_items_r2(
+            context_id text NOT NULL, day text NOT NULL, digest text NOT NULL, domain text NOT NULL,
             entity_id text NOT NULL, symbol text, display_name text,
             aliases text[] NOT NULL, search_parts text[] NOT NULL,
             sector_ids text[] NOT NULL, values_json jsonb NOT NULL,
             summary jsonb NOT NULL, detail jsonb NOT NULL, detail_sha256 text NOT NULL,
-            PRIMARY KEY(context_id,day,domain,entity_id),
-            FOREIGN KEY(context_id,day) REFERENCES read_versions(context_id,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_responses(
-            context_id text NOT NULL, day text NOT NULL, path text NOT NULL,
+            PRIMARY KEY(context_id,day,digest,domain,entity_id),
+            FOREIGN KEY(context_id,day,digest) REFERENCES read_versions_r2(context_id,day,digest))''')
+        pg.execute('''CREATE TABLE IF NOT EXISTS read_responses_r2(
+            context_id text NOT NULL, day text NOT NULL, digest text NOT NULL, path text NOT NULL,
             payload jsonb NOT NULL, payload_sha256 text NOT NULL,
-            PRIMARY KEY(context_id,day,path), FOREIGN KEY(context_id,day) REFERENCES read_versions(context_id,day))''')
-        pg.execute('CREATE INDEX IF NOT EXISTS read_items_order ON read_items(context_id,day,domain,entity_id)')
-        pg.execute('''CREATE OR REPLACE FUNCTION read_index_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
+            PRIMARY KEY(context_id,day,digest,path), FOREIGN KEY(context_id,day,digest) REFERENCES read_versions_r2(context_id,day,digest))''')
+        pg.execute('CREATE INDEX IF NOT EXISTS read_items_r2_order ON read_items_r2(context_id,day,digest,domain,entity_id)')
+        pg.execute('''CREATE OR REPLACE FUNCTION read_index_r2_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
           BEGIN
-            IF TG_TABLE_NAME='read_versions' THEN
+            IF TG_TABLE_NAME='read_versions_r2' THEN
               IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
                  (OLD.context_id,OLD.day,OLD.digest,OLD.contract)=(NEW.context_id,NEW.day,NEW.digest,NEW.contract) THEN RETURN NEW; END IF;
               IF TG_OP='INSERT' THEN RETURN NEW; END IF;
               RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
             END IF;
-            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions WHERE context_id=NEW.context_id AND day=NEW.day AND sealed) THEN
+            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions_r2 WHERE context_id=NEW.context_id AND day=NEW.day AND digest=NEW.digest AND sealed) THEN
               RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
             END IF;
             RETURN NEW;
           END $$''')
-        for table in ('read_versions','read_items','read_responses'):
-            pg.execute(sql.Composed([sql.SQL('DROP TRIGGER IF EXISTS read_index_immutable_guard ON '),sql.Identifier(table)]))
-            pg.execute(sql.Composed([sql.SQL('CREATE TRIGGER read_index_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON '),
-                sql.Identifier(table),sql.SQL(' FOR EACH ROW EXECUTE FUNCTION read_index_immutable()')]))
-        pg.execute("CREATE OR REPLACE FUNCTION read_index_no_truncate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'READ_INDEX_IMMUTABLE'; END $$")
-        for table in ('read_versions','read_items','read_responses'):
+        for table in ('read_versions_r2','read_items_r2','read_responses_r2'):
+            pg.execute(sql.Composed([sql.SQL('DROP TRIGGER IF EXISTS read_index_r2_immutable_guard ON '),sql.Identifier(table)]))
+            pg.execute(sql.Composed([sql.SQL('CREATE TRIGGER read_index_r2_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON '),
+                sql.Identifier(table),sql.SQL(' FOR EACH ROW EXECUTE FUNCTION read_index_r2_immutable()')]))
+        pg.execute("CREATE OR REPLACE FUNCTION read_index_r2_no_truncate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'READ_INDEX_IMMUTABLE'; END $$")
+        for table in ('read_versions_r2','read_items_r2','read_responses_r2'):
             pg.execute(sql.Composed([sql.SQL('DROP TRIGGER IF EXISTS read_index_truncate_guard ON '),sql.Identifier(table)]))
             pg.execute(sql.Composed([sql.SQL('CREATE TRIGGER read_index_truncate_guard BEFORE TRUNCATE ON '),
-                sql.Identifier(table),sql.SQL(' EXECUTE FUNCTION read_index_no_truncate()')]))
+                sql.Identifier(table),sql.SQL(' EXECUTE FUNCTION read_index_r2_no_truncate()')]))
         lock_key=hashlib.sha256(canonical([schema,context_id,day])).hexdigest()
         pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(lock_key,))
-        old=pg.execute('SELECT digest FROM read_versions WHERE context_id=%s AND day=%s',(context_id,day)).fetchone()
-        if old and old[0]!=digest: raise ValueError('READ_INDEX_IMMUTABLE_VERSION_CONFLICT')
+        old=pg.execute('SELECT contract,sealed FROM read_versions_r2 WHERE context_id=%s AND day=%s AND digest=%s',(context_id,day,digest)).fetchone()
         if old is None:
-            pg.execute('INSERT INTO read_versions(context_id,day,digest,contract) VALUES(%s,%s,%s,%s)',(context_id,day,digest,CONTRACT))
+            pg.execute('INSERT INTO read_versions_r2(context_id,day,digest,contract) VALUES(%s,%s,%s,%s)',(context_id,day,digest,CONTRACT))
             with pg.cursor() as cur:
                 for domain,rows in collections.items():
                     values=[]
@@ -246,18 +231,20 @@ def prepare(root, context_id, day, collections, responses, memberships):
                         aliases=sorted(set(aliases)|{v.upper() for v in aliases}|{v.upper().split('.')[-1] for v in aliases})
                         search=[str(v).casefold() for v in [sid,row['symbol'],row['display_name'],*row.get('search_aliases',[])]]
                         detail=detail_payload(row)
-                        values.append((context_id,day,domain,sid,row['symbol'],row['display_name'],aliases,search,
+                        values.append((context_id,day,digest,domain,sid,row['symbol'],row['display_name'],aliases,search,
                             memberships.get(sid,[]),Jsonb({k:c.get('value') for k,c in row['fields'].items()}),
                             Jsonb(summary(row,domain)),Jsonb(detail),hashlib.sha256(canonical(detail)).hexdigest()))
-                    cur.executemany('INSERT INTO read_items VALUES('+','.join(['%s']*13)+')',values)
-                cur.executemany('INSERT INTO read_responses VALUES(%s,%s,%s,%s,%s)',
-                    [(context_id,day,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
-            pg.execute('UPDATE read_versions SET sealed=true WHERE context_id=%s AND day=%s',(context_id,day))
-        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items WHERE context_id=%s AND day=%s GROUP BY domain',(context_id,day)).fetchall())
+                    cur.executemany('INSERT INTO read_items_r2(context_id,day,digest,domain,entity_id,symbol,display_name,aliases,search_parts,sector_ids,values_json,summary,detail,detail_sha256) VALUES('+','.join(['%s']*14)+')',values)
+                cur.executemany('INSERT INTO read_responses_r2(context_id,day,digest,path,payload,payload_sha256) VALUES(%s,%s,%s,%s,%s,%s)',
+                    [(context_id,day,digest,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
+            pg.execute('UPDATE read_versions_r2 SET sealed=true WHERE context_id=%s AND day=%s AND digest=%s',(context_id,day,digest))
+        elif old!=(CONTRACT,True):
+            raise ValueError('READ_INDEX_IMMUTABLE_VERSION_CONFLICT')
+        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items_r2 WHERE context_id=%s AND day=%s AND digest=%s GROUP BY domain',(context_id,day,digest)).fetchall())
         if counts!={k:len(v) for k,v in collections.items() if v}: raise ValueError('READ_INDEX_COUNT_MISMATCH')
         # Read back every row once before handing the index to HTTP.
         for domain,rows in collections.items():
-            actual=pg.execute('SELECT detail FROM read_items WHERE context_id=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(context_id,day,domain)).fetchall()
+            actual=pg.execute('SELECT detail FROM read_items_r2 WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(context_id,day,digest,domain)).fetchall()
             expected=sorted((detail_payload(row) for row in rows),key=lambda r:r['entity_id'])
             if [r[0] for r in actual]!=expected: raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
         identity=ForwardFactStore._database_identity(pg)
@@ -275,38 +262,46 @@ class ReadIndex:
         if binding['engine']!='postgresql' or not schema_binding_matches(root,binding):
             raise ValueError('READ_INDEX_SCHEMA_MISMATCH')
         if (binding['head_token'],binding['T0'])!=(context_id,day):raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
+        self.schema='v4'
 
     def attest(self, pg):
         if ForwardFactStore._database_identity(pg)!=self.binding['database_identity']: raise ValueError('READ_INDEX_DATABASE_MISMATCH')
-        row=pg.execute('SELECT digest,contract,sealed FROM read_versions WHERE context_id=%s AND day=%s',(self.context_id,self.day)).fetchone()
+        if self.binding['schema']!='v4':
+            mapped=pg.execute("""SELECT digest,contract,domain_counts,verification FROM read_index_migration_map_r1
+                WHERE generation='R2' AND source_schema=%s AND context_id=%s AND day=%s""",
+                (self.binding['schema'],self.context_id,self.day)).fetchone()
+            if (not mapped or mapped[0]!=self.binding['digest'] or mapped[1]!=CONTRACT
+                    or mapped[2]!=self.binding['counts'] or mapped[3].get('status')!='VERIFIED'):
+                raise ValueError('READ_INDEX_LEGACY_VERSION_NOT_MIGRATED')
+        row=pg.execute('SELECT digest,contract,sealed FROM read_versions_r2 WHERE context_id=%s AND day=%s AND digest=%s',(self.context_id,self.day,self.binding['digest'])).fetchone()
         if row is None or row[2] is not True:raise ValueError('READ_INDEX_VERSION_UNAVAILABLE')
         if row[1]!=CONTRACT:raise ValueError('READ_INDEX_VERSION_CONTRACT_MISMATCH')
         if row[0]!=self.binding['digest']:raise ValueError('READ_INDEX_VERSION_DIGEST_MISMATCH')
 
     def response(self, path):
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE context_id=%s AND day=%s AND path=%s',(self.context_id,self.day,path)).fetchone()
+            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses_r2 WHERE context_id=%s AND day=%s AND digest=%s AND path=%s',(self.context_id,self.day,self.binding['digest'],path)).fetchone()
         if row is None: return None
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return row[0]
 
     @staticmethod
-    def _detail_row(pg, context_id, day, domain, key):
+    def _detail_row(pg, context_id, day, digest, domain, key):
         # Prefer the primary key. Combining entity, symbol and alias
         # predicates with OR prevents PostgreSQL from using the composite
         # primary-key index efficiently on the dominant detail route.
-        rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-            WHERE context_id=%s AND day=%s AND domain=%s AND entity_id=%s LIMIT 2''',
-            (context_id,day,domain,key)).fetchall()
+        rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items_r2
+            WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s AND entity_id=%s LIMIT 2''',
+            (context_id,day,digest,domain,key)).fetchall()
         if not rows:
-            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-                WHERE context_id=%s AND day=%s AND domain=%s AND upper(symbol)=upper(%s) LIMIT 2''',
-                (context_id,day,domain,key)).fetchall()
+            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items_r2
+                WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s AND upper(symbol)=upper(%s) LIMIT 2''',
+                (context_id,day,digest,domain,key)).fetchall()
         if not rows:
-            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
-                WHERE context_id=%s AND day=%s AND domain=%s AND %s=ANY(aliases) LIMIT 2''',
-                (context_id,day,domain,key)).fetchall()
+            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items_r2
+                WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s AND %s=ANY(aliases) LIMIT 2''',
+                (context_id,day,digest,domain,key)).fetchall()
         if len(rows)!=1:return None
         row=rows[0]
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')
@@ -314,24 +309,24 @@ class ReadIndex:
 
     def response_and_detail(self, path, domain, key):
         """Read the shared context and one detail with a single attested PG session."""
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            response=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE context_id=%s AND day=%s AND path=%s',
-                                (self.context_id,self.day,path)).fetchone()
-            detail=self._detail_row(pg,self.context_id,self.day,domain,key)
+            response=pg.execute('SELECT payload,payload_sha256 FROM read_responses_r2 WHERE context_id=%s AND day=%s AND digest=%s AND path=%s',
+                                (self.context_id,self.day,self.binding['digest'],path)).fetchone()
+            detail=self._detail_row(pg,self.context_id,self.day,self.binding['digest'],domain,key)
         if response is None:return None,None
         if hashlib.sha256(canonical(response[0])).hexdigest()!=response[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return response[0],detail
 
     def page(self, domain, query, *, entity=None, sector=None):
         selection,offset,limit=query_parts(domain,query,entity=entity,sector=sector)
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
             rows=pg.execute('''SELECT entity_id,symbol,display_name,aliases,search_parts,
                                       sector_ids,values_json,summary
-                                 FROM read_items
-                                WHERE context_id=%s AND day=%s AND domain=%s''',
-                            (self.context_id,self.day,domain)).fetchall()
+                                 FROM read_items_r2
+                                WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s''',
+                            (self.context_id,self.day,self.binding['digest'],domain)).fetchall()
         matched=[]
         for entity_id,symbol,name,aliases,search_parts,sector_ids,values_json,summary in rows:
             if selection['needle'] and not any(selection['needle'] in str(part).casefold() for part in search_parts):continue
@@ -361,19 +356,19 @@ class ReadIndex:
                     offset=offset,limit=limit,has_next=offset+limit<total,domain=domain,gap=None)
 
     def detail(self, domain, key):
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            return self._detail_row(pg,self.context_id,self.day,domain,key)
+            return self._detail_row(pg,self.context_id,self.day,self.binding['digest'],domain,key)
 
     def display_identities(self, domain, entity_ids):
         """Bounded identity/name join for already selected event or ladder rows."""
         keys=sorted({str(v) for v in entity_ids if v})
         if not keys:return {}
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
             rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
-                FROM read_items WHERE context_id=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
-                (self.context_id,self.day,domain,keys)).fetchall()
+                FROM read_items_r2 WHERE context_id=%s AND day=%s AND digest=%s AND domain=%s AND entity_id=ANY(%s)''',
+                (self.context_id,self.day,self.binding['digest'],domain,keys)).fetchall()
         result={}
         for entity_id,symbol,name,detail,digest in rows:
             if hashlib.sha256(canonical(detail)).hexdigest()!=digest:raise ValueError('READ_INDEX_DETAIL_DIGEST_MISMATCH')

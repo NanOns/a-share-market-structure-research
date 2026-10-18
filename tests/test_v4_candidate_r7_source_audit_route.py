@@ -15,7 +15,7 @@ def test_pg_candidate_cohort_includes_trade_date_scoped_r7_audit(monkeypatch, tm
     monkeypatch.setattr(store_module.ForwardR7Store, 'read_candidate_source_audit', classmethod(audit))
 
     class Reader:
-        pg_candidate_schema = 'v4_research_candidate'
+        is_pg_candidate = True
         context = dict(source_mode='PG_CANDIDATE_SNAPSHOT', accepted_trade_date='2026-09-30')
         def query(self, route, query):
             return dict(status='READY', items=[dict(entity_id='candidate-1')], total=1)

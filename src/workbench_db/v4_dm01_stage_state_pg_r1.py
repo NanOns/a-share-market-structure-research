@@ -86,6 +86,7 @@ def _store(root) -> ForwardFactStore:
     store.root = project_root
     store.folder = folder
     store.schema = v4_native.workspace_schema(folder, "forward")
+    store.workspace_namespace = ForwardFactStore.namespace_for(folder)
     store.dsn = v4_native.configured_dsn()
     with v4_native.connection(store.schema, dsn=store.dsn) as pg:
         relation = pg.execute("SELECT to_regclass('forward_facts')").fetchone()
@@ -115,6 +116,7 @@ def _read_fact(root, binding: dict) -> dict:
     if (descriptor.get("contract_id") != "V4_FORWARD_PG_FACT_STORE_R1"
             or descriptor.get("engine") != "postgresql"
             or descriptor.get("schema") != schema
+            or descriptor.get("workspace_namespace") != ForwardFactStore.namespace_for(folder)
             or descriptor.get("kind") != KIND
             or descriptor.get("database_identity") != _expected_identity()):
         raise ValueError("DM01_STAGE_STATE_DESCRIPTOR_IDENTITY_MISMATCH")
@@ -123,8 +125,8 @@ def _read_fact(root, binding: dict) -> dict:
         if ForwardFactStore._database_identity(pg) != descriptor["database_identity"]:
             raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
         row = pg.execute(
-            "SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
-            (descriptor["kind"], descriptor["fact_key"]),
+            "SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+            (descriptor["workspace_namespace"],descriptor["kind"], descriptor["fact_key"]),
         ).fetchone()
     if (row is None or row[1] != descriptor.get("payload_sha256")
             or digest(row[0].encode("utf-8")) != descriptor["payload_sha256"]):
@@ -283,17 +285,18 @@ def read_unique_stage(root, *, trade_date: str, stage: str) -> dict:
     if project_root.drive.upper() != "G:" or not folder.is_relative_to(project_root):
         raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
     schema = v4_native.workspace_schema(folder, "forward")
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     expected = _expected_identity()
     with v4_native.connection(schema, read_only=True, dsn=v4_native.configured_reader_dsn()) as pg:
         if ForwardFactStore._database_identity(pg) != expected:
             raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
         rows = pg.execute(
             """SELECT payload,payload_sha256 FROM forward_facts
-                 WHERE kind=%s
+                 WHERE workspace_namespace=%s AND kind=%s
                    AND payload::jsonb->>'trade_date'=%s
                    AND payload::jsonb->>'stage'=%s
                  ORDER BY fact_key COLLATE \"C\" LIMIT 2""",
-            (KIND, day, stage),
+            (workspace_namespace,KIND, day, stage),
         ).fetchall()
     if len(rows) != 1:
         raise ValueError("DM01_STAGE_STATE_NOT_UNIQUE")
@@ -318,16 +321,17 @@ def read_latest_stage(root, *, stage: str) -> dict:
     if project_root.drive.upper() != "G:" or not folder.is_relative_to(project_root):
         raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
     schema = v4_native.workspace_schema(folder, "forward")
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     expected = _expected_identity()
     with v4_native.connection(schema, read_only=True, dsn=v4_native.configured_reader_dsn()) as pg:
         if ForwardFactStore._database_identity(pg) != expected:
             raise ValueError("DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH")
         rows = pg.execute(
             """SELECT payload,payload_sha256 FROM forward_facts
-                 WHERE kind=%s AND payload::jsonb->>'stage'=%s
+                 WHERE workspace_namespace=%s AND kind=%s AND payload::jsonb->>'stage'=%s
                  ORDER BY payload::jsonb->>'trade_date' DESC, fact_key COLLATE \"C\"
                  LIMIT 2""",
-            (KIND, stage),
+            (workspace_namespace,KIND, stage),
         ).fetchall()
     if not rows:
         raise ValueError("DM01_STAGE_STATE_NOT_FOUND")

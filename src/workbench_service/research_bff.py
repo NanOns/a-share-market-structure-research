@@ -23,11 +23,11 @@ class ResearchBFF:
 
     def current(self):
         with self.lock:
-            schema=os.environ.get('V4_PG_RESEARCH_CANDIDATE_SCHEMA')
-            if not schema:raise SourceInvalid('PG_CANDIDATE_SCHEMA_REQUIRED_NO_WORKSPACE_AUTHORITY')
-            if self.reader is None or schema!=self.pointer_digest:
-                self.reader=ProductionV4ResearchReader(self.root,pg_candidate_schema=schema)
-                self.pointer_digest=schema
+            release_id=os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID')
+            if not release_id:raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_REQUIRED')
+            if self.reader is None or release_id!=self.pointer_digest:
+                self.reader=ProductionV4ResearchReader(self.root,candidate_release_id=release_id)
+                self.pointer_digest=release_id
             return self.reader
 
     def allowed(self,host):
@@ -65,7 +65,7 @@ class ResearchBFF:
             if not parts:return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             name=parts[0]
             if name=='context':
-                if getattr(r,'pg_candidate_schema',None):
+                if getattr(r,'is_pg_candidate',False):
                     control=dict(status='SNAPSHOT_ONLY',next_completed_session=None,source_requests=0,
                         data_preserved=True,scope='PG_SNAPSHOT_ONLY_NO_DAILY_WORKER_STATUS',
                         accepted_input_date=r.context['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
@@ -80,7 +80,7 @@ class ResearchBFF:
                 # PG transaction as the rest of the V4 research API. It is a
                 # read projection only; it does not enroll a formal cohort or
                 # claim PIT/production authority.
-                if not getattr(r,'pg_candidate_schema',None):
+                if not getattr(r,'is_pg_candidate',False):
                     return 409,r.envelope(status='BLOCKED',code='PG_CANDIDATE_SNAPSHOT_REQUIRED',items=[])
                 payload=r.query('forward',query)
                 try:

@@ -146,10 +146,9 @@ def table_manifest(pg, schema, storage_kind='snapshot'):
 
 class Builder(LegacyBuilder):
     def __init__(self, root, release_id, *, storage_kind='snapshot'):
-        # A versioned namespace never upgrades an existing R1 schema in place.
         if storage_kind not in EXTRA_TABLES:raise ValueError('PG_SNAPSHOT_STORAGE_CONTRACT_REQUIRED')
         self.storage_kind=storage_kind
-        super().__init__(root, CONTRACT + ':' + storage_kind + ':' + release_id)
+        super().__init__(root, release_id)
 
     def seal(self, meta, *, source_binding=None, consumer_binding=None):
         source_binding = source_binding or dict(kind='MANIFEST_BOUND_SOURCES',
@@ -157,23 +156,8 @@ class Builder(LegacyBuilder):
         consumer_binding=consumer_binding or {}
         if set(consumer_binding)!=EXTRA_FIELDS[self.storage_kind]:
             raise ValueError('PG_SNAPSHOT_CONSUMER_BINDING_REQUIRED')
-        manifest = dict(contract_id=DIGEST_CONTRACT, storage_kind=self.storage_kind, metadata=meta,
-                        metadata_sha256=digest(meta), source_binding=source_binding,
-                        tables=table_manifest(self.pg, self.schema, self.storage_kind))
-        identity = database_identity(self.pg)
-        descriptor = dict(contract_id=CONTRACT, engine='postgresql', schema=self.schema,
-                          release_id=meta['release_id'], T0=meta['context']['accepted_trade_date'],
-                          content_manifest=manifest, database_identity=identity)
-        descriptor.update(consumer_binding)
-        descriptor['logical_digest'] = digest(descriptor)
-        self.pg.execute('CREATE TABLE snapshot_identity(digest text PRIMARY KEY,contract_id text NOT NULL,descriptor text NOT NULL)')
-        self.pg.execute('INSERT INTO snapshot_identity VALUES(%s,%s,%s)',
-                        (descriptor['logical_digest'], CONTRACT, canonical(descriptor).decode()))
-        self.pg.execute("CREATE FUNCTION reject_snapshot_mutation() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'IMMUTABLE_RESEARCH_SNAPSHOT'; END $$")
-        for table in (*TABLES, *EXTRA_TABLES[self.storage_kind], 'snapshot_identity'):
-            self.pg.execute(sql.SQL('CREATE TRIGGER immutable_snapshot BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE ON {} FOR EACH STATEMENT EXECUTE FUNCTION reject_snapshot_mutation()').format(sql.Identifier(table)))
-        verify(self.pg, descriptor)  # independent rescan before commit
-        return descriptor
+        return self.seal_release(meta,storage_kind=self.storage_kind,source_binding=source_binding,
+                                 consumer_binding=consumer_binding)
 
 
 def verify(pg, descriptor):
@@ -197,6 +181,21 @@ def verify(pg, descriptor):
 
 @contextmanager
 def read(descriptor):
+    if descriptor.get('contract_id')=='V4_PG_RESEARCH_SNAPSHOT_R3_SINGLE_SCHEMA':
+        from .v4_native import connection
+        from .v4_research_release_pg_r1 import load_release,ReleaseReadTransaction
+        with connection('v4',read_only=True) as pg:
+            current,_,_=load_release(pg,descriptor.get('release_id'),verify_content=True)
+            if current!=descriptor:raise ValueError('PG_SNAPSHOT_R3_DESCRIPTOR_MISMATCH')
+            yield ReleaseReadTransaction(pg,descriptor['release_id'])
+        return
+    if descriptor.get('contract_id')==CONTRACT:
+        from .v4_native import connection
+        from .v4_research_release_pg_r1 import resolve_legacy_release,ReleaseReadTransaction
+        with connection('v4',read_only=True) as pg:
+            current=resolve_legacy_release(pg,descriptor,verify_content=True)
+            yield ReleaseReadTransaction(pg,current['release_id'])
+        return
     if descriptor.get('contract_id') != CONTRACT:
         raise ValueError('PG_SNAPSHOT_R2_BINDING_REQUIRED_NO_FALLBACK')
     with connection(descriptor['schema'], read_only=True) as pg:

@@ -24,6 +24,31 @@ def test_r43_json_source_uses_only_pg_ingress(monkeypatch, tmp_path):
     assert calls == [(tmp_path, "config/authority.json")]
 
 
+@pytest.mark.parametrize("module_name", [
+    "workbench_analysis.r43_owner_replay",
+    "workbench_analysis.corrected_owner_replay",
+])
+def test_owner_protected_state_rechecks_pg_bindings_without_workspace_reads(monkeypatch, tmp_path, module_name):
+    import hashlib
+    import importlib
+    from pathlib import Path
+
+    module=importlib.import_module(module_name)
+    authority=b'{"contract_id":"JOINT_AUTHORITY"}'
+    authority_sha=hashlib.sha256(authority).hexdigest()
+    head_sha="a"*64
+    monkeypatch.setattr(module,"checked_pg",lambda _root,binding: authority if binding["path"]=="config/v4_joint_release_authority_v1.json" else b"")
+    monkeypatch.setattr(
+        "workbench_db.dm01_data_accepted_head_pg_r1.read_current",
+        lambda _root: {"head_sha256":head_sha},
+    )
+    monkeypatch.setattr(Path,"read_bytes",lambda *_: (_ for _ in ()).throw(AssertionError("workspace read")))
+
+    protected={"config/v4_joint_release_authority_v1.json":authority_sha,
+               "data/v4/V4_DATA_ACCEPTED_HEAD.json":head_sha}
+    assert module.protected_state_unchanged(tmp_path,protected)
+
+
 def test_corrected_owner_exact_input_never_admits_missing_file(monkeypatch, tmp_path):
     from workbench_analysis import corrected_owner_replay
 
@@ -98,54 +123,30 @@ def test_corrected_owner_candidate_json_is_registered_in_pg(monkeypatch, tmp_pat
     assert json.loads(ingested[0][2]) == {"candidate": "DEV"}
 
 
-def test_corrected_owner_json_ambiguity_selects_latest_dev_revision(monkeypatch, tmp_path):
+def test_corrected_owner_json_ambiguity_fails_closed_without_exact_identity(monkeypatch, tmp_path):
     from workbench_analysis import corrected_owner_replay
 
     def ambiguous(*_args, **_kwargs):
         raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE")
 
-    selected = []
     monkeypatch.setattr(
         "workbench_db.v4_historical_source_ingress_pg_r1.read_path", ambiguous
     )
-    monkeypatch.setattr(
-        "workbench_db.v4_historical_source_ingress_pg_r1.read_latest_candidate_path",
-        lambda root, path, *, source_origin: selected.append((root, path, source_origin))
-        or {"value": {"candidate": "LATEST_DEV"}},
-    )
-
-    assert corrected_owner_replay.pg_json_source(tmp_path, "data/candidate.json") == {
-        "candidate": "LATEST_DEV"
-    }
-    assert selected == [
-        (tmp_path, "data/candidate.json", (
-            "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT", "V4_R43_OWNER_CANDIDATE_OUTPUT"))
-    ]
+    with pytest.raises(ValueError, match="PG_JSON_SOURCE_EXACT_BINDING_REQUIRED"):
+        corrected_owner_replay.pg_json_source(tmp_path, "data/candidate.json")
 
 
-def test_r43_candidate_binding_ambiguity_selects_latest_dev_revision(monkeypatch, tmp_path):
+def test_r43_candidate_binding_ambiguity_fails_closed_without_exact_identity(monkeypatch, tmp_path):
     from workbench_analysis import r43_owner_replay
 
     def ambiguous(*_args, **_kwargs):
         raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE")
 
-    selected = []
     monkeypatch.setattr(
         "workbench_db.v4_historical_source_ingress_pg_r1.read_path", ambiguous
     )
-    monkeypatch.setattr(
-        "workbench_db.v4_historical_source_ingress_pg_r1.read_latest_candidate_path",
-        lambda root, path, *, source_origin: selected.append((root, path, source_origin))
-        or {"record": {"source_path": path, "source_sha256": "b" * 64, "source_bytes": 12}},
-    )
-
-    assert r43_owner_replay.pg_source_binding(tmp_path, "data/candidate.json") == {
-        "path": "data/candidate.json", "sha256": "b" * 64, "bytes": 12
-    }
-    assert selected == [
-        (tmp_path, "data/candidate.json", (
-            "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT", "V4_R43_OWNER_CANDIDATE_OUTPUT"))
-    ]
+    with pytest.raises(ValueError, match="PG_SOURCE_EXACT_BINDING_REQUIRED"):
+        r43_owner_replay.pg_source_binding(tmp_path, "data/candidate.json")
 
 
 def test_corrected_profile_history_is_consumed_in_core_order():

@@ -128,7 +128,7 @@ def _trust_test_authority(tmp_path, monkeypatch):
             "capabilities": ["ACCEPT_SOURCE_PACKAGE", "AS_RECORDED", "PIT_ELIGIBLE"],
         }},
     }))
-    monkeypatch.setattr(ingest, "ACCEPTANCE_AUTHORITY_REGISTRY", registry)
+    monkeypatch.setattr(ingest, "_acceptance_authority_registry", lambda pg=None: json.loads(registry.read_bytes()))
     return private
 
 
@@ -145,7 +145,9 @@ def test_actual_style_freeze_stays_diagnostic_without_accepted_pit_receipt(tmp_p
     assert {row["source_key"] for row in plan["source_facts"]} == {"tdx", "native_baostock", "runtime_manifest", "security_universe"}
 
 
-def test_self_hashed_receipt_cannot_create_acceptance_authority(tmp_path):
+def test_self_hashed_receipt_cannot_create_acceptance_authority(tmp_path, monkeypatch):
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+    monkeypatch.setattr(ingest, "_acceptance_authority_registry", lambda pg=None: {})
     day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=True)
     receipt = _receipt(day, freeze, readiness)
     plan = build_source_ingest_plan(

@@ -32,11 +32,12 @@ def get(root, owner_kind, token, day):
     root = Path(root).resolve()
     folder = root / FOLDER
     schema = workspace_schema(folder, 'forward')
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     fact_key = _key(owner_kind, token, day)
     with connection(schema, read_only=True) as pg:
         row = pg.execute(
-            'SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
-            (KIND, fact_key),
+            'SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s',
+            (workspace_namespace,KIND, fact_key),
         ).fetchone()
     if row is None:
         raise ValueError('OPERATIONAL_OWNER_BINDING_REGISTRY_NOT_FOUND')

@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from pathlib import PurePosixPath
 from .v4_native import connection
-from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest,canonical
+from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest,canonical,resolve_migrated_legacy_fact
 
 OWNER='V4_OPERATIONAL_OWNER_NATIVE_PG_CLOSEOUT_R1'
 FOLDER='data/v4/operational_owner_pg_closeout_r1'
@@ -23,7 +23,7 @@ def read_schema(root,binding,descriptor,workspace_root=None):
             or binding.get('pg_descriptor')!=descriptor):
         raise ValueError('PG_OPERATIONAL_OWNER_INLINE_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
     schema=descriptor.get('schema')
-    if not isinstance(schema,str) or not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema):
+    if not isinstance(schema,str) or (schema!='v4' and not re.fullmatch(r'v4_(?:forward|r8_forward)_[a-f0-9]{16}',schema)):
         raise ValueError('INVALID_V4_PG_SCHEMA')
     return schema
 
@@ -87,14 +87,17 @@ def validate_source_binding(source_binding):
 def read(root,binding,head_token,day,domain,source_binding,*,workspace_root=None):
     descriptor=descriptor_metadata(root,binding)
     schema=read_schema(root,binding,descriptor,workspace_root)
-    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
+    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('kind'))!=(CONTRACT,'postgresql',domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+    namespace=descriptor.get('workspace_namespace')
+    if schema!='v4':namespace=resolve_migrated_legacy_fact(schema,domain,descriptor['fact_key'],descriptor['payload_sha256'])
+    elif namespace is None:raise ValueError('PG_OPERATIONAL_OWNER_NAMESPACE_REQUIRED')
     validate_source_binding(source_binding)
-    with connection(schema,read_only=True) as pg:
+    with connection('v4',read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
             raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
-        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
-                       (domain,descriptor['fact_key'])).fetchone()
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s',
+                       (namespace,domain,descriptor['fact_key'])).fetchone()
     if row is None or row[1]!=descriptor['payload_sha256'] or digest(row[0].encode())!=row[1]:
         raise ValueError('PG_OPERATIONAL_OWNER_PAYLOAD_DIGEST_MISMATCH')
     payload=json.loads(row[0])
@@ -108,13 +111,16 @@ def read_authority_manifest(root,binding,*,workspace_root=None):
     """Read the authority value from PG; the inline descriptor is only a locator."""
     descriptor=descriptor_metadata(root,binding)
     schema=read_schema(root,binding,descriptor,workspace_root)
-    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,'authority_manifest'):
+    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('kind'))!=(CONTRACT,'postgresql','authority_manifest'):
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_DESCRIPTOR_REQUIRED_NO_FILE_FALLBACK')
-    with connection(schema,read_only=True) as pg:
+    namespace=descriptor.get('workspace_namespace')
+    if schema!='v4':namespace=resolve_migrated_legacy_fact(schema,'authority_manifest',descriptor['fact_key'],descriptor['payload_sha256'])
+    elif namespace is None:raise ValueError('PG_OPERATIONAL_OWNER_NAMESPACE_REQUIRED')
+    with connection('v4',read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
             raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
-        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s',
-                       ('authority_manifest',descriptor['fact_key'])).fetchone()
+        row=pg.execute('SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s',
+                       (namespace,'authority_manifest',descriptor['fact_key'])).fetchone()
     if row is None or row[1]!=descriptor.get('payload_sha256') or digest(row[0].encode())!=row[1]:
         raise ValueError('PG_OPERATIONAL_OWNER_AUTHORITY_PAYLOAD_DIGEST_MISMATCH')
     try:
@@ -155,13 +161,16 @@ def attest_cached(root,binding,domain,source_binding,*,workspace_root=None):
     """Rehash live PG bytes before reusing a previously fully verified owner."""
     descriptor=descriptor_metadata(root,binding)
     schema=read_schema(root,binding,descriptor,workspace_root)
-    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('schema'),descriptor.get('kind'))!=(CONTRACT,'postgresql',schema,domain):
+    if (descriptor.get('contract_id'),descriptor.get('engine'),descriptor.get('kind'))!=(CONTRACT,'postgresql',domain):
         raise ValueError('PG_OPERATIONAL_OWNER_DESCRIPTOR_REQUIRED_NO_FALLBACK')
+    namespace=descriptor.get('workspace_namespace')
+    if schema!='v4':namespace=resolve_migrated_legacy_fact(schema,domain,descriptor['fact_key'],descriptor['payload_sha256'])
+    elif namespace is None:raise ValueError('PG_OPERATIONAL_OWNER_NAMESPACE_REQUIRED')
     validate_source_binding(source_binding)
-    with connection(schema,read_only=True) as pg:
+    with connection('v4',read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=descriptor.get('database_identity'):
             raise ValueError('PG_OPERATIONAL_OWNER_DATABASE_IDENTITY_MISMATCH')
-        row=pg.execute("SELECT payload_sha256,encode(sha256(convert_to(payload,'UTF8')),'hex') FROM forward_facts WHERE kind=%s AND fact_key=%s",
-                       (domain,descriptor['fact_key'])).fetchone()
+        row=pg.execute("SELECT payload_sha256,encode(sha256(convert_to(payload,'UTF8')),'hex') FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+                       (namespace,domain,descriptor['fact_key'])).fetchone()
     if row is None or row!=(descriptor['payload_sha256'],descriptor['payload_sha256']):
         raise ValueError('PG_OPERATIONAL_OWNER_PAYLOAD_DIGEST_MISMATCH')

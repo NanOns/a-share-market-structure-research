@@ -19,7 +19,7 @@ class ReadConnection:
 
     def execute(self, sql, params=()):
         self.statements.append((sql, params))
-        if "FROM update_jobs j LEFT JOIN update_job_progress" in sql:
+        if "FROM jobs_update_jobs_r1 j LEFT JOIN jobs_update_job_progress_r1" in sql:
             return Cursor(self.progress)
         if "MAX(d.trade_date)" in sql:
             return Cursor(self.accepted)
@@ -34,7 +34,7 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
 
     @contextmanager
     def read_connection(schema, *, dsn, read_only, row_factory):
-        assert schema == "v4_jobs_test"
+        assert schema == "v4"
         assert dsn == "reader-dsn-placeholder"
         assert read_only is True
         yield pg
@@ -42,7 +42,7 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
     monkeypatch.setattr(daily_pg, "connection", read_connection)
     monkeypatch.setattr(daily_pg, "configured_reader_dsn", lambda: "reader-dsn-placeholder")
     jobs = object.__new__(daily_pg.DailyJobs)
-    jobs.schema = "v4_jobs_test"
+    jobs.schema = "v4"
     jobs.dsn = "reader-dsn-placeholder"
     jobs.root = tmp_path
     jobs.worker_error = None
@@ -71,9 +71,9 @@ def test_dm01_status_catalog_preflight_is_select_only_and_covers_heartbeat():
     assert statements[0] == "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"
     assert statements[-1] == "COMMIT"
     assert all(statement.startswith(("SELECT ", "WITH ")) for statement in statements[1:-1])
-    assert "CURRENT_SCHEMA()" in sql.upper()
-    assert "('UPDATE_JOB_PROGRESS','HEARTBEAT_AT')" in sql.upper()
-    assert "UPDATE_JOB_DAYS_PUBLISHED_TRADE_DATE" in sql.upper()
+    assert "'V4' AS JOBS_SCHEMA" in sql.upper()
+    assert "('JOBS_UPDATE_JOB_PROGRESS_R1','HEARTBEAT_AT')" in sql.upper()
+    assert "JOBS_UPDATE_JOB_DAYS_PUBLISHED_TRADE_DATE_R1" in sql.upper()
 
 
 def test_dm01_pg_progress_upsert_persists_real_heartbeat(monkeypatch, tmp_path):
@@ -88,12 +88,12 @@ def test_dm01_pg_progress_upsert_persists_real_heartbeat(monkeypatch, tmp_path):
 
     @contextmanager
     def write_connection(schema, *, dsn, row_factory):
-        assert schema == "v4_jobs_test"
+        assert schema == "v4"
         yield pg
 
     monkeypatch.setattr(daily_pg, "connection", write_connection)
     jobs = object.__new__(daily_pg.DailyJobs)
-    jobs.schema = "v4_jobs_test"
+    jobs.schema = "v4"
     jobs.dsn = "writer-dsn-placeholder"
     jobs.active_job_id = "job-1"
     jobs.lock_key = 42
@@ -191,7 +191,7 @@ def test_dm01_daily_progress_reports_no_published_receipt_as_none(monkeypatch, t
     monkeypatch.setattr(daily_pg, "connection", read_connection)
     monkeypatch.setattr(daily_pg, "configured_reader_dsn", lambda: "reader-dsn-placeholder")
     jobs = object.__new__(daily_pg.DailyJobs)
-    jobs.schema = "v4_jobs_test"
+    jobs.schema = "v4"
     jobs.dsn = "reader-dsn-placeholder"
     jobs.root = tmp_path
     jobs.worker_error = None
@@ -214,7 +214,7 @@ def test_dm01_progress_does_not_fall_back_to_writer_dsn(monkeypatch, tmp_path):
         lambda: (_ for _ in ()).throw(RuntimeError("V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK")),
     )
     jobs = object.__new__(daily_pg.DailyJobs)
-    jobs.schema = "v4_jobs_test"
+    jobs.schema = "v4"
     jobs.dsn = "writer-dsn-placeholder"
     jobs.root = tmp_path
     jobs.worker_error = None
@@ -232,11 +232,11 @@ def test_dm01_job_and_settings_reads_use_reader_dsn_and_readonly_transaction(mon
 
     class ReadDb:
         def execute(self,sql,params=()):
-            if sql=='SELECT * FROM update_jobs WHERE job_id=?':
+            if sql=='SELECT * FROM jobs_update_jobs_r1 WHERE job_id=?':
                 return RowsCursor(one={'job_id':'job-1','status':'QUEUED','through_date':'2026-10-16'})
-            if sql=='SELECT * FROM update_job_days WHERE job_id=? ORDER BY trade_date':
+            if sql=='SELECT * FROM jobs_update_job_days_r1 WHERE job_id=? ORDER BY trade_date':
                 return RowsCursor(rows=[])
-            if sql=='SELECT * FROM scheduler_policy WHERE id=1':
+            if sql=='SELECT * FROM jobs_scheduler_policy_r1 WHERE id=1':
                 return RowsCursor(one={'enabled':1,'revision':2,'updated_at':'2026-10-16T10:00:00+08:00'})
             raise AssertionError('unexpected read SQL: '+sql)
 
@@ -249,12 +249,18 @@ def test_dm01_job_and_settings_reads_use_reader_dsn_and_readonly_transaction(mon
     monkeypatch.setattr(daily_pg,'connection',connection)
     monkeypatch.setattr(daily_pg,'configured_reader_dsn',lambda:'reader-only-dsn')
     jobs=object.__new__(daily_pg.DailyJobs)
-    jobs.schema='v4_jobs_test';jobs.root=tmp_path;jobs.thread=None;jobs.policy_binding=None
+    jobs.schema='v4';jobs.root=tmp_path;jobs.thread=None;jobs.policy_binding=None
+    jobs._load_approved_policy=lambda: (
+        {'contract_id':'READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1','version':'1.1.0',
+         'historical_PIT_permission':False,'automated_trading_permission':False,
+         'algorithm_upgrade_permission':False,'publication_ready':False},
+        {'contract_id':'READ_ONLY_OPERATIONAL_DAILY_RELEASE_POLICY_V1_1','version':'1.1.0'},
+    )
 
     assert jobs.job('job-1')['status']=='QUEUED'
     settings=jobs.settings()
     assert settings['auto_enabled'] is True and settings['revision']==2
-    assert opened==[('v4_jobs_test','reader-only-dsn',True)]*2
+    assert opened==[('v4','reader-only-dsn',True)]*2
 
 
 def test_dm01_readonly_status_client_needs_no_writer_and_cannot_start_work(monkeypatch, tmp_path):
@@ -262,7 +268,7 @@ def test_dm01_readonly_status_client_needs_no_writer_and_cannot_start_work(monke
     pg=ReadConnection(None,None)
     @contextmanager
     def connection(schema,*,dsn,read_only,row_factory):
-        assert schema.startswith('v4_jobs_') and dsn=='reader-only-dsn' and read_only is True
+        assert schema=='v4' and dsn=='reader-only-dsn' and read_only is True
         yield pg
     monkeypatch.setattr(daily_pg,'connection',connection)
     monkeypatch.setattr(daily_pg,'configured_reader_dsn',lambda:'reader-only-dsn')

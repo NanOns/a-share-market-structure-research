@@ -537,7 +537,7 @@ def test_core_rows_must_reference_a_receipted_source_revision():
         )
 
 
-def test_core_writer_never_uses_reader_dsn_or_touches_database_without_writer_dsn(monkeypatch):
+def test_core_writer_prefers_explicit_writer_dsn_and_checks_readonly_before_writing(monkeypatch):
     receipt, rows, source_sha, producer_sha = _input()
     plan = build_daily_core_result_plan(
         publication_id="pub-20261016-r1", publication_revision=1,
@@ -545,15 +545,17 @@ def test_core_writer_never_uses_reader_dsn_or_touches_database_without_writer_ds
         producer_contract_id="V4_OPERATIONAL_DAILY_OWNER_R1", producer_sha256=producer_sha,
         producer_receipt=receipt, rows=rows,
     )
-    monkeypatch.delenv("V4_NATIVE_PG_DSN", raising=False)
+    monkeypatch.setenv("V4_NATIVE_PG_DSN", "postgresql://writer@example.invalid/market_research")
     monkeypatch.setenv("WORKBENCH_PG_DSN", "postgresql://reader@example.invalid/market_research")
     class PG:
-        touched = False
-        def execute(self, *args, **kwargs): self.touched = True
+        def __init__(self): self.queries = []
+        def execute(self, query, *args, **kwargs):
+            self.queries.append(query)
+            return type("Result", (), {"fetchone": lambda self: ("on",)})()
     pg = PG()
-    with pytest.raises(CoreResultError, match="CORE_RESULT_WRITER_DSN_REQUIRED_NO_READER_FALLBACK"):
+    with pytest.raises(CoreResultError, match="CORE_RESULT_WRITE_TRANSACTION_MUST_BE_WRITABLE"):
         persist_daily_core_result(pg, plan)
-    assert pg.touched is False
+    assert pg.queries == ["SHOW transaction_read_only"]
 
 
 def test_core_writer_rejects_read_only_transaction_before_any_write(monkeypatch):

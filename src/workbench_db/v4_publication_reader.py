@@ -77,6 +77,10 @@ def readonly_connection(*, dsn: str | None = None):
         pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         pg.execute("SET LOCAL statement_timeout='30s'")
         pg.execute("SET LOCAL lock_timeout='5s'")
+        # The single V4 business schema is the explicit lookup scope for every
+        # nested reader sharing this transaction; never inherit public/default
+        # search_path state from the PostgreSQL role.
+        pg.execute("SET LOCAL search_path TO v4, pg_catalog")
     except Exception as exc:
         pg.close()
         code = getattr(exc, "sqlstate", None)

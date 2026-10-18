@@ -57,15 +57,15 @@ class _Adapter:
                 "database_identity": {"database": "market_research", "database_oid": 16384,
                                       "host": "127.0.0.1", "port": 5432},
                 "owner_schemas": {
-                    "research_priority": "v4_research_priority_aaaaaaaaaaaaaaaa",
-                    "operational_risk": "v4_operational_risk_aaaaaaaaaaaaaaaa",
-                    "sector_lifecycle": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa",
+                    "research_priority": "v4",
+                    "operational_risk": "v4",
+                    "sector_lifecycle": "v4",
                 },
             },
             "module_results": {
-                "research_priority": {"owner_schema": "v4_research_priority_aaaaaaaaaaaaaaaa"},
-                "operational_risk": {"owner_schema": "v4_operational_risk_aaaaaaaaaaaaaaaa"},
-                "sector_lifecycle": {"owner_schema": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa"},
+                "research_priority": {"owner_schema": "v4"},
+                "operational_risk": {"owner_schema": "v4"},
+                "sector_lifecycle": {"owner_schema": "v4"},
             },
         }}
 
@@ -122,6 +122,7 @@ def test_current_api_explicit_pg_candidate_http_and_no_file_fallback(monkeypatch
             assert body["workspace_identity"]["contract_id"] == "V4_PG_WORKSPACE_NAMESPACE_ID_R1"
             assert body["workspace_identity"]["purpose"] == "publication"
             assert body["workspace_mapping"]["model_namespace_id"] == "workspace-main"
+            assert set(body["workspace_mapping"]["owner_schemas"].values()) == {"v4"}
             proof=body["context"]["contracts"]["V4_PUBLICATION_TEST_CONTRACT"]
             assert proof["publication_id"] == body["context"]["publication_id"]
             assert proof["trade_date"] == body["context"]["trade_date"]
@@ -218,7 +219,7 @@ def test_candidate_server_factory_requires_explicit_database_identity(monkeypatc
     }
 
 
-def test_candidate_server_resolves_research_schema_through_workspace_alias(monkeypatch, tmp_path):
+def test_candidate_server_binds_explicit_release_id_on_development_port(monkeypatch, tmp_path):
     calls = {}
 
     class _Server:
@@ -230,19 +231,17 @@ def test_candidate_server_resolves_research_schema_through_workspace_alias(monke
             calls["served"] = True
 
     monkeypatch.setattr(v4_server, "ThreadingHTTPServer", _Server)
-    from workbench_db import v4_native
-    monkeypatch.setattr(v4_native, "workspace_schema", lambda root, purpose: "v4_research_stable")
     monkeypatch.setattr(v4_server, "make_v4_handler", lambda *args, **kwargs: (args, kwargs))
 
     adapter = _Adapter()
-    v4_server.serve_v4_candidate(tmp_path, adapter)
+    v4_server.serve_v4_candidate(tmp_path, adapter, candidate_release_id='a'*32)
 
     assert calls["address"] == ("127.0.0.1", 28766)
     args, kwargs = calls["handler"]
     assert args[0] == tmp_path
     assert args[1] is adapter
     assert kwargs["allow_pg_candidate"] is True
-    assert kwargs["pg_research_candidate_schema"] == "v4_research_stable"
+    assert kwargs["pg_candidate_release_id"] == 'a'*32
     assert calls["served"] is True
 
 

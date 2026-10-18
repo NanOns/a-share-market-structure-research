@@ -44,10 +44,11 @@ def read_latest(root: str | Path) -> dict[str, Any]:
     project = Path(root).resolve()
     folder = (project / FOLDER).resolve()
     schema = v4_native.workspace_schema(folder, "forward")
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     dsn = v4_native.configured_reader_dsn()
     with v4_native.connection(schema, dsn=dsn, read_only=True) as pg:
-        rows = pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s ORDER BY ordinal DESC LIMIT 1",
-                          (KIND,)).fetchall()
+        rows = pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s ORDER BY ordinal DESC LIMIT 1",
+                          (workspace_namespace,KIND,)).fetchall()
         identity = ForwardFactStore._database_identity(pg)
     if len(rows) != 1:
         raise ValueError("STARTUP_ATTESTATION_PG_NOT_FOUND")

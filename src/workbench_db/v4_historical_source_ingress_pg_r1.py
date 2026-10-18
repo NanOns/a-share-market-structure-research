@@ -17,7 +17,8 @@ import psycopg
 from psycopg import sql
 
 from . import v4_native
-from .v4_forward_pg_r1 import ForwardFactStore, canonical, digest
+from .v4_forward_pg_r1 import (ForwardFactStore, canonical, digest,
+                               )
 
 CONTRACT = "V4_HISTORICAL_SOURCE_INGRESS_PG_R1"
 VERSION = "1.1.0"
@@ -261,6 +262,7 @@ def ingest_package_bytes(root: str | Path, source_path: str, raw: bytes, *,
     target=ForwardFactStore.__new__(ForwardFactStore)
     target.root=project_root;target.folder=folder
     target.schema=v4_native.workspace_schema(folder,"forward")
+    target.workspace_namespace=ForwardFactStore.namespace_for(folder)
     target.dsn=v4_native.configured_dsn()
     target.database_identity=None
     with v4_native.connection(target.schema,dsn=target.dsn) as pg:
@@ -281,11 +283,11 @@ def ingest_package_bytes(root: str | Path, source_path: str, raw: bytes, *,
             key=digest(canonical({"contract_id":PACKAGE_CONTRACT,"source_id":source_id,
                 "source_sha256":sha,"chunk_index":index}))
             payload=canonical(record);payload_sha=digest(payload)
-            pg.execute("INSERT INTO forward_facts(kind,fact_key,payload,payload_sha256,source_sha256) "
-                "VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
-                (PACKAGE_CHUNK_KIND,key,payload.decode("utf-8"),payload_sha,sha))
-            existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
-                (PACKAGE_CHUNK_KIND,key)).fetchone()
+            pg.execute("INSERT INTO forward_facts(workspace_namespace,kind,fact_key,payload,payload_sha256,source_sha256) "
+                "VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+                (target.workspace_namespace,PACKAGE_CHUNK_KIND,key,payload.decode("utf-8"),payload_sha,sha))
+            existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+                (target.workspace_namespace,PACKAGE_CHUNK_KIND,key)).fetchone()
             if existing!=(payload.decode("utf-8"),payload_sha):
                 raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_CONFLICT")
             chunk_refs.append({"fact_key":key,"payload_sha256":payload_sha,
@@ -297,11 +299,11 @@ def ingest_package_bytes(root: str | Path, source_path: str, raw: bytes, *,
             "first_ingested_at":datetime.now(timezone.utc).isoformat()}
         manifest_key=digest(canonical({"contract_id":PACKAGE_CONTRACT,"source_id":source_id,"source_sha256":sha}))
         manifest_payload=canonical(manifest);manifest_sha=digest(manifest_payload)
-        pg.execute("INSERT INTO forward_facts(kind,fact_key,payload,payload_sha256,source_sha256) "
-            "VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
-            (PACKAGE_KIND,manifest_key,manifest_payload.decode("utf-8"),manifest_sha,sha))
-        existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
-            (PACKAGE_KIND,manifest_key)).fetchone()
+        pg.execute("INSERT INTO forward_facts(workspace_namespace,kind,fact_key,payload,payload_sha256,source_sha256) "
+            "VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+            (target.workspace_namespace,PACKAGE_KIND,manifest_key,manifest_payload.decode("utf-8"),manifest_sha,sha))
+        existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+            (target.workspace_namespace,PACKAGE_KIND,manifest_key)).fetchone()
         if existing!=(manifest_payload.decode("utf-8"),manifest_sha):
             raise ValueError("HISTORICAL_SOURCE_PACKAGE_MANIFEST_CONFLICT")
     binding=target._binding(PACKAGE_KIND,manifest_key,manifest_sha)
@@ -315,17 +317,32 @@ def read_package_bytes(root: str | Path, source_path: str, expected_sha256: str)
     source_id=source_id_for_path(relative)
     if not isinstance(expected_sha256,str) or not re.fullmatch(r"[0-9a-f]{64}",expected_sha256):
         raise ValueError("HISTORICAL_SOURCE_PACKAGE_DIGEST_INVALID")
-    folder=(Path(project)/FOLDER).resolve();schema=v4_native.workspace_schema(folder,"forward")
+    folder=(Path(project)/FOLDER).resolve();schema='v4'
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
+    manifest_key=digest(canonical({"contract_id":PACKAGE_CONTRACT,"source_id":source_id,"source_sha256":expected_sha256}))
+    active=v4_native.current_read_snapshot()
+    if active is not None:
+        manifest_row=active.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+            (workspace_namespace,PACKAGE_KIND,manifest_key)).fetchone()
+    else:
+        with v4_native.connection('v4',dsn=v4_native.configured_reader_dsn(),read_only=True) as pg:
+            manifest_row=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s AND fact_key=%s",
+                (workspace_namespace,PACKAGE_KIND,manifest_key)).fetchone()
+    if manifest_row is None:
+        raise ValueError('HISTORICAL_SOURCE_PACKAGE_NOT_MIGRATED')
+    if not manifest_row or digest(manifest_row[0].encode('utf-8'))!=manifest_row[1]:
+        raise ValueError('HISTORICAL_SOURCE_PACKAGE_MANIFEST_DIGEST_MISMATCH')
+    manifest_probe=json.loads(manifest_row[0])
     def query(pg):
         expected={}
         try:expected=json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON","{}"))
         except ValueError as exc:raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
         identity=ForwardFactStore._database_identity(pg)
         if expected and identity!=expected:raise ValueError("HISTORICAL_SOURCE_PACKAGE_DATABASE_IDENTITY_MISMATCH")
-        rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE kind=%s "
+        rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s "
             "AND payload::jsonb->>'source_id'=%s AND payload::jsonb->>'source_sha256'=%s "
             "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
-            (PACKAGE_KIND,source_id,expected_sha256)).fetchall()
+            (workspace_namespace,PACKAGE_KIND,source_id,expected_sha256)).fetchall()
         if len(rows)!=1:
             raise ValueError("HISTORICAL_SOURCE_PACKAGE_NOT_UNIQUE" if rows else "HISTORICAL_SOURCE_PACKAGE_NOT_FOUND")
         key,payload,payload_sha=rows[0]
@@ -339,8 +356,8 @@ def read_package_bytes(root: str | Path, source_path: str, expected_sha256: str)
             raise ValueError("HISTORICAL_SOURCE_PACKAGE_MANIFEST_INVALID")
         keys=[item.get("fact_key") for item in manifest["chunks"]]
         if any(not isinstance(value,str) for value in keys):raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_LIST_INVALID")
-        chunk_rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE kind=%s "
-            "AND fact_key=ANY(%s) ORDER BY fact_key COLLATE \"C\"",(PACKAGE_CHUNK_KIND,keys)).fetchall()
+        chunk_rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s "
+            "AND fact_key=ANY(%s) ORDER BY fact_key COLLATE \"C\"",(workspace_namespace,PACKAGE_CHUNK_KIND,keys)).fetchall()
         if len(chunk_rows)!=len(keys):raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_MISSING")
         by_key={key:(payload,payload_sha) for key,payload,payload_sha in chunk_rows}
         output=bytearray()
@@ -363,7 +380,7 @@ def read_package_bytes(root: str | Path, source_path: str, expected_sha256: str)
         return {"record":manifest,"raw":raw}
     active=v4_native.current_read_snapshot()
     if active is not None:return query(active)
-    with _same_instance_read(schema) as pg:return query(pg)
+    with _same_instance_read('v4') as pg:return query(pg)
 
 
 def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
@@ -432,41 +449,56 @@ def _query(root: str | Path, *, source_id: str | None = None,
     if (source_id is None) == (source_path is None):
         raise ValueError("HISTORICAL_SOURCE_SELECTOR_REQUIRED")
     folder = (project / FOLDER).resolve()
-    schema = v4_native.workspace_schema(folder, "forward")
+    schema = 'v4'
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     expected = {}
     try:
         expected = json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", "{}"))
     except ValueError as exc:
         raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
     indexed_key=None
+    selected_id = source_id or source_id_for_path(source_path)
     if expected_sha256 is not None:
-        selected_id=source_id or source_id_for_path(source_path)
         indexed_key=digest(canonical({"contract_id":CONTRACT,"source_id":selected_id,
                                       "source_sha256":expected_sha256}))
     def query(connection):
         identity = ForwardFactStore._database_identity(connection)
         if expected and identity != expected:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH")
+        # A verified migration receipt is the durable, exact locator for rows
+        # moved into v4 from a retired physical schema. Do not recreate a
+        # workspace alias or infer a namespace from the checkout path. New
+        # ingests continue to use the current logical workspace namespace.
+        migrated = []
+        if source_path is not None:
+            receipt_rows = connection.execute(
+                "SELECT workspace_namespace FROM forward_schema_migration_map_r1 "
+                "WHERE kind=%s AND verification->>'exact_path'=%s "
+                "AND (%s::text IS NULL OR verification->>'exact_source_sha256'=%s) "
+                "AND verification->>'status'='VERIFIED' "
+                "AND target_sha256=payload_sha256 ORDER BY workspace_namespace COLLATE \"C\" LIMIT 2",
+                (KIND, source_path, expected_sha256, expected_sha256),
+            ).fetchall()
+            migrated = [row[0] for row in receipt_rows]
+        namespaces = list(dict.fromkeys([workspace_namespace, *migrated]))
         if indexed_key is not None:
-            indexed_statement=sql.SQL(
-                "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s AND fact_key=%s"
-            ).format(sql.Identifier(schema))
-            return connection.execute(indexed_statement,(KIND,indexed_key)).fetchall()
-        statement=sql.SQL(
-            "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
+            return connection.execute(
+                "SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=ANY(%s) AND kind=%s AND fact_key=%s",
+                (namespaces,KIND,indexed_key)).fetchall()
+        statement=(
+            "SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=ANY(%s) AND kind=%s "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_id'=%s) "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_path'=%s) "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_sha256'=%s) "
-            "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
-        ).format(sql.Identifier(schema))
+            "ORDER BY fact_key COLLATE \"C\" LIMIT 2")
         return connection.execute(statement,
-            (KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256)).fetchall()
+            (namespaces,KIND,source_id,source_id,source_path,source_path,expected_sha256,expected_sha256)).fetchall()
     if pg is None:
         from .v4_native import current_read_snapshot
         active=current_read_snapshot()
         if active is not None: rows=query(active)
         else:
-            with _same_instance_read(schema) as connection:rows=query(connection)
+            with _same_instance_read('v4') as connection:rows=query(connection)
     else:
         rows = query(pg)
     if len(rows) != 1:
@@ -503,45 +535,65 @@ def read_source(root: str | Path, source_id: str) -> dict[str, Any]:
 
 
 def read_latest_candidate_path(root: str | Path, source_path: str | Path, *,
-                               source_origin: str | tuple[str, ...]) -> dict[str, Any]:
-    """Resolve the latest immutable revision for an explicitly named DEV producer set."""
+                               source_origin: str | tuple[str, ...],
+                               expected_sha256: str | None = None,
+                               expected_t0: str | None = None,
+                               expected_run_id: str | None = None) -> dict[str, Any]:
+    """Resolve one exact DEV revision; never infer identity from ingest time."""
     project=_root(root);relative=Path(source_path).as_posix()
     origins=[source_origin] if isinstance(source_origin,str) else list(source_origin) if isinstance(source_origin,tuple) else []
     if (not origins or len(origins)>4 or len(set(origins))!=len(origins)
             or any(not isinstance(origin,str) or not origin.startswith('V4_') or not origin.endswith('_CANDIDATE_OUTPUT') for origin in origins)):
         raise ValueError('HISTORICAL_SOURCE_CANDIDATE_ORIGIN_INVALID')
-    folder=(Path(project)/FOLDER).resolve();schema=v4_native.workspace_schema(folder,'forward')
+    if not any(value is not None for value in (expected_sha256,expected_t0,expected_run_id)):
+        raise ValueError('HISTORICAL_SOURCE_CANDIDATE_EXACT_SELECTOR_REQUIRED')
+    if expected_sha256 is not None and not re.fullmatch(r'[0-9a-f]{64}',expected_sha256):
+        raise ValueError('HISTORICAL_SOURCE_CANDIDATE_SHA_INVALID')
+    if expected_t0 is not None and (not isinstance(expected_t0,str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}',expected_t0)):
+        raise ValueError('HISTORICAL_SOURCE_CANDIDATE_T0_INVALID')
+    if expected_run_id is not None and (not isinstance(expected_run_id,str) or not expected_run_id or len(expected_run_id)>200):
+        raise ValueError('HISTORICAL_SOURCE_CANDIDATE_RUN_ID_INVALID')
+    folder=(Path(project)/FOLDER).resolve();schema='v4'
+    workspace_namespace=ForwardFactStore.namespace_for(folder)
     def query(pg):
         expected={}
         try:expected=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
         except ValueError as exc:raise ValueError('PG_DATABASE_IDENTITY_CONFIGURATION_INVALID') from exc
         identity=ForwardFactStore._database_identity(pg)
         if expected and identity!=expected:raise ValueError('HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH')
-        rows=pg.execute(sql.SQL(
-            "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
+        rows=pg.execute(
+            "SELECT payload,payload_sha256 FROM forward_facts WHERE workspace_namespace=%s AND kind=%s "
             "AND payload::jsonb->>'source_path'=%s AND payload::jsonb->>'source_origin'=ANY(%s) "
-            "ORDER BY (payload::jsonb->>'first_ingested_at')::timestamptz DESC, "
-            "payload::jsonb->>'source_sha256' DESC LIMIT 2"
-        ).format(sql.Identifier(schema)),(KIND,relative,origins)).fetchall()
-        if not rows:raise ValueError('HISTORICAL_SOURCE_INGRESS_NOT_FOUND')
-        payload,payload_sha=rows[0];encoded=payload.encode('utf-8')
-        if digest(encoded)!=payload_sha:raise ValueError('HISTORICAL_SOURCE_INGRESS_PG_DIGEST_MISMATCH')
-        record=json.loads(payload)
-        if (record.get('contract_id')!=CONTRACT or record.get('contract_version') not in LEGACY_VERSIONS
-                or record.get('source_path')!=relative or record.get('source_origin') not in origins
-                or not re.fullmatch(r'[0-9a-f]{64}',str(record.get('source_sha256') or ''))):
-            raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_BINDING_INVALID')
-        if len(rows)>1:
-            prior=json.loads(rows[1][0])
-            if prior.get('first_ingested_at')==record.get('first_ingested_at'):
-                raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_REVISION_TIE')
-        selected_record,raw=_query(project,source_path=relative,
-            expected_sha256=record['source_sha256'],pg=pg)
-        return {'record':selected_record,'raw':raw,'value':selected_record.get('source_json'),
-                'text':selected_record.get('source_text_utf8')}
+            "AND (%s::text IS NULL OR payload::jsonb->>'source_sha256'=%s) "
+            "AND (%s::text IS NULL OR COALESCE(payload::jsonb->>'T0',payload::jsonb->>'trade_date')=%s) "
+            "AND (%s::text IS NULL OR COALESCE(payload::jsonb->>'run_id',payload::jsonb->>'source_run_id')=%s) "
+            "LIMIT 2",
+            (workspace_namespace,KIND,relative,origins,expected_sha256,expected_sha256,
+             expected_t0,expected_t0,expected_run_id,expected_run_id)).fetchall()
+        return rows
     active=v4_native.current_read_snapshot()
-    if active is not None:return query(active)
-    with _same_instance_read(schema) as pg:return query(pg)
+    if active is not None:
+        rows=query(active)
+    else:
+        with _same_instance_read('v4') as pg:rows=query(pg)
+    if not rows:raise ValueError('HISTORICAL_SOURCE_INGRESS_NOT_FOUND')
+    payload,payload_sha=rows[0];encoded=payload.encode('utf-8')
+    if digest(encoded)!=payload_sha:raise ValueError('HISTORICAL_SOURCE_INGRESS_PG_DIGEST_MISMATCH')
+    record=json.loads(payload)
+    if (record.get('contract_id')!=CONTRACT or record.get('contract_version') not in LEGACY_VERSIONS
+            or record.get('source_path')!=relative or record.get('source_origin') not in origins
+            or not re.fullmatch(r'[0-9a-f]{64}',str(record.get('source_sha256') or ''))):
+        raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_BINDING_INVALID')
+    if len(rows)>1:
+        prior=json.loads(rows[1][0])
+        if prior.get('first_ingested_at')==record.get('first_ingested_at'):
+            raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_REVISION_TIE')
+    if active is not None:
+        selected_record,raw=_query(project,source_path=relative,expected_sha256=record['source_sha256'],pg=active)
+    else:
+        selected_record,raw=_query(project,source_path=relative,expected_sha256=record['source_sha256'])
+    return {'record':selected_record,'raw':raw,'value':selected_record.get('source_json'),
+            'text':selected_record.get('source_text_utf8')}
 
 
 class PGSourceBytes(io.BytesIO):

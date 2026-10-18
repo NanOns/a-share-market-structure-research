@@ -47,6 +47,7 @@ def verify(pg, descriptor):
 
 
 def build_readback(root, records, *, environment, evidence_origin):
+    raise RuntimeError('V4_SINGLE_SCHEMA_SHADOW_EXPORT_MIGRATION_REQUIRED')
     if (environment, evidence_origin) not in [('REAL', 'PIT_OBSERVED'),
                                               ('ACTIVATION_SIMULATION', 'ACTIVATION_SIMULATION')]:
         raise ValueError('SHADOW_STORAGE_ORIGIN_INVALID')

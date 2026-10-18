@@ -139,3 +139,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 单 Schema guard 定向验证从 5 项更新为 6 项，结果 `6 passed`；覆盖运行时已存在 v4 验证且无 DDL、缺失 v4 fail-closed、旧 Schema 拒绝、Alias/Shadow/Research staging 行为。
 - 本机静态调用扫描确认剩余运行时 `CREATE SCHEMA` 字面量只在 `NativeShadowDatabase` 被构造器首行拒绝之后的不可达旧实现；Shadow export writers 同样在数据库访问前拒绝。历史版本 migration SQL 保持原样，运行时代码路径不执行这些旧 Schema 创建语句。
+
+### 2026-10-19 继续复核：运行时护栏与最终目录
+
+- 以 `WORKBENCH_PG_DSN` 建立 `REPEATABLE READ READ ONLY` 会话后调用 `create_schema(pg, 'v4')`，实际返回数据库 `market_research`、命名空间 `v4`、`transaction_read_only=on`；该路径只查询 `to_regnamespace`，未执行 DDL。
+- 在 `G:\codex_tmp\test_temp\v4_single_schema_guard_r7_recheck` 复跑 `tests/test_v4_single_schema_guard_r7.py`：`6 passed`。
+- 再次现场盘点的清理矩阵为初始 76 个非系统 Schema、已退役 75 个、最终仅 `v4`；最终 PG 目录没有 `v4_*` Schema、public 下没有 V4 业务对象，V4 到其他非系统业务 Schema 依赖为 0。矩阵逐项保存于 `G:\codex_tmp\v4_single_schema_retirement_matrix_20261019.json`。该只读复核没有发起 DROP；之前提交的 Research 32 项和 Forward 3 项 RESTRICT 清理结果分别保存在 `research_cleanup_applied_20261019.json` 与 `forward_remaining_cleanup_apply_r1.json`，本次逐条确认其结果为 `DROP_RESTRICT_SUCCESS`。其余已退役条目以其迁移台账证据与最终目录缺席状态复核。
+- 固定 V4 命名空间中 `model_namespaces` 存在；当前 FEP 运行页仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。本次目录只读盘点未发现 v4 中的 FEP 领域表，因此不能把旧 FEP `fep`/`fep_e5_engineering` fixture 迁移代码算作统一 Schema 完成，也未通过旧 fixture 写入该模块。需在任务合同允许的数据来源及 FEP 固定表迁移方案下继续处理；现有界面保持只读、生产未授权、未训练槽 Pending。
+- 对运行时代码和应用服务代码进行 `CREATE SCHEMA` / Schema 身份静态扫描：常规 Forward、History、Journal、ReadIndex、Owner、Jobs、Research 入口都经 `v4_native.connection/create_schema`，后者仅校验预置 `v4`。发现的旧 Shadow schema 构造器触库前抛错，Shadow 导出入口也 fail-closed；历史迁移 SQL、显式 Phase-0 bootstrap 及隔离测试/脚本未执行。

@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 import struct
 import time
 from datetime import datetime, timezone
@@ -52,6 +53,85 @@ def official_sessions(root, *, pg_reader=None, source_mode=None):
         from workbench_db.v4_market_calendar_reader_r1 import from_environment
         pg_reader=from_environment()
     return pg_reader.sessions()
+
+
+def load_source_acquisition_pg(root):
+    """Admit the historical BaoStock capture manifest once, then read its PG bytes."""
+    from common.paths import resolve_market_source_capture_root
+    capture_root = resolve_market_source_capture_root(root)
+    return _load_captured_source_pg(root, capture_root / 'acquisition.json',
+        source_revision='V4_R4_BAOSTOCK_ACQUISITION_MANIFEST_R1',
+        source_origin='BAOSTOCK_API_CAPTURE_MANIFEST')
+
+
+def load_json_source_pg(root, relative_path, *, source_origin='V4_FORMAL_SOURCE_CAPTURE'):
+    """Capture one configured formal source file, then consume its exact PG bytes."""
+    source = (Path(root).resolve() / relative_path).resolve()
+    source.relative_to(Path(root).resolve())
+    raw = source.read_bytes()
+    sha = digest(raw)
+    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    ingest_captured_bytes(root, source_path, raw, source_revision=sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw or exact['record'].get('source_origin') != source_origin:
+        raise ValueError('V4_FORMAL_SOURCE_PG_READBACK_MISMATCH')
+    return json.loads(exact['raw'])
+
+
+def load_json_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_CAPTURE'):
+    """Capture a hash-bound JSON input and return only the exact PG readback."""
+    return json.loads(load_bytes_binding_pg(root, binding, source_origin=source_origin))
+
+
+def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_CAPTURE'):
+    """Capture exact bound bytes and return only the PG readback bytes."""
+    relative_path = str(binding['path'])
+    source = (Path(root).resolve() / relative_path).resolve()
+    source.relative_to(Path(root).resolve())
+    raw = source.read_bytes()
+    sha = digest(raw)
+    if binding.get('sha256') and sha != binding['sha256']:
+        raise ValueError('V4_HASH_BOUND_SOURCE_CAPTURE_MISMATCH')
+    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    ingest_captured_bytes(root, source_path, raw, source_revision=sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw:
+        raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
+    return exact['raw']
+
+
+def load_source_query_pg(root, query):
+    """Read one exact query response through PG SourceIngress after source capture."""
+    from common.paths import resolve_market_source_capture_root
+    filename = Path(str(query.get('path') or '')).name
+    if not re.fullmatch(r'[0-9a-f]{64}(?:-[0-9a-f]{64})?\.json', filename):
+        raise ValueError('BAOSTOCK_QUERY_CAPTURE_NAME_INVALID')
+    capture_path = resolve_market_source_capture_root(root) / 'queries' / filename
+    payload = _load_captured_source_pg(root, capture_path,
+        source_revision=str(query.get('source_revision') or query.get('query_identity') or query.get('hash') or ''),
+        source_origin='BAOSTOCK_API_RAW_QUERY_RESPONSE')
+    if (payload.get('method') != query.get('method') or payload.get('params') != query.get('params')
+            or payload.get('status') != query.get('status')
+            or payload.get('hash') != query.get('hash')
+            or payload.get('row_count') != query.get('row_count')):
+        raise ValueError('BAOSTOCK_QUERY_CAPTURE_BINDING_MISMATCH')
+    return payload
+
+
+def _load_captured_source_pg(root, path, *, source_revision, source_origin):
+    path = Path(path)
+    raw = path.read_bytes()
+    sha = digest(raw)
+    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    ingest_captured_bytes(root, source_path, raw,
+        source_revision=source_revision or sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw or exact['record'].get('source_origin') != source_origin:
+        raise ValueError('V4_SOURCE_CAPTURE_PG_READBACK_MISMATCH')
+    return json.loads(exact['raw'])
 
 
 def read_day_bytes(data, dates):

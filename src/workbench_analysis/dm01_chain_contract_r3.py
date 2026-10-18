@@ -119,7 +119,8 @@ def validate_context(cap,target,parent,freeze,calendar,identity,staging):
     if set(freeze['field_source_instances'])!={'TRADING_STATUS','ISST'}:
         raise ComponentBuildError('BOTH_FIELD_INSTANCES_REQUIRED')
     stage=Path(staging).resolve()
-    for root in (Path('D:/new_tdx'),*[Path(p) for p in freeze.get('tdx_roots',[])]):ensure_outside_tdx(stage,root)
+    from common.paths import resolve_tdx_root
+    for root in (resolve_tdx_root(ROOT),*[Path(p) for p in freeze.get('tdx_roots',[])]):ensure_outside_tdx(stage,root)
     if stage.is_relative_to((ROOT/'data/v4/artifact_store').resolve()):
         raise ComponentBuildError('CANDIDATE_IN_ACCEPTED_NAMESPACE')
     return dict(cap=cap,target=target,parent=parent,freeze=freeze,calendar=calendar,identity=identity,staging=stage,contract=contract)

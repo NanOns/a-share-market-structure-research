@@ -16,9 +16,10 @@ from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
 from workbench_analysis.dm01_accepted_builder_registry import validate_registry  # noqa: E402
 
 
-DEFAULT_AUDIT = Path(r"D:\Users\lps\Desktop\V4_DM01_POSTCLOSE_EXTERNAL_AUDIT_R2_20260928.md")
 AUDIT_COPY = Path("docs/evidence/V4_DM01_POSTCLOSE_EXTERNAL_AUDIT_R2_20260928.md")
-TDX_ROOT = Path("D:/new_tdx")
+DEFAULT_AUDIT = ROOT / AUDIT_COPY
+from common.paths import resolve_tdx_root
+TDX_ROOT = resolve_tdx_root(ROOT)
 
 
 def sha256(path: Path) -> str:

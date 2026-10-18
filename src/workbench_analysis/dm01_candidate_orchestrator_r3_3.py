@@ -14,7 +14,10 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
     before={artifact_reference_path(p):sha(p) for p in head_paths};stage=None;receipts={}
     try:
         from .daily_source_freeze import ensure_outside_tdx
-        for root in (Path('D:/new_tdx'),*[Path(p) for p in source_freeze.get('tdx_roots',[])]):ensure_outside_tdx(Path(staging_root),root)
+        from common.paths import resolve_tdx_root
+        configured_tdx_root = resolve_tdx_root(ROOT)
+        tdx_roots = (configured_tdx_root, *[Path(p) for p in source_freeze.get('tdx_roots',[])])
+        for root in tdx_roots:ensure_outside_tdx(Path(staging_root),root)
         contract=load(ref(ROOT/CONTRACT_PATH));validate_parent(parent_data_head,contract)
         target=resolve_target_session(parent_data_head['head']['accepted_trade_date'],calendar_binding,source_freeze['observed_at'],source_freeze['trade_date'])
         contract_sha=sha(ROOT/CONTRACT_PATH)
@@ -59,7 +62,8 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
             protected_heads_unchanged=all(sha(ROOT/p)==s for p,s in before.items()))
         if stage is not None:
             from .daily_increment_builder import _atomic_json
-            _atomic_json(stage/'failure.json',result,tdx_root=Path('D:/new_tdx'))
+            from common.paths import resolve_tdx_root
+            _atomic_json(stage/'failure.json',result,tdx_root=resolve_tdx_root(ROOT))
         return result
 
 def candidate_parent(result, staging_root):

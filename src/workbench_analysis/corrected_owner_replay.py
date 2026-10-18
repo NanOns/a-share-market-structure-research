@@ -13,13 +13,14 @@ from decimal import Decimal, ROUND_HALF_UP, localcontext
 from pathlib import Path
 
 from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq
-from tdx.gbbq_reader import read_gbbq
 from v4.factors.core import Bar, Observation, compute_core, market_reference
-from .market_source_acquisition import official_sessions, write, now, is_stock_code
+from .market_source_acquisition import (official_sessions, write, now, is_stock_code,
+    load_source_acquisition_pg, load_source_query_pg, load_json_source_pg, load_json_binding_pg,
+    load_bytes_binding_pg)
 from .tdx_official_daily_source import sha256_file, _atomic_write
 
 CONTRACT = 'config/v4_corrected_owner_replay_v1.json'
-OUT = 'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1'
+OUT = 'data/v4/workspaces/owner_repair_v1'
 
 
 def load(path):
@@ -41,7 +42,8 @@ def checked(root, binding):
 
 def gzwrite(root, path, rows):
     raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
-    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=resolve_tdx_root(root))
     return ref(root, path)
 
 
@@ -106,24 +108,37 @@ def materialize_core(root, dates=None):
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
     required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
-    acquisition = load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    acquisition = load_source_acquisition_pg(root)
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
         if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock'):
-            payload=load(q['path']); rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
+            payload=load_source_query_pg(root,q); rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
             bao_queries.append(q)
-    source_pointer=load(root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json')
-    capture=load(checked(root,source_pointer['capture_receipt'])); package=checked(root,capture['package'])
+    source_pointer=load_json_source_pg(root,'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json',
+        source_origin='V4_DM01_TDX_SOURCE_CAPTURE_AUTHORITY')
+    capture=load_json_binding_pg(root,source_pointer['capture_receipt'],
+        source_origin='V4_DM01_TDX_CAPTURE_RECEIPT')
+    from io import BytesIO
+    package=BytesIO(load_bytes_binding_pg(root,capture['package'],source_origin='V4_TDX_OFFICIAL_DAILY_PACKAGE'))
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
-    source_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq'); blob=source_gbbq.read_bytes()
-    gpath=root/'data/v4/corrected_owner_sources'/hashlib.sha256(blob).hexdigest()/'gbbq'
-    _atomic_write(gpath,blob,tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    source_gbbq=resolve_tdx_root(root)/'T0002/hq_cache/gbbq'; blob=source_gbbq.read_bytes()
+    gbbq_sha=hashlib.sha256(blob).hexdigest()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    gbbq_path=f'external/tdx_gbbq/{gbbq_sha}/gbbq'
+    ingest_captured_bytes(root,gbbq_path,blob,source_revision=gbbq_sha,
+        source_origin='TDX_READ_ONLY_SOURCE_ROOT_GBBQ')
+    gbbq_binding=dict(path=gbbq_path,sha256=gbbq_sha,bytes=len(blob))
+    exact_gbbq=read_bound(root,gbbq_path,gbbq_sha)
+    if exact_gbbq['raw']!=blob or exact_gbbq['record'].get('source_origin')!='TDX_READ_ONLY_SOURCE_ROOT_GBBQ':
+        raise ValueError('CORRECTED_GBBQ_PG_INGRESS_READBACK_MISMATCH')
+    from tdx.gbbq_reader import decode_gbbq_bytes
     events=defaultdict(list)
-    for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
+    for e in decode_gbbq_bytes(exact_gbbq['raw'],source=gbbq_path):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
-    sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
+    sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=gbbq_binding,
                  identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()

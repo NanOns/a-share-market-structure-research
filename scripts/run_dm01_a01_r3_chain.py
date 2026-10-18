@@ -15,13 +15,18 @@ from scripts.build_v4_08_r2_membership_evidence import atomic_json
 from workbench_analysis.dm01_incremental_component_builders_r3 import load,digest,sha,_write_immutable,BUILD_ORDER,resolve_target_session,CONTRACT_PATH
 from workbench_analysis.dm01_candidate_orchestrator_r3 import build_candidate,candidate_parent
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
+from workbench_analysis.market_source_acquisition import (load_json_source_pg, load_json_binding_pg,
+    load_bytes_binding_pg)
 from scripts.build_v4_02_formal_periods import period_key
 from tdx.gbbq_reader import read_gbbq
+from common.paths import resolve_tdx_root
 BASE='data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/'
-P='reports/audits/DM01_A01_R3_'
+P='data/v4/workspaces/dm01_a01_r3/DM01_A01_R3_'
 STAGE=ROOT/'data/v4/dm01_candidate_staging_r3'
 
 def read(p):return json.loads((ROOT/p).read_text(encoding='utf8'))
+def read_source(p, *, source_origin='V4_DM01_A01_R3_FORMAL_CAPTURE'):
+    return load_json_source_pg(ROOT,p,source_origin=source_origin)
 def save(name,value):
     stem=Path(name); path=BASE+(stem.parent/(stem.stem+'_'+digest(value)+stem.suffix)).as_posix()
     _write_immutable(ROOT/path,value);return bind(path)
@@ -40,7 +45,8 @@ def active(records,target):
         and (not r.get('symbol_effective_to') or r['symbol_effective_to']>=target)]
 
 def prepare():
-    if read('reports/audits/A10_A12_R3_EXTERNAL_ACCEPTANCE_FORMALIZATION_R1.json')['phase_A']!='PASS':
+    if read_source('reports/audits/A10_A12_R3_EXTERNAL_ACCEPTANCE_FORMALIZATION_R1.json',
+        source_origin='V4_EXTERNAL_ACCEPTANCE_FORMALIZATION')['phase_A']!='PASS':
         raise ValueError('PHASE_A_MUST_PASS_FIRST')
     now=datetime.now(timezone.utc).isoformat()
     dataref=bind('data/v4/V4_DATA_ACCEPTED_HEAD.json');datahead=load(dataref);cutoff=datahead['accepted_trade_date'];cutnum=int(cutoff.replace('-',''))
@@ -150,23 +156,29 @@ def prepare():
     pm=save('accepted_parent_components_reference_state.json',dict(parent_data_head_digest=dataref['sha256'],components=parents,
         accepted_data_head=dataref,accepted_source_bindings=accepted_sources,projection='LAST_ACTUAL_CLOSE_PLUS_ACCEPTED_NATIVE_ACTIONS'))
     parent['component_manifest_binding']=pm
-    inputs={};instanceindex=read('reports/audits/A10_A12_R3_SOURCE_INSTANCE_MANIFEST_R1.json')['instances']
-    capture=read('reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json');currentreceipt=load(capture['capture_receipt'])
+    inputs={};instanceindex=read_source('reports/audits/A10_A12_R3_SOURCE_INSTANCE_MANIFEST_R1.json',
+        source_origin='V4_DM01_SOURCE_INSTANCE_MANIFEST')['instances']
+    capture=read_source('reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json',
+        source_origin='V4_DM01_TDX_SOURCE_CAPTURE_AUTHORITY')
+    currentreceipt=load_json_binding_pg(ROOT,capture['capture_receipt'],source_origin='V4_DM01_TDX_CAPTURE_RECEIPT')
     assert capture['status']=='PASS'
     for target in completed:
         instance=instanceindex.get(target)
-        if instance is None:instance=read(P+target.replace('-','')+'_SOURCE_CAPTURE_R1.json')['instances']
-        raw=load(load(instance['TRADING_STATUS'])['raw_artifact']);eligible=active(records,target);roster={r['source_security_key'] for r in eligible}
-        provider=load(instance['TRADING_STATUS'])
+        if instance is None:raise ValueError('PG_SOURCE_INSTANCE_MANIFEST_MISSING_TARGET:'+target)
+        raw=load_json_binding_pg(ROOT,load_json_binding_pg(ROOT,instance['TRADING_STATUS'])['raw_artifact'])
+        eligible=active(records,target);roster={r['source_security_key'] for r in eligible}
+        provider=load_json_binding_pg(ROOT,instance['TRADING_STATUS'])
         bao=save(target+'/baostock_daily.json',dict(status='BAOSTOCK_DAILY_SNAPSHOT_READY',trade_date=target,provider_date=target,
             snapshot_id=provider['source_revision'],daily_rows=raw['rows'],raw_response_binding=provider['raw_artifact'],
             source_instances=instance,origin='DELAYED_HISTORICAL_RETRIEVAL',knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
-        prior_capture=ROOT/goh['evidence_bindings']['official_tdx_package']['path']
         if target==goh['first_accepted_target_trade_date']:
-            pkg=goh['evidence_bindings']['official_tdx_package'];actual_receipt=bind((prior_capture.parent/'capture_receipt.json').relative_to(ROOT).as_posix());kind='EXTERNALLY_ACCEPTED_GO_FORWARD_PACKAGE'
+            pkg=goh['evidence_bindings']['official_tdx_package']
+            actual_receipt=load_json_source_pg(ROOT,(Path(pkg['path']).parent/'capture_receipt.json').as_posix(),
+                source_origin='V4_GO_FORWARD_TDX_CAPTURE_RECEIPT');kind='EXTERNALLY_ACCEPTED_GO_FORWARD_PACKAGE'
         else:pkg=currentreceipt['package'];actual_receipt=capture['capture_receipt'];kind='CURRENT_OFFICIAL_ZIP_RECONSTRUCTED'
         bars=[];excluded=0;future=0;targetnum=int(target.replace('-',''))
-        with zipfile.ZipFile(ROOT/pkg['path']) as z:
+        from io import BytesIO
+        with zipfile.ZipFile(BytesIO(load_bytes_binding_pg(ROOT,pkg,source_origin='V4_TDX_OFFICIAL_DAILY_PACKAGE'))) as z:
             for name in z.namelist():
                 stem=Path(name).stem
                 if not name.lower().endswith('.day') or len(stem)!=8:continue
@@ -236,7 +248,7 @@ def execute():
             observed_at=context['observed_at'],ingested_at=context['observed_at'],system_available_at=context['observed_at'])
         freeze.update(inputs=source['inputs'],parent_data_head_digest=parent['binding']['sha256'],
             calendar_publication_id=context['calendar']['publication_id'],identity_publication_id=context['identity']['publication_id'],
-            field_source_instances=source['instances'],tdx_roots=['D:/new_tdx'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+            field_source_instances=source['instances'],tdx_roots=[str(resolve_tdx_root(ROOT))],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
         freeze['manifest_sha256']=digest({k:v for k,v in freeze.items() if k!='manifest_sha256'})
         args=dict(parent_data_head=parent,source_freeze=freeze,calendar_binding=context['calendar'],identity_binding=context['identity'],staging_root=STAGE,head_paths=heads)
         result=build_candidate(**args)

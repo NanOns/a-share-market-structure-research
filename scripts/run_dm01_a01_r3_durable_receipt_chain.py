@@ -17,6 +17,7 @@ from workbench_analysis.dm01_candidate_orchestrator_r3_3 import build_candidate,
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
 from scripts.build_v4_02_formal_periods import period_key
 from tdx.gbbq_reader import read_gbbq
+from common.paths import resolve_tdx_root
 BASE='data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2/'
 P='reports/audits/DM01_A01_R3_'
 STAGE=ROOT/'data/v4/dm01_candidate_staging_r3/durable_r3'
@@ -49,7 +50,7 @@ def execute():
             observed_at=context['observed_at'],ingested_at=context['observed_at'],system_available_at=context['observed_at'])
         freeze.update(inputs=source['inputs'],parent_data_head_digest=parent['binding']['sha256'],
             calendar_publication_id=context['calendar']['publication_id'],identity_publication_id=context['identity']['publication_id'],
-            field_source_instances=source['instances'],tdx_roots=['D:/new_tdx'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+            field_source_instances=source['instances'],tdx_roots=[str(resolve_tdx_root(ROOT))],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
         freeze['manifest_sha256']=digest({k:v for k,v in freeze.items() if k!='manifest_sha256'})
         args=dict(parent_data_head=parent,source_freeze=freeze,calendar_binding=context['calendar'],identity_binding=context['identity'],staging_root=STAGE,head_paths=heads)
         result=build_candidate(**args)

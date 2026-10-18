@@ -4,7 +4,7 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, CONTRACT
-from .market_source_acquisition import write, official_sessions
+from .market_source_acquisition import write, official_sessions, load_source_acquisition_pg, load_source_query_pg
 from .v4_13_descendant_contracts import DescendantContracts
 from .v4_13_loo_runtime import relative_sector
 from sector.native_r5 import build_native
@@ -12,9 +12,9 @@ from v4.base_seed import _normalize_facts, evaluate_facts, _known, _unknown
 
 
 def dated_industry_memberships(root, day, universe):
-    root=Path(root);acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    root=Path(root);acquisition=load_source_acquisition_pg(root)
     query=next(q for q in acquisition['queries'] if q['method']=='query_stock_industry' and q['params']=={'date':day})
-    payload=load(query['path']);rows=payload['rows'];result=[];revision=query['source_revision']
+    payload=load_source_query_pg(root,query);rows=payload['rows'];result=[];revision=query['source_revision']
     for row in rows:
         code=row['code'].lower()
         if code not in universe or not row.get('industry'):continue
@@ -36,7 +36,8 @@ def materialize_sectors(root):
     import baostock
     source=inspect.getsource(baostock.query_stock_industry).encode()
     from .tdx_official_daily_source import _atomic_write
-    _atomic_write(out/'QUERY_STOCK_INDUSTRY_SDK_SOURCE.py',source,tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    _atomic_write(out/'QUERY_STOCK_INDUSTRY_SDK_SOURCE.py',source,tdx_root=resolve_tdx_root(root))
     params=load(root/'config/v4_08_algorithm_parameter_set_r5.json');seedparams=load(root/'config/v4_07_parameter_set_v1.json')
     sessions=official_sessions(root)
     for result in replay['owners']:

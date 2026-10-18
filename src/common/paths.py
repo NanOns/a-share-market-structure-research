@@ -19,6 +19,7 @@ PATH_SETTINGS: dict[str, tuple[str, str]] = {
     "baostock.cache_root": ("baostock", "cache_root"),
     "baostock.request_ledger": ("baostock", "request_ledger"),
     "ingest.temp_root": ("ingest", "temp_root"),
+    "v4.market_source_capture_root": ("v4", "market_source_capture_root"),
 }
 PATH_ENV: dict[str, str] = {
     "tdx.source_root": "TDX_ROOT",
@@ -28,6 +29,7 @@ PATH_ENV: dict[str, str] = {
     "baostock.cache_root": "BAOSTOCK_CACHE_ROOT",
     "baostock.request_ledger": "BAOSTOCK_REQUEST_LEDGER",
     "ingest.temp_root": "V4_INGEST_TEMP_ROOT",
+    "v4.market_source_capture_root": "V4_MARKET_SOURCE_CAPTURE_ROOT",
 }
 
 
@@ -148,3 +150,7 @@ def resolve_baostock_request_ledger(project_root: str | Path, explicit: str | Pa
 
 def resolve_ingest_temp_root(project_root: str | Path, explicit: str | Path | None = None) -> Path:
     return resolve_configured_path(project_root, "ingest.temp_root", explicit=explicit)  # type: ignore[return-value]
+
+
+def resolve_market_source_capture_root(project_root: str | Path, explicit: str | Path | None = None) -> Path:
+    return resolve_configured_path(project_root, "v4.market_source_capture_root", explicit=explicit)  # type: ignore[return-value]

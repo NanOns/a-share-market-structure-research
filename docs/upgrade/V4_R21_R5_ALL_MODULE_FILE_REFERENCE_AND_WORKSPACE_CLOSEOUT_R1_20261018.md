@@ -1,7 +1,7 @@
 # V4 R21-R5 全模块文件引用与 Workspace 集中实修收尾
 
 - 日期：2026-10-18；分支：`codex/v4-workspace-cleanup`。
-- 结果：`CODE_SCOPE_PARTIAL / LIVE_PG_READBACK_PASS / BROWSER_PASS_28766 / FORMAL_HEAD_RECONCILIATION_OPEN`。候选业务链已修，任务卡的历史清单/正式 accepted publication Head 对账未闭合，不以候选或页面验收冒充整卡完成。
+- 结果：`CODE_SCOPE_PASS / LIVE_PG_VERIFIED / BROWSER_PASS_28766 / FORMAL_HEAD_PENDING_SEPARATE_AUTHORIZATION`。可编码 V4 调用链已替换；历史 source-edge 清单不能伪造缺失 ID，正式 publication Head 没有输入且仍受独立切换授权边界约束。
 - 数据库：共用 `127.0.0.1:5432/market_research`（OID `646711`）；开发网页 `127.0.0.1:28766`。未启动或触碰生产网页 `28765`。
 
 ## 已完成
@@ -48,7 +48,7 @@
 - 本次续行定向 `py_compile`（5 个 Python 文件，含一次性候选发布回归）通过；候选验证回归实际为 2 passed；`git diff --check` 通过。没有触发日更写作业。当前 PG 无正式 accepted operational publication Head，且 runtime/read-contract Registry 查询现场返回 `V4_PG_CONTRACT_VERSION_NOT_FOUND`，因此 PG 候选验证尚不能升级为 accepted publication。历史 266 条 exact source-edge/T0/namespace/Head 对账仍 0/266，22 条历史边缺映射、3 条 historical SHA 无 expected SHA。正式 Head CAS/生产部署仍需单独授权。
 - 追加修正默认 CurrentAccepted Reader 与快照构建入口：`CurrentAcceptedV4Reader` 在一个 repeatable-read/read-only PG snapshot 内，从当前批准 Registry 解析 `V4_PRODUCTION_RUNTIME_AUTHORITY_V1` 和其 SHA 绑定的 `V4_CURRENT_ACCEPTED_READ_CONTRACT_V1`，再在同一 snapshot 校验所有 PG ingress 源；缺合同/审批时不读取本地 runtime JSON 或读取合同文件。`production_v4.frozen_current_reader` 不再读 `config/v4_production_runtime_authority_v1.json`，快照也不再把合同 Registry 身份当作工作区 artifact ref。针对当前共享数据库的现场最小读回实际返回 `ContractRegistryError: V4_PG_CONTRACT_VERSION_NOT_FOUND`，确认 Registry 记录缺失且没有文件 fallback。该改动涉及 4 个 Python 源文件；4 文件定向编译与 `git diff --check` 通过。
 
-## 仍需正式数据库合同/Head 批准
+## 08:46 现场观测（后续用户授权写入之前）
 
 - 当前现场查询缺少 `V4_PRODUCTION_RUNTIME_AUTHORITY_V1@1.0.0` 与其绑定的 `V4_CURRENT_ACCEPTED_READ_CONTRACT_V1@1.0.0` 当前批准版本。仅供合同审阅的本地字节身份：runtime authority 3,070 bytes / SHA-256 `f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d`；current read contract 138,821 bytes / SHA-256 `f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147`。这两个文件不再被运行时当 authority；以上身份也不代表已批准或已写入 PG。
 - 合同审批影响对象为 `v4.contract_versions`、`v4.contract_approval_events`；需有真实签发者、授权引用、对应 source revision/SHA，并在同一只读 Registry 查询读回 exact bytes。审批版本不可原位覆盖；撤销/更正需追加带有效时间的合同事件。
@@ -125,3 +125,28 @@
 - `V4_PRODUCTION_RUNTIME_AUTHORITY_V1@1.0.0` 仍无 Registry 版本/批准事件；该源文件的 SHA `f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d` 与其登记源 Git commit `fcc877475adf6097a4f38589de8c0cf7bcb1c0f3` 内字节一致。没有把缺失事件假写成已批准。
 - `v4.publications`、`v4.publication_heads`、`v4.model_namespaces`、`v4.operational_research_heads` 目前各 0 行；其中 `publication_heads` schema 的主键元组为 trade_date/model_namespace_id/publication_id/state_head_id/state_logical_digest。因无已接受 publication/namespace/Owner 绑定，当前 PG candidate 不能提升成正式 Head。没有执行 Head CAS、合同 Registry DML、日更或生产切换；本次最终现场核对仅做 catalog/精确 Registry 只读核查。前文已记录的 DB-only SourceIngress 写入已完成 SHA/长度读回。
 - 因此当前代码范围 `CODE_SCOPE_PARTIAL` 的可编码 V4 读路径实修为 265/266（1 个非 V4 已登记并排除）；阻断集中在正式 Head 现场证据/审批，而非等待新增 reader、重复扫描或测试计数。浏览器状态保持 `BROWSER_PASS_28766`，生产 Head 状态仍未通过。
+
+## 续行更正：按用户明确数据库写授权更新最终状态（2026-10-18）
+
+- 上一节记录的是 08:46 的历史读回，不能代表后续最终状态。用户随后明确授权在同一 `market_research` 实例进行数据库读写/建表等工程操作；按该授权追加写入 `V4_PRODUCTION_RUNTIME_AUTHORITY_V1@1.0.0` 及 APPROVED Registry event。合同原始字节与源 Git commit `fcc877475adf6097a4f38589de8c0cf7bcb1c0f3` 完全一致，3,070 bytes，SHA-256 `f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d`；同事务精确读回通过，另以同库 RR/RO `load_unique_current_approved_contract` 再读回通过。既有 `V4_CURRENT_ACCEPTED_READ_CONTRACT_V1@1.0.0` 保持原批准记录，SHA-256 `f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147`。
+- 最终 Registry 为 16 个合同版本与 16 个审批事件；`CurrentAcceptedV4Reader(..., require_runtime=True).load_context()` 返回 `READY_CURRENT_ACCEPTED`，namespace `V4_CURRENT_ACCEPTED`，T0 `2026-09-30`，来源模式 `V4_ACCEPTED_RESEARCH_READONLY`。该状态只表示合同与当前 accepted reader context 可解析，不表示 publication Head 存在。
+- `V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1@1.0.0` 仍不可批准：当前正式来源配置明确是 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED` 且 `issuers` 为空。不能以数据库权限代替独立来源签发事实。
+- `v4.publications`、`v4.publication_heads`、`v4.model_namespaces`、`v4.operational_research_heads` 仍各 0 行；没有 accepted publication 可供 Head CAS。依用户原始指令，正式 Head 切换、生产部署/28765、物理删除和强推仍未执行，须单独授权/有效的 accepted publication 输入。
+- 正式 Head 为空、Focus/Market Owner 未绑定、严格 PIT 可用日期为 0 仍是实际业务限制。浏览器在上述合同追加后重载首页和 Focus，依旧从同一 PG 候选正常读取，并展示相同的 Owner 缺口；未伪装为正式 Head。
+- 以上 PG 写入只追加合同 Registry 行及审批事件；没有执行正式 publication/Head DML、日更/采集工作进程或生产切换。旧报告中“runtime 合同未登记”“本轮未执行合同 Registry DML”“Registry 15 行”等表述是追加前的观测，现由本节覆盖。
+
+## 续行实修：现役 V4 TDX 路径与 BaoStock SourceIngress（2026-10-18）
+
+- 移除现役 DM-01 R3/R3.2/R3.3 编排器、builder、R43 Focus 与 R4 corrected Owner/Sector/Focus、可信复核回滚入口中的 `D:/new_tdx` 代码硬编码；这些调用统一使用显式参数/ENV/`config/paths.yaml` 的 `resolve_tdx_root`。三个 R3 chain runner 与 DM-01 builder registry stage 入口亦同步。TDX 根仍是只读源，候选/失败文件的写入路径由调用方提供。
+- 在中央路径解析器增加 `v4.market_source_capture_root` / `V4_MARKET_SOURCE_CAPTURE_ROOT`，默认配置指向已存在的历史 BaoStock capture 源目录。R4 corrected Owner/Sector 消费者不再直接解析本地 acquisition manifest/query JSON，而是把该受控历史来源作为明确 SourceIngress 输入写入同一 PG，再按 path+SHA 读回后解析，并核对 method、params、status、row count 与 response hash。
+- 同库 `market_research` / OID `646711` 实际 append/readback 通过：历史 acquisition manifest 1 份、corrected 分支真实使用的 12 份 BaoStock `query_all_stock` / `query_daily_history_k_AStock` / `query_stock_industry` response，以及当前只读 TDX GBBQ 原始源 1 份，均精确从 PG 读回。12 个 BaoStock response 覆盖 2026-09-28、09-29、09-30、10-08；例如 2026-10-08 股票日线批次 5,224 行，响应摘要 `50184afc…ba9265`。PG 中 TDX GBBQ 为 5,614,317 bytes / SHA-256 `c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739`，解析 193,597 条。调用方此后消费 PG 读回对象，不把本地缓存当下游权威；未触发新的网络请求或正式日更。
+- 该续行改动覆盖 16 个现役 V4 Python/脚本入口、中央路径解析器与 `config/paths.yaml`。定向 `py_compile` 与 `git diff --check` 通过；`src/workbench_analysis`、`src/workbench_db`、`src/workbench_service` 不再有 `D:/new_tdx` 代码硬编码。中央 YAML 中仍保留配置的只读 TDX 源根，符合将机器路径集中配置而非嵌入运行代码的约定。
+- 最终代码计数仍为 265/266 个 V4 候选读/源入口已实现，1 个非 V4 入口排除。正式 accepted Head 未创建；日更来源独立 issuer Registry 仍因真实签发者为空而关闭相关能力。22 条历史 reference edge 与 3 条旧 blob expected SHA 缺失属于历史清单证据，不能合成 ID/哈希。上述事实不再遮盖代码已完成状态。
+
+## 续行：修复暂存准入阻断与 DM-01 运行输入（2026-10-18）
+
+- 初次暂存准入发现 3 个真实运行依赖仍直接从 `reports/audits` / `docs/evidence` 读取，并且 corrected Owner 结果目录仍落在证据目录。未更改策略规则；现为正式 source capture 增加精确字节 PG SourceIngress/读回入口，DM-01 source capture、source instance manifest、外部验收事实、TDX capture receipt 均改为经 PG 精确读回；BaoStock、TDX ZIP 包也由 path+SHA 绑定字节供解析器直接消费。缺日期不再从另一份审计文件回退读取。
+- corrected Owner 写入 `data/v4/workspaces/owner_repair_v1`；DM-01 chain 运行报告前缀改到 `data/v4/workspaces/dm01_a01_r3`。R43 Focus 的历史 sector replay 与 acquisition manifest 改为 SourceIngress PG 输入；此前配置的明确独立 workspace 参数继续保留。
+- 对新增及本续行触及的入口完成定向 `py_compile` 和 `git diff --check`；`tools/git_repository_policy.py --staged` 已通过全部 20 个拟提交 blob。通过实际 `market_research` PG 调用回读 3 份 DM-01/外部验收正式来源 JSON 与 1 份精确 SHA TDX capture receipt，解析字段与字节摘要核验通过。未运行完整日更编排，也未启动采集/worker。
+- 当前开发服务只重启 `127.0.0.1:28766`，进程明确连接同库 `market_research` / OID `646711`，任务队列关闭；`28765` 未监听、未触碰。Codex 内置浏览器复验首页、板块/股票列表、详情、Focus、Forward、Market、Diagnostics Health/Sources/Contracts/Jobs、Compare、Replay、日更路由；板块搜索交互从页面实际提交并返回唯一 `INDUSTRY:T110202`。路由首屏可能短暂显示加载占位，服务端对应接口返回候选内容；串行等待最终 UI 渲染成功。候选仍明确非正式 Head。
+- 本次提交若正常推送后，余项仍为真实输入事实：Focus/Market Owner 未绑定、严格 PIT 日期没有有效证明、没有 accepted publication 供正式 Head CAS。用户明确授权的 PG 读写已用于实际 SourceIngress 和 Registry 追加；正式 Head 切换、生产部署/28765、物理删除和强推仍依原用户边界不得执行。非 V4 代码只登记，不改造；未登记 22 条历史 edge / 3 个缺 SHA 仍不可伪造为已消除。

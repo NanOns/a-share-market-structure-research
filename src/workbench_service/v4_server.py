@@ -431,6 +431,9 @@ def serve_v4_candidate(root, pg_current_adapter=None, *, pg_research_candidate_s
     """Explicit candidate-only BFF on the one development port; never production."""
     if pg_current_adapter is None:
         pg_current_adapter = pg_candidate_adapter_from_environment(workspace_root=root)
+    if pg_research_candidate_schema is None:
+        from workbench_db.v4_native import workspace_schema
+        pg_research_candidate_schema = workspace_schema(root, 'research')
     ThreadingHTTPServer(
         ('127.0.0.1',28766),
         make_v4_handler(root,pg_current_adapter,allow_pg_candidate=True,

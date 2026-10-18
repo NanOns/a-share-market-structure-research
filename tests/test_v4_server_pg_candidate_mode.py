@@ -218,6 +218,34 @@ def test_candidate_server_factory_requires_explicit_database_identity(monkeypatc
     }
 
 
+def test_candidate_server_resolves_research_schema_through_workspace_alias(monkeypatch, tmp_path):
+    calls = {}
+
+    class _Server:
+        def __init__(self, address, handler):
+            calls["address"] = address
+            calls["handler"] = handler
+
+        def serve_forever(self):
+            calls["served"] = True
+
+    monkeypatch.setattr(v4_server, "ThreadingHTTPServer", _Server)
+    from workbench_db import v4_native
+    monkeypatch.setattr(v4_native, "workspace_schema", lambda root, purpose: "v4_research_stable")
+    monkeypatch.setattr(v4_server, "make_v4_handler", lambda *args, **kwargs: (args, kwargs))
+
+    adapter = _Adapter()
+    v4_server.serve_v4_candidate(tmp_path, adapter)
+
+    assert calls["address"] == ("127.0.0.1", 28766)
+    args, kwargs = calls["handler"]
+    assert args[0] == tmp_path
+    assert args[1] is adapter
+    assert kwargs["allow_pg_candidate"] is True
+    assert kwargs["pg_research_candidate_schema"] == "v4_research_stable"
+    assert calls["served"] is True
+
+
 def test_candidate_bff_rejects_missing_contract_approval_proof():
     from workbench_db.v4_publication_reader import PublicationReadError
 

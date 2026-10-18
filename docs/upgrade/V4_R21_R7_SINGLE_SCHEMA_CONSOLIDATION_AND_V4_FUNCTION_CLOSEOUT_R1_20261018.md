@@ -524,3 +524,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 入口随后停在严格的 Owner 依赖校验：`v4_operational_live_head_pg_r1.read_current()` 返回 `PG_ACCEPTED_OPERATIONAL_HEAD_REQUIRED_NO_FILE_FALLBACK`。开发库目前无 Accepted Operational Head；未创建/伪造 Head、未发布 Owner/Publication 或生产 Head。当前唯一 Accepted Data Head 仍是 9-30 候选，10-15 日更没有发布完成。
 - `tests/test_v4_baostock_runtime_acceptance_pg_r1.py` 定向回归 7 项通过；合并执行的日更 executor 套件共 14 项中 12 项通过、2 项受测试环境阻断：一项 mock PG 对象缺少真实 `execute()` 接口；另一项导入路径试图访问非 disposable 本地 PG，被测试隔离插件拒绝。真实日更入口已越过回执与证据路径两处错误，并在缺少 Accepted Operational Head 的设计门禁处停止。
 - 本次开发只使用当前 `market_research` 数据库与 `v4`，没有新建 Schema；28766 是当前唯一监听的项目网页端口，28765 未监听且未操作。后续需补齐真实接受日历/Universe 身份和 Operational Head 的完整前置证据，才能继续 Owner 与当日日更验收；不能将 10-15 冻结候选或 9-30 页面 T0 表述为已发布 10-15。
+
+### 2026-10-19 固定 v4 消费者保护迁移 072
+
+- 为消除风险/优先级 Owner、Sector Lifecycle、ReadIndex R1/R2 与日更作业历史消费者中的运行时持久 DDL，新增并登记 `V4_FIXED_SCHEMA_CONSUMER_GUARDS_R1`。中央迁移 072 在固定 `v4` 关系上统一部署保护器；消费者现在只核验中央迁移创建的固定表、列、策略行与启用触发器，不再动态创建 Schema、表、函数或触发器。
+- 迁移前先对同一开发数据库检查 15 个先决关系，并在 RR/RW 事务中完整执行迁移 SQL 后显式回滚，确认 SQL 可执行。正式使用项目迁移 runner 应用到 `market_research`；迁移台账 SHA-256 为 `2dbdeca42b48930c0b4e10d0813cdf2ee9aacd609d2546f4e3f5837eeb4c4db5`。迁移后 RR/RO 连接确认身份 `market_research`、OID `646711`、`127.0.0.1:5432`、`transaction_read_only=on`，且 072 台账读回一致。
+- 在生产数据外未新增探针行的情况下，通过已存在记录执行 12 项 update/truncate 负向探针（风险版本/载荷、优先级版本、Sector 版本/明细、ReadIndex R1/R2 版本/明细、作业尝试/事件），均被保护器拒绝，SQLSTATE `P0001`。探针外层事务显式回滚；之后 RR/RO 对 14 张固定关系逐表 COUNT 前后完全一致。核验的 26 个相关启用触发器均存在，现有业务行数包括 Sector Lifecycle 400、ReadIndex R1/R2 明细 78,857/62,671、作业事件 406。
+- 本阶段测试：迁移 allocator 2 项通过，Sector Lifecycle 与日更进度回归已运行；风险、ReadIndex 与部分 Owner 测试在 collection/import 时触发测试隔离插件对非 disposable `market_research` 的访问拒绝，另有 Owner closeout 测试同类环境阻断。未绕过隔离，也未因此写入额外业务数据。Python AST/语法、指定 diff whitespace、消费者源码无持久 DDL 检查通过。
+- 这项迁移只完成消费者保护与持久 DDL 收敛，不代表 ReadIndex/Owner/日更等模块已完成真实业务验收，也不代表迁移清理可以删除其他旧 Schema。10-15 日更仍须从 10-16 冻结包获取 10-15 数据，并满足接受日历、Universe/身份映射和 Accepted Operational Head 的正式门禁；当前 9-30 仅是页面使用的旧候选 T0，不能混作日更任务日期。

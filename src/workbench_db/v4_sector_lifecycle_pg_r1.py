@@ -8,7 +8,7 @@ from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from .v4_native import connection,create_schema,workspace_schema
+from .v4_native import connection
 from .v4_forward_pg_r1 import ForwardFactStore
 
 CONTRACT='V4_SECTOR_LIFECYCLE_PG_OWNER_R1'
@@ -28,38 +28,20 @@ def schema_for_revision(root,owner_digest):
     return 'v4'
 
 
-def _install_schema(pg,schema):
-    create_schema(pg,schema)
-    pg.execute(sql.SQL('''CREATE TABLE IF NOT EXISTS {}.sector_lifecycle_owner_versions_r1(
-        token text NOT NULL,T0 text NOT NULL,contract text NOT NULL,digest text NOT NULL,
-        producer_sha256 text NOT NULL,parameter_digest text NOT NULL,input_digest text NOT NULL,
-        row_count integer NOT NULL,database_identity jsonb NOT NULL,sealed boolean NOT NULL DEFAULT false,
-        PRIMARY KEY(token,T0))''').format(sql.Identifier(schema)))
-    pg.execute(sql.SQL('''CREATE TABLE IF NOT EXISTS {}.sector_lifecycle_owner_rows_r1(
-        token text NOT NULL,T0 text NOT NULL,sector_id text NOT NULL,payload jsonb NOT NULL,
-        payload_sha256 text NOT NULL,PRIMARY KEY(token,T0,sector_id),
-        FOREIGN KEY(token,T0) REFERENCES {}.sector_lifecycle_owner_versions_r1(token,T0))''').format(sql.Identifier(schema),sql.Identifier(schema)))
-    pg.execute(sql.SQL('''CREATE OR REPLACE FUNCTION {}.sector_lifecycle_owner_immutable_r1() RETURNS trigger LANGUAGE plpgsql AS $$
-      BEGIN
-        IF TG_TABLE_NAME='sector_lifecycle_owner_versions_r1' THEN
-          IF TG_OP='INSERT' AND NOT NEW.sealed THEN RETURN NEW; END IF;
-          IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
-             (OLD.token,OLD.T0,OLD.contract,OLD.digest,OLD.producer_sha256,OLD.parameter_digest,OLD.input_digest,OLD.row_count,OLD.database_identity)=
-             (NEW.token,NEW.T0,NEW.contract,NEW.digest,NEW.producer_sha256,NEW.parameter_digest,NEW.input_digest,NEW.row_count,NEW.database_identity) THEN RETURN NEW; END IF;
-          RAISE EXCEPTION 'SECTOR_LIFECYCLE_OWNER_IMMUTABLE';
-        END IF;
-        IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM {}.sector_lifecycle_owner_versions_r1 WHERE token=NEW.token AND T0=NEW.T0 AND sealed) THEN
-          RAISE EXCEPTION 'SECTOR_LIFECYCLE_OWNER_IMMUTABLE';
-        END IF;
-        RETURN NEW;
-      END $$''').format(sql.Identifier(schema),sql.Identifier(schema)))
-    pg.execute(sql.SQL('''CREATE OR REPLACE FUNCTION {}.owner_sector_lifecycle_no_truncate_r1() RETURNS trigger LANGUAGE plpgsql AS $$
-      BEGIN RAISE EXCEPTION 'SECTOR_LIFECYCLE_OWNER_IMMUTABLE'; END $$''').format(sql.Identifier(schema)))
+def _require_fixed_schema(pg):
+    immutable='sector_lifecycle_owner_immutable_r1'
+    no_truncate='owner_sector_lifecycle_no_truncate_r1'
     for table in ('sector_lifecycle_owner_versions_r1','sector_lifecycle_owner_rows_r1'):
-        pg.execute(sql.SQL('DROP TRIGGER IF EXISTS sector_lifecycle_owner_immutable_r1_guard ON {}.{}').format(sql.Identifier(schema),sql.Identifier(table)))
-        pg.execute(sql.SQL('CREATE TRIGGER sector_lifecycle_owner_immutable_r1_guard BEFORE INSERT OR UPDATE OR DELETE ON {}.{} FOR EACH ROW EXECUTE FUNCTION {}.sector_lifecycle_owner_immutable_r1()').format(sql.Identifier(schema),sql.Identifier(table),sql.Identifier(schema)))
-        pg.execute(sql.SQL('DROP TRIGGER IF EXISTS owner_sector_lifecycle_no_truncate_r1_guard ON {}.{}').format(sql.Identifier(schema),sql.Identifier(table)))
-        pg.execute(sql.SQL("CREATE TRIGGER owner_sector_lifecycle_no_truncate_r1_guard BEFORE TRUNCATE ON {}.{} FOR EACH STATEMENT EXECUTE FUNCTION {}.owner_sector_lifecycle_no_truncate_r1()").format(sql.Identifier(schema),sql.Identifier(table),sql.Identifier(schema)))
+        exists=pg.execute('SELECT to_regclass(%s)',('.'.join(('v4',table)),)).fetchone()
+        count=pg.execute('''SELECT count(*) FROM pg_trigger t
+            JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+            JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace pn ON pn.oid=p.pronamespace
+            WHERE n.nspname='v4' AND c.relname=%s AND t.tgenabled IN ('O','A') AND NOT t.tgisinternal
+              AND ((t.tgname='sector_lifecycle_owner_immutable_r1_guard' AND pn.nspname='v4' AND p.proname=%s)
+                OR (t.tgname='owner_sector_lifecycle_no_truncate_r1_guard' AND pn.nspname='v4' AND p.proname=%s))''',
+            (table,immutable,no_truncate)).fetchone()[0]
+        if not exists or exists[0] is None or count!=2:
+            raise ValueError('V4_FIXED_SECTOR_LIFECYCLE_STORAGE_NOT_MIGRATED:'+table)
 
 
 def prepare(root,token,day,rows,*,producer_sha256,parameter_digest,input_digest):
@@ -72,7 +54,7 @@ def prepare(root,token,day,rows,*,producer_sha256,parameter_digest,input_digest)
         parameter_digest=parameter_digest,input_digest=input_digest,rows=rows)
     owner_digest=digest(material);schema=schema_for_revision(root,owner_digest)
     with connection(schema) as pg:
-        _install_schema(pg,schema)
+        _require_fixed_schema(pg)
         pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),))
         identity=ForwardFactStore._database_identity(pg)
         old=pg.execute(sql.SQL('SELECT digest,sealed FROM {}.sector_lifecycle_owner_versions_r1 WHERE token=%s AND T0=%s').format(sql.Identifier(schema)),(token,day)).fetchone()

@@ -56,9 +56,17 @@ def test_dm01_daily_progress_uses_pg_published_receipts_without_head_file(monkey
 
 
 def test_dm01_published_receipt_poll_has_partial_index():
-    assert "update_job_days_published_trade_date" in daily_pg.DDL
-    assert "WHERE state='PUBLISHED'" in daily_pg.DDL
-    assert "ADD COLUMN IF NOT EXISTS heartbeat_at timestamptz" in daily_pg.DDL
+    from pathlib import Path
+    migration_dir=Path(__file__).resolve().parents[1]/"src/workbench_db/migrations/v4_postgres"
+    jobs_sql=(migration_dir/"053_v4_daily_jobs_single_schema_r1.sql").read_text(encoding="utf-8")
+    guard_sql=(migration_dir/"072_v4_fixed_schema_consumer_guards_r1.sql").read_text(encoding="utf-8")
+    runtime_source=(Path(__file__).resolve().parents[1]/"src/workbench_analysis/operational_daily_jobs_pg_r1.py").read_text(encoding="utf-8")
+    assert "jobs_update_job_days_published_trade_date_r1" in jobs_sql
+    assert "WHERE state='PUBLISHED'" in jobs_sql
+    assert "heartbeat_at timestamptz" in jobs_sql
+    assert "append_only_jobs_history_r1" in guard_sql
+    assert "pg.execute(DDL)" not in runtime_source
+    assert "CREATE TABLE IF NOT EXISTS" not in runtime_source
 
 
 def test_dm01_status_catalog_preflight_is_select_only_and_covers_heartbeat():

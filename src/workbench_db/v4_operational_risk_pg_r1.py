@@ -3,7 +3,7 @@ import hashlib,json
 from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
-from .v4_native import connection,create_schema,workspace_schema
+from .v4_native import connection
 from .v4_forward_pg_r1 import ForwardFactStore
 
 CONTRACT='V4_OPERATIONAL_RISK_PG_OWNER_R1'
@@ -17,38 +17,21 @@ def schema_for_revision(root,owner_digest):
         raise ValueError('OPERATIONAL_RISK_OWNER_DIGEST_INVALID')
     return 'v4'
 
-def _install(pg,schema,family):
+def _require_fixed_owner_storage(pg,family):
     if family not in ('risk_r1','priority_r1'):raise ValueError('V4_OWNER_FAMILY_INVALID')
-    create_schema(pg,schema)
     versions='owner_versions_'+family;payloads='owner_payloads_'+family
     guard='owner_guard_'+family;no_truncate='owner_no_truncate_'+family
-    pg.execute(f"""CREATE TABLE IF NOT EXISTS v4.{versions}(
-        token text NOT NULL,T0 text NOT NULL,contract text NOT NULL,digest text NOT NULL,
-        row_count integer NOT NULL,database_identity jsonb NOT NULL,sealed boolean NOT NULL DEFAULT false,
-        PRIMARY KEY(token,T0))""")
-    pg.execute(f"""CREATE TABLE IF NOT EXISTS v4.{payloads}(
-        token text NOT NULL,T0 text NOT NULL,payload jsonb NOT NULL,payload_sha256 text NOT NULL,
-        PRIMARY KEY(token,T0),FOREIGN KEY(token,T0) REFERENCES v4.{versions}(token,T0))""")
-    pg.execute(f"""CREATE OR REPLACE FUNCTION v4.{guard}() RETURNS trigger LANGUAGE plpgsql AS $$
-      BEGIN
-        IF TG_TABLE_NAME='{versions}' THEN
-          IF TG_OP='INSERT' AND NOT NEW.sealed THEN RETURN NEW; END IF;
-          IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
-             (OLD.token,OLD.T0,OLD.contract,OLD.digest,OLD.row_count,OLD.database_identity)=
-             (NEW.token,NEW.T0,NEW.contract,NEW.digest,NEW.row_count,NEW.database_identity) THEN RETURN NEW; END IF;
-        ELSE
-          IF TG_OP='INSERT' AND NOT EXISTS(
-             SELECT 1 FROM v4.{versions} WHERE token=NEW.token AND T0=NEW.T0 AND sealed) THEN RETURN NEW; END IF;
-        END IF;
-        RAISE EXCEPTION 'OPERATIONAL_RISK_OWNER_IMMUTABLE';
-      END $$""")
-    pg.execute(f"""CREATE OR REPLACE FUNCTION v4.{no_truncate}() RETURNS trigger LANGUAGE plpgsql AS $$
-      BEGIN RAISE EXCEPTION 'OPERATIONAL_RISK_OWNER_IMMUTABLE'; END $$""")
     for table in (versions,payloads):
-        pg.execute(f'DROP TRIGGER IF EXISTS {family}_immutable_guard ON v4.{table}')
-        pg.execute(f'DROP TRIGGER IF EXISTS {family}_no_truncate_guard ON v4.{table}')
-        pg.execute(f'CREATE TRIGGER {family}_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON v4.{table} FOR EACH ROW EXECUTE FUNCTION v4.{guard}()')
-        pg.execute(f'CREATE TRIGGER {family}_no_truncate_guard BEFORE TRUNCATE ON v4.{table} FOR EACH STATEMENT EXECUTE FUNCTION v4.{no_truncate}()')
+        relation=pg.execute('SELECT to_regclass(%s)',('.'.join(('v4',table)),)).fetchone()
+        guards=pg.execute('''SELECT count(*) FROM pg_trigger t
+            JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+            JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace pn ON pn.oid=p.pronamespace
+            WHERE n.nspname='v4' AND c.relname=%s AND t.tgenabled IN ('O','A') AND NOT t.tgisinternal
+              AND ((t.tgname=%s AND pn.nspname='v4' AND p.proname=%s)
+                OR (t.tgname=%s AND pn.nspname='v4' AND p.proname=%s))''',
+            (table,family+'_immutable_guard',guard,family+'_no_truncate_guard',no_truncate)).fetchone()[0]
+        if not relation or relation[0] is None or guards!=2:
+            raise ValueError('V4_FIXED_OWNER_STORAGE_NOT_MIGRATED:'+family+':'+table)
 
 def prepare(root,token,day,payload):
     root=Path(root).resolve()
@@ -58,7 +41,7 @@ def prepare(root,token,day,payload):
     if any(item.get('T0')!=day for item in payload['families'].values()):raise ValueError('OPERATIONAL_RISK_FAMILY_DATE_INVALID')
     owner_digest=digest(dict(contract_id=CONTRACT,token=token,T0=day,payload=payload));schema=schema_for_revision(root,owner_digest)
     with connection(schema) as pg:
-        _install(pg,schema,'risk_r1');pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),))
+        _require_fixed_owner_storage(pg,'risk_r1');pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),))
         identity=ForwardFactStore._database_identity(pg)
         old=pg.execute(sql.SQL('SELECT digest,sealed FROM {}.owner_versions_risk_r1 WHERE token=%s AND T0=%s').format(sql.Identifier(schema)),(token,day)).fetchone()
         if old and (old[0]!=owner_digest or old[1] is not True):raise ValueError('OPERATIONAL_RISK_OWNER_IMMUTABLE_CONFLICT')
@@ -106,7 +89,7 @@ def prepare_priority(root,token,day,payload):
         raise ValueError('RESEARCH_PRIORITY_BINDINGS_REQUIRED')
     owner_digest=digest(dict(contract_id='V4_RESEARCH_PRIORITY_PG_OWNER_R1',token=token,T0=day,payload=payload));schema=_priority_schema(root,owner_digest)
     with connection(schema) as pg:
-        _install(pg,schema,'priority_r1');pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),));identity=ForwardFactStore._database_identity(pg)
+        _require_fixed_owner_storage(pg,'priority_r1');pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(''.join((schema,token,day)),));identity=ForwardFactStore._database_identity(pg)
         old=pg.execute(sql.SQL('SELECT digest,sealed FROM {}.owner_versions_priority_r1 WHERE token=%s AND T0=%s').format(sql.Identifier(schema)),(token,day)).fetchone()
         if old and (old[0]!=owner_digest or old[1] is not True):raise ValueError('RESEARCH_PRIORITY_OWNER_IMMUTABLE_CONFLICT')
         if old is None:

@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
-from .v4_native import connection, create_schema, workspace_schema
+from .v4_native import connection, workspace_schema
 from .v4_forward_pg_r1 import ForwardFactStore
 
 CONTRACT = 'V4_READ_INDEX_R1'
@@ -94,6 +94,20 @@ def query_parts(domain, query, *, entity=None, sector=None):
     return where,args,sql.SQL(',').join(order),offset,limit
 
 
+def _require_fixed_read_index_storage(pg):
+    for table in ('read_versions_r1','read_items_r1','read_responses_r1'):
+        relation=pg.execute('SELECT to_regclass(%s)',('.'.join(('v4',table)),)).fetchone()
+        count=pg.execute('''SELECT count(*) FROM pg_trigger t
+            JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+            JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace pn ON pn.oid=p.pronamespace
+            WHERE n.nspname='v4' AND c.relname=%s AND t.tgenabled IN ('O','A') AND NOT t.tgisinternal
+              AND ((t.tgname='read_index_r1_immutable_guard' AND pn.nspname='v4' AND p.proname='read_index_r1_immutable')
+                OR (t.tgname='read_index_r1_truncate_guard' AND pn.nspname='v4' AND p.proname='read_index_r1_no_truncate'))''',
+            (table,)).fetchone()[0]
+        if not relation or relation[0] is None or count!=2:
+            raise ValueError('V4_FIXED_READ_INDEX_R1_STORAGE_NOT_MIGRATED:'+table)
+
+
 def prepare(root, token, day, collections, responses, memberships):
     """One producer transaction; existing version content can only be verified."""
     root=Path(root);schema=workspace_schema(root,'read_index')
@@ -102,43 +116,7 @@ def prepare(root, token, day, collections, responses, memberships):
                   responses=responses,memberships=memberships)
     digest=hashlib.sha256(canonical(material)).hexdigest()
     with connection(schema) as pg:
-        create_schema(pg,schema)
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_versions_r1(
-            token text NOT NULL, day text NOT NULL, digest text NOT NULL,
-            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(token,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_items_r1(
-            token text NOT NULL, day text NOT NULL, domain text NOT NULL,
-            entity_id text NOT NULL, symbol text, display_name text,
-            aliases text[] NOT NULL, search_parts text[] NOT NULL,
-            sector_ids text[] NOT NULL, values_json jsonb NOT NULL,
-            summary jsonb NOT NULL, detail jsonb NOT NULL, detail_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,domain,entity_id),
-            FOREIGN KEY(token,day) REFERENCES read_versions_r1(token,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_responses_r1(
-            token text NOT NULL, day text NOT NULL, path text NOT NULL,
-            payload jsonb NOT NULL, payload_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,path), FOREIGN KEY(token,day) REFERENCES read_versions_r1(token,day))''')
-        pg.execute('CREATE INDEX IF NOT EXISTS read_items_r1_order ON read_items_r1(token,day,domain,entity_id)')
-        pg.execute('''CREATE OR REPLACE FUNCTION read_index_r1_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
-          BEGIN
-            IF TG_TABLE_NAME='read_versions_r1' THEN
-              IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
-                 (OLD.token,OLD.day,OLD.digest,OLD.contract)=(NEW.token,NEW.day,NEW.digest,NEW.contract) THEN RETURN NEW; END IF;
-              IF TG_OP='INSERT' THEN RETURN NEW; END IF;
-              RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
-            END IF;
-            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions_r1 WHERE (token)=NEW.token AND day=NEW.day AND sealed) THEN
-              RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
-            END IF;
-            RETURN NEW;
-          END $$''')
-        for table in ('read_versions_r1','read_items_r1','read_responses_r1'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_r1_immutable_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_r1_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON {} FOR EACH ROW EXECUTE FUNCTION read_index_r1_immutable()').format(sql.Identifier(table)))
-        pg.execute("CREATE OR REPLACE FUNCTION read_index_r1_no_truncate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'READ_INDEX_IMMUTABLE'; END $$")
-        for table in ('read_versions_r1','read_items_r1','read_responses_r1'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_truncate_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_truncate_guard BEFORE TRUNCATE ON {} EXECUTE FUNCTION read_index_r1_no_truncate()').format(sql.Identifier(table)))
+        _require_fixed_read_index_storage(pg)
         lock_key=hashlib.sha256(canonical([schema,token,day])).hexdigest()
         pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(lock_key,))
         old=pg.execute('SELECT digest FROM read_versions_r1 WHERE token=%s AND day=%s',(token,day)).fetchone()

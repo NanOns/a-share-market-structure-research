@@ -274,7 +274,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 以 `market_research` / OID `646711` 的 `REPEATABLE READ READ ONLY` 事务重新核目录：连接用户 `postgres`，`127.0.0.1:5432`，事务 `read_only=on`；项目 Schema 结果仅 `v4`（owner `postgres`），未发现 `v4_*`、`fep`、`fep_e5_engineering`。`public` 项目关系数为 0；`v4` 表/视图关系为 86，所计关系对象占用 `27,752,079,360` 字节。Schema migration ledger 已读回 single-schema Research、History、Jobs、Forward R7、Journal Registry、ReadIndex、Owner 与 Publication Owner Guard 版本；没有 FEP single-schema 迁移记录。
 - R21-R7 要求保留审查的三份 `r43_owner_replay.py`、`corrected_owner_replay.py`、`test_v4_r6_pg_only_owner_source_reads.py` 均无本地未提交 diff；历史已推送提交 `bbebbb6bc` 将相关消费者固定到 `v4`。这保留了精确 PG 来源读回，仍不等于其历史输入、Owner 或 PIT 已通过业务验收。
 - Workspace 盘点：`G:\\codex_tmp\\r7_active_baseline_20261015` 有 3,646 个文件、2,255,654,812 字节（2.101 GiB），Git 有 5 个已修改跟踪文件及 `data/`、`docs/`、`runtime/`、`git/` 和多个新源码等未跟踪内容。没有其它进程命令行引用此路径；因此整体不是可确认的可重建临时物，完整保留，不删除其唯一修改、数据或证据。
-- 单独审计的 9 个 `__pycache__` 目录共 30 个 `.pyc`（513,843 字节），均为可重建缓存；递归删除这些缓存的命令被执行工具策略拒绝，故没有文件被删除。DB-11 Workspace 物理清理保持 `PARTIAL`，须保留该工具拒绝事实，不能把缓存核验计为已清理。
+- 此前只读检查的 9 个 `__pycache__` 目录是局部样本。2026-10-19 全仓精确盘点实际发现 143 个目录、2,165 个 `.pyc`，总计 28,981,840 字节；2,159 个存在同目录匹配 `.py` 源文件，另 6 个没有源文件，可能是唯一历史字节码，全部保留。按逐文件绝对路径删除 2,159 个可重建缓存的操作被执行工具策略拒绝，没有文件被删除，也没有尝试改用其它删除通道。DB-11 Workspace 物理清理保持 `PARTIAL`；不能把缓存清点计为已清理。
 - 当前数据库目录通过单 Schema 计数，但此前定义的多表/索引空间统计口径与此处关系总占用口径不同；该数字不用于推导历史迁移前后数据库空间变化，也不表示全部 27.75 GB 都是基础表数据。
 - FEP 相关遗留 SQL/合同仍列有独立 `fep`/`fep_e5_engineering` 命名，但现役总迁移入口仅执行显式登记集、已阻止非 `v4` Schema 创建，E5 `schema.sql` 在任何 DDL 前显式失败关闭；实库没有这些 Schema。FEP 当前仍是来源/Owner不足状态，需补固定 `v4` 存储迁移与完整模块验收，不能以目录中不存在旧 Schema 记作 FEP 通过。
 

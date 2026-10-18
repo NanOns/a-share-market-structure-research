@@ -80,6 +80,7 @@ def pytest_configure(config):
     selected=Path(os.environ.get('REMAINDER_TEST_TEMP_BASE',str(DISPOSABLE_BASE))).resolve()
     readonly_allowlist={
         'tests/test_corrected_owner_replay_r4.py',
+        'tests/test_v4_r6_pg_only_owner_source_reads.py',
         'tests/v4_09/test_stock_prewatch.py',
         'tests/v4_dm01/test_corrected_owner_diagnostic_calendar.py',
     }

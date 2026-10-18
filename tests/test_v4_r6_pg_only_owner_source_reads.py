@@ -47,6 +47,40 @@ def test_corrected_owner_exact_input_never_admits_missing_file(monkeypatch, tmp_
         )
 
 
+def test_corrected_owner_candidate_json_is_registered_in_pg(monkeypatch, tmp_path):
+    import json
+    from pathlib import Path
+    from workbench_analysis import corrected_owner_replay
+
+    ingested = []
+
+    def write(path, value, *, project_root):
+        assert project_root == tmp_path
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_text('{"candidate":"DEV"}\n', encoding="utf8")
+
+    monkeypatch.setattr(corrected_owner_replay, "write", write)
+    monkeypatch.setattr(
+        corrected_owner_replay,
+        "_ingress_candidate_bytes",
+        lambda root, path, raw: ingested.append((root, Path(path).relative_to(root).as_posix(), raw)),
+    )
+    monkeypatch.setattr(
+        corrected_owner_replay,
+        "ref",
+        lambda root, path: {"path": Path(path).relative_to(root).as_posix()},
+    )
+
+    receipt = corrected_owner_replay.write_candidate_json(
+        tmp_path, tmp_path / "data/v4/candidate/OWNER.json", {"candidate": "DEV"}
+    )
+
+    assert receipt == {"path": "data/v4/candidate/OWNER.json"}
+    assert len(ingested) == 1
+    assert ingested[0][:2] == (tmp_path, "data/v4/candidate/OWNER.json")
+    assert json.loads(ingested[0][2]) == {"candidate": "DEV"}
+
+
 def test_focus_contract_uses_json_compatible_pg_text_without_yaml(monkeypatch, tmp_path):
     from workbench_analysis import r43_focus_replay
 

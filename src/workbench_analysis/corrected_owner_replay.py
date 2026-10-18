@@ -89,6 +89,37 @@ def gzwrite(root, path, rows, *, pg_ingress=False):
     return ref(root, path)
 
 
+def _ingress_candidate_bytes(root, path, raw):
+    """Register corrected-owner candidate bytes in PG and verify the exact readback."""
+    import hashlib
+    from workbench_db.v4_historical_source_ingress_pg_r1 import (
+        MAX_INLINE_SOURCE_BYTES, ingest_captured_bytes, ingest_package_bytes,
+        read_bound, read_package_bytes,
+    )
+    project = Path(root).resolve()
+    relative = Path(path).resolve().relative_to(project).as_posix()
+    sha = hashlib.sha256(raw).hexdigest()
+    source_origin = 'V4_CORRECTED_OWNER_CANDIDATE_OUTPUT'
+    if len(raw) > MAX_INLINE_SOURCE_BYTES:
+        result = ingest_package_bytes(project, relative, raw, expected_sha256=sha,
+            source_revision=sha, source_origin=source_origin)
+        actual = read_package_bytes(project, relative, sha)['raw']
+    else:
+        result = ingest_captured_bytes(project, relative, raw, source_revision=sha,
+            source_origin=source_origin)
+        actual = read_bound(project, relative, sha)['raw']
+    if (actual != raw or result['source_sha256'] != sha
+            or result['source_bytes'] != len(raw)):
+        raise ValueError('CORRECTED_OWNER_OUTPUT_PG_READBACK_MISMATCH:' + relative)
+
+
+def write_candidate_json(root, path, value):
+    """Write a local diagnostic copy and make the exact candidate receipt PG-readable."""
+    write(path, value, project_root=root)
+    _ingress_candidate_bytes(root, path, Path(path).read_bytes())
+    return ref(root, path)
+
+
 def gzrows(path):
     if hasattr(path,'read_bytes'):
         with gzip.GzipFile(fileobj=BytesIO(path.read_bytes()),mode='rb') as stream:
@@ -157,7 +188,7 @@ def materialize_core(root, dates=None):
     head = head_state['candidate']
     protected = {'config/v4_joint_release_authority_v1.json': sha256_file(root/'config/v4_joint_release_authority_v1.json'),
                  'data/v4/V4_DATA_ACCEPTED_HEAD.json': head_state['head_sha256']}
-    write(out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.1', phase0='DEGRADED_PASS',
+    write_candidate_json(root,out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.1', phase0='DEGRADED_PASS',
           acceptance='IN_PROGRESS', observed_at=now(), protected=protected, next_stage='CORRECTED_STRUCTURE_AND_MEMBER_OWNERS'))
     identity = load(checked_pg(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
     ids = {r['source_security_key'].lower():r for r in identity}
@@ -229,7 +260,7 @@ def materialize_core(root, dates=None):
             raw=[v for v in struct.iter_unpack('<IIIIIfII',z.read(name)) if v[0]<=int(max(dates).replace('-',''))]
             # Preserve enough actual bars for the original 250-bar Profile and period windows.
             cache[ids[code]['security_id']]=(code,raw[-420:])
-    write(out/'SOURCE_BINDINGS.json',dict(sources=sources,unknown_canonical_identity=unknown_codes,
+    write_candidate_json(root,out/'SOURCE_BINDINGS.json',dict(sources=sources,unknown_canonical_identity=unknown_codes,
           query_receipts=bao_queries,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
     rps={}; receipts=[]; oracle=[]
     for target in required:
@@ -302,11 +333,11 @@ def materialize_core(root, dates=None):
              actual_raw_rows=len(raw_rows),adjustment_current_ready=sum(r['adjustment_readiness']=='READY' for r in adjusted_rows),
              known_fields=dict(Counter(k for r in rows for k,v in r['fields'].items() if v.get('value') is not None)),
              knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,publication_state='STAGING_NOT_ACCEPTED')
-        write(folder/'OWNER.json',receipt);receipts.append(receipt)
+        write_candidate_json(root,folder/'OWNER.json',receipt);receipts.append(receipt)
         oracle.append(dict(trade_date=target,checks=dict(checks),errors=errors,samples=sample,result='PASS' if not errors else 'FAIL'))
         print(json.dumps(dict(stage='CORE',date=target,rows=len(rows),raw=len(raw_rows),known=receipt['known_fields'],errors=len(errors))),flush=True)
         if errors:raise ValueError('INDEPENDENT_CORE_ORACLE_FAILED:'+target)
-    write(out/'CORE_REPLAY.json',dict(contract='V4_CORRECTED_OWNER_REPLAY_V1',owners=receipts,oracle=oracle,
+    write_candidate_json(root,out/'CORE_REPLAY.json',dict(contract='V4_CORRECTED_OWNER_REPLAY_V1',owners=receipts,oracle=oracle,
           protected=protected,heads_unchanged=all(sha256_file(root/p)==h for p,h in protected.items()),
           acceptance='PASS_CORRECTED_CORE_NUMERIC_ORACLE',next_stage='PROFILE_STRUCTURE_SECTOR_FOCUS_FORWARD'))
     return receipts

@@ -158,6 +158,13 @@
 - 独立候选读回用合同 `validate_candidate_output` 逐行复验四日 20,893 条 D2；每日期的 D2、D0 calculations、input facts、Focus status 都是相同证券行数且日期/行身份一致。PG immutable Series 再读得 20,843 bars。Focus projection 的 episode scope、事件数、Forward 状态以及 `AS_RECORDED=false`、`PIT_ELIGIBLE=false`、`production_admission=false` 一致，候选级验证为 `PASS_CORRECTED_CANDIDATE_SCOPE`；这不是外部独立验收或正式准入。
 - 验证结果：`tests/test_v4_r6_pg_only_owner_source_reads.py` 3 passed；本轮修改模块及回归文件 `py_compile`、`git diff --check` 通过。28766 context/home/focus 在 PG 写入后仍以同一 context token 返回 HTTP 200。该实跑不创建 publication/Head，不改变 production admission；全模块外部 QA、最新浏览器交互复验和未获执行器准许的衍生文件清理仍未全部通过/完成，见本报告未完成项。
 
+## Corrected Owner Core 收据写入 PG（2026-10-18 续行）
+
+- `corrected_owner_replay.materialize_core` 的 `ENTRY.json`、`SOURCE_BINDINGS.json`、逐日 `OWNER.json` 与 `CORE_REPLAY.json` 此前只写本地；现改为原子落盘后立即进入 Historical SourceIngress，按精确 SHA/字节数从 PG 读回校验。来源标识为 `V4_CORRECTED_OWNER_CANDIDATE_OUTPUT`，不产生 accepted publication 或生产 Head。Core、prior core、history、raw、adjusted gzip 产物原已执行同样 PG ingress。
+- `tests/remainder_isolation_plugin.py` 的只读共享库测试 allowlist 新增该 R6 定向模块；仍强制将 `127.0.0.1:5432/market_research` 事务设为只读，只针对精确测试路径启用。此前未设置该模式时 5 项测试在导入期被隔离插件拒绝，补上明确 allowlist 后定向模块 6 passed；修改文件 `py_compile` 通过。
+- 真实 PG 写入验证使用唯一 DEV receipt（128 bytes，SHA-256 `f667265764786e8513e254920c9d152cc4cc9acd56023c0dcf49d5f072a6c6d0`）；本地临时副本删除后，`read_path` 仍读回完全相同 JSON。临时工作区文件已删除，PG 中保留此不可变开发 SourceIngress 记录作为精确读回证据，`production_admission=false`。
+- 本修复仅闭合 Corrected Owner Core 收据的文件→PG读取断点；尚未实际运行该旧支线完整 Core 算法，也不改变报告中 Focus 自动写入、正式来源/PIT、28766 服务重载、完整浏览器矩阵等未完成项。
+
 ## R4.12 冻结合同消费者改为 PG-only（2026-10-18）
 
 - 定向读链扫描发现 `FrozenContracts` 在 Structure/Health/Breakout 每次运行时仍直接读取冻结入口及合同文件。入口、16 份 frozen contracts 与外部 freeze acceptance 共 18 份源均为当前 clean Git revision；逐项核对合同声明 SHA/bytes 后，以 `git:<revision>:<path>` provenance 登记到唯一开发 PG，并逐字节读回。未修改合同文本或审批状态。

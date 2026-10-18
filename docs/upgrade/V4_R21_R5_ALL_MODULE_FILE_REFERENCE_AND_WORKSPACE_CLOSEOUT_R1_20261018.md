@@ -65,3 +65,11 @@
 - 本机共用 PG `market_research` OID 646711 上本续行读取的候选为 `v4_research_30b2798be6cbcc7448dd4c66`，T0 2026-09-30；候选写入/读回不改变 accepted Head。浏览器仅连开发端口 28766；28765 未触碰。
 - 本续行共修改 6 个 V4 现役代码文件；未改非 V4 调用点。源码核验限定为定向 Python 编译、Node ESM 语法解析和 diff whitespace 检查，不运行全套测试、重复基线扫描、GitHub CLI 流程测试或 Actions。
 - 现役 V4 PG 候选代码修复累计 265/266 个历史 P1 调用点（1 个非 V4 调用点 out of scope）；正式历史 edge→T0/namespace/accepted publication Head 对账仍 0/266，22 条历史 reference edge（21 唯一调用点）无可用精确映射，3 条旧 governance 行缺 expected blob SHA。现库仍无当前批准 runtime/current-read Registry 合同且无 accepted operational publication Head；本轮没有伪造审批或切换正式 Head。正式合同/Head 与生产 28765 项保持单独授权状态。
+
+## 继续完成的历史治理 PG 读取修复（2026-10-18）
+
+- 修复 `historical_stage_governance_r17.py` 的三个现役治理调用点（稳定基线 ID：`V4-BCA-R2-33ff91eb2cc7f9242d1b`、`V4-BCA-R2-d8f1515f20b63e2ab89c`、`V4-BCA-R2-c53955269a0f76785382`）：`registry`、`protected_bytes`、`current_state` 所用的精确 source/archive bytes 改为从 PostgreSQL ingress 直接读入内存；删除 PG 内容物化到临时 Workspace 再 `read_bytes()` 的运行时路径。历史 Git blob 仅作显式归档来源身份比对，不作为文件读取回退。
+- 修正 `current_state()` 的阶段选择：Data Head 的 `stage_head` 是其原始 T0 的历史绑定（V4-10），当前已接受阶段从 PG ingress→CurrentStageAuthority→Stage Head/Owner 链读取。函数再核对 Stage Authority 的 Data Head SHA 和内容与 PG canonical Data Head 完全一致，避免旧历史阶段误判当前状态。
+- 现场共享 PG `market_research` 中发现注册表绑定的静态归档 `reports/r17a/source_archive/static/data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json` 缺一条 ingress fact。按其登记路径、SHA-256 `83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be` 和 4,142 字节 exact archive 一次性写入同一 PG ingress，并读回校验 path/SHA/长度。此为源事实 ingress，不是正式 Head 或业务数据替换。
+- 定向现场调用：当前 Stage=`V4_00_TO_V4_15_ACCEPTED`，`historical_stage_governance_r17.current_state()` 返回 `PASS`、T0 `2026-09-30`、`production/shadow/focus/global_mandatory_adoption=false`。未改 Data Head、Owner、publication Head 或生产服务。
+- 本次追加修改 1 个现役 V4 Python 文件，覆盖 3 个基线稳定调用点；待定向编译、diff、暂存准入，随后提交推送。非 V4 仍只登记。

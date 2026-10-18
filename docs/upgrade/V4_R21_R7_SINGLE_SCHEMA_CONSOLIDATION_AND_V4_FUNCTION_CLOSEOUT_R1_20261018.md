@@ -477,3 +477,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 在代码推送后再次由项目连接层建立 `REPEATABLE READ READ ONLY` 事务并读回：`market_research` / OID `646711` / `127.0.0.1:5432`，用户 `postgres`，`transaction_read_only=on`；`v4` 与 `v4_*` 名称查询仅返回 `v4`，目录 123 张表、5 个序列、0 个视图，`v4` 到其他非系统用户 Schema 依赖为 0。
 - 实测监听端口为 PostgreSQL `5432` 与开发服务 `28766`；`28765` 当前未监听，未启动或操作生产服务。续修提交 `f529970b8`（移除退役 Shadow writer）和 `67b88781a`（精确校验旧 Forward locator）均已推送到 `origin/codex/v4-workspace-cleanup`，远端 ref 与本地 HEAD 相等。
 - 这次目录核验确认单 Schema 实际结果仍成立，不追补缺失的历史 DROP 收据，也不改变 S3/DB-05、DB-07、外部来源、日更或全模块状态。
+
+### 2026-10-19 10-15 交易日 TDX 回溯文件补采与固定 SourceIngress 读回
+
+- 用户纠正本轮目标交易日为 `2026-10-15`。调用项目既有官方 TDX 捕获合同核对该日时，官方页公布的最新更新日期为 `2026-10-16`，因此 10-15 目标查询返回 `WAIT_TDX_PUBLICATION`；精确页、更新信息与捕获回执绑定均只作为来源元数据写入固定 `v4` SourceIngress，不将元数据当作 10-15 行情包。
+- 按同一合同捕获官方 10-16 包：`https://data.tdx.com.cn/vipdoc/hsjday.zip`，549,184,442 字节，SHA-256 `c0ea0dffad66e06351596fb3855ffde0d80536e3d962867a09f42ddf32448219`，官方 update date `2026-10-16`。ZIP CRC 校验通过，12,205 项、解压 949,447,040 字节。该包于 10-18 捕获并晚于目标日，故仅作为回溯重建来源。
+- 从该包只读提取 10-15 的 32 字节 `.day` 原始记录，保留包 SHA、成员路径及 SHA、原始记录字节及 SHA；不使用 10-16 或更晚记录。经严格顺序/长度核验的目标日成员为沪 4,869、深 4,506、北 352，共 9,727。排除 `sh000833.day`（历史段非递增）及 `sz131804.day`、`sz131807.day`（空文件）。抽取文件 5,143,445 字节，SHA-256 `aa9c9689b19251fcb5335234b4d28c5797214851738a78d3cc1239cfd7e880ca`，过程证据位于 `G:\codex_tmp\v4_tdx_target_20261015_from_20261016.jsonl`。
+- 抽取物以 `TDX_OFFICIAL_PACKAGE_TARGET_DAY_EXTRACT_RETROSPECTIVE_NON_PIT` 明确身份写入历史 SourceIngress；开发库精确路径/摘要读取回读字节相等。抽取内代码身份仅来自 TDX 文件名，尚未和 10-15 接受 Universe/代码身份 Owner 对接。状态保持 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`、`formal_accepted=false`；未创建 Source Package、Universe、日历、Publication 或任一 Head。
+- 写入后独立 `REPEATABLE READ READ ONLY` 复核为 `market_research` / OID `646711` / `127.0.0.1:5432`、`transaction_read_only=on`；V4 命名空间仍仅 `v4`。`source_packages`、`source_package_facts`、`market_calendar_sessions`、`publications`、`publication_heads`、`operational_research_heads` 仍各 0 行。该补采为 10-15 DEV 回溯输入，不解除独立签发、Accepted 日历、真实 Universe/Owner 或生产门。

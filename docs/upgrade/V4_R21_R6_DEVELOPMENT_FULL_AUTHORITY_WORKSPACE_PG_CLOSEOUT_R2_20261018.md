@@ -89,3 +89,4 @@
 - 在已运行的 `127.0.0.1:28766` 实际浏览器页进入“数据与诊断 → 日更与失败状态”，页面与 API 均返回同一候选上下文：T0=`2026-09-30`，事件33、Focus469、Forward117、Market1、Sector378、结算5、来源4、股票5213。展开“查看快照缺口与日更状态”后证实 `SOURCE_INCOMPLETE`、`worker_started=false`、`source_requests=0`，原因 `PG_CANDIDATE_DOES_NOT_CONTAIN_DAILY_WORKER_RECEIPTS`，策略 `NO_WORKSPACE_RECEIPT_FALLBACK`。
 - 市场页实测显示盘后截面、宽度分母5,224/实际行情5,213、上涨2,344/下跌2,712/平盘155/未知13及成交额14,378.36亿元；点击展开上证指数后真实走势图可见，收盘3,842.19，并明确显示指数成交量原始单位待核实。页面继续标注 `PG 候选快照·不代表正式 Head`。
 - 这补齐了日更诊断抽屉与市场图表两个实际交互点；它们仍是候选态功能核验。没有启动日更写入进程，没有改动 Joint authority，也没有触碰28765。
+- 另从实际 DM-01 运行入口调用 `current_parent()` 做只读全链核验：PG 返回 accepted trade date `2026-09-30`、Head SHA `38e7c9b6…bae08`、9项组件；accepted chain、机器接受记录、组件权限、9个组件产物与回执均校验通过，状态 `DM01_PG_PARENT_READ=PASS`。这证明现行DM-01接受Head读链在PG端实际可用，不等于本次下一交易日已接受；目标增量仍受中间交易日官方源包缺失门禁约束。

@@ -370,4 +370,4 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 ### 当前接受来源与日更 Head 阻断事实复核
 
-- 配置 `config/v4_daily_source_acceptance_authorities_r1.json` 现场仍为 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED`，`issuers` 为空。当前 DB RR/RO 只读计数 `market_calendar_sessions=0`、`source_packages=0`、`source_package_facts=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`；`v4.daily_core_result_snapshots` 与 `v4.daily_core_result_rows` 固定表已部署，但当前目录统计为 0 行/0 live tuples；市场日历表也为空。缺失的独立签发来源与日历/Head 无法由本机工程探针代替，日更/Accepted 门继续关闭。
+- 配置 `config/v4_daily_source_acceptance_authorities_r1.json` 现场仍为 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED`，`issuers` 为空。当前 DB RR/RO 只读计数 `market_calendar_sessions=0`、`source_packages=0`、`source_package_facts=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`；`v4.daily_core_result_snapshots` 与 `v4.daily_core_result_rows` 固定表已部署；RR/RO `COUNT(*)` 确认为 0。相同事务内 `market_calendar_sessions`、`source_packages`、`source_package_facts`、`publications`、`publication_heads`、`operational_research_heads` 的精确计数也全为 0。缺失的独立签发来源与日历/Head 无法由本机工程探针代替，日更/Accepted 门继续关闭。

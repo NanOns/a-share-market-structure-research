@@ -1,8 +1,6 @@
 -- FEP_E5_ENGINEERING_LEDGER_V1. Explicit isolated engineering namespace, not production migration.
 DO $$ BEGIN
- IF current_database()='market_research' THEN
-  RAISE EXCEPTION 'V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED';
- END IF;
+ RAISE EXCEPTION 'V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED';
 END $$;
 CREATE SCHEMA IF NOT EXISTS fep_e5_engineering;
 CREATE TABLE IF NOT EXISTS fep_e5_engineering.models(

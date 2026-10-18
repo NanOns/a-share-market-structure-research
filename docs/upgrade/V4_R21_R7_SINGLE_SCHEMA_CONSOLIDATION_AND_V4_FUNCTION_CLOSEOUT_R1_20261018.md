@@ -166,5 +166,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 复核发现历史 R4 `scripts/execute_r4_next_acceptance_r1.py::db_receipts()` 仍会连接 55547 隔离 PostgreSQL 并执行 `DROP SCHEMA fep CASCADE`。该入口现于任何连接前直接 fail-closed；不再保留该数据库探针。
 - `tests/fep_e5/test_canonical_authority_read.py` 旧隔离 SQL 测试改为只读来源发现测试。`CanonicalExpectancyReadAPI` 与 FEP canonical identity availability reader 均不再查询旧 `fep.*`，在 `v4` 固定 FEP 表迁移合同缺失时返回/记录 `V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED`，且不进行 PG 读取或写入。对应身份负例测试改为纯内存输入核验。
+- 追加盘点后，E1 dataset writer/migration、FEP metadata register、trusted-authority candidate reader 与 canonical ledger 的数据库读写入口也全部先行拒绝，或在 inventory 中返回未就绪；均不会接触旧 `fep.*`。真实数据库继续只读确认 `market_research` / 5432，业务 Schema 仅 `public`,`v4`，v4 FEP 命名关系 0；28766 PID 17632 仍在监听，28765 无监听。
+- 全仓 `src/workbench_service`、`src/workbench_analysis`、`src/workbench_db` 的 Python 数据访问静态扫描，已无 `fep.*` SQL 引用；standalone FEP SQL fixture 现在对任意数据库在首个 `CREATE SCHEMA` 之前直接报迁移缺失。数据库保护测试在仅禁止 `execute()` 的假连接下覆盖上述 E1/E5 writer、migration、authority 与 inventory 边界。
+- 额外收集旧 `tests/fep` 与 standalone E5 PostgreSQL 回归时，FEP fixture 已在建连前跳过；结果为 43 passed、13 failed、268 skipped。13 项未计验收：其中历史 FeatureOwner/Pipeline 用例的直接开发库读取被仓库隔离插件拒绝；其余主要期望旧的合成 FEP Owner 状态或旧迁移清单。未创建/连接隔离 PG、未写入共享 PG。单 Schema 与 fail-closed 定向验收独立结果仍为 16 passed。
 - 28766 真实浏览器复看 `/v4/research/forward?view=fep`：范围仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，质量及当前观察覆盖不可得，未训练预测槽为 `PENDING`；没有声明生产模型验收。
-- 新增定向覆盖与单 Schema guard 合跑 `15 passed`；仓库暂存 Blob 准入检查通过，精确提交 `7fbd6606f` 已推送至 `codex/v4-workspace-cleanup`。没有连接 55547、没有新增数据库/Schema、没有改动 PG 事实。FEP 固定表迁移与缺失业务源仍未完成，整体阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。
+- 扩展入口封闭后的定向回归与单 Schema guard 最新结果 `16 passed`；仓库暂存 Blob 准入检查通过。隔离探针修复提交 `7fbd6606f` 与首次读入口修复提交 `8bf9bc519` 已推送至 `codex/v4-workspace-cleanup`；本段扩展入口封闭代码和本报告仍待本次精确提交。没有连接 55547、没有新增数据库/Schema、没有改动 PG 事实。FEP 固定表迁移与缺失业务源仍未完成，整体阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。

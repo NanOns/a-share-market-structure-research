@@ -335,6 +335,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 日更页真实显示开发快照 T0 `2026-09-30`、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、后台 worker 未启动；“检查数据源、立即补齐、自动更新设置、重试失败日、取消未发布部分”按钮均为 disabled，未执行触发操作。页面说明为只读 PG 状态预览，不创建日更任务或后台进程。
 - 随后恢复浏览器到个股详情日线/QFQ `120/253`；本轮浏览器 error/warn 日志为空。28765 未触碰。
 
+### 2026-10-19 Home 风险来源缺失提示续修
+
+- 在真实 28766 `/v4/research/home` 页面发现风险 Owner 未绑定时，Home 将空 `risks` 列表误显示为“该已处理截面没有 owner 发出的风险变化”，把来源缺失混成无变化。修复 `static/research/app.js` 的空状态分支：有已绑定 risk Owner 才显示无风险变化；Owner 未绑定或来源不完整时显示缺失原因并明确“不能判定没有风险变化”。
+- 直接重载 28766 浏览器页面并等待完整异步渲染，真实页面现显示 `DATED_OPERATIONAL_RISK_CHANGE_OWNER_NOT_PRESENT；不能判定没有风险变化`；候选 T0 `2026-09-30`、股票/板块计数和市场四轴仍按原候选快照渲染。此次只改开发前端静态代码并由 28766 在线资产读取，无 DB 写入、服务重启或 28765 操作。Risk 来源与业务验收仍为 `SOURCE_INCOMPLETE`。
+
 ### 2026-10-19 FEP 后最终 Schema 目录与 ACL 复核
 
 - 在 `market_research` / OID `646711` / `127.0.0.1:5432` 以 `REPEATABLE READ READ ONLY` 事务重新查询最终目录。当前用户 `postgres`，事务 `read_only=on`；`v4`/`v4_*` 命名空间结果仅 `v4`。目录中固定表 121、索引 219、序列 5；视图/物化视图 0；例程 84、非内部触发器 182、用户定义类型 244（含 PostgreSQL 自动数组类型）。该组是 FEP 068 后的当前 `pg_class`/`pg_proc`/`pg_trigger` 口径，覆盖并更新此前 FEP 迁移前的 86 表及 232 关系类快照。

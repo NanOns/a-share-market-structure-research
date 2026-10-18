@@ -148,11 +148,12 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 固定 V4 命名空间中 `model_namespaces` 存在；当前 FEP 运行页仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。本次目录只读盘点未发现 v4 中的 FEP 领域表，因此不能把旧 FEP `fep`/`fep_e5_engineering` fixture 迁移代码算作统一 Schema 完成，也未通过旧 fixture 写入该模块。需在任务合同允许的数据来源及 FEP 固定表迁移方案下继续处理；现有界面保持只读、生产未授权、未训练槽 Pending。
 - 对运行时代码和应用服务代码进行 `CREATE SCHEMA` / Schema 身份静态扫描：常规 Forward、History、Journal、ReadIndex、Owner、Jobs、Research 入口都经 `v4_native.connection/create_schema`，后者仅校验预置 `v4`。发现的旧 Shadow schema 构造器触库前抛错，Shadow 导出入口也 fail-closed；历史迁移 SQL、显式 Phase-0 bootstrap 及隔离测试/脚本未执行。
 - 后续检查 FEP fixture 发现 `fep_e5.canonical_ledger.apply()` 可执行路径传入的旧 SQL migration；standalone `fep_e5/schema.sql` 也可创建旧 engineering Schema。已禁用旧 migration executor（缺少 v4 固定表迁移合同前直接 fail-closed），并在 standalone SQL 顶层拒绝 `market_research`；原 FEP migration rollback 测试不再克隆 PostgreSQL 数据库，改为验证 fail-closed。与单 Schema guard 合跑 9 项纯定向用例，`9 passed`，没有连接或写入 PG。这只停止非统一 FEP fixture 扩张，未迁移或虚构任何 FEP 领域表；现有 FEP 页面仍仅是历史工程证据，模块验收保持 PARTIAL。
+- 2026-10-19 FEP 护栏提交后重新只读连接确认 DB `market_research` / `127.0.0.1:5432`、`transaction_read_only=on`，非系统 Schema 为 `public`,`v4`，`v4` 中 FEP 命名关系为 0。非历史迁移的应用源码 Schema-creation 静态扫描只剩：`NativeShadowDatabase` 构造器首行 fail-closed 后的不可达旧实现，以及当前数据库名受保护的 FEP fixture SQL；没有触碰 PG。
 
 ### Workspace 清点续记
 
 - `G:\codex_tmp` 直接子目录实测：`v4_repository_governance_r3_20261016` 4,675,814,273 字节，含 WP3 recovery freeze、bundle、unreachable-object 与 owner-source/LFS 核验材料；`r7_active_baseline_20261015` 2,255,654,812 字节，当前仍有 5 个 tracked diff、独有 untracked source/data/docs/runtime 和长路径；`R20_R1_20261017` 833,189,333 字节；`v4_r6_tdx_20261016` 568,127,024 字节；`v4_historical_source_ingress` 276,321,223 字节；`test_temp` 473,341,452 字节。扫描时没有发现这些目标路径被其他进程使用，前述恢复证据/源码改动/行情及 SourceIngress 内容仍无法证明可以重建，均未删除。该实测不支持“已清理 2.67 GB”的旧汇报口径。
-- 本轮新建的只读复核脚本和单测临时目录按 G 盘临时路径创建；结束后尝试删除确认为本轮生成的 3 个脚本及 `test_temp\v4_single_schema_guard_r7_recheck`，文件操作自动审核拒绝。未尝试其他删除/移动方式，也未修改保留目录。DB-11 仍为 PARTIAL，待允许的文件清理操作可执行且逐项证明可重建后续办。
+- 本轮新建的只读复核脚本和单测临时目录按 G 盘临时路径创建；结束后尝试删除确认为本轮生成的 3 个脚本及 `test_temp\v4_single_schema_guard_r7_recheck`，文件操作自动审核拒绝。随后新增的 `v4_fep_single_schema_ro_recheck.py` 仍留在 G 临时目录；未尝试其他删除/移动方式，也未修改保留目录。DB-11 仍为 PARTIAL，待允许的文件清理操作可执行且逐项证明可重建后续办。
 
 ### 原 266 基线与本轮 Delta
 

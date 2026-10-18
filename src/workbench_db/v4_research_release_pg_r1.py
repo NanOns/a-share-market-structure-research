@@ -69,12 +69,15 @@ def _central_table_manifest(pg,release_id,storage_kind):
 
 
 def resolve_legacy_schema(pg,schema):
-    """Resolve only an exact, already-migrated schema; never inspect it."""
-    if not isinstance(schema,str) or not schema.startswith('v4_research_'):
+    """Resolve an exact, fully verified legacy locator without inspecting it."""
+    if not isinstance(schema,str) or not re.fullmatch(r'v4_research_[a-f0-9]{24}',schema):
         raise ValueError('PG_CANDIDATE_RELEASE_ID_REQUIRED')
-    rows=pg.execute('SELECT DISTINCT canonical_version FROM v4.legacy_schema_migration_map WHERE source_schema=%s ORDER BY canonical_version',(schema,)).fetchall()
-    if len(rows)!=1:raise ValueError('LEGACY_SCHEMA_RELEASE_MAPPING_NOT_UNIQUE')
-    return rows[0][0]
+    rows=pg.execute('SELECT canonical_version,verification FROM v4.legacy_schema_migration_map WHERE source_schema=%s ORDER BY source_table',(schema,)).fetchall()
+    versions={row[0] for row in rows}
+    if len(versions)!=1:raise ValueError('LEGACY_SCHEMA_RELEASE_MAPPING_NOT_UNIQUE')
+    if any(not isinstance(row[1],dict) or row[1].get('status')!='VERIFIED' for row in rows):
+        raise ValueError('LEGACY_SCHEMA_RELEASE_MAPPING_NOT_VERIFIED')
+    return next(iter(versions))
 
 
 def load_release(pg,release_id,*,verify_content=True):

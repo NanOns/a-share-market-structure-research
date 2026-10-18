@@ -295,3 +295,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 在应用 067 Owner publication binding 修复后，按唯一开发服务约束停止并重启了 `127.0.0.1:28766`；首次启动因子进程缺少项目 `PYTHONPATH` 退出，补齐 `PYTHONPATH=G:\\codex work\\大A交易\\src` 后同一入口成功运行。28765 全程未启动或重启。
 - 通过当前内置浏览器实际打开候选个股详情 `/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9`，页面完成实际 PostgreSQL 数据渲染：候选 T0 `2026-09-30`、候选而非正式 Head；日线实际成交图表 `120/253` 根；详情中收盘价、成交量、成交额、均线、波动等候选值可读，Owner/历史证据不足字段继续显示“来源能力不足”，并列出缺失的 followup/失效合同证据。页面可用不被计为 Accepted、PIT 或模块验收通过。
 - 本次重载与浏览器复核没有产生 PG 写入、Schema 新建或生产切换；此项仅确认修复后的固定 Schema 开发版本能够通过真实页面读取现存候选数据。Publication/Publication Head 仍为空，端到端 Accepted Owner 写读继续待真实来源与 Head 门满足后执行。
+
+### 2026-10-19 历史 Research locator 精确回执收紧
+
+- 静态审查确认 `resolve_legacy_schema()` 没有现役调用者，但仍接受任意 `v4_research_` 前缀并只按 canonical version 去重。将其收紧为冻结的 `v4_research_<24位小写hex>` 形式，并要求该来源 Schema 的全部版本映射都带 `verification.status=VERIFIED` 后才返回唯一 canonical release；该函数只查询 `v4.legacy_schema_migration_map`，不连接或扫描历史物理 Schema。
+- 新增纯读回夹具覆盖非法 locator 在触库前拒绝、混合/未验证映射拒绝、完整验证映射成功。定向用例 `3 passed`，相关文件 `py_compile` 与 `git diff --check` 通过；本补丁没有访问 PG 或改变候选数据。

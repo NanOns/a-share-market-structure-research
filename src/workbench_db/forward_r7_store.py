@@ -674,8 +674,9 @@ class ForwardR7Store:
                             or run.get('run_id') != run_id or run.get('source_run') != bundle.get('source_run')
                             or run_source_sha != expected_payload_sha):
                         raise ValueError("FORWARD_R7_PUBLISHED_FACT_CHAIN_MISMATCH")
-                    eligible.append((schema, index, index_key, index_fact_sha, daily_key,
-                        daily_fact_sha, aggregate_key, aggregate_fact_sha, run_key, run_fact_sha,
+                    eligible.append((schema, index, index_key, index_fact_sha, index_source_sha,
+                        daily_key, daily_fact_sha, daily_source_sha, aggregate_key, aggregate_fact_sha,
+                        aggregate_source_sha, run_key, run_fact_sha, run_source_sha,
                         bundle, expected_payload_sha))
                 except (TypeError, ValueError, KeyError, json.JSONDecodeError):
                     invalid_matching_records += 1
@@ -693,8 +694,9 @@ class ForwardR7Store:
                 offset=offset, has_next=False, reason='R7_AUDIT_NAMESPACE_AMBIGUOUS_FOR_CANDIDATE_T0',
                 binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
 
-        (schema, index, index_key, index_fact_sha, daily_key, daily_fact_sha,
-         aggregate_key, aggregate_fact_sha, run_key, run_fact_sha, bundle, payload_sha) = eligible[0]
+        (schema, index, index_key, index_fact_sha, index_source_sha, daily_key, daily_fact_sha,
+         daily_source_sha, aggregate_key, aggregate_fact_sha, aggregate_source_sha,
+         run_key, run_fact_sha, run_source_sha, bundle, payload_sha) = eligible[0]
         groups = []
         for key_text, counts in bundle.get('groups', {}).items():
             parts = key_text.split('/')
@@ -715,10 +717,10 @@ class ForwardR7Store:
                 source_run_id=index.get('source_run_id'), published_at=index.get('published_at'),
                 published_payload_sha256=payload_sha,
                 facts={
-                    'publish_index':dict(key=index_key,sha256=index_fact_sha),
-                    'daily_universe':dict(key=daily_key,sha256=daily_fact_sha),
-                    'aggregate_stats':dict(key=aggregate_key,sha256=aggregate_fact_sha),
-                    'pipeline_run':dict(key=run_key,sha256=run_fact_sha),
+                    'publish_index':dict(key=index_key,sha256=index_fact_sha,source_sha256=index_source_sha),
+                    'daily_universe':dict(key=daily_key,sha256=daily_fact_sha,source_sha256=daily_source_sha),
+                    'aggregate_stats':dict(key=aggregate_key,sha256=aggregate_fact_sha,source_sha256=aggregate_source_sha),
+                    'pipeline_run':dict(key=run_key,sha256=run_fact_sha,source_sha256=run_source_sha),
                 }))
 
 

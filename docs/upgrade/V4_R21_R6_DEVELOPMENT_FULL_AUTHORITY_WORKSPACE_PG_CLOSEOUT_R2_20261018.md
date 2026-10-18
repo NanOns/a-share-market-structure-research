@@ -302,5 +302,5 @@
 
 - 只读追踪 R14 promotion validator 时，发现它的 R17 `exact()` 只查 inline SourceIngress，不能解析已存在的 chunked SourceIngress package。修复为：inline 明确 NOT_FOUND 后再按同 path/SHA 读 PG package；其他错误仍失败关闭，未加工作区回退。定向 18 项测试通过；`exact()` 对 PG 内 72,536,853 字节、3 chunk 的 R10 候选包实际读回 SHA 与 Head 完全一致。
 - 恢复三个完全可校验的缺失对象到同一 PG SourceIngress：R19 静态归档 `scripts/validate_v4_12_promotion_r14.py` 的 Git 原始 blob（3,948 bytes，精确注册 SHA）；R14 Head 绑定配置 `config/v4_12_active_selector_vectors_r12.json`（19,020 bytes，仓内字节与 Head SHA 一致）；R10 runtime package（72,536,853 bytes，三块 package）。三个对象写后均按其精确 PG descriptor 读回；不改 accepted Data/Stage/V4-12 Head 或权限。
-- R14 历史六轮绑定共 1,718 项，首次盘点时 40 项已在 PG、1,678 项缺失，缺失绑定合计 598,763,135 bytes。为区别“当前业务事实/运行依赖”与大批历史验收证据，批量补档仅推进 50 项；50 项均来自 Head 精确绑定，仓内长度/SHA 匹配且 PG 读回通过，失败 0。其余历史证据未继续无差别导入；R14 validator 尚未全链通过，不能据此声称 V4-12 验收或现役模块验收完成。
+- 口径澄清：R20/R21 的 266 是业务文件读取调用点；本条 1,718 是 R14 Head 的 R8–R13 历史验收/运行证据文件绑定数（每个 path+SHA 一项），不是新增业务文件数或调用点数，也不是本轮现役业务文件迁移清单。首次盘点时这 1,718 项里 40 项已在 PG、1,678 项缺失，缺失绑定合计 598,763,135 bytes。历史证据批次推进 50 项后即停止扩量；50 项均来自 Head 精确绑定，仓内长度/SHA 匹配且 PG 读回通过，失败 0。其余历史证据未继续导入；R14 validator 尚未全链通过，不能据此声称 V4-12 验收或现役模块验收完成。
 - 本阶段下一步仍是聚焦现役业务文件/运行链的 PG read/write 与 28766 实际功能；历史轮次只有在被明确证明为现役调用依赖后再按确切 Head binding 补齐。正式生产切换与最终生产包继续关闭。

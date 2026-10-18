@@ -214,3 +214,9 @@
 - 候选 Cohort API 现把上述独立审计及证据摘要写入嵌套、顶层响应；来源页按历史工程审计呈现日期和绑定口径，缺数据时显示明确 reason，避免把缺 Owner 误报成 SQL 故障。Research 与兼容前端状态文案同步修正。
 - 使用 `v4_research_7f5f6c66a4681999ca5420f5` / T0 `2026-09-30` 的实际 PG Reader 与更新后 BFF 直接联验，HTTP 200、审计 READY、5624 个股票/板块分母，四类发布事实证据均在；定向测试 3 passed，修改 Python `py_compile`、两个前端 JS `node --check`、`git diff --check` 均通过。另一个合并测试调用中，两项旧 CoreProduct mock 测试因仓库隔离插件拒绝共享 PG 连接而未执行；未关闭或绕过隔离。
 - 28766 当前服务进程仍是已知候选启动器；本机执行策略拒绝了重载该进程的命令，故尚未将“代码直验”描述成已运行服务/浏览器实页复验。28765 未触碰。待后续可安全重载 28766 时再补该项实页证据。
+
+## 28766 Forward 结算嵌套字段展示订正（2026-10-18）
+
+- 复核 `forward/settlement` 原始 PG 响应后订正上一段误判：期限、状态、到期日和结果指标在 `items[].fields` 嵌套投影内；上一轮只看顶层行字段，错误称这些字段未投影。该 PG T0 下共有 117 个候选 enrollment、585 条期限状态记录，期限为 T+1/T+3/T+5/T+10/T+20；585 条均为 `PENDING`，成熟合格为 0，收益与路径指标均为 `UNKNOWN / NOT_YET_DUE`。没有接受后续日输入时，due date 继续为未知。
+- Research Forward 结算视图现读取嵌套 `fields`，按证券、期限、状态展示；展开行显示 due date 质量/原因、评价修订、AS_RECORDED 与历史 PIT 状态、期限收益、MAE、MFE、收盘路径回撤及各自质量原因。摘要明确显示 200/585 分页、状态数和成熟数，同时保持 PG 候选/非正式 Head 说明。
+- 真实 28766 浏览器页加载新前端后验证摘要为 `200 / 585`、`PENDING 585`、成熟 `0`；展开第一行显示 T+5、PENDING、`NOT_YET_DUE` 及四项 `UNKNOWN` 指标原因。通过 `/api/v4/forward/settlement` 和 `/api/v4/forward/statistics` 实测数据一致；这项只修正展示，不回算或写入结算结果。

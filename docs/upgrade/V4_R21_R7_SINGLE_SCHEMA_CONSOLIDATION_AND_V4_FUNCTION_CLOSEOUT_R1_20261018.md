@@ -361,3 +361,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `/v4/research/forward?view=settlement` 显示 T0 `2026-09-30`、当前页 5/5 个期限投影、状态记录 5、`PENDING` 5、成熟合格 0；均为候选快照，不作为正式 Head 或 T0 可知证明。
 - `/v4/research/data-update` 实际页面显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`、worker 未启动、只读预览；检查源、补齐、自动更新、失败重试、取消均禁用，作业进度表为空。未触发任何写操作。
 - `/v4/research/market` 实际显示盘后候选 T0 `2026-09-30`：上涨 2,344、下跌 2,712、平盘 155、不可判定 13；分母 5,224、行情 5,213、成交额 14,378.36 亿元；涨跌停统计 56/12/11/1。官方/媒体事件源未绑定，页面不宣称实时状态。
+
+### 2026-10-19 迁移回执目标连接与 Forward 索引计划复核
+
+- 当前 `market_research` 的 RR/RO 事务读回迁移台账：Research 169/169、Forward 9,256/9,256、History 11/11、Owner 7/7、ReadIndex 16/16、Journal Registry 7/7、Jobs 历史 8/8 和 Jobs 版本 1/1 均为 `VERIFIED`。Forward 9,256 条回执与 `v4.forward_facts` 按 `(workspace_namespace,kind,fact_key)` 精确连接；缺目标或目标 SHA 不符为 0，回执 `target_sha256=payload_sha256` 为 9,256/9,256。此项证明现有迁移台账对应目标行仍在，不能替代逐来源业务语义/活跃消费者验收。
+- 只读 `EXPLAIN (FORMAT JSON)` 使用当前真实 workspace namespace 检查 `forward_facts`：精确 `(workspace_namespace,kind,fact_key)` 查找使用 `forward_facts_pkey`；`source_path + source_origin` 的有界候选查找使用 `forward_source_ingress_path_origin_sha_r1` 并有 `LIMIT 2`。没有实际读取大 payload 的 ANALYZE 扫描。
+- 当前目录统计尺寸：`forward_facts` 6,219,431,936 B（统计估计 live/dead tuples 9,280/37），`forward_legacy_evidence_r1` 8,394,104,832 B（2,457/0），`forward_r7_facts_r1` 2,182,561,792 B（312/0）；尺寸含 TOAST/索引，行数为 PostgreSQL 统计估值，不当作精确业务计数。

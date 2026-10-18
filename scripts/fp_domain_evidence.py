@@ -26,7 +26,15 @@ def enter(stage):
     else:out=ROOT/f'docs/evidence/fp{stage:02d}_20261008'
     if (out/'ENTRY.json').exists():raise ValueError('FROZEN_STAGE_RECEIPT_REQUIRES_NEW_NAMESPACE')
     tracked=subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode('utf-8').split('\0')
-    protected=[ref(path) for path in tracked if path and (ROOT/path).is_file()]
+    protected_paths=[]
+    for path in tracked:
+        if not path or not (ROOT/path).is_file():continue
+        candidate=Path(path)
+        code_or_contract=path.startswith(('src/','scripts/','tools/','config/'))
+        accepted_head=path.startswith('data/v4/') and 'HEAD' in candidate.name and candidate.suffix=='.json'
+        if code_or_contract and not path.startswith('config/v4_static_byte_archive_r19/') or accepted_head:
+            protected_paths.append(path)
+    protected=[ref(path) for path in protected_paths]
     write(out/'ENTRY.json',dict(stage=f'FP{stage:02d}',contract=f'FP{stage:02d}_DOMAIN_DELIVERY_V1',
         baseline=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         task=dict(source='USER_SUPPLIED_CURRENT_R2_DRIVE_TASK_CARD'),

@@ -238,6 +238,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 现役 Shadow 旧 writer 在建立 PG 连接前 fail-closed；FEP E5 旧 `schema.sql` 先抛出固定存储迁移错误，后续旧 DDL 不会执行。代码库中仍能静态搜索到这些不可达的历史 DDL 文本；没有任何运行路径可执行它们。Risk Owner 的陈旧注释已改为明确说明物理 locator 固定为 `v4`、版本身份来自 `token/T0/digest`。
 - 回归期间没有写业务 PG、创建 Schema、签发 Head 或触碰 28765。S1 的运行期防扩散边界继续为 `PASS`；S3 清理执行证据、Accepted 来源/日历、成熟结算、完整日更及其他模块门仍按当前矩阵保持 `PARTIAL`。
 
+### 2026-10-19 现场目录与服务槽复核
+
+- 再次从项目 Reader DSN 建立显式 `REPEATABLE READ READ ONLY` 事务，实查 `market_research` OID `646711`、`127.0.0.1:5432`，`transaction_read_only=on`；V4 目录仅 `v4`（123 表、5 序列、85 例程），无 `v4_*`，跨 V4 Schema 依赖 0。端口实查为开发服务 `28766` 正在监听，生产端口 `28765` 未监听。
+- 本次复核只读，无数据库写入、服务重启、Head/Publication 改动或 28765 操作；此结果确认 DB-01 的当前目录事实，不补足 DB-05 缺少的历史逐项 DROP 执行方式收据，也不改变其 `PARTIAL` 状态。
+
 ### 2026-10-19 个股详情周期切换续验
 
 - 真实浏览器打开候选个股三一重能 `/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9`。详情实际显示截至 `2026-09-30` 的日线 `120/253` 根、周线 `54/54` 根、月线 `13/13` 根；逐项操作“行情周期”控件后，状态/蜡烛图容器均完成重新加载。页面同时显示按目标日坐标的前复权口径、成交量单位为股、成交额单位为元。

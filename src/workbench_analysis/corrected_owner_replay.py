@@ -51,10 +51,41 @@ def checked(root, binding):
         raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))+':'+str(error)) from error
 
 
-def gzwrite(root, path, rows):
+def checked_pg(root, binding):
+    """Resolve an exact historical input from PG; this replay has no disk fallback."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes, read_package_bytes
+    try:
+        return bound_bytes(root, binding)
+    except (OSError, KeyError, ValueError) as error:
+        if not isinstance(error, ValueError) or str(error) != 'HISTORICAL_SOURCE_INGRESS_NOT_FOUND':
+            raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))+':'+str(error)) from error
+        try:
+            package = read_package_bytes(root, binding['path'], binding['sha256'])
+            if binding.get('bytes') is not None and len(package['raw']) != binding['bytes']:
+                raise ValueError('CORRECTED_PG_PACKAGE_SIZE_MISMATCH')
+            return package['raw']
+        except (OSError, KeyError, ValueError) as package_error:
+            error = package_error
+        raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))+':'+str(error)) from error
+
+
+def pg_json_source(root, relative_path):
+    """Read an exact, previously ingressed project source; never fall back to disk."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    source = read_path(root, Path(relative_path).as_posix())
+    if not isinstance(source.get('value'), dict):
+        raise ValueError('PG_JSON_SOURCE_NOT_OBJECT:' + str(relative_path))
+    return source['value']
+
+
+def gzwrite(root, path, rows, *, pg_ingress=False):
     raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
+    compressed = gzip.compress(raw, mtime=0)
     from common.paths import resolve_tdx_root
-    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=resolve_tdx_root(root))
+    _atomic_write(path, compressed, tdx_root=resolve_tdx_root(root))
+    if pg_ingress:
+        from .r43_owner_replay import _ingress_candidate_bytes
+        _ingress_candidate_bytes(root, path, compressed)
     return ref(root, path)
 
 
@@ -119,7 +150,7 @@ def midrank(returns, members):
 
 
 def materialize_core(root, dates=None):
-    root = Path(root).resolve(); policy = load(root/CONTRACT)
+    root = Path(root).resolve(); policy = pg_json_source(root, CONTRACT)
     dates = dates or policy['target_sessions']; out = root/OUT; out.mkdir(parents=True, exist_ok=True)
     from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
     head_state = read_current(root)
@@ -128,63 +159,56 @@ def materialize_core(root, dates=None):
                  'data/v4/V4_DATA_ACCEPTED_HEAD.json': head_state['head_sha256']}
     write(out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.1', phase0='DEGRADED_PASS',
           acceptance='IN_PROGRESS', observed_at=now(), protected=protected, next_stage='CORRECTED_STRUCTURE_AND_MEMBER_OWNERS'))
-    identity = load(checked(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
+    identity = load(checked_pg(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
     required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
-    acquisition = load_source_acquisition_pg(root)
+    from .r43_owner_replay import historical_source
+    acquisition = historical_source(root,'acquisition')['value']
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
         if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock'):
-            payload=load_source_query_pg(root,q); rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+            payload=read_path(root,Path(q['path']).resolve().relative_to(root).as_posix())['value']; rows=payload.get('rows',[]); day=q['params'].get('date',q['params'].get('day'))
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
             bao_queries.append(q)
-    source_pointer=load_json_source_pg(root,'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json',
-        source_origin='V4_DM01_TDX_SOURCE_CAPTURE_AUTHORITY')
-    capture=load_json_binding_pg(root,source_pointer['capture_receipt'],
-        source_origin='V4_DM01_TDX_CAPTURE_RECEIPT')
+    source_pointer=historical_source(root,'capture_audit')['value']
+    capture=load(checked_pg(root,source_pointer['capture_receipt']))
     from io import BytesIO
-    package=BytesIO(load_bytes_binding_pg(root,capture['package'],source_origin='V4_TDX_OFFICIAL_DAILY_PACKAGE'))
+    package=BytesIO(checked_pg(root,capture['package']))
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
-    from common.paths import resolve_tdx_root
-    source_gbbq=resolve_tdx_root(root)/'T0002/hq_cache/gbbq'; blob=source_gbbq.read_bytes()
-    gbbq_sha=hashlib.sha256(blob).hexdigest()
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
-    gbbq_path=f'external/tdx_gbbq/{gbbq_sha}/gbbq'
-    ingest_captured_bytes(root,gbbq_path,blob,source_revision=gbbq_sha,
-        source_origin='TDX_READ_ONLY_SOURCE_ROOT_GBBQ')
-    gbbq_binding=dict(path=gbbq_path,sha256=gbbq_sha,bytes=len(blob))
-    exact_gbbq=read_bound(root,gbbq_path,gbbq_sha)
-    if exact_gbbq['raw']!=blob or exact_gbbq['record'].get('source_origin')!='TDX_READ_ONLY_SOURCE_ROOT_GBBQ':
+    frozen_previous=historical_source(root,'core_replay')['value']['owners'][0]
+    gbbq_binding=frozen_previous['sources']['gbbq']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    exact_gbbq=bound_bytes(root,gbbq_binding)
+    blob=exact_gbbq.read_bytes()
+    if hashlib.sha256(blob).hexdigest()!=gbbq_binding['sha256']:
         raise ValueError('CORRECTED_GBBQ_PG_INGRESS_READBACK_MISMATCH')
     from tdx.gbbq_reader import decode_gbbq_bytes
     events=defaultdict(list)
     for e in decode_gbbq_bytes(exact_gbbq['raw'],source=gbbq_path):events[e.security_id.lower()].append(e)
-    dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
+    dispositions=pg_json_source(root,'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=gbbq_binding,
                  identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
-    historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
-    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_source_binding_bytes
-    historical_status_bytes=admit_source_binding_bytes(root,historical,
-        source_origin='V4_CORRECTED_OWNER_HISTORICAL_STATUS')
+    historical=pg_json_source(root,'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
+    historical_status_bytes=checked_pg(root,historical)
     for r in gzrows(historical_status_bytes):
         if r['status']=='SUSPENDED':status[r['security_id']][r['trade_date']]='SUSPENDED'
-    chain=load(checked(root,head['accepted_chain']))
+    chain=load(checked_pg(root,head['accepted_chain']))
     dated_identity={}
     for node in chain['nodes']:
         d=node['trade_date'];component=node['components']['IDENTITY_UNIVERSE']
-        rs=load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']
+        rs=load(checked_pg(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']
         dated_identity[d]={r['security_id'] for r in rs}
         component=node['components']['TRADING_STATUS']
-        for r in load(checked(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']:
+        for r in load(checked_pg(root,dict(path=component['artifact_path'],sha256=component['artifact_sha256'])))['rows']:
             status[r['security_id']][d]=r['status']
-    historical_universe=load(checked(root,load(root/'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
-    historical_universe_bytes=admit_source_binding_bytes(root,historical_universe,
-        source_origin='V4_CORRECTED_OWNER_HISTORICAL_UNIVERSE')
+    historical_universe=load(checked_pg(root,pg_json_source(root,'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
+    historical_universe_bytes=checked_pg(root,historical_universe)
     for r in gzrows(historical_universe_bytes):
         if r['trade_date'] in required and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
             dated_identity.setdefault(r['trade_date'],set()).add(r['security_id'])
@@ -272,9 +296,9 @@ def materialize_core(root, dates=None):
                 row['fields'][f'rps{h}_delta{k}']=dict(value=v,quality_state='OBSERVED' if v is not None else 'UNKNOWN',unknown_reason=None if v is not None else 'EXACT_DATED_RPS_ENDPOINT_UNKNOWN',prior_endpoint=prior,contract_id='RPS_MIDRANK_V1')
         folder=out/'owners'/target
         receipt=dict(trade_date=target,rows=len(rows),source_digest=source_digest,sources=sources,
-             core=gzwrite(root,folder/'core.jsonl.gz',rows),prior_core=gzwrite(root,folder/'prior_core_target_coordinate.jsonl.gz',prior_rows),
-             history=gzwrite(root,folder/'history.jsonl.gz',[dict(security_id=sid,bars=bs) for sid,bs in histories.items()]),
-             raw=gzwrite(root,folder/'raw.jsonl.gz',raw_rows),adjusted=gzwrite(root,folder/'adjusted.jsonl.gz',adjusted_rows),
+             core=gzwrite(root,folder/'core.jsonl.gz',rows,pg_ingress=True),prior_core=gzwrite(root,folder/'prior_core_target_coordinate.jsonl.gz',prior_rows,pg_ingress=True),
+             history=gzwrite(root,folder/'history.jsonl.gz',[dict(security_id=sid,bars=bs) for sid,bs in histories.items()],pg_ingress=True),
+             raw=gzwrite(root,folder/'raw.jsonl.gz',raw_rows,pg_ingress=True),adjusted=gzwrite(root,folder/'adjusted.jsonl.gz',adjusted_rows,pg_ingress=True),
              actual_raw_rows=len(raw_rows),adjustment_current_ready=sum(r['adjustment_readiness']=='READY' for r in adjusted_rows),
              known_fields=dict(Counter(k for r in rows for k,v in r['fields'].items() if v.get('value') is not None)),
              knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,publication_state='STAGING_NOT_ACCEPTED')

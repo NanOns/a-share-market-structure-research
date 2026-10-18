@@ -5,7 +5,8 @@ from collections import Counter, defaultdict
 from tdx.gbbq_reader import read_gbbq
 from .limit_rules import LimitStateService
 from .special_price_phases import SpecialPhaseEventStore,PhasePolicyRegistry,resolve_event_phase
-from .r43_owner_replay import OUT,load,checked,gzrows,gzwrite,ref
+from .r43_owner_replay import (OUT,load,checked,gzrows,gzwrite,ref,pg_json_source,
+    pg_source_binding,historical_source,write_candidate_json)
 from .market_source_acquisition import official_sessions,write
 
 
@@ -17,32 +18,33 @@ def observed_listing_phase(identity,day,sessions,resolved_phase):
     return resolved_phase
 
 def materialize_daily_limits(root):
-    root=Path(root).resolve();out=root/OUT;core=load(out/'CORE_REPLAY.json');sessions=official_sessions(root)
-    trace=load(out.parent/'04_TDX_BAOSTOCK_GBBQ_LIFECYCLE_AND_DELTA_SOURCE_TRACE.json')
-    rules_binding=ref(root,root/'config/v4_02_price_limit_rules_r3.json');rules=load(checked(root,rules_binding))
+    root=Path(root).resolve();out=root/OUT;core=pg_json_source(root,OUT+'/CORE_REPLAY.json');sessions=official_sessions(root)
+    rules_binding=pg_source_binding(root,'config/v4_02_price_limit_rules_r3.json');rules=load(checked(root,rules_binding))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_bound
     for rule in rules['rules']:
         if rule.get('source_capture_path'):
-            checked(root,dict(path=rule['source_capture_path'],sha256=rule['source_capture_sha256']))
-    service=LimitStateService(rules['rules']);policy_binding=ref(root,root/'config/special_price_phase_policy_r6.json')
+            admit_bound(root,dict(path=rule['source_capture_path'],sha256=rule['source_capture_sha256']))
+    service=LimitStateService(rules['rules']);policy_binding=pg_source_binding(root,'config/special_price_phase_policy_r6.json')
     policy=PhasePolicyRegistry(load(checked(root,policy_binding)))
-    event_binding=ref(root,root/'data/v4/bootstrap/special_price_phase_events_r4.jsonl')
+    event_binding=pg_source_binding(root,'data/v4/bootstrap/special_price_phase_events_r4.jsonl')
     store=SpecialPhaseEventStore.from_jsonl(checked(root,event_binding));identities=load(checked(root,core['owners'][0]['sources']['identity']))['rows']
     identities={r['security_id']:r for r in identities};events=defaultdict(list)
     for e in read_gbbq(checked(root,core['owners'][0]['sources']['gbbq'])):
         if e.category==1:events[e.security_id.lower()].append(e.event_date)
     contract=out/'DAILY_PRICE_LIMIT_CONTRACT_V1.json'
-    write(contract,dict(contract_id='R43_RECONSTRUCTED_DAILY_PRICE_LIMIT_V1',task='R4.3 W5',identity='Accepted canonical board and dated saved BaoStock native isST; never infer ST from code or current name',reference='Saved native preclose must equal preceding official raw close; ex-right day unavailable official ex-reference remains UNKNOWN',daily_observable=['close_limit_up','close_limit_down','daily_high_equals_limit_up','daily_low_equals_limit_down','one_price_limit_bar'],intraday='NOT_OBSERVABLE_FROM_DAILY',legal_rules=rules_binding,AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False,acceptance='IN_PROGRESS',next_stage='INDEPENDENT_DATED_LIMIT_QA'))
+    write_candidate_json(root,contract,dict(contract_id='R43_RECONSTRUCTED_DAILY_PRICE_LIMIT_V1',task='R4.3 W5',identity='Accepted canonical board and dated saved BaoStock native isST; never infer ST from code or current name',reference='Saved native preclose must equal preceding official raw close; ex-right day unavailable official ex-reference remains UNKNOWN',daily_observable=['close_limit_up','close_limit_down','daily_high_equals_limit_up','daily_low_equals_limit_down','one_price_limit_bar'],intraday='NOT_OBSERVABLE_FROM_DAILY',legal_rules=rules_binding,AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False,acceptance='IN_PROGRESS',next_stage='INDEPENDENT_DATED_LIMIT_QA'))
     # Match dated receipts explicitly. Successor sessions need not be present
     # in the original four-session trace; acquisition carries their real freezes.
-    dated_sources={item['trade_date']:item['baostock'] for item in trace['dates']}
-    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    dated_sources={}
+    acquisition=historical_source(root,'acquisition')['value']
     for query in acquisition['queries']:
         if query.get('method')=='query_daily_history_k_AStock' and query.get('path'):
             date=query['params'].get('date',query['params'].get('day'))
-            source=Path(query['path']).resolve()
             if date not in {owner['trade_date'] for owner in core['owners']}:continue
-            if source.is_relative_to(root):dated_sources[date]=ref(root,source)
-            elif date not in dated_sources:raise ValueError('DATED_DAILY_LIMIT_SOURCE_OUTSIDE_WORKSPACE:'+date)
+            source=Path(query['path']).resolve()
+            try:relative=source.relative_to(root).as_posix()
+            except ValueError as exc:raise ValueError('DATED_DAILY_LIMIT_SOURCE_OUTSIDE_WORKSPACE:'+date) from exc
+            dated_sources[date]=pg_source_binding(root,relative)
     receipts=[]
     for owner in core['owners']:
         day=owner['trade_date']
@@ -68,7 +70,7 @@ def materialize_daily_limits(root):
             else:state.update(daily_high_equals_limit_up=None,daily_low_equals_limit_down=None,one_price_limit_bar=None)
             for k in ('limit_up_price','limit_down_price'):state[k]=str(state[k]) if state[k] is not None else None
             records.append(state)
-        artifact=gzwrite(root,out/'owners'/day/'daily_price_limits_v1.jsonl.gz',records)
+        artifact=gzwrite(root,out/'owners'/day/'daily_price_limits_v1.jsonl.gz',records,pg_ingress=True)
         receipts.append(dict(trade_date=day,artifact=artifact,rows=len(records),counts=dict(Counter(r['limit_state'] for r in records)),unknown_reasons=dict(Counter(r['reason'] for r in records if r['limit_state']=='UNKNOWN')),limit_coverage=sum(r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT') for r in records)/len(records),daily_observable_known=sum(r['daily_high_equals_limit_up'] is not None for r in records)))
-    write(out/'DAILY_PRICE_LIMIT_REPLAY.json',dict(contract=ref(root,contract),owners=receipts,acceptance='EXECUTED_DATED_DAILY_CLOSE_AND_EXTREMA_LIMIT_OBSERVATIONS',production_admission=False))
+    write_candidate_json(root,out/'DAILY_PRICE_LIMIT_REPLAY.json',dict(contract=ref(root,contract),owners=receipts,acceptance='EXECUTED_DATED_DAILY_CLOSE_AND_EXTREMA_LIMIT_OBSERVATIONS',production_admission=False))
     return receipts

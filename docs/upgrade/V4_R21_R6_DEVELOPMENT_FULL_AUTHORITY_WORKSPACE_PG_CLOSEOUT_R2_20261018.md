@@ -149,3 +149,10 @@
 - 对同一 PG candidate reader/BFF 做只读 Python audit-hook 运行时审计，跨产品共调用 45 次（44 个不同路由，另含重复的 Diagnostics/Jobs 复核）；所有返回 HTTP 200，审计期间 `data/`、`config/`、`reports/`、`runtime/` 本地业务文件打开计数为 0。源码证据包位于 `G:\codex_tmp\v4_r6_runtime_business_file_audit_20261018.json` 与 `G:\codex_tmp\v4_r6_runtime_business_file_audit_extended_20261018.json`；调用分别覆盖股票/板块/图表/时间线、Focus/Forward、市场四轴/事实事件、Sources、cohort、Replay/Compare 与诊断。业务内容由相同 immutable PG candidate 读取；SOURCE_INCOMPLETE/PIT_NOT_AVAILABLE 按原 Owner 和权限事实返回。
 - 本轮测试一度给页面 URL 加了临时 `uiqa` 参数，页面按合同将未知筛选项拒绝；改用无参数正式 URL 复测后 Focus 469 行、Forward 117 行、待结算 585 行均正常呈现，属于测试参数错误，不是产品缺陷。
 - 对 `data/v4/dynamic_daily_sources/tdx/20261008` 与 `G:\codex_tmp\test_temp` 的边界、文件数/大小及无活跃 pytest 进程已复核。PowerShell 执行器对这两个删除请求均自动拒绝；文件仍在，未尝试改用其他执行路径绕过。TDX 捕获副本已迁 PG 且无消费者，pytest basetemp 为可重建项，仍列待清理。
+
+## Focus/Forward 四日真实运行续验（2026-10-18）
+
+- `r43_focus_replay` 的研究配置合同标注为 `JSON_COMPATIBLE_YAML`，而当前运行 Python 没有 PyYAML；修正为与其他现役消费者一致的标准库 `json.loads`，入口仍先从 PG Historical SourceIngress 读取精确配置字节。新增定向测试验证 PG-only 配置路径、缺源 fail-closed 与 Owner 输入读取。
+- 使用已接受 Data Head 日历与 R4 日历扩展的诊断候选上下文实跑 Focus/Forward，保持 `production_admission=false`。四日分别处理 5,222、5,223、5,224、5,224 个证券行；D0 TRUE 为 114、190、175、150，其余状态保持 UNKNOWN；PREWATCH TRUE 为 1,106、1,190、1,120、910；D2 fresh 为 114、169、122、100。结果形成 2,477 个 Focus episodes、7,524 个 events；Forward outcomes 为 OBSERVED 3,418、PENDING 9,742，未将未到期结果改写为接受状态。
+- 首次完整计算发现 PG immutable Series 已写入，但供 Focus adapter 消费的 descriptor 没有进入 Historical SourceIngress。已在 Series builder 后新增精确 descriptor ingress/readback，再用新候选命名空间完整复跑；最终 Series descriptor、4日各 D2/calculation/fact/status 文件及压缩 Focus/Forward 产物合计 18 项均按实际 SHA、长度及原字节从 PG 精确读回。最终 Focus/Forward SHA-256 为 `48e77f32…e709a0`（5,319,773 字节）。
+- 验证结果：`tests/test_v4_r6_pg_only_owner_source_reads.py` 3 passed；本轮修改模块及回归文件 `py_compile`、`git diff --check` 通过。该实跑不创建 publication/Head，不改变 production admission；全模块 QA、28766 最新浏览器交互复验和空间清理仍未全部通过/完成，见本报告未完成项。

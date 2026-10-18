@@ -42,6 +42,7 @@ class FrozenContracts:
 class CandidateStore:
     def __init__(self,root,directory='reports/v4_12_runtime_r1'):
         self.root=Path(root).resolve();self.directory=self.root/directory
+        self.pg_ingress=False
         if not self.directory.resolve().is_relative_to(self.root):raise ValueError('CANDIDATE_PATH_ESCAPE')
         self.directory.mkdir(parents=True,exist_ok=True)
     def write_bytes(self,name,raw):
@@ -56,6 +57,9 @@ class CandidateStore:
                 os.replace(tmp,path)
             finally:
                 if os.path.exists(tmp):os.unlink(tmp)
+        if self.pg_ingress:
+            from .r43_owner_replay import _ingress_candidate_bytes
+            _ingress_candidate_bytes(self.root,path,raw)
         return file_ref(self.root,path.relative_to(self.root).as_posix())
     def json(self,name,value):return self.write_bytes(name,canonical(value))
     def jsonl(self,name,rows,compress=False):

@@ -102,6 +102,8 @@ class SpecialPhaseEventStore:
 
     @classmethod
     def from_jsonl(cls, path: str | Path) -> "SpecialPhaseEventStore":
+        if hasattr(path, "read_text"):
+            return cls(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
         with Path(path).open("r", encoding="utf-8") as stream:
             return cls(json.loads(line) for line in stream if line.strip())
 

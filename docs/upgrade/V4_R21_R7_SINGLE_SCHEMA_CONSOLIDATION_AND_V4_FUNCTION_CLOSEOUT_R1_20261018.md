@@ -238,6 +238,12 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 现役 Shadow 旧 writer 在建立 PG 连接前 fail-closed；FEP E5 旧 `schema.sql` 先抛出固定存储迁移错误，后续旧 DDL 不会执行。代码库中仍能静态搜索到这些不可达的历史 DDL 文本；没有任何运行路径可执行它们。Risk Owner 的陈旧注释已改为明确说明物理 locator 固定为 `v4`、版本身份来自 `token/T0/digest`。
 - 回归期间没有写业务 PG、创建 Schema、签发 Head 或触碰 28765。S1 的运行期防扩散边界继续为 `PASS`；S3 清理执行证据、Accepted 来源/日历、成熟结算、完整日更及其他模块门仍按当前矩阵保持 `PARTIAL`。
 
+### 2026-10-19 Forward R7 读事务边界续修
+
+- 静态追踪发现 `ForwardR7Store` 的 R7 表存在性探测、storage verification 与独立 `_latest_publish_index()` 读路径使用裸连接执行 SELECT，未通过统一只读事务边界。现改为固定 `v4` 的 `connection(..., read_only=True)`，独立发布索引查询显式 `REPEATABLE READ READ ONLY`；写路径保持显式写连接不变。
+- `tests/test_forward_r7_task.py` 与 `tests/test_v4_candidate_r7_source_audit_route.py` 定向回归 `11 passed`。随后用真实项目连接只读调用 `ForwardR7Store.verify_existing_storage()` 与 `read_counts()`，读回固定关系 `v4.forward_r7_facts_r1`、历史样本 39,366、匹配 924/不匹配 37,812/未知 630，最新历史 T0 `2026-10-13`、generation 7。该 R7 历史研究发布与 UI 的 `2026-09-30` 候选不是同一 T0，未将其替代为该候选的来源；`live` 与 `late` 仍为空。
+- 本次数据库读回显式只读，无 PG 写入、Schema/Head 变化或 28765 操作。后续仍需独立签发的同 T0 来源/Owner 才能解除业务状态门。
+
 ### 2026-10-19 现场目录与服务槽复核
 
 - 再次从项目 Reader DSN 建立显式 `REPEATABLE READ READ ONLY` 事务，实查 `market_research` OID `646711`、`127.0.0.1:5432`，`transaction_read_only=on`；V4 目录仅 `v4`（123 表、5 序列、85 例程），无 `v4_*`，跨 V4 Schema 依赖 0。端口实查为开发服务 `28766` 正在监听，生产端口 `28765` 未监听。

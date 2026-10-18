@@ -13,6 +13,7 @@ from psycopg.types.json import Jsonb
 
 from workbench_analysis.forward_r7 import (canonical_bytes, legacy_observation_id,
     make_observation_id, sha256, compute_nominal_settlement)
+from .v4_native import connection
 
 
 SETTLEMENT_STATUS_STATES = (
@@ -81,7 +82,7 @@ class ForwardR7Store:
                     or Path(binding.get('candidate_root','')).resolve()!=self.root
                     or binding.get('schema')!='v4'):
                 raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
-        with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+        with connection("v4",dsn=self.dsn,read_only=True) as pg:
             present=pg.execute("SELECT 1 FROM information_schema.tables WHERE table_schema='v4' AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'").fetchone()
         if not present:
             raise RuntimeError('V4_FORWARD_R7_SINGLE_SCHEMA_MIGRATION_REQUIRED')
@@ -114,7 +115,7 @@ class ForwardR7Store:
 
 
     def verify_existing_storage(self):
-        with self._connect() as pg:
+        with connection("v4",dsn=self.dsn,read_only=True) as pg:
             present = pg.execute("""SELECT 1 FROM information_schema.tables
                 WHERE table_schema=%s AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'""",
                 (self.schema,)).fetchone()
@@ -418,6 +419,8 @@ class ForwardR7Store:
         own = pg is None
         conn = pg or self._connect()
         try:
+            if own:
+                conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
             rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_r7_facts_r1
                 WHERE origin_namespace=%s AND kind='r7_publish_index' ORDER BY ordinal DESC""").format(
                     sql.Identifier(self.schema)), (self.origin_namespace,)).fetchall()

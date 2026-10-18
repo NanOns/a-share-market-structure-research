@@ -255,3 +255,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 最终身份：DB `market_research` / OID `646711` / `127.0.0.1:5432`，用户 `postgres`，`transaction_read_only=on`，`REPEATABLE READ`。全量关系/Schema 目录输出 `G:\codex_tmp\v4_r21r7_catalog_recheck_20261019.json`；最终复核摘要仅报告此时仍在 `public` 的 V4 用户关系清单，不包含凭据。
 - 本机 28766 受控重载后，真实浏览器重新读出个股详情 `SEC-00096141BD5420F5CB3120E687CDA5B9`：日线截至 `2026-09-30`，原生前复权 `120/253` 根；蜡烛图与详情字段均完成渲染。随后逐层追到实际路由 `ResearchBFF → stock_views.chart → v4_history_pg_r1.read`，API 返回历史版本 `ba5ac5f7…` 的 120 根分页；同一只读 RR 事务在 `v4.history_versions_r1` 查得该版 T0 `2026-09-30`、全量 1,309,832 根/5,224 个证券，`v4.history_bars_r1` 中本证券 253 根（首日 `2025-09-15`，末日 `2026-09-30`）。API 与页面均指向数据库 `market_research` / OID `646711` 和固定 Schema `v4`。该候选来源谱系为 `RECONSTRUCTED_CORRECTED`；不提升为 PIT/Accepted。页内接受状态、市场相对强度、相对板块等缺少 Owner 的字段继续显示来源不足。未操作 28765。
 - 此清理关闭了 SOT R3 指出的 `public` V4 用户对象残留，不改变正式业务门状态；Source/PIT、Accepted 日历与 Head、当日完整 Owner/Publication、成熟 Focus/Forward 等模块验收缺口仍使最终产品验收保持未通过。
+
+### 2026-10-19 R8 Forward 旧多 Schema 回归断言纠偏
+
+- 全仓消费者扫描发现 `tests/test_r8_forward_namespace.py` 仍断言候选必须进入工作区专属的旧物理 Schema，并通过旧 alias/Head 候选枚举来选择存储；该回归与 R21-R7 固定 `v4` 合同相反。生产读取器当前只验证受限候选绑定并检查 `v4.forward_r7_facts_r1`，没有旧 Schema 搜索/建库。
+- 将该旧回归改为固定关系验收：候选 locator 必须是 `v4`、绑定 root 必须精确匹配、目标固定表缺失则 fail-closed；所有场景均通过注入 PG 连接执行，不创建/改写 PG 对象。G 临时目录定向 pytest 为 `5 passed`；该次无共享数据库写入、无服务重载和无 Schema 变化。
+- 这修复了会鼓励恢复多 Schema 的回归合同，不提升 Forward 的 PIT/Accepted 或成熟结算状态。

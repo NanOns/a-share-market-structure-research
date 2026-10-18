@@ -171,3 +171,13 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 额外收集旧 `tests/fep` 与 standalone E5 PostgreSQL 回归时，FEP fixture 已在建连前跳过；结果为 43 passed、13 failed、268 skipped。13 项未计验收：其中历史 FeatureOwner/Pipeline 用例的直接开发库读取被仓库隔离插件拒绝；其余主要期望旧的合成 FEP Owner 状态或旧迁移清单。未创建/连接隔离 PG、未写入共享 PG。单 Schema 与 fail-closed 定向验收独立结果仍为 16 passed。
 - 28766 真实浏览器复看 `/v4/research/forward?view=fep`：范围仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，质量及当前观察覆盖不可得，未训练预测槽为 `PENDING`；没有声明生产模型验收。
 - 扩展入口封闭后的定向回归与单 Schema guard 最新结果 `16 passed`；仓库暂存 Blob 准入检查通过。隔离探针修复提交 `7fbd6606f`、首次读入口修复 `8bf9bc519` 和其余历史适配器封闭 `60e082bd8` 已推送至 `codex/v4-workspace-cleanup`。没有连接 55547、没有新增数据库/Schema、没有改动 PG 事实。FEP 固定表迁移与缺失业务源仍未完成，整体阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。
+
+### 2026-10-19 28766 受控重载后的真实浏览器续验
+
+按任务卡在本机开发槽位 `127.0.0.1:28766` 完成受控重载后，使用浏览器逐页等待异步渲染，并对 API 做串行现场抽查。快速连续导航时的短暂骨架态/客户端取消曾在服务日志留下 `ConnectionAbortedError`；等待页面请求完成后各页面正常渲染，不能将该瞬时态记为页面验收失败。未启动或触及 `28765`。
+
+- API 现场抽查：`/api/v4/context`、`sectors`、`stocks`、`focus`、`market/breadth`、`sources`、`diagnostics`、`forward` 均为 `200 READY`；`forward/fep` 为 `200 SOURCE_INCOMPLETE`，与缺少当日模型 Owner 的预期一致。候选上下文身份仍为 DB `market_research` / OID `646711`，Schema `v4`，Release `05cf8913242f46c8af53b3d89f323b64`，T0 `2026-09-30`；各域 `released=false`，不是正式 Head。
+- 真实内置浏览器：Home 读到股票 5,213、板块 378、Radar/Forward 117；Sector 列表读到 378 条并展示当期强度/宽度，前序成员缺口保留为“来源能力不足”；股票列表读到 5,213 条，交互搜索 `SH.600675` 后显示中华企业、收盘 2.520、共 1 条；Focus 读到 469 条，并在同页展示 Forward 117、期限计划 585、已发布期限状态 5、成熟合格 0；Market 页读到上涨 2,344、下跌 2,712、平盘 155、未知 13，分母 5,224、实际行情 5,213、成交额 14,378.36 亿元及涨跌停 56/12/11/1，并实际打开价格规则/来源抽屉；Diagnostics 显示 RAW_DAILY 5,213、TRADING_STATUS 5,224、IDENTITY_UNIVERSE 5,224 通过，ADJUSTED_DAILY 5,213 降级通过。
+- 日更页 `/v4/research/data-update` 显示快照截至 `2026-09-30`、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、worker 未启动；检查来源、立即补齐、自动更新、失败重试、取消均禁用。页面正确保持开发只读预览。
+- FEP 仍只显示 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，未训练槽 `PENDING`，质量/当前覆盖不可得。Home、Sector、股票搜索、Focus、Market、Diagnostics、Forward/FEP 与日更页的候选读取现均由受控重载后的 28766 实际服务提供；不把可读、候选或降级状态提升为 PIT、Accepted 或产品 PASS。
+- 本次只读 API/浏览器核验未写入业务数据或改变 Schema。正式数据缺口仍包括合格 PIT 日线与独立接纳回执、覆盖目标日期的 Accepted 日历/发布 Head、前序 PIT 成分与 Owner、Focus 到期与结构事实、Forward 成熟结算、官方事件源；DB-08/10、模块完整验收及 DB-11 工作区物理清理依旧未关闭。

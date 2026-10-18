@@ -59,6 +59,25 @@ production_changed: false
 | DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。旧 baseline、治理恢复证据及其他历史目录经实际计量；存在未提交/独有内容或不可替代恢复证据，保留，物理工作区清理未完成。 |
 | DB-12 | PASS | 当前 RR/RO 库目录仅 `v4`，交叉 Schema 依赖 0；最新现场复核为 123 张表、85 例程、184 个非内部触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |
 
+## 全模块缺口与可执行验收路径
+
+| 模块 | 现有真实状态 | 尚缺的业务输入/权威 | 输入到位后的真实续验路径 |
+|---|---|---|---|
+| Research Core / Profile | 四个既有候选日的 Core Oracle 已报 0 error；研究版本固定写在 `v4`。 | 足以证明目标日期原始状态的完整 PIT 官方行情及独立来源合同；当前部分日期为 `RECONSTRUCTED_CORRECTED`。 | 复用既有四日样例，只对存储版本键/受影响算法跑最小数值回归；同一 T0 对照 OHLCV、MA 与 Profile 数值、版本摘要和来源身份。 |
+| Sector / Rotation / Market | 当前 2026-09-30 候选截面可读；统计未知项显式呈现。 | 前序日期 PIT 行业成员与市场状态；官方事件/媒体来源及分钟炸板序列；缺少经接受的交易日历。 | 按接受日历固定 T0；核成员集合、LOO、宽度/强度/涨跌停分母和轮动状态的逐日数值；事件按来源合同核验原始时间戳与证据。 |
+| Owner / Publication / Head | Owner 读取使用固定 `v4` 与精确来源绑定；DEV CAS 正/负路径已在回滚事务验证。 | 已批准 Owner/合同版本、真实 publication/module results 与可绑定来源的 Head；当前 publication、publication_heads、operational_research_heads 均 0。 | 用真实批准来源执行 Owner→模块结果→DEV publication/head 端到端写读与 CAS/失败重试；校验精确 T0、digest、row_count、数据库身份及 stale-CAS 拒绝。不得写正式对外 Head。 |
+| Focus | 候选快照显示 469 条，来源为冻结重建；缺项以 Unknown 表示。 | 已批准结构谓词/失效合同、完整跟踪事件与真实后续交易日行情；成熟结算结果和历史账核对仍不足。 | 固定 candidate/run/namespace/T0 逐条核输入；仅用真实后续会话计算 D0/D2、到期/失效及 outcome，核对旧账、幂等重试和未成熟样本 Pending。 |
+| Forward / Cohort / Settlement | 117 个候选、585 个期限计划、5 条已发布期限状态覆盖 1 个样本；成熟合格为 0。R7 事实读回为研究级且非 PIT。 | 同 namespace/run/T0 的完整后续 PIT 行情、已接受日历及明确 Owner/来源；成熟交易日尚无独立可接受结算事实。 | 精确绑定 Forward cohort 与 Owner；核每个 horizon 的交易会话日期、源行数、摘要、缺失/冲突键；只对真实到期样本结算并检验同 key 跨 namespace 隔离。 |
+| SourceIngress / Data Head / TDX | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定可从 PG 读回；64 MiB+1 chunk 边界已回滚验证。10-08 ZIP 字节/CRC 校验通过。 | 10-08 ZIP lineage 为 `RECONSTRUCTED_CORRECTED`；独立接纳 issuer 为空，不能签发 `AS_RECORDED`、PIT 或 Accepted。 | 有合同认可的真实来源后，以有界 chunk/stream 写入固定 Source Package/SourceIngress，读回逐块 SHA、长度、manifest 与引用；独立验收者确认后才更新接纳状态。不得灌入 1,678 历史绑定。 |
+| History / Stock charts | 固定 `v4.history_versions_r1` 版本可读；候选版本 ba5ac5f7… 在 T0 2026-09-30 覆盖 5,224 证券、1,309,832 根；页面日/周/月 RAW/QFQ 图表真实渲染。 | 当前行情谱系不是完整 PIT/Accepted；需要合同认可的逐日官方行情和复权依据。 | 逐源对账目标证券各周期 bars、日期边界、RAW/QFQ、均线及摘要；T0 错配/缺 bar 必须拒绝，浏览器验证不能替代来源准入。 |
+| Daily / Jobs / Calendar | 数据更新页正确禁用写操作；worker 未启动，来源请求 0，尚无作业回执。 | 当前接受来源 registry 无批准 issuer；`market_calendar_sessions`、publication/head、worker receipt 均为空。 | 用真实被批准的交易日和数据源执行一次完整 DM-01 runner；读回每 stage/job/source receipt，验证同日幂等、下一交易日增量、失败恢复、超时重试及无新 Schema。 |
+| FEP | 固定 `v4` 存储迁移已部署（35 张关系，34 张带保护）；业务行为空；页面保持 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，Champion 为 NONE。 | 经批准的 FEP Owner、真实信号/结果及成熟 PIT 样本、当前有效模型/合同签发；不得用历史 fixture 自我授权。 | 先按固定合同导入/生成带来源身份的真实 FEP facts，再核分母、校准与成熟度读回；只有独立授权和模块门通过后才评估展示/研究能力，不据此授予生产权限。 |
+| Shadow | identity/facts 固定表与 immutable guard 已部署；表内真实探针行数 0；28766 正确显示 `NO_REAL_SHADOW_DATA`。 | 独立接受的真实 readback manifest、签发来源及 PIT 输入。 | 以完整签名身份与来源证据走 R3 writer；核全量内容摘要、逐 fact origin、数据库身份和只读 reader；无接受清单继续 fail-closed。 |
+| Replay / Compare / Risk | Compare 的事后重建视图可读并显式标非 PIT；严格 Replay 可用日期为 0。Home 对未绑定 risk Owner 已修为显示来源缺失。 | 冻结 PIT 日线/成员/Owner、足够历史窗口、风险 Owner 和来源完整性。 | 对同一个已接受 T0 重放并核历史身份/无未来数据；Compare 区间对齐且报告来源；Risk 按 Owner 输出变更，否则必须保留不可判定状态。 |
+| Workspace cleanup | 全仓 `.pyc` 已逐项清点；2,159 个可重建项与 6 个无对应源文件项均保留，旧目录中仍有独有/未归属证据。 | 精确逐目录依赖确认与可执行的受控清理操作；工具策略此前拒绝逐项缓存删除。 | 仅对已证可重建、无活动依赖且不含唯一证据的具体路径执行清理；清理后复扫尺寸/路径并保存前后差异。若同一操作仍被工具策略拒绝，记录为未完成，不换通道绕过。 |
+
+以上路径把工程验证、真实 PG 读写、28766 交互和 Accepted/PIT 业务验收分开。数据库写权限不等于来源签发权；任何缺少独立来源或 Owner 的模块继续保持 fail-closed，不以工程探针、测试夹具或页面显示替代正式验收。
+
 ## 原 266 项与 R7 Delta
 
 原始 P1 分母保持 **266**（Owner 200、其他业务 28、市场/源 38）。本轮不重算全仓 161,114 引用边、不覆盖历史 ID，也不把代码改造、PG 数据存在或浏览器显示混报为正式 accepted。历史核对仍记为 **正式 Head/T0/namespace 对账 0/266**，并保留此前登记的 22 条未映射历史 reference edge；此项待原矩阵拥有精确 source-edge 与 Head 证据后单独关闭。

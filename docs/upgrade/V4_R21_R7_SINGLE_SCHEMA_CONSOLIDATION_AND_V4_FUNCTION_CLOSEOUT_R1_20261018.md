@@ -532,3 +532,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 在生产数据外未新增探针行的情况下，通过已存在记录执行 12 项 update/truncate 负向探针（风险版本/载荷、优先级版本、Sector 版本/明细、ReadIndex R1/R2 版本/明细、作业尝试/事件），均被保护器拒绝，SQLSTATE `P0001`。探针外层事务显式回滚；之后 RR/RO 对 14 张固定关系逐表 COUNT 前后完全一致。核验的 26 个相关启用触发器均存在，现有业务行数包括 Sector Lifecycle 400、ReadIndex R1/R2 明细 78,857/62,671、作业事件 406。
 - 本阶段测试：迁移 allocator 2 项通过，Sector Lifecycle 与日更进度回归已运行；风险、ReadIndex 与部分 Owner 测试在 collection/import 时触发测试隔离插件对非 disposable `market_research` 的访问拒绝，另有 Owner closeout 测试同类环境阻断。未绕过隔离，也未因此写入额外业务数据。Python AST/语法、指定 diff whitespace、消费者源码无持久 DDL 检查通过。
 - 这项迁移只完成消费者保护与持久 DDL 收敛，不代表 ReadIndex/Owner/日更等模块已完成真实业务验收，也不代表迁移清理可以删除其他旧 Schema。10-15 日更仍须从 10-16 冻结包获取 10-15 数据，并满足接受日历、Universe/身份映射和 Accepted Operational Head 的正式门禁；当前 9-30 仅是页面使用的旧候选 T0，不能混作日更任务日期。
+
+### 2026-10-19 冻结作业导入回执固定版本化
+
+- 源码扫描发现仅供 G 盘隔离冻结作业 oracle 使用的 `v4_job_migration_r1.import_oracle()` 仍会按调用创建未版本化 `migration_receipts` 表。先用 RR/RO 核对实际 PG：`v4.migration_receipts` 与新目标关系都不存在，因此没有遗留回执行需要搬移。保留导入器用途，将目标定为固定版本表 `v4.jobs_frozen_oracle_migration_receipts_r1`；导入前要求 `jobs.schema='v4'` 并校验中央迁移关系/不可变保护器，移除运行时持久 DDL。
+- 由迁移登记器分配 074，正式迁移 runner 在 `market_research` 应用 `V4_FIXED_JOB_MIGRATION_RECEIPTS_R1`，SHA-256 `f2aa7a088731e813bbade4244b42214df1a52fc70aa799c1a1a0101be1e6e055`。应用后固定 v4 表数为 124；RR/RO 连接身份为 `market_research` / OID `646711` / `127.0.0.1:5432`，事务只读且回执表初始 0 行。
+- 在 RR/RW 外层事务内插入唯一 64 字节摘要探针，更新、删除、截断三种修改均返回 SQLSTATE `P0001` / `IMMUTABLE_JOB_MIGRATION_RECEIPT`；显式回滚后独立 RR/RO 计数仍为 0。未导入业务 oracle，也未改变其他作业历史。
+- 新增本地纯单元断言覆盖固定关系/guard 校验和无运行期表 DDL。该变更尚待提交；其他未相关工作区修改未纳入。

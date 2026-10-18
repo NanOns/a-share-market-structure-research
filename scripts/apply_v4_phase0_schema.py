@@ -66,6 +66,7 @@ VERSIONS={
     "071_v4_publication_owner_canonical_schema_r1.sql":"V4_PUBLICATION_OWNER_CANONICAL_SCHEMA_R1",
     "072_v4_fixed_schema_consumer_guards_r1.sql":"V4_FIXED_SCHEMA_CONSUMER_GUARDS_R1",
     "073_v4_history_immutability_fixed_schema_r1.sql":"V4_HISTORY_IMMUTABILITY_FIXED_SCHEMA_R1",
+    "074_v4_fixed_job_migration_receipts_r1.sql":"V4_FIXED_JOB_MIGRATION_RECEIPTS_R1",
 }
 
 def dsn():

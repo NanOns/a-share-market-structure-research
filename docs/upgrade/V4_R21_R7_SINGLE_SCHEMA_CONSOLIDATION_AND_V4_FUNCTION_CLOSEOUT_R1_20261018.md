@@ -343,3 +343,4 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 在当前 `market_research` 上对空的 `v4.operational_research_heads` 执行事务内工程 CAS 核验；先以 `EXCLUSIVE` 表锁确认目标无当前行。插入并精确读回 payload bytes、JSONB、SHA-256、generation 1；用旧 SHA 条件更新到不同候选并读回 generation 2；再次以过期旧 SHA 更新返回 0 行，确认 stale CAS 被拒。
 - 候选仅含 `ENGINEERING_CAS_ROLLBACK_TEST` / `not_accepted=true` 标记；整个写入事务显式 rollback。后续独立 `REPEATABLE READ READ ONLY` 事务确认 `operational_research_heads` 仍 0 行、只读开启。没有签发或持久化 DEV/Accepted Head、Publication、Owner 或日更回执；没有改动其他业务表。该实测补足固定 `v4` 行上的 CAS 正/负路径机制证据，DB-10 与完整日更产品验收仍为 `PARTIAL`。
+- 回滚后调用活动的 `v4_operational_live_head_pg_r1.read_current()`，它在零行状态下准确抛出 `PG_ACCEPTED_OPERATIONAL_HEAD_REQUIRED_NO_FILE_FALLBACK`；独立 RR/RO 核对仍为 0 行。这验证应用读者拒绝从工作区文件合成/回退 Operational Head。

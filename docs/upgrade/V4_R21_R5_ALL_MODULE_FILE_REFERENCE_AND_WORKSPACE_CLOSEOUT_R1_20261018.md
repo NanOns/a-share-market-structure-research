@@ -72,4 +72,9 @@
 - 修正 `current_state()` 的阶段选择：Data Head 的 `stage_head` 是其原始 T0 的历史绑定（V4-10），当前已接受阶段从 PG ingress→CurrentStageAuthority→Stage Head/Owner 链读取。函数再核对 Stage Authority 的 Data Head SHA 和内容与 PG canonical Data Head 完全一致，避免旧历史阶段误判当前状态。
 - 现场共享 PG `market_research` 中发现注册表绑定的静态归档 `reports/r17a/source_archive/static/data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json` 缺一条 ingress fact。按其登记路径、SHA-256 `83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be` 和 4,142 字节 exact archive 一次性写入同一 PG ingress，并读回校验 path/SHA/长度。此为源事实 ingress，不是正式 Head 或业务数据替换。
 - 定向现场调用：当前 Stage=`V4_00_TO_V4_15_ACCEPTED`，`historical_stage_governance_r17.current_state()` 返回 `PASS`、T0 `2026-09-30`、`production/shadow/focus/global_mandatory_adoption=false`。未改 Data Head、Owner、publication Head 或生产服务。
-- 本次追加修改 1 个现役 V4 Python 文件，覆盖 3 个基线稳定调用点；待定向编译、diff、暂存准入，随后提交推送。非 V4 仍只登记。
+- 本次追加修改 1 个现役 V4 Python 文件，覆盖 3 个基线稳定调用点；定向编译、diff、暂存准入通过，并已提交推送（`d2de98303`）。非 V4 仍只登记。
+
+## 推送后 28766 浏览器复验
+
+- 用重启后的当前分支服务及 Codex 内置浏览器重新验收：从首页进入个股，搜索 `SH.600675` 返回 1 条并打开详情；板块搜索“区域地产”返回 1 条。Forward 历史/结算/FEP、Diagnostics Health/Jobs/Sources/Contracts、市场、Compare、Replay 与日更状态页均加载；日更页面显示开发快照只读、worker 未启动。
+- UI 与直接 API 返回均绑定 `market_research`、OID `646711`、T0 `2026-09-30` 的同一 PG 候选快照。未触发采集、日更、正式 Head CAS 或生产部署；28765 未监听。

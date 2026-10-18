@@ -223,3 +223,4 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 已用 `scripts/v4_migration_readonly_preflight_r1.py --out-dir G:\codex_tmp\v4_r21r7_preflight_20261019` 实际运行只读预检；结果 `READ_ONLY_PREFLIGHT_ONLY_NO_DDL_DML_NO_HEAD`，记录 67 个迁移 SQL 与重复序号 `010`，未执行 SQL migration、DDL/DML 或 Head 更新。证据 JSON 留在 G 临时目录。
 - 预检通过配置连接检查后识别当前会话角色为 PostgreSQL `postgres` 超级用户，故 Reader least-privilege 项为 `BLOCKED_PRIVILEGED_READER`，自动 apply decision 保持阻止。此项只表示角色未达到该只读预检器的受限 Reader 契约，不否认前述由显式 `READ ONLY` RR 事务完成的目录/数据读取；也不授权把普通开发 DDL 与正式迁移角色混为一谈。
 - 本轮当前工作树修改的 Python 文件完成 `py_compile`；`tests/test_v4_single_schema_guard_r7.py` 在临时目录 `G:\codex_tmp\test_temp\r21r7-single-schema-20261019` 定向重跑为 `6 passed`，`git diff --check` 通过。结果只证明固定 Schema 创建边界，不替代模块数据门。
+- Focus 的“实际路径与到期结果”控件实际展开首批 30 个对象；进一步对中华企业打开“各锚点到期结果”，只读抽屉返回截至 `2026-09-30` 的 1 条修正历史重建记录，路径完整度、确认事实、锚点变化、最大向上偏离、当前回撤均无可确认值（`—`），同时明确结构证据缺失时保留不可判定。Forward 同页显示 117 样本、585 期限计划、已发布 5 项（覆盖 1/117）、成熟合格 0、待到期表 5 条；未发布/未成熟不转成零收益或质量结论。

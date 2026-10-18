@@ -33,11 +33,20 @@ class OperationalForwardAuthority(CurrentStageAuthority):
 from workbench_db.v4_forward_pg_r1 import ForwardFactStore
 
 class ForwardStore(ForwardFactStore):
+    def __init__(self,root,folder):
+        self._read_cache={}
+        super().__init__(root,folder)
+
     def append(self,kind,key,value):
         try:return super().append(kind,key,value)
         except ValueError as error:
             if str(error)=='FORWARD_APPEND_IDENTITY_CONFLICT':raise SourceInvalid(str(error)) from error
             raise
+
+    def read(self,binding):
+        key=(binding.get('path'),binding.get('sha256'))
+        if key not in self._read_cache:self._read_cache[key]=super().read(binding)
+        return copy.deepcopy(self._read_cache[key])
 
 class LocalForwardPriceSource(VectorPriceSource):
     evidence_class='REAL_ACCEPTED_LOCAL_CORRECTED_FORWARD'

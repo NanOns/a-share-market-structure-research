@@ -42,7 +42,9 @@ def build():
                 seen_legacy_bindings.add(key)
             prior_freezes[old['enrollment_id']]=binding
     for b in store.refs('t0_freezes'):prior_freezes[store.read(b)['enrollment_id']]=b
-    snapshots={store.read(b)['T0']:store.read(b)['snapshot'] for b in prior_freezes.values()}
+    snapshots={}
+    for b in prior_freezes.values():
+        freeze=store.read(b);snapshots[freeze['T0']]=freeze['snapshot']
     outcomes=[];plans=[];enrollments=[];freezes=[];read_count=0;coordinate_cache={}
     accepted_data_head,_=source_binding(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json')
     sources=dict(projection_adapter=ref('scripts/build_fp10_forward_v2.py'),kernel=kernel,evaluation_inputs=inputs,

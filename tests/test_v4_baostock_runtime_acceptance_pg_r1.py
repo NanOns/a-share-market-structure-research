@@ -2,6 +2,7 @@ from contextlib import contextmanager
 import base64
 import hashlib
 import json
+from pathlib import Path
 
 from workbench_analysis.baostock_runtime_acceptance import build_runtime_acceptance_manifest
 from workbench_db import v4_baostock_runtime_acceptance_pg_r1 as pg_acceptance
@@ -61,7 +62,10 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
                 self._relation_query = True
                 return self
             assert "FROM forward_facts" in query
-            assert params == (pg_acceptance.KIND, day)
+            expected_namespace = pg_acceptance.ForwardFactStore.namespace_for(
+                Path("G:/codex work/大A交易") / pg_acceptance.FOLDER
+            )
+            assert params == (expected_namespace, pg_acceptance.KIND, day)
             self._relation_query = False
             return self
 
@@ -70,12 +74,12 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
 
     @contextmanager
     def connection(schema, *, read_only):
-        assert schema.startswith("v4_forward_")
+        assert schema == "v4"
         assert read_only is True
         yield Cursor()
 
     monkeypatch.setattr(pg_acceptance.v4_native, "connection", connection)
-    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4_forward_fixture")
+    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4")
     monkeypatch.setattr(pg_acceptance.ForwardFactStore, "_database_identity", staticmethod(lambda _pg: identity))
     monkeypatch.setattr(pg_acceptance, "_expected_identity", lambda: identity)
 
@@ -97,7 +101,7 @@ def test_pg_loader_rejects_payload_digest_mismatch(monkeypatch):
     def connection(*_args, **_kwargs): yield Cursor()
     identity = {"database": "market_research", "database_oid": 42, "host": "127.0.0.1", "port": 5432}
     monkeypatch.setattr(pg_acceptance.v4_native, "connection", connection)
-    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4_forward_fixture")
+    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4")
     monkeypatch.setattr(pg_acceptance.ForwardFactStore, "_database_identity", staticmethod(lambda _pg: identity))
     monkeypatch.setattr(pg_acceptance, "_expected_identity", lambda: identity)
     try:
@@ -117,7 +121,7 @@ def test_pg_loader_reports_missing_unmigrated_store_as_not_found(monkeypatch):
     def connection(*_args, **_kwargs): yield Cursor()
 
     monkeypatch.setattr(pg_acceptance.v4_native, "connection", connection)
-    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4_forward_fixture")
+    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4")
     try:
         pg_acceptance.load("G:/codex work/大A交易", "2026-10-16", sdk={})
     except ValueError as exc:
@@ -162,7 +166,7 @@ def test_operational_executor_materializes_manifest_from_pg_bundle_without_file_
     bundle = {"manifest": record["manifest"], "smoke_receipt": record["smoke_receipt"],
               "native_response": record["native_response"], "payload_sha256": "f" * 64,
               "database_identity": {"database": "fixture", "database_oid": 1, "host": "fixture", "port": 5432},
-              "schema": "v4_fixture"}
+              "schema": "v4"}
     calls = {}
 
     def load(root, target, *, sdk):
@@ -177,6 +181,8 @@ def test_operational_executor_materializes_manifest_from_pg_bundle_without_file_
     monkeypatch.setattr(pg_acceptance, "load", load)
     monkeypatch.setattr(pg_acceptance, "export_native_response", export)
     monkeypatch.setattr(executor, "package_metadata", lambda: runtime)
+    from common import paths
+    monkeypatch.setattr(paths, "resolve_tdx_root", lambda *_args, **_kwargs: Path("D:/new_tdx"))
 
     result = executor._load_pg_runtime_acceptance(tmp_path, day)
     assert calls["target"] == day

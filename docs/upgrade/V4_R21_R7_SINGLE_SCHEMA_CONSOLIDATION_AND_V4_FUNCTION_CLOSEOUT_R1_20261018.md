@@ -261,3 +261,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 全仓消费者扫描发现 `tests/test_r8_forward_namespace.py` 仍断言候选必须进入工作区专属的旧物理 Schema，并通过旧 alias/Head 候选枚举来选择存储；该回归与 R21-R7 固定 `v4` 合同相反。生产读取器当前只验证受限候选绑定并检查 `v4.forward_r7_facts_r1`，没有旧 Schema 搜索/建库。
 - 将该旧回归改为固定关系验收：候选 locator 必须是 `v4`、绑定 root 必须精确匹配、目标固定表缺失则 fail-closed；所有场景均通过注入 PG 连接执行，不创建/改写 PG 对象。G 临时目录定向 pytest 为 `5 passed`；该次无共享数据库写入、无服务重载和无 Schema 变化。
 - 这修复了会鼓励恢复多 Schema 的回归合同，不提升 Forward 的 PIT/Accepted 或成熟结算状态。
+
+### 2026-10-19 其余 PG 消费者测试断言统一至固定 Schema
+
+- 将 BaoStock runtime acceptance 测试夹具更新为固定 `v4` 连接，并按真实 `(workspace_namespace, kind, fact_key)` 查询参数验证固定表读取；操作执行器夹具使用 `v4` 身份，TDX 根路径仅用于只读源路径边界解析，不对源目录写入。
+- 将 Daily Jobs 与 PG runtime consumer 测试中的旧 `v4_jobs_*` 断言改为 `v4`。三个受影响测试文件 `py_compile` 通过；BaoStock 纯夹具定向用例 `7 passed`。另外两个文件含共享开发库写入/HTTP 服务行为，本轮未运行其集成用例，需在遵守 28766 唯一服务槽位和数据库写入范围的前提下另行核验。
+- 无 Schema/业务数据写入或服务重载；不影响模块数据门状态。

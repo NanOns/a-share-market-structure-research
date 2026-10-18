@@ -150,3 +150,12 @@
 - 对新增及本续行触及的入口完成定向 `py_compile` 和 `git diff --check`；`tools/git_repository_policy.py --staged` 已通过全部 20 个拟提交 blob。通过实际 `market_research` PG 调用回读 3 份 DM-01/外部验收正式来源 JSON 与 1 份精确 SHA TDX capture receipt，解析字段与字节摘要核验通过。未运行完整日更编排，也未启动采集/worker。
 - 当前开发服务只重启 `127.0.0.1:28766`，进程明确连接同库 `market_research` / OID `646711`，任务队列关闭；`28765` 未监听、未触碰。Codex 内置浏览器复验首页、板块/股票列表、详情、Focus、Forward、Market、Diagnostics Health/Sources/Contracts/Jobs、Compare、Replay、日更路由；板块搜索交互从页面实际提交并返回唯一 `INDUSTRY:T110202`。路由首屏可能短暂显示加载占位，服务端对应接口返回候选内容；串行等待最终 UI 渲染成功。候选仍明确非正式 Head。
 - 本次提交若正常推送后，余项仍为真实输入事实：Focus/Market Owner 未绑定、严格 PIT 日期没有有效证明、没有 accepted publication 供正式 Head CAS。用户明确授权的 PG 读写已用于实际 SourceIngress 和 Registry 追加；正式 Head 切换、生产部署/28765、物理删除和强推仍依原用户边界不得执行。非 V4 代码只登记，不改造；未登记 22 条历史 edge / 3 个缺 SHA 仍不可伪造为已消除。
+
+## 用户指出未完成后的继续修复（2026-10-18）
+
+- 继续改完 DM-01 R3/R3.2/R3.3 候选链：三版 candidate orchestrator 不再接收或散列本地 `protected_bindings` Head 文件，而要求从同一共享 PostgreSQL 获取已接受 Stage/Data/Calendar/Identity/Membership/Owner tuple 的单次 RR/RO authority snapshot；三个运行链入口及三个确定性复核入口均传入该快照回调。失败状态字段也改为准确表示 `accepted_authority_unchanged`。
+- 修复 DM-01 stage-state 精确读取：`.pg.json` locator 不再作为内容来源；读取只接受 inline PG descriptor，先验 descriptor SHA/bytes/schema/database identity，再从现有 Forward facts 表读 payload 并复验 PG payload SHA。date-bound runner 报告 stage 已覆盖候选、会话解析、失败/通过后检、原子性、确定性与外部复核交接；不创建文件报告或报告目录。
+- 新增的 RR/RO 快照助手在实际同库调用中读取通过：`market_research` / OID `646711`、T0 `2026-09-30`、authority binding 12 个，数据库系统标识与任务期间已记录值一致。此处为代码路径真实读回，不是Head写入或发布。
+- Codex 内置浏览器在真实 `127.0.0.1:28766/v4/` 对当前分支逐模块验收：首页、板块/股票搜索和股票详情、Focus/Forward、Market、Diagnostics health/sources/contracts/jobs/legacy/shadow、Compare、Replay、数据更新中心。浏览器实际提交板块 `区域地产` 搜索，唯一返回 `INDUSTRY:T110202`；实际提交股票 `SH.600675` 搜索并打开详情；Focus 页内 Forward 搜索返回 1 个样本，期限结算返回 5 行；Market 搜索返回 1 条事件。Compare 表单实际选择重建视图与股票-市场模式，回显 `view=corrected` 并明确 PIT 不可用；Replay 表单实际读取并打开来源缺口详情，返回 `PIT_NOT_AVAILABLE / NO_BOUND_DATE_SNAPSHOT`。Diagnostics 抽屉的真实 PG context 回显 `market_research`、OID `646711`、system identifier `7688198230782699460`。日更页显示正式日历 Head 缺失、worker 未启动、没有新建作业；浏览器 console 无 error/warn。全程未触发在线数据请求、日更写操作或 Head 切换。
+- 最新续行变更涉及 11 个 V4 Python 文件；上述文件定向 `py_compile`、`git diff --check` 与暂存区准入检查结果见本提交记录。此次不做全仓扫描、GitHub CLI 流程测试、完整测试套件或 Actions。
+- 仍未完成的不是可编码调用点：Focus/Market Owner 正式发布物和严格 PIT 可用日历/快照证明在当前 PG 候选中缺失；没有 accepted publication 可做正式 Head CAS。正式 Head、生产部署/28765、物理删除、强推仍按原任务边界排除。原有 22 条历史 edge ID 映射和 3 条历史 blob expected SHA 缺失也不能通过代码改造伪造补齐。

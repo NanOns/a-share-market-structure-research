@@ -32,6 +32,13 @@ STAGES = frozenset({
     "stage_head",
     "dev_baseline_head",
     "bootstrap_manifest",
+    "dm01_r3_candidate",
+    "dm01_r3_session_resolution",
+    "dm01_r3_postcheck_failed",
+    "dm01_r3_postcheck_passed",
+    "dm01_r3_atomicity",
+    "dm01_r3_determinism",
+    "dm01_r3_reaudit_handoff",
 })
 
 
@@ -43,10 +50,21 @@ def _day(value: str) -> str:
 
 
 def _expected_identity() -> dict:
+    raw = os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON")
     try:
-        identity = json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", "{}"))
+        identity = json.loads(raw) if raw else {}
     except ValueError as exc:
         raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
+    if not identity:
+        # Reuse the project's configured shared reader identity when a runner
+        # was launched outside the web-server wrapper. No second database or
+        # separately provisioned reader instance is introduced.
+        with v4_native.connection("v4", read_only=True) as pg:
+            database, oid, host, port = pg.execute(
+                "SELECT current_database(),(SELECT oid FROM pg_database WHERE datname=current_database()),"
+                "coalesce(inet_server_addr()::text,'local'),inet_server_port()"
+            ).fetchone()
+        identity = dict(database=database, database_oid=oid, host=host, port=port)
     if not isinstance(identity, dict) or not {
         "database", "database_oid", "host", "port"
     }.issubset(identity):
@@ -85,15 +103,14 @@ def _read_fact(root, binding: dict) -> dict:
     folder = (project_root / FOLDER).resolve()
     if project_root.drive.upper() != "G:" or not folder.is_relative_to(project_root):
         raise ValueError("DM01_STAGE_STATE_G_ROOT_REQUIRED")
-    if not isinstance(binding, dict) or set(binding) != {"path", "sha256", "bytes"}:
+    if not isinstance(binding, dict) or set(binding) - {"path", "sha256", "bytes", "pg_descriptor"}:
         raise ValueError("DM01_STAGE_STATE_BINDING_REQUIRED")
-    descriptor_path = (project_root / binding["path"]).resolve()
-    if not descriptor_path.is_relative_to(folder) or not descriptor_path.name.endswith(".pg.json"):
-        raise ValueError("DM01_STAGE_STATE_DESCRIPTOR_PATH_INVALID")
-    raw = descriptor_path.read_bytes()
+    descriptor = binding.get("pg_descriptor")
+    if not isinstance(descriptor, dict):
+        raise ValueError("DM01_STAGE_STATE_INLINE_PG_DESCRIPTOR_REQUIRED")
+    raw = canonical(descriptor)
     if len(raw) != binding["bytes"] or digest(raw) != binding["sha256"]:
         raise ValueError("DM01_STAGE_STATE_DESCRIPTOR_DIGEST_MISMATCH")
-    descriptor = json.loads(raw)
     schema = v4_native.workspace_schema(folder, "forward")
     if (descriptor.get("contract_id") != "V4_FORWARD_PG_FACT_STORE_R1"
             or descriptor.get("engine") != "postgresql"

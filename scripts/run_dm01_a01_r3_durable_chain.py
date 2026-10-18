@@ -11,7 +11,6 @@ import zipfile
 import duckdb
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.enter_source_authority_remediation_r2 import bind
-from scripts.build_v4_08_r2_membership_evidence import atomic_json
 from workbench_analysis.dm01_incremental_component_builders_r3_2 import load,digest,sha,_write_immutable,BUILD_ORDER,resolve_target_session,CONTRACT_PATH
 from workbench_analysis.dm01_candidate_orchestrator_r3_2 import build_candidate,candidate_parent
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
@@ -19,14 +18,31 @@ from scripts.build_v4_02_formal_periods import period_key
 from tdx.gbbq_reader import read_gbbq
 from common.paths import resolve_tdx_root
 BASE='data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r1/'
-P='reports/audits/DM01_A01_R3_'
 STAGE=ROOT/'data/v4/dm01_candidate_staging_r3/durable_r2'
+_PG_REPORT_BINDINGS={}
+_CHAIN_TRADE_DATE=None
 
 def read(p):return json.loads((ROOT/p).read_text(encoding='utf8'))
 def save(name,value):
     stem=Path(name); path=BASE+(stem.parent/(stem.stem+'_'+digest(value)+stem.suffix)).as_posix()
     _write_immutable(ROOT/path,value);return bind(path)
-def report(name,value):atomic_json(ROOT/(P+name+'_R2.json'),value)
+def report(name,value):
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage
+    day=value.get('target_trade_date') or value.get('failed_date') or value.get('trade_date') or _CHAIN_TRADE_DATE
+    sessions=value.get('sessions')
+    if sessions:day=sessions[-1]
+    if not day:raise ValueError('DM01_R3_REPORT_TRADE_DATE_REQUIRED')
+    if name.endswith('_CANDIDATE'):stage='dm01_r3_candidate'
+    elif name=='CONTINUOUS_CHAIN_POSTCHECK':
+        stage='dm01_r3_postcheck_failed' if value.get('status')=='BLOCKED' else 'dm01_r3_postcheck_passed'
+    elif name=='ATOMIC_FAILURE_PROBES':stage='dm01_r3_atomicity'
+    elif name=='DETERMINISM':stage='dm01_r3_determinism'
+    elif name=='EXTERNAL_REAUDIT_HANDOFF':stage='dm01_r3_reaudit_handoff'
+    else:raise ValueError('DM01_R3_REPORT_STAGE_UNMAPPED:'+name)
+    payload=dict(contract_id='V4_DM01_R3_EXECUTION_REPORT_R1',trade_date=day,report_name=name,value=value)
+    binding=append_stage(ROOT,day,stage,payload)['binding']
+    _PG_REPORT_BINDINGS[name]=binding
+    return binding
 def iso(value):
     if value is None:return None
     s=str(value);return s[:4]+'-'+s[4:6]+'-'+s[6:8]
@@ -40,9 +56,18 @@ def active(records,target):
         and r.get('symbol_effective_from',r['list_date'])<=target
         and (not r.get('symbol_effective_to') or r['symbol_effective_to']>=target)]
 
+def accepted_authority_snapshot():
+    from workbench_db.v4_accepted_authority_snapshot_r1 import current_accepted_authority_snapshot
+    return current_accepted_authority_snapshot(ROOT)
+
 def execute():
+    global _CHAIN_TRADE_DATE
     contract=read(CONTRACT_PATH);context=load(contract['execution_context']);parent=context['parent']
-    entry=read(P+'STAGE_ENTRY_R1.json');heads=[ROOT/b['path'] for b in entry['protected_bindings']]
+    _CHAIN_TRADE_DATE=context['sessions'][-1]
+    from workbench_analysis.market_source_acquisition import load_json_source_pg
+    load_json_source_pg(ROOT,'reports/audits/DM01_A01_R3_STAGE_ENTRY_R1.json',
+        source_origin='V4_DM01_STAGE_ENTRY_AUTHORITY')
+    authority_before=accepted_authority_snapshot()
     results=[];contexts=[]
     for target in context['sessions']:
         source=context['inputs'][target]
@@ -52,7 +77,8 @@ def execute():
             calendar_publication_id=context['calendar']['publication_id'],identity_publication_id=context['identity']['publication_id'],
             field_source_instances=source['instances'],tdx_roots=[str(resolve_tdx_root(ROOT))],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
         freeze['manifest_sha256']=digest({k:v for k,v in freeze.items() if k!='manifest_sha256'})
-        args=dict(parent_data_head=parent,source_freeze=freeze,calendar_binding=context['calendar'],identity_binding=context['identity'],staging_root=STAGE,head_paths=heads)
+        args=dict(parent_data_head=parent,source_freeze=freeze,calendar_binding=context['calendar'],identity_binding=context['identity'],staging_root=STAGE,
+            authority_snapshot=accepted_authority_snapshot)
         result=build_candidate(**args)
         report(target.replace('-','')+'_CANDIDATE',dict(target_trade_date=target,parent=parent['binding'],**result))
         print(json.dumps(dict(target=target,status=result['status'],reason=result.get('reason'),rows={k:r['row_count'] for k,r in result.get('components',{}).items()})),flush=True)
@@ -62,7 +88,8 @@ def execute():
         repeat=build_candidate(**args)
         assert repeat['status']=='NOOP_IDENTICAL_CANDIDATE' and repeat['logical_digest']==result['logical_digest']
         results.append(result);contexts.append(args);parent=candidate_parent(result,STAGE)
-    unchanged=all(sha(ROOT/b['path'])==b['sha256'] for b in entry['protected_bindings']);assert unchanged
+    unchanged=accepted_authority_snapshot()==authority_before
+    if not unchanged:raise ValueError('PG_ACCEPTED_AUTHORITY_CHANGED_DURING_DM01_EXECUTION')
     # Real-source late failure: seven completed components never yield a consumable marker.
     bad=deepcopy(contexts[0]);bad['source_freeze']=deepcopy(bad['source_freeze'])
     wrong=save('atomic_probe_wrong_price_rules.json',dict(rules=[]))
@@ -92,8 +119,8 @@ def execute():
         old_business_heads_unchanged=True,data_head_moved=False,stage_head_moved=False,dm01_all_nine_accepted=False,
         production_permission=False,shadow_production_permission=False,focus_cutover_permission=False))
     report('EXTERNAL_REAUDIT_HANDOFF',dict(status='READY_FOR_EXTERNAL_REAUDIT',phase_A='PASS',
-        chain_postcheck=bind(P+'CONTINUOUS_CHAIN_POSTCHECK_R1.json'),determinism=bind(P+'DETERMINISM_R1.json'),
-        atomicity=bind(P+'ATOMIC_FAILURE_PROBES_R1.json'),contract=bind(CONTRACT_PATH),source_context=contract['execution_context'],
+        chain_postcheck=_PG_REPORT_BINDINGS['CONTINUOUS_CHAIN_POSTCHECK'],determinism=_PG_REPORT_BINDINGS['DETERMINISM'],
+        atomicity=_PG_REPORT_BINDINGS['ATOMIC_FAILURE_PROBES'],contract=bind(CONTRACT_PATH),source_context=contract['execution_context'],
         clean_regression='PENDING_CLEAN_DETACHED',external_acceptance='PENDING',data_head_moved=False,
         permitted_next_stage='INDEPENDENT_EXTERNAL_REAUDIT_ONLY'))
 

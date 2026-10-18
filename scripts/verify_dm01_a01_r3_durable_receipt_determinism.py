@@ -9,6 +9,7 @@ from scripts.enter_source_authority_remediation_r2 import bind
 from workbench_analysis.dm01_incremental_component_builders_r3_3 import load,digest,_write_immutable
 from workbench_analysis.dm01_candidate_orchestrator_r3_3 import build_candidate
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
+from common.paths import resolve_tdx_root
 P='reports/audits/DM01_A01_R3_'
 def read(p):return json.loads((ROOT/p).read_text(encoding='utf8'))
 def main():
@@ -17,12 +18,13 @@ def main():
     freeze=build_source_freeze_manifest_v2(trade_date=target,sources=source['families'],changed_tdx_files=[],
         observed_at=ctx['observed_at'],ingested_at=ctx['observed_at'],system_available_at=ctx['observed_at'])
     freeze.update(inputs=source['inputs'],parent_data_head_digest=parent['binding']['sha256'],calendar_publication_id=ctx['calendar']['publication_id'],
-        identity_publication_id=ctx['identity']['publication_id'],field_source_instances=source['instances'],tdx_roots=['D:/new_tdx'],
+        identity_publication_id=ctx['identity']['publication_id'],field_source_instances=source['instances'],tdx_roots=[str(resolve_tdx_root(ROOT))],
         knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
     freeze['manifest_sha256']=digest({k:v for k,v in freeze.items() if k!='manifest_sha256'})
-    heads=[ROOT/r['path'] for r in read(P+'STAGE_ENTRY_R1.json')['protected_bindings']]
+    from workbench_db.v4_accepted_authority_snapshot_r1 import current_accepted_authority_snapshot
+    authority_snapshot=lambda: current_accepted_authority_snapshot(ROOT)
     args=dict(parent_data_head=parent,source_freeze=freeze,calendar_binding=ctx['calendar'],identity_binding=ctx['identity'],
-        staging_root=ROOT/'data/v4/dm01_candidate_staging_r3/durable_r3/fresh_determinism_r3',head_paths=heads)
+        staging_root=ROOT/'data/v4/dm01_candidate_staging_r3/durable_r3/fresh_determinism_r3',authority_snapshot=authority_snapshot)
     fresh=build_candidate(**args)
     assert fresh['status']=='READY_FOR_EXTERNAL_REAUDIT',fresh
     assert fresh['logical_digest']==original['logical_digest'] and fresh['candidate_revision']==original['candidate_revision']

@@ -230,3 +230,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 再次使用项目 `v4_native.connection('v4', read_only=True)` 读回 `market_research` / `127.0.0.1:5432`，事务级 `transaction_read_only=on`。`market_calendar_sessions=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`、`publication_module_results=0`、`daily_core_result_snapshots=0`、`daily_core_result_rows=0`；`dm01_data_accepted_heads=1` 但仍是 `AS_RECORDED=false` 且 focus/shadow/production 权限关闭的候选，不能作为 Accepted Head。
 - Owner 固定表实际读回优先级 3 个密封版本（最近 T0 `2026-10-15`）、风险 3 个（最近 `2026-10-15`）、扇区生命周期 1 个（`2026-10-13`）；旧 Owner 数据可读不等于当日完整 Accepted Publication/Owner 链，Publication module binding 仍为 0。查询未写库。
+
+### 2026-10-19 Research Series/Journal 双版本隔离现场核验
+
+- 对固定表 Series 与 Journal 各构造两份独立 release（共 4 份），用 R2 Builder seal 后通过 `load_release(verify_content=True)` 和 release-scoped Reader 逐项读回。每个 release 只返回其自身唯一 marker，Series 固定表为 `v4.research_series_bars`，Journal 固定表为 `v4.research_journal_days`；没有版本串读。
+- 四个样例均在开发 PG 事务内完成并回滚。回滚后临时 `research_releases` 行数为 0；事务前后 `v4`/`v4_*` Schema 集合均只有 `v4`，固定表目录清单不变。该核验没有新建业务 Schema、版本专属表或持久化合成业务行。与前述 Snapshot A/B 双版本回滚读回合并，补足 S1 两版本固定存储现场证据；此结果不替代历史 Series RAW/QFQ 聚合、行情来源或 Accepted 门验收。
+- 只读容量复查进一步确认主要对象体量来自 TOAST：`v4.forward_facts` 总量 `6,218,366,976 B`（估算 9,052 行，TOAST `6,211,829,760 B`），`v4.forward_legacy_evidence_r1` `8,394,104,832 B`，`v4.forward_r7_facts_r1` `2,182,561,792 B`。没有因此扫描或复制大对象；估算行数不等价于精确业务行数。

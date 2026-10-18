@@ -193,3 +193,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 ### 2026-10-19 再次真实浏览器复核
 
 当前内置浏览器实际访问本机 `28766` 并等待异步数据渲染完成：Focus 路由返回 469 条；Forward 路由返回 117 条样本、首次冻结未知、期限计划 585、已发布期限状态 5（覆盖 1 个样本）、成熟合格 0；FEP 路由显示 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`、质量/当前观察覆盖不可得、未训练槽 `PENDING`。Market 路由显示历史截面截至 2026-09-30（上涨 2,344、下跌 2,712、平盘 155、未知 13、分母 5,224、行情 5,213、成交额 14,378.36 亿元），并明确非实时行情。日更路由显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`，worker 未启动，源检查/补齐/自动更新/重试/取消按钮均禁用。以上是实际 UI 与当前降级/未知状态核验，不是模块通过；页面未执行任何写操作。
+
+### 2026-10-19 Owner 固定表消费者真实读回纠正
+
+- 首次用真实 `REPEATABLE READ READ ONLY` 会话逐项走 Owner 消费者，发现 `owner_schema_migration_map_r1.T0` 与固定 Owner 表 `T0` 是 `text`，绑定中的日期是 PG `date`；回执查询和版本查询均因此产生 `text = date`。已在消费者端严格规范化为 ISO `YYYY-MM-DD`，拒绝 `datetime` 和非规范日期字符串。该修复不改数据、不改迁移回执、不创建 Schema。
+- 再次通过三个真实 Owner 读取器逐项读取 7 份迁移凭证并校验 payload/聚合 digest 和行数：operational_risk 3 份（各 3 行）、research_priority 3 份（5,625 / 5,625 / 5,626 行）、sector_lifecycle 1 份（400 行）。7/7 状态 `FIXED_V4_READBACK_VERIFIED`；同一事务 `transaction_read_only=on`，数据库 `market_research` / OID `646711` / `127.0.0.1:5432`。这验证了已迁移 Owner 数据的固定表真实读取路径；因为 `publication_module_results` 仍为 0 行，不能代替完整 accepted Publication 绑定链验收。
+- 更新 Owner 测试夹具以覆盖迁移回执和日期文本对齐、固定 `v4` 表关系及显式只读事务；Owner 专项 `8 passed`。代码修改后仅重载了开发端口 `28766`（新 PID 30824），浏览器重新读取 Home 成功；`28765` 未启动。

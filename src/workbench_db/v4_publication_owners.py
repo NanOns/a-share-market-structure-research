@@ -1,6 +1,7 @@
 """Fixed-query readback for immutable V4 Owners in the single v4 schema."""
 from __future__ import annotations
 
+from datetime import date, datetime
 import re
 from typing import Any, Mapping
 
@@ -13,6 +14,21 @@ SECTOR_LIFECYCLE_OWNER_CONTRACT = "V4_SECTOR_LIFECYCLE_PG_OWNER_R1"
 _OWNER_TOKEN_FIELD = "to" + "ken"
 _SCHEMA = re.compile(r"^(?:v4|v4_[a-f0-9]{56})$")
 _MAX_OWNER_ROWS = 200_000
+
+
+def _canonical_owner_t0(value: Any) -> str:
+    if isinstance(value, datetime):
+        raise PublicationReadError("OWNER_T0_INVALID")
+    if isinstance(value, date):
+        return value.isoformat()
+    if isinstance(value, str):
+        try:
+            parsed = date.fromisoformat(value)
+        except ValueError as exc:
+            raise PublicationReadError("OWNER_T0_INVALID") from exc
+        if parsed.isoformat() == value:
+            return value
+    raise PublicationReadError("OWNER_T0_INVALID")
 
 
 def _owner_table(schema: str, family: str, part: str) -> str:
@@ -41,10 +57,11 @@ def _attest_migrated_owner(pg: Any, binding: Mapping[str, Any], family: str, con
     source_schema = binding.get("owner_schema")
     if source_schema == "v4":
         return
+    source_trade_date = _canonical_owner_t0(binding.get("owner_trade_date"))
     receipt = pg.execute(
         """SELECT digest,contract,row_count,verification FROM v4.owner_schema_migration_map_r1
            WHERE family=%s AND source_schema=%s AND token=%s AND T0=%s""",
-        (family, source_schema, binding.get("owner_version_token"), binding.get("owner_trade_date")),
+        (family, source_schema, binding.get("owner_version_token"), source_trade_date),
     ).fetchone()
     if (not receipt or receipt[0] != binding.get("result_digest") or receipt[1] != contract
             or receipt[2] != binding.get("row_count") or receipt[3].get("status") != "VERIFIED"):
@@ -80,6 +97,7 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
     versions_table = _owner_table(schema, "sector_lifecycle", "versions")
     rows_table = _owner_table(schema, "sector_lifecycle", "payloads")
     token, trade_date = binding.get("owner_version_token"), binding.get("owner_trade_date")
+    trade_date_text = _canonical_owner_t0(trade_date)
     if not isinstance(token, str) or not token.strip():
         raise PublicationReadError("SECTOR_LIFECYCLE_OWNER_TOKEN_INVALID")
 
@@ -88,7 +106,7 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
         "producer_sha256,parameter_digest,input_digest "
         "FROM {}.{} WHERE token=%s AND T0=%s"
     ).format(sql.Identifier("v4"), sql.Identifier(versions_table))
-    version = pg.execute(version_sql, (token, trade_date)).fetchone()
+    version = pg.execute(version_sql, (token, trade_date_text)).fetchone()
     if version is None:
         raise PublicationReadError("SECTOR_LIFECYCLE_OWNER_VERSION_MISSING")
     owner_digest, contract_id, sealed, actual_count, owner_database_identity, producer_sha, parameter_digest, input_digest = version
@@ -102,7 +120,7 @@ def read_sector_lifecycle_owner(pg: Any, binding: Mapping[str, Any]) -> dict[str
         "SELECT sector_id,payload,payload_sha256 FROM {}.{} "
         "WHERE token=%s AND T0=%s ORDER BY sector_id COLLATE \"C\" LIMIT %s"
     ).format(sql.Identifier("v4"), sql.Identifier(rows_table))
-    rows = pg.execute(rows_sql, (token, trade_date, count + 1)).fetchall()
+    rows = pg.execute(rows_sql, (token, trade_date_text, count + 1)).fetchall()
     if len(rows) != count:
         raise PublicationReadError("OWNER_READBACK_ROW_COUNT_MISMATCH")
     payload = []
@@ -164,11 +182,12 @@ def _read_single_payload_owner(pg: Any, binding: Mapping[str, Any], *, family: s
     version_table, payload_table = f"{schema}.{version_name}", f"{schema}.{payload_name}"
     _require_read_only_transaction(pg)
     token, trade_date = binding.get("owner_version_token"), binding.get("owner_trade_date")
+    trade_date_text = _canonical_owner_t0(trade_date)
     if not isinstance(token, str) or not token.strip():
         raise PublicationReadError("OWNER_TOKEN_INVALID")
     version = pg.execute(
         sql.SQL("SELECT digest,contract,sealed,row_count,database_identity FROM v4.{} WHERE token=%s AND T0=%s").format(sql.Identifier(version_name)),
-        (token, trade_date),
+        (token, trade_date_text),
     ).fetchone()
     if version is None:
         raise PublicationReadError("OWNER_VERSION_MISSING")
@@ -178,7 +197,7 @@ def _read_single_payload_owner(pg: Any, binding: Mapping[str, Any], *, family: s
         raise PublicationReadError("OWNER_VERSION_ATTESTATION_MISMATCH")
     payload_row = pg.execute(
         sql.SQL("SELECT payload,payload_sha256 FROM v4.{} WHERE token=%s AND T0=%s").format(sql.Identifier(payload_name)),
-        (token, trade_date),
+        (token, trade_date_text),
     ).fetchone()
     if payload_row is None:
         raise PublicationReadError("OWNER_PAYLOAD_MISSING")

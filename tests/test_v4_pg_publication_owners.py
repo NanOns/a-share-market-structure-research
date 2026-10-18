@@ -22,8 +22,11 @@ DAY = "2026-10-15"
 
 
 class SQLText(str):
-    def format(self, identifier):
-        return SQLText(self.replace("{}", str(identifier)))
+    def format(self, *identifiers):
+        rendered = self
+        for identifier in identifiers:
+            rendered = rendered.replace("{}", str(identifier), 1)
+        return SQLText(rendered)
 
 
 class FakeIdentifier:
@@ -46,8 +49,9 @@ class Cursor:
 
 
 class FakePG:
-    def __init__(self, *, corrupt_row=False, writable=False):
+    def __init__(self, *, corrupt_row=False, transaction_read_only="on"):
         self.statements = []
+        self.transaction_read_only = transaction_read_only
         self.row = {
             "sector_id": "sector-1", "T0": DAY,
             "contract_id": "SECTOR_LIFECYCLE_RECONSTRUCTED_V1", "health": "STABLE",
@@ -61,15 +65,16 @@ class FakePG:
         }
         self.material.update(dict([("token", OWNER_VERSION_ID)]))
         self.owner_digest = digest(canonical(self.material))
-        self.role = (False, False, False, bool(writable), False)
 
     def execute(self, query, params=None):
         query = str(query)
         self.statements.append((query, params))
+        if query == "SHOW transaction_read_only":
+            return Cursor(one=(self.transaction_read_only,))
+        if "owner_schema_migration_map_r1" in query:
+            return Cursor(one=(self.owner_digest, SECTOR_LIFECYCLE_OWNER_CONTRACT, 1, {"status": "VERIFIED"}))
         if "inet_server_addr()" in query:
             return Cursor(one=("market_research", 16384, "127.0.0.1", 5432))
-        if "FROM pg_roles r" in query:
-            return Cursor(one=self.role)
         if "owner_versions" in query:
             return Cursor(one=(self.owner_digest, SECTOR_LIFECYCLE_OWNER_CONTRACT, True, 1, IDENTITY,
                               "1" * 64, "2" * 64, "3" * 64))
@@ -101,8 +106,10 @@ def test_sector_lifecycle_owner_readback_verifies_version_and_every_row(monkeypa
     assert resolved["payload"] == [pg.row]
     assert resolved["result_digest"] == pg.owner_digest
     queries = [query for query, _ in pg.statements]
-    assert '"' + SCHEMA + '".owner_versions' in queries[2]
-    assert '"' + SCHEMA + '".owner_rows' in queries[3]
+    assert '"v4"."sector_lifecycle_owner_versions_r1"' in queries[3]
+    assert '"v4"."sector_lifecycle_owner_rows_r1"' in queries[4]
+    receipt_query = next(params for query, params in pg.statements if "owner_schema_migration_map_r1" in query)
+    assert receipt_query[3] == DAY
     assert all("DROP" not in query.upper() for query in queries)
 
 
@@ -121,11 +128,11 @@ def test_sector_owner_rejects_unbound_schema_relation_contract_and_large_read(mo
     assert not any("owner_versions" in query for query, _ in pg.statements)
 
 
-def test_sector_owner_rejects_write_capable_role_and_row_digest_mismatch(monkeypatch):
+def test_sector_owner_requires_readonly_transaction_and_verifies_row_digest(monkeypatch):
     import sys
     install_fake_psycopg(monkeypatch)
-    with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_OWNER_WRITE_PRIVILEGES"):
-        pg = FakePG(writable=True)
+    with pytest.raises(PublicationReadError, match="PG_READER_TRANSACTION_NOT_READ_ONLY"):
+        pg = FakePG(transaction_read_only="off")
         read_sector_lifecycle_owner(pg, binding(pg))
     with pytest.raises(PublicationReadError, match="SECTOR_LIFECYCLE_OWNER_ROW_DIGEST_MISMATCH"):
         pg = FakePG(corrupt_row=True)
@@ -153,10 +160,12 @@ class FakePayloadPG:
     def execute(self, query, params=None):
         query = str(query)
         self.statements.append((query, params))
+        if query == "SHOW transaction_read_only":
+            return Cursor(one=("on",))
+        if "owner_schema_migration_map_r1" in query:
+            return Cursor(one=(self.owner_digest, self.contract, self.count, {"status": "VERIFIED"}))
         if "inet_server_addr()" in query:
             return Cursor(one=("market_research", 16384, "127.0.0.1", 5432))
-        if "FROM pg_roles r" in query:
-            return Cursor(one=(False, False, False, False, False))
         if "owner_versions" in query:
             return Cursor(one=(self.owner_digest, self.contract, True, self.count, IDENTITY))
         if "owner_payloads" in query:
@@ -194,7 +203,9 @@ def test_single_payload_owner_resolvers_verify_owner_attestation_and_digest(monk
     resolved = resolver(pg, payload_binding(family, pg))
     assert resolved["payload"] == payload
     assert resolved["result_digest"] == pg.owner_digest
-    assert any('"' + SCHEMA + '".owner_payloads' in query for query, _ in pg.statements)
+    assert any("FROM v4." in query and "WHERE token=%s AND T0=%s" in query for query, _ in pg.statements)
+    receipt_params = next(params for query, params in pg.statements if "owner_schema_migration_map_r1" in query)
+    assert receipt_params[3] == DAY
 
     corrupt = FakePayloadPG(family, payload, corrupt=True)
     with pytest.raises(PublicationReadError, match="OWNER_PAYLOAD_DIGEST_MISMATCH"):

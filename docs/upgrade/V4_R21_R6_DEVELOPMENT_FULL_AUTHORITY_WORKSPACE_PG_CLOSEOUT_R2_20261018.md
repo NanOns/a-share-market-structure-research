@@ -138,7 +138,7 @@
 ## 唯一工作区与衍生目录现场分类
 
 - `git worktree list` 仅登记唯一主仓 `G:\codex work\大A交易`，当前分支仍为 `codex/v4-workspace-cleanup`。监听核对仅见 PG `5432` 与开发 `28766`；未见 `28765` listener。28766 使用本主仓进程，且此前 PG identity 与 `market_research` 一致。
-- `G:\codex_tmp\v4_r6_tdx_20261016` 为 568,127,024 字节/39 文件的 TDX 原始源快照，`KEEP_SOURCE`；`r6_daily_evidence` 为 3,066,205 字节/22 文件，`KEEP_EVIDENCE`。`test_temp` 共 468,654,562 字节/20,462 文件，均为旧 pytest disposable basetemp 候选；当前无 pytest 进程，PostgreSQL 仅监听 5432，未见 disposable PG listener，列为 `DELETE_REBUILDABLE`。本轮自动生成的定向 pytest 子目录清理请求被执行器策略拒绝，未绕过该限制。
+- `G:\codex_tmp\v4_r6_tdx_20261016` 为 568,127,024 字节/39 文件的 TDX 原始源快照，`KEEP_SOURCE`；`r6_daily_evidence` 为 3,066,205 字节/22 文件，`KEEP_EVIDENCE`。`test_temp` 共 468,656,932 字节/20,492 文件，均为旧测试与本轮定向 pytest disposable basetemp 候选；当前无 pytest 进程，PostgreSQL 仅监听 5432，未见 disposable PG listener，列为 `DELETE_REBUILDABLE`。清理请求被执行器策略拒绝，未绕过该限制。
 - `data/v4/dynamic_daily_sources/tdx/20261008` 下两份页面捕获目录的 6 文件共 54,192 字节全部已 PG 精确读回、无现役消费者引用，分类为 `MIGRATE_TO_PG / DELETE_REBUILDABLE`；目录递归删除同样被执行器自动策略拒绝，文件副本保留并登记待清理，不影响 SourceIngress 运行路径。
 - `G:\codex_tmp\r7_active_baseline_20261015` 实测为未登记 worktree 的旧 Git clone：2,252,363,310 字节/2,726 文件、分支 `master`、23 条未提交路径，当前运行代码未发现其路径引用。因该副本带有未归属的源码/数据更改，分类 `UNKNOWN / PRESERVE`，未清理。`v4_repository_governance_r3_20261016` 为 4,675,814,273 字节/82 文件且无 `.git` 的恢复快照容器，分类 `KEEP_EVIDENCE/UNKNOWN`。当前主仓 5 个未跟踪路径（本地 hook、R75 报告、3 个审计脚本）同样保留，未覆盖或暂存。
 

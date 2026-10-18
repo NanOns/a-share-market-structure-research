@@ -2,7 +2,9 @@
 import json
 from pathlib import Path
 from .v4_native import connection, workspace_schema
-from .v4_forward_pg_r1 import ForwardFactStore, CONTRACT, digest, resolve_migrated_legacy_fact
+from .v4_forward_pg_r1 import (ForwardFactStore, CONTRACT, digest,
+                               is_legacy_forward_schema_locator,
+                               resolve_migrated_legacy_fact)
 
 COHORT_KIND = 'validation_cohort'
 
@@ -41,7 +43,9 @@ def load_owner(root, binding):
     folder = path.parent.parent
     expected_schema = workspace_schema(folder, 'forward')
     source_schema=document.get('schema')
-    if (document.get('engine') != 'postgresql' or source_schema not in ('v4',) and not (isinstance(source_schema,str) and source_schema.startswith('v4_forward_')) or document.get('kind') != COHORT_KIND):
+    if (document.get('engine') != 'postgresql'
+            or source_schema!='v4' and not is_legacy_forward_schema_locator(source_schema)
+            or document.get('kind') != COHORT_KIND):
         raise ValueError('COHORT_PG_DESCRIPTOR_IDENTITY_MISMATCH')
     namespace=document.get('workspace_namespace')
     if source_schema!='v4':namespace=resolve_migrated_legacy_fact(source_schema,COHORT_KIND,document['fact_key'],document['payload_sha256'])

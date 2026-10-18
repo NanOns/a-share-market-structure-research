@@ -465,3 +465,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 继续静态扫描发现旧 `v4_shadow_live_pg_r3.NativeShadowDatabase` 虽然构造器开头已 fail-closed，但类体仍保留独立 PG 连接、路径哈希 Schema 和不可达的创建/写入逻辑。已删除整段退役 writer 实现；仅保留旧导入表面、构造即拒绝的兼容类以及仍有测试合同调用的显式模拟资格辅助函数。源码中不再有 Shadow 路径的 `CREATE SCHEMA` 或数据库连接实现。
 - 新增回归断言检查旧文件不含 Schema 创建语句且实例化在连接前按迁移错误拒绝。`tests/test_v4_single_schema_guard_r7.py` 定向运行 `7 passed`；两个变更 Python 文件 `py_compile` 成功，指定文件 `git diff --check` 通过。所有 pytest 临时目录与 Python 缓存均在 `G:\codex_tmp`。
 - 本次只改源码/回归/阶段报告；未连接或写入 PostgreSQL、未改变 Schema/业务 Head、未启动/停止服务，也未触碰 28765。数据库目录现状仍依据最近 RR/RO 实测；本条是运行时能力进一步移除，不构成新 PG 清理或模块数据验收。
+
+### 2026-10-19 Forward 迁移 locator 入口精确化
+
+- Market Fact、Period Owner 与 Cohort Reader 对旧来源 locator 的前置门原先只判断 `v4_forward_` 前缀；虽然下游 migration-map resolver 会再次用严格正则拒绝非法值，但入口本身允许非合同格式进入后续逻辑。新增共享纯函数，只接受冻结的 `v4_forward_<16位小写hex>` 与 `v4_r8_forward_<16位小写hex>` 格式，并用于三个消费者及精确迁移/只读解析入口；实际历史内容仍只能凭 `v4` 固定表的 `VERIFIED` 精确映射回执读回。
+- 新增纯单测覆盖两种合法历史定位、畸形/大小写/尾缀/其他模块/空 locator 拒绝，以及无效 locator 在建立 PG 连接前 fail-closed。定向 Forward locator + History locator 回归 `3 passed`；5 个变更 Python 文件 `py_compile` 通过，变更文件 `git diff --check` 通过。测试临时目录与字节码缓存均置于 `G:\codex_tmp`。
+- 未触碰数据库、28766 或 28765；该改动是 locator 格式收紧，不改变已验证映射、数据行或模块来源状态。

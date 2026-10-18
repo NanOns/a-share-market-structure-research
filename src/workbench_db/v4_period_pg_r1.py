@@ -2,7 +2,9 @@
 import json
 from pathlib import Path
 from .v4_native import connection,workspace_schema,configured_dsn
-from .v4_forward_pg_r1 import ForwardFactStore,CONTRACT,digest,resolve_migrated_legacy_fact
+from .v4_forward_pg_r1 import (ForwardFactStore,CONTRACT,digest,
+                               is_legacy_forward_schema_locator,
+                               resolve_migrated_legacy_fact)
 OWNER='CORE_PRODUCT_PERIOD_PG_OWNER_R1'
 
 def prepare(root,payload,key):
@@ -25,7 +27,7 @@ def read(root,binding,day,domain,head_token,*,security_id=None):
     from workbench_analysis.r43_owner_replay import checked
     path=checked(root,binding);d=json.loads(path.read_bytes());schema=workspace_schema(path.parent.parent,'forward')
     source_schema=d.get('schema')
-    if (d.get('contract_id')!=CONTRACT or source_schema not in ('v4',) and not (isinstance(source_schema,str) and source_schema.startswith('v4_forward_'))
+    if (d.get('contract_id')!=CONTRACT or source_schema!='v4' and not is_legacy_forward_schema_locator(source_schema)
             or d.get('kind')!=domain or d.get('engine')!='postgresql'):raise ValueError('PG_PERIOD_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     namespace=d.get('workspace_namespace')
     if source_schema!='v4':namespace=resolve_migrated_legacy_fact(source_schema,domain,d['fact_key'],d['payload_sha256'])

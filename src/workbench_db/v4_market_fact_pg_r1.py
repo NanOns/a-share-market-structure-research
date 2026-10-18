@@ -1,7 +1,9 @@
 """Immutable source-bound market payloads, native PG read only consumers."""
 import json
 from .v4_native import connection, workspace_schema
-from .v4_forward_pg_r1 import ForwardFactStore, CONTRACT, digest, resolve_migrated_legacy_fact
+from .v4_forward_pg_r1 import (ForwardFactStore, CONTRACT, digest,
+                               is_legacy_forward_schema_locator,
+                               resolve_migrated_legacy_fact)
 
 def prepare(root, facts, key):
     if facts.get('contract_id')!='CORE_PRODUCT_MARKET_FACT_READ_R1':raise ValueError('MARKET_SOURCE_CONTRACT_REQUIRED')
@@ -14,7 +16,7 @@ def read(root,binding,day):
     schema=workspace_schema(path.parent.parent,'forward')
     source_schema=descriptor.get('schema')
     if (descriptor.get('contract_id')!=CONTRACT or descriptor.get('engine')!='postgresql'
-            or source_schema not in ('v4',) and not (isinstance(source_schema,str) and source_schema.startswith('v4_forward_'))
+            or source_schema!='v4' and not is_legacy_forward_schema_locator(source_schema)
             or descriptor.get('kind')!='market_facts'):raise ValueError('PG_MARKET_DESCRIPTOR_REQUIRED_NO_FALLBACK')
     namespace=descriptor.get('workspace_namespace')
     if source_schema!='v4':namespace=resolve_migrated_legacy_fact(source_schema,descriptor['kind'],descriptor['fact_key'],descriptor['payload_sha256'])

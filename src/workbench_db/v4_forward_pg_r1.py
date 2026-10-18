@@ -32,10 +32,15 @@ def digest(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def is_legacy_forward_schema_locator(source_schema):
+    """Recognize only frozen legacy locator shapes; storage remains in v4."""
+    return (isinstance(source_schema, str)
+            and re.fullmatch(r'v4_(?:forward|r8_forward)_[a-f0-9]{16}', source_schema) is not None)
+
+
 def migrate_exact_legacy_fact(source_schema, kind, key, expected_sha256=None):
     """Move one exact legacy fact into the fixed table and record its locator."""
-    if (not isinstance(source_schema,str)
-            or not re.fullmatch(r'v4_(?:forward|r8_forward)_[a-f0-9]{16}',source_schema)
+    if (not is_legacy_forward_schema_locator(source_schema)
             or not isinstance(kind,str) or not re.fullmatch(r'[a-z][a-z0-9_]{0,60}',kind)
             or not isinstance(key,str)):
         raise ValueError('FORWARD_LEGACY_EXACT_LOCATOR_INVALID')
@@ -81,8 +86,7 @@ def migrate_exact_legacy_fact(source_schema, kind, key, expected_sha256=None):
 
 def resolve_migrated_legacy_fact(source_schema, kind, key, expected_sha256=None):
     """Resolve an already migrated locator using the read-only v4 receipt."""
-    if (not isinstance(source_schema,str)
-            or not re.fullmatch(r'v4_(?:forward|r8_forward)_[a-f0-9]{16}',source_schema)
+    if (not is_legacy_forward_schema_locator(source_schema)
             or not isinstance(kind,str) or not re.fullmatch(r'[a-z][a-z0-9_]{0,60}',kind)
             or not isinstance(key,str)):
         raise ValueError('FORWARD_LEGACY_EXACT_LOCATOR_INVALID')

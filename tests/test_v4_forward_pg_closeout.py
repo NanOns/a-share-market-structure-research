@@ -59,8 +59,10 @@ def test_forward_pg_owner_read_uses_reader_dsn(monkeypatch, tmp_path):
     payload_raw = forward_pg.canonical(payload)
     payload_sha = hashlib.sha256(payload_raw).hexdigest()
     fact_key = 'owner-1'
+    namespace = ForwardFactStore.namespace_for(tmp_path/'forward')
     descriptor = dict(contract_id=forward_pg.CONTRACT, engine='postgresql', database_identity=identity,
-                      schema='v4_forward_test', kind='outcomes', fact_key=fact_key, payload_sha256=payload_sha)
+                      schema='v4', workspace_namespace=namespace,
+                      kind='outcomes', fact_key=fact_key, payload_sha256=payload_sha)
     descriptor_raw = forward_pg.canonical(descriptor)
     descriptor_path = tmp_path/'forward/outcomes'/(hashlib.sha256(fact_key.encode()).hexdigest()+'.pg.json')
     descriptor_path.parent.mkdir(parents=True)
@@ -82,7 +84,7 @@ def test_forward_pg_owner_read_uses_reader_dsn(monkeypatch, tmp_path):
 
     @contextmanager
     def reader_connection(schema, *, dsn, read_only):
-        assert schema == 'v4_forward_test'
+        assert schema == 'v4'
         assert dsn == 'configured-reader'
         assert read_only is True
         yield FakePg()
@@ -92,7 +94,8 @@ def test_forward_pg_owner_read_uses_reader_dsn(monkeypatch, tmp_path):
     store = object.__new__(ForwardFactStore)
     store.root = tmp_path.resolve()
     store.folder = (tmp_path/'forward').resolve()
-    store.schema = 'v4_forward_test'
+    store.schema = 'v4'
+    store.workspace_namespace = namespace
     store.database_identity = identity
     store.dsn = 'writer-must-not-be-used-for-read'
 
@@ -103,7 +106,8 @@ def test_forward_pg_owner_read_has_no_writer_dsn_fallback(monkeypatch, tmp_path)
     store = object.__new__(ForwardFactStore)
     store.root = tmp_path.resolve()
     store.folder = (tmp_path/'forward').resolve()
-    store.schema = 'v4_forward_test'
+    store.schema = 'v4'
+    store.workspace_namespace = ForwardFactStore.namespace_for(store.folder)
     store.database_identity = {}
     store.dsn = 'writer-only'
     monkeypatch.setattr(forward_pg, 'configured_reader_dsn',

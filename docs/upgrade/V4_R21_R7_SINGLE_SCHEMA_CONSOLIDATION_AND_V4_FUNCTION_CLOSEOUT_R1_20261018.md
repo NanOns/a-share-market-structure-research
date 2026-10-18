@@ -276,3 +276,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 单独审计的 9 个 `__pycache__` 目录共 30 个 `.pyc`（513,843 字节），均为可重建缓存；递归删除这些缓存的命令被执行工具策略拒绝，故没有文件被删除。DB-11 Workspace 物理清理保持 `PARTIAL`，须保留该工具拒绝事实，不能把缓存核验计为已清理。
 - 当前数据库目录通过单 Schema 计数，但此前定义的多表/索引空间统计口径与此处关系总占用口径不同；该数字不用于推导历史迁移前后数据库空间变化，也不表示全部 27.75 GB 都是基础表数据。
 - FEP 相关遗留 SQL/合同仍列有独立 `fep`/`fep_e5_engineering` 命名，但现役总迁移入口仅执行显式登记集、已阻止非 `v4` Schema 创建，E5 `schema.sql` 在任何 DDL 前显式失败关闭；实库没有这些 Schema。FEP 当前仍是来源/Owner不足状态，需补固定 `v4` 存储迁移与完整模块验收，不能以目录中不存在旧 Schema 记作 FEP 通过。
+
+### 2026-10-19 Forward Owner 只读夹具固定 Schema 纠偏
+
+- `tests/test_v4_forward_pg_closeout.py` 中 PG-only Reader 的新绑定夹具原先仍写入任意 `v4_forward_test`，该值既非固定 `v4` locator，也不是符合格式且有迁移回执的历史定位符。已改为 `schema='v4'` 并绑定与测试 Workspace 对应的 `workspace_namespace`，同时保持 Reader 必须显式只读且使用 Reader DSN 的断言。
+- 修改文件 `py_compile` 与 `git diff --check` 通过。该测试文件还含真实共享 PG 写入/immutability 集成用例，本次未启动其 pytest 收集/隔离数据库过程；因此只记录语法检查，不宣称定向集成通过。
+- 没有写入开发数据库或启动 HTTP 服务。

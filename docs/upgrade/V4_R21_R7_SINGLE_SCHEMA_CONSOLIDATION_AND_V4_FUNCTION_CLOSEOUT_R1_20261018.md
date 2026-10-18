@@ -181,3 +181,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 日更页 `/v4/research/data-update` 显示快照截至 `2026-09-30`、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、worker 未启动；检查来源、立即补齐、自动更新、失败重试、取消均禁用。页面正确保持开发只读预览。
 - FEP 仍只显示 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，未训练槽 `PENDING`，质量/当前覆盖不可得。Home、Sector、股票搜索、Focus、Market、Diagnostics、Forward/FEP 与日更页的候选读取现均由受控重载后的 28766 实际服务提供；不把可读、候选或降级状态提升为 PIT、Accepted 或产品 PASS。
 - 本次只读 API/浏览器核验未写入业务数据或改变 Schema。正式数据缺口仍包括合格 PIT 日线与独立接纳回执、覆盖目标日期的 Accepted 日历/发布 Head、前序 PIT 成分与 Owner、Focus 到期与结构事实、Forward 成熟结算、官方事件源；DB-08/10、模块完整验收及 DB-11 工作区物理清理依旧未关闭。
+
+### 2026-10-19 单 Schema Owner 发布绑定触发器续修
+
+- 消费者审查发现 `v4.publication_module_results` 的 R4 触发器仍以 `to_regclass(owner_schema.owner_relation)` 验证实体表；在单 Schema 迁移并清理旧哈希 Schema 后，合法的 Owner 来源绑定会因旧物理 Schema 不存在而被拒绝。`owner_schema` 实际是来源谱系标识，读侧用 `(family, source_schema, token, T0)` 精确查询 `v4.owner_schema_migration_map_r1`，数据实体固定读取 `v4` 中版本化 Owner 表。
+- 新增并注册 migration 065/066，触发器现在校验来源 Schema 哈希格式、精确且 `VERIFIED` 的迁移回执、回执 digest/contract/row_count，以及相应 `v4` Owner 版本的 T0、digest、contract、计数、sealed 与数据库身份。旧 Schema 不会被重建；没有新增别名，也没有批量迁移历史绑定。开发库 `v4.schema_migrations` 已读回 065 与 066，触发器定义包含凭证校验；目录确认旧哈希 Schema 为 0，绑定表目前 0 行，因此尚无可用真实 publication 进行端到端绑定写入验收。
+- 065/066 的源文件 SHA-256 均与开发库台账一致。057 的已记录校验和 `509e66d6…` 与仓库 SQL 当前散列 `4c473184…` 不同；为不改写既有台账，在迁移入口加入仅针对该精确历史校验和的兼容分支，并要求 `v4.schema_migrations` 四列类型/空值属性及 `PRIMARY KEY(version)` 精确匹配且 `v4_meta` 已不存在，否则仍以校验和冲突失败。随后常规 `apply_v4_phase0_schema.py --apply` 成功遍历注册迁移集，结果 `ALREADY_CURRENT`，057 状态为 `ALREADY_APPLIED_COMPATIBILITY_VERIFIED`，其余版本包含 065/066 均为 `ALREADY_APPLIED`；数据库台账没有被重写。
+- 定向 Owner writer 回归 `1 passed`。初次关联旧测试集因 fake PG fixture 与旧静态断言未跟上固定表/共享只读事务契约，68 项结果为 29 passed、39 failed；随后更新 fixture 响应、物理关系断言，并将权限测试对齐 SOT 的共享连接显式只读事务要求，再运行 Owner/Publication/Schema 兼容回归，结果 `69 passed`，另覆盖只读事务关闭时 fail-closed。该结果是代码契约回归，不替代真实 publication 的端到端绑定写入。
+- 阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`；尚需真实 publication 端到端 Owner 绑定、迁移总入口校验和余下模块/输入门验收。

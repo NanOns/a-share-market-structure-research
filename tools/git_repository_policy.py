@@ -194,6 +194,10 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
         left = re.split(r"[=:]", match.group(0), maxsplit=1)[0].strip().strip("'\"")
         left = left.rsplit(".", 1)[-1].lower()
         right = value.rsplit(".", 1)[-1].lower()
+        # The persisted Owner version token is an identifier copied from the
+        # trigger's NEW row, not a credential literal.
+        if left == "token" and value.lower() == "new.owner_version_token":
+            continue
         if left and right == left and re.fullmatch(r"[A-Za-z_]\w*", value.rsplit(".", 1)[-1]):
             continue
         if value and not PLACEHOLDER.fullmatch(value) and not re.match(

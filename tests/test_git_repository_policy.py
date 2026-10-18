@@ -56,7 +56,7 @@ def test_large_formal_document_requires_review_and_large_data_is_rejected():
 def test_machine_paths_credentials_and_dynamic_sql_are_flagged_without_echoing_values():
     findings = policy.inspect_blob(
         "src/db/query.sql",
-        b"-- D:/new_tdx\nSELECT * FROM t WHERE id = ' + user_id\n"
+        b'-- D:/new_tdx\nquery = "SELECT * FROM t WHERE id = " + user_id\n'
         + b"# pass" + b"word = SuperSecretValue\n",
     )
     codes = {item.code for item in findings}
@@ -69,6 +69,11 @@ def test_credentials_in_config_are_flagged_but_runtime_secret_lookup_is_allowed(
     findings = policy.inspect_blob("config/runtime.json", sample)
     assert "CREDENTIAL_PATTERN" in {item.code for item in findings}
     assert policy.inspect_blob("src/auth.py", b"token = response.get('access_token')\n") == []
+
+
+def test_owner_version_token_sql_identifier_is_not_a_credential_literal():
+    sql = b"IF EXISTS (SELECT 1 FROM v4.owner_versions WHERE token = NEW.owner_version_token AND token IS NOT NULL) THEN NULL; END IF;"
+    assert policy.inspect_blob("src/workbench_db/migrations/v4_postgres/066_owner_guard.sql", sql) == []
 
 
 def test_arbitrary_windows_drive_paths_are_machine_specific():

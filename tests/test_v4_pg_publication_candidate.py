@@ -90,12 +90,13 @@ class Cursor:
 
 
 class FakeConnection:
-    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, missing_bindings=False, parent=None, page_data=None, core_snapshot=None, core_rows=None, contract_documents=None):
+    def __init__(self, *, head=None, bindings=None, sources=None, identity=None, role=None, transaction_read_only="on", missing_bindings=False, parent=None, page_data=None, core_snapshot=None, core_rows=None, contract_documents=None):
         self.head = head
         self.bindings = bindings if bindings is not None else [binding_row(module) for module in supported_owner_keys()]
         self.sources = sources if sources is not None else [source_row()]
         self.identity = identity or ("market_research", 16384, "127.0.0.1", 5432)
         self.role = role or ("v4_reader", False, False, False, False, False, False, False, False, False, False, False, False, False)
+        self.transaction_read_only = transaction_read_only
         self.missing_bindings = missing_bindings
         self.parent = parent
         self.page_data = page_data or {}
@@ -121,6 +122,8 @@ class FakeConnection:
             if "current_database()" in statement:
                 return Cursor(one=("market_research", "v4_reader", "repeatable read", "on"))
             return Cursor(one=("repeatable read", "on"))
+        if "SELECT current_user, current_setting('transaction_read_only')" in statement:
+            return Cursor(one=("v4_reader", self.transaction_read_only))
         if ("FROM v4.publications p" in statement and "p.revision_no=%s" in statement
                 and "JOIN v4.model_namespaces" not in statement):
             return Cursor(one=(self.head.get("contract_bindings"),))
@@ -404,19 +407,26 @@ def test_head_state_and_same_day_parent_identity_fail_closed():
         })).read_context(trade_date="2026-10-15", model_namespace_id="v4-main")
 
 
-def test_reader_role_write_privilege_blocks_even_read_only_transaction():
-    with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_WRITE_PRIVILEGES"):
-        reader_for(FakeConnection(head=publication_row(), role=("owner", False, False, False, False, False, False, True, False, False, False, False))).read_context(
-            trade_date="2026-10-15", model_namespace_id="v4-main",
-        )
+def test_reader_allows_shared_pg_role_inside_explicit_read_only_transaction():
+    connection = FakeConnection(head=publication_row(), role=("owner", False, False, False, False, False, False, True, False, False, False, False))
+    result = reader_for(connection).read_context(trade_date="2026-10-15", model_namespace_id="v4-main")
+    assert result["readback_complete"] is True
+    assert any("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY" in sql for sql, _ in connection.statements)
 
 
 @pytest.mark.parametrize("index", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
-def test_reader_rejects_every_privileged_role_or_namespace_write_capability(index):
+def test_reader_uses_read_only_transaction_with_shared_role_capabilities(index):
     role=["v4_reader"]+[False]*13
     role[index]=True
-    with pytest.raises(PublicationReadError, match="PG_READER_ROLE_HAS_WRITE_PRIVILEGES"):
-        reader_for(FakeConnection(head=publication_row(), role=tuple(role))).read_context(
+    connection = FakeConnection(head=publication_row(), role=tuple(role))
+    result = reader_for(connection).read_context(trade_date="2026-10-15", model_namespace_id="v4-main")
+    assert result["readback_complete"] is True
+    assert not any("FROM pg_roles" in sql for sql, _ in connection.statements)
+
+
+def test_reader_rejects_shared_role_when_transaction_is_not_read_only():
+    with pytest.raises(PublicationReadError, match="PG_READER_TRANSACTION_NOT_READ_ONLY"):
+        reader_for(FakeConnection(head=publication_row(), transaction_read_only="off")).read_context(
             trade_date="2026-10-15", model_namespace_id="v4-main",
         )
 

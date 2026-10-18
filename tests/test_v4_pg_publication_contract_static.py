@@ -122,10 +122,25 @@ def test_r4_owner_binding_relation_is_migrated_for_the_exact_reader_contract():
 def test_sector_owner_resolver_uses_fixed_relations_and_quoted_schema_identifier():
     owner = read(ROOT / "src/workbench_db/v4_publication_owners.py")
     assert '"SELECT digest,contract,sealed,row_count,database_identity, "' in owner
-    assert '"SELECT sector_id,payload,payload_sha256 FROM {}.owner_rows "' in owner
-    assert "sql.Identifier(schema)" in owner
+    assert '"SELECT sector_id,payload,payload_sha256 FROM {}.{} "' in owner
+    assert 'sql.Identifier("v4")' in owner
+    assert "sector_lifecycle_owner_rows_r1" in owner
+    assert "owner_schema_migration_map_r1" in owner
     assert "owner_version_token" in owner and "payload_sha256" in owner
-    assert "PG_READER_ROLE_HAS_OWNER_WRITE_PRIVILEGES" in owner
+    assert "_require_read_only_transaction(pg)" in owner
+
+
+def test_publication_owner_binding_guard_uses_single_schema_migration_receipts():
+    migration = read(ROOT / "src/workbench_db/migrations/v4_postgres/066_v4_publication_owner_receipt_guard_r1.sql")
+    ledger = read(ROOT / "scripts/apply_v4_phase0_schema.py")
+    assert "owner_schema_migration_map_r1" in migration
+    assert "V4_MODULE_OWNER_MIGRATION_RECEIPT_MISSING_OR_MISMATCH" in migration
+    assert "V4_MODULE_OWNER_SINGLE_SCHEMA_VERSION_MISSING_OR_MISMATCH" in migration
+    assert "owner_versions_priority_r1" in migration
+    assert "owner_versions_risk_r1" in migration
+    assert "sector_lifecycle_owner_versions_r1" in migration
+    assert "to_regclass" not in migration
+    assert '"066_v4_publication_owner_receipt_guard_r1.sql":"V4_PUBLICATION_OWNER_RECEIPT_GUARD_R1"' in ledger
 
 
 def test_all_current_entries_are_candidate_only_and_default_reader_is_unchanged():

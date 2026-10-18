@@ -289,3 +289,11 @@
 
 - Listener 实查仍为 PG `127.0.0.1:5432` PID 8640 与开发服务 `127.0.0.1:28766` PID 33460；`28765` 无监听、未触碰。`/api/v4/context`、home、Focus、Forward、Market、Diagnostics Health/Jobs 与 Cohort 均 HTTP 200，读响应 context token 一致为 `research-v4-pg-candidate-91b4066e…2ec116935`。Jobs 继续显式返回 `PG_CANDIDATE_DOES_NOT_CONTAIN_DAILY_WORKER_RECEIPTS`；没有启动重复 worker。
 - 当前 28766 的 `/api/v4/candidates/cohort` 响应仍没有 `r7_source_audit` 字段（页面来源审计仍不能展示更新代码的 READY 投影）；这是已知旧服务进程未载入新 BFF 的实测复现。R6 新代码的直接 PG/BFF 联验已有 READY 证据，但不冒充为当前进程/浏览器的 SourceAudit 实页通过。前述 Focus 搜索、证券详情、图表周期/价格口径、Market 搜索、Replay/Compare 与 Forward 结算交互证据保持有效；四日 Corrected Owner 不作为 accepted Head 接入现役页面。
+
+## Corrected Owner 阶段新鲜度与 QA 绑定续修（2026-10-18）
+
+- 修复 `corrected_owner_pipeline` 只判断候选回执“存在”、未判断日期覆盖的问题。Core 日期集现为下游唯一预期序列；Profile/Profile Owner core 字节绑定和 Health 原始 projection 绑定也逐日核对，Profile、Sector、Health、Focus、Market 任一日期覆盖落后时会重建；重建后仍不一致即明确失败，不静默复用旧回执。
+- 独立 QA 回执现在携带 Core、Profile/Structure、Sector、Health、Focus/Forward、Market/Rotation 六个精确 PG descriptor（path/SHA/bytes）；流水线检查四日范围和六项 descriptor 全等后才返回 QA PASS。单日旧 QA、旧下游日期集或旧候选版本不再能为当前候选通过。
+- QA 的会话日序列改为读取 accepted DM01 Head 中绑定的精确日历字节，并与 PG R4 日历扩展合并；明确属于诊断候选计算，不创建 accepted 市场日历 publication。四日 QA 重跑通过，`errors=[]`；独立 Core 数值 Oracle、120 项 LOO 样本、锚点沿袭、Health unknown、D2 日期/宇宙、Journal 回滚/NOOP/CAS 检查全通过。新 QA 回执 5,547 bytes、SHA-256 `282d1175921a7d2f5e041e37a03a82e67c830322132bb003c5625a699a76ba9f`，并通过同 SHA 的 PG descriptor 读回。
+- `run_corrected_owner_pipeline(target_date=2026-10-08, stage=all, calendar_source=accepted_dm01_data_head_candidate)` 实跑返回 `CORRECTED_OWNER_QA_PASS_PENDING_SCOPED_ADMISSION`，`source_requests_this_run=0`、`data_head_moved=false`、`production_admission=false`。流水线 receipt SHA-256 `4b4c40dfa031c7d83d997da9512d88be9e58f4860d6e1fd067bd01147e500010`；候选未成为 28766 accepted/正式 Head。
+- 针对新鲜度函数、PG-only 来源读取、Corrected Owner 回放的定向测试：17 passed；相关脚本 `py_compile`、`git diff --check` 通过。28766 SourceAudit 后端仍是已记录的旧进程现场状态；本次未重启/改变 28766，也未触及 28765。

@@ -3,7 +3,8 @@ import gzip,hashlib,io,json,os,sys,uuid
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from workbench_analysis.corrected_owner_replay import OUT
-from workbench_analysis.market_source_acquisition import official_sessions,freeze_membership_observation
+from workbench_analysis.r43_owner_replay import pg_source_binding
+from workbench_analysis.market_source_acquisition import freeze_membership_observation
 from workbench_analysis.tdx_official_daily_source import sha256_file
 from focus_tracker.v4_native_core_journal import append
 from workbench_db.v4_journal_pg_r1 import open_read
@@ -31,8 +32,26 @@ def pg_gzip_json(binding):
 def main():
     from workbench_analysis.corrected_owner_pipeline import _candidate_json
     out=ROOT/OUT;core=_candidate_json(ROOT,f'{OUT}/CORE_REPLAY.json');structure=_candidate_json(ROOT,f'{OUT}/PROFILE_STRUCTURE_REPLAY.json');health=_candidate_json(ROOT,f'{OUT}/HEALTH_PROJECTION_REPLAY.json')
-    sectors=_candidate_json(ROOT,f'{OUT}/SECTOR_REPLAY.json');focus=_candidate_json(ROOT,f'{OUT}/FOCUS_FORWARD_REPLAY.json');results=[];anchors={};errors=[]
-    sessions=official_sessions(ROOT)
+    sectors=_candidate_json(ROOT,f'{OUT}/SECTOR_REPLAY.json');focus=_candidate_json(ROOT,f'{OUT}/FOCUS_FORWARD_REPLAY.json');market=_candidate_json(ROOT,f'{OUT}/MARKET_ROTATION_REPLAY.json');results=[];anchors={};errors=[]
+    # This verifier seals only the explicitly non-production diagnostic scope.
+    # Build its session sequence from the exact accepted DM01 calendar bytes
+    # plus the R4 extension; do not require an unrelated publication calendar
+    # Head to exist in order to revalidate candidate owners.
+    from workbench_analysis.dm01_runtime_r4 import calendar as r4_calendar
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    accepted_head=read_current(ROOT)
+    calendar_binding=accepted_head['candidate'].get('calendar')
+    if not isinstance(calendar_binding,dict):raise ValueError('DM01_ACCEPTED_DATA_HEAD_CALENDAR_BINDING_MISSING')
+    accepted_calendar=read_bound(ROOT,calendar_binding['path'],calendar_binding['sha256'])
+    calendar_value=accepted_calendar.get('value')
+    base_sessions=(calendar_value.get('session_dates') or calendar_value.get('sessions')) if isinstance(calendar_value,dict) else None
+    extension=r4_calendar(ROOT)
+    if (not isinstance(base_sessions,list) or calendar_binding.get('bytes')!=len(accepted_calendar['raw'])
+            or base_sessions!=sorted(set(base_sessions))):raise ValueError('DM01_ACCEPTED_DATA_HEAD_CALENDAR_INVALID')
+    sessions=sorted(set(base_sessions)|set(extension['session_dates']))
+    if not sessions or sessions!=sorted(set(sessions)):
+        raise ValueError('CORRECTED_DIAGNOSTIC_SESSION_SEQUENCE_INVALID')
     for c,s,h,sector,f in zip(core['owners'],structure['owners'],health['owners'],sectors['owners'],focus['owners']):
         day=c['trade_date'];m=pg_json(s['structure_manifest']);runtime=next(r for r in m['artifacts'] if r['path'].endswith('runtime_security.jsonl.gz'))
         rows=list(pg_gzrows(runtime));projection={r['security_id']:r for r in pg_gzrows(h['projection'])}
@@ -113,7 +132,12 @@ def main():
     roots=[str(resolve_tdx_root(ROOT))]
     membership_root=qa_root/'membership_project';(membership_root/'data/v4/membership_observations').mkdir(parents=True,exist_ok=True)
     observation=freeze_membership_observation(membership_root,qa_root/'future_membership_smoke',[focus['owners'][-1]['trade_date']],roots)
-    result=dict(contract_id='V4_R4_CORRECTED_OWNER_INDEPENDENT_READBACK_V1',dates=results,errors=errors,
+    candidate_bindings={name:pg_source_binding(ROOT,f'{OUT}/{filename}') for name,filename in {
+        'core':'CORE_REPLAY.json','profile_structure':'PROFILE_STRUCTURE_REPLAY.json',
+        'sector':'SECTOR_REPLAY.json','health':'HEALTH_PROJECTION_REPLAY.json',
+        'focus_forward':'FOCUS_FORWARD_REPLAY.json','market_rotation':'MARKET_ROTATION_REPLAY.json'}.items()}
+    result=dict(contract_id='V4_R4_CORRECTED_OWNER_INDEPENDENT_READBACK_V1',dates=results,
+        candidate_bindings=candidate_bindings,errors=errors,
         acceptance='PASS_CORRECTED_CANDIDATE_SCOPE' if not errors else 'FAIL',journal_checks=checks,
         focus_episodes=focus['episodes'],forward_outcomes=focus['outcomes'],protected=protected,
         future_membership_capture=True,change_count=len(observation['changes']),

@@ -214,3 +214,35 @@ def test_corrected_owner_pipeline_rejects_workspace_only_receipt(monkeypatch, tm
         target.parent.mkdir(parents=True)
         target.write_text("{}", encoding="utf8")
         corrected_owner_pipeline._candidate_json(tmp_path, relative)
+
+
+def test_corrected_owner_pipeline_rejects_stale_stage_dates_and_bindings():
+    from workbench_analysis.corrected_owner_pipeline import (
+        _health_profile_matches, _profile_core_matches, _require_candidate_days,
+    )
+
+    days = ["2026-09-28", "2026-09-29"]
+    core = {"owners": [
+        {"trade_date": day, "core": {"path": f"core/{day}", "sha256": day, "bytes": 10}}
+        for day in days
+    ]}
+    profiles = {"owners": [
+        {"owner": {"trade_date": day, "core": dict(core["owners"][i]["core"])},
+         "advanced_projection": {"path": f"projection/{day}", "sha256": f"p-{day}", "bytes": 20}}
+        for i, day in enumerate(days)
+    ]}
+    health = {"owners": [
+        {"trade_date": day, "original_projection": dict(profiles["owners"][i]["advanced_projection"])}
+        for i, day in enumerate(days)
+    ]}
+
+    assert _require_candidate_days(core, days, "core")
+    assert not _require_candidate_days({"owners": core["owners"][:1]}, days, "core")
+    assert _profile_core_matches(profiles, core)
+    stale_profile = {"owners": [dict(profiles["owners"][0], owner=dict(profiles["owners"][0]["owner"],
+                    core={"path": "core/old", "sha256": "old", "bytes": 10}))] + profiles["owners"][1:]}
+    assert not _profile_core_matches(stale_profile, core)
+    assert _health_profile_matches(health, profiles)
+    stale_health = {"owners": [dict(health["owners"][0], original_projection={
+        "path": "projection/old", "sha256": "old", "bytes": 20})] + health["owners"][1:]}
+    assert not _health_profile_matches(stale_health, profiles)

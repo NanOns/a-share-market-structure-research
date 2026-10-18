@@ -16,6 +16,51 @@ def _candidate_json(root, relative_path):
         return None
 
 
+def _owner_days(manifest, *, nested_owner=False):
+    owners=manifest.get('owners')
+    if not isinstance(owners,list):return None
+    days=[]
+    for item in owners:
+        owner=item.get('owner') if nested_owner and isinstance(item,dict) else item
+        day=owner.get('trade_date') if isinstance(owner,dict) else None
+        if not isinstance(day,str):return None
+        days.append(day)
+    return days if len(days)==len(set(days)) else None
+
+
+def _binding_identity(binding):
+    if not isinstance(binding,dict):return None
+    return tuple(binding.get(k) for k in ('path','sha256','bytes'))
+
+
+def _profile_core_matches(profiles, core):
+    core_by_day={o.get('trade_date'):o for o in core.get('owners',[]) if isinstance(o,dict)}
+    for item in profiles.get('owners',[]):
+        owner=item.get('owner') if isinstance(item,dict) else None
+        if not isinstance(owner,dict):return False
+        expected=core_by_day.get(owner.get('trade_date'),{}).get('core')
+        if _binding_identity(owner.get('core'))!=_binding_identity(expected):return False
+    return True
+
+
+def _health_profile_matches(health, profiles):
+    profile_by_day={}
+    for item in profiles.get('owners',[]):
+        owner=item.get('owner') if isinstance(item,dict) else None
+        if isinstance(owner,dict):profile_by_day[owner.get('trade_date')]=item
+    for item in health.get('owners',[]):
+        profile=profile_by_day.get(item.get('trade_date'))
+        if not profile or _binding_identity(item.get('original_projection'))!=_binding_identity(profile.get('advanced_projection')):
+            return False
+    return True
+
+
+def _require_candidate_days(manifest, expected_days, stage, *, nested_owner=False):
+    if _owner_days(manifest,nested_owner=nested_owner)!=expected_days:
+        return False
+    return True
+
+
 def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all',
                                 calendar_source='pg_publication_head'):
     root=Path(root).resolve()
@@ -77,38 +122,54 @@ def _run_corrected_owner_pipeline(root, *, target_date, stage, calendar_authorit
         for owner in core['owners']:
             for key in ('core','prior_core','history','raw','adjusted'):checked(root,owner[key])
     else:materialize_core(root)
+    core=_candidate_json(root,core_path)
+    core_days=_owner_days(core)
+    if not core_days or target_date not in core_days:
+        raise ValueError('CORRECTED_CORE_CANDIDATE_DATE_SET_INVALID')
     if stage=='core':return dict(status='CORRECTED_CORE_READY',receipt=pg_source_binding(root,core_path),calendar_authority=calendar_authority)
     profile_path=OUT+'/PROFILE_STRUCTURE_REPLAY.json';profiles=_candidate_json(root,profile_path)
-    if profiles is None:
+    if (profiles is None or not _require_candidate_days(profiles,core_days,'profile',nested_owner=True)
+            or not _profile_core_matches(profiles,core)):
         from .corrected_structure_replay import materialize_profiles_structure
         materialize_profiles_structure(root)
         profiles=_candidate_json(root,profile_path)
+    if not _require_candidate_days(profiles,core_days,'profile',nested_owner=True) or not _profile_core_matches(profiles,core):
+        raise ValueError('CORRECTED_PROFILE_STRUCTURE_STALE_FOR_CORE')
     for owner in profiles['owners']:
         for key in ('profiles','status'):checked(root,owner['owner'][key])
         checked(root,owner['structure_manifest']);checked(root,owner['snapshot'])
     if stage=='profile':return dict(status='CORRECTED_PROFILE_STRUCTURE_READY',receipt=pg_source_binding(root,profile_path),calendar_authority=calendar_authority)
     sector_path=OUT+'/SECTOR_REPLAY.json';sectors=_candidate_json(root,sector_path)
-    if sectors is None:
+    if sectors is None or not _require_candidate_days(sectors,core_days,'sector'):
         from .corrected_sector_replay import materialize_sectors
         materialize_sectors(root)
         sectors=_candidate_json(root,sector_path)
+    if not _require_candidate_days(sectors,core_days,'sector'):
+        raise ValueError('CORRECTED_SECTOR_STALE_FOR_CORE')
     for owner in sectors['owners']:
         for key in ('membership','native','seed','relative_sector'):checked(root,owner[key])
     health_path=OUT+'/HEALTH_PROJECTION_REPLAY.json';health=_candidate_json(root,health_path)
-    if health is None:
+    if (health is None or not _require_candidate_days(health,core_days,'health')
+            or not _health_profile_matches(health,profiles)):
         from .corrected_health_projection import materialize_health
         materialize_health(root)
         health=_candidate_json(root,health_path)
+    if not _require_candidate_days(health,core_days,'health') or not _health_profile_matches(health,profiles):
+        raise ValueError('CORRECTED_HEALTH_STALE_FOR_PROFILE')
     focus_path=OUT+'/FOCUS_FORWARD_REPLAY.json';focus=_candidate_json(root,focus_path)
-    if focus is None:
+    if focus is None or not _require_candidate_days(focus,core_days,'focus'):
         from .corrected_focus_replay import materialize_focus
         materialize_focus(root)
         focus=_candidate_json(root,focus_path)
+    if not _require_candidate_days(focus,core_days,'focus'):
+        raise ValueError('CORRECTED_FOCUS_STALE_FOR_CORE')
     market_path=OUT+'/MARKET_ROTATION_REPLAY.json';market_rotation=_candidate_json(root,market_path)
-    if market_rotation is None:
+    if market_rotation is None or not _require_candidate_days(market_rotation,core_days,'market_rotation'):
         from .corrected_market_rotation import materialize_market_rotation
         materialize_market_rotation(root)
         market_rotation=_candidate_json(root,market_path)
+    if not _require_candidate_days(market_rotation,core_days,'market_rotation'):
+        raise ValueError('CORRECTED_MARKET_ROTATION_STALE_FOR_CORE')
     for name in ('HEALTH_PROJECTION_REPLAY','MARKET_ROTATION_REPLAY'):
         manifest=health if name=='HEALTH_PROJECTION_REPLAY' else market_rotation
         for owner in manifest['owners']:
@@ -118,8 +179,21 @@ def _run_corrected_owner_pipeline(root, *, target_date, stage, calendar_authorit
     for owner in focus['owners']:
         for key in ('D2','facts','calculations'):checked(root,owner[key])
     qa=_candidate_json(root,OUT+'/INDEPENDENT_QA_AND_SAFE_RELEASE_READBACK.json')
-    if qa and (qa['errors'] or qa['acceptance']!='PASS_CORRECTED_CANDIDATE_SCOPE'):
-        raise ValueError('CORRECTED_OWNER_INDEPENDENT_QA_FAILED')
+    if qa:
+        if qa['errors'] or qa['acceptance']!='PASS_CORRECTED_CANDIDATE_SCOPE':
+            raise ValueError('CORRECTED_OWNER_INDEPENDENT_QA_FAILED')
+        if [row.get('trade_date') for row in qa.get('dates',[])]!=core_days:
+            raise ValueError('CORRECTED_QA_DATE_SET_STALE_FOR_CURRENT_CANDIDATES')
+        expected={
+            'core':pg_source_binding(root,core_path),
+            'profile_structure':pg_source_binding(root,profile_path),
+            'sector':pg_source_binding(root,sector_path),
+            'health':pg_source_binding(root,health_path),
+            'focus_forward':pg_source_binding(root,focus_path),
+            'market_rotation':pg_source_binding(root,market_path),
+        }
+        if qa.get('candidate_bindings')!=expected:
+            raise ValueError('CORRECTED_QA_BINDINGS_STALE_FOR_CURRENT_CANDIDATES')
     result=dict(status='CORRECTED_OWNER_QA_PASS_PENDING_SCOPED_ADMISSION' if qa else 'CORRECTED_OWNER_CANDIDATE_READY_PENDING_RELEASE_QA',target_date=target_date,
                 contract=pg_source_binding(root,CONTRACT),core=pg_source_binding(root,core_path),
                 profile_structure=pg_source_binding(root,profile_path),sector=pg_source_binding(root,sector_path),

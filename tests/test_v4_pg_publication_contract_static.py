@@ -46,12 +46,15 @@ def test_candidate_sql_serializes_associations_without_invented_seven_owner_comp
 def test_reader_rehashes_sources_in_one_read_only_final_schema_context():
     contract = read(ROOT / "src/workbench_db/v4_publication_contract.py")
     reader = read(ROOT / "src/workbench_db/v4_publication_reader.py")
+    native = read(ROOT / "src/workbench_db/v4_native.py")
     assert "p.revision_no" in reader
     assert "h.revision" not in reader and "p.revision," not in reader
     assert "v4.state_heads" in reader and "verified_state_digest" in reader
     assert "v4.publication_consumed_sources" in reader and "v4.source_revisions" in reader
     assert "system_available_at" in reader and "provider_available_at" in reader
-    assert "has_table_privilege" in reader and "rolsuper" in reader and "rolbypassrls" in reader
+    assert 'attest_read_role(pg, "v4")' in reader
+    assert "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY" in native
+    assert "SHOW transaction_read_only" in native
     assert 'env.get("V4_NATIVE_PG_DSN")' not in reader
     assert "SOURCE_MANIFEST_REHASH_MISMATCH" in reader
     assert "SOURCE_MANIFEST_CONTRACT_UNSUPPORTED" in reader

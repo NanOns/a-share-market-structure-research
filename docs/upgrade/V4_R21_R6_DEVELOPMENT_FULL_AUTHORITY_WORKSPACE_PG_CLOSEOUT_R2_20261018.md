@@ -18,6 +18,7 @@
 - 数据库仍为唯一实例 `127.0.0.1:5432/market_research`（OID `646711`）。本轮执行了只读目录、来源覆盖及快照核查；未执行 DDL/DML、合同注册、Owner/Head 写入。正式 publications、publication heads、operational research heads、日历、universe、source packages/core results 等关键事实表仍为空；不能据此声称完整业务写读链已完成。
 - 最新完整候选仍为 `v4_research_e30350bf444bbb9980cf3e2c`，T0 `2026-09-30`，5,213 股票、5,224 身份、378 板块、469 Focus、117 Forward、33 事件；仅为候选快照，不是正式 Head。
 - 数据库虽有新行情行至 `2026-10-15`，但在无 snapshot manifest 的局部 schema 中最多覆盖 9 个证券（最新 schema 共 46,906 行，覆盖 `2026-09-28` 至 `2026-10-15`）。它不构成全市场完整 T0；严格 PIT 仍为 `PIT_NOT_PROVEN`，不得用于伪造接受状态。
+- 只读查看 TDX `sh/sz/lday` 的 11,810 个沪深日线末记录，最新到 `2026-10-08` 的仅 8 个文件；`2026-09-10` 有 8,984 个文件。故未发现可替代 9-30 完整候选的更新全市场源快照。
 - 在 `127.0.0.1:28766` 的候选 PG 服务上验证总览、股票、板块、Focus、市场/事件、诊断、Forward、日更预览。回放和个股比较页也已实际渲染：T0 `2026-09-30`、严格 PIT 可用日期 0；对照明确标注事后重建，展示股票区间收益 1.205% 与 2.011%，共同日期 `2026-09-29` 至 `2026-09-30`。日更页未接受日历、worker 未启动、写操作禁用。
 - 当前运行环境没有显式 `V4_NATIVE_PG_DSN`（`configured_dsn()` 实测返回 `V4_NATIVE_PG_DSN_REQUIRED`）。遵守写连接边界，本轮不能执行 PG DDL/DML/合同注册/DEV Head；继续读核查、代码修复和 28766 测试。配置显式开发写 DSN 后即可续跑迁移及 Owner/Head 写读。
 - 修改过的 Python 编译通过；连接/迁移、DM01 Parent 绑定及 PG schema 静态回归共 31 项通过。`tests/test_v4_universe_pg_r1.py` 因环境缺少 `cryptography` 未能收集；`tests/test_corrected_owner_replay_r4.py` 被仓库隔离插件以 `DISPOSABLE_PG_CLUSTER_REQUIRED` 阻断；均未绕过环境/隔离门禁。

@@ -45,8 +45,10 @@ class ForwardStore(ForwardFactStore):
 
     def read(self,binding):
         key=(binding.get('path'),binding.get('sha256'))
-        if key not in self._read_cache:self._read_cache[key]=super().read(binding)
-        return copy.deepcopy(self._read_cache[key])
+        cache=getattr(self,'_read_cache',None)
+        if cache is None:self._read_cache=cache={}
+        if key not in cache:cache[key]=super().read(binding)
+        return copy.deepcopy(cache[key])
 
 class LocalForwardPriceSource(VectorPriceSource):
     evidence_class='REAL_ACCEPTED_LOCAL_CORRECTED_FORWARD'

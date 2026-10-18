@@ -68,3 +68,10 @@
 - 变更脚本编译通过；相关定向回归本轮 36 项通过。4 个 FP05 PG 写库用例因要求隔离 PG 实例而被仓库安全插件拒绝，未在共享业务库上绕过隔离；两份冻结历史测试在收集期因导入已删除的 `production_v4.reference` 失败。此限制不影响已完成的真实候选运行及 28766 验证。
 - 工作空间收口：本轮 FP05–FP09、FP12/FP13 的 ENTRY/原始回读/矩阵均移至 `G:\\codex_tmp\\r6_daily_evidence`，仓内对应生成目录已清空；阶段保护检查改为基于 Git 跟踪的代码、合同配置和 V4 data Head，抽查 2,959 项全部未变，避免对 60,134 个仓库文件做全盘哈希。
 - FP10 运行剖析显示重复读取同一 T0 冻结快照造成大量重复 PG 索引往返；ForwardStore 已加入不可变事实读缓存，并消除初始化阶段重复读取冻结记录。先前中断前已写入的 facts 保持追加幂等，将在优化后的新运行中复用。
+
+## FP10 候选 Forward 投影完成（2026-10-18）
+
+- 缓存版 `scripts/build_fp10_forward_v2.py` 成功完成，PG 候选 authority 已落在 `data/v4/r2_daily_candidates/20261018_r6/v4_forward_operational_authority_v1.json`；发布内容按 SHA 绑定于 `data/v4/fp10_forward/`。候选数据规模：117 enrollments、585 plans、585 outcomes、117 T0 freezes。
+- 本日 `2026-09-30` 没有真实到期计划：`settlement_gate=NO_REAL_DUE`、due_count 0、actual_price_reads 0。585 个 horizon 当前均为 PENDING，mature eligible 为 0，胜率/收益分位不计算；历史权限未变，严格 PIT 未授予。此为真实生命周期推进结果，不是业务验收通过。
+- 所有本轮 R2 过程回执（含成功的 FP10 readback 和前次中断/重跑入口）均已移至 `G:\\codex_tmp\\r6_daily_evidence`，不提交原始证据或过程输出。
+- FP10 缓存改动回归复验 `tests/test_r2_forward_daily.py` 与 `tests/test_v4_21_forward_observation_contract.py`：32 passed（0.20 秒）。此前首次复验中发现的 `__new__` 测试工厂兼容问题已修复。

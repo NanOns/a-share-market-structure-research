@@ -162,3 +162,9 @@
 
 - 定向读链扫描发现 `FrozenContracts` 在 Structure/Health/Breakout 每次运行时仍直接读取冻结入口及合同文件。入口、16 份 frozen contracts 与外部 freeze acceptance 共 18 份源均为当前 clean Git revision；逐项核对合同声明 SHA/bytes 后，以 `git:<revision>:<path>` provenance 登记到唯一开发 PG，并逐字节读回。未修改合同文本或审批状态。
 - `FrozenContracts` 改为按稳定 SourceIngress ID 读取入口，其他冻结合同与 acceptance 按声明 path/SHA/bytes 从 PG 读取并复验摘要；不再从工作区回退。实际 loader 初始化返回 16 个冻结合同、冻结 digest `9c0556af…193602`、counter contract `V4_12_SESSION_COUNTER_V2`。新增 PG-only mock regression；R6/R4.12 合并定向套件 4 passed，py_compile 和 `git diff --check` 通过。该改动切断 18 个运行期合同/验收文件读取点，不改变业务模型、Head 或 production admission。
+
+## Corrected Owner 旧支线的 PG 读写边界续修（2026-10-18）
+
+- Structure/Sector/Focus/Market Rotation 旧 Corrected 支线继续把 replay manifests、研究配置、算法参数、策略合同从 PG 精确绑定读取；阶段回执、逐日数据文件、D2 与 Focus/Rotation 成品在生成后写入 SourceIngress，后续消费者不再依赖其本地副本。Focus 研究配置同样改为 JSON-compatible YAML 的标准库解析。
+- R4.04 该支线的 `output_schema`、`field_window_mapping` 和 dated-membership policy 三份精确合同此前未在 PG；核对 clean Git revision SHA/bytes 后完成 SourceIngress，原字节读回一致。代码变更后的 5 项 Structure contract / R6 PG-only 定向测试全部通过，相关模块 `py_compile` 和 `git diff --check` 通过。
+- 该旧支线的 PG Owner Core/Profile manifest 当前不存在，因此这里只完成读取/写回边界修正，未宣称它已真实四日运行；已完成真实四日业务运行的是上节 R43 Focus/Forward 候选。后续该支线可在其 Core/Profile Owner 从 PG 登记完成后继续联调。

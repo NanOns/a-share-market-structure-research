@@ -5,8 +5,9 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
-from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, CONTRACT
-from .market_source_acquisition import official_sessions, write
+from .corrected_owner_replay import load, checked, gzrows, gzwrite, OUT, CONTRACT, pg_json_source
+from .r43_owner_replay import write_candidate_json, pg_source_binding
+from .market_source_acquisition import official_sessions
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
 from .v4_12_breakout_episode import BreakoutEpisodeEngine, episode_contract
@@ -96,10 +97,10 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
 
 
 def materialize_profiles_structure(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
+    root=Path(root).resolve();out=root/OUT;replay=pg_json_source(root,OUT+'/CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
-    write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.1',
-          prior_gate=ref(root,out/'CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
+    write_candidate_json(root,out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=pg_source_binding(root,CONTRACT),upgrade_document='R4.1',
+          prior_gate=pg_source_binding(root,OUT+'/CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     from scripts.run_v4_04_full_market_candidate_r4 import build_row, CONTRACT_FILES
     from scripts import run_v4_04_full_market_candidate_r4 as builder
     from scripts.build_fp06_sector import periods
@@ -109,7 +110,7 @@ def materialize_profiles_structure(root):
     c13=DescendantContracts(root)
     c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=None
     cutoff=datetime.now(timezone.utc).isoformat()
-    cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
+    cd=digest({p:pg_source_binding(root,p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
         day=owner['trade_date'];folder=out/'owners'/day;factors=list(gzrows(checked(root,owner['core'])))
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
@@ -126,7 +127,7 @@ def materialize_profiles_structure(root):
             r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else 'UNKNOWN',status_conflict=False))
-        owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))
+        owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles,pg_ingress=True),status=gzwrite(root,folder/'status.jsonl.gz',statuses,pg_ingress=True))
         engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
         results=[]
         for factor in factors:
@@ -135,13 +136,14 @@ def materialize_profiles_structure(root):
             use_prior=prior if prior and sid in previous_ids else None
             results.append(engine.evaluate(sid,use_prior))
         store=CandidateStore(root,folder.relative_to(root).as_posix()+'/structure')
+        store.pg_ingress=True
         artifacts=[]
         for name,rs,compressed in [('runtime_security.jsonl.gz',results,True),('state_observations.jsonl.gz',[o for r in results for o in r['observations']],True),('anchors.jsonl',[a for r in results for a in r['anchors']],False),('events.jsonl',[a for r in results for a in r['events']],False),('transitions.jsonl',[a for r in results for a in r['transitions']],False)]:
             artifacts.append(store.jsonl(name,rs,compressed))
         manifest=store.json('runtime_manifest.json',dict(contract_id='V4_12_R13_RUNTIME_CANDIDATE_MANIFEST',
              status='ENGINEERING_CANDIDATE_NOT_ACCEPTED',trade_date=day,revision='r1',available_at=cutoff,
              entry=c.entry_ref,contract_digest=c.digest,snapshot_contract=engine.state_ref,episode_contract=engine.episode_ref,
-             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=ref(root,root/CONTRACT),
+             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=pg_source_binding(root,CONTRACT),
              owner_inputs=owner,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,formal_accepted=False,
              raw_fallback_count=0,provider_replacement_count=0,V4_11_candidate_substitution_count=0))
         print(__import__('json').dumps(dict(stage='PROFILE_STRUCTURE_PRESEAL',day=day,
@@ -158,11 +160,11 @@ def materialize_profiles_structure(root):
             counts[name]=dict(known=known,unknown=len(results)-known)
         counts['relative_market_state']=dict(known=sum(r['states']['relative_market_state']['value']!='UNKNOWN' for r in profiles),unknown=sum(r['states']['relative_market_state']['value']=='UNKNOWN' for r in profiles))
         result=dict(owner=owner,structure_manifest=manifest,snapshot=snapshot,rows=len(results),counts=counts,
-             advanced_projection=gzwrite(root,folder/'advanced_structure_projection.jsonl.gz',projected),
+             advanced_projection=gzwrite(root,folder/'advanced_structure_projection.jsonl.gz',projected,pg_ingress=True),
              anchors=sum(len(r['anchor_states']) for r in results),events=sum(len(r['events']) for r in results),
              prior_unknown_absence_preserved=True,acceptance='MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION')
-        write(folder/'PROFILE_STRUCTURE_OWNER.json',result);receipts.append(result)
+        write_candidate_json(root,folder/'PROFILE_STRUCTURE_OWNER.json',result);receipts.append(result)
         print(__import__('json').dumps(dict(stage='PROFILE_STRUCTURE',day=day,anchors=result['anchors'],counts=counts)),flush=True)
-    write(out/'PROFILE_STRUCTURE_REPLAY.json',dict(contract='V4_CORRECTED_OWNER_REPLAY_V1',owners=receipts,
+    write_candidate_json(root,out/'PROFILE_STRUCTURE_REPLAY.json',dict(contract='V4_CORRECTED_OWNER_REPLAY_V1',owners=receipts,
           acceptance='REAL_MATERIALIZATION_COMPLETE_PENDING_INDEPENDENT_STRUCTURE_ORACLE',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     return receipts

@@ -10,7 +10,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 import pandas as pd
-from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, pg_json_source
+from .r43_owner_replay import write_candidate_json
 from .market_source_acquisition import write, official_sessions
 from .tdx_official_daily_source import _atomic_write
 from .research_features import build_stock_research_features, ResearchFeatureContext
@@ -59,6 +60,15 @@ def confirmation(values):
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
 
 
+def pg_focus_inputs(root, input_namespace, sector_namespace):
+    """Load replay manifests and research config from exact PG ingress bytes."""
+    replay=pg_json_source(root,input_namespace+'/PROFILE_STRUCTURE_REPLAY.json')
+    sectors=pg_json_source(root,sector_namespace+'/SECTOR_REPLAY.json')
+    sources=pg_json_source(root,input_namespace+'/SOURCE_BINDINGS.json')['sources']
+    config=pg_json_source(root,'config/research_attention_v3.yaml')
+    return replay,sectors,sources,config
+
+
 def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None):
     root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
     if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
@@ -68,22 +78,23 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     sector_inputs=root/sector_namespace if sector_namespace else inputs
     if not sector_inputs.resolve().is_relative_to(root):
         raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
-    replay=load(inputs/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(sector_inputs/'SECTOR_REPLAY.json')
+    replay,sectors,sources,cfg=pg_focus_inputs(root,(input_namespace or OUT),
+        (sector_namespace or input_namespace or OUT))
     sessions=official_sessions(root);cutoff=datetime.now(timezone.utc).isoformat();prior=None;prior_pid=None;days={};receipts=[]
     contract=out/'FOCUS_STAGE_CONTRACT_V1.json'
-    write(contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.1',
+    write_candidate_json(root,contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.1',
         source_admission='Exact R4 sealed owner files; corrected candidate only',
         D0='Original scanner/parameters/priority and UNKNOWN-dominant wrapper',
         D2='Unchanged R5 candidate reducer and full field/temporal/publication validator',
         focus='Original membership/path/outcome kernels; independent corrected namespace',
         accepted=False,AS_RECORDED=False,production_admission=False,
         exact_business_AST=d2.adapter_ast_evidence()))
-    cfg=load(root/'config/research_attention_v3.yaml');package=load_package(root)
+    package=load_package(root)
     cal=dict(session_dates=sessions,sessions=[dict(trade_date=d,session_index=i) for i,d in enumerate(sessions)],
           lineage_id='R4_OFFICIAL_MASTER_CALENDAR',producer_contract_id='MARKET_CALENDAR_V1')
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     calendar_binding=_ingress_exact_file(root,out/'FOCUS_CALENDAR.json')
-    sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
+    pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
@@ -167,10 +178,10 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
             source_contract=ref(root,contract),fact_manifest_digest=digest(manifest))
         prior_pid='R4_D2:'+digest(publication);publication['publication_id']=prior_pid;prior={r['entity_id']:r for r in rows};days[day]=rows
         from common.paths import resolve_tdx_root
-        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=resolve_tdx_root(root))
-        calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations)
-        fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows)
-        write(folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=_ingress_exact_file(root,folder/'focus_status.json')
+        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=resolve_tdx_root(root));_ingress_exact_file(root,path)
+        calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations,pg_ingress=True)
+        fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows,pg_ingress=True)
+        write_candidate_json(root,folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=_ingress_exact_file(root,folder/'focus_status.json')
         for sid,bars in history.items():
             for bar in bars:
                 if bar['trade_date']==day:
@@ -199,8 +210,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
          knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'
     from common.paths import resolve_tdx_root
-    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=resolve_tdx_root(root))
+    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=resolve_tdx_root(root));_ingress_exact_file(root,path)
     result=dict(owners=receipts,focus=ref(root,path),episodes=len(projection['episodes']),events=len(projection['events']),
           outcomes=dict(Counter(o['outcome_status'] for e in projection['episodes'] for o in e['outcomes'])),
           production_admission=False,next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE')
-    write(out/'FOCUS_FORWARD_REPLAY.json',result);return result
+    write_candidate_json(root,out/'FOCUS_FORWARD_REPLAY.json',result);return result

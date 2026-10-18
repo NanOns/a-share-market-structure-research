@@ -6,7 +6,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from .r43_owner_replay import (load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT,
-    progress_items, historical_source, pg_json_source, write_candidate_json)
+    progress_items, historical_source, pg_json_source, pg_source_binding, write_candidate_json)
 from .market_source_acquisition import official_sessions, write
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
@@ -113,8 +113,8 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
 def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None):
     root=Path(root).resolve();out=root/OUT;replay=pg_json_source(root,OUT+'/CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
-    write_candidate_json(root,out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.3',
-          prior_gate=ref(root,out/'CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
+    write_candidate_json(root,out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=pg_source_binding(root,CONTRACT),upgrade_document='R4.3',
+          prior_gate=pg_source_binding(root,OUT+'/CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     from scripts.run_v4_04_full_market_candidate_r4 import build_row, CONTRACT_FILES
     from scripts import run_v4_04_full_market_candidate_r4 as builder
     from scripts.build_fp06_sector import periods
@@ -145,7 +145,7 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         acquisition=dict(path=acquisition_source['record']['source_path'],sha256=acquisition_source['record']['source_sha256'],bytes=acquisition_source['record']['source_bytes']),
         rule='Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN'))
     cutoff=datetime.now(timezone.utc).isoformat()
-    cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
+    cd=digest({p:pg_source_binding(root,p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
         day=owner['trade_date'];folder=out/'owners'/day;factors=gzrows(checked(root,owner['core']))
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
@@ -183,7 +183,7 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         manifest=store.json('runtime_manifest.json',dict(contract_id='V4_12_R13_RUNTIME_CANDIDATE_MANIFEST',
              status='ENGINEERING_CANDIDATE_NOT_ACCEPTED',trade_date=day,revision='r1',available_at=cutoff,
              entry=c.entry_ref,contract_digest=c.digest,snapshot_contract=engine.state_ref,episode_contract=engine.episode_ref,
-             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=ref(root,root/CONTRACT),
+             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=pg_source_binding(root,CONTRACT),
              owner_inputs=owner,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,formal_accepted=False,
              raw_fallback_count=0,provider_replacement_count=0,V4_11_candidate_substitution_count=0))
         snapshot=EpisodeSnapshotMaterializer(c,store).seal(results,manifest,cutoff)

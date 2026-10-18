@@ -65,3 +65,37 @@ def test_focus_contract_uses_json_compatible_pg_text_without_yaml(monkeypatch, t
         "format": "JSON_COMPATIBLE_YAML"
     }
     assert calls == [(tmp_path, "config/research_attention_v3.yaml")]
+
+
+def test_corrected_focus_replay_inputs_are_pg_only(monkeypatch, tmp_path):
+    from workbench_analysis import corrected_focus_replay
+
+    calls = []
+
+    def source(root, path):
+        calls.append((root, path))
+        if path.endswith("PROFILE_STRUCTURE_REPLAY.json"):
+            return {"owners": []}
+        if path.endswith("SECTOR_REPLAY.json"):
+            return {"owners": []}
+        if path.endswith("SOURCE_BINDINGS.json"):
+            return {"sources": {"identity": {"path": "id", "sha256": "a" * 64}}}
+        return {"thresholds": {}}
+
+    monkeypatch.setattr(corrected_focus_replay, "pg_json_source", source)
+    monkeypatch.setattr(
+        "pathlib.Path.read_bytes",
+        lambda _path: (_ for _ in ()).throw(AssertionError("workspace read")),
+    )
+
+    result = corrected_focus_replay.pg_focus_inputs(tmp_path, "input", "sector")
+    assert result[0] == {"owners": []}
+    assert result[1] == {"owners": []}
+    assert result[2]["identity"]["path"] == "id"
+    assert result[3] == {"thresholds": {}}
+    assert calls == [
+        (tmp_path, "input/PROFILE_STRUCTURE_REPLAY.json"),
+        (tmp_path, "sector/SECTOR_REPLAY.json"),
+        (tmp_path, "input/SOURCE_BINDINGS.json"),
+        (tmp_path, "config/research_attention_v3.yaml"),
+    ]

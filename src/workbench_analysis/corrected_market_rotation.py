@@ -2,8 +2,9 @@
 from collections import defaultdict, Counter
 from pathlib import Path
 from statistics import fmean, median
-from .corrected_owner_replay import load, gzrows, gzwrite, ref, checked, OUT
-from .market_source_acquisition import official_sessions, write
+from .corrected_owner_replay import load, gzrows, gzwrite, checked, OUT, pg_json_source
+from .r43_owner_replay import pg_source_binding, write_candidate_json
+from .market_source_acquisition import official_sessions
 from .v4_13_descendant_contracts import DescendantContracts
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package
 from v4.factors.native import market_axis_primitives, market_trend_axis
@@ -12,11 +13,11 @@ from dataclasses import asdict
 
 
 def materialize_market_rotation(root):
-    root=Path(root).resolve();out=root/OUT;profiles=load(out/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(out/'SECTOR_REPLAY.json')
+    root=Path(root).resolve();out=root/OUT;profiles=pg_json_source(root,OUT+'/PROFILE_STRUCTURE_REPLAY.json');sectors=pg_json_source(root,OUT+'/SECTOR_REPLAY.json')
     sessions=official_sessions(root);c=DescendantContracts(root);dep=c.dependencies
     param,registry=resolve_package(dep['rotation_contract'],dep['parameter_set'],
          checked(root,c.config['loo_context']['accepted_sector_dependencies']['parameter_set']).read_bytes(),dep['field_registry'])
-    write(out/'MARKET_ROTATION_STAGE_ENTRY.json',dict(task='R4.1',contract='R4_CORRECTED_MARKET_ROTATION_V1',
+    write_candidate_json(root,out/'MARKET_ROTATION_STAGE_ENTRY.json',dict(task='R4.1',contract='R4_CORRECTED_MARKET_ROTATION_V1',
         accepted=False,prior_rotation='No accepted corrected episode; execute original UNKNOWN-preserving gate',
         price_limit_owner='Not bound; stress fields remain UNKNOWN',next_stage='INDEPENDENT_QA'))
     receipts=[]
@@ -36,7 +37,7 @@ def materialize_market_rotation(root):
             ar=f['fields']['amount_ratio20']['value']
             if ar is not None:amounts.append(ar)
         # Endpoint membership is explicitly intersected with the saved historic owner.
-        authority_binding=ref(root,root/'config/v4_market_operational_authority_v1.json')
+        authority_binding=pg_source_binding(root,'config/v4_market_operational_authority_v1.json')
         historical=load(checked(root,authority_binding))['market']
         market=load(checked(root,historical));membership=market['sources']['historical_universe']
         members=defaultdict(set)
@@ -83,7 +84,7 @@ def materialize_market_rotation(root):
         trend=market_trend_axis(index_close=level,index_ma20=ma(levels[-20:]),index_ma20_t_minus_5=ma(levels[-25:-5]),**identity)
         row=dict(trade_date=day,trend_axis=trend['trend_axis'],**{k:axes[k] for k in ('breadth_axis','participation_axis','stress_level','stress_change')})
         regime=asdict(project([row])[day])
-        write(folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
+        market_binding=write_candidate_json(root,folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
               breadth_common_count=len(common),breadth_evaluable=len(comparisons),comparison_trade_date=prior3,
               input_bindings=[owner['core'],owner['history'],membership,prefix_binding],AS_RECORDED=False,accepted=False,
               index_successor_bridge=bridge,trend_blocker=None if level is not None else 'INCOMPLETE_DATED_INDEX_BRIDGE',stress_blocker='TARGET_PRICE_LIMIT_OWNER_NOT_BOUND'))
@@ -95,9 +96,9 @@ def materialize_market_rotation(root):
                   contract=dep['rotation_contract'],registry=dep['field_registry'],parameters=param,seed_truth=seed,seed_capability=True)
             rotations.append(dict(sector_id=n['sector_id'],trade_date=day,rotation=r,b0=evaluate_b0(n,dep['b0_contract'],param),
                    AS_RECORDED=False,accepted=False,taxonomy='BAOSTOCK_CSRC_INDUSTRY'))
-        receipts.append(dict(trade_date=day,market=ref(root,folder/'market_owner_candidate_v2.json'),
-            rotation=gzwrite(root,folder/'rotation_candidate.jsonl.gz',rotations),
+        receipts.append(dict(trade_date=day,market=market_binding,
+            rotation=gzwrite(root,folder/'rotation_candidate.jsonl.gz',rotations,pg_ingress=True),
             rotation_counts=dict(Counter(r['rotation']['output_state'] for r in rotations)),
             b0_counts=dict(Counter(r['b0']['output_state'] for r in rotations))))
-    write(out/'MARKET_ROTATION_REPLAY.json',dict(owners=receipts,acceptance='EXECUTED_FIELD_LOCAL_ADMISSION_BLOCKERS',production_admission=False))
+    write_candidate_json(root,out/'MARKET_ROTATION_REPLAY.json',dict(owners=receipts,acceptance='EXECUTED_FIELD_LOCAL_ADMISSION_BLOCKERS',production_admission=False))
     return receipts

@@ -3,8 +3,9 @@ import inspect
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
-from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, CONTRACT
-from .market_source_acquisition import write, official_sessions, load_source_acquisition_pg, load_source_query_pg
+from .corrected_owner_replay import checked, gzrows, gzwrite, OUT, CONTRACT, pg_json_source
+from .r43_owner_replay import write_candidate_json, pg_source_binding
+from .market_source_acquisition import official_sessions, load_source_acquisition_pg, load_source_query_pg
 from .v4_13_descendant_contracts import DescendantContracts
 from .v4_13_loo_runtime import relative_sector
 from sector.native_r5 import build_native
@@ -30,15 +31,15 @@ def dated_industry_memberships(root, day, universe):
 
 
 def materialize_sectors(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'PROFILE_STRUCTURE_REPLAY.json');receipts=[];history={}
-    write(out/'SECTOR_STAGE_ENTRY.json',dict(contract=ref(root,root/'config/v4_dated_membership_source_policy_v1.json'),
+    root=Path(root).resolve();out=root/OUT;replay=pg_json_source(root,OUT+'/PROFILE_STRUCTURE_REPLAY.json');receipts=[];history={}
+    write_candidate_json(root,out/'SECTOR_STAGE_ENTRY.json',dict(contract=pg_source_binding(root,'config/v4_dated_membership_source_policy_v1.json'),
           upgrade_document='R4.1',acceptance='IN_PROGRESS',next_stage='LOO_FOCUS_FORWARD_INDEPENDENT_QA'))
     import baostock
     source=inspect.getsource(baostock.query_stock_industry).encode()
     from .tdx_official_daily_source import _atomic_write
     from common.paths import resolve_tdx_root
     _atomic_write(out/'QUERY_STOCK_INDUSTRY_SDK_SOURCE.py',source,tdx_root=resolve_tdx_root(root))
-    params=load(root/'config/v4_08_algorithm_parameter_set_r5.json');seedparams=load(root/'config/v4_07_parameter_set_v1.json')
+    params=pg_json_source(root,'config/v4_08_algorithm_parameter_set_r5.json');seedparams=pg_json_source(root,'config/v4_07_parameter_set_v1.json')
     sessions=official_sessions(root)
     for result in replay['owners']:
         owner=result['owner'];day=owner['trade_date'];folder=out/'owners'/day
@@ -70,8 +71,8 @@ def materialize_sectors(root):
             current[sid]=dict(trade_date=day,fields=fields,price_basis_id=f['price_basis_id'])
         universe={r['source_security_key'].lower():r['security_id'] for r in factors}
         memberships,query=dated_industry_memberships(root,day,universe)
-        binding=gzwrite(root,folder/'dated_csrc_memberships.jsonl.gz',memberships)
-        sources=dict(core=owner['core'],profiles=owner['profiles'],membership=binding,policy=ref(root,root/'config/v4_dated_membership_source_policy_v1.json'))
+        binding=gzwrite(root,folder/'dated_csrc_memberships.jsonl.gz',memberships,pg_ingress=True)
+        sources=dict(core=owner['core'],profiles=owner['profiles'],membership=binding,policy=pg_source_binding(root,'config/v4_dated_membership_source_policy_v1.json'))
         prior={};prior_members={};prior_date={};prior_native={};prior_seed={}
         for k in (1,3):
             d=sessions[sessions.index(day)-k]
@@ -121,15 +122,15 @@ def materialize_sectors(root):
             if ordinal and ordinal%500==0:print(json.dumps(dict(stage='LOO_PROGRESS',date=day,completed=ordinal,total=len(factorby))),flush=True)
         receipt=dict(trade_date=day,taxonomy='BAOSTOCK_CSRC_INDUSTRY',membership=binding,
              membership_count=len(memberships),sector_count=len(native),query=query,
-             native=gzwrite(root,folder/'csrc_sector_native.jsonl.gz',native),seed=gzwrite(root,folder/'base_seed.jsonl.gz',seedrows),
-             relative_sector=gzwrite(root,folder/'csrc_relative_sector_loo.jsonl.gz',loo),
+             native=gzwrite(root,folder/'csrc_sector_native.jsonl.gz',native,pg_ingress=True),seed=gzwrite(root,folder/'base_seed.jsonl.gz',seedrows,pg_ingress=True),
+             relative_sector=gzwrite(root,folder/'csrc_relative_sector_loo.jsonl.gz',loo,pg_ingress=True),
              known_fields=dict(Counter(k for r in native for k,v in r['fields'].items() if v.get('value') is not None)),
              relative_sector_known=sum(r['quality']=='KNOWN' for r in loo),oracle=oracle,
              original_tdx_concept_membership='ACCEPTED_20260930_ONLY; OTHER_DATES_UNPROVEN',
              source_taxonomy_substitution=False,production_admission=False)
         receipt['relative_only_optimization']='Original per-group kernel; rs1/rs5 and eligibility checked against full exclusion cross-section on first 30 identities; cross-section percentiles are not consumed by relative_sector.'
-        write(folder/'SECTOR_OWNER.json',receipt);receipts.append(receipt)
+        write_candidate_json(root,folder/'SECTOR_OWNER.json',receipt);receipts.append(receipt)
         history[day]=dict(current=current,groups=dict(groups),native={r['sector_id']:r for r in native},seed=seed)
         print(json.dumps(dict(stage='SECTOR_LOO',date=day,sectors=len(native),members=len(memberships),known=receipt['relative_sector_known'])),flush=True)
-    write(out/'SECTOR_REPLAY.json',dict(owners=receipts,acceptance='CORRECTED_CSRC_TAXONOMY_ONLY',next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE'))
+    write_candidate_json(root,out/'SECTOR_REPLAY.json',dict(owners=receipts,acceptance='CORRECTED_CSRC_TAXONOMY_ONLY',next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE'))
     return receipts

@@ -1,8 +1,19 @@
 """Resumable corrected-owner branch of the same DM01 daily entry."""
 import json
 from pathlib import Path
-from .corrected_owner_replay import load, checked, ref, OUT, CONTRACT, materialize_core
-from .market_source_acquisition import write, official_sessions, load_json_source_pg, load_json_binding_pg
+from .corrected_owner_replay import load, checked, OUT, CONTRACT, materialize_core, pg_json_source
+from .r43_owner_replay import historical_source, pg_source_binding, write_candidate_json
+from .market_source_acquisition import official_sessions
+
+
+def _candidate_json(root, relative_path):
+    try:
+        return pg_json_source(root,relative_path)
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+        if (Path(root)/relative_path).exists():
+            raise ValueError('UNINGRESSED_WORKSPACE_CANDIDATE_NOT_CONSUMABLE:'+relative_path) from error
+        return None
 
 
 def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all',
@@ -50,68 +61,74 @@ def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all',
 
 
 def _run_corrected_owner_pipeline(root, *, target_date, stage, calendar_authority):
-    root=Path(root).resolve();out=root/OUT;policy=load(root/CONTRACT)
-    seal=out/'OWNER_STAGE_SEAL_V1.json'
-    if seal.exists():
-        bound=load(seal)
+    root=Path(root).resolve();out=root/OUT;policy=pg_json_source(root,CONTRACT)
+    seal_path=OUT+'/OWNER_STAGE_SEAL_V1.json';bound=_candidate_json(root,seal_path)
+    if bound is not None:
         if bound.get('production_admission') is not False:raise ValueError('CORRECTED_SEAL_PERMISSION_OVERCLAIM')
         for binding in bound['bindings']:checked(root,binding)
     if target_date not in policy['target_sessions'] or target_date not in official_sessions(root):
         raise ValueError('CORRECTED_SESSION_OUTSIDE_VERSIONED_CONTRACT')
-    if (out/'CORE_REPLAY.json').exists():
-        core=load(out/'CORE_REPLAY.json')
-        current=load_json_source_pg(root,'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json',
-                                    source_origin='V4_CORRECTED_OWNER_CANDIDATE')
-        capture=load_json_binding_pg(root,current['capture_receipt'],
-                                     source_origin='V4_CORRECTED_OWNER_CANDIDATE')
+    core_path=OUT+'/CORE_REPLAY.json';core=_candidate_json(root,core_path)
+    if core is not None:
+        current=historical_source(root,'capture_audit')['value']
+        capture=load(checked(root,current['capture_receipt']))
         if capture['package']['sha256']!=core['owners'][0]['sources']['package']['sha256']:
             raise ValueError('NEW_SOURCE_REVISION_REQUIRES_SEPARATE_CORRECTED_OWNER_NAMESPACE')
         for owner in core['owners']:
             for key in ('core','prior_core','history','raw','adjusted'):checked(root,owner[key])
     else:materialize_core(root)
-    if stage=='core':return dict(status='CORRECTED_CORE_READY',receipt=str(out/'CORE_REPLAY.json'),calendar_authority=calendar_authority)
-    if not (out/'PROFILE_STRUCTURE_REPLAY.json').exists():
+    if stage=='core':return dict(status='CORRECTED_CORE_READY',receipt=pg_source_binding(root,core_path),calendar_authority=calendar_authority)
+    profile_path=OUT+'/PROFILE_STRUCTURE_REPLAY.json';profiles=_candidate_json(root,profile_path)
+    if profiles is None:
         from .corrected_structure_replay import materialize_profiles_structure
         materialize_profiles_structure(root)
-    profiles=load(out/'PROFILE_STRUCTURE_REPLAY.json')
+        profiles=_candidate_json(root,profile_path)
     for owner in profiles['owners']:
         for key in ('profiles','status'):checked(root,owner['owner'][key])
         checked(root,owner['structure_manifest']);checked(root,owner['snapshot'])
-    if stage=='profile':return dict(status='CORRECTED_PROFILE_STRUCTURE_READY',receipt=str(out/'PROFILE_STRUCTURE_REPLAY.json'),calendar_authority=calendar_authority)
-    if not (out/'SECTOR_REPLAY.json').exists():
+    if stage=='profile':return dict(status='CORRECTED_PROFILE_STRUCTURE_READY',receipt=pg_source_binding(root,profile_path),calendar_authority=calendar_authority)
+    sector_path=OUT+'/SECTOR_REPLAY.json';sectors=_candidate_json(root,sector_path)
+    if sectors is None:
         from .corrected_sector_replay import materialize_sectors
         materialize_sectors(root)
-    sectors=load(out/'SECTOR_REPLAY.json')
+        sectors=_candidate_json(root,sector_path)
     for owner in sectors['owners']:
         for key in ('membership','native','seed','relative_sector'):checked(root,owner[key])
-    if not (out/'HEALTH_PROJECTION_REPLAY.json').exists():
+    health_path=OUT+'/HEALTH_PROJECTION_REPLAY.json';health=_candidate_json(root,health_path)
+    if health is None:
         from .corrected_health_projection import materialize_health
         materialize_health(root)
-    if not (out/'FOCUS_FORWARD_REPLAY.json').exists():
+        health=_candidate_json(root,health_path)
+    focus_path=OUT+'/FOCUS_FORWARD_REPLAY.json';focus=_candidate_json(root,focus_path)
+    if focus is None:
         from .corrected_focus_replay import materialize_focus
         materialize_focus(root)
-    if not (out/'MARKET_ROTATION_REPLAY.json').exists():
+        focus=_candidate_json(root,focus_path)
+    market_path=OUT+'/MARKET_ROTATION_REPLAY.json';market_rotation=_candidate_json(root,market_path)
+    if market_rotation is None:
         from .corrected_market_rotation import materialize_market_rotation
         materialize_market_rotation(root)
+        market_rotation=_candidate_json(root,market_path)
     for name in ('HEALTH_PROJECTION_REPLAY','MARKET_ROTATION_REPLAY'):
-        for owner in load(out/(name+'.json'))['owners']:
+        manifest=health if name=='HEALTH_PROJECTION_REPLAY' else market_rotation
+        for owner in manifest['owners']:
             for key in ('projection','market','rotation'):
                 if key in owner:checked(root,owner[key])
-    focus=load(out/'FOCUS_FORWARD_REPLAY.json');checked(root,focus['focus'])
+    checked(root,focus['focus'])
     for owner in focus['owners']:
         for key in ('D2','facts','calculations'):checked(root,owner[key])
-    qa_path=out/'INDEPENDENT_QA_AND_SAFE_RELEASE_READBACK.json'
-    qa=load(qa_path) if qa_path.exists() else None
+    qa=_candidate_json(root,OUT+'/INDEPENDENT_QA_AND_SAFE_RELEASE_READBACK.json')
     if qa and (qa['errors'] or qa['acceptance']!='PASS_CORRECTED_CANDIDATE_SCOPE'):
         raise ValueError('CORRECTED_OWNER_INDEPENDENT_QA_FAILED')
     result=dict(status='CORRECTED_OWNER_QA_PASS_PENDING_SCOPED_ADMISSION' if qa else 'CORRECTED_OWNER_CANDIDATE_READY_PENDING_RELEASE_QA',target_date=target_date,
-                contract=ref(root,root/CONTRACT),core=ref(root,out/'CORE_REPLAY.json'),
-                profile_structure=ref(root,out/'PROFILE_STRUCTURE_REPLAY.json'),sector=ref(root,out/'SECTOR_REPLAY.json'),
-                health=ref(root,out/'HEALTH_PROJECTION_REPLAY.json'),focus_forward=ref(root,out/'FOCUS_FORWARD_REPLAY.json'),
-                market_rotation=ref(root,out/'MARKET_ROTATION_REPLAY.json'),
+                contract=pg_source_binding(root,CONTRACT),core=pg_source_binding(root,core_path),
+                profile_structure=pg_source_binding(root,profile_path),sector=pg_source_binding(root,sector_path),
+                health=pg_source_binding(root,health_path),focus_forward=pg_source_binding(root,focus_path),
+                market_rotation=pg_source_binding(root,market_path),
                 calendar_authority=calendar_authority,
                 source_requests_this_run=0,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,
                 data_head_moved=False,production_admission=False,
                 next_stage='INDEPENDENT_EXTERNAL_SCOPED_OWNER_REVIEW' if qa else 'FOCUS_FORWARD_AND_SCOPED_RELEASE_QA')
-    write(out/'DM01_CORRECTED_OWNER_RECEIPT.json',result)
-    return dict(result,receipt=str(out/'DM01_CORRECTED_OWNER_RECEIPT.json'))
+    receipt_path=OUT+'/DM01_CORRECTED_OWNER_RECEIPT.json'
+    write_candidate_json(root,out/'DM01_CORRECTED_OWNER_RECEIPT.json',result)
+    return dict(result,receipt=pg_source_binding(root,receipt_path))

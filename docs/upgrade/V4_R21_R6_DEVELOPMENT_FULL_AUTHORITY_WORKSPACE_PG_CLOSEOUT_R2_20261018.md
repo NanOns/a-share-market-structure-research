@@ -168,3 +168,4 @@
 - Structure/Sector/Focus/Market Rotation 旧 Corrected 支线继续把 replay manifests、研究配置、算法参数、策略合同从 PG 精确绑定读取；阶段回执、逐日数据文件、D2 与 Focus/Rotation 成品在生成后写入 SourceIngress，后续消费者不再依赖其本地副本。Focus 研究配置同样改为 JSON-compatible YAML 的标准库解析。
 - R4.04 该支线的 `output_schema`、`field_window_mapping` 和 dated-membership policy 三份精确合同此前未在 PG；核对 clean Git revision SHA/bytes 后完成 SourceIngress，原字节读回一致。代码变更后的 5 项 Structure contract / R6 PG-only 定向测试全部通过，相关模块 `py_compile` 和 `git diff --check` 通过。
 - 该旧支线的 PG Owner Core/Profile manifest 当前不存在，因此这里只完成读取/写回边界修正，未宣称它已真实四日运行；已完成真实四日业务运行的是上节 R43 Focus/Forward 候选。后续该支线可在其 Core/Profile Owner 从 PG 登记完成后继续联调。
+- Corrected Owner stage orchestrator 和 Health projection 也已改为从 PG 读取续跑 receipt/manifests、输出投影写回 SourceIngress；若旧目录有文件但 PG 无对应绑定，按 `UNINGRESSED_WORKSPACE_CANDIDATE_NOT_CONSUMABLE` 拒绝使用。更新后 Structure/Health/Sector/Focus/Rotation/Owner 编排器组合定向套件 6 passed，py_compile、`git diff --check` 通过；该边界修正不补造缺失 Core/Profile Owner 输入。

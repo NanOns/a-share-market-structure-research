@@ -99,3 +99,21 @@ def test_corrected_focus_replay_inputs_are_pg_only(monkeypatch, tmp_path):
         (tmp_path, "input/SOURCE_BINDINGS.json"),
         (tmp_path, "config/research_attention_v3.yaml"),
     ]
+
+
+def test_corrected_owner_pipeline_rejects_workspace_only_receipt(monkeypatch, tmp_path):
+    from workbench_analysis import corrected_owner_pipeline
+
+    monkeypatch.setattr(
+        corrected_owner_pipeline,
+        "pg_json_source",
+        lambda *_args: (_ for _ in ()).throw(
+            ValueError("HISTORICAL_SOURCE_INGRESS_NOT_FOUND")
+        ),
+    )
+    with pytest.raises(ValueError, match="UNINGRESSED_WORKSPACE_CANDIDATE_NOT_CONSUMABLE"):
+        relative = "data/v4/workspaces/candidate/receipt.json"
+        target = tmp_path / relative
+        target.parent.mkdir(parents=True)
+        target.write_text("{}", encoding="utf8")
+        corrected_owner_pipeline._candidate_json(tmp_path, relative)

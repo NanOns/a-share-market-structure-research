@@ -327,3 +327,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 ### GitHub 跟踪更新尝试
 
 - 按任务卡“尽力更新现有 Issue #2/PR #3”的要求，先读取现有条目和最新评论，再分别尝试追加本轮准确进度。GitHub 集成对两次评论写入均返回 HTTP 403 `Resource not accessible by integration`，没有新增外部评论；没有重复重试或更换通道。分支提交已正常推送，Issue/PR 跟踪更新受该集成权限限制。
+
+### 2026-10-19 28766 来源审计与日更安全门续验
+
+- 当前 28766 Forward 来源审计页的真实浏览器抽屉返回 `V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1@1.0.0` / `READY`，T0 `2026-09-30`，固定来源 Schema `v4`、namespace `R7_RESEARCH_ONLY`、generation 3、source_run_id `8758c55d…ef89`；同时明确 `evidence_class=RETROSPECTIVE_RESEARCH`、`strict_t0_pit=false`，因此仍非 PIT/正式候选接纳。
+- 日更页真实显示开发快照 T0 `2026-09-30`、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、后台 worker 未启动；“检查数据源、立即补齐、自动更新设置、重试失败日、取消未发布部分”按钮均为 disabled，未执行触发操作。页面说明为只读 PG 状态预览，不创建日更任务或后台进程。
+- 随后恢复浏览器到个股详情日线/QFQ `120/253`；本轮浏览器 error/warn 日志为空。28765 未触碰。

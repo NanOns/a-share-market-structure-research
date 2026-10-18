@@ -109,3 +109,10 @@
 - 冻结脚本现在以精确 PG SourceIngress binding 读取 TDX capture receipt、delta receipt/delta、BaoStock daily update、GBBQ accepted manifest/member；对每份 JSON 校验 path、SHA、字节数与业务日期/快照身份。官方日历继续由 PG-bound runtime reader选择，冻结清单直接引用其 binding；不再把本地副本重新算哈希后当作来源记录。
 - 日更编排在启动冻结前把本次 TDX capture receipt 写入 SourceIngress 并将 binding 传给冻结脚本。GBBQ 首次边界现在对 manifest 声明的源成员校验原始 SHA/长度，逐件写入并从 PG 精确读回；冻结消费者只按 manifest 的 path/SHA 读 PG。TDX 原 ZIP 仍由上游受控捕获/差分构建负责读取；冻结阶段仅检查其捕获路径仍存在并引用已验证 receipt 中的 SHA，不在下游重复散列 ZIP。
 - 新增或更新定向回归覆盖 BaoStock 精确绑定、错误日期拒绝、通用 JSON binding SHA/长度拒绝以及冻结脚本无工作区 `read_text/read_bytes`；8 项通过，两个脚本 `py_compile` 和 `git diff --check` 通过。完整实际日更仍由 2026-10-08 中间交易日 TDX 源包缺失阻断，尚未据此宣称端到端接受 Head 通过。
+
+## TDX 页面捕获与 28766 现场续验
+
+- 真实跑 `2026-10-16` DM-01 时，编排在来源请求前因连续交易日缺口 `2026-10-08` 返回 `BLOCKED_MISSING_INTERMEDIATE_SESSION`，`source_requests=0`、Data Head 未移动。随后真实跑 `2026-10-08`，官方 TDX 页面与 update-info 两次捕获均报告最新发布日为 `2026-10-16`，状态 `WAIT_TDX_PUBLICATION`；未下载 ZIP、未请求 BaoStock、未移动 Head。页面原件 25,379 字节、JS 120 字节、receipt 1,604 字节已分别 SourceIngress 并按 SHA/长度 PG 原字节读回。
+- `scripts/capture_tdx_official_daily_package.py` 现在在捕获命令边界校验并写入 page HTML、update-info JS、capture receipt 的 PG binding；捕获元数据仍受 4 MiB/256 KiB 字节上限。真实 CLI 回执返回三个 binding；新增正反例纳入后 10 项定向测试通过。当前交易日缺口仍是真实供应方发布时间事实，不做倒填/倒签。
+- 实查 `127.0.0.1:5432/market_research` 的现有连接角色为 `postgres`，`rolsuper=true`、库级 CREATE 与当前 schema USAGE/CREATE 均为 true，事务非只读；这是实际连接能力，不是权限申请或凭据名义阻断。没有创建平行实例。
+- 28766 API 已按有效 context token 读验同一 PG candidate/T0=`2026-09-30`。首页、市场、板块 378 项、股票 5,213 项、Focus 469 项、Forward plans 585 项、settlement 5 项均返回 READY；样本股票日/周/月图分别返回 253/54/13 个有效聚合区间，周 QFQ 图返回 20 条并绑定 history version、Head 与 source digest。板块成员样本 25 项。FEP 返回 `SOURCE_INCOMPLETE / NO_CURRENT_DAY_MODEL_INFERENCE_OWNER`；日更状态仍 `PREVIEW_ONLY`、jobs disabled、worker `NOT_STARTED`。数据更新页及脚本、主/组件/API 静态资源 HTTP 200；这一轮是 HTTP/API 验证，没有把它扩称为新一轮浏览器交互验收。

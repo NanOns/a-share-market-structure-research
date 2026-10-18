@@ -485,3 +485,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 从该包只读提取 10-15 的 32 字节 `.day` 原始记录，保留包 SHA、成员路径及 SHA、原始记录字节及 SHA；不使用 10-16 或更晚记录。经严格顺序/长度核验的目标日成员为沪 4,869、深 4,506、北 352，共 9,727。排除 `sh000833.day`（历史段非递增）及 `sz131804.day`、`sz131807.day`（空文件）。抽取文件 5,143,445 字节，SHA-256 `aa9c9689b19251fcb5335234b4d28c5797214851738a78d3cc1239cfd7e880ca`，过程证据位于 `G:\codex_tmp\v4_tdx_target_20261015_from_20261016.jsonl`。
 - 抽取物以 `TDX_OFFICIAL_PACKAGE_TARGET_DAY_EXTRACT_RETROSPECTIVE_NON_PIT` 明确身份写入历史 SourceIngress；开发库精确路径/摘要读取回读字节相等。抽取内代码身份仅来自 TDX 文件名，尚未和 10-15 接受 Universe/代码身份 Owner 对接。状态保持 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`、`formal_accepted=false`；未创建 Source Package、Universe、日历、Publication 或任一 Head。
 - 写入后独立 `REPEATABLE READ READ ONLY` 复核为 `market_research` / OID `646711` / `127.0.0.1:5432`、`transaction_read_only=on`；V4 命名空间仍仅 `v4`。`source_packages`、`source_package_facts`、`market_calendar_sessions`、`publications`、`publication_heads`、`operational_research_heads` 仍各 0 行。该补采为 10-15 DEV 回溯输入，不解除独立签发、Accepted 日历、真实 Universe/Owner 或生产门。
+
+### 2026-10-19 续行：Schema 生成残留与 10-15 开发页核验
+
+- 对 `src/workbench_db` 与 `src/workbench_analysis` 的运行时源码扫描显示，V4 仍有 `create_schema` 调用点，但中央 `v4_native.create_schema` 只允许名称为 `v4` 且仅核验该 Schema 已存在；任何其他名称均以 `V4_SINGLE_SCHEMA_ONLY_SCHEMA_CREATION_BLOCKED` 拒绝，运行时不会建业务 Schema。历史只读目录唯一命中动态 Schema 关键词的函数为 `v4.reject_forward_legacy_schema_retirement_mutation_r1()`；RR/RO 读回定义确认其只是阻止旧退役账目修改的触发器函数，不含 Schema DDL。业务 Schema 目录仍仅有 `v4`。
+- 真实 28766 个股详情页再次显示候选 T0 `2026-09-30`，提示 `PG 候选快照 · 不代表正式 Head`；指标来源缺失仍展示为“来源能力不足”，页面未把 10-15 回溯 SourceIngress 误展示为新日更数据。当前浏览器渲染和数据模型尚未接上 10-15 DEV 回溯行，日更仍需接受日历、Universe/身份映射、Source Package 与 Head 才能完整验收。
+- 当前开发分支仅固定业务 Schema `v4`；本次没有运行 DDL、清理旧 Schema、改变数据库行或启动服务。下一步按固定迁移与消费者矩阵，逐一将运行时表/保护器 DDL 收敛到版本化中央迁移，再继续 10-15 DEV 日更和模块验收；Accepted/生产切换仍关闭。

@@ -247,3 +247,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 代码审查发现 `CoreProductBFFR1.chart_history_pack` 只接受 `schema='v4'`，会在调用支持迁移映射的 History Reader 前拒绝冻结的旧 History locator。调整为只接受 `v4` 或合同格式 `v4_history_<16位十六进制>`；后者仍必须由 `v4_history_pg_r1.read` 在 `v4.history_migration_map_r1` 中精确匹配，实际条目、版本与条数校验仍在 `v4` 固定表执行，不连接旧 Schema，也不使用工作区路径定位。
 - 在真实开发库以显式只读 RR 连接读取一条已迁移映射：旧 locator `v4_history_64d0f9c30983a3ac` → canonical version `51cbf9a29c866f9b7afa07e07fa8fd567af4059c617ce61e20a83bdac8c0f6b6`，T0 `2026-10-15`，证券 `SEC-00096141BD5420F5CB3120E687CDA5B9`；实际 Reader 经映射从 `v4.history_bars_r1` 读回 420 根，日期 `2025-01-16` 至 `2026-10-15`。实证旧名称仅作为迁移 locator，物理读 Schema 为 `v4`。
 - locator 纯函数定向用例 `1 passed`，相关模块及用例 `py_compile` 通过。对旧集成测试文件的定向 pytest 因测试收集时模块导入触发仓库 disposable-PG 插件而在执行前被拒绝；没有绕过隔离、创建数据库或写 PG，该次不计通过。真实旧 locator 读回独立于此 pytest 收集结果完成。
+
+### 2026-10-19 public History 遗留对象清理与目录终核
+
+- 在同一 `market_research` 的 `REPEATABLE READ READ ONLY` 目录复核中发现，除 `v4` 外虽无任何 `v4_*` Schema，但 `public` 仍有旧 `history_versions_r1`、`history_bars_r1` 两表及 `reject_history_r1_mutation()` 函数。两表精确行数均为 0；四个触发器仅引用该函数；`history_bars_r1` 的唯一 FK 只关联这两张 public 表。源码消费者均经 `v4_native.connection('v4')` 限定 search_path，没有 public 定位入口。
+- 将以上精确对象按 `DROP TABLE ... RESTRICT`（先 bars 后 versions）及 `DROP FUNCTION ... RESTRICT` 清理；未删除 `public` Schema、未用 CASCADE。DDL 事务提交后重新以只读 RR 核验：V4 业务 Schema 列表仅 `v4`，`v4_*` 为 0；public 用户关系为 0；对仍存在的 `v4_*` 对象做目录依赖计数为 0；固定 History 表仍在 `v4` 且保有 11 个版本、57,466 条证券历史 payload。
+- 最终身份：DB `market_research` / OID `646711` / `127.0.0.1:5432`，用户 `postgres`，`transaction_read_only=on`，`REPEATABLE READ`。全量关系/Schema 目录输出 `G:\codex_tmp\v4_r21r7_catalog_recheck_20261019.json`；最终复核摘要仅报告此时仍在 `public` 的 V4 用户关系清单，不包含凭据。
+- 本机 28766 受控重载后，真实浏览器重新读出个股详情 `SEC-00096141BD5420F5CB3120E687CDA5B9`：日线截至 `2026-09-30`，原生前复权 `120/253` 根；蜡烛图与详情字段均完成渲染。页内仍明确候选快照而非正式 Head，接受状态、市场相对强度、相对板块等缺少 Owner 的字段继续显示来源不足。未操作 28765。
+- 此清理关闭了 SOT R3 指出的 `public` V4 用户对象残留，不改变正式业务门状态；Source/PIT、Accepted 日历与 Head、当日完整 Owner/Publication、成熟 Focus/Forward 等模块验收缺口仍使最终产品验收保持未通过。

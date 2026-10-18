@@ -54,3 +54,14 @@
 - 合同审批影响对象为 `v4.contract_versions`、`v4.contract_approval_events`；需有真实签发者、授权引用、对应 source revision/SHA，并在同一只读 Registry 查询读回 exact bytes。审批版本不可原位覆盖；撤销/更正需追加带有效时间的合同事件。
 - 正式产品发布还需以经批准合同验证后的候选 publication 为输入，经 `v4.publications` / `v4.publication_heads`（以及适用时 `v4.operational_research_heads`）的 canonical CAS 路径绑定 publication、revision、T0、namespace、source digest 和 Owner 结果。影响是改变当前正式读取 Head；校验需在提交后从同库 RR/RO 查询精确读回，再刷新 28766 检查上下文。回退方式是按 CAS generation 追加后继修正 Head，不删除历史行或改旧 accepted digest。
 - 本轮没有执行上述 Registry DML、正式 Head CAS 或生产切换。授权触发点：指定正式合同签发者并批准这两个合同版本；若需正式发布，再单独确认 canonical publication/Head CAS 目标与 T0。候选验证记录与正式 Head 分开。
+
+
+## 最终续行核验（2026-10-18）
+
+- 修复最新前端实际语法错误（Forward 说明卡片的 `append` 括号），Node ESM parser 和 Codex 浏览器均已复验。浏览器期间发现的旧 SyntaxError 仅来自修复前已捕获的控制台记录；修复并重载后的现役模块可正常渲染。
+- `ProductionV4ResearchReader` 现只接受显式 PostgreSQL 候选 schema；删除不可达的工作区 SQLite 文件签名、`stat()` 与本地 `json_extract`/`LIKE` 搜索分支。候选只读连接每个请求校验 PG `snapshot_identity`，活动请求共享一次 PG 只读事务。
+- `diagnostic_views` 不再从 `runtime/research_daily/*.json` 读作业回执；Jobs 诊断明确以 PG 候选 counts/status 返回 `worker_started=false`、`source_requests=0` 和“无日更回执”原因。Health 诊断明确区分 `BASE_PG_PROJECTION` 与 `NOT_BOUND`，显示缺少 Focus/Forward/Market Owner 时的实际候选 gap。前端 Jobs 现通过 BFF 读取该 PG 状态。
+- 重启后 Codex 内置浏览器在 `127.0.0.1:28766` 实测：首页 5,213 股票、378 板块、117 Radar/Forward；股票搜索 `SH.600675` 唯一命中并打开详情；板块 378 条；Focus 页 0 条并明确 `EPISODE_PROJECTION_NOT_PUBLISHED_IN_CURRENT_OWNER_CONTEXT`（不可解读为没有关注对象）；Forward 117 条、待到期结算 5 条、无绑定 Owner 统计明确为未知；市场页明确 `SOURCE_INCOMPLETE · MARKET_CENTER_NOT_BOUND`；Diagnostics Health 显示 5,213/378 及未绑定领域原因，Jobs 显示 PG 候选 T0 2026-09-30、worker 未启动、来源请求 0。日更工作台明确未启动 worker/无 accepted market calendar。Compare、Replay 入口可加载，严格 PIT 可用日期仍为 0 并保留非 PIT 限制提示。
+- 本机共用 PG `market_research` OID 646711 上本续行读取的候选为 `v4_research_30b2798be6cbcc7448dd4c66`，T0 2026-09-30；候选写入/读回不改变 accepted Head。浏览器仅连开发端口 28766；28765 未触碰。
+- 本续行共修改 6 个 V4 现役代码文件；未改非 V4 调用点。源码核验限定为定向 Python 编译、Node ESM 语法解析和 diff whitespace 检查，不运行全套测试、重复基线扫描、GitHub CLI 流程测试或 Actions。
+- 现役 V4 PG 候选代码修复累计 265/266 个历史 P1 调用点（1 个非 V4 调用点 out of scope）；正式历史 edge→T0/namespace/accepted publication Head 对账仍 0/266，22 条历史 reference edge（21 唯一调用点）无可用精确映射，3 条旧 governance 行缺 expected blob SHA。现库仍无当前批准 runtime/current-read Registry 合同且无 accepted operational publication Head；本轮没有伪造审批或切换正式 Head。正式合同/Head 与生产 28765 项保持单独授权状态。

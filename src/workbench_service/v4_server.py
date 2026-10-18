@@ -55,7 +55,8 @@ def _require_candidate_contract_proofs(context):
 def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_research_candidate_schema=None, static_root=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
-    recover(root)
+    if not pg_research_candidate_schema:
+        recover(root)
     # A PG research candidate is an independent development surface. Do not
     # instantiate the file-backed accepted Head reader on that route: even a
     # harmless context/status request must remain bound to the PG snapshot.

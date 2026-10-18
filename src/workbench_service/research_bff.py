@@ -1,11 +1,12 @@
 """FP03 BFF routing: one immutable snapshot per reader and request."""
 import json
+import os
 import threading
 import time
 import psycopg
 from collections import defaultdict, deque
 from urllib.parse import unquote
-from .production_v4 import ProductionV4ResearchReader, POINTER
+from .production_v4 import ProductionV4ResearchReader
 from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
 from .domain_views import home,sector_view
@@ -22,12 +23,11 @@ class ResearchBFF:
 
     def current(self):
         with self.lock:
-            from .joint_release import AUTHORITY
-            pointer=self.root/AUTHORITY
-            signature=digest((pointer if pointer.exists() else self.root/POINTER).read_bytes())
-            if self.reader is None or signature!=self.pointer_digest:
-                candidate=ProductionV4ResearchReader(self.root)
-                self.reader=candidate;self.pointer_digest=signature
+            schema=os.environ.get('V4_PG_RESEARCH_CANDIDATE_SCHEMA')
+            if not schema:raise SourceInvalid('PG_CANDIDATE_SCHEMA_REQUIRED_NO_WORKSPACE_AUTHORITY')
+            if self.reader is None or schema!=self.pointer_digest:
+                self.reader=ProductionV4ResearchReader(self.root,pg_candidate_schema=schema)
+                self.pointer_digest=schema
             return self.reader
 
     def allowed(self,host):
@@ -89,7 +89,16 @@ class ResearchBFF:
                 return 200,payload
             if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):
                 publication=r.manifest.get('domain_features',{}).get('forward')
-                if not publication:return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[])
+                if not publication:
+                    if parts[1]=='statistics':
+                        return 200,r.envelope(status='SOURCE_INCOMPLETE',data=dict(
+                            enrollment_denominator=None,planned_horizon_denominator=None,
+                            published_outcomes=None,published_enrollment_count=None,
+                            mature_eligible_count=None,
+                            reason='FORWARD_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE'))
+                    return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        offset=int(query.get('offset',0)),limit=int(query.get('limit',30)),
+                        has_next=False,reason='FORWARD_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE')
                 if parts[1]=='fep':return 200,r.envelope(status='SOURCE_INCOMPLETE',data=dict(publication['fep'],production_binding='NOT_BOUND_TO_CURRENT_PRODUCTION'),reason='NO_CURRENT_DAY_MODEL_INFERENCE_OWNER')
                 if parts[1]=='statistics':return 200,r.envelope(status='READY',data=publication['statistics'])
                 if parts[1]=='risk':return 200,r.query('stocks',query,summary=False)
@@ -113,6 +122,10 @@ class ResearchBFF:
                     if len(parts)==3 and parts[2] in ('episodes','timeline','anchors','observations','outcomes'):
                         rows=[x for x in publication['episodes'] if x['entity_id']==parts[1]]
                         return 200,r.envelope(status='READY' if rows else 'EMPTY_VALID',items=rows,total=len(rows),has_next=False,permissions=publication['permissions'],write_block_reason=publication['write_block_reason'],legacy_history=publication['legacy_history'])
+                elif parts[1]=='events':
+                    return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        offset=int(query.get('offset',0)),limit=int(query.get('limit',30)),
+                        has_next=False,reason='FOCUS_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE')
             if name=='market' and len(parts)==1:return 200,r.envelope(status='READY' if r.manifest.get('domain_features',{}).get('market') else 'SOURCE_INCOMPLETE',market=r.manifest.get('domain_features',{}).get('market'))
             if name=='diagnostics':
                 if len(parts)>1:

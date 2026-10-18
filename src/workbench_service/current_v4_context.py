@@ -65,34 +65,18 @@ class CurrentAcceptedV4Reader:
     def _contract(self):
         try:
             if self.follow_runtime and self.contract_path=='config/v4_current_accepted_read_contract_v1.json':
-                from workbench_analysis.contract_registry_pg_v1 import (
-                    load_current_approved_contract_by_digest,
-                    load_unique_current_approved_contract,
-                )
+                from workbench_analysis.contract_registry_pg_v1 import load_unique_current_approved_contract
                 from workbench_db.v4_publication_reader import PgPublicationReader, readonly_connection
                 with readonly_connection() as pg:
                     identity=PgPublicationReader._read_database_identity(pg)
-                    runtime_registered=load_unique_current_approved_contract(
-                        pg,'V4_PRODUCTION_RUNTIME_AUTHORITY_V1','1.0.0',
+                    registered=load_unique_current_approved_contract(
+                        pg,'V4_CURRENT_ACCEPTED_READ_CONTRACT_V1','1.0.0',
                         expected_database_identity=identity)
-                    runtime=runtime_registered.parsed_json
-                    if not isinstance(runtime,dict):raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
-                    if (runtime.get('contract_id')!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1'
-                            or runtime.get('version')!='1.0.0' or not runtime.get('ui_read_only')
-                            or runtime.get('tdx_write_authorized') or runtime.get('trading_action_authorized')):
-                        raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
-                    ref=runtime.get('read_authority')
-                    if not isinstance(ref,dict) or ref.get('contract_id')!='V4_CURRENT_ACCEPTED_READ_CONTRACT_V1':
-                        raise SourceInvalid('RUNTIME_READ_AUTHORITY_BINDING_INVALID')
-                    registered=load_current_approved_contract_by_digest(
-                        pg,'V4_CURRENT_ACCEPTED_READ_CONTRACT_V1',ref.get('sha256',''),
-                        'V4_CURRENT_ACCEPTED',expected_database_identity=identity)
-                    if (len(registered.raw_content)!=ref.get('bytes')
-                            or registered.raw_sha256!=ref.get('sha256')
+                    if (registered.namespace!='V4_CURRENT_ACCEPTED'
+                            or registered.raw_sha256 != registered.approval_source_sha256
                             or registered.parsed_json is None):
-                        raise SourceInvalid('RUNTIME_READ_AUTHORITY_REGISTRY_MISMATCH')
+                        raise SourceInvalid('CURRENT_READ_CONTRACT_REGISTRY_MISMATCH')
                     contract=registered.parsed_json;contract_digest=registered.raw_sha256
-                if runtime['data_head_binding']['sha256']!=contract['anchors']['data_head']['sha256'] or runtime['stage_authority_binding']['sha256']!=contract['anchors']['stage_authority']['sha256']:raise SourceInvalid('RUNTIME_READ_AUTHORITY_INCONSISTENT')
             else:
                 if self.require_runtime:raise SourceInvalid('RUNTIME_AUTHORITY_MISSING')
                 from workbench_db.v4_historical_source_ingress_pg_r1 import read_path

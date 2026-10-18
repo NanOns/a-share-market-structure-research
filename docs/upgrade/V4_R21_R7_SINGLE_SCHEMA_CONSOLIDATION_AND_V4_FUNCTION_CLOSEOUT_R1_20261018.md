@@ -367,3 +367,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 当前 `market_research` 的 RR/RO 事务读回迁移台账：Research 169/169、Forward 9,256/9,256、History 11/11、Owner 7/7、ReadIndex 16/16、Journal Registry 7/7、Jobs 历史 8/8 和 Jobs 版本 1/1 均为 `VERIFIED`。Forward 9,256 条回执与 `v4.forward_facts` 按 `(workspace_namespace,kind,fact_key)` 精确连接；缺目标或目标 SHA 不符为 0，回执 `target_sha256=payload_sha256` 为 9,256/9,256。此项证明现有迁移台账对应目标行仍在，不能替代逐来源业务语义/活跃消费者验收。
 - 只读 `EXPLAIN (FORMAT JSON)` 使用当前真实 workspace namespace 检查 `forward_facts`：精确 `(workspace_namespace,kind,fact_key)` 查找使用 `forward_facts_pkey`；`source_path + source_origin` 的有界候选查找使用 `forward_source_ingress_path_origin_sha_r1` 并有 `LIMIT 2`。没有实际读取大 payload 的 ANALYZE 扫描。
 - 当前目录统计尺寸：`forward_facts` 6,219,431,936 B（统计估计 live/dead tuples 9,280/37），`forward_legacy_evidence_r1` 8,394,104,832 B（2,457/0），`forward_r7_facts_r1` 2,182,561,792 B（312/0）；尺寸含 TOAST/索引，行数为 PostgreSQL 统计估值，不当作精确业务计数。
+
+### 当前接受来源与日更 Head 阻断事实复核
+
+- 配置 `config/v4_daily_source_acceptance_authorities_r1.json` 现场仍为 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED`，`issuers` 为空。当前 DB RR/RO 只读计数 `market_calendar_sessions=0`、`source_packages=0`、`source_package_facts=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`；`v4.daily_core_result_snapshots` 与 `v4.daily_core_result_rows` 固定表已部署，但当前目录统计为 0 行/0 live tuples；市场日历表也为空。缺失的独立签发来源与日历/Head 无法由本机工程探针代替，日更/Accepted 门继续关闭。

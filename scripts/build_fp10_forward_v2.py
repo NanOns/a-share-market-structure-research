@@ -4,19 +4,22 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
 from scripts.fp_domain_evidence import enter,operational_path
+from scripts.build_fp05_market import source_binding
+from workbench_analysis.market_source_acquisition import load_bytes_binding_pg
 from workbench_service.production_v4 import frozen_current_reader,ProductionV4ResearchReader
 from workbench_service.forward_daily import CONTRACT,ForwardStore,OperationalForwardAuthority,LocalForwardPriceSource,calendar_extension,verify_due_settlement
 from workbench_service.current_v4_context import canonical,digest,SourceInvalid
-from workbench_service.joint_release import checked_path
 from focus_tracker.v4_daily_driver import path_inputs
 from focus_tracker.v4_path_adapter import AcceptedPaths
 from workbench_analysis.v4_15_settlement import due_plan
 from workbench_analysis.v4_15_settlement_successor import SettlementRuntime
+from workbench_db.v4_series_pg_r1 import verified_series_scope
 
 def build():
     out=enter(10);current,_=frozen_current_reader(ROOT);contract,_=current._contract();ctx=current.load_context()['context'];day=ctx['accepted_trade_date']
-    market=json.loads(operational_path('v4_market_operational_authority_v1.json').read_bytes())
-    stocks=json.loads(operational_path('v4_stock_operational_authority_v1.json').read_bytes())
+    market_authority_binding,market_authority_raw=source_binding(operational_path('v4_market_operational_authority_v1.json'))
+    stock_authority_binding,stock_authority_raw=source_binding(operational_path('v4_stock_operational_authority_v1.json'))
+    market=json.loads(market_authority_raw);stocks=json.loads(stock_authority_raw)
     for owner in (market,stocks):
         if owner['trade_date']!=day or owner['input_data_head']['sha256']!=ctx['data_head_digest']:raise SourceInvalid('FORWARD_OWNER_DATE_HEAD_MISMATCH')
     inputs=path_inputs(ROOT,dict(sources=dict(market_operational=market['market'],stock_series=stocks['series'])))
@@ -28,18 +31,31 @@ def build():
         if not dest.exists():write(dest,raw)
         kernel[p]=ref(dest)
     store=ForwardStore(ROOT,'data/v4/r2_forward/journal_v1')
-    legacy=ProductionV4ResearchReader(ROOT).manifest['domain_features']['forward'];prior_freezes={}
+    legacy=ProductionV4ResearchReader(ROOT).manifest['domain_features']['forward'];prior_freezes={};seen_legacy_bindings=set()
     for old in legacy['outcomes']:
-        if old.get('frozen_t0'):prior_freezes[old['enrollment_id']]=old['frozen_t0']
+        if old.get('frozen_t0'):
+            binding=old['frozen_t0'];key=(binding.get('path'),binding.get('sha256'))
+            if key not in seen_legacy_bindings:
+                raw=load_bytes_binding_pg(ROOT,binding,source_origin='V4_FORWARD_LEGACY_T0')
+                freeze=json.loads(raw);snapshot_binding=freeze.get('snapshot')
+                if isinstance(snapshot_binding,dict):load_bytes_binding_pg(ROOT,snapshot_binding,source_origin='V4_FORWARD_LEGACY_T0')
+                seen_legacy_bindings.add(key)
+            prior_freezes[old['enrollment_id']]=binding
     for b in store.refs('t0_freezes'):prior_freezes[store.read(b)['enrollment_id']]=b
     snapshots={store.read(b)['T0']:store.read(b)['snapshot'] for b in prior_freezes.values()}
     outcomes=[];plans=[];enrollments=[];freezes=[];read_count=0;coordinate_cache={}
+    accepted_data_head,_=source_binding(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json')
     sources=dict(projection_adapter=ref('scripts/build_fp10_forward_v2.py'),kernel=kernel,evaluation_inputs=inputs,
-        accepted_data_head=ref('data/v4/V4_DATA_ACCEPTED_HEAD.json'))
-    for row,binding in current._rows(contract,'cohort'):
+        market_authority=market_authority_binding,stock_authority=stock_authority_binding,
+        accepted_data_head=accepted_data_head)
+    # Reuse one verified repeatable-read PG snapshot for the entire bounded
+    # projection. Each enrollment has its own settlement cache, but the
+    # immutable 1.3M-row series snapshot must be fully verified only once.
+    with verified_series_scope():
+      for row,binding in current._rows(contract,'cohort'):
         t0=row['T0'];frozen_calendar=current._read(row['calendar_identity']);sessions=frozen_calendar.get('session_dates',frozen_calendar.get('sessions'))
         if sessions and isinstance(sessions[0],dict):sessions=[r['trade_date'] for r in sessions]
-        accepted=json.loads(checked_path(ROOT,inputs['calendar']).read_bytes())['session_dates']
+        accepted=json.loads(load_bytes_binding_pg(ROOT,inputs['calendar'],source_origin='V4_FORWARD_CALENDAR_INPUT'))['session_dates']
         if accepted and isinstance(accepted[0],dict):accepted=[r['trade_date'] for r in accepted]
         calendar=calendar_extension(sessions,accepted,t0,day)
         authority=OperationalForwardAuthority(ROOT,calendar,dict(contract_id=CONTRACT,accepted_data_head=sources['accepted_data_head'],calendar=inputs['calendar'],kernel=kernel,

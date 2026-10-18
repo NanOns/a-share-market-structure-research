@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts import build_fp06_sector as base
 from scripts.fp01_evidence import ref
+from workbench_analysis.market_source_acquisition import load_bytes_binding_pg
 from sector.native_r5 import build_native
 
 CONTRACT='R2_CURRENT_SECTOR_MA20_WIDTH_ADAPTER_V3'
@@ -25,7 +26,7 @@ def width_facts(current,target,expected_price_basis_id):
 
 def native(memberships,current,**kwargs):
     market_ref=kwargs['source_bindings'].get('market',{})
-    market=json.loads((ROOT/market_ref['path']).read_bytes()) if market_ref.get('path') else {}
+    market=json.loads(load_bytes_binding_pg(ROOT,market_ref,source_origin='FP06_SECTOR_INPUT')) if market_ref.get('path') else {}
     expected=market.get('sources',{}).get('gbbq',{}).get('sha256')
     return build_native(memberships,width_facts(current,kwargs['target'],expected),**kwargs)
 

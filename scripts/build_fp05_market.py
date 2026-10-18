@@ -18,6 +18,7 @@ from scripts.fp_domain_evidence import enter,operational_path
 from workbench_service.production_v4 import frozen_current_reader
 from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
 from workbench_analysis.market_source_acquisition import load_bytes_binding_pg,load_json_source_pg
+from workbench_analysis.market_source_acquisition import parse_git_lfs_pointer
 from workbench_service.current_v4_context import canonical,digest
 from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
 from tdx.gbbq_reader import decode_gbbq_bytes
@@ -29,6 +30,12 @@ def verified(binding):
 
 def source_binding(path):
     relative=Path(path).resolve().relative_to(ROOT.resolve()).as_posix()
+    local_pointer=Path(path).read_bytes()
+    pointer=parse_git_lfs_pointer(local_pointer)
+    if pointer is not None:
+        sha,size=pointer
+        binding=dict(path=relative,sha256=sha,bytes=size)
+        return binding,load_bytes_binding_pg(ROOT,binding,source_origin='FP05_MARKET_INPUT')
     source=ingress_path(ROOT,relative)
     record=source['record']
     return dict(path=relative,sha256=record['source_sha256'],bytes=record['source_bytes']),source['raw']

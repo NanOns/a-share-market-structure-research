@@ -57,3 +57,12 @@
 - 根据暂存准入策略发现并改正两处现役代码仍直接读取历史报告的路径。`scripts/build_fp05_market.py` 现通过 `ingress_path`/`load_bytes_binding_pg` 读取执行上下文、历史日报收据、历史行业指数、市场阶段序列、历史市场分类、合同和价格影响配置；压缩流与 GBBQ 均从 PG 读回字节解析。Owner pipeline 的当前 TDX source-capture 收据和其绑定收据也改为 PG SourceIngress JSON 读回。
 - 实际将 FP05 三个历史文件和 Owner 收据/绑定按精确路径、SHA 与字节数登记/读回 PG；例如两个 gzip 输入分别为 234,720 字节（`898a6554…1bdaedb`）与 356,287 字节（`89aae848…a9b139`），Owner capture receipt 为 3,019 字节。`tools/git_repository_policy.py --staged` 在这一修正后通过 16 个变更 blob 的准入检查。
 - 新命名空间 FP05 实跑到历史行情绑定处后 fail-closed：日报收据指向的历史坐标行情包 SHA 为 `7d67a7d4…79ff8c7`；仓内同路径只有 133 字节且 SHA 为 `aebc94d8…c9cbbdc`，PG 精确 source 和 package 也都不存在。未用占位文件替代，未生成 FP05 市场产物。符合 R2 新运行路径机制的空 ENTRY 记录已移出仓库并保存在 `G:\\codex_tmp\\r6_fp05_blocked_start\\fp05`。继续完成 FP05 需要恢复这一精确历史输入或基于已接受源重建并重新绑定其历史合同。
+
+## 最新连续实修补充（2026-10-18）
+
+- 更正上节 FP05 阻断结论：已从仓库 `.git/lfs/objects` 找回收据指定的 52,034,710 字节 LFS 原始包（SHA `7d67a7d4…79ff8c7`），通过分块 SourceIngress 写入/读回 PG；未改动 133 字节跟踪指针。FP05 实际产出 `MATERIALIZED`：9/30 `WEAK / IMPROVING / THIN / LOW / DECLINING`，5224 个历史证券。
+- FP06、FP07、FP08、FP09 均以 PG SourceIngress/序列输入完成候选运行：Sector 5224 行/378 板块；Stock 1,309,832 根日线/5224 证券；Focus 469 episodes/766 events；Market Center 完成 5 个指数、5224 个对象规则与 5213 条实际行情的独立计算。所有产物留在 R2 候选命名空间，未更新 accepted Head。
+- FP10 将市场/股票 authority、日历、历史 T0 冻结和日线价格输入改为 PG 精确绑定；新增共享只读 PG 序列校验作用域，避免每个样本重复验证 1,309,832 行快照。当前重跑尚在计算，尚未生成最终 Forward authority/结算收据；不得计为完成。
+- FP12 已在候选 namespace 构建 9/28–9/30 三日回放目录；严格 PIT 日期为 0。FP13 在 28766 上完成独立行情/板块/Focus/Forward/Market 数值核对，写出 110 行字段矩阵；复查发现并移除残留 SQLite 路径，所有候选快照查询改走 PG。
+- 28766 浏览器实测首页、板块、个股、Focus、市场事件、诊断、回放和比较页面可加载。当前可见候选值与历史 T0 数据一致；Replay API 为 `PIT_NOT_AVAILABLE`、0 条日期，Focus 路径字段仍有缺口，Sector Rotation 资格仍为来源不足，不能视作全模块验收。`/api/v4/diagnostics/health` 与 jobs 路由可用；旧式 `/api/v4/health` 不是有效路由。
+- 变更脚本编译通过；相关定向回归本轮 36 项通过。4 个 FP05 PG 写库用例因要求隔离 PG 实例而被仓库安全插件拒绝，未在共享业务库上绕过隔离；两份冻结历史测试在收集期因导入已删除的 `production_v4.reference` 失败。此限制不影响已完成的真实候选运行及 28766 验证。

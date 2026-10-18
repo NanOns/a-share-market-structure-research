@@ -1,28 +1,29 @@
 """Accepted price-limit facts and frozen official index bars, never a 10% shortcut."""
 import json,sys,zipfile
+from io import BytesIO
 from pathlib import Path
 from dataclasses import asdict
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
 from scripts.fp_domain_evidence import enter,operational_path
-from scripts.build_fp05_market import verified
+from scripts.build_fp05_market import verified,source_binding
 from workbench_service.current_v4_context import canonical,digest
 from tdx.day_reader import decode_record
 
 def main():
-    out=enter(9);headref=ref('data/v4/V4_DATA_ACCEPTED_HEAD.json');head=json.loads(verified(headref).read_bytes());target=head['trade_date'] if 'trade_date' in head else head['accepted_trade_date']
+    out=enter(9);headref,headraw=source_binding(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json');head=json.loads(headraw);target=head['trade_date'] if 'trade_date' in head else head['accepted_trade_date']
     sources={k:head['component_artifacts'][k] for k in ('RAW_DAILY','PRICE_LIMIT','TRADING_STATUS','IDENTITY_UNIVERSE')};sources['data_head']=headref;sources['projection_adapter']=ref('scripts/build_fp09_market_center.py')
-    limit=json.loads(verified(sources['PRICE_LIMIT']).read_bytes())['rows'];raw=json.loads(verified(sources['RAW_DAILY']).read_bytes())['rows'];prices={r['security_id']:r for r in raw};states=Counter(r['limit_status'] for r in limit);breadth=Counter();amount=0
+    limit=json.loads(verified(sources['PRICE_LIMIT']))['rows'];raw=json.loads(verified(sources['RAW_DAILY']))['rows'];prices={r['security_id']:r for r in raw};states=Counter(r['limit_status'] for r in limit);breadth=Counter();amount=0
     for r in limit:
         p=prices.get(r['security_id']);reference=r.get('reference_price')
         if not p or r['trading_status']!='ACTUAL_TRADED' or reference is None:breadth['unknown']+=1;continue
         delta=float(p['close'])-float(reference);breadth['up' if delta>0.000001 else 'down' if delta<-.000001 else 'flat']+=1
     amount=sum(float(r['amount']) for r in raw)
-    chain=json.loads(verified(head['accepted_chain']).read_bytes());dated={}
+    chain=json.loads(verified(head['accepted_chain']));dated={}
     for node in chain['nodes']:
         if node['trade_date']>target:continue
-        receipt=node['components']['PRICE_LIMIT'];binding=dict(path=receipt['artifact_path'],sha256=receipt['artifact_sha256']);sources['limits_'+node['trade_date']]=binding;dated[node['trade_date']]={r['security_id']:r for r in json.loads(verified(binding).read_bytes())['rows']}
+        receipt=node['components']['PRICE_LIMIT'];binding=dict(path=receipt['artifact_path'],sha256=receipt['artifact_sha256']);sources['limits_'+node['trade_date']]=binding;dated[node['trade_date']]={r['security_id']:r for r in json.loads(verified(binding))['rows']}
     ladder=[]
     for r in limit:
         if r['limit_status']!='LIMIT_UP':continue
@@ -33,9 +34,9 @@ def main():
             if previous['limit_status']!='LIMIT_UP':prefix_unknown=False;break
             run+=1
         ladder.append(dict(entity_id=r['security_id'],symbol=r['source_security_key'],consecutive_limit_up_lower_bound=run,exact_streak=None if prefix_unknown else run,reason='HISTORICAL_PREFIX_NOT_BOUND' if prefix_unknown else None))
-    zpath=ROOT/'data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip';sources['index_archive']=ref(zpath);assert sources['index_archive']['sha256']=='d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655'
+    zpath=ROOT/'data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip';index_binding,index_raw=source_binding(zpath);sources['index_archive']=index_binding;assert sources['index_archive']['sha256']=='d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655'
     indices=[]
-    with zipfile.ZipFile(zpath) as archive:
+    with zipfile.ZipFile(BytesIO(index_raw)) as archive:
         for filename,name in [('sh000001','上证指数'),('sz399001','深证成指'),('sz399006','创业板指'),('sh000300','沪深300'),('sh000852','中证1000')]:
             member=filename[:2]+'/lday/'+filename+'.day';data=archive.read(member);assert len(data)%32==0;bars=[]
             for i in range(0,len(data),32):

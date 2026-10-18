@@ -436,10 +436,20 @@ def _query(root: str | Path, *, source_id: str | None = None,
         expected = json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", "{}"))
     except ValueError as exc:
         raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
+    indexed_key=None
+    if expected_sha256 is not None:
+        selected_id=source_id or source_id_for_path(source_path)
+        indexed_key=digest(canonical({"contract_id":CONTRACT,"source_id":selected_id,
+                                      "source_sha256":expected_sha256}))
     def query(connection):
         identity = ForwardFactStore._database_identity(connection)
         if expected and identity != expected:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH")
+        if indexed_key is not None:
+            indexed_statement=sql.SQL(
+                "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s AND fact_key=%s"
+            ).format(sql.Identifier(schema))
+            return connection.execute(indexed_statement,(KIND,indexed_key)).fetchall()
         statement=sql.SQL(
             "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
             "AND (%s::text IS NULL OR payload::jsonb->>'source_id'=%s) "

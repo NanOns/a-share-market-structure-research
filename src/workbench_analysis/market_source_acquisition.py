@@ -6,6 +6,7 @@ import json
 import math
 import re
 import struct
+import subprocess
 import time
 from contextlib import contextmanager
 from contextvars import ContextVar
@@ -157,6 +158,10 @@ def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_
             raw=exact['raw']
             if len(raw)!=binding.get('bytes',len(raw)) or digest(raw)!=expected_sha:
                 raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
+            if path!=relative_path:
+                ingest_captured_bytes(root,relative_path,raw,source_revision=expected_sha,source_origin=source_origin)
+                exact=read_bound(root,relative_path,expected_sha)
+                if exact['raw']!=raw:raise ValueError('V4_HASH_BOUND_PATH_ALIAS_READBACK_MISMATCH')
             return raw
         try:exact_package=read_package_bytes(root,relative_path,expected_sha)
         except ValueError as exc:
@@ -170,11 +175,27 @@ def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_
     source.relative_to(Path(root).resolve())
     raw = source.read_bytes()
     sha = digest(raw)
+    pointer=parse_git_lfs_pointer(raw)
+    if pointer is not None:
+        pointer_sha,pointer_bytes=pointer
+        if (expected_sha is not None and expected_sha!=pointer_sha
+                or binding.get('bytes') is not None and binding['bytes']!=pointer_bytes):
+            raise ValueError('V4_GIT_LFS_POINTER_BINDING_MISMATCH')
+        lfs_root=Path(subprocess.check_output(
+            ['git','-C',str(Path(root).resolve()),'rev-parse','--git-path','lfs/objects'],
+            cwd=Path(root).resolve(),text=True,encoding='utf-8').strip())
+        if not lfs_root.is_absolute():lfs_root=Path(root).resolve()/lfs_root
+        object_path=lfs_root/pointer_sha[:2]/pointer_sha[2:4]/pointer_sha
+        if not object_path.is_file():raise ValueError('V4_GIT_LFS_OBJECT_MISSING')
+        raw=object_path.read_bytes()
+        if len(raw)!=pointer_bytes or digest(raw)!=pointer_sha:
+            raise ValueError('V4_GIT_LFS_OBJECT_INVALID')
+        sha=pointer_sha
     if binding.get('sha256') and sha != binding['sha256']:
         raise ValueError('V4_HASH_BOUND_SOURCE_CAPTURE_MISMATCH')
     if binding.get('bytes') is not None and binding['bytes']!=len(raw):
         raise ValueError('V4_HASH_BOUND_SOURCE_LENGTH_MISMATCH')
-    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    source_path = relative_path
     if len(raw)>MAX_INLINE_SOURCE_BYTES:
         ingested=ingest_package_bytes(root,relative_path,raw,expected_sha256=sha,
             source_revision=sha,source_origin=source_origin)
@@ -190,6 +211,14 @@ def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_
     if exact['raw'] != raw:
         raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
     return exact['raw']
+
+
+def parse_git_lfs_pointer(raw):
+    """Parse the strict canonical Git LFS pointer form without smudging a file."""
+    match=re.fullmatch(
+        rb'version https://git-lfs\.github\.com/spec/v1\n'
+        rb'oid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n?',raw)
+    return (match.group(1).decode('ascii'),int(match.group(2))) if match else None
 
 
 def load_source_query_pg(root, query):

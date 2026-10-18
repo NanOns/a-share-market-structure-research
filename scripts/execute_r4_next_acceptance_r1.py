@@ -70,36 +70,12 @@ def compact_existing():
     for r in a['records']:r['payload']=compact(r['payload'])
     put(p.name,a)
 def db_receipts():
-    import psycopg
-    sys.path.insert(0,str(ROOT/'tests/fep_e5'))
-    from test_canonical_authority_read import seed,complete_rows,REQUEST,AT
-    from workbench_analysis.fep_e5.trusted_authority import read_canonical_candidate,resolve_current_sources
-    records=[]
-    with psycopg.connect('host=127.0.0.1 port=55547 user=postgres dbname=fep_authority_isolated',autocommit=True) as pg:
-        directory=Path(pg.execute('show data_directory').fetchone()[0]).resolve()
-        assert directory==(temp_root()/'test_temp'/'r4_next_authority_20261010'/'data').resolve()
-        for case in ('complete_engineering','expired_grant','missing_prediction'):
-            pg.execute('drop schema if exists fep cascade');pg.execute('create schema fep')
-            data=complete_rows();request=dict(REQUEST,prediction_id='P')
-            if case=='expired_grant':data['permission_keys'][0]['expires_at']=AT
-            if case=='missing_prediction':request.pop('prediction_id')
-            seed(pg,data);r=read_canonical_candidate(pg,request,at=AT)
-            records.append(dict(case=case,result=r))
-    put('D_REAL_SQL_SUCCESS_FAILURE_READBACK.json',dict(scope='Actual isolated SQL with synthetic rows, no formal Owner or authority',records=records))
-    actual=resolve_current_sources(ROOT)
-    put('D_EXACT_TRUSTED_PRODUCTION_REQUIREMENTS.json',dict(contract_id='FEP_CANONICAL_AUTHORITY_READ_R2',
-        T0='2026-10-09',production_authorized=False,actual_source_discovery=actual,
-        required_before_consumer_start=[
-            'Independently admitted canonical production DB Owner and read-only connection, never default DSN',
-            'Exact scope_id,target_id,horizon,feature_contract_id,model_set_id,model_revision,capability',
-            'Immutable model registry revision/digest and accepted CHAMPION model-set membership',
-            'Current ALLOW activation, exact grant/Head identity, version CAS receipt and prior activation',
-            'Original valid_from/expires_at grant window containing consumer cutoff; engineering_only is insufficient',
-            'Independent current capability approval Owner, not caller bool/dict or engineering CAS',
-            'Exact prediction_id, immutable output digest, accepted prediction run/snapshot/publication lineage',
-            'PIT_OBSERVED PRODUCTION first-asof dependencies with source Owner/SHA/first availability before cutoff',
-            'Actual FIT labels mature and revision available before fit_started_at, all six typed READY fields'],
-        status='SOURCE_NOT_PRESENT',next_stage='Independent original-source admission; no model or grant manufactured'))
+    raise RuntimeError(
+        'ISOLATED_PG_PROBES_DISABLED_BY_SINGLE_DB_POLICY: '
+        'this historical R4 runner targets a separate PostgreSQL instance and '
+        'performs destructive schema replacement; use the authorized '
+        'market_research.v4 single-schema acceptance flow instead.'
+    )
 def finish():
     import shutil,xml.etree.ElementTree as ET
     for source,target in [(temp_root()/'r4_next_d_registered.xml','D_NEGATIVE_CANDIDATE_JUNIT.xml'),(temp_root()/'r4_next_c.xml','C_ADMISSION_JUNIT.xml'),(temp_root()/'r4_next_de.xml','DE_CONSUMER_REGRESSION_JUNIT.xml')]:

@@ -24,6 +24,7 @@
 - 28766 页面交互已有 R5 同日真实浏览器矩阵覆盖（板块、股票详情、Focus/Forward、Market、Diagnostics、Compare、Replay、数据更新页）；该矩阵标明 candidate context 和 PIT 限制。R6 本次续行再次调用 Windows UI 自动化时，工具无法可靠判定 Chrome 当前 URL，故未绕过，也未声称新增浏览器验收。
 - 在当前有效 `V4_CURRENT_ACCEPTED_READ_CONTRACT_V1` 绑定下，实际依次读取 summary、radar、entity、sector、cohort、settlement、health 七个产品模块，并将精确合同、PG context、七模块结果摘要追加为 `VALIDATED_CANDIDATE_PENDING_PUBLICATION` 事实，再从同一 PG descriptor 读回验证。候选 T0 为 2026-09-30；`accepted_head_changed=false`、`workspace_authority_changed=false`。这是七模块 PG 读链执行证据，不代表 publication/Head 被接受。
 - 28766 续行 API 探针：context、home、sectors、stocks、focus、forward、market、diagnostics health/jobs、cohort candidate 共 10 个路由均 HTTP 200，PG context token 一致；Jobs 按预期返回 `SOURCE_INCOMPLETE`，市场事实事件保留 `SOURCE_UNAVAILABLE`。开发服务仍只监听 28766，PostgreSQL 为单一 5432 PID `8640`；28765 无监听。
+- 实跑 `scripts/run_v4_dm01_daily_increment.py --target-date 2026-10-16 --typed-scope-v2`，准确返回 `BLOCKED_MISSING_INTERMEDIATE_SESSION:2026-10-08`，BaoStock 数据源请求 0 次，accepted data Head 未动。随后以 10-08 作为最早缺口执行 G 临时目录下的诊断候选模式；官方 TDX 页面与更新元数据各有界读取一次，实际最新发布日为 10-16，因此状态 `WAIT_TDX_PUBLICATION`。页面/更新回执仅落 `G:\\codex_tmp`，对应 `source_readiness` PG 阶段事实已读回；未下载日线 ZIP、未请求 BaoStock、未建数据候选或提升 Head。连续日更的真实阻断现已定位为历史中间日官方 TDX 包不可用，不能以 10-16 包倒填 10-08 或伪造 PIT。
 
 ## 验证、清理与未完成项
 

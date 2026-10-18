@@ -544,3 +544,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 在上述迁移后再次扫描 `src/workbench_db`、`src/workbench_analysis`、`src/workbench_service` 中 Python 源码的 `CREATE TABLE/INDEX/FUNCTION/TRIGGER`、`ALTER TABLE`、`DROP TRIGGER` 与 `create_schema()`。V4 PG 业务持久结构创建现在只通过固定迁移 runner 管理：Research/Journaling/Series builder 中的未限定 `CREATE TABLE` 由 builder 转换为连接私有 `pg_temp` staging 表；`v4_native.create_schema()` 只验证已部署的 `v4`，不执行创建；本地生产/评估与 product-pack 的 DDL 属于 SQLite 文件库。上轮发现的作业 oracle 持久回执 DDL 已于 074 移除。
 - 扫描未发现 V4 业务运行期 `CREATE SCHEMA` 或可按 workspace/purpose 选择物理 Schema 的路径。`workspace_schema(root,purpose)` 返回固定 `v4`，workspace/purpose 只参与数据行身份；`connection()` 拒绝所有非 `v4` locator。该静态结果与此前目录中仅存在 `v4` 的 RR/RO catalog 读回一致。仍需持续审查隔离迁移脚本和全模块业务验收，静态扫描不代表每个业务模块的 PIT/Accepted 验收已通过。
+
+### 2026-10-19 日更增量目标更正：基线 10-15，目标 10-16
+
+- 按用户最新说明，本轮日更增量目标是 **2026-10-16**；系统此前已处理到的日更基线是 2026-10-15。前文将 10-15 当成本轮目标的记录只表示此前做过的 10-15 诊断，不再作为本轮目标定义。个股页此前的“当前已处理截至 2026-09-30”来自页面绑定的旧研究快照 T0，和日更任务日期不是同一口径。
+- 实际日更捕获尝试目标 10-16 后，开发目录新增不可变冻结件 `data/v4/dynamic_daily_sources/daily_freezes/2026-10-16/81ef2d58c8df9ee23564d7ba142c75016a3c8838273e7d13673901aacf0ef419.json`，字节 SHA-256 `32093deff93b0baed3f59fcee8dffae1c3303302788948b4bb3e7c6879f1c408`。该冻结件标记 `AS_RECORDED=false`、`PIT_ELIGIBLE=false`，仅为开发诊断候选。
+- TDX 10-16 官方包 SHA `c0ea0dffad66e06351596fb3855ffde0d80536e3d962867a09f42ddf32448219` 的目标日抽取覆盖 `2026-10-16`，5,567 行，固定 v4 PG 事实读回 `PASS`、`DIAGNOSTIC_ONLY`。BaoStock 10-16 固定 v4 运行时接受事实按合同读回成功：5,226 条日行情、48 条复权审计因子，manifest 与 payload 绑定 SHA `6d709f1f049ebd3aa1481e8d8479c71dcd1b03a88c03a0c953561548a76e8820` / `9c5e0c6d78ba328aa4293301f50e150907fd2beedbe85ed5094c07e536b2f82d`。这证明输入候选可读，不等同于 Accepted 日更发布；TDX 包于目标日后捕获，不能标为 `AS_RECORDED` 或 PIT。
+- 非 capture-only 的正式执行入口在读取日历时以 `PG_MARKET_CALENDAR_IDENTITY_REQUIRED` 停止；capture-only 路径能落盘/读回候选，但无法通过正式 Owner/Head 门。当前开发 PG RR/RO 实读仍为 Accepted Data Head T0 `2026-09-30`、Accepted Operational Head 缺失、接受市场日历事实 0、Source Package/Publication/Head 事实均 0；日更作业账本 through_date 目前为 10-15 且状态 `QA_BLOCKED`，10-15 日期仍 `QUEUED`。因此不更新正式 Head 或伪造 10-15 基线；本轮可确认的 10-16 结果是回溯诊断候选，正式日更验收仍被现有日历与 Owner 门阻断。
+- 为避免旧研究快照日期被读成日更最新日期，三个研究前端入口的顶栏现显示“研究视图 T0”并说明该日期属于本页快照、日更状态查看数据更新/日更作业。真实 `127.0.0.1:28766` 个股浏览器页刷新后实际显示新文案，同时保留 `PG 候选快照 · 不代表正式 Head` 与图表截至 9-30；没有重启服务或触碰 28765。

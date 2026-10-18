@@ -112,3 +112,23 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 5. 仅在所有模块验收通过后进入 28765 正式切换和最终产品打包门。当前不切换 28765、不制作正式包。
 
 **当前结论：** 单 Schema 数据架构与物理清理已通过；候选读取与一部分功能页可用。全模块真实数据验收尚未完成，阶段状态维持 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。
+
+## 2026-10-19 续行复核补记
+
+本轮在未启动或重启任何服务、未改动生产端口的情况下，对开发 PG 与 `28766` 再作一次独立现场复核。仅用于补充当前执行证据，不提升尚未满足的模块/数据验收状态。
+
+- PostgreSQL 只读 RR 会话确认 `market_research` / OID `646711` / `127.0.0.1:5432` / 用户 `postgres`，`transaction_read_only=on`。目录仅有业务 Schema `v4`；关系 232 个，总尺寸 27,752,103,936 字节；例程 57 个；非内部触发器 123 个；无 public V4 业务对象、无 `v4_*`、无 v4 到其他非系统业务 Schema 的目录依赖。数组类型随基础类型计数，故原报告的 86 个独立类型口径与目录原始类型行数不同。
+- 迁移台账本次读回：Research `legacy_schema_migration_map` 169 行、Forward `forward_schema_migration_map_r1` 9,256 行、History 11 行、Owner 7 行、ReadIndex 16 行、Journal Registry 7 行。全部位于 `v4`。本次仅目录/计数查询，未执行数据库写入。
+- `28766` 真实浏览器复核 `/v4/research/stocks?q=SH.600675&sort=id&offset=0`：异步加载完成后显示中华企业单条命中（收盘 2.520），第 1 页共 1 条。此前等待中的状态是尚未完成加载，不构成复现故障。
+- `/v4/research/focus` 显示 469 条 Focus 清单与 117 条 Forward 样本；期限计划 585、已发布期限状态 5、成熟合格 0。界面保留结构谓词缺失、旧账未核对和成熟结算不足的状态。
+- `/v4/research/market` 显示截至 2026-09-30 的盘后截面：上涨 2,344、下跌 2,712、平盘 155、未知 13，分母 5,224、行情 5,213、成交额 14,378.36 亿元；涨停 56、跌停 12、停牌 11、未知 1。页面不是实时数据，前序日/PIT 行业成分仍不完整。
+- `/v4/research/diagnostics` 显示 RAW_DAILY 5,213 通过、TRADING_STATUS 5,224 通过、IDENTITY_UNIVERSE 5,224 通过、ADJUSTED_DAILY 5,213 降级通过。`/diagnostics/jobs` 明示 PG 候选快照不包含日更 worker 回执、来源请求为 0。`/diagnostics/sources` 的证据抽屉显示 T0 2026-09-30、`RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`/`PIT_ELIGIBLE=false`、各域 `released=false`。
+- `/v4/research/data-update` 显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`、后台任务未启动，检查数据源/立即补齐/自动更新/失败日重试/取消未发布部分均禁用。该行为与缺少接受日历及作业准入相符；日更验收仍未通过。
+
+本次浏览器操作均为只读；本机端口核对仍为 PostgreSQL `5432` 与开发服务 `28766`，无生产 `28765` 监听。
+
+本轮补充完成另外两项真实页面交互核验：
+
+- `/v4/research/replay?as_of=2026-09-30` 显示该日期已绑定候选截面，但严格 PIT 可用日期为 0；说明无完整 first-available 证明，不展示未来状态/后续成员/结果。
+- `/v4/research/compare` 先显示严格 T0 冻结回放不可用，再由页面控件明确切换至事后重建（非 PIT）。以中华企业 `SH.600675` 对比起点 Universe 市场等权，返回 1.205% 与 -0.136%，共同窗口 2026-09-29 至 09-30，并明确声明事后重建不代表 T0 当时已知。
+- `/v4/research/forward?view=fep` 标注 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，质量及当前覆盖不可得，未训练模型保持 `PENDING`；不构成生产模型或正式发布。

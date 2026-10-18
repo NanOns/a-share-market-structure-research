@@ -313,3 +313,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - FEP E1 repository、canonical identity、ledger fixture adapter、metadata binding、trusted authority 与 Expectancy API 的活动 SQL 均固定到 `v4`。旧不兼容 `fep_e5_engineering` payload-ledger 已替换为触库前失败的兼容壳；其旧 `schema.sql` 保留历史内容但在首条 DDL 前无条件抛出迁移错误。活动 FEP Python 路径不再包含物理 `fep` 或 `fep_e5_engineering` 定位。
 - 真实 DB 的 FEP inventory 回报 35 表、34 受保护表，业务行仍为空；Canonical Expectancy 对不存在的 slot 返回 `NOT_READY`，MODEL_DISPLAY 与 PRIORITY_USE 仍不可授予。该结果证明固定存储已部署和缺少实际 Owner 时正确失败关闭，不证明 Focus/Forward/Market/FEP 的业务来源门、训练成熟度、Accepted Head 或产品功能验收已通过。
 - 更新 FEP 单 Schema 定向夹具覆盖中央迁移注册、拒绝旧任意 SQL、拒绝 legacy payload-ledger Schema 触库、固定 v4 空库读路径及活动模块静态扫描。定向纯夹具及 Research locator 用例 `9 passed`；9 个相关 Python 文件 `py_compile` 成功。PostgreSQL 目录与业务读取复核独立完成，均使用只读事务；正式 28765 未触碰。
+
+### 2026-10-19 Research 双 release 实库隔离读回
+
+- 为验证 S1/DB-02，在 `market_research` 的两个独立事务中分别用真实 R1/R2 Builder 写入不同 release_id、T0 和仅含单个测试对象的 snapshot。两个 Builder 都只返回 `schema='v4'`；各自 `load_snapshot_release()` 与 `v4.research_objects WHERE release_id=...` 均读回各自完整身份与唯一对象，A/B 未串读。每个事务在断开前主动 rollback，随后使用只读连接核实两个测试 release 均未持久化、`v4_*` Schema 数仍为 0。该操作验证真实 PG 固定表和版本键隔离，不留下候选或历史假数据，也不构成全量行业数据与服务路由验收。

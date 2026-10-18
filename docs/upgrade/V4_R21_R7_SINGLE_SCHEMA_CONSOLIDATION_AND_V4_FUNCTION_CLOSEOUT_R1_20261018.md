@@ -305,3 +305,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 按现存 BaoStock 合同的 bounded smoke gate 使用匿名固定版 `0.9.3`，对单只 `sh.600000` 请求 `2026-10-08` 日线；记录 UTC 时间 `2026-10-18T21:34:14Z`，实际端点 `public-api.baostock.com:10030`，登录/查询/退出均成功，返回目标日 1 行。请求预算 ledger 从当前仓库 ledger 读入后仅写 G 临时目录，原始 provider payload 未持久化、未写 PG。
 - 收据位于 `G:\\codex_tmp\\v4_r21r7_baostock_20261008_smoke\\coverage_receipt.json`。`BAOSTOCK_DAILY_FINGERPRINT_V1.enabled=false` 且其状态仍为 `PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING`；这次单证券诊断不能证明全市场覆盖、数据字段容差/独立接纳、PIT、SourceIngress 或 Accepted 日更，不改变 DB-09/10 与模块数据门状态。
+
+### 2026-10-19 FEP fixed-v4 storage migration and consumer cutover
+
+- 按中央 migration runner 对 `market_research` 执行已登记的 `068_v4_fep_fixed_schema_storage_r1.sql`。事务已提交并读回 checksum；固定 `v4` 下新增 35 张 FEP 业务表和 27 个数据库函数，没有执行 `CREATE SCHEMA`、没有新增 alias，也没有使用 CASCADE。数据库目录复核为 `market_research` / `127.0.0.1:5432`，可见业务 Schema 仅 `v4`（另有 PostgreSQL 默认 `public`）；runner 的 `v4_table_count=121`。
+- 对 migration 中 35 个表逐一目录核对：35/35 存在于 `v4`，34 张 append-only 表的 UPDATE/DELETE 防护触发器全覆盖，唯一可变头 `deployment_heads` 有 `controlled_head` 保护；从 migration 声明提取的 27 个函数全部在 `v4` 找到。以显式 `REPEATABLE READ READ ONLY` 事务读回所有 35 表计数，当前均为 0；没有旧 FEP 独立 Schema 或 FEP 业务行需要迁移，未合成候选或 Owner。
+- FEP E1 repository、canonical identity、ledger fixture adapter、metadata binding、trusted authority 与 Expectancy API 的活动 SQL 均固定到 `v4`。旧不兼容 `fep_e5_engineering` payload-ledger 已替换为触库前失败的兼容壳；其旧 `schema.sql` 保留历史内容但在首条 DDL 前无条件抛出迁移错误。活动 FEP Python 路径不再包含物理 `fep` 或 `fep_e5_engineering` 定位。
+- 真实 DB 的 FEP inventory 回报 35 表、34 受保护表，业务行仍为空；Canonical Expectancy 对不存在的 slot 返回 `NOT_READY`，MODEL_DISPLAY 与 PRIORITY_USE 仍不可授予。该结果证明固定存储已部署和缺少实际 Owner 时正确失败关闭，不证明 Focus/Forward/Market/FEP 的业务来源门、训练成熟度、Accepted Head 或产品功能验收已通过。
+- 更新 FEP 单 Schema 定向夹具覆盖中央迁移注册、拒绝旧任意 SQL、拒绝 legacy payload-ledger Schema 触库、固定 v4 空库读路径及活动模块静态扫描。定向纯夹具及 Research locator 用例 `9 passed`；9 个相关 Python 文件 `py_compile` 成功。PostgreSQL 目录与业务读取复核独立完成，均使用只读事务；正式 28765 未触碰。

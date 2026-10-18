@@ -60,6 +60,7 @@ VERSIONS={
     "065_v4_publication_owner_single_schema_guard_r1.sql":"V4_PUBLICATION_OWNER_SINGLE_SCHEMA_GUARD_R1",
     "066_v4_publication_owner_receipt_guard_r1.sql":"V4_PUBLICATION_OWNER_RECEIPT_GUARD_R1",
     "067_v4_publication_owner_canonical_locator_r1.sql":"V4_PUBLICATION_OWNER_CANONICAL_LOCATOR_R1",
+    "068_v4_fep_fixed_schema_storage_r1.sql":"V4_FEP_FIXED_SCHEMA_STORAGE_R1",
 }
 
 def dsn():

@@ -22,6 +22,8 @@
 - 28766 仍服务 PG 候选 T0 `2026-09-30`：股票 5,213、板块 378、Focus 469、Forward 117、事件 33；只读、生产权限关闭、日更 worker 未启动。
 - 对 28766 做了 41 个 API 请求（context、列表/详情、股票图表、Market、Events、Focus、Forward、Sources、Diagnostics、Replay/Compare）及 6 个产品页 HTTP 请求。有效数据路由为 200 且上下文 token 一致；明确返回 `SOURCE_INCOMPLETE` 的域保留该状态；Replay/Compare 因无首可用时间证明返回 `PIT_NOT_AVAILABLE`。服务返回的 8 个页面/静态资源与本仓 `static/research` 文件 SHA 全部一致。
 - 28766 页面交互已有 R5 同日真实浏览器矩阵覆盖（板块、股票详情、Focus/Forward、Market、Diagnostics、Compare、Replay、数据更新页）；该矩阵标明 candidate context 和 PIT 限制。R6 本次续行再次调用 Windows UI 自动化时，工具无法可靠判定 Chrome 当前 URL，故未绕过，也未声称新增浏览器验收。
+- 在当前有效 `V4_CURRENT_ACCEPTED_READ_CONTRACT_V1` 绑定下，实际依次读取 summary、radar、entity、sector、cohort、settlement、health 七个产品模块，并将精确合同、PG context、七模块结果摘要追加为 `VALIDATED_CANDIDATE_PENDING_PUBLICATION` 事实，再从同一 PG descriptor 读回验证。候选 T0 为 2026-09-30；`accepted_head_changed=false`、`workspace_authority_changed=false`。这是七模块 PG 读链执行证据，不代表 publication/Head 被接受。
+- 28766 续行 API 探针：context、home、sectors、stocks、focus、forward、market、diagnostics health/jobs、cohort candidate 共 10 个路由均 HTTP 200，PG context token 一致；Jobs 按预期返回 `SOURCE_INCOMPLETE`，市场事实事件保留 `SOURCE_UNAVAILABLE`。开发服务仍只监听 28766，PostgreSQL 为单一 5432 PID `8640`；28765 无监听。
 
 ## 验证、清理与未完成项
 

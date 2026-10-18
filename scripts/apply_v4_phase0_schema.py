@@ -40,12 +40,17 @@ VERSIONS={
 }
 
 def dsn():
-    value=os.environ.get("WORKBENCH_PG_DSN")
+    value=os.environ.get("V4_NATIVE_PG_DSN")
     if not value:
-        for raw in (ROOT/"config/.env").read_text("utf-8-sig").splitlines():
+        env_path=ROOT/"config/.env"
+        if env_path.is_file():
+            lines=env_path.read_text("utf-8-sig").splitlines()
+        else:
+            lines=[]
+        for raw in lines:
             key,sep,val=raw.partition("=")
-            if sep and key.strip()=="WORKBENCH_PG_DSN": value=val.strip().strip('"').strip("'"); break
-    if not value: raise RuntimeError("WORKBENCH_PG_DSN_REQUIRED")
+            if sep and key.strip()=="V4_NATIVE_PG_DSN": value=val.strip().strip('"').strip("'"); break
+    if not value: raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED")
     return value
 
 def apply():

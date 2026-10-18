@@ -1,34 +1,35 @@
 # V4 R21 R6 开发全权限与 PG 全链路实修报告 R2
 
-- 阶段状态：`DEGRADED_PASS`（开发候选链路可运行；工作空间别名迁移、正式 Owner/Head 和全功能验收未完成）
-- 授权依据：Drive 最新任务卡 `V4_R21_R6_开发全权限_工作空间清理_PG全链路与全模块连续实修总任务卡_R2_20261018.md` 与长期开发授权 SOT R2。
-- 范围：现役 V4 文件引用、PG 候选快照读取、28766 前端和接口实测；未重复此前 53 次提交/205 个文件审计。
+- 阶段状态：`DEGRADED_PASS`。开发候选服务可读，部分权限边界与文件读取已修复；完整 workspace alias 迁移、真实 Owner/DEV Head 写读和全模块验收仍在推进。
+- 授权依据：Drive 任务卡 `V4_R21_R6_开发全权限_工作空间清理_PG全链路与全模块连续实修总任务卡_R2_20261018.md`、长期开发授权 SOT R2。
+- 生产边界：未切换或触碰 28765；仅在 28766 验证。未启用采集器、自动 worker 或生产 Head。
 
-## 实修
+## 本轮代码实修
 
-- 历史 SourceIngress 合同升至 1.1.0，拒绝超过 64 MiB 的内联源文件，避免将大 TDX ZIP 读入内存并 base64 写入 PG；兼容读取既有 1.0.0 记录。
-- Corrected Owner 与 R43 Owner 的核心物化改从 PG DM01 accepted Data Head 取快照和 SHA，不再读本地 `V4_DATA_ACCEPTED_HEAD.json`。
-- 个股历史图表移除非 PG 文件路径读取分支；没有 PG 历史绑定时返回 `SOURCE_INCOMPLETE / PG_HISTORY_BINDING_REQUIRED`。
-- 更新 `AGENTS.md` 中与最新 SOT 冲突的 PG 只读和清理条款，保留开发/生产隔离及单库约束。
+- `v4_native.configured_dsn()` 写连接仅接受显式 `V4_NATIVE_PG_DSN`；不再从 `WORKBENCH_PG_DSN` 回退推导写权限。补齐无本机 `.env` 污染的连接策略测试。
+- 同步修正 V4 foundation、Focus schema、runtime heads 三个迁移入口，只从显式 `V4_NATIVE_PG_DSN` 获取写连接。
+- 新增不暴露路径的 `logical_workspace_id`，同一 Git 项目搬迁目录后可保持稳定身份；现有物理 schema 仍按旧绝对根路径生成，PG alias 注册及调用方切换尚未完成，因此暂不改名或移表。
+- SourceIngress 合同升至 1.1.0，兼容读取 1.0.0 并限制 64 MiB 内联数据；超大源包仍需后续受控的包/成员流式接入。
+- Corrected Owner 与 R43 Owner 从 PG DM01 accepted Data Head 取快照及 SHA。个股图表去除非 PG 文件读取分支；无 PG 历史绑定时明确降级为 `SOURCE_INCOMPLETE / PG_HISTORY_BINDING_REQUIRED`。
 
-## PG 与运行实测
+## PG 与 28766 实况
 
-- 使用现有 `127.0.0.1:5432/market_research`（database OID `646711`）；本轮未执行 DDL/DML、Owner/Head 写入或合同注册。当前 PG 有 16 个合同版本和 16 个合同批准事件，但 publications、publication heads、operational research heads 均为 0。未伪造发布或接受状态。
-- 唯一完整候选快照 schema `v4_research_e30350bf444bbb9980cf3e2c`：T0 `2026-09-30`，股票 5,213、身份全集 5,224、板块 378、Focus 469、Forward 117、事件 33。更新日期 2026-10-01 20:25:10（北京时间）；快照仍为候选，未代表正式 Head。
-- 在 `127.0.0.1:28766` 运行候选服务，28765 未启动/触碰。浏览器实测：总览、股票搜索与详情/周线、板块搜索与详情、Focus、市场与事件、诊断、Forward、日更只读预览均读取候选 PG 数据。示例股票中华企业 SH.600675 展示 253 根日线和 54 根周线；区域地产返回 43 个成员。
-- Forward 显示候选样本 117、计划期限 585、已发布期限状态 5（覆盖 1 个样本）、成熟合格 0。日更预览显示未接受市场日历，worker 未启动，写操作按钮禁用。
-- PIT 回放与比较 API 返回 HTTP 200，但状态分别为 `PIT_NOT_AVAILABLE` 和无 T0 首次可得证明；未输出未来状态。浏览器回放/比较页未能完成可视化结果验证。
-- 全程保持本地候选投影，不改动 Data Head 身份；未启动采集器或后台写进程。
+- 数据库仍为唯一实例 `127.0.0.1:5432/market_research`（OID `646711`）。本轮执行了只读目录、来源覆盖及快照核查；未执行 DDL/DML、合同注册、Owner/Head 写入。正式 publications、publication heads、operational research heads、日历、universe、source packages/core results 等关键事实表仍为空；不能据此声称完整业务写读链已完成。
+- 最新完整候选仍为 `v4_research_e30350bf444bbb9980cf3e2c`，T0 `2026-09-30`，5,213 股票、5,224 身份、378 板块、469 Focus、117 Forward、33 事件；仅为候选快照，不是正式 Head。
+- 数据库虽有新行情行至 `2026-10-15`，但在无 snapshot manifest 的局部 schema 中最多覆盖 9 个证券（最新 schema 共 46,906 行，覆盖 `2026-09-28` 至 `2026-10-15`）。它不构成全市场完整 T0；严格 PIT 仍为 `PIT_NOT_PROVEN`，不得用于伪造接受状态。
+- 在 `127.0.0.1:28766` 的候选 PG 服务上验证总览、股票、板块、Focus、市场/事件、诊断、Forward、日更预览。回放和个股比较页也已实际渲染：T0 `2026-09-30`、严格 PIT 可用日期 0；对照明确标注事后重建，展示股票区间收益 1.205% 与 2.011%，共同日期 `2026-09-29` 至 `2026-09-30`。日更页未接受日历、worker 未启动、写操作禁用。
+- 当前运行环境没有显式 `V4_NATIVE_PG_DSN`（`configured_dsn()` 实测返回 `V4_NATIVE_PG_DSN_REQUIRED`）。遵守写连接边界，本轮不能执行 PG DDL/DML/合同注册/DEV Head；继续读核查、代码修复和 28766 测试。配置显式开发写 DSN 后即可续跑迁移及 Owner/Head 写读。
+- 修改过的 Python 编译通过；`tests/test_v4_native_reader_dsn.py`：14 项通过。此前 `tests/test_corrected_owner_replay_r4.py` 被仓库隔离插件以 `DISPOSABLE_PG_CLUSTER_REQUIRED` 阻断；未绕过隔离门禁。
 
-## 验收、清理与遗留
+## 工作空间与清理
 
-- 已通过：涉及的 Python 文件 `py_compile`；SourceIngress 超限拒绝 smoke；无 PG 图表绑定时降级 smoke；`git diff --check`。
-- pytest `tests/test_corrected_owner_replay_r4.py` 在收集阶段被项目隔离插件拒绝连接共享 PG（`DISPOSABLE_PG_CLUSTER_REQUIRED`），未绕过隔离插件。
-- 本轮没有删除文件：未发现经过证明可安全删除、无消费者的重建产物。TDX 源目录及已有未跟踪用户文件保持原状。
-- `v4_native.workspace_schema()` 仍以绝对根路径散列生成 schema；多个历史 schema 尚未建立数据保全和调用方切换映射，故本轮未改名/删除。更近日期的部分行情 schema 缺少唯一 metadata snapshot manifest，不能作为完整快照。
-- 28766 上回归的 replay/compare 可视化、T0 证明、正式 Owner/operational Head、完整 PIT/Forward 成熟结果、工作空间逻辑身份与安全 alias 迁移、可删产物盘点及全模块正式验收仍待处理。
-- GitHub fetch 曾遇 Schannel TLS 握手错误；提交和推送结果以本报告随后的 Git 命令回执为准。
+- 新逻辑 workspace ID 为后续 alias 迁移提供稳定键，但尚未注册 PG alias；现有 Owner 映射按旧 root identity 授权，切换前仍需逐项保全并验证 schema/Owner 引用。
+- 清除了 G 临时目录中已确认可重建的 pytest 缓存、纯 `.pyc` 与 pip 缓存，共 `2,674,361,197` 字节（约 2.49 GiB）；只 prune 指向缺失 checkout 的陈旧 Git worktree 登记，没有删除 checkout/源数据。TDX 只读源和用户未跟踪文件未动。
+- 其他大型临时目录包含独有来源、测试证据、恢复包或带未跟踪源码的数据，未盲删；`r7_active_baseline_20261015` 需对其 5 个修改文件与 1,845 个未跟踪文件完成归属/回收核对。
 
-## 下一阶段
+## 后续必须继续的工作
 
-持续在现役 V4 开发分支修复工作空间逻辑身份及 PG alias 迁移方案、PIT/Owner 证据链与回放 UI，补齐一致的完整快照和日更业务链，再运行全模块验收。正式切换至 28765 与最终生产打包继续等待用户另行明确启动。
+- 建立稳定 workspace ID 到既有物理 schema 的 PG alias 表/迁移与读回，再按调用链切换；保持 Owner authority 与现有数据连续。
+- 从真实来源补足完整且有合同的最新 T0；完成 Source → PG facts → 候选 Owner → `DEV_VALIDATED` Head/读回 → BFF/UI 的真实写读链，并覆盖全模块日更联调。
+- 逐项登记可删除工作区产物；执行可运行的 PG/浏览器功能验收并记录证据。完成开发分支代码与正式规范后提交、推送并更新同一跟踪项。
+- 正式生产切换和最终生产打包仍须等全功能、全模块验收及用户另行明确启动。

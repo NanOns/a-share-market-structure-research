@@ -11,16 +11,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def dsn() -> str:
-    value = os.environ.get("WORKBENCH_PG_DSN")
+    value = os.environ.get("V4_NATIVE_PG_DSN")
     local = ROOT / "config/.env"
     if not value and local.is_file():
         for line in local.read_text("utf-8").splitlines():
             key, sep, val = line.partition("=")
-            if sep and key.strip() == "WORKBENCH_PG_DSN":
+            if sep and key.strip() == "V4_NATIVE_PG_DSN":
                 value = val.strip().strip("\"").strip("'")
                 break
     if not value:
-        raise RuntimeError("WORKBENCH_PG_DSN_REQUIRED")
+        raise RuntimeError("V4_NATIVE_PG_DSN_REQUIRED")
     return value
 
 

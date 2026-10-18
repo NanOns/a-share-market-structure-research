@@ -157,3 +157,8 @@
 - 首次完整计算发现 PG immutable Series 已写入，但供 Focus adapter 消费的 descriptor 没有进入 Historical SourceIngress。已在 Series builder 后新增精确 descriptor ingress/readback，再用新候选命名空间完整复跑；最终 Series descriptor、4日各 D2/calculation/fact/status 文件及压缩 Focus/Forward 产物合计 18 项均按实际 SHA、长度及原字节从 PG 精确读回。最终 Focus/Forward SHA-256 为 `48e77f32…e709a0`（5,319,773 字节）。
 - 独立候选读回用合同 `validate_candidate_output` 逐行复验四日 20,893 条 D2；每日期的 D2、D0 calculations、input facts、Focus status 都是相同证券行数且日期/行身份一致。PG immutable Series 再读得 20,843 bars。Focus projection 的 episode scope、事件数、Forward 状态以及 `AS_RECORDED=false`、`PIT_ELIGIBLE=false`、`production_admission=false` 一致，候选级验证为 `PASS_CORRECTED_CANDIDATE_SCOPE`；这不是外部独立验收或正式准入。
 - 验证结果：`tests/test_v4_r6_pg_only_owner_source_reads.py` 3 passed；本轮修改模块及回归文件 `py_compile`、`git diff --check` 通过。28766 context/home/focus 在 PG 写入后仍以同一 context token 返回 HTTP 200。该实跑不创建 publication/Head，不改变 production admission；全模块外部 QA、最新浏览器交互复验和未获执行器准许的衍生文件清理仍未全部通过/完成，见本报告未完成项。
+
+## R4.12 冻结合同消费者改为 PG-only（2026-10-18）
+
+- 定向读链扫描发现 `FrozenContracts` 在 Structure/Health/Breakout 每次运行时仍直接读取冻结入口及合同文件。入口、16 份 frozen contracts 与外部 freeze acceptance 共 18 份源均为当前 clean Git revision；逐项核对合同声明 SHA/bytes 后，以 `git:<revision>:<path>` provenance 登记到唯一开发 PG，并逐字节读回。未修改合同文本或审批状态。
+- `FrozenContracts` 改为按稳定 SourceIngress ID 读取入口，其他冻结合同与 acceptance 按声明 path/SHA/bytes 从 PG 读取并复验摘要；不再从工作区回退。实际 loader 初始化返回 16 个冻结合同、冻结 digest `9c0556af…193602`、counter contract `V4_12_SESSION_COUNTER_V2`。新增 PG-only mock regression；R6/R4.12 合并定向套件 4 passed，py_compile 和 `git diff --check` 通过。该改动切断 18 个运行期合同/验收文件读取点，不改变业务模型、Head 或 production admission。

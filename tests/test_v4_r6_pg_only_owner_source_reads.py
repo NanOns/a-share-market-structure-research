@@ -101,7 +101,33 @@ def test_corrected_owner_json_ambiguity_selects_latest_dev_revision(monkeypatch,
         "candidate": "LATEST_DEV"
     }
     assert selected == [
-        (tmp_path, "data/candidate.json", "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT")
+        (tmp_path, "data/candidate.json", (
+            "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT", "V4_R43_OWNER_CANDIDATE_OUTPUT"))
+    ]
+
+
+def test_r43_candidate_binding_ambiguity_selects_latest_dev_revision(monkeypatch, tmp_path):
+    from workbench_analysis import r43_owner_replay
+
+    def ambiguous(*_args, **_kwargs):
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE")
+
+    selected = []
+    monkeypatch.setattr(
+        "workbench_db.v4_historical_source_ingress_pg_r1.read_path", ambiguous
+    )
+    monkeypatch.setattr(
+        "workbench_db.v4_historical_source_ingress_pg_r1.read_latest_candidate_path",
+        lambda root, path, *, source_origin: selected.append((root, path, source_origin))
+        or {"record": {"source_path": path, "source_sha256": "b" * 64, "source_bytes": 12}},
+    )
+
+    assert r43_owner_replay.pg_source_binding(tmp_path, "data/candidate.json") == {
+        "path": "data/candidate.json", "sha256": "b" * 64, "bytes": 12
+    }
+    assert selected == [
+        (tmp_path, "data/candidate.json", (
+            "V4_CORRECTED_OWNER_CANDIDATE_OUTPUT", "V4_R43_OWNER_CANDIDATE_OUTPUT"))
     ]
 
 

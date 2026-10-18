@@ -62,8 +62,13 @@ def historical_source(root, key):
 
 def pg_json_source(root, relative_path):
     """Read an exact, previously ingressed project source; never fall back to disk."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-    source = read_path(root, Path(relative_path).as_posix())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path,read_latest_candidate_path
+    relative=Path(relative_path).as_posix()
+    try:source=read_path(root,relative)
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':raise
+        source=read_latest_candidate_path(root,relative,source_origin=(
+            'V4_CORRECTED_OWNER_CANDIDATE_OUTPUT','V4_R43_OWNER_CANDIDATE_OUTPUT'))
     if not isinstance(source.get('value'), dict):
         raise ValueError('PG_JSON_SOURCE_NOT_OBJECT:' + str(relative_path))
     return source['value']
@@ -71,8 +76,14 @@ def pg_json_source(root, relative_path):
 
 def pg_source_binding(root, relative_path):
     """Return the immutable path/SHA/size fact already registered in PostgreSQL."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-    record = read_path(root, Path(relative_path).as_posix())['record']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path,read_latest_candidate_path
+    relative=Path(relative_path).as_posix()
+    try:source=read_path(root,relative)
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':raise
+        source=read_latest_candidate_path(root,relative,source_origin=(
+            'V4_CORRECTED_OWNER_CANDIDATE_OUTPUT','V4_R43_OWNER_CANDIDATE_OUTPUT'))
+    record = source['record']
     return dict(path=record['source_path'], sha256=record['source_sha256'],
                 bytes=record['source_bytes'])
 
@@ -159,9 +170,20 @@ def _ingress_candidate_bytes(root, path, raw):
     relative = Path(path).resolve().relative_to(project).as_posix()
     sha = hashlib.sha256(raw).hexdigest()
     if len(raw) > MAX_INLINE_SOURCE_BYTES:
-        result = ingest_package_bytes(project, relative, raw, expected_sha256=sha,
-            source_revision=sha, source_origin='V4_R43_OWNER_CANDIDATE_OUTPUT')
-        actual = read_package_bytes(project, relative, sha)['raw']
+        try:
+            existing = read_package_bytes(project, relative, sha)
+        except ValueError as error:
+            if str(error) != 'HISTORICAL_SOURCE_PACKAGE_NOT_FOUND': raise
+            result = ingest_package_bytes(project, relative, raw, expected_sha256=sha,
+                source_revision=sha, source_origin='V4_R43_OWNER_CANDIDATE_OUTPUT')
+            actual = read_package_bytes(project, relative, sha)['raw']
+        else:
+            # A prior exact-byte package may already have been admitted under a
+            # broader corrected-owner source origin. Its immutable chunk key is
+            # content-addressed, so verify/reuse those bytes instead of trying to
+            # rewrite provenance metadata under the same chunk identity.
+            result = existing['record']
+            actual = existing['raw']
     else:
         result = ingest_captured_bytes(project, relative, raw, source_revision=sha,
             source_origin='V4_R43_OWNER_CANDIDATE_OUTPUT')

@@ -78,7 +78,8 @@ def pg_json_source(root, relative_path):
     except ValueError as error:
         if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_UNIQUE':raise
         source=read_latest_candidate_path(root,relative,
-            source_origin='V4_CORRECTED_OWNER_CANDIDATE_OUTPUT')
+            source_origin=('V4_CORRECTED_OWNER_CANDIDATE_OUTPUT',
+                           'V4_R43_OWNER_CANDIDATE_OUTPUT'))
     if not isinstance(source.get('value'), dict):
         raise ValueError('PG_JSON_SOURCE_NOT_OBJECT:' + str(relative_path))
     return source['value']

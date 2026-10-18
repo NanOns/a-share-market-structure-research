@@ -502,11 +502,13 @@ def read_source(root: str | Path, source_id: str) -> dict[str, Any]:
             "text": text}
 
 
-def read_latest_candidate_path(root: str | Path, source_path: str, *,
-                               source_origin: str) -> dict[str, Any]:
-    """Resolve the latest immutable revision only for an explicitly named DEV producer."""
+def read_latest_candidate_path(root: str | Path, source_path: str | Path, *,
+                               source_origin: str | tuple[str, ...]) -> dict[str, Any]:
+    """Resolve the latest immutable revision for an explicitly named DEV producer set."""
     project=_root(root);relative=Path(source_path).as_posix()
-    if not isinstance(source_origin,str) or not source_origin.startswith('V4_') or not source_origin.endswith('_CANDIDATE_OUTPUT'):
+    origins=[source_origin] if isinstance(source_origin,str) else list(source_origin) if isinstance(source_origin,tuple) else []
+    if (not origins or len(origins)>4 or len(set(origins))!=len(origins)
+            or any(not isinstance(origin,str) or not origin.startswith('V4_') or not origin.endswith('_CANDIDATE_OUTPUT') for origin in origins)):
         raise ValueError('HISTORICAL_SOURCE_CANDIDATE_ORIGIN_INVALID')
     folder=(Path(project)/FOLDER).resolve();schema=v4_native.workspace_schema(folder,'forward')
     def query(pg):
@@ -517,16 +519,16 @@ def read_latest_candidate_path(root: str | Path, source_path: str, *,
         if expected and identity!=expected:raise ValueError('HISTORICAL_SOURCE_INGRESS_DATABASE_IDENTITY_MISMATCH')
         rows=pg.execute(sql.SQL(
             "SELECT payload,payload_sha256 FROM {}.forward_facts WHERE kind=%s "
-            "AND payload::jsonb->>'source_path'=%s AND payload::jsonb->>'source_origin'=%s "
+            "AND payload::jsonb->>'source_path'=%s AND payload::jsonb->>'source_origin'=ANY(%s) "
             "ORDER BY (payload::jsonb->>'first_ingested_at')::timestamptz DESC, "
             "payload::jsonb->>'source_sha256' DESC LIMIT 2"
-        ).format(sql.Identifier(schema)),(KIND,relative,source_origin)).fetchall()
+        ).format(sql.Identifier(schema)),(KIND,relative,origins)).fetchall()
         if not rows:raise ValueError('HISTORICAL_SOURCE_INGRESS_NOT_FOUND')
         payload,payload_sha=rows[0];encoded=payload.encode('utf-8')
         if digest(encoded)!=payload_sha:raise ValueError('HISTORICAL_SOURCE_INGRESS_PG_DIGEST_MISMATCH')
         record=json.loads(payload)
         if (record.get('contract_id')!=CONTRACT or record.get('contract_version') not in LEGACY_VERSIONS
-                or record.get('source_path')!=relative or record.get('source_origin')!=source_origin
+                or record.get('source_path')!=relative or record.get('source_origin') not in origins
                 or not re.fullmatch(r'[0-9a-f]{64}',str(record.get('source_sha256') or ''))):
             raise ValueError('HISTORICAL_SOURCE_INGRESS_CANDIDATE_BINDING_INVALID')
         if len(rows)>1:

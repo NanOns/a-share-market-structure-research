@@ -83,7 +83,8 @@ def load(root,token,day):
     if binding is None:raise ValueError('OPERATIONAL_RISK_AUTHORITY_BINDING_MISSING')
     if binding.get('contract_id')!=CONTRACT or binding.get('engine')!='postgresql' or binding.get('token')!=token or binding.get('T0')!=day:raise ValueError('OPERATIONAL_RISK_BINDING_CONTEXT_INVALID')
     schema=binding.get('schema')
-    # The content-addressed physical schema is part of the authority.
+    # The physical locator is fixed at v4; the version identity is the
+    # token/T0/digest tuple, never the PostgreSQL schema name.
     if binding.get('schema')!=schema_for_revision(root,binding['digest']):raise ValueError('OPERATIONAL_RISK_SCHEMA_MISMATCH')
     with connection(schema,read_only=True) as pg:
         if ForwardFactStore._database_identity(pg)!=binding.get('database_identity'):raise ValueError('OPERATIONAL_RISK_DATABASE_IDENTITY_MISMATCH')

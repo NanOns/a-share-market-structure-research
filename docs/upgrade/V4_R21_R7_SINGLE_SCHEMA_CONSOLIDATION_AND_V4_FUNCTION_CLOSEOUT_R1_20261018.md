@@ -232,6 +232,12 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 两个 Forward 固定表的精确 `(namespace, kind, fact_key)` 读取计划均命中索引：R1 `forward_facts_pkey` 直接按三键扫描；R7 使用 `forward_r7_facts_namespace_kind_ordinal_r1` 锁定 namespace/kind 后过滤 fact_key。未对大表做无界内容扫描或复制。逻辑版本映射与完整性以迁移映射和逐来源收据为准；历史 1,678 项绑定仍未批量导入。
 - 本轮实际 gate 目录计数仍为市场日历会话、Publication/Publication Head、Operational Research Head、Publication Owner 绑定、Daily Core snapshot/rows 均 0；DM-01 仅 1 条 `AS_RECORDED=false` 且 production/focus/shadow 权限关闭的候选 Head。以上说明模块验收仍处于数据阻塞，不能将单 Schema 目录通过外推为业务通过。
 
+### 2026-10-19 单 Schema 运行期边界回归
+
+- 对 `tests/test_v4_single_schema_guard_r7.py` 与 `tests/fep_e5/test_single_schema_fail_closed.py` 执行定向回归，结果 `12 passed`。运行期 `workspace_schema()` 和 Owner/ReadIndex 版本定位器均固定返回 `v4`；`connection()` 拒绝其它 schema；`create_schema()` 只核验已存在的 `v4`，不会隐式建库。
+- 现役 Shadow 旧 writer 在建立 PG 连接前 fail-closed；FEP E5 旧 `schema.sql` 先抛出固定存储迁移错误，后续旧 DDL 不会执行。代码库中仍能静态搜索到这些不可达的历史 DDL 文本；没有任何运行路径可执行它们。Risk Owner 的陈旧注释已改为明确说明物理 locator 固定为 `v4`、版本身份来自 `token/T0/digest`。
+- 回归期间没有写业务 PG、创建 Schema、签发 Head 或触碰 28765。S1 的运行期防扩散边界继续为 `PASS`；S3 清理执行证据、Accepted 来源/日历、成熟结算、完整日更及其他模块门仍按当前矩阵保持 `PARTIAL`。
+
 ### 2026-10-19 个股详情周期切换续验
 
 - 真实浏览器打开候选个股三一重能 `/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9`。详情实际显示截至 `2026-09-30` 的日线 `120/253` 根、周线 `54/54` 根、月线 `13/13` 根；逐项操作“行情周期”控件后，状态/蜡烛图容器均完成重新加载。页面同时显示按目标日坐标的前复权口径、成交量单位为股、成交额单位为元。

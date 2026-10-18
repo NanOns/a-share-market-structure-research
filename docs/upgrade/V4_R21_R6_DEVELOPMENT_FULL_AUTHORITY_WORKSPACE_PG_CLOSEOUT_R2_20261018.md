@@ -284,3 +284,8 @@
 - Market Rotation 日期桥接现在完整：各桥接日 5,222–5,224 members、覆盖率约 99.7%；9/30、10/08 趋势均可计算为 `WEAK`。市场 `regime` 仍 `UNKNOWN`、全日历 prior rotation states 仍 `UNKNOWN`；压力状态保留 `TARGET_PRICE_LIMIT_OWNER_NOT_BOUND`。10/08 B0 部分可算（TRUE 21 / FALSE 32 / UNKNOWN 30），其余日 B0 仍 UNKNOWN。不得把日期桥接可算描述为 Rotation 业务验收通过。
 - 四日独立 QA `PASS_CORRECTED_CANDIDATE_SCOPE`、`errors=[]`：逐日 structure/date/universe、Core oracle、Sector LOO、Health 不提升 unknown、anchor 冻结、Focus 假日/D2、Forward 期限以及 Journal 注入回滚/重复 NOOP/错误 CAS 拒绝均通过。QA 回执 4,263 bytes、SHA-256 `8233a243b6a5b0aead990c6966a830b78876409be72fab9647ce5f519f13ccae`；lifecycle descriptor 2,251 bytes 精确 PG 读回。accepted Data Head 仍 SHA `38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40`、generation 1，`production_admission=false`。
 - 此次增加的 resolver/package 修复及四日运行仍是 R4 Corrected DEV 候选范围；不解决 TDX 概念有效历史、北交所 canonical identity、unknown prior-episode 证明、price-limit Owner、外部范围验收等 gate。四日回执未登记成 28766 正式/accepted Head，28766 仍需按其已有 PG candidate context 独立做页面验收。
+
+## 四日 PG 候选重建后的 28766 现场续探（2026-10-18）
+
+- Listener 实查仍为 PG `127.0.0.1:5432` PID 8640 与开发服务 `127.0.0.1:28766` PID 33460；`28765` 无监听、未触碰。`/api/v4/context`、home、Focus、Forward、Market、Diagnostics Health/Jobs 与 Cohort 均 HTTP 200，读响应 context token 一致为 `research-v4-pg-candidate-91b4066e…2ec116935`。Jobs 继续显式返回 `PG_CANDIDATE_DOES_NOT_CONTAIN_DAILY_WORKER_RECEIPTS`；没有启动重复 worker。
+- 当前 28766 的 `/api/v4/candidates/cohort` 响应仍没有 `r7_source_audit` 字段（页面来源审计仍不能展示更新代码的 READY 投影）；这是已知旧服务进程未载入新 BFF 的实测复现。R6 新代码的直接 PG/BFF 联验已有 READY 证据，但不冒充为当前进程/浏览器的 SourceAudit 实页通过。前述 Focus 搜索、证券详情、图表周期/价格口径、Market 搜索、Replay/Compare 与 Forward 结算交互证据保持有效；四日 Corrected Owner 不作为 accepted Head 接入现役页面。

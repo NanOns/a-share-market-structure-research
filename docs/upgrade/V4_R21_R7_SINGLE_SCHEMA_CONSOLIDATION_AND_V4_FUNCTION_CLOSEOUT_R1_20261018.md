@@ -56,7 +56,7 @@ production_changed: false
 | DB-08 | PARTIAL | 四日 Core 独立 Oracle（09-28、09-29、09-30、10-08）已有 0 error 结果；四日完整 Sector/Focus/Market/Forward 数值闭环受 10-08 PIT、前序成员和成熟结算来源缺失阻断。 |
 | DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；未复制 551 MB TDX ZIP Base64，且历史 1,678 项未导入。超 64 MiB 的整包 typed/chunk SourceIngress 未在本轮执行端到端验收。 |
 | DB-10 | PARTIAL | 日更和 Jobs 只读/幂等路径可运行；`market_calendar_sessions` 与正式 publication Head 为空、没有 worker 回执，故不签发 Accepted/DEV Head、不宣称重试/增量真实作业通过。 |
-| DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。`G:\codex_tmp\r7_active_baseline_20261015` 含未提交代码和未跟踪 data/docs/runtime，存在路径过长项且无进程使用；因其内容未证明可重建而保留，物理工作区清理未完成。 |
+| DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。旧 baseline、治理恢复证据及其他历史目录经实际计量；存在未提交/独有内容或不可替代恢复证据，保留，物理工作区清理未完成。 |
 | DB-12 | PASS | 当前库目录仅 `v4`，交叉 Schema 依赖 0；最终目录核对 232 关系、57 例程、86 类型、123 触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |
 
 ## 原 266 项与 R7 Delta
@@ -147,3 +147,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 再次现场盘点的清理矩阵为初始 76 个非系统 Schema、已退役 75 个、最终仅 `v4`；最终 PG 目录没有 `v4_*` Schema、public 下没有 V4 业务对象，V4 到其他非系统业务 Schema 依赖为 0。矩阵逐项保存于 `G:\codex_tmp\v4_single_schema_retirement_matrix_20261019.json`。该只读复核没有发起 DROP；之前提交的 Research 32 项和 Forward 3 项 RESTRICT 清理结果分别保存在 `research_cleanup_applied_20261019.json` 与 `forward_remaining_cleanup_apply_r1.json`，本次逐条确认其结果为 `DROP_RESTRICT_SUCCESS`。其余已退役条目以其迁移台账证据与最终目录缺席状态复核。
 - 固定 V4 命名空间中 `model_namespaces` 存在；当前 FEP 运行页仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。本次目录只读盘点未发现 v4 中的 FEP 领域表，因此不能把旧 FEP `fep`/`fep_e5_engineering` fixture 迁移代码算作统一 Schema 完成，也未通过旧 fixture 写入该模块。需在任务合同允许的数据来源及 FEP 固定表迁移方案下继续处理；现有界面保持只读、生产未授权、未训练槽 Pending。
 - 对运行时代码和应用服务代码进行 `CREATE SCHEMA` / Schema 身份静态扫描：常规 Forward、History、Journal、ReadIndex、Owner、Jobs、Research 入口都经 `v4_native.connection/create_schema`，后者仅校验预置 `v4`。发现的旧 Shadow schema 构造器触库前抛错，Shadow 导出入口也 fail-closed；历史迁移 SQL、显式 Phase-0 bootstrap 及隔离测试/脚本未执行。
+
+### Workspace 清点续记
+
+- `G:\codex_tmp` 直接子目录实测：`v4_repository_governance_r3_20261016` 4,675,814,273 字节，含 WP3 recovery freeze、bundle、unreachable-object 与 owner-source/LFS 核验材料；`r7_active_baseline_20261015` 2,255,654,812 字节，当前仍有 5 个 tracked diff、独有 untracked source/data/docs/runtime 和长路径；`R20_R1_20261017` 833,189,333 字节；`v4_r6_tdx_20261016` 568,127,024 字节；`v4_historical_source_ingress` 276,321,223 字节；`test_temp` 473,341,452 字节。扫描时没有发现这些目标路径被其他进程使用，前述恢复证据/源码改动/行情及 SourceIngress 内容仍无法证明可以重建，均未删除。该实测不支持“已清理 2.67 GB”的旧汇报口径。
+- 本轮新建的只读复核脚本和单测临时目录按 G 盘临时路径创建；结束后尝试删除确认为本轮生成的 3 个脚本及 `test_temp\v4_single_schema_guard_r7_recheck`，文件操作自动审核拒绝。未尝试其他删除/移动方式，也未修改保留目录。DB-11 仍为 PARTIAL，待允许的文件清理操作可执行且逐项证明可重建后续办。

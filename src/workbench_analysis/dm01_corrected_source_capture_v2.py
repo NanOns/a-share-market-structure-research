@@ -15,6 +15,24 @@ def resolve_source_paths(project_root):
     return resolve_tdx_root(project_root),resolve_baostock_cache_root(project_root)
 
 
+def _smoke_receipt_reference(project_root, smoke_path):
+    """Bind staging smoke receipts under the repo or configured G temp root.
+
+    Diagnostic capture output must stay outside Git when the caller selects
+    the configured ingest temp root. Durable runtime acceptance loading still
+    requires a project-relative receipt, so an absolute temp reference is only
+    consumed by this in-memory, staging-only capture path.
+    """
+    root=Path(project_root).resolve();path=Path(smoke_path).resolve()
+    try:return path.relative_to(root).as_posix()
+    except ValueError:pass
+    from common.paths import resolve_ingest_temp_root
+    temp_root=resolve_ingest_temp_root(root)
+    if path.drive.upper()!='G:' or not path.is_relative_to(temp_root):
+        raise ValueError('STAGING_SMOKE_RECEIPT_OUTSIDE_CONFIGURED_G_TEMP_ROOT')
+    return str(path)
+
+
 def write(path, payload, *, project_root=None, tdx_root=None):
     from common.paths import resolve_tdx_root
     root=Path(project_root or Path(__file__).resolve().parents[2]).resolve()
@@ -109,8 +127,8 @@ def corrected_baostock_capture(root, target_date, output):
             auth_mode='PUBLIC_ANONYMOUS',live_smoke=smoke,AS_RECORDED=False,
             consumer_scope='CORRECTED_SOURCE_STAGING_ONLY'),project_root=root,tdx_root=tdx_root)
         manifest=build_runtime_acceptance_manifest(sdk=package_metadata(),auth_mode='PUBLIC_ANONYMOUS',live_smoke=smoke,
-            smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=hashlib.sha256(smoke_path.read_bytes()).hexdigest())
-        manifest.update(consumer_scope='CORRECTED_SOURCE_STAGING_ONLY',production_permission=False,AS_RECORDED=False)
+            smoke_receipt_path=_smoke_receipt_reference(root,smoke_path),smoke_receipt_sha256=hashlib.sha256(smoke_path.read_bytes()).hexdigest())
+        manifest.update(consumer_scope='CORRECTED_SOURCE_STAGING_ONLY',receipt_storage='CONFIGURED_G_TEMP_EPHEMERAL_OR_PROJECT_LOCAL',production_permission=False,AS_RECORDED=False)
         manifest['manifest_sha256']=canonical_sha256({k:v for k,v in manifest.items() if k!='manifest_sha256'})
         write(output/'CORRECTED_RUNTIME_CAPABILITY_MANIFEST.json',manifest,project_root=root,tdx_root=tdx_root)
         with BaoStockClient(budget,auth_mode='PUBLIC_ANONYMOUS',runtime_acceptance_manifest=manifest) as client:

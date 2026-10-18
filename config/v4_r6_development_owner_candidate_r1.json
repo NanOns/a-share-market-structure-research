@@ -1,8 +1,8 @@
 {
   "contract_id": "V4_R6_DEVELOPMENT_OWNER_CANDIDATE_R1",
-  "contract_version": "1.0.0",
+  "contract_version": "1.1.0",
   "lifecycle": "DRAFT_DEVELOPMENT_DIAGNOSTIC_ONLY",
-  "scope": "A non-published, non-current development Head candidate containing one PG-backed Owner domain for a TDX target-bar candidate.",
+  "scope": "A non-published, non-current development Head candidate containing PG-backed Owner domains for same-T0 TDX and diagnostic supplemental source candidates.",
   "invariants": {
     "source_bytes_read_back_from_pg": true,
     "owner_rows_read_back_from_pg": true,
@@ -16,7 +16,7 @@
   "required_evidence": [
     "T0, source provider, source package digest, and observation/availability clocks",
     "PG SourceIngress byte binding and exact readback",
-    "PG Owner authority descriptor and exact rowset readback",
+    "PG Owner authority descriptor and exact per-domain rowset readback",
     "Immutable PG development candidate binding and exact readback"
   ],
   "promotion": "This draft contract cannot authorize accepted Head movement, publication, historical PIT, production use, or final packaging."

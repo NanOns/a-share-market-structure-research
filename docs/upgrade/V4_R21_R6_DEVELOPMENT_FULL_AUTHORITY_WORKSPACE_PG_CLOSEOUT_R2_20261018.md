@@ -226,3 +226,8 @@
 - 通过浏览器读取通达信官网个人行情页的实际 DOM，动态“更新日期”仍显示 `2026-10-16 15:58:46`；页面说明这是沪深京日线完整包，并提示需等更新日期到达当日才包含当日数据。
 - 页面链接目标 `/vipdoc/hsjday.zip` 的 HEAD/GET 返回均是 `text/html`，GET 仅 986 字节脚本验证页，并非 ZIP 数据包。没有绕过该来源验证，没有把挑战页当作官方行情文件或 SourceIngress 输入。
 - 因官网当前没有显示 10-17/10-18 新日期，且可见下载链接当前没有交付 ZIP，2026-10-08 中间日依旧没有本轮可校验的官方包；未从后续快照倒签、未创建增量 Head。
+
+## 开发 Head 候选事实与来源审计读合同续核（2026-10-18）
+
+- PG 中已存在 2026-10-16 的 `V4_R6_DEVELOPMENT_OWNER_CANDIDATE_R1` 1.0.0 与 1.1.0 候选。两版都明确为 `DIAGNOSTIC_ONLY`、`accepted_head=false`、`publication_id=null`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`；1.0.0 Owner 行 5,567，1.1.0 组件计数为 TDX Core 5,567、BaoStock 日线交叉校验 5,226、原生/归一化因子各 48。来源时间记录为 2026-10-18T04:59:20Z。该数据是可读的开发 Owner 候选，不是已发布或 accepted 的开发/生产 Head；未修改状态。
+- 新增 `V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1@1.0.0` 输出合同，READY 与 SOURCE_INCOMPLETE 均给出一致合同标识、版本、绑定范围和证据级别。候选 `2026-09-30` 的直接 PG 函数验读仍返回 READY；该契约及路由边界定向回归 3 passed，修改模块 `py_compile` 通过。

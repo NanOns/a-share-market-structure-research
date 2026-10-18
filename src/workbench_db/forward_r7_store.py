@@ -46,6 +46,7 @@ def _configured_forward_dsn(root: Path):
 
 class ForwardR7Store:
     contract_id = "V4_FORWARD_PG_READ_WRITE_R7_R1"
+    candidate_source_audit_contract_id = "V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1"
 
     def __init__(self, root: str | Path, *, dsn: str | None = None):
         self.root = Path(root).resolve()
@@ -593,6 +594,12 @@ class ForwardR7Store:
         if day != trade_date:
             raise ValueError("INVALID_CANDIDATE_TRADE_DATE")
 
+        def incomplete(reason):
+            return dict(contract_id=cls.candidate_source_audit_contract_id,
+                contract_version='1.0.0',status='SOURCE_INCOMPLETE',items=[],total=0,
+                limit=limit,offset=offset,has_next=False,reason=reason,
+                binding='CANDIDATE_TRADE_DATE_ONLY',evidence_class='RETROSPECTIVE_RESEARCH')
+
         def decode_fact(row, *, expected_source_sha=None):
             fact_key, raw_payload, stored_sha, source_sha = row
             raw = raw_payload.encode("utf-8") if isinstance(raw_payload, str) else bytes(raw_payload)
@@ -682,17 +689,11 @@ class ForwardR7Store:
                     invalid_matching_records += 1
 
         if invalid_matching_records:
-            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
-                offset=offset, has_next=False, reason='R7_PUBLISHED_FACT_CHAIN_INVALID',
-                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+            return incomplete('R7_PUBLISHED_FACT_CHAIN_INVALID')
         if not eligible:
-            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
-                offset=offset, has_next=False, reason='NO_PUBLISHED_R7_AUDIT_FOR_CANDIDATE_T0',
-                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+            return incomplete('NO_PUBLISHED_R7_AUDIT_FOR_CANDIDATE_T0')
         if len(eligible) != 1:
-            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
-                offset=offset, has_next=False, reason='R7_AUDIT_NAMESPACE_AMBIGUOUS_FOR_CANDIDATE_T0',
-                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+            return incomplete('R7_AUDIT_NAMESPACE_AMBIGUOUS_FOR_CANDIDATE_T0')
 
         (schema, index, index_key, index_fact_sha, index_source_sha, daily_key, daily_fact_sha,
          daily_source_sha, aggregate_key, aggregate_fact_sha, aggregate_source_sha,
@@ -701,14 +702,13 @@ class ForwardR7Store:
         for key_text, counts in bundle.get('groups', {}).items():
             parts = key_text.split('/')
             if len(parts) != 3:
-                return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
-                    offset=offset, has_next=False, reason='R7_AUDIT_GROUP_KEY_INVALID',
-                    binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+                return incomplete('R7_AUDIT_GROUP_KEY_INVALID')
             groups.append(dict(rule_id=parts[0], rule_version=parts[1], entity_type=parts[2],
                 **{name: int(counts.get(name, 0)) for name in
                    ('universe_count','match_count','no_match_count','unknown_count')}))
         items=[dict(trade_date=day, groups=sorted(groups,key=lambda x:(x['rule_id'],x['rule_version'],x['entity_type'])))] if offset==0 else []
-        return dict(status='READY', items=items,
+        return dict(contract_id=cls.candidate_source_audit_contract_id,contract_version='1.0.0',
+            status='READY', items=items,
             total=1, limit=limit, offset=offset, has_next=offset+len(items)<1,
             evidence_class='RETROSPECTIVE_RESEARCH', strict_t0_pit=False,
             binding='CANDIDATE_TRADE_DATE_ONLY_INDEPENDENT_R7_PUBLISHED_FACT',

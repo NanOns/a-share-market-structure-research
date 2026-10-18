@@ -2,7 +2,8 @@ def test_pg_candidate_cohort_includes_trade_date_scoped_r7_audit(monkeypatch, tm
     import workbench_db.forward_r7_store as store_module
     from workbench_service.research_bff import ResearchBFF
 
-    expected = dict(status='READY', items=[dict(trade_date='2026-09-30', groups=[])],
+    expected = dict(contract_id='V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1',contract_version='1.0.0',
+                    status='READY', items=[dict(trade_date='2026-09-30', groups=[])],
                     total=1, binding='CANDIDATE_TRADE_DATE_ONLY_INDEPENDENT_R7_PUBLISHED_FACT',
                     evidence_class='RETROSPECTIVE_RESEARCH', strict_t0_pit=False)
     calls = []

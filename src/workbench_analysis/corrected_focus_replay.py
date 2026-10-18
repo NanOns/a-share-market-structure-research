@@ -191,10 +191,15 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
              PREWATCH=dict(Counter(r['prewatch']['raw_qualification'] for r in calculations)),
              D2_freshness=dict(Counter(r['state_freshness'] for r in rows)),D2=ref(root,path),facts=fact,calculations=calc)
         receipts.append(receipt);print(json.dumps(dict(stage='D0_D2',**{k:v for k,v in receipt.items() if k in ('trade_date','rows','D0','PREWATCH','D2_freshness')})),flush=True)
-    series=out/'focus_actual_bars.pg.json'
     from workbench_db.v4_series_pg_r1 import build
     from workbench_service.current_v4_context import canonical,digest as content_digest
-    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
+    series_t0=max(days)
+    series_source_digest=content_digest(canonical(dict(source_bindings=sources,T0=series_t0,
+        owner_inputs=[dict(trade_date=day,core=native[day]['factors'],profiles=native[day]['profiles'])
+                      for day in sorted(native)])))
+    series=out/f"focus_actual_bars_{series_t0.replace('-','')}_{series_source_digest[:20]}.pg.json"
+    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=series_t0,
+         source_digest=series_source_digest)
     # The dated-series relation owns the bars; SourceIngress owns this exact
     # immutable descriptor so existing PG-bound Focus readers can resolve it.
     series_binding=_ingress_exact_file(root,series)

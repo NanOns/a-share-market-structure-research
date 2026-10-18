@@ -15,16 +15,34 @@ from .v4_12_frozen_snapshot_v2 import load_contract
 from .v4_12_input_binder import InputBinder
 
 
+class OrderedHistoryBySecurity:
+    """Read sorted, PG-ingressed history rows alongside matching Core rows."""
+    def __init__(self, rows):
+        self.rows=iter(rows);self.current=next(self.rows,None)
+
+    def get(self, security_id, default=None):
+        if self.current is None:return default
+        if self.current.get('security_id')!=security_id:
+            raise ValueError('CORRECTED_HISTORY_STREAM_ORDER_MISMATCH')
+        bars={bar['trade_date']:bar for bar in self.current['bars']}
+        self.current=next(self.rows,None)
+        return bars
+
+    def assert_complete(self):
+        if self.current is not None:
+            raise ValueError('CORRECTED_HISTORY_STREAM_EXTRA_ROW')
+
+
 class CorrectedBinder(EpisodeBinder):
     """Bind only saved, hash-verified corrected outputs; never calculate factors here."""
-    def __init__(self, contracts, day, cutoff, owner, profiles, status_rows):
+    def __init__(self, contracts, day, cutoff, owner, profiles, status_rows, history_rows):
         self.contracts=contracts;self.root=contracts.root;self.date=day;self.cutoff=datetime.fromisoformat(cutoff)
         self.calendar=official_sessions(self.root);self.previous=self.calendar[self.calendar.index(day)-1]
         self.fields={r['field']:deepcopy(r) for r in contracts.config['field_registry']['fields']}
         self.publications={};self.source_refs={}
         self.core={r['security_id']:r for r in gzrows(checked(self.root,owner['core']))}
         self.previous_core={r['security_id']:r for r in gzrows(checked(self.root,owner['prior_core']))}
-        self.history={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(self.root,owner['history']))}
+        self.history=history_rows
         self.adjusted={r['security_id']:r for r in gzrows(checked(self.root,owner['adjusted']))}
         self.profiles={r['security_id']:r for r in profiles};self.status_rows=status_rows
         self.data={'component_artifacts':{'RAW_DAILY':owner['raw'],'ADJUSTED_DAILY':owner['adjusted']}}
@@ -88,9 +106,9 @@ class CorrectedBinder(EpisodeBinder):
 
 
 class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
-    def __init__(self, contracts, day, cutoff, owner, profiles, statuses):
+    def __init__(self, contracts, day, cutoff, owner, profiles, statuses, history_rows):
         self.contracts=contracts;self.trade_date=day;self.cutoff=cutoff;self.revision='r1'
-        self.binder=CorrectedBinder(contracts,day,cutoff,owner,profiles,statuses)
+        self.binder=CorrectedBinder(contracts,day,cutoff,owner,profiles,statuses,history_rows)
         self.state_contract,self.state_ref=load_contract(contracts)
         self.episode_contract,self.episode_ref=episode_contract(contracts)
         self.engineering_empty_seed=False
@@ -113,11 +131,13 @@ def materialize_profiles_structure(root):
     cd=digest({p:pg_source_binding(root,p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
         day=owner['trade_date'];folder=out/'owners'/day;factors=list(gzrows(checked(root,owner['core'])))
-        histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
+        profile_history=OrderedHistoryBySecurity(gzrows(checked(root,owner['history'])))
         for factor in factors:
-            sid=factor['security_id'];bs=histories[sid]
+            sid=factor['security_id'];history_by_date=profile_history.get(sid)
+            if history_by_date is None:raise ValueError('CORRECTED_HISTORY_STREAM_ROW_MISSING')
+            bs=list(history_by_date.values())
             actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else 'UNKNOWN') for d in sessions if bs[0]['trade_date']<=d<=day]
             bars=[dict(trade_date=b['trade_date'],qfq_close=b['qfq_ohlc'][3] if b['qfq_ohlc'] else None,
                 qfq_high=b['qfq_ohlc'][1] if b['qfq_ohlc'] else None,qfq_low=b['qfq_ohlc'][2] if b['qfq_ohlc'] else None,
@@ -127,15 +147,20 @@ def materialize_profiles_structure(root):
             r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else 'UNKNOWN',status_conflict=False))
+        profile_history.assert_complete()
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles,pg_ingress=True),status=gzwrite(root,folder/'status.jsonl.gz',statuses,pg_ingress=True))
-        engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
+        engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses,
+            OrderedHistoryBySecurity(gzrows(checked(root,owner['history']))))
         results=[]
         for factor in factors:
             sid=factor['security_id']
             # Newly listed identities have no predecessor row: absence stays UNKNOWN.
             use_prior=prior if prior and sid in previous_ids else None
             results.append(engine.evaluate(sid,use_prior))
-        store=CandidateStore(root,folder.relative_to(root).as_posix()+'/structure')
+        engine.binder.history.assert_complete()
+        structure_run=digest(dict(day=day,core_sha256=owner['core']['sha256'],contract_digest=cd,
+                                  available_at=cutoff))[:20]
+        store=CandidateStore(root,folder.relative_to(root).as_posix()+'/structure/'+structure_run)
         store.pg_ingress=True
         artifacts=[]
         for name,rs,compressed in [('runtime_security.jsonl.gz',results,True),('state_observations.jsonl.gz',[o for r in results for o in r['observations']],True),('anchors.jsonl',[a for r in results for a in r['anchors']],False),('events.jsonl',[a for r in results for a in r['events']],False),('transitions.jsonl',[a for r in results for a in r['transitions']],False)]:

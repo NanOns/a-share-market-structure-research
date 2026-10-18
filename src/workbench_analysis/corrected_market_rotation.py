@@ -24,28 +24,34 @@ def materialize_market_rotation(root):
     for item,sector in zip(profiles['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         factors={r['security_id']:r for r in gzrows(checked(root,owner['core']))}
-        hist={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(root,owner['history']))}
         prior3=sessions[sessions.index(day)-3];previous=sessions[sessions.index(day)-1]
-        comparisons=[];amounts=[]
-        for sid,f in factors.items():
-            bars=hist[sid]
-            def ret(d):
-                a=bars.get(d,{}).get('qfq_ohlc');b=bars.get(sessions[sessions.index(d)-1],{}).get('qfq_ohlc')
-                return a[3]/b[3]-1 if a and b and b[3]>0 else None
-            a,b=ret(day),ret(prior3)
-            if a is not None and b is not None:comparisons.append((a,b))
-            ar=f['fields']['amount_ratio20']['value']
-            if ar is not None:amounts.append(ar)
         # Endpoint membership is explicitly intersected with the saved historic owner.
         authority_binding=pg_source_binding(root,'config/v4_market_operational_authority_v1.json')
         historical=load(checked(root,authority_binding))['market']
         market=load(checked(root,historical));membership=market['sources']['historical_universe']
+        prefix_binding=market['sources']['prior_market_path']
+        prefixpath=checked(root,prefix_binding)
+        prefix=[r for r in gzrows(prefixpath) if r['trade_date']<=day]
+        levels=[r['level'] for r in prefix];level=levels[-1];bridge=[]
+        policy=load(checked(root,market['sources']['path_contract']))
+        bridge_dates=sessions[sessions.index(prefix[-1]['trade_date'])+1:sessions.index(day)+1]
+        required_dates={day,prior3,previous,sessions[sessions.index(prior3)-1]}
+        member_dates={prior3}
+        for bridge_day in bridge_dates:
+            prior_day=sessions[sessions.index(bridge_day)-1]
+            required_dates.update((bridge_day,prior_day));member_dates.add(prior_day)
         members=defaultdict(set)
         for r in gzrows(checked(root,membership)):
-            if r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):members[r['trade_date']].add(r['security_id'])
+            if r.get('trade_date') in member_dates and r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
+                members[r['trade_date']].add(r['security_id'])
         for old in profiles['owners']:
-            if old['owner']['trade_date']<=day:
+            if old['owner']['trade_date'] in member_dates:
                 members[old['owner']['trade_date']]={r['security_id'] for r in gzrows(checked(root,old['owner']['core']))}
+        hist={}
+        for row in gzrows(checked(root,owner['history'])):
+            hist[row['security_id']]={bar['trade_date']:bar for bar in row['bars'] if bar['trade_date'] in required_dates}
+        amounts=[f['fields']['amount_ratio20']['value'] for f in factors.values()
+                 if f['fields']['amount_ratio20']['value'] is not None]
         universe=members.get(prior3,set())
         if not universe:
             previous_owner=next((x['owner'] for x in profiles['owners'] if x['owner']['trade_date']==prior3),None)
@@ -65,12 +71,7 @@ def materialize_market_rotation(root):
         axes=market_axis_primitives(breadth=breadth,participation=median(amounts) if amounts else None,
               limit_coverage=None,stress_ratio=None,prior_stress_ratio=None,stress_change_current_ratio=None,
               stress_change_current_provided=True,**identity)
-        prefix_binding=market['sources']['prior_market_path']
-        prefixpath=checked(root,prefix_binding)
-        prefix=[r for r in gzrows(prefixpath) if r['trade_date']<=day]
-        levels=[r['level'] for r in prefix];level=levels[-1];bridge=[]
-        policy=load(checked(root,market['sources']['path_contract']))
-        for d in sessions[sessions.index(prefix[-1]['trade_date'])+1:sessions.index(day)+1]:
+        for d in bridge_dates:
             prev=sessions[sessions.index(d)-1];start=members.get(prev,set());returns=[]
             for sid in sorted(start):
                 bars=hist.get(sid,{})

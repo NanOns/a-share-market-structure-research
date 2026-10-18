@@ -105,6 +105,19 @@ def test_corrected_owner_json_ambiguity_selects_latest_dev_revision(monkeypatch,
     ]
 
 
+def test_corrected_profile_history_is_consumed_in_core_order():
+    from workbench_analysis.corrected_structure_replay import OrderedHistoryBySecurity
+
+    history = OrderedHistoryBySecurity(iter([
+        {"security_id": "S1", "bars": [{"trade_date": "2026-09-29", "close": 10}]},
+        {"security_id": "S2", "bars": [{"trade_date": "2026-09-30", "close": 11}]},
+    ]))
+
+    assert history.get("S1") == {"2026-09-29": {"trade_date": "2026-09-29", "close": 10}}
+    assert history.get("S2") == {"2026-09-30": {"trade_date": "2026-09-30", "close": 11}}
+    assert history.get("S3") is None
+
+
 def test_focus_contract_uses_json_compatible_pg_text_without_yaml(monkeypatch, tmp_path):
     from workbench_analysis import r43_focus_replay
 

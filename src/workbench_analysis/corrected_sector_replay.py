@@ -7,6 +7,7 @@ from .corrected_owner_replay import checked, gzrows, gzwrite, OUT, CONTRACT, pg_
 from .r43_owner_replay import write_candidate_json, pg_source_binding
 from .market_source_acquisition import official_sessions, load_source_acquisition_pg, load_source_query_pg
 from .v4_13_descendant_contracts import DescendantContracts
+from .corrected_structure_replay import OrderedHistoryBySecurity
 from .v4_13_loo_runtime import relative_sector
 from sector.native_r5 import build_native
 from v4.base_seed import _normalize_facts, evaluate_facts, _known, _unknown
@@ -48,14 +49,16 @@ def materialize_sectors(root):
         raw={r['security_id']:r for r in gzrows(checked(root,owner['raw']))};adjusted={r['security_id']:r for r in gzrows(checked(root,owner['adjusted']))}
         previous={r['security_id']:r for r in gzrows(checked(root,owner['prior_core']))}
         prior_date_value=sessions[sessions.index(day)-1]
-        histories={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(root,owner['history']))}
+        histories=OrderedHistoryBySecurity(gzrows(checked(root,owner['history'])))
         current={};seed={};seedrows=[]
         for sid,f in factorby.items():
             p=profileby[sid];p=dict(p,historical_as_recorded_claim=False)
             context=dict(trade_date=day,expected_board_counts=dict(Counter(r['board_scope'] for r in factors)),profile_row_publication_id=p['publication_id'])
             facts=_normalize_facts(p,f,context)
             pc=previous.get(sid,{}).get('fields',{}).get('ma20',{})
-            pb=histories.get(sid,{}).get(prior_date_value)
+            by_date=histories.get(sid)
+            if by_date is None:raise ValueError('CORRECTED_SECTOR_HISTORY_ROW_MISSING')
+            pb=by_date.get(prior_date_value)
             facts['ma20_t_minus_1']=_known(pc['value']) if pc.get('quality_state')=='OBSERVED' else _unknown('EXACT_PRIOR_CORE_MA20_UNKNOWN')
             facts['close_t_minus_1']=_known(pb['qfq_ohlc'][3]) if pb and pb['qfq_ohlc'] else _unknown('EXACT_PRIOR_ADJUSTED_CLOSE_UNKNOWN')
             s=evaluate_facts(facts,seedparams)
@@ -69,6 +72,7 @@ def materialize_sectors(root):
             mdd=p['derived_fields'].get('mdd20',{})
             fields['mdd20']=dict(value=mdd.get('value'),quality='ACCEPTED' if mdd.get('quality')=='OBSERVED' else 'UNKNOWN',max_source_date=day)
             current[sid]=dict(trade_date=day,fields=fields,price_basis_id=f['price_basis_id'])
+        histories.assert_complete()
         universe={r['source_security_key'].lower():r['security_id'] for r in factors}
         memberships,query=dated_industry_memberships(root,day,universe)
         binding=gzwrite(root,folder/'dated_csrc_memberships.jsonl.gz',memberships,pg_ingress=True)

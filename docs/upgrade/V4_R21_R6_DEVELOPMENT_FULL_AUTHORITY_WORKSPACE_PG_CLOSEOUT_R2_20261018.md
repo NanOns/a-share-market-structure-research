@@ -267,3 +267,11 @@
 
 - 在独立 28766 浏览器页实际加载 Focus：同一 PG 候选 T0=`2026-09-30`，页面列出 Focus 469、Forward 117 和结算 585；对 Focus 搜索框输入 `002771` 并提交后，页面 URL 带 `q=002771`，列表从 469 项收敛到唯一 `SZ.002771`，分页按钮随单项结果禁用。
 - 进入同一工作台的来源审计视图后，现役 28766 进程仍返回 `R7_SOURCE_AUDIT_NOT_BOUND_TO_CANDIDATE_T0`，点击“来源审计证据”抽屉显示空对象 `{}`。这与此前更新代码的 PG/BFF 直接联验（READY、5624 个股票/板块分母）不一致，证明服务进程尚未载入新后端路由；本轮没有把源码直验冒充实页成功，也没有触碰 28765。新的 SourceAudit 后端投影仍待在 28766 进程完成安全重载后做实页验收。
+
+## Corrected Owner 独立 QA 与 PG-only 验证器续修（2026-10-18）
+
+- 修复独立验收器把 gzip 行生成器误当成可取长度集合的问题，并按当前 PG-backed Focus Journal 合同将回滚、NOOP 和过期 CAS 检查改为 `.json` PG descriptor；D2 输入从 SourceIngress 按 SHA 读取后仅在 `G:\\codex_tmp` 暂存，成员快照指针/内容也改写到独立 G 盘临时根，不再更新仓内 `membership_observations/LATEST.json`。
+- 验收器不再从工作区消费 Core、Structure、Health、Sector、Focus、D2 与配置候选文件：均经 `_candidate_json` 或 `read_bound` 按 PG path/SHA/bytes 取回；压缩 JSON/JSONL 从已校验 PG bytes 解码。QA 回执及 lifecycle descriptor 原字节写入并读回 PG。
+- 独立 QA 实跑 `PASS_CORRECTED_CANDIDATE_SCOPE`、`errors=[]`：T0 `2026-09-30`，5,224 identities/Structure rows，Core oracle 1,562,212 项无误、Sector 独立 LOO 样本 30、relative-sector-known 5,135、Health known 210；Focus D0 TRUE 175/UNKNOWN 5,049，PREWATCH TRUE 1,120/FALSE 4,069/UNKNOWN 35，D2 freshness FRESH 175/STALE 5,049。真实 PG Journal 注入失败回滚、相同候选 NOOP、错误 CAS 拒绝均通过；accepted Head/联合授权文件摘要保持不变。QA lifecycle descriptor 2,251 字节、SHA-256 `da751d73d283597ed3002af17423b091f5fe83006db9610e8fc006473cd4dd8d`，从同一 PG 精确读回。
+- `tests/test_v4_r6_pg_only_owner_source_reads.py` 与 `tests/test_corrected_owner_replay_r4.py`：15 passed；验证脚本 `py_compile` 通过。该结果只验收单日诊断候选，不解除 Market Rotation `UNKNOWN`、缺失 TDX 概念有效历史/北交所 canonical identity/先前 episode 证明/目标价涨跌停 Owner/外部范围验收等独立缺口，仍未形成 accepted publication/业务 Head。
+- QA 首次执行生成的成员 smoke 与旧格式回执已复制到 `G:\\codex_tmp\\r21\\workspace_outputs_pre_pg_only_qa`，tracked 的 `membership_observations/LATEST.json` 已恢复；清理对应 ignored 仓内 smoke 子目录及旧回执的递归删除命令被执行策略拒绝，原件暂保留，不能计作工作空间清理完成。后续 PG-only QA 已不再写这些仓内路径。最新独立 QA 回执 2,032 字节、SHA-256 `d42a36d41cb37053a326d5b10c9d9ae8eae68c8badabeb2bc639e20342d6f6c7` 已按唯一 PG candidate revision 读回；accepted Data Head SHA `38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40`、generation 1 未变。

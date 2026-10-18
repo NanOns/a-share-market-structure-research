@@ -87,3 +87,30 @@
 - 重启后通过 Codex 内置浏览器再次实际操作 28766：板块搜索“区域地产”唯一返回 1 条；个股搜索 `SH.600675` 唯一命中并打开详情；Focus 显示未绑定 Owner 的真实原因，Forward 显示 117 个样本并可切换结算视图；市场显示 `MARKET_CENTER_NOT_BOUND`；Diagnostics Health/Jobs 正常读取 PG 候选，Jobs 明示 worker 未启动、source requests=0。候选身份和 T0 与此前一致；未启动采集或日更任务。
 - 本续行新增 1 条 DB-only source ingress：`config/dm01_incremental_builders_contract_r1.json` 精确 SHA 版本，27,431 字节；同库 path/SHA/长度读回一致。未触碰合同审批、Owner、publication Head 或生产状态。
 - 当前未闭合项为正式合同审批/accepted publication Head、历史基线中 22 条缺原始 edge ID 的引用关系与 3 条缺 expected SHA 的历史 blob 对账，以及仅登记的非 V4 调用点。其余现役 V4 PG consumer 的临时文件物化调用已清零。
+
+## 最终 28766 页面操作矩阵（2026-10-18）
+
+服务为现有开发槽 `127.0.0.1:28766`，PG 是 `market_research` / OID `646711`，同一 candidate context token，T0 `2026-09-30`；所有页面明示为 `PG_CANDIDATE_SNAPSHOT`，不代表 accepted Head。页面请求经 `/api/v4/<route>`，页面刷新/搜索/展开只读，不启动 worker。
+
+| 页面与实测 URL | API/操作 | 实测显示与结果 |
+|---|---|---|
+| 首页 `/v4/research/home` | `home`；打开个股/板块入口 | 5,213 股票、378 板块、117 Radar/Forward、T0 2026-09-30；市场轮动变化缺前日 Owner 输入时明示不可生成。 |
+| 板块 `/v4/research/sectors?q=区域地产` | `sectors` 搜索 | 唯一命中 `INDUSTRY:T110202`，共 1 条。 |
+| 个股 `/v4/research/stocks?q=SH.600675` → `/v4/research/stocks/SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319` | `stocks`、个股详情与行情图 | 唯一命中并打开；收盘价 2.520、行业关系可跳转。技术图提示 `HISTORICAL_INDEX_NOT_BOUND`；高级画像多个字段如实显示来源能力不足。 |
+| Focus `/v4/research/focus` | `focus` 搜索“中华企业” | Owner 未绑定原因 `EPISODE_PROJECTION_NOT_PUBLISHED_IN_CURRENT_OWNER_CONTEXT`，结果 0 不冒充“无关注对象”；同页 Forward 统计未知原因可见。 |
+| Forward `/v4/research/forward?q=SH.600675` | `forward` 搜索；切换“期限结算” | 117 行候选，搜索唯一命中；期限结算展示 PG 候选 5 行，并说明期限/收益/结算字段未投影、不能视为已结算。 |
+| 市场 `/v4/research/market?q=SH.600675` | `market` 与 `events` 搜索 | 市场中心缺绑定，`SOURCE_INCOMPLETE · MARKET_CENTER_NOT_BOUND`；事件搜索命中 1 条。 |
+| Health `/v4/research/diagnostics/health` | `diagnostics/health`；展开 Owner/字段影响 | 股票 5,213、板块 378；Focus/Market 能力未绑定，原因显式给出。 |
+| Sources/Contracts `/v4/research/diagnostics/sources`、`/contracts` | `diagnostics/sources`、`diagnostics/contracts`；展开记录 | 候选 source/Owner/contract digest 与域缺口读自当前 PG context；Market/Focus/Core 差异明示。 |
+| Jobs `/v4/research/diagnostics/jobs` | `diagnostics/jobs`；点击“查看快照缺口与日更状态” | T0 2026-09-30、PG candidate counts；`worker_started=false`、`source_requests=0`，明示无日更回执。 |
+| Compare `/v4/research/compare?as_of=2026-09-30&view=frozen&left=SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319&mode=stock-stock&right=SEC-02EEB406A654DC45C93B18230C20120A` | `compare`；读取选定版本 | 数据请求走通；严格 PIT 可用日期 0，因此明确“不显示未来状态、后续成员或结果”，标 `PIT 不可用`。 |
+| Replay `/v4/research/replay?as_of=2026-09-30` | `replay`；读取选定版本 | 读取走通；当时可得性证明不完整，保留重建版本标识和 PIT 不可用原因。 |
+| 日更 `/v4/research/data-update` | PG 日更状态；点击“查看详细日志” | 绑定开发候选快照；正式日历 Head 未绑定、任务“尚无”、worker 未启动；补齐/重试等写操作禁用。 |
+
+浏览器验收为真实 PG 候选流程的 `BROWSER_VERIFIED`，不是正式业务 `PRODUCTION_ACCEPTED`。页面/API 的共同阻断为当前批准 runtime/current-read contract Registry、Focus/Market Owner、严格 PIT 日期及正式 accepted publication Head 缺失；未以空白或 mock 补齐。
+
+## 最终稳定调用点计数
+
+- 复用已有 R2 266 ID 清单和 266 行迁移矩阵（未重扫全仓）。矩阵当前为 264 `IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION`、1 `IMPLEMENTED_PG_ONLY_NO_FILE_FALLBACK`、1 `OUT_OF_SCOPE_NON_V4_REGISTERED`。即 V4 代码级改造为 265/266，非 V4 1/266 仅登记；正式现场对账仍 0/266。
+- V4 代码改造里，最后本提交 28 个 Python 文件把 PG-ingress 源字节解析从临时文件切成内存 `PGSourceBytes`；改前实际 caller 不再调用 `materialize_bound/path`，对应源/Owner/日更/DM01/研究 API 读取使用同一 PG 候选中的精确 path/SHA/length。累积候选 V4 改造数 265，不把历史 reference-edge 证明冒称业务调用点修复。
+- 剩余源码调用点：0 个已确认仍会调用 PG 临时文件 materializer；1 个 matrix 调用点是非 V4 且范围排除。剩余验收/清单问题：264 个 V4 ID 等 source-edge/T0/namespace/accepted publication Head 的历史清单 join；其中 22 个历史 reference edge 无对应 `reference_ids`（21 个唯一 callsite），3 个 governance 行没有 baseline `expected blob SHA`。这些状态与“有无文件回退”是两类问题。

@@ -54,7 +54,7 @@ production_changed: false
 | DB-06 | PASS | Research 旧 descriptor 原始字节/SHA 保留；固定 `v4.research_releases` 记录旧 Schema、旧 digest 与新 release/manifest 的对照，迁移不伪称旧/新 descriptor digest 相同。 |
 | DB-07 | PASS | 所有现役连接入口固定 `v4`；28766 的首页、Forward 来源审计页实际读取固定 `v4` PG 候选 Release；缺失来源仍明确 fail-closed。 |
 | DB-08 | PARTIAL | 四日 Core 独立 Oracle（09-28、09-29、09-30、10-08）已有 0 error 结果；四日完整 Sector/Focus/Market/Forward 数值闭环受 10-08 PIT、前序成员和成熟结算来源缺失阻断。 |
-| DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；未复制 551 MB TDX ZIP Base64，且历史 1,678 项未导入。超 64 MiB 的整包 typed/chunk SourceIngress 未在本轮执行端到端验收。 |
+| DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；另用 64 MiB+1 字节事务内工程负载验证 5 块写入、重组读回、长度/SHA 与回滚。未把真实 551 MB TDX ZIP Base64 复制到 Forward facts；其真实包/独立接受合同仍未验，历史 1,678 项未导入。 |
 | DB-10 | PARTIAL | 日更和 Jobs 只读/幂等路径可运行；`market_calendar_sessions` 与正式 publication Head 为空、没有 worker 回执，故不签发 Accepted/DEV Head、不宣称重试/增量真实作业通过。 |
 | DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。旧 baseline、治理恢复证据及其他历史目录经实际计量；存在未提交/独有内容或不可替代恢复证据，保留，物理工作区清理未完成。 |
 | DB-12 | PASS | 当前库目录仅 `v4`，交叉 Schema 依赖 0；最终目录核对 232 关系、57 例程、86 类型、123 触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |

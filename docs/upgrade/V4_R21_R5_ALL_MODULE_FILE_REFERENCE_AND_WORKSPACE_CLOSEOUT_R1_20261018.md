@@ -118,3 +118,10 @@
 ## GitHub 收尾摘要写入结果
 
 - 按任务卡向现有 Issue #2 与 Draft PR #3 各尝试一次提交同一份精简实修摘要；GitHub 连接器对两次写入均返回 HTTP 403 `Resource not accessible by integration`。按任务卡约定不转走本机 GitHub CLI/其他凭据通路；代码与报告已正常推送，Issue/PR 评论未写入。
+
+## 最终 PG 现场读回（2026-10-18 08:46 Asia/Shanghai）
+
+- 在同一数据库 `market_research` / OID `646711` / system identifier `7688198230782699460` 内只读确认：`v4.contract_versions` 与 `v4.contract_approval_events` 已存在，各 15 行；`V4_CURRENT_ACCEPTED_READ_CONTRACT_V1@1.0.0` 现有 APPROVED 记录，SHA-256 为 `f3e6c98652e692c291a3766edd65dcaf0b329d4c6cf7251880b31c1203af6147`、namespace `V4_CURRENT_ACCEPTED`，批准事件带非空签发字段与任务授权引用。此前报告的缺失读回是更早观测，本次读回已更新该事实。
+- `V4_PRODUCTION_RUNTIME_AUTHORITY_V1@1.0.0` 仍无 Registry 版本/批准事件；该源文件的 SHA `f0187a8a1b0ed4f21d342c44104d1c3f0a2a4b14ad110625f139ee62aaff7f2d` 与其登记源 Git commit `fcc877475adf6097a4f38589de8c0cf7bcb1c0f3` 内字节一致。没有把缺失事件假写成已批准。
+- `v4.publications`、`v4.publication_heads`、`v4.model_namespaces`、`v4.operational_research_heads` 目前各 0 行；其中 `publication_heads` schema 的主键元组为 trade_date/model_namespace_id/publication_id/state_head_id/state_logical_digest。因无已接受 publication/namespace/Owner 绑定，当前 PG candidate 不能提升成正式 Head。没有执行 Head CAS、合同 Registry DML、日更或生产切换；本次最终现场核对仅做 catalog/精确 Registry 只读核查。前文已记录的 DB-only SourceIngress 写入已完成 SHA/长度读回。
+- 因此当前代码范围 `CODE_SCOPE_PARTIAL` 的可编码 V4 读路径实修为 265/266（1 个非 V4 已登记并排除）；阻断集中在正式 Head 现场证据/审批，而非等待新增 reader、重复扫描或测试计数。浏览器状态保持 `BROWSER_PASS_28766`，生产 Head 状态仍未通过。

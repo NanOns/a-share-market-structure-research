@@ -282,3 +282,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `tests/test_v4_forward_pg_closeout.py` 中 PG-only Reader 的新绑定夹具原先仍写入任意 `v4_forward_test`，该值既非固定 `v4` locator，也不是符合格式且有迁移回执的历史定位符。已改为 `schema='v4'` 并绑定与测试 Workspace 对应的 `workspace_namespace`，同时保持 Reader 必须显式只读且使用 Reader DSN 的断言。
 - 修改文件 `py_compile` 与 `git diff --check` 通过。该测试文件还含真实共享 PG 写入/immutability 集成用例，本次未启动其 pytest 收集/隔离数据库过程；因此只记录语法检查，不宣称定向集成通过。
 - 没有写入开发数据库或启动 HTTP 服务。
+
+### 2026-10-19 新 Owner 固定 v4 publication 绑定入口修复
+
+- 复核 065/066 后发现它们虽校验 `v4` 固定 Owner 版本表，却无条件要求 `owner_schema` 是旧 `v4_<56hex>` 且存在旧 Schema 迁移回执。因此 canonical Owner Writer 写出的 `schema='v4'` 无法进入 publication binding，导致新数据虽然迁入固定表，新的 accepted publication Owner 仍会被拒绝。
+- 新增 migration 067：`owner_schema='v4'` 时校验精确 Owner family、`owner_relation`、T0、token、contract、digest、row_count、sealed、database identity，直接读固定 Owner 版本表；冻结的历史 `v4_<56hex>` locator 继续要求匹配且 `VERIFIED` 的迁移回执。按合同对准 `market_research` 显式 apply；台账 readback SHA `69f7ac1e…` 与代码相同，实际 trigger 函数含 canonical 分支、relation guard 和历史回执分支；目录仍仅 1 个 V4 Schema。
+- Workspace Owner mapping 校验现在接受 canonical `v4` locator，同时保留有界旧 locator 兼容。纯映射用例 `3 passed`，改动文件 `py_compile` / `git diff --check` 通过。
+- `publication_module_results` 与 `publication_heads` 当前均 0 行，开发库尚无可绑定 publication。没有伪造 accepted publication 或 Owner 绑定做端到端验收；真实 accepted Head/来源门补齐后仍需运行一次全链路写读验证。

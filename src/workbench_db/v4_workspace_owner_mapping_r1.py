@@ -10,7 +10,7 @@ from .v4_native import workspace_namespace_identity
 
 CONTRACT_ID = "V4_PG_WORKSPACE_OWNER_MAPPING_R1"
 CONTRACT_VERSION = "1.0.0"
-_SCHEMA = re.compile(r"^v4_[a-z0-9_]{1,56}$")
+_SCHEMA = re.compile(r"^(?:v4|v4_[a-z0-9_]{1,56})$")
 
 
 class WorkspaceOwnerMappingError(ValueError):

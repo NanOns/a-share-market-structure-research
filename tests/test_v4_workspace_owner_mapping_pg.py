@@ -28,9 +28,9 @@ def _registry(root, *, namespace="workspace-main"):
                 "host": "127.0.0.1", "port": 5432,
             },
             "owner_schemas": {
-                "research_priority": "v4_research_priority_aaaaaaaaaaaaaaaa",
-                "operational_risk": "v4_operational_risk_aaaaaaaaaaaaaaaa",
-                "sector_lifecycle": "v4_sector_lifecycle_aaaaaaaaaaaaaaaa",
+                "research_priority": "v4",
+                "operational_risk": "v4",
+                "sector_lifecycle": "v4",
             },
         }],
     }
@@ -43,7 +43,7 @@ def test_pg_contract_mapping_resolves_exact_root_namespace_and_owner_schemas(tmp
     )
 
     assert mapping["contract_id"] == "V4_PG_WORKSPACE_OWNER_MAPPING_R1"
-    assert mapping["owner_schemas"]["research_priority"] == "v4_research_priority_aaaaaaaaaaaaaaaa"
+    assert mapping["owner_schemas"]["research_priority"] == "v4"
     assert mapping["database_identity"]["database"] == "market_research"
 
 

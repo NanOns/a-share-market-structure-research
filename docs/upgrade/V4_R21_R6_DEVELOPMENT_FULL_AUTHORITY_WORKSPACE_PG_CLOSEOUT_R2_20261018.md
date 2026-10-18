@@ -231,3 +231,9 @@
 
 - PG 中已存在 2026-10-16 的 `V4_R6_DEVELOPMENT_OWNER_CANDIDATE_R1` 1.0.0 与 1.1.0 候选。两版都明确为 `DIAGNOSTIC_ONLY`、`accepted_head=false`、`publication_id=null`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`；1.0.0 Owner 行 5,567，1.1.0 组件计数为 TDX Core 5,567、BaoStock 日线交叉校验 5,226、原生/归一化因子各 48。来源时间记录为 2026-10-18T04:59:20Z。该数据是可读的开发 Owner 候选，不是已发布或 accepted 的开发/生产 Head；未修改状态。
 - 新增 `V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1@1.0.0` 输出合同，READY 与 SOURCE_INCOMPLETE 均给出一致合同标识、版本、绑定范围和证据级别。候选 `2026-09-30` 的直接 PG 函数验读仍返回 READY；该契约及路由边界定向回归 3 passed，修改模块 `py_compile` 通过。
+
+## 本轮数据库全权限与工作空间别名实修续行（2026-10-18）
+
+- 按用户最新授权核验数据库连接：唯一 `market_research`（OID `646711`）的现有连接角色为 PostgreSQL `postgres`，实际具备数据库建表及全库读写能力。此前缺的是进程显式 writer 环境变量，不是数据库 ACL；本轮只在单次 Python 子进程内把既有连接显式绑定到 `V4_NATIVE_PG_DSN`，不输出或持久化凭据。
+- 运行仓库哈希校验迁移入口逐项核验 28 项已登记基础迁移，全部 checksum 一致且为 `ALREADY_APPLIED`；本次没有重复执行 DDL，也没有改动 publication、Head 或业务事实行。
+- 为 `data/v4/r2_forward/journal_v1` 登记稳定 workspace id `v4w_ecb96cfbb2fd62f229e2ab17da241cd8` 到其原 schema `v4_forward_eb17ba1165c8c2a5` 的 `forward` 别名。写入前核实该目录存在、PG 目标表存在且含 2,769 条事实；事务提交后通过生产 `workspace_schema()` 路径解析回同一 schema，并再次读回 2,769 条。此次只增加路径无关的 PG namespace alias，不复制/搬移事实、不改 Head。

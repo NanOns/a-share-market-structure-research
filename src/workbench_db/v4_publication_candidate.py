@@ -238,6 +238,8 @@ def build_publication_candidate(
         schema, relation = raw.get("owner_schema"), raw.get("owner_relation")
         if not isinstance(schema, str) or not _IDENTIFIER.fullmatch(schema) or not isinstance(relation, str) or not _IDENTIFIER.fullmatch(relation):
             raise CandidatePlanError("INVALID_OWNER_LOCATOR")
+        if schema != "v4":
+            raise CandidatePlanError("OWNER_SINGLE_SCHEMA_REQUIRED")
         token, contract = raw.get("owner_version_token"), raw.get("owner_contract_id")
         if not isinstance(token, str) or not token.strip() or not isinstance(contract, str) or not contract.strip():
             raise CandidatePlanError("OWNER_IDENTITY_INCOMPLETE")

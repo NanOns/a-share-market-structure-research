@@ -957,6 +957,8 @@ class PgPublicationReader:
             for key in ("owner_schema", "owner_relation"):
                 if not isinstance(row.get(key), str) or not _IDENTIFIER.fullmatch(row[key]):
                     raise PublicationReadError("INVALID_OWNER_LOCATOR")
+            if row["owner_schema"] != "v4":
+                raise PublicationReadError("OWNER_SINGLE_SCHEMA_LOCATOR_REQUIRED")
             for key in ("owner_version_token", "owner_contract_id", "quality_status"):
                 if not isinstance(row.get(key), str) or not row[key].strip():
                     raise PublicationReadError("OWNER_IDENTITY_INCOMPLETE")

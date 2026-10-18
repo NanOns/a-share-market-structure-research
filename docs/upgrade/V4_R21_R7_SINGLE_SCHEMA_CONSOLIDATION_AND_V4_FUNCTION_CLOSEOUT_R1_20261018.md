@@ -248,6 +248,12 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 真实进程核查：28766 当前 PID `27332`，启动时间 06:21；晚于其启动的提交包括 `12f870237`、`9c4628d3a`、`e20547f56`。28765 当前未监听。
 - 受控重载 28766 的进程停止调用被执行策略拒绝，进程未停止/重启；未尝试其它终止通道。内置浏览器仍可读当前候选股票页，日线 253 根、周线切换后 54 根，再恢复日线 253 根，均显示候选 T0 `2026-09-30`、候选 Release `05cf8913242f46c8af53b3d89f323b64`。此交互仅证明当前运行进程行为，不代表最新提交已加载或最新代码通过浏览器验收。`DB-07` 因此改为 `PARTIAL`，待安全可执行的 28766 最新代码重载后续验。
 
+### 2026-10-19 Owner Publication 单 Schema 约束闭环
+
+- 代码与目录审计定位到 `publication_module_results.owner_schema` 的历史 CHECK 仍只接受 `v4_<hash>`，与 067 的 canonical `v4` trigger 分支及固定表读写器冲突。新增版本迁移 `V4_PUBLICATION_OWNER_CANONICAL_SCHEMA_R1`，不修改历史 038/065–067 原文；候选构建、写入器、Reader 现均只接受 `owner_schema='v4'`，旧 locator 不再进入新 Publication binding。
+- 通过正式迁移执行器在授权开发库实际应用 071，RR/RO 读回 CHECK 为 `owner_schema='v4'`，版本 ledger SHA `b21ae28a…d0c1d4db`，Publication module rows 仍为 0；Schema 清单仍仅 `v4`。这修复了 Owner binding 的必要条件，但无已接受 Publication/Head，尚无真实端到端绑定可验证，因此 `DB-10` 和 `DB-07` 继续 PARTIAL。
+- `tests/test_v4_pg_publication_candidate.py`、`tests/test_v4_r7_sql_schema_compatibility.py`、`tests/test_v4_single_schema_guard_r7.py` 定向回归 `67 passed`；4 个修改 Python 文件 `py_compile` 通过。没有创建合成 Publication/Owner/Head 行，没有改变交易日历或来源准入状态。
+
 ### 2026-10-19 Forward R7 读事务边界续修
 
 - 静态追踪发现 `ForwardR7Store` 的 R7 表存在性探测、storage verification 与独立 `_latest_publish_index()` 读路径使用裸连接执行 SELECT，未通过统一只读事务边界。现改为固定 `v4` 的 `connection(..., read_only=True)`，独立发布索引查询显式 `REPEATABLE READ READ ONLY`；写路径保持显式写连接不变。

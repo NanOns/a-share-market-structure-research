@@ -41,10 +41,17 @@ def test_publication_migration_runner_registers_the_ordered_034_to_039_chain():
         ("037_daily_core_result_binding_r6.sql", "V4_DAILY_CORE_RESULT_BINDING_R6"),
         ("038_publication_module_results_r4.sql", "V4_PUBLICATION_MODULE_RESULTS_R4"),
         ("039_tdx_package_row_count_authority_r1.sql", "V4_TDX_PACKAGE_ROW_COUNT_AUTHORITY_R1"),
+        ("071_v4_publication_owner_canonical_schema_r1.sql", "V4_PUBLICATION_OWNER_CANONICAL_SCHEMA_R1"),
     ):
         assert f'"{migration}":"{contract}"' in normalized
     assert "for filename,version in sorted(VERSIONS.items())" in normalized
     assert "MIGRATIONS.glob(\"*.sql\")" not in runner
+
+
+def test_publication_owner_locator_migration_requires_only_canonical_schema():
+    migration = (MIGRATION / "071_v4_publication_owner_canonical_schema_r1.sql").read_text(encoding="utf-8")
+    assert "DROP CONSTRAINT publication_module_results_owner_schema_check" in migration
+    assert "CHECK (owner_schema = 'v4')" in migration
 
 
 def test_migration_schema_normalizer_allows_only_historical_foundation_rewrite():

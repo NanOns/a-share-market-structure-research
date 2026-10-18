@@ -106,8 +106,7 @@ def persist_publication_module_results(pg: Any, candidate: Mapping[str, Any]) ->
         if (family is None
                 or row.get("module_contract_id") != MODULE_CONTRACT_ID
                 or dict(row.get("database_identity") or {}) != dict(expected_identity)
-                or not isinstance(row.get("owner_schema"), str)
-                or re.fullmatch(r"v4_[a-f0-9]{56}", row["owner_schema"]) is None
+                or row.get("owner_schema") != "v4"
                 or row.get("owner_relation") != family["relation"]
                 or row.get("owner_contract_id") != family["owner_contract_id"]
                 or not isinstance(row.get("owner_version_token"), str)

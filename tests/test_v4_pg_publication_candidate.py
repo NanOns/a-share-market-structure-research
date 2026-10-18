@@ -44,7 +44,7 @@ def binding_row(module, **changes):
     row = {
         "module_key": module, "module_contract_id": CONTRACT_ID,
         "database_identity": DATABASE_IDENTITY,
-        "owner_schema": "v4_" + "a" * 56,
+        "owner_schema": "v4",
         "owner_relation": "owner_rows" if module == "sector_lifecycle" else "owner_payloads",
         "owner_version_token": f"{module}-owner-r1", "owner_trade_date": TARGET_DATE,
         "owner_contract_id": OWNER_FAMILIES[module]["owner_contract_id"], "result_digest": "d" * 64,
@@ -727,7 +727,7 @@ def test_sector_membership_requires_same_publication_source_and_reports_non_pit_
 def owner_results(day="2026-10-15"):
     return [{
         "module_key": module, "module_contract_id": CONTRACT_ID,
-        "database_identity": DATABASE_IDENTITY, "owner_schema": "v4_" + "a" * 56,
+        "database_identity": DATABASE_IDENTITY, "owner_schema": "v4",
         "owner_relation": OWNER_FAMILIES[module]["relation"], "owner_version_token": f"{module}-r1",
         "owner_trade_date": day, "owner_contract_id": OWNER_FAMILIES[module]["owner_contract_id"],
         "result_digest": "d" * 64, "row_count": 1, "quality_status": "DEGRADED",
@@ -764,6 +764,13 @@ def test_candidate_is_candidate_only_and_preserves_quality_flags():
     assert plan["module_results"][0]["as_recorded"] is False
     assert plan["module_results"][0]["pit_eligible"] is False
     assert len(plan["candidate_digest"]) == 64
+
+
+def test_candidate_rejects_legacy_owner_schema_locator():
+    rows = owner_results()
+    rows[0]["owner_schema"] = "v4_" + "a" * 56
+    with pytest.raises(CandidatePlanError, match="OWNER_SINGLE_SCHEMA_REQUIRED"):
+        candidate(module_results=rows)
 
 
 def test_new_t0_rejects_r2_manifest_downgrade():

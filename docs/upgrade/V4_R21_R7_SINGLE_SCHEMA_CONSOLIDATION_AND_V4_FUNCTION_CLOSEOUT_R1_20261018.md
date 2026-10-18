@@ -289,3 +289,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 新增 migration 067：`owner_schema='v4'` 时校验精确 Owner family、`owner_relation`、T0、token、contract、digest、row_count、sealed、database identity，直接读固定 Owner 版本表；冻结的历史 `v4_<56hex>` locator 继续要求匹配且 `VERIFIED` 的迁移回执。按合同对准 `market_research` 显式 apply；台账 readback SHA `69f7ac1e…` 与代码相同，实际 trigger 函数含 canonical 分支、relation guard 和历史回执分支；目录仍仅 1 个 V4 Schema。
 - Workspace Owner mapping 校验现在接受 canonical `v4` locator，同时保留有界旧 locator 兼容。纯映射用例 `3 passed`，改动文件 `py_compile` / `git diff --check` 通过。
 - `publication_module_results` 与 `publication_heads` 当前均 0 行，开发库尚无可绑定 publication。没有伪造 accepted publication 或 Owner 绑定做端到端验收；真实 accepted Head/来源门补齐后仍需运行一次全链路写读验证。
+
+### 2026-10-19 067 变更后 28766 浏览器复载
+
+- 在应用 067 Owner publication binding 修复后，按唯一开发服务约束停止并重启了 `127.0.0.1:28766`；首次启动因子进程缺少项目 `PYTHONPATH` 退出，补齐 `PYTHONPATH=G:\\codex work\\大A交易\\src` 后同一入口成功运行。28765 全程未启动或重启。
+- 通过当前内置浏览器实际打开候选个股详情 `/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9`，页面完成实际 PostgreSQL 数据渲染：候选 T0 `2026-09-30`、候选而非正式 Head；日线实际成交图表 `120/253` 根；详情中收盘价、成交量、成交额、均线、波动等候选值可读，Owner/历史证据不足字段继续显示“来源能力不足”，并列出缺失的 followup/失效合同证据。页面可用不被计为 Accepted、PIT 或模块验收通过。
+- 本次重载与浏览器复核没有产生 PG 写入、Schema 新建或生产切换；此项仅确认修复后的固定 Schema 开发版本能够通过真实页面读取现存候选数据。Publication/Publication Head 仍为空，端到端 Accepted Owner 写读继续待真实来源与 Head 门满足后执行。

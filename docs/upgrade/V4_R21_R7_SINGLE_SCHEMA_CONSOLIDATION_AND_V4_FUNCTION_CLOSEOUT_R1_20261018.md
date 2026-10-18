@@ -225,3 +225,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 本轮当前工作树修改的 Python 文件完成 `py_compile`；`tests/test_v4_single_schema_guard_r7.py` 在临时目录 `G:\codex_tmp\test_temp\r21r7-single-schema-20261019` 定向重跑为 `6 passed`，`git diff --check` 通过。结果只证明固定 Schema 创建边界，不替代模块数据门。
 - Focus 的“实际路径与到期结果”控件实际展开首批 30 个对象；进一步对中华企业打开“各锚点到期结果”，只读抽屉返回截至 `2026-09-30` 的 1 条修正历史重建记录，路径完整度、确认事实、锚点变化、最大向上偏离、当前回撤均无可确认值（`—`），同时明确结构证据缺失时保留不可判定。Forward 同页显示 117 样本、585 期限计划、已发布 5 项（覆盖 1/117）、成熟合格 0、待到期表 5 条；未发布/未成熟不转成零收益或质量结论。
 - 对待提交的一次性 Schema 数据迁移/RESTRICT 清理脚本及历史验收脚本运行 staged-blob 策略时，策略拒绝了动态标识符 SQL、机器绝对路径和过程文件读取项。脚本与用户原有工作区修改均留在原位置、未修改策略或另找通道提交；本续行只提交通过准入检查的正式报告、只读预检器和 DB-01 SQL 检查更新。
+
+### 2026-10-19 新续行数据库 gate 复核
+
+- 再次使用项目 `v4_native.connection('v4', read_only=True)` 读回 `market_research` / `127.0.0.1:5432`，事务级 `transaction_read_only=on`。`market_calendar_sessions=0`、`publications=0`、`publication_heads=0`、`operational_research_heads=0`、`publication_module_results=0`、`daily_core_result_snapshots=0`、`daily_core_result_rows=0`；`dm01_data_accepted_heads=1` 但仍是 `AS_RECORDED=false` 且 focus/shadow/production 权限关闭的候选，不能作为 Accepted Head。
+- Owner 固定表实际读回优先级 3 个密封版本（最近 T0 `2026-10-15`）、风险 3 个（最近 `2026-10-15`）、扇区生命周期 1 个（`2026-10-13`）；旧 Owner 数据可读不等于当日完整 Accepted Publication/Owner 链，Publication module binding 仍为 0。查询未写库。

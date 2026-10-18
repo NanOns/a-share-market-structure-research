@@ -237,6 +237,7 @@
 - 使用正式 `tdx.day_reader` 只读枚举配置源根 `D:/new_tdx/vipdoc` 下 12,246 个沪/深/北 `.day` 文件：12,244 个首尾记录结构有效，2 个文件边界无效；按有序定长记录定位到恰好 8 个包含 `2026-10-08` 的证券文件。其余文件的末条日期绝大多数早于 10-08；只有上述 8 个本地文件的末条日期为 10-08，覆盖显然不是全市场快照。
 - 对 8 个完整 `.day` 文件逐条校验日期单调性、重复日期、OHLC 和金额，全部 `valid=true`；修改时间集中在 2026-10-09 10:31–12:46 UTC。逐项解析 TDX 原生记录并核对目标日字段，没有把修改时间解释成官方发布日期或首可用证明。
 - 按用户的 PG 全权限授权，将 8 份原始文件合计 976,768 字节以 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1@1.1.0` 精确写入唯一 `market_research`，来源标记 `LOCAL_TDX_READ_ONLY_ROOT_WITHOUT_OFFICIAL_PACKAGE_RECEIPT`，revision 明示本地文件修改时间和 SHA-256。随后在同一个 repeatable-read 只读事务中，按原始绝对路径+SHA 读取 8 项并逐字节一致；目标日收盘分别为 `SH.600497` 8.80、`SH.688349` 13.30、`SZ.000021` 33.12、`SZ.002202` 16.68、`SZ.002372` 8.92、`SZ.002373` 7.18、`SZ.300197` 1.97、`SZ.301486` 209.86。
+- 另将聚合清单 `V4_TDX_LOCAL_PARTIAL_DAILY_CANDIDATE_R1@1.0.0` 以 PG-only logical path `data/v4/tdx_local_partial_candidate_r1/20261008/manifest.json` 写入 SourceIngress 并按 SHA 原字节/JSON 读回；未在工作区创建同名文件。清单显式记录 8 个来源、976,768 字节、`complete_universe=false`、无 package/accepted calendar/publication/Head，以及 `AS_RECORDED=false`、`PIT_ELIGIBLE=false`。
 - 这些事实只构成 `DIAGNOSTIC_ONLY_PARTIAL_LOCAL_SNAPSHOT`：无原始官方 ZIP/receipt、全市场覆盖、accepted calendar、publication 或 Head；`AS_RECORDED=false`、`PIT_ELIGIBLE=false`。它们补上本地输入证据的 PG 读回，不解除 10-08 连续日更门禁、不回填其他证券、不升级为正式 TDX SourceIngress/Owner。原始只读文件未改；完整结构与 PG 绑定证据保存在 `G:\codex_tmp\r21`。
 
 ## 本轮数据库全权限与工作空间别名实修续行（2026-10-18）

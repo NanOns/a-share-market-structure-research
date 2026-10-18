@@ -114,3 +114,7 @@
 - 复用已有 R2 266 ID 清单和 266 行迁移矩阵（未重扫全仓）。矩阵当前为 264 `IMPLEMENTED_PG_ONLY_READ_CODE_PENDING_INVENTORY_RECONCILIATION`、1 `IMPLEMENTED_PG_ONLY_NO_FILE_FALLBACK`、1 `OUT_OF_SCOPE_NON_V4_REGISTERED`。即 V4 代码级改造为 265/266，非 V4 1/266 仅登记；正式现场对账仍 0/266。
 - V4 代码改造里，最后本提交 28 个 Python 文件把 PG-ingress 源字节解析从临时文件切成内存 `PGSourceBytes`；改前实际 caller 不再调用 `materialize_bound/path`，对应源/Owner/日更/DM01/研究 API 读取使用同一 PG 候选中的精确 path/SHA/length。累积候选 V4 改造数 265，不把历史 reference-edge 证明冒称业务调用点修复。
 - 剩余源码调用点：0 个已确认仍会调用 PG 临时文件 materializer；1 个 matrix 调用点是非 V4 且范围排除。剩余验收/清单问题：264 个 V4 ID 等 source-edge/T0/namespace/accepted publication Head 的历史清单 join；其中 22 个历史 reference edge 无对应 `reference_ids`（21 个唯一 callsite），3 个 governance 行没有 baseline `expected blob SHA`。这些状态与“有无文件回退”是两类问题。
+
+## GitHub 收尾摘要写入结果
+
+- 按任务卡向现有 Issue #2 与 Draft PR #3 各尝试一次提交同一份精简实修摘要；GitHub 连接器对两次写入均返回 HTTP 403 `Resource not accessible by integration`。按任务卡约定不转走本机 GitHub CLI/其他凭据通路；代码与报告已正常推送，Issue/PR 评论未写入。

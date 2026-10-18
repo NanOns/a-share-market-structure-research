@@ -47,6 +47,23 @@ def test_corrected_owner_exact_input_never_admits_missing_file(monkeypatch, tmp_
         )
 
 
+def test_historical_exact_resolves_verified_pg_package_after_inline_not_found(monkeypatch,tmp_path):
+    import hashlib
+    from pathlib import Path
+    from workbench_analysis import historical_stage_governance_r17 as governance
+
+    raw=b'package-only-pg-bytes';sha=hashlib.sha256(raw).hexdigest();calls=[]
+    def missing(_root,_path,_sha):raise ValueError('HISTORICAL_SOURCE_INGRESS_NOT_FOUND')
+    def package(root,path,expected):
+        calls.append((root,path,expected));return {'raw':raw}
+    monkeypatch.setattr(governance,'read_bound',missing)
+    monkeypatch.setattr(governance,'read_package_bytes',package)
+    monkeypatch.setattr(Path,'read_bytes',lambda *_: (_ for _ in ()).throw(AssertionError('workspace fallback')))
+    bound=governance.exact(tmp_path,dict(path='reports/large.jsonl',sha256=sha,bytes=len(raw)))
+    assert bound.read_bytes()==raw
+    assert calls==[(tmp_path.resolve(),'reports/large.jsonl',sha)]
+
+
 def test_corrected_owner_candidate_json_is_registered_in_pg(monkeypatch, tmp_path):
     import json
     from pathlib import Path

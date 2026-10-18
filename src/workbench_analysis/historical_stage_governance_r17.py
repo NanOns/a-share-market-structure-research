@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib,json,subprocess
 import re
-from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound,read_package_bytes
 STAGE='data/v4/V4_STAGE_ACCEPTED_HEAD.json'
 REGISTRY='config/v4_historical_moving_head_registry_r17_v1.json'
 REGISTRY_SHA='3926d58b3953597e10c4619f442b910c853d229c61e4b4b65bd58f3c05679e4d'
@@ -16,8 +16,16 @@ class PGBoundBytes:
     def read_text(self,encoding='utf-8'):return self._raw.decode(encoding)
 
 def exact(root,ref):
-    try:raw=read_bound(Path(root).resolve(),ref['path'],ref['sha256'])['raw']
-    except (OSError,KeyError,ValueError) as error:raise HistoricalBindingError('PG_ARCHIVE_MISSING_OR_INVALID:'+str(ref.get('path'))) from error
+    project=Path(root).resolve()
+    try:raw=read_bound(project,ref['path'],ref['sha256'])['raw']
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':
+            raise HistoricalBindingError('PG_ARCHIVE_MISSING_OR_INVALID:'+str(ref.get('path'))) from error
+        try:raw=read_package_bytes(project,ref['path'],ref['sha256'])['raw']
+        except (OSError,KeyError,ValueError) as package_error:
+            raise HistoricalBindingError('PG_ARCHIVE_MISSING_OR_INVALID:'+str(ref.get('path'))) from package_error
+    except (OSError,KeyError) as error:
+        raise HistoricalBindingError('PG_ARCHIVE_MISSING_OR_INVALID:'+str(ref.get('path'))) from error
     if hashlib.sha256(raw).hexdigest()!=ref['sha256'] or any(len(raw)!=ref[k] for k in ('bytes','byte_count') if k in ref):raise HistoricalBindingError('EXACT_ARCHIVE_SHA_OR_BYTES_INVALID')
     return PGBoundBytes(ref['path'],raw)
 def registry(root):

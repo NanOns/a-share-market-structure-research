@@ -297,3 +297,10 @@
 - QA 的会话日序列改为读取 accepted DM01 Head 中绑定的精确日历字节，并与 PG R4 日历扩展合并；明确属于诊断候选计算，不创建 accepted 市场日历 publication。四日 QA 重跑通过，`errors=[]`；独立 Core 数值 Oracle、120 项 LOO 样本、锚点沿袭、Health unknown、D2 日期/宇宙、Journal 回滚/NOOP/CAS 检查全通过。新 QA 回执 5,547 bytes、SHA-256 `282d1175921a7d2f5e041e37a03a82e67c830322132bb003c5625a699a76ba9f`，并通过同 SHA 的 PG descriptor 读回。
 - `run_corrected_owner_pipeline(target_date=2026-10-08, stage=all, calendar_source=accepted_dm01_data_head_candidate)` 实跑返回 `CORRECTED_OWNER_QA_PASS_PENDING_SCOPED_ADMISSION`，`source_requests_this_run=0`、`data_head_moved=false`、`production_admission=false`。流水线 receipt SHA-256 `4b4c40dfa031c7d83d997da9512d88be9e58f4860d6e1fd067bd01147e500010`；候选未成为 28766 accepted/正式 Head。
 - 针对新鲜度函数、PG-only 来源读取、Corrected Owner 回放的定向测试：17 passed；相关脚本 `py_compile`、`git diff --check` 通过。28766 SourceAudit 后端仍是已记录的旧进程现场状态；本次未重启/改变 28766，也未触及 28765。
+
+## PG exact/package 历史绑定读取修复（2026-10-18）
+
+- 只读追踪 R14 promotion validator 时，发现它的 R17 `exact()` 只查 inline SourceIngress，不能解析已存在的 chunked SourceIngress package。修复为：inline 明确 NOT_FOUND 后再按同 path/SHA 读 PG package；其他错误仍失败关闭，未加工作区回退。定向 18 项测试通过；`exact()` 对 PG 内 72,536,853 字节、3 chunk 的 R10 候选包实际读回 SHA 与 Head 完全一致。
+- 恢复三个完全可校验的缺失对象到同一 PG SourceIngress：R19 静态归档 `scripts/validate_v4_12_promotion_r14.py` 的 Git 原始 blob（3,948 bytes，精确注册 SHA）；R14 Head 绑定配置 `config/v4_12_active_selector_vectors_r12.json`（19,020 bytes，仓内字节与 Head SHA 一致）；R10 runtime package（72,536,853 bytes，三块 package）。三个对象写后均按其精确 PG descriptor 读回；不改 accepted Data/Stage/V4-12 Head 或权限。
+- R14 历史六轮绑定共 1,718 项，首次盘点时 40 项已在 PG、1,678 项缺失，缺失绑定合计 598,763,135 bytes。为区别“当前业务事实/运行依赖”与大批历史验收证据，批量补档仅推进 50 项；50 项均来自 Head 精确绑定，仓内长度/SHA 匹配且 PG 读回通过，失败 0。其余历史证据未继续无差别导入；R14 validator 尚未全链通过，不能据此声称 V4-12 验收或现役模块验收完成。
+- 本阶段下一步仍是聚焦现役业务文件/运行链的 PG read/write 与 28766 实际功能；历史轮次只有在被明确证明为现役调用依赖后再按确切 Head binding 补齐。正式生产切换与最终生产包继续关闭。

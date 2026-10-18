@@ -237,3 +237,8 @@
 - 按用户最新授权核验数据库连接：唯一 `market_research`（OID `646711`）的现有连接角色为 PostgreSQL `postgres`，实际具备数据库建表及全库读写能力。此前缺的是进程显式 writer 环境变量，不是数据库 ACL；本轮只在单次 Python 子进程内把既有连接显式绑定到 `V4_NATIVE_PG_DSN`，不输出或持久化凭据。
 - 运行仓库哈希校验迁移入口逐项核验 28 项已登记基础迁移，全部 checksum 一致且为 `ALREADY_APPLIED`；本次没有重复执行 DDL，也没有改动 publication、Head 或业务事实行。
 - 为 `data/v4/r2_forward/journal_v1` 登记稳定 workspace id `v4w_ecb96cfbb2fd62f229e2ab17da241cd8` 到其原 schema `v4_forward_eb17ba1165c8c2a5` 的 `forward` 别名。写入前核实该目录存在、PG 目标表存在且含 2,769 条事实；事务提交后通过生产 `workspace_schema()` 路径解析回同一 schema，并再次读回 2,769 条。此次只增加路径无关的 PG namespace alias，不复制/搬移事实、不改 Head。
+
+## 28766 Focus 实页交互与来源审计现场续验（2026-10-18）
+
+- 在独立 28766 浏览器页实际加载 Focus：同一 PG 候选 T0=`2026-09-30`，页面列出 Focus 469、Forward 117 和结算 585；对 Focus 搜索框输入 `002771` 并提交后，页面 URL 带 `q=002771`，列表从 469 项收敛到唯一 `SZ.002771`，分页按钮随单项结果禁用。
+- 进入同一工作台的来源审计视图后，现役 28766 进程仍返回 `R7_SOURCE_AUDIT_NOT_BOUND_TO_CANDIDATE_T0`，点击“来源审计证据”抽屉显示空对象 `{}`。这与此前更新代码的 PG/BFF 直接联验（READY、5624 个股票/板块分母）不一致，证明服务进程尚未载入新后端路由；本轮没有把源码直验冒充实页成功，也没有触碰 28765。新的 SourceAudit 后端投影仍待在 28766 进程完成安全重载后做实页验收。

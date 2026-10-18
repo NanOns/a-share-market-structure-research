@@ -101,6 +101,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 2026-10-19 真实浏览器的 Forward 来源审计页/API 再验通过；四条 R7 事实摘要均与 PG `v4.forward_r7_facts_r1` 一致。该项仅证明历史工程证据可读，未提升 PIT 或发布状态。
 - 收尾时把 R1 ReadIndex 固定行插入占位符改为静态语句、把查询组合改为 Psycopg `Composed`，并把 Journal 的三种固定表读写改为静态语句；移除旧 Shadow dead writer 中硬编码的临时目录，数据库身份仍需配置且构造器在触库前 fail-closed。对应仓库暂存 Blob 准入检查通过（66 项）。附加尝试收集 `tests/test_v4_read_index_r1.py` 时，仓库隔离插件在测试体执行前要求 disposable PG cluster 并中止；未绕过该插件或创建额外数据库，因此该次不计为测试通过，数据库未被该次测试写入。
 - 上述收尾修改后，`tests/test_v4_single_schema_guard_r7.py` 在 G 盘临时根重跑为 5/5 通过，覆盖固定 Schema、Alias 禁止、旧连接拒绝、Shadow 导出关闭及本地 staging 写路径。
+- 已将本阶段提交 `bbebbb6bc62bf5d8f187dc59ee4ed6771d826a30` 推送到任务卡原分支 `codex/v4-workspace-cleanup`。按任务卡尝试更新 Issue #2 正文和 PR #3 讨论，GitHub 集成对两项写入均返回 HTTP 403 `Resource not accessible by integration`；未重试其他写入端点，分支提交/推送已成功。PR 仍为 Draft，不合入开发主分支。
 
 ## 尚未完成的门与下一阶段
 

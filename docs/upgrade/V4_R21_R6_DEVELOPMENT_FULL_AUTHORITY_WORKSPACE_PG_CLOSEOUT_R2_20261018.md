@@ -141,3 +141,10 @@
 - `G:\codex_tmp\v4_r6_tdx_20261016` 为 568,127,024 字节/39 文件的 TDX 原始源快照，`KEEP_SOURCE`；`r6_daily_evidence` 为 3,066,205 字节/22 文件，`KEEP_EVIDENCE`。`test_temp` 共 468,654,562 字节/20,462 文件，均为旧 pytest disposable basetemp 候选；当前无 pytest 进程，PostgreSQL 仅监听 5432，未见 disposable PG listener，列为 `DELETE_REBUILDABLE`。本轮自动生成的定向 pytest 子目录清理请求被执行器策略拒绝，未绕过该限制。
 - `data/v4/dynamic_daily_sources/tdx/20261008` 下两份页面捕获目录的 6 文件共 54,192 字节全部已 PG 精确读回、无现役消费者引用，分类为 `MIGRATE_TO_PG / DELETE_REBUILDABLE`；目录递归删除同样被执行器自动策略拒绝，文件副本保留并登记待清理，不影响 SourceIngress 运行路径。
 - `G:\codex_tmp\r7_active_baseline_20261015` 实测为未登记 worktree 的旧 Git clone：2,252,363,310 字节/2,726 文件、分支 `master`、23 条未提交路径，当前运行代码未发现其路径引用。因该副本带有未归属的源码/数据更改，分类 `UNKNOWN / PRESERVE`，未清理。`v4_repository_governance_r3_20261016` 为 4,675,814,273 字节/82 文件且无 `.git` 的恢复快照容器，分类 `KEEP_EVIDENCE/UNKNOWN`。当前主仓 5 个未跟踪路径（本地 hook、R75 报告、3 个审计脚本）同样保留，未覆盖或暂存。
+
+## 浏览器实页与结构时间线联验（2026-10-18 续行）
+
+- 用 in-app browser 打开 28766 当前 PG 候选的首页、个股详情、板块详情、Focus、Market、Diagnostics/Jobs 实页；导航、详情表、筛选控件、图表控件和各域表格均完成加载。所有页面头部 context 均显示同一 T0 `2026-09-30` 与 `PG 候选快照 · 不代表正式 Head`。
+- 个股 `SEC-0051683845B17D59641B7D1DC261FE2A` 实页显示 253 根日线实际成交图、个股画像与“结构锚点与事件”入口（2 项结构事件）。同一 context-token 的 API 回归 15 个路由全部 HTTP 200：stocks 5,213、sectors 378、focus 469、forward 117、settlement 585、板块成员 25、结构时间线 3 条。板块历史时间线准确返回 `SOURCE_INCOMPLETE / FIRST_ACCEPTED_PIT_MEMBERSHIP_NO_PRIOR_DATED_NATIVE_HISTORY`；Diagnostics/Jobs 准确返回 worker receipts 缺失，没有启动 worker。
+- 本轮测试一度给页面 URL 加了临时 `uiqa` 参数，页面按合同将未知筛选项拒绝；改用无参数正式 URL 复测后 Focus 469 行、Forward 117 行、待结算 585 行均正常呈现，属于测试参数错误，不是产品缺陷。
+- 对 `data/v4/dynamic_daily_sources/tdx/20261008` 与 `G:\codex_tmp\test_temp` 的边界、文件数/大小及无活跃 pytest 进程已复核。PowerShell 执行器对这两个删除请求均自动拒绝；文件仍在，未尝试改用其他执行路径绕过。TDX 捕获副本已迁 PG 且无消费者，pytest basetemp 为可重建项，仍列待清理。

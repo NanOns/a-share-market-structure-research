@@ -161,6 +161,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 以任务卡发布 HEAD `2d838f28342664e26cdd78c01d0a6638048da3e7` 为基线，当前开发分支 6 个提交的增量改动共覆盖固定 Schema 迁移、`v4_native` 运行时护栏、R2 Research Snapshot/Series/Journal、Forward/Focus/History/ReadIndex/Jobs/Owner/Publication/SourceIngress 消费者、BFF/股票图表/Replay/开发服务、Corrected/R43 Owner PG-only 精确来源读取及针对性测试。新增点名的 Owner Delta 为 `src/workbench_analysis/corrected_owner_replay.py`、`src/workbench_analysis/r43_owner_replay.py` 和 `tests/test_v4_r6_pg_only_owner_source_reads.py`；Forward/History/Jobs/ReadIndex 的 Schema Delta 由对应固定表迁移及消费者文件列在 `git diff 2d838f28342664e26cdd78c01d0a6638048da3e7..HEAD --name-only` 中。当前额外工作区修改没有计入这些已提交增量。
 - 上述变动可证明指定路径已有单 Schema 代码实现及局部真实调用验收，不消除原 266 的历史源边界对账工作；在生产业务读全量盘点、PG 数据身份/Head 验收和 per-ID 对账完成前，266 仍保留为独立历史基线，新增 delta 继续按“代码 / 实际 PG / 28766 DEV / Accepted”分层追踪。
 - R14 历史 1,678 项绑定继续处于暂停扩量状态；本轮未批量迁移，也未改写 append-only 历史绑定。仅已核验为活动依赖的确切 Forward/History/Owner/ReadIndex/Research 事实通过各自版本化迁移台账承载，不能把台账行数解释为 1,678 项整体验收。
+- 按 R6 的原始绑定核验记录复审此前已导入的 50 项：它们来自 R14 Head 对 R8–R13 历史验收/运行证据的 path+SHA 绑定，原字节长度/SHA 与 PG 读回当时逐项一致；不属于 R20/R21 的 266 个现役业务调用点或 V4 当前业务源数据。归类为 `HISTORICAL_EVIDENCE_ONLY / R14_AUDIT_VALIDATOR_INPUT`，保留 Head 原件身份、PG append-only 记录与既有审计 receipt，不做删除或再复制；R14 validator 尚未全链通过，因此这 50 项也不宣称完成其历史验收。剩余 1,678 项维持停止线。
 
 ### 2026-10-19 FEP 旧读入口与隔离探针续修
 

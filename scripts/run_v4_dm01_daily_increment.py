@@ -18,7 +18,7 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
-from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
+from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, POLICY, HEAD
 from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
 from common.paths import (  # noqa: E402
     resolve_baostock_cache_root, resolve_tdx_root, resolve_tdx_snapshot_root,
@@ -30,8 +30,7 @@ from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baost
 
 
 def _runtime_acceptance(target_date: str) -> tuple[dict | None, str | None]:
-    contract = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
-                                       "config/baostock_supplemental_contract_v1.json")
+    contract = _daily_runtime_contract("BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0")
     settings = contract.get("dm01_daily_updates", {})
     template = settings.get("runtime_acceptance_manifest_template")
     if not template:
@@ -64,7 +63,7 @@ def _run_json_cli(*args: str) -> tuple[int, dict]:
 
 
 def _read_baostock_daily_update_from_pg(target_date: str, snapshot_id: str,
-                                       source_revision: str | None = None) -> dict:
+                                       source_revision: str | None = None) -> tuple[dict, dict]:
     """Capture exact provider cache bytes once, then consume the PG readback."""
     folder=resolve_baostock_cache_root(ROOT)/"baostock"/target_date.replace("-","")
     snapshot_file=folder/snapshot_id/"daily_update.json"
@@ -74,26 +73,36 @@ def _read_baostock_daily_update_from_pg(target_date: str, snapshot_id: str,
     ingested=ingest_captured_bytes(ROOT,logical_path,raw,
         source_revision=str(source_revision or snapshot_id),
         source_origin='BAOSTOCK_DAILY_CAPTURE_EXPLICIT_PROVIDER_BOUNDARY')
-    return json.loads(read_bound(ROOT,logical_path,ingested['source_sha256'])['raw'])
+    return (json.loads(read_bound(ROOT,logical_path,ingested['source_sha256'])['raw']),
+            dict(path=logical_path,sha256=ingested['source_sha256'],bytes=ingested['source_bytes']))
 
 
-def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | None, str | None]:
+def _ingest_pg_json_projection(logical_path: str, payload: dict, *, source_revision: str,
+                               source_origin: str) -> dict:
+    """Bind an already captured/PG-read JSON payload for downstream PG-only readers."""
+    raw=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False).encode('utf-8')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes
+    result=ingest_captured_bytes(ROOT,logical_path,raw,source_revision=source_revision,source_origin=source_origin)
+    return dict(path=result['source_path'],sha256=result['source_sha256'],bytes=result['source_bytes'])
+
+
+def _run_baostock_daily_capture(target_date: str) -> tuple[dict | None, dict | None, dict | None, str | None]:
     # The active DM-01 lane uses the adapter that captures exact native response
     # bytes and appends the date-bound acceptance fact to PG before returning.
     smoke_code, smoke = _run_json_cli("scripts/accept_dynamic_daily_baostock_v2.py", "--target-date", target_date)
     if smoke_code != 0 or smoke.get("status") != "ACCEPTED":
-        return None, smoke, str(smoke.get("reason") or smoke.get("status") or "BAOSTOCK_RUNTIME_SMOKE_NOT_ACCEPTED")
+        return None, None, smoke, str(smoke.get("reason") or smoke.get("status") or "BAOSTOCK_RUNTIME_SMOKE_NOT_ACCEPTED")
     manifest, error = _runtime_acceptance(target_date)
     if manifest is None:
-        return None, smoke, error
+        return None, None, smoke, error
     capture_code, capture = _run_json_cli("scripts/capture_baostock_daily_update.py", "--target-date", target_date)
     if capture_code != 0 or capture.get("status") not in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
-        return None, smoke, str(capture.get("reason") or capture.get("status") or "BAOSTOCK_DAILY_CAPTURE_NOT_READY")
+        return None, None, smoke, str(capture.get("reason") or capture.get("status") or "BAOSTOCK_DAILY_CAPTURE_NOT_READY")
     try:
-        record=_read_baostock_daily_update_from_pg(target_date,str(capture['snapshot_id']),capture.get('source_revision_id'))
+        record,binding=_read_baostock_daily_update_from_pg(target_date,str(capture['snapshot_id']),capture.get('source_revision_id'))
     except (OSError, ValueError, KeyError, TypeError) as exc:
-        return None, smoke, "BAOSTOCK_DAILY_SNAPSHOT_READBACK_FAILED:" + type(exc).__name__
-    return record, smoke, None
+        return None, None, smoke, "BAOSTOCK_DAILY_SNAPSHOT_READBACK_FAILED:" + type(exc).__name__
+    return record, binding, smoke, None
 
 
 def _accepted_gbbq_snapshot(target_date: str, stage_binding: dict | None = None) -> dict | None:
@@ -180,6 +189,7 @@ def main() -> int:
     candidate_result = None
     promotion_result = None
     bao = None
+    bao_binding = None
     bao_smoke = None
     bao_error = None
     runtime_manifest = None
@@ -226,13 +236,13 @@ def main() -> int:
                     from workbench_analysis.dm01_corrected_source_capture_v2 import corrected_baostock_capture
                     source,runtime_manifest,bao_error=corrected_baostock_capture(ROOT,args.target_date,snapshot_root/'corrected_staging'/args.target_date/'baostock_v2')
                     if source:
-                        bao=_read_baostock_daily_update_from_pg(args.target_date,str(source['snapshot_id']),source.get('source_revision_id'))
+                        bao,bao_binding=_read_baostock_daily_update_from_pg(args.target_date,str(source['snapshot_id']),source.get('source_revision_id'))
                         bao_smoke=dict(status='ACCEPTED',scope='CORRECTED_READ_CAPABILITY_ONLY')
                     else:bao_smoke=dict(status='BLOCKED',reason=bao_error)
                     probe_code,gbbq_probe=_run_json_cli('-m','scripts.probe_v4_dm01_gbbq_revision','--target-date',args.target_date)
                     gbbq_stage_binding=gbbq_probe.get('pg_stage_state')
                 else:
-                    bao, bao_smoke, bao_error = _run_baostock_daily_capture(args.target_date)
+                    bao, bao_binding, bao_smoke, bao_error = _run_baostock_daily_capture(args.target_date)
                     runtime_manifest, runtime_error = _runtime_acceptance(args.target_date)
             if bao is not None:
                 if args.typed_scope_v2:
@@ -317,12 +327,21 @@ def main() -> int:
                     raise ValueError("DAILY_SOURCE_FREEZE_PG_STAGE_BINDING_REQUIRED")
                 freeze = read_stage(ROOT, freeze_pg_state["binding"], trade_date=args.target_date,
                     stage="daily_source_freeze")
-                bao_path = resolve_baostock_cache_root(ROOT) / 'baostock' / args.target_date.replace('-','') / str(bao['snapshot_id']) / 'daily_update.json'
-                settings = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
-                    "config/baostock_supplemental_contract_v1.json")['dm01_daily_updates']
-                runtime_path = ROOT / settings['runtime_acceptance_manifest_template'].replace('{YYYYMMDD}',args.target_date.replace('-',''))
                 try:
-                    freeze,parent,cal,identity = project_source_freeze(ROOT,freeze,ref(ROOT,tdx_capture_path),ref(ROOT,bao_path),ref(ROOT,runtime_path))
+                    capture_revision=hashlib.sha256(json.dumps(
+                        tdx,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False
+                    ).encode('utf-8')).hexdigest()
+                    tdx_binding=_ingest_pg_json_projection(
+                        f"external/tdx_daily_capture/{args.target_date}/{capture_revision}/capture_receipt.json",
+                        tdx,source_revision=capture_revision,
+                        source_origin='TDX_OFFICIAL_DAILY_CAPTURE_RECEIPT_PROJECTION')
+                    runtime_binding=_ingest_pg_json_projection(
+                        f"external/baostock_runtime_acceptance/{args.target_date}/{runtime_manifest['manifest_sha256']}/accepted_runtime_manifest.json",
+                        runtime_manifest,source_revision=runtime_manifest['manifest_sha256'],
+                        source_origin='BAOSTOCK_ACCEPTED_RUNTIME_PG_FACT_PROJECTION')
+                    if not isinstance(bao_binding,dict):
+                        raise ValueError('BAOSTOCK_DAILY_PG_SOURCE_BINDING_REQUIRED')
+                    freeze,parent,cal,identity = project_source_freeze(ROOT,freeze,tdx_binding,bao_binding,runtime_binding)
                     candidate_result = build_candidate(parent=parent,freeze=freeze,cal=cal,identity=identity,root=ROOT,builders=BUILDERS)
                     promotion_result = promote(candidate_result['candidate'],expected_parent_sha=parent['binding']['sha256'],root=ROOT)
                     readiness = dict(readiness,status=promotion_result['status'])

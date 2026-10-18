@@ -223,6 +223,9 @@ def load(root: Path, day: str, *, sdk: Mapping[str, Any], auth_mode: str | None 
     key = _key(day)
     schema = v4_native.workspace_schema(root / FOLDER, "forward")
     with v4_native.connection(schema, read_only=True) as pg:
+        relation = pg.execute("SELECT to_regclass('forward_facts')").fetchone()
+        if not relation or relation[0] is None:
+            raise ValueError("BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND")
         identity = ForwardFactStore._database_identity(pg)
         expected_identity=dict(_expected_identity())
         if expected_identity and identity != expected_identity:

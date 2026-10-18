@@ -96,3 +96,10 @@
 - `src/workbench_service/pit_observation.py` 不再把当前源复制到工作区作为 PIT 冻结档案；5类 manifest 源按精确 path/SHA 从 PG SourceIngress 读取，观察收据也以内容绑定写入/读回 PG。历史本地收据只在 PG 缺失时按原字节做一次导入；已有 18 个本地归档文件保留，实测前后文件集合、大小和时间戳均未变化。
 - 用28766正在服务的同一 PG 候选 schema 实跑冻结两次：T0=`2026-09-30`、5个源、同一 receipt 与 source identity，`idempotent=true`；随后对5个 path/SHA 再经 PG SourceIngress/package binding 精确读回，共75,180,686字节。PG 收据为1,569字节、SHA `6de3d849…42a828`，合同 `R2_FIRST_OBSERVED_FREEZE_V1`。按合同仍返回 `strict_t0_pit_ready=false`、`AS_RECORDED=false`。
 - 定向验证 `tests/test_r2_csv_pit.py`：3 passed。该改动只消除了首次观察模块对业务源文件的重复回读和新档案落盘，没有授予历史 PIT、改变任何 Head 或发布范围。
+
+## DM-01 日更接受数据继续收口到 PG
+
+- 修正 `scripts/run_v4_dm01_daily_increment.py` 对 PG 日更合同读取器的旧式参数调用。该入口现在按已登记的 `BAOSTOCK_SUPPLEMENTAL_SOURCE_V1@1.1.0` 读取合同，不再把废弃的本地合同文件参数传给只支持 PG registry 的运行时。
+- BaoStock 日线首次 SourceIngress 后保留原 path/SHA/bytes PG binding 并传给后续步骤；当前进程捕获的 TDX 收据、从 PG 接受事实加载的 BaoStock runtime manifest 分别用内容寻址方式登记 SourceIngress。`project_source_freeze` 下游继续通过 `dm01_runtime_r4.read()` 精确从 PG 读这三类输入，避免回开工作区副本。投影键含捕获内容摘要，重复捕获不会覆盖不同 receipt。
+- 将 BaoStock runtime acceptance fact store 在唯一开发 PG 中完成空库 DDL 初始化及稳定 workspace alias 注册：namespace `v4_forward_ca206ffd216e90b4`，alias `ACTIVE`，原路径目录不存在、原始文件迁移数为 0、当前事实数为 0；没有写入接受记录或移动 Head。对真实 PG 读路径核验后，缺事实按 `BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND` 返回，不再触发未初始化表的 SQL 异常。
+- 定向单测 7 passed；首次观察 PIT 套件 3 passed；修改模块 `py_compile` 通过。较宽的冻结 DM-01 系统套件由仓库隔离插件拒绝访问非 disposable 的共享 PG，未关闭或绕过该隔离。当前日更仍受 2026-10-08 官方 TDX 中间交易日源包缺失阻断；本修正尚未使日更或接受 Head 通过。

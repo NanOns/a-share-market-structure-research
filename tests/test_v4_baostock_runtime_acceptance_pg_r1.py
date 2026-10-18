@@ -53,13 +53,20 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
     identity = {"database": "market_research", "database_oid": 42, "host": "127.0.0.1", "port": 5432}
 
     class Cursor:
-        def execute(self, query, params):
+        def __init__(self):
+            self._relation_query = False
+
+        def execute(self, query, params=None):
+            if "to_regclass" in query:
+                self._relation_query = True
+                return self
             assert "FROM forward_facts" in query
             assert params == (pg_acceptance.KIND, day)
+            self._relation_query = False
             return self
 
         def fetchone(self):
-            return row
+            return ("forward_facts",) if self._relation_query else row
 
     @contextmanager
     def connection(schema, *, read_only):
@@ -82,8 +89,9 @@ def test_pg_loader_reads_date_fact_and_validates_database_identity(monkeypatch):
 def test_pg_loader_rejects_payload_digest_mismatch(monkeypatch):
     day, runtime, _record, _row = _fixture()
     class Cursor:
-        def execute(self, *_args): return self
-        def fetchone(self): return (json.dumps({"contract_id": pg_acceptance.CONTRACT}), "0" * 64)
+        def execute(self, query, *_args): self.relation_query="to_regclass" in query; return self
+        def fetchone(self):
+            return ("forward_facts",) if self.relation_query else (json.dumps({"contract_id": pg_acceptance.CONTRACT}), "0" * 64)
 
     @contextmanager
     def connection(*_args, **_kwargs): yield Cursor()
@@ -98,6 +106,24 @@ def test_pg_loader_rejects_payload_digest_mismatch(monkeypatch):
         assert str(exc) == "BAOSTOCK_PG_RUNTIME_PAYLOAD_DIGEST_MISMATCH"
     else:
         raise AssertionError("payload digest mismatch was accepted")
+
+
+def test_pg_loader_reports_missing_unmigrated_store_as_not_found(monkeypatch):
+    class Cursor:
+        def execute(self, *_args): return self
+        def fetchone(self): return (None,)
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield Cursor()
+
+    monkeypatch.setattr(pg_acceptance.v4_native, "connection", connection)
+    monkeypatch.setattr(pg_acceptance.v4_native, "workspace_schema", lambda *_: "v4_forward_fixture")
+    try:
+        pg_acceptance.load("G:/codex work/大A交易", "2026-10-16", sdk={})
+    except ValueError as exc:
+        assert str(exc) == "BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND"
+    else:
+        raise AssertionError("missing uninitialized runtime store was not reported")
 
 
 def test_native_response_binding_rejects_modified_exact_bytes():

@@ -84,9 +84,8 @@ class DailyJobs(StateMachine):
         calendar_mode=os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
         if calendar_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
         self._load_approved_policy()
-        with psycopg.connect(self.dsn,connect_timeout=5) as pg:
-            create_schema(pg,self.schema)
         with connection(self.schema,dsn=self.dsn) as pg:
+            create_schema(pg,self.schema)
             pg.execute('SELECT pg_advisory_xact_lock(%s)',(self.lock_key,))
             pg.execute(DDL)
 

@@ -3,8 +3,7 @@ import hashlib
 import json
 import re
 from psycopg.types.json import Jsonb
-from .v4_native import connection, create_schema, workspace_schema, configured_dsn
-import psycopg
+from .v4_native import connection, create_schema, workspace_schema
 
 CONTRACT='V4_PG_DATED_HISTORY_INDEX_R1'
 
@@ -37,9 +36,9 @@ def canonical(value): return json.dumps(value,sort_keys=True,ensure_ascii=False,
 def build(root,rows,*,head_token,t0,source_digest):
     if len(head_token)!=64 or len(source_digest)!=64: raise ValueError('HISTORY_SOURCE_DIGEST_REQUIRED')
     schema=workspace_schema(root,'history')
-    with psycopg.connect(configured_dsn(),connect_timeout=5) as pg: create_schema(pg,schema)
     version=hashlib.sha256(canonical(dict(contract_id=CONTRACT,head_token=head_token,t0=t0,source_digest=source_digest))).hexdigest()
     with connection(schema) as pg:
+        create_schema(pg,schema)
         # Whole frozen history publication writes millions of bars. Bound this
         # producer transaction separately from latency-bounded HTTP reads.
         pg.execute("SET LOCAL statement_timeout = '120s'")

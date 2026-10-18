@@ -243,6 +243,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 静态追踪发现 `ForwardR7Store` 的 R7 表存在性探测、storage verification 与独立 `_latest_publish_index()` 读路径使用裸连接执行 SELECT，未通过统一只读事务边界。现改为固定 `v4` 的 `connection(..., read_only=True)`，独立发布索引查询显式 `REPEATABLE READ READ ONLY`；写路径保持显式写连接不变。
 - `tests/test_forward_r7_task.py` 与 `tests/test_v4_candidate_r7_source_audit_route.py` 定向回归 `11 passed`。随后用真实项目连接只读调用 `ForwardR7Store.verify_existing_storage()` 与 `read_counts()`，读回固定关系 `v4.forward_r7_facts_r1`、历史样本 39,366、匹配 924/不匹配 37,812/未知 630，最新历史 T0 `2026-10-13`、generation 7。该 R7 历史研究发布与 UI 的 `2026-09-30` 候选不是同一 T0，未将其替代为该候选的来源；`live` 与 `late` 仍为空。
 - 本次数据库读回显式只读，无 PG 写入、Schema/Head 变化或 28765 操作。后续仍需独立签发的同 T0 来源/Owner 才能解除业务状态门。
+- 相关窄范围检查 `tests/test_v4_history_locator_contract_r1.py` + `tests/test_v4_single_schema_guard_r7.py` 为 `7 passed`，四个本轮改动 Python 文件 `py_compile` 通过。PG 写入相关 pytest 因隔离钩子明确拒绝把开发库作为 disposable test DB 而未通过，其中包括 `DISPOSABLE_PG_CLUSTER_REQUIRED`；部分 Daily fixture 另因未配置 `TDX_ROOT` 报错。该运行记录为 `TEST_INFRA_BLOCKED`，不计入模块 PASS，也没有调整或绕过隔离钩子。
 
 ### 2026-10-19 现场目录与服务槽复核
 

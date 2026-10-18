@@ -267,7 +267,7 @@ def _existing_downloader_package(target_date: str, package_url: str, *, max_byte
     """
     root = Path(project_root).resolve() if project_root is not None else Path(__file__).resolve().parents[2]
     child_env = os.environ.copy()
-    from common.paths import resolve_ingest_temp_root
+    from common.paths import resolve_ingest_temp_root, resolve_tdx_snapshot_root
     temp_root = resolve_ingest_temp_root(root)
     temp_root.mkdir(parents=True, exist_ok=True)
     for key in ('TMP', 'TEMP', 'TMPDIR'):
@@ -288,7 +288,8 @@ def _existing_downloader_package(target_date: str, package_url: str, *, max_byte
 
     def verified(receipt_ref: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
         receipt_path = (root / receipt_ref['path']).resolve()
-        receipt_path.relative_to(root / 'data/v4/source_evidence/dm01_a01_r3/tdx')
+        snapshot_root = resolve_tdx_snapshot_root(root)
+        receipt_path.relative_to(snapshot_root / 'source_evidence/dm01_a01_r3/tdx')
         if sha256_file(receipt_path) != receipt_ref['sha256']:
             raise TDXSourceError('TDX_EXISTING_RECEIPT_DIGEST_MISMATCH')
         receipt = json.loads(receipt_path.read_bytes())

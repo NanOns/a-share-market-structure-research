@@ -347,7 +347,13 @@ def test_tdx_root_uses_configured_resolver_when_omitted(monkeypatch,tmp_path):
 
 def test_existing_downloader_uses_structured_stdout_receipt_without_report_pointer(monkeypatch,tmp_path):
     url='https://data.tdx.com.cn/vipdoc/hsjday.zip'
-    capture_root=tmp_path/'data/v4/source_evidence/dm01_a01_r3/tdx/run'
+    snapshot_root=tmp_path/'dynamic_daily_sources'
+    config=tmp_path/'config';config.mkdir()
+    (config/'paths.yaml').write_text(
+        'tdx:\n  snapshot_root: "dynamic_daily_sources"\ningest:\n  temp_root: "G:/codex_tmp"\n',
+        encoding='utf-8',
+    )
+    capture_root=snapshot_root/'source_evidence/dm01_a01_r3/tdx/run'
     package=capture_root/'sha256-package'/'hsjday.zip'
     package.parent.mkdir(parents=True)
     package.write_bytes(b'zip-payload')

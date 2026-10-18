@@ -354,3 +354,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 ### DB-09 大包分块边界续验
 
 - 以 67,108,865 字节的工程测试字节（超过 64 MiB 内联上限 1 字节）走 `ingest_package_bytes`，分成 5 个 16 MiB 上限内的 chunk，并由 `read_package_bytes` 在同一事务重组读回；长度与 SHA-256 `21cb3b4aac53f4501245ed1913e95357c443705cb68dd01addccd764f3811b29` 精确一致。事务随后回滚，独立 RR/RO 查询使用唯一 workspace namespace、manifest/chunk kind 与全部精确 fact_key 核对，持久探针行为 0 行。该工程探针验证边界、分块、SHA 和读回，不向数据库沉淀 67 MiB 测试内容；也不替代真实来源或历史 551 MB ZIP 的接纳。
+
+### 2026-10-19 Focus、Forward 与日更页面续验
+
+- 28766 `/v4/research/focus` 异步加载后显示候选冻结源重建 Focus 469 条（首屏 30 条），并提供搜索/排序/证据控件；页面显式提示结构谓词缺失和旧账未核对。独立 Forward 分母 117、期限计划 585、已发布期限状态 5（覆盖 1 个样本）、成熟合格 0，明确不计算胜率和收益分位数。
+- `/v4/research/forward?view=settlement` 显示 T0 `2026-09-30`、当前页 5/5 个期限投影、状态记录 5、`PENDING` 5、成熟合格 0；均为候选快照，不作为正式 Head 或 T0 可知证明。
+- `/v4/research/data-update` 实际页面显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`、worker 未启动、只读预览；检查源、补齐、自动更新、失败重试、取消均禁用，作业进度表为空。未触发任何写操作。
+- `/v4/research/market` 实际显示盘后候选 T0 `2026-09-30`：上涨 2,344、下跌 2,712、平盘 155、不可判定 13；分母 5,224、行情 5,213、成交额 14,378.36 亿元；涨跌停统计 56/12/11/1。官方/媒体事件源未绑定，页面不宣称实时状态。

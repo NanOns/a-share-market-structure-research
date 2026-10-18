@@ -350,3 +350,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 在 `market_research` 的既有开发连接上用事务内工程字节探针验证 `ingest_captured_bytes`：45 字节精确输入写入 `v4.forward_facts`，PG 绑定读回 SHA-256 `6e98c67a81988c7a9e7ce3b5ed859cb5c6a01ed2cd26b89184c491c1af4076e8`，同一字节/路径重试返回 `ALREADY_PRESENT`。随后显式回滚；新的 `REPEATABLE READ READ ONLY` 会话按精确 `(workspace_namespace,kind,fact_key)` 查询确认持久行数为 0，`transaction_read_only=on`。该结果只验证小包写读与幂等机制，不生成历史接受证据。
 - 28766 内置浏览器打开 `/v4/research/diagnostics/jobs` 并等待异步加载后，真实页面显示候选 T0 `2026-09-30`、`PG_CANDIDATE_SNAPSHOT`、events 33 / Focus 469 / Forward 117 / Market 1 / Sectors 378 / Settlement 5 / Sources 4 / Stocks 5,213；worker 未启动，快照无作业回执，来源请求 0。页面如实 fail-closed；DB-10 的实际日更和 worker 回执仍未验收。
+
+### DB-09 大包分块边界续验
+
+- 以 67,108,865 字节的工程测试字节（超过 64 MiB 内联上限 1 字节）走 `ingest_package_bytes`，分成 5 个 16 MiB 上限内的 chunk，并由 `read_package_bytes` 在同一事务重组读回；长度与 SHA-256 `21cb3b4aac53f4501245ed1913e95357c443705cb68dd01addccd764f3811b29` 精确一致。事务随后回滚，独立 RR/RO 查询使用唯一 workspace namespace、manifest/chunk kind 与全部精确 fact_key 核对，持久探针行为 0 行。该工程探针验证边界、分块、SHA 和读回，不向数据库沉淀 67 MiB 测试内容；也不替代真实来源或历史 551 MB ZIP 的接纳。

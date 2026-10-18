@@ -182,7 +182,7 @@
 
 - 真实打开 28766 Market 页：宽度 5,224 个分母中有 5,213 个实际行情（上涨 2,344、下跌 2,712、平盘 155、未知 13），成交额 14,378.36 亿元；5 个指数、涨跌停统计和 56 个涨停梯队正常呈现。页面说明这是截至 9-30 的盘后历史截面；分钟级炸板与批准的媒体/官方消息事实源仍未绑定，状态没有被推断填充。
 - 真实打开 Diagnostics/Jobs 页：环境为 `PG_CANDIDATE_SNAPSHOT`、T0 9-30，显示 events 33、Focus 469、Forward 117、Market 1、Radar 117、Sectors 378、Settlement 585、Sources 4、Stocks 5,213；明确标注本次没有启动日更 worker、快照不含作业回执、source requests=0，原因 `PG_CANDIDATE_DOES_NOT_CONTAIN_DAILY_WORKER_RECEIPTS`。
-- 对配置为只读输入的 `D:/new_tdx` 只检查三个沪/深/北证 `.day` 文件边界及 2026-10-08 记录：均无目标日记录，最新分别到 2026-09-10、09-11、09-10。该本地终端快照不能补出 10-08；未从之后的数据包倒填，也未更改 TDX 源目录。
+- 初查只抽了三只证券，不足以代表整棵只读源目录；该样本结论已由后续 12,246 文件定向枚举订正：仅 8 个 `.day` 文件含 2026-10-08 记录，其余记录多数截至 2026-09-10；具体覆盖、完整性和 PG 入库见本报告末尾“本地 TDX 10-08 稀疏记录 PG SourceIngress 续验”。源根始终只读，未从其余日期倒填。
 - 官方[通达信个人行情数据页](https://www.tdx.com.cn/article/vipdata.html)列出沪深京完整日线包，并说明下载包要在更新日期到达后才包含当日数据；该公开页没有 2026-10-08 的独立历史日包链接。此前 PG SourceIngress 捕获的官方更新元数据把最新可用包标在 10-16，因此连续正式日更链仍卡在 10-08 中间日；本地旧快照和 10-16 回溯内容均不被当作 PIT/accepted 输入。
 
 ## 证券图表交互控件实页复验续行（2026-10-18）
@@ -231,6 +231,13 @@
 
 - PG 中已存在 2026-10-16 的 `V4_R6_DEVELOPMENT_OWNER_CANDIDATE_R1` 1.0.0 与 1.1.0 候选。两版都明确为 `DIAGNOSTIC_ONLY`、`accepted_head=false`、`publication_id=null`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`；1.0.0 Owner 行 5,567，1.1.0 组件计数为 TDX Core 5,567、BaoStock 日线交叉校验 5,226、原生/归一化因子各 48。来源时间记录为 2026-10-18T04:59:20Z。该数据是可读的开发 Owner 候选，不是已发布或 accepted 的开发/生产 Head；未修改状态。
 - 新增 `V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1@1.0.0` 输出合同，READY 与 SOURCE_INCOMPLETE 均给出一致合同标识、版本、绑定范围和证据级别。候选 `2026-09-30` 的直接 PG 函数验读仍返回 READY；该契约及路由边界定向回归 3 passed，修改模块 `py_compile` 通过。
+
+## 本地 TDX 10-08 稀疏记录 PG SourceIngress 续验（2026-10-18）
+
+- 使用正式 `tdx.day_reader` 只读枚举配置源根 `D:/new_tdx/vipdoc` 下 12,246 个沪/深/北 `.day` 文件：12,244 个首尾记录结构有效，2 个文件边界无效；按有序定长记录定位到恰好 8 个包含 `2026-10-08` 的证券文件。其余文件的末条日期绝大多数早于 10-08；只有上述 8 个本地文件的末条日期为 10-08，覆盖显然不是全市场快照。
+- 对 8 个完整 `.day` 文件逐条校验日期单调性、重复日期、OHLC 和金额，全部 `valid=true`；修改时间集中在 2026-10-09 10:31–12:46 UTC。逐项解析 TDX 原生记录并核对目标日字段，没有把修改时间解释成官方发布日期或首可用证明。
+- 按用户的 PG 全权限授权，将 8 份原始文件合计 976,768 字节以 `V4_HISTORICAL_SOURCE_INGRESS_PG_R1@1.1.0` 精确写入唯一 `market_research`，来源标记 `LOCAL_TDX_READ_ONLY_ROOT_WITHOUT_OFFICIAL_PACKAGE_RECEIPT`，revision 明示本地文件修改时间和 SHA-256。随后在同一个 repeatable-read 只读事务中，按原始绝对路径+SHA 读取 8 项并逐字节一致；目标日收盘分别为 `SH.600497` 8.80、`SH.688349` 13.30、`SZ.000021` 33.12、`SZ.002202` 16.68、`SZ.002372` 8.92、`SZ.002373` 7.18、`SZ.300197` 1.97、`SZ.301486` 209.86。
+- 这些事实只构成 `DIAGNOSTIC_ONLY_PARTIAL_LOCAL_SNAPSHOT`：无原始官方 ZIP/receipt、全市场覆盖、accepted calendar、publication 或 Head；`AS_RECORDED=false`、`PIT_ELIGIBLE=false`。它们补上本地输入证据的 PG 读回，不解除 10-08 连续日更门禁、不回填其他证券、不升级为正式 TDX SourceIngress/Owner。原始只读文件未改；完整结构与 PG 绑定证据保存在 `G:\codex_tmp\r21`。
 
 ## 本轮数据库全权限与工作空间别名实修续行（2026-10-18）
 

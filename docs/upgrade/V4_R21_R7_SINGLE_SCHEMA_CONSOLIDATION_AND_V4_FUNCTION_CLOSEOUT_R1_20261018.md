@@ -24,7 +24,7 @@ production_changed: false
 | S0 真实对象、消费者和权限盘点 | PASS | 合并前只读快照为 76 个 V4 物理 Schema；2026-10-19 最终只读快照确认 DB OID 646711、`127.0.0.1:5432`、只读事务开启，现只剩 `v4`。完整最终快照在 `G:\codex_tmp\v4_single_schema_inventory_20261019.json`。 |
 | S1 停止动态 Schema 生成 | PASS | `workspace_schema()` 固定返回 `v4`；应用连接拒绝任何其他 Schema；Schema 创建边界拒绝非 `v4`；Alias 注册禁用；旧独立 live Shadow writer 在连接数据库前 fail-closed，R1/R2 导出 API 仅委托固定 v4 R3 writer。 |
 | S2 固定表结构 | PASS | 最新 `REPEATABLE READ READ ONLY` 目录核验为 `v4` 下 123 张表、85 个例程、184 个非内部触发器。计数包括 FEP 与 Shadow 固定存储迁移；这些触发器是现役版本化表的约束，不是旧 Schema 残留。 |
-| S3 精确迁移与旧 Schema 清理 | PASS | 只读目录确认 `v4_*` Schema 为 0，跨 Schema 目录依赖为 0。所有删除使用 `RESTRICT`。Forward 映射 11 个来源 Schema 的 9,256 条精确映射均为 `VERIFIED`。 |
+| S3 精确迁移与旧 Schema 清理 | PARTIAL | 当前全库非系统用户 Schema 仅 `v4`，旧 75 项均不在目录，跨用户 Schema 依赖为 0；但逐项清理执行收据不足：G 盘证据审计仅找到 37 项持久 `DROP_RESTRICT_SUCCESS` 收据，38 项没有可回读的逐项执行收据，其中 8 项 Forward/R8 在仓库也没有对应清理执行器。不能将目录缺席等同于逐项 RESTRICT 成功证明。Forward 映射 11 个来源 Schema 的 9,256 条行映射均为 `VERIFIED`，另有 R8 的独立 251 行 digest 回执。 |
 | S4 全部运行时消费者切换 | PARTIAL | 主研究、股票图表、板块成员、Focus/Forward、诊断、Owner 精确 SourceIngress、日更仓储和 Shadow 导出/读回均经唯一 `v4` 边界；历史引用只通过固定表中的精确迁移回执解析。Shadow 固定存储已部署，真实接受清单仍缺失并 fail-closed。 |
 | S5 全模块续修 | PARTIAL | 可执行的消费者修复和 28766 浏览器检查已推进。候选快照未发布为正式 Head；缺少接受交易日历及若干模块历史输入，不能将候选可读视为模块验收完成。 |
 | S6 DB-01..12 与 28766 浏览器验收 | PARTIAL | 已完成的受控数据库及浏览器检查见下表；待到期、PIT 历史、日更作业回执和真实上游输入仍未满足全部验收门。 |
@@ -32,7 +32,7 @@ production_changed: false
 ## PostgreSQL 迁移与核验
 
 - 只读事务实测：数据库 `market_research`，OID `646711`，端口 `5432`，`transaction_read_only=on`，隔离级别 `repeatable read`。本机 PostgreSQL 子进程不是多个数据库实例。
-- 最终 Schema：合并前的 76 个 V4 物理 Schema 收敛为 `v4` 一项；75 个旧 V4 Schema 已清理；`v4_*` 为 0；目录跨 Schema 依赖为 0。旧 Schema 清理未用 `CASCADE`。
+- 最终目录状态：合并前的 76 个 V4 物理 Schema 当前只剩 `v4`；75 个旧 Schema 均不在目录，`v4_*` 为 0，目录跨用户 Schema 依赖为 0。对清理方式作证据复核后，现有可持久读回的 `DROP_RESTRICT_SUCCESS` 收据为 37/75；38 项仅能证明最终目录缺席与相应迁移/清理合同，其中 30 项有使用 `RESTRICT` 的清理脚本但没有逐项执行输出收据，另 8 项（7 个 `v4_forward_*` 与 `v4_r8_forward_64d0f9c30983a3ac`）在当前仓库找不到相应清理执行器。未发现 CASCADE 执行证据，但也不能把未留存执行收据表述为已证实 RESTRICT 成功。逐项核对文件为 `G:\codex_tmp\v4_single_schema_evidence_audit_r1_20261019.json`。
 - 已把初始快照 76 项与迁移/退役台账、最终 `pg_namespace` 结果交叉核对，形成 75 个旧 Schema 名称级退役矩阵；75/75 均已不在最终目录。分类为 Research 32、Forward 12、R8 Forward 1、History 3、Jobs 9、ReadIndex 2、Journal Registry 2、Owner/其他旧模块 13、`v4_meta` 1；保留的唯一业务 Schema 为 `v4`。矩阵记录逐项来源映射表/回执行数及最终存在性，位置 `G:\codex_tmp\v4_single_schema_retirement_matrix_20261019.json`。没有迁移映射的 `v4_meta` 与 R8 Forward 行单独依赖 Schema 清理/退役证据，不伪装成数据迁移行。
 - Forward 固定表：`forward_schema_migration_map_r1` 有 9,256 条映射，9,256 条回执均 `VERIFIED`，覆盖 11 个来源 Schema。最大旧 Forward 关系 2,457 行、8,394,104,832 字节，作为零复制、只审计的 `v4.forward_legacy_evidence_r1` 保留；活动精确映射 390 条仍指向固定 `v4.forward_facts`。该存档保留原始字节，不代表活跃旧 Schema。
 - 固定 Forward 目标表在最后只读盘点中有 `forward_facts=9,280` 行、`forward_r7_facts_r1=312` 行。按来源版本/工作区继续分表或建 Schema 已禁用。
@@ -50,7 +50,7 @@ production_changed: false
 | DB-02 | PASS | 两个 Research Release 分别在固定 `v4` 表中读回；descriptor、T0、release_id 和内容摘要经验证，不跨版本混读。 |
 | DB-03 | PASS | RAW/QFQ Series、多日 Journal 固定表正向样例读回并回滚；错 T0/缺版本校验 fail-closed。 |
 | DB-04 | PARTIAL | Forward 数据按 namespace/run/T0 使用固定 `v4` 表并保留旧键碰撞身份；Focus 历史到期/自动写入与完整成熟 outcome 尚缺真实验收输入。 |
-| DB-05 | PASS | 75 个旧 V4 Schema 逐项有退役矩阵并 `RESTRICT` 清理；Forward 9,256 条精确映射回执为 `VERIFIED`，本轮另完成当前 Data Head 30 条原始绑定的字节级读回。无 `CASCADE`。 |
+| DB-05 | PARTIAL | 75 个旧 V4 Schema 的最终缺席、来源映射和 37 项持久 `DROP_RESTRICT_SUCCESS` 收据已交叉核验；另 38 项无逐项持久执行收据，8 项 Forward/R8 名称无现存清理执行器。Forward 9,256 条精确映射回执仍为 `VERIFIED`，当前 Data Head 30 条原始绑定字节级读回也保持通过。未发现 `CASCADE` 执行证据；完整逐项清理方式尚未全部证明。 |
 | DB-06 | PASS | Research 旧 descriptor 原始字节/SHA 保留；固定 `v4.research_releases` 记录旧 Schema、旧 digest 与新 release/manifest 的对照，迁移不伪称旧/新 descriptor digest 相同。 |
 | DB-07 | PASS | 所有现役连接入口固定 `v4`；28766 的首页、Forward 来源审计页实际读取固定 `v4` PG 候选 Release；缺失来源仍明确 fail-closed。 |
 | DB-08 | PARTIAL | 四日 Core 独立 Oracle（09-28、09-29、09-30、10-08）已有 0 error 结果；四日完整 Sector/Focus/Market/Forward 数值闭环受 10-08 PIT、前序成员和成熟结算来源缺失阻断。 |
@@ -130,7 +130,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 4. 完成 76 Schema 全量消费者最终盘点和清理凭证交叉核验；保留不可重建的历史证据，不因对象名含旧 Schema 而删除。
 5. 仅在所有模块验收通过后进入 28765 正式切换和最终产品打包门。当前不切换 28765、不制作正式包。
 
-**当前结论：** 单 Schema 数据架构与物理清理已通过；候选读取与一部分功能页可用。全模块真实数据验收尚未完成，阶段状态维持 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。
+**当前结论：** 全库 catalog 当前只含一个 V4 业务 Schema `v4`，消费者固定关系和版本迁移已有实证；但旧 Schema 逐项清理方式的持久执行证据仅覆盖 37/75，故 S3/DB-05 仍为 `PARTIAL`。同时候选读取与一部分功能页可用，全模块真实数据验收尚未完成，阶段状态维持 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。
 
 ## 2026-10-19 续行复核补记
 

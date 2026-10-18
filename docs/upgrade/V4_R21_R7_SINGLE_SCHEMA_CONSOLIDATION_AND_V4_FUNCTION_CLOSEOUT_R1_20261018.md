@@ -538,4 +538,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 源码扫描发现仅供 G 盘隔离冻结作业 oracle 使用的 `v4_job_migration_r1.import_oracle()` 仍会按调用创建未版本化 `migration_receipts` 表。先用 RR/RO 核对实际 PG：`v4.migration_receipts` 与新目标关系都不存在，因此没有遗留回执行需要搬移。保留导入器用途，将目标定为固定版本表 `v4.jobs_frozen_oracle_migration_receipts_r1`；导入前要求 `jobs.schema='v4'` 并校验中央迁移关系/不可变保护器，移除运行时持久 DDL。
 - 由迁移登记器分配 074，正式迁移 runner 在 `market_research` 应用 `V4_FIXED_JOB_MIGRATION_RECEIPTS_R1`，SHA-256 `f2aa7a088731e813bbade4244b42214df1a52fc70aa799c1a1a0101be1e6e055`。应用后固定 v4 表数为 124；RR/RO 连接身份为 `market_research` / OID `646711` / `127.0.0.1:5432`，事务只读且回执表初始 0 行。
 - 在 RR/RW 外层事务内插入唯一 64 字节摘要探针，更新、删除、截断三种修改均返回 SQLSTATE `P0001` / `IMMUTABLE_JOB_MIGRATION_RECEIPT`；显式回滚后独立 RR/RO 计数仍为 0。未导入业务 oracle，也未改变其他作业历史。
-- 新增本地纯单元断言覆盖固定关系/guard 校验和无运行期表 DDL。该变更尚待提交；其他未相关工作区修改未纳入。
+- 新增本地纯单元断言覆盖固定关系/guard 校验和无运行期表 DDL。代码与 074 迁移已提交并推送到开发分支；本次报告追加待随阶段记录提交。其他未相关工作区修改未纳入。
+
+### V4 PG 运行期持久 DDL 全源码复扫
+
+- 在上述迁移后再次扫描 `src/workbench_db`、`src/workbench_analysis`、`src/workbench_service` 中 Python 源码的 `CREATE TABLE/INDEX/FUNCTION/TRIGGER`、`ALTER TABLE`、`DROP TRIGGER` 与 `create_schema()`。V4 PG 业务持久结构创建现在只通过固定迁移 runner 管理：Research/Journaling/Series builder 中的未限定 `CREATE TABLE` 由 builder 转换为连接私有 `pg_temp` staging 表；`v4_native.create_schema()` 只验证已部署的 `v4`，不执行创建；本地生产/评估与 product-pack 的 DDL 属于 SQLite 文件库。上轮发现的作业 oracle 持久回执 DDL 已于 074 移除。
+- 扫描未发现 V4 业务运行期 `CREATE SCHEMA` 或可按 workspace/purpose 选择物理 Schema 的路径。`workspace_schema(root,purpose)` 返回固定 `v4`，workspace/purpose 只参与数据行身份；`connection()` 拒绝所有非 `v4` locator。该静态结果与此前目录中仅存在 `v4` 的 RR/RO catalog 读回一致。仍需持续审查隔离迁移脚本和全模块业务验收，静态扫描不代表每个业务模块的 PIT/Accepted 验收已通过。

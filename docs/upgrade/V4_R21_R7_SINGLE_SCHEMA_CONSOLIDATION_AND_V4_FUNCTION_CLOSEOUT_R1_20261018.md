@@ -317,3 +317,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 ### 2026-10-19 Research 双 release 实库隔离读回
 
 - 为验证 S1/DB-02，在 `market_research` 的两个独立事务中分别用真实 R1/R2 Builder 写入不同 release_id、T0 和仅含单个测试对象的 snapshot。两个 Builder 都只返回 `schema='v4'`；各自 `load_snapshot_release()` 与 `v4.research_objects WHERE release_id=...` 均读回各自完整身份与唯一对象，A/B 未串读。每个事务在断开前主动 rollback，随后使用只读连接核实两个测试 release 均未持久化、`v4_*` Schema 数仍为 0。该操作验证真实 PG 固定表和版本键隔离，不留下候选或历史假数据，也不构成全量行业数据与服务路由验收。
+
+### 2026-10-19 FEP 部署后目录与 Forward 体积复查
+
+- FEP 固定表迁移后的目录总表数为 121（迁移前 86 张固定表，加 FEP 35 张）；早先报告中的 86 是 FEP 迁移前快照，当前有效表数以本次迁移台账与目录读回为准。此前报告中 232 是关系类对象的不同统计口径，不能与表数混用。FEP 业务空表仍不等于 FEP 业务验收通过。
+- 对三张主要 Forward 表只查询 `pg_class`、TOAST/索引关系尺寸和 `pg_stat_all_tables` 估算统计，没有扫描/复制 payload，也没有清理对象。当前目录尺寸为 `v4.forward_legacy_evidence_r1` 8,394,104,832 B（主关系 647,168 B、索引 1,409,024 B）、`v4.forward_facts` 6,218,366,976 B（主关系 3,268,608 B、索引 3,235,840 B）、`v4.forward_r7_facts_r1` 2,182,561,792 B（主关系 139,264 B、索引 180,224 B）。总尺寸包含 TOAST 与索引。目录统计估算分别为约 2,457、9,280、312 个 live tuples，不能当作精确业务行数；早先对 `forward_facts` 的总尺寸读数与本次不同，数据库统计/关系尺寸是各自观测时点的现场值，不据此推导 payload 变更或完整数据量。既有固定表主键和来源过滤索引仍在，无活动全表 payload 盘点。
+- 28766 个股详情页实际选择月线并渲染 `13/13` 根（QFQ，截至 2026-09-30），随后恢复日线并渲染 `120/253` 根，页内均线/蜡烛图区域正常；同时保留此前真实周线 `54/54` 根的浏览器读回和月线 RAW API `13/13`、`READY` 回读。验收后将用户当前页恢复为日线/QFQ。浏览器与 API 读取的仍是候选研究数据，不能替代 PIT、Accepted Head、来源完整性或模块数据验收；28765 未触碰。

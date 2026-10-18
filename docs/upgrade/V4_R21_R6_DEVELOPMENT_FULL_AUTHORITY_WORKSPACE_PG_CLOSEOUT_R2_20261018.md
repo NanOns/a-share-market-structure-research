@@ -170,3 +170,10 @@
 - 该旧支线的 PG Owner Core/Profile manifest 当前不存在，因此这里只完成读取/写回边界修正，未宣称它已真实四日运行；已完成真实四日业务运行的是上节 R43 Focus/Forward 候选。后续该支线可在其 Core/Profile Owner 从 PG 登记完成后继续联调。
 - Corrected Owner stage orchestrator 和 Health projection 也已改为从 PG 读取续跑 receipt/manifests、输出投影写回 SourceIngress；若旧目录有文件但 PG 无对应绑定，按 `UNINGRESSED_WORKSPACE_CANDIDATE_NOT_CONSUMABLE` 拒绝使用。更新后 Structure/Health/Sector/Focus/Rotation/Owner 编排器组合定向套件 6 passed，py_compile、`git diff --check` 通过；该边界修正不补造缺失 Core/Profile Owner 输入。
 - 在上述 SourceIngress 写入后再次探测 28766 的 context/home/focus/forward/market/diagnostics-health 六路：全部 HTTP 200、同一 `research-v4-pg-candidate-91b4066e…2ec116935` context token。Focus 明确保留 `SOURCE_INCOMPLETE`，原因 `AUTOMATIC_WRITE_PATH_ADAPTER_AND_LEGACY_HISTORY_MIGRATION_NOT_ADMITTED`；没有把可读候选状态描述成 Focus 写入/续算已准入。监听仍仅 PG 5432 PID 8640 与开发 28766 PID 33460，无 28765。
+
+## 28766 Focus 与证券详情实页复验续行（2026-10-18）
+
+- 使用本机 in-app browser 直接打开 `http://127.0.0.1:28766/v4/research/focus`，实页加载同一 PG 候选 context token/T0=`2026-09-30`；Focus 清单显示 469 条，Forward 显示 117 个独立样本，期限结算 585 条。页眉明确标注“PG 候选快照 · 不代表正式 Head”，成熟样本为 0 时未展示收益胜率。
+- 通过真实页面查询参数 `q=002771` 验证检索闭环，结果从 469 条收敛到 1 条 `SZ.002771`，分页按钮与筛选输入状态一致；Forward 和结算分区保持独立，查询不改变数据。
+- 从 Focus 命中的证券身份打开详情页 `SEC-00E228DA7EBF038EA528EF36B65B4C97`：详情表、来源证据按钮、所属行业/关联概念、事实/研究状态/假设分区、关注时间线与结构事件区均完成渲染。图表选择器显示日线/周线/月线与原生前复权/不复权选项；日线实页为 T0 截止 253 根、默认展示 120 根，成交量股/成交额元。
+- 缺失 Owner 继续以“来源能力不足/字段未接入/待补证据”展示；该实页验证不把候选提升为 accepted Head，也不表示 Focus 自动写入或全模块验收完成。

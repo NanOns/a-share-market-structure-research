@@ -146,5 +146,6 @@
 
 - 用 in-app browser 打开 28766 当前 PG 候选的首页、个股详情、板块详情、Focus、Market、Diagnostics/Jobs 实页；导航、详情表、筛选控件、图表控件和各域表格均完成加载。所有页面头部 context 均显示同一 T0 `2026-09-30` 与 `PG 候选快照 · 不代表正式 Head`。
 - 个股 `SEC-0051683845B17D59641B7D1DC261FE2A` 实页显示 253 根日线实际成交图、个股画像与“结构锚点与事件”入口（2 项结构事件）。同一 context-token 的 API 回归 15 个路由全部 HTTP 200：stocks 5,213、sectors 378、focus 469、forward 117、settlement 585、板块成员 25、结构时间线 3 条。板块历史时间线准确返回 `SOURCE_INCOMPLETE / FIRST_ACCEPTED_PIT_MEMBERSHIP_NO_PRIOR_DATED_NATIVE_HISTORY`；Diagnostics/Jobs 准确返回 worker receipts 缺失，没有启动 worker。
+- 对同一 PG candidate reader/BFF 做只读 Python audit-hook 运行时审计，跨产品共调用 45 次（44 个不同路由，另含重复的 Diagnostics/Jobs 复核）；所有返回 HTTP 200，审计期间 `data/`、`config/`、`reports/`、`runtime/` 本地业务文件打开计数为 0。源码证据包位于 `G:\codex_tmp\v4_r6_runtime_business_file_audit_20261018.json` 与 `G:\codex_tmp\v4_r6_runtime_business_file_audit_extended_20261018.json`；调用分别覆盖股票/板块/图表/时间线、Focus/Forward、市场四轴/事实事件、Sources、cohort、Replay/Compare 与诊断。业务内容由相同 immutable PG candidate 读取；SOURCE_INCOMPLETE/PIT_NOT_AVAILABLE 按原 Owner 和权限事实返回。
 - 本轮测试一度给页面 URL 加了临时 `uiqa` 参数，页面按合同将未知筛选项拒绝；改用无参数正式 URL 复测后 Focus 469 行、Forward 117 行、待结算 585 行均正常呈现，属于测试参数错误，不是产品缺陷。
 - 对 `data/v4/dynamic_daily_sources/tdx/20261008` 与 `G:\codex_tmp\test_temp` 的边界、文件数/大小及无活跃 pytest 进程已复核。PowerShell 执行器对这两个删除请求均自动拒绝；文件仍在，未尝试改用其他执行路径绕过。TDX 捕获副本已迁 PG 且无消费者，pytest basetemp 为可重建项，仍列待清理。

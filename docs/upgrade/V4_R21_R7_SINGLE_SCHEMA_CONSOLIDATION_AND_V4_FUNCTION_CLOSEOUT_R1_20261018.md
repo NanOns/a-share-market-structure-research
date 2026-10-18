@@ -152,3 +152,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - `G:\codex_tmp` 直接子目录实测：`v4_repository_governance_r3_20261016` 4,675,814,273 字节，含 WP3 recovery freeze、bundle、unreachable-object 与 owner-source/LFS 核验材料；`r7_active_baseline_20261015` 2,255,654,812 字节，当前仍有 5 个 tracked diff、独有 untracked source/data/docs/runtime 和长路径；`R20_R1_20261017` 833,189,333 字节；`v4_r6_tdx_20261016` 568,127,024 字节；`v4_historical_source_ingress` 276,321,223 字节；`test_temp` 473,341,452 字节。扫描时没有发现这些目标路径被其他进程使用，前述恢复证据/源码改动/行情及 SourceIngress 内容仍无法证明可以重建，均未删除。该实测不支持“已清理 2.67 GB”的旧汇报口径。
 - 本轮新建的只读复核脚本和单测临时目录按 G 盘临时路径创建；结束后尝试删除确认为本轮生成的 3 个脚本及 `test_temp\v4_single_schema_guard_r7_recheck`，文件操作自动审核拒绝。未尝试其他删除/移动方式，也未修改保留目录。DB-11 仍为 PARTIAL，待允许的文件清理操作可执行且逐项证明可重建后续办。
+
+### 原 266 基线与本轮 Delta
+
+- `docs/upgrade/V4_R21_CALLSITE_MIGRATION_MATRIX_R1_20261017.json` 的历史 P1 基线、161,114 条引用边统计及 266 项正式待核计数保持原样；本轮不据新代码 diff 重算历史扫描口径，也不把“代码已改”折算为 PG、DEV 或 Accepted 通过。
+- 以任务卡发布 HEAD `2d838f28342664e26cdd78c01d0a6638048da3e7` 为基线，当前开发分支 6 个提交的增量改动共覆盖固定 Schema 迁移、`v4_native` 运行时护栏、R2 Research Snapshot/Series/Journal、Forward/Focus/History/ReadIndex/Jobs/Owner/Publication/SourceIngress 消费者、BFF/股票图表/Replay/开发服务、Corrected/R43 Owner PG-only 精确来源读取及针对性测试。新增点名的 Owner Delta 为 `src/workbench_analysis/corrected_owner_replay.py`、`src/workbench_analysis/r43_owner_replay.py` 和 `tests/test_v4_r6_pg_only_owner_source_reads.py`；Forward/History/Jobs/ReadIndex 的 Schema Delta 由对应固定表迁移及消费者文件列在 `git diff 2d838f28342664e26cdd78c01d0a6638048da3e7..HEAD --name-only` 中。当前额外工作区修改没有计入这些已提交增量。
+- 上述变动可证明指定路径已有单 Schema 代码实现及局部真实调用验收，不消除原 266 的历史源边界对账工作；在生产业务读全量盘点、PG 数据身份/Head 验收和 per-ID 对账完成前，266 仍保留为独立历史基线，新增 delta 继续按“代码 / 实际 PG / 28766 DEV / Accepted”分层追踪。
+- R14 历史 1,678 项绑定继续处于暂停扩量状态；本轮未批量迁移，也未改写 append-only 历史绑定。仅已核验为活动依赖的确切 Forward/History/Owner/ReadIndex/Research 事实通过各自版本化迁移台账承载，不能把台账行数解释为 1,678 项整体验收。

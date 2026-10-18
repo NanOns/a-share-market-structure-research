@@ -52,7 +52,7 @@ production_changed: false
 | DB-04 | PARTIAL | Forward 数据按 namespace/run/T0 使用固定 `v4` 表并保留旧键碰撞身份；Focus 历史到期/自动写入与完整成熟 outcome 尚缺真实验收输入。 |
 | DB-05 | PARTIAL | 75 个旧 V4 Schema 的最终缺席、来源映射和 37 项持久 `DROP_RESTRICT_SUCCESS` 收据已交叉核验；另 38 项无逐项持久执行收据，8 项 Forward/R8 名称无现存清理执行器。Forward 9,256 条精确映射回执仍为 `VERIFIED`，当前 Data Head 30 条原始绑定字节级读回也保持通过。未发现 `CASCADE` 执行证据；完整逐项清理方式尚未全部证明。 |
 | DB-06 | PASS | Research 旧 descriptor 原始字节/SHA 保留；固定 `v4.research_releases` 记录旧 Schema、旧 digest 与新 release/manifest 的对照，迁移不伪称旧/新 descriptor digest 相同。 |
-| DB-07 | PASS | 所有现役连接入口固定 `v4`；28766 的首页、Forward 来源审计页实际读取固定 `v4` PG 候选 Release；缺失来源仍明确 fail-closed。 |
+| DB-07 | PARTIAL | 现役连接入口固定 `v4`，此前 28766 首页/Forward 来源审计页可读固定 `v4` PG 候选；本次检查确认当前监听 PID 27332 在 06:21 启动，早于 06:39–06:41 的后续提交，因此不能把这次页面结果认作最新代码验收。开发端受控重载调用被执行策略拒绝，28765 未触碰；需在 28766 最新代码实际加载后复核。 |
 | DB-08 | PARTIAL | 四日 Core 独立 Oracle（09-28、09-29、09-30、10-08）已有 0 error 结果；四日完整 Sector/Focus/Market/Forward 数值闭环受 10-08 PIT、前序成员和成熟结算来源缺失阻断。 |
 | DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；另用 64 MiB+1 字节事务内工程负载验证 5 块写入、重组读回、长度/SHA 与回滚。未把真实 551 MB TDX ZIP Base64 复制到 Forward facts；其真实包/独立接受合同仍未验，历史 1,678 项未导入。 |
 | DB-10 | PARTIAL | 日更和 Jobs 只读/幂等路径可运行；`market_calendar_sessions` 与正式 publication Head 为空、没有 worker 回执，故不签发 Accepted/DEV Head、不宣称重试/增量真实作业通过。 |
@@ -237,6 +237,16 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 对 `tests/test_v4_single_schema_guard_r7.py` 与 `tests/fep_e5/test_single_schema_fail_closed.py` 执行定向回归，结果 `12 passed`。运行期 `workspace_schema()` 和 Owner/ReadIndex 版本定位器均固定返回 `v4`；`connection()` 拒绝其它 schema；`create_schema()` 只核验已存在的 `v4`，不会隐式建库。
 - 现役 Shadow 旧 writer 在建立 PG 连接前 fail-closed；FEP E5 旧 `schema.sql` 先抛出固定存储迁移错误，后续旧 DDL 不会执行。代码库中仍能静态搜索到这些不可达的历史 DDL 文本；没有任何运行路径可执行它们。Risk Owner 的陈旧注释已改为明确说明物理 locator 固定为 `v4`、版本身份来自 `token/T0/digest`。
 - 回归期间没有写业务 PG、创建 Schema、签发 Head 或触碰 28765。S1 的运行期防扩散边界继续为 `PASS`；S3 清理执行证据、Accepted 来源/日历、成熟结算、完整日更及其他模块门仍按当前矩阵保持 `PARTIAL`。
+
+### 2026-10-19 迁移器 Schema 创建范围收紧
+
+- 将 `apply_v4_phase0_schema.py` 的历史兼容收敛到唯一 foundation 文件 `001_v4_phase0_foundation.sql`：执行时只把其既有 `v4_meta.schema_migrations` ledger 重写到 `v4.schema_migrations`，保持原 SQL 文件与迁移 SHA 不变。后续任何已登记迁移若包含 `CREATE SCHEMA`（包括 `CREATE SCHEMA v4`）或引用退役 `v4_meta` 均 fail-closed。
+- 定向回归 `tests/test_v4_r7_sql_schema_compatibility.py` 与 `tests/test_v4_single_schema_guard_r7.py`：`10 passed`；`git diff --check` 通过。未执行迁移 DDL，未写业务 PG。
+
+### 2026-10-19 本轮 28766 最新代码加载状态
+
+- 真实进程核查：28766 当前 PID `27332`，启动时间 06:21；晚于其启动的提交包括 `12f870237`、`9c4628d3a`、`e20547f56`。28765 当前未监听。
+- 受控重载 28766 的进程停止调用被执行策略拒绝，进程未停止/重启；未尝试其它终止通道。内置浏览器仍可读当前候选股票页，日线 253 根、周线切换后 54 根，再恢复日线 253 根，均显示候选 T0 `2026-09-30`、候选 Release `05cf8913242f46c8af53b3d89f323b64`。此交互仅证明当前运行进程行为，不代表最新提交已加载或最新代码通过浏览器验收。`DB-07` 因此改为 `PARTIAL`，待安全可执行的 28766 最新代码重载后续验。
 
 ### 2026-10-19 Forward R7 读事务边界续修
 

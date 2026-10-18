@@ -45,3 +45,21 @@ def test_publication_migration_runner_registers_the_ordered_034_to_039_chain():
         assert f'"{migration}":"{contract}"' in normalized
     assert "for filename,version in sorted(VERSIONS.items())" in normalized
     assert "MIGRATIONS.glob(\"*.sql\")" not in runner
+
+
+def test_migration_schema_normalizer_allows_only_historical_foundation_rewrite():
+    import pytest
+    from scripts.apply_v4_phase0_schema import normalize_migration_schema
+
+    legacy = (MIGRATION / "001_v4_phase0_foundation.sql").read_text(encoding="utf-8")
+    normalized = normalize_migration_schema("001_v4_phase0_foundation.sql", legacy)
+    assert "CREATE SCHEMA IF NOT EXISTS v4_meta" not in normalized
+    assert "v4_meta.schema_migrations" not in normalized
+    assert "CREATE SCHEMA IF NOT EXISTS v4" in normalized
+
+    with pytest.raises(RuntimeError, match="V4_SINGLE_SCHEMA_MIGRATION_SCHEMA_CREATE_BLOCKED"):
+        normalize_migration_schema("071_new.sql", "CREATE SCHEMA v4_test;")
+    with pytest.raises(RuntimeError, match="V4_SINGLE_SCHEMA_MIGRATION_SCHEMA_CREATE_BLOCKED"):
+        normalize_migration_schema("071_new.sql", "CREATE SCHEMA v4;")
+    with pytest.raises(RuntimeError, match="V4_SINGLE_SCHEMA_RETIRED_META_SCHEMA_REFERENCE_BLOCKED"):
+        normalize_migration_schema("071_new.sql", "SELECT * FROM v4_meta.schema_migrations;")

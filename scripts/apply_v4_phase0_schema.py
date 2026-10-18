@@ -99,6 +99,31 @@ def verified_legacy_ledger_transition(cur,version,recorded_checksum,recorded_con
         where conrelid='v4.schema_migrations'::regclass and contype='p'""").fetchone()
     return columns==expected and primary_key==("PRIMARY KEY (version)",)
 
+def normalize_migration_schema(filename,text):
+    """Allow schema bootstrap only in the immutable foundation migration.
+
+    The historical foundation used ``v4_meta`` for its migration ledger.  Its
+    SQL bytes/checksum remain untouched; at execution time that one known
+    target is routed to ``v4``. No later migration may create a namespace or
+    refer to the retired ledger schema.
+    """
+    schema_targets={m.group(1).strip('"').casefold() for m in re.finditer(
+        r'(?im)^\s*CREATE\s+SCHEMA\s+(?:IF\s+NOT\s+EXISTS\s+)?("?[a-z_][a-z0-9_]*"?)',text)}
+    foundation="001_v4_phase0_foundation.sql"
+    if filename != foundation:
+        if schema_targets:
+            raise RuntimeError('V4_SINGLE_SCHEMA_MIGRATION_SCHEMA_CREATE_BLOCKED:'+','.join(sorted(schema_targets)))
+        if 'v4_meta' in text.casefold():
+            raise RuntimeError('V4_SINGLE_SCHEMA_RETIRED_META_SCHEMA_REFERENCE_BLOCKED')
+        return text
+    if schema_targets-{'v4','v4_meta'} or 'v4' not in schema_targets or 'v4_meta' not in schema_targets:
+        raise RuntimeError('V4_FOUNDATION_SCHEMA_TARGET_SET_INVALID:'+','.join(sorted(schema_targets)))
+    text=re.sub(r'(?im)^\s*CREATE\s+SCHEMA\s+IF\s+NOT\s+EXISTS\s+v4_meta\s*;\s*','',text)
+    text=text.replace('v4_meta.schema_migrations','v4.schema_migrations')
+    if 'v4_meta' in text.casefold():
+        raise RuntimeError('V4_FOUNDATION_RETIRED_META_SCHEMA_REWRITE_INCOMPLETE')
+    return text
+
 def apply():
     applied=[]
     with psycopg.connect(dsn()) as pg:
@@ -149,13 +174,7 @@ def apply():
                             raise RuntimeError(f"V4_MIGRATION_CHECKSUM_CONFLICT:{version}")
                         applied.append({"version":version,"checksum_sha256":checksum,"status":"ALREADY_APPLIED"})
                         continue
-                schema_targets={m.group(1).strip('"').casefold() for m in re.finditer(
-                    r'(?im)^\s*CREATE\s+SCHEMA\s+(?:IF\s+NOT\s+EXISTS\s+)?("?[a-z_][a-z0-9_]*"?)',text)}
-                if schema_targets-{'v4','v4_meta'}:
-                    raise RuntimeError('V4_SINGLE_SCHEMA_MIGRATION_SCHEMA_CREATE_BLOCKED:'+','.join(sorted(schema_targets-{'v4'})))
-                if 'v4_meta' in schema_targets or 'v4_meta.' in text:
-                    text=re.sub(r'(?im)^\s*CREATE\s+SCHEMA\s+IF\s+NOT\s+EXISTS\s+v4_meta\s*;\s*','',text)
-                    text=text.replace('v4_meta.schema_migrations','v4.schema_migrations')
+                text=normalize_migration_schema(filename,text)
                 try:
                     cur.execute(text)
                 except Exception as exc:

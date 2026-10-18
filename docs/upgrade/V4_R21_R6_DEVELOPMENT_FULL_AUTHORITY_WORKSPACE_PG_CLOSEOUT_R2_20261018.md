@@ -11,6 +11,7 @@
 - 新增不暴露路径的 `logical_workspace_id`，同一 Git 项目搬迁目录后可保持稳定身份；现有物理 schema 仍按旧绝对根路径生成，PG alias 注册及调用方切换尚未完成，因此暂不改名或移表。
 - SourceIngress 合同升至 1.1.0，兼容读取 1.0.0 并限制 64 MiB 内联数据；超大源包仍需后续受控的包/成员流式接入。
 - Corrected Owner 与 R43 Owner 从 PG DM01 accepted Data Head 取快照及 SHA。个股图表去除非 PG 文件读取分支；无 PG 历史绑定时明确降级为 `SOURCE_INCOMPLETE / PG_HISTORY_BINDING_REQUIRED`。
+- DM01 增量构建器的真实 Parent 校验也从 PG Head/ SHA 读回，不再重新读取 Data Head 本地文件；保留精确路径与摘要匹配。
 
 ## PG 与 28766 实况
 
@@ -19,7 +20,7 @@
 - 数据库虽有新行情行至 `2026-10-15`，但在无 snapshot manifest 的局部 schema 中最多覆盖 9 个证券（最新 schema 共 46,906 行，覆盖 `2026-09-28` 至 `2026-10-15`）。它不构成全市场完整 T0；严格 PIT 仍为 `PIT_NOT_PROVEN`，不得用于伪造接受状态。
 - 在 `127.0.0.1:28766` 的候选 PG 服务上验证总览、股票、板块、Focus、市场/事件、诊断、Forward、日更预览。回放和个股比较页也已实际渲染：T0 `2026-09-30`、严格 PIT 可用日期 0；对照明确标注事后重建，展示股票区间收益 1.205% 与 2.011%，共同日期 `2026-09-29` 至 `2026-09-30`。日更页未接受日历、worker 未启动、写操作禁用。
 - 当前运行环境没有显式 `V4_NATIVE_PG_DSN`（`configured_dsn()` 实测返回 `V4_NATIVE_PG_DSN_REQUIRED`）。遵守写连接边界，本轮不能执行 PG DDL/DML/合同注册/DEV Head；继续读核查、代码修复和 28766 测试。配置显式开发写 DSN 后即可续跑迁移及 Owner/Head 写读。
-- 修改过的 Python 编译通过；`tests/test_v4_native_reader_dsn.py`：14 项通过。此前 `tests/test_corrected_owner_replay_r4.py` 被仓库隔离插件以 `DISPOSABLE_PG_CLUSTER_REQUIRED` 阻断；未绕过隔离门禁。
+- 修改过的 Python 编译通过；连接/迁移及 DM01 Parent 绑定聚焦测试共 17 项通过。此前 `tests/test_corrected_owner_replay_r4.py` 被仓库隔离插件以 `DISPOSABLE_PG_CLUSTER_REQUIRED` 阻断；未绕过隔离门禁。
 
 ## 工作空间与清理
 

@@ -80,6 +80,17 @@ def pg_bound_json(ref):
     except (ValueError,UnicodeDecodeError) as exc:
         raise ComponentBuildError('PG_AUTHORITY_JSON_INVALID:'+str(ref.get('path'))) from exc
 
+def _require_current_pg_data_parent(root,parent):
+    """Bind real-source incremental work to the canonical PG Data Head."""
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    current=read_current(root)
+    binding=parent.get('binding',{})
+    if (parent.get('head')!=current['candidate']
+            or binding.get('sha256')!=current['head_sha256']
+            or binding.get('path')!='data/v4/V4_DATA_ACCEPTED_HEAD.json'):
+        raise ComponentBuildError('REAL_PARENT_MUST_BE_CURRENT_ACCEPTED_HEAD')
+    return current
+
 def _write_immutable(path,value,tdx_roots=()):
     for root in (_tdx_root(),*tdx_roots):ensure_outside_tdx(path,Path(root))
     data=canonical(value)+b'\n'
@@ -152,12 +163,7 @@ def _context(cap,target,parent,freeze,calendar,identity,staging):
     for ref in contract['runtime_bindings']:pg_bound_bytes(ref)
     if not freeze.get('fixture_scope'):
         # Real-source callers cannot mint accepted calendar/identity/parent authority by labeling a file.
-        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-        current_source=read_path(ROOT,'data/v4/V4_DATA_ACCEPTED_HEAD.json')
-        current=current_source['value']
-        if (parent['head']!=current or parent['binding']['sha256']!=current_source['record']['source_sha256']
-                or parent['binding']['path']!=current_source['record']['source_path']):
-            raise ComponentBuildError('REAL_PARENT_MUST_BE_CURRENT_ACCEPTED_HEAD')
+        _require_current_pg_data_parent(ROOT,parent)
         if cal.get('accepted_head_binding')!=contract['accepted_calendar_head']:
             raise ComponentBuildError('REAL_CALENDAR_ACCEPTED_AUTHORITY_REQUIRED')
         owner=pg_bound_json(contract['accepted_calendar_head']);extension=pg_bound_json(owner['accepted_extension'])

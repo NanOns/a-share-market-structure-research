@@ -574,6 +574,153 @@ class ForwardR7Store:
             items=[dict(trade_date=day, groups=sorted(by_date[day].values(), key=lambda x:x["rule_id"])) for day in page],
             total=len(dates), limit=limit, offset=offset, has_next=offset + len(page) < len(dates))
 
+    @classmethod
+    def read_candidate_source_audit(cls, root: str | Path, *, trade_date: str,
+                                    limit: int = 100, offset: int = 0):
+        """Read one R7 audit only when a unique, published PG fact matches a candidate T0.
+
+        A research candidate has no operational Head by design, so this path does not
+        call ``read_current`` or bind a production namespace. It uses the candidate's
+        validated date as a narrow selector and returns independently published,
+        retrospective R7 evidence with its complete PG fact-chain digests.
+        """
+        if not 1 <= limit <= 200 or not 0 <= offset <= 1_000_000:
+            raise ValueError("INVALID_QUERY_BOUND")
+        try:
+            day = date.fromisoformat(trade_date).isoformat()
+        except (TypeError, ValueError) as exc:
+            raise ValueError("INVALID_CANDIDATE_TRADE_DATE") from exc
+        if day != trade_date:
+            raise ValueError("INVALID_CANDIDATE_TRADE_DATE")
+
+        def decode_fact(row, *, expected_source_sha=None):
+            fact_key, raw_payload, stored_sha, source_sha = row
+            raw = raw_payload.encode("utf-8") if isinstance(raw_payload, str) else bytes(raw_payload)
+            actual_sha = hashlib.sha256(raw).hexdigest()
+            if actual_sha != stored_sha.strip():
+                raise ValueError("FORWARD_R7_FACT_DIGEST_MISMATCH")
+            if expected_source_sha is not None and source_sha != expected_source_sha:
+                raise ValueError("FORWARD_R7_FACT_SOURCE_DIGEST_MISMATCH")
+            value = json.loads(raw)
+            if not isinstance(value, dict):
+                raise ValueError("FORWARD_R7_FACT_PAYLOAD_INVALID")
+            return fact_key, value, actual_sha, source_sha
+
+        with psycopg.connect(_configured_forward_dsn(Path(root)), connect_timeout=5) as pg:
+            pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+            pg.execute("SET LOCAL statement_timeout='10s'")
+            schemas = [row[0] for row in pg.execute("""SELECT s.schema_name
+                FROM information_schema.schemata s JOIN information_schema.tables t
+                  ON t.table_schema=s.schema_name
+                WHERE s.schema_name LIKE 'v4_forward_%' AND t.table_name='forward_facts'
+                ORDER BY s.schema_name""").fetchall()]
+            eligible = []
+            invalid_matching_records = 0
+            for schema in schemas:
+                query = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
+                    FROM {}.forward_facts WHERE kind='r7_publish_index'
+                      AND payload::jsonb->>'trade_date'=%s
+                      AND payload::jsonb->>'index_name'='daily_universe'
+                    ORDER BY (payload::jsonb->>'generation')::bigint DESC""").format(sql.Identifier(schema))
+                index_rows = pg.execute(query, (day,)).fetchall()
+                if not index_rows:
+                    continue
+                try:
+                    decoded_indexes = [decode_fact(row) for row in index_rows]
+                    highest_generation = max(int(item[1].get('generation', 0)) for item in decoded_indexes)
+                    latest = [item for item in decoded_indexes if int(item[1].get('generation', 0)) == highest_generation]
+                    if len(latest) != 1:
+                        raise ValueError("FORWARD_R7_PUBLISH_INDEX_GENERATION_AMBIGUOUS")
+                    index_key, index, index_fact_sha, index_source_sha = latest[0]
+                    expected_payload_sha = index.get('payload_sha256')
+                    run_id = index.get('source_run_id')
+                    index_contract=index.get('identity_contract') or 'V4_FORWARD_PUBLISH_INDEX_R1_LEGACY'
+                    index_lane=index.get('lane') or 'RETROSPECTIVE_RESEARCH'
+                    if (index.get('trade_date') != day or not expected_payload_sha
+                            or index_lane!='RETROSPECTIVE_RESEARCH'
+                            or index.get('index_name')!='daily_universe'
+                            or index_contract not in ('V4_FORWARD_PUBLISH_INDEX_R2','V4_FORWARD_PUBLISH_INDEX_R1_LEGACY')
+                            or not run_id or int(index.get('generation', 0)) < 1):
+                        raise ValueError("FORWARD_R7_PUBLISH_INDEX_INVALID")
+
+                    def facts(kind, where_sql, params):
+                        statement = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
+                            FROM {}.forward_facts WHERE kind=%s AND """ + where_sql).format(sql.Identifier(schema))
+                        return [decode_fact(row) for row in pg.execute(statement, (kind, *params)).fetchall()]
+
+                    daily = facts('r7_daily_universe', "payload::jsonb->>'trade_date'=%s AND payload::jsonb->>'lane'='RETROSPECTIVE_RESEARCH' AND payload::jsonb->>'stable_sha256'=%s", (day, expected_payload_sha))
+                    aggregates = facts('r7_aggregate_stats', "payload::jsonb->>'trade_date'=%s AND payload::jsonb->>'lane'='RETROSPECTIVE_RESEARCH' AND payload::jsonb->>'stable_sha256'=%s", (day, expected_payload_sha))
+                    runs = facts('r7_pipeline_run', "fact_key=%s", (run_id,))
+                    if len(daily) != 1 or len(aggregates) != 1 or len(runs) != 1:
+                        raise ValueError("FORWARD_R7_PUBLISHED_FACT_CHAIN_INCOMPLETE")
+                    daily_key, bundle, daily_fact_sha, daily_source_sha = daily[0]
+                    aggregate_key, aggregate, aggregate_fact_sha, aggregate_source_sha = aggregates[0]
+                    run_key, run, run_fact_sha, run_source_sha = runs[0]
+                    stable_body=dict(trade_date=bundle.get('trade_date'),lane=bundle.get('lane'),
+                        revision=bundle.get('revision'),source_digest=bundle.get('source_digest'),
+                        rows=bundle.get('rows'))
+                    stable_body_valid=(cls._stable_hash(stable_body)==expected_payload_sha
+                        if bundle.get('identity_contract')=='V4_FORWARD_OBSERVATION_ID_R2'
+                        else bundle.get('identity_contract') is None and bundle.get('stable_sha256')==expected_payload_sha)
+                    source_hashes=bundle.get('source_run',{}).get('source_hashes',{})
+                    if (bundle.get('trade_date') != day or bundle.get('lane') != 'RETROSPECTIVE_RESEARCH'
+                            or not stable_body_valid
+                            or aggregate.get('groups') != bundle.get('groups')
+                            or aggregate.get('stable_sha256') != expected_payload_sha
+                            or aggregate_source_sha != expected_payload_sha
+                            or index_source_sha != expected_payload_sha
+                            or sha256(source_hashes) != daily_source_sha
+                            or run.get('status') != 'PASS' or run.get('trade_date') != day
+                            or run.get('run_id') != run_id or run.get('source_run') != bundle.get('source_run')
+                            or run_source_sha != expected_payload_sha):
+                        raise ValueError("FORWARD_R7_PUBLISHED_FACT_CHAIN_MISMATCH")
+                    eligible.append((schema, index, index_key, index_fact_sha, daily_key,
+                        daily_fact_sha, aggregate_key, aggregate_fact_sha, run_key, run_fact_sha,
+                        bundle, expected_payload_sha))
+                except (TypeError, ValueError, KeyError, json.JSONDecodeError):
+                    invalid_matching_records += 1
+
+        if invalid_matching_records:
+            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
+                offset=offset, has_next=False, reason='R7_PUBLISHED_FACT_CHAIN_INVALID',
+                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+        if not eligible:
+            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
+                offset=offset, has_next=False, reason='NO_PUBLISHED_R7_AUDIT_FOR_CANDIDATE_T0',
+                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+        if len(eligible) != 1:
+            return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
+                offset=offset, has_next=False, reason='R7_AUDIT_NAMESPACE_AMBIGUOUS_FOR_CANDIDATE_T0',
+                binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+
+        (schema, index, index_key, index_fact_sha, daily_key, daily_fact_sha,
+         aggregate_key, aggregate_fact_sha, run_key, run_fact_sha, bundle, payload_sha) = eligible[0]
+        groups = []
+        for key_text, counts in bundle.get('groups', {}).items():
+            parts = key_text.split('/')
+            if len(parts) != 3:
+                return dict(status='SOURCE_INCOMPLETE', items=[], total=0, limit=limit,
+                    offset=offset, has_next=False, reason='R7_AUDIT_GROUP_KEY_INVALID',
+                    binding='CANDIDATE_TRADE_DATE_ONLY', evidence_class='RETROSPECTIVE_RESEARCH')
+            groups.append(dict(rule_id=parts[0], rule_version=parts[1], entity_type=parts[2],
+                **{name: int(counts.get(name, 0)) for name in
+                   ('universe_count','match_count','no_match_count','unknown_count')}))
+        items=[dict(trade_date=day, groups=sorted(groups,key=lambda x:(x['rule_id'],x['rule_version'],x['entity_type'])))] if offset==0 else []
+        return dict(status='READY', items=items,
+            total=1, limit=limit, offset=offset, has_next=offset+len(items)<1,
+            evidence_class='RETROSPECTIVE_RESEARCH', strict_t0_pit=False,
+            binding='CANDIDATE_TRADE_DATE_ONLY_INDEPENDENT_R7_PUBLISHED_FACT',
+            source=dict(schema=schema, namespace_scope='R7_RESEARCH_ONLY',
+                index_contract=index.get('identity_contract') or 'V4_FORWARD_PUBLISH_INDEX_R1_LEGACY', generation=index.get('generation'),
+                source_run_id=index.get('source_run_id'), published_at=index.get('published_at'),
+                published_payload_sha256=payload_sha,
+                facts={
+                    'publish_index':dict(key=index_key,sha256=index_fact_sha),
+                    'daily_universe':dict(key=daily_key,sha256=daily_fact_sha),
+                    'aggregate_stats':dict(key=aggregate_key,sha256=aggregate_fact_sha),
+                    'pipeline_run':dict(key=run_key,sha256=run_fact_sha),
+                }))
+
 
     def read_settlement(self, *, lane: str | None = None, trade_date: str | None = None,
                         horizon: int | None = None, status: str | None = None,

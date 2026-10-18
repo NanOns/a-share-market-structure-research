@@ -206,3 +206,11 @@
 - Replay/Compare 初次抓取曾处于加载中；等待同一 28766 请求完成后页面正常渲染，实测未复现代码缺陷，因此没有为了消除短暂加载态改动前端。
 - 同步只读复核 PG 身份为 `market_research` / OID `646711` / 5432 / system identifier `7688198230782699460`；合同版本 19、审批事件 16、accepted Data Head 1。`publications`、`publication_heads`、`model_namespaces`、`operational_research_heads` 均 0 行。故当前仍只有开发候选，不具备正式业务 Head。
 - 再查官方[通达信个人行情数据页](https://www.tdx.com.cn/article/vipdata.html)：页面列出动态完整包但没有可核验的 2026-10-08 历史归档链接，并说明更新日期到达后完整包才包含当日数据；因此 10-16/10-18 当前包不能补成 10-08 的当时官方输入。连续日更及 PIT/accepted 仍保持关闭。
+
+## 28766 Forward 来源审计候选 PG 投影修复（2026-10-18）
+
+- 发现候选 Cohort 路由直接返回 PG `forward` 投影，没有把已经存在的 R7 来源审计挂到 `candidate_research.r7_source_audit`；因此来源审计页把“未绑定”笼统显示成错误/缺失。`ForwardR7Store` 的生产读路径要求 Operational Head，而当前开发候选没有 Operational Head，不能调用该路径后把另一 Head 的数据混入候选。
+- 新增单日候选审计读取器：只用经候选 Reader 验证的 trade date，在唯一开发 PG 中定位同日 R7 历史发布记录；核对发布索引、`r7_daily_universe`、`r7_aggregate_stats`、PASS `r7_pipeline_run` 四段原始载荷 SHA、来源 SHA、run id、分组计数和稳定摘要。当前 T0 `2026-09-30` 唯一命中 `v4_forward_f17219af1df44bb8`，发布索引为 `V4_FORWARD_PUBLISH_INDEX_R1_LEGACY`、generation 3；返回股票 5,224（MATCH 121 / NO_MATCH 5,069 / UNKNOWN 34）和板块 400（MATCH 2 / NO_MATCH 398）。响应明示 `RETROSPECTIVE_RESEARCH`、`strict_t0_pit=false`、`CANDIDATE_TRADE_DATE_ONLY_INDEPENDENT_R7_PUBLISHED_FACT`，不代表候选样本来源或正式 Head。
+- 候选 Cohort API 现把上述独立审计及证据摘要写入嵌套、顶层响应；来源页按历史工程审计呈现日期和绑定口径，缺数据时显示明确 reason，避免把缺 Owner 误报成 SQL 故障。Research 与兼容前端状态文案同步修正。
+- 使用 `v4_research_7f5f6c66a4681999ca5420f5` / T0 `2026-09-30` 的实际 PG Reader 与更新后 BFF 直接联验，HTTP 200、审计 READY、5624 个股票/板块分母，四类发布事实证据均在；定向测试 3 passed，修改 Python `py_compile`、两个前端 JS `node --check`、`git diff --check` 均通过。另一个合并测试调用中，两项旧 CoreProduct mock 测试因仓库隔离插件拒绝共享 PG 连接而未执行；未关闭或绕过隔离。
+- 28766 当前服务进程仍是已知候选启动器；本机执行策略拒绝了重载该进程的命令，故尚未将“代码直验”描述成已运行服务/浏览器实页复验。28765 未触碰。待后续可安全重载 28766 时再补该项实页证据。

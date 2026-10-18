@@ -83,6 +83,21 @@ class ResearchBFF:
                 if not getattr(r,'pg_candidate_schema',None):
                     return 409,r.envelope(status='BLOCKED',code='PG_CANDIDATE_SNAPSHOT_REQUIRED',items=[])
                 payload=r.query('forward',query)
+                try:
+                    from workbench_db.forward_r7_store import ForwardR7Store
+                    audit=ForwardR7Store.read_candidate_source_audit(self.root,
+                        trade_date=r.context['accepted_trade_date'],
+                        limit=int(query.get('limit',100)),offset=int(query.get('offset',0)))
+                except Exception as exc:
+                    audit=dict(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        reason='R7_CANDIDATE_AUDIT_READ_FAILED',detail=type(exc).__name__,
+                        binding='CANDIDATE_TRADE_DATE_ONLY',evidence_class='RETROSPECTIVE_RESEARCH')
+                candidate_research=payload.get('candidate_research')
+                if not isinstance(candidate_research,dict):candidate_research={}
+                candidate_research['r7_source_audit']=audit
+                payload['candidate_research']=candidate_research
+                payload['r7_source_audit']=audit
+                payload['r7_source_status']=audit['status']
                 payload.update(contract_id='V4_PG_CANDIDATE_COHORT_READ_R1',
                     source_mode=r.context.get('source_mode'),production_accepted=False,
                     cohort_enrollment_enabled=False,PIT_ELIGIBLE=False)

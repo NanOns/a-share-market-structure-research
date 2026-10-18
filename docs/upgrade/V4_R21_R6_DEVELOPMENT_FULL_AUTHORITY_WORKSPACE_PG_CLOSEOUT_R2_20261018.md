@@ -21,7 +21,7 @@
 - PG 事实：`v4.contract_versions` 19 条、审批事件 16 条；`dm01_data_accepted_heads` 1 条。现有 `publications`、`publication_heads`、`operational_research_heads` 与 accepted 市场日历为空。BaoStock `query_trade_dates` 实查 10-16 为交易日，并存为 PG 诊断日历候选；补齐身份/namespace 后正式市场日历读取仍明确返回 `NO_ACCEPTED_PUBLICATION_HEAD`，不伪造 accepted 日历或源接受。
 - 28766 仍服务 PG 候选 T0 `2026-09-30`：股票 5,213、板块 378、Focus 469、Forward 117、事件 33；只读、生产权限关闭、日更 worker 未启动。
 - 对 28766 做了 41 个 API 请求（context、列表/详情、股票图表、Market、Events、Focus、Forward、Sources、Diagnostics、Replay/Compare）及 6 个产品页 HTTP 请求。有效数据路由为 200 且上下文 token 一致；明确返回 `SOURCE_INCOMPLETE` 的域保留该状态；Replay/Compare 因无首可用时间证明返回 `PIT_NOT_AVAILABLE`。服务返回的 8 个页面/静态资源与本仓 `static/research` 文件 SHA 全部一致。
-- 浏览器逐页交互未完成：Windows UI 自动化访问 Chrome URL 时被工具层停止；未绕过。HTTP/API 和静态资源校验不等同于视觉验收。
+- 28766 页面交互已有 R5 同日真实浏览器矩阵覆盖（板块、股票详情、Focus/Forward、Market、Diagnostics、Compare、Replay、数据更新页）；该矩阵标明 candidate context 和 PIT 限制。R6 本次续行再次调用 Windows UI 自动化时，工具无法可靠判定 Chrome 当前 URL，故未绕过，也未声称新增浏览器验收。
 
 ## 验证、清理与未完成项
 
@@ -29,3 +29,10 @@
 - 已清理 G 盘可重建 pytest/pyc/pip 缓存 2,674,361,197 字节。大型 `G:/codex_tmp/r7_active_baseline_20261015` 含改动源码及独有材料，尚未逐项归属，保留；未动 TDX 只读源或无关文件。
 - 后续继续项：恢复可用的开发 PG publication/calendar/Head 输入链，再运行正式目标日期运行接受、完整 DM-01 日更冻结与 Core/全模块业务 Head 联调；继续现役 V4 业务文件读取收口和 Focus/Forward/Market/Cohort 接线；按任务授权逐项清理已确认无消费者的开发衍生物；补完 28766 浏览器交互矩阵。
 - 证据仍不支持全模块验收。生产切换和最终生产打包保持关闭，必须等全功能验收通过并由用户另行明确启动。
+
+## 用户再次确认开发 PG 全权限后的续行实修（2026-10-18）
+
+- 将 `focus_daily_stage` 自动执行门禁由本地 JSON 文件读取改为精确绑定的 PG SourceIngress 字节读取。代码固定合同路径、SHA-256 与 180 字节长度；PG 不可用、事实缺失或身份错误时 fail-closed，不回退读取工作区文件。当前门禁继续保持关闭，原因来自 PG 读回的原合同值：等待真实次日接受及多日 Forward/到期结果接受。
+- 在唯一 `market_research` PG 中一次性登记 `config/focus_daily_pipeline_gate_v1.json` 原始字节：SHA-256 `8d398694d8df852d2f623d74538afc4e77358a5de394ee2364c43a5fba7daaa2`、180 字节；同路径/摘要精确读回，并从运行函数默认路径实测得到 `(False, REAL_NEXT_DAY_ACCEPTED; MULTI_DAY_FORWARD_AND_DUE_OUTCOME_ACCEPTANCE_PENDING)`。
+- `tests/upgrade_v3/test_focus_07a_post_sync_stage.py` 定向验证 9 项通过，覆盖 PG 字节入口、不可用时关闭、既有 Focus preflight/apply 顺序和同步身份检查。`git diff --check` 通过。该修复关闭一个仍由 V4 运行时直接读取业务配置文件的调用点。
+- 28766 当前 HTTP/API 服务仍为 PG 候选上下文；本次 UI 自动化工具在无法确认 Chrome 当前 URL 时拒绝继续，未绕过。既有 R5 浏览器页面操作矩阵仍是最近一次真实浏览器验收证据；本次未运行日更/采集、创建正式 publication 或切换 Head。

@@ -11,12 +11,22 @@ from typing import Any, Callable
 
 CONTRACT_ID = "FOCUS_P12_POST_SYNC_STAGE_V1"
 GATE_CONTRACT_ID = "FOCUS_DAILY_PIPELINE_GATE_V1"
+GATE_SOURCE_PATH = "config/focus_daily_pipeline_gate_v1.json"
+GATE_SOURCE_SHA256 = "8d398694d8df852d2f623d74538afc4e77358a5de394ee2364c43a5fba7daaa2"
+GATE_SOURCE_BYTES = 180
 
 
-def _automatic_apply_gate(root: Path) -> tuple[bool, str]:
+def _automatic_apply_gate(root: Path, *, source_loader: Callable[..., Any] | None = None) -> tuple[bool, str]:
     try:
-        gate = json.loads((root / "config/focus_daily_pipeline_gate_v1.json").read_text("utf-8"))
-    except (OSError, ValueError):
+        if source_loader is None:
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+            source_loader = read_path_bytes
+        source = source_loader(root, GATE_SOURCE_PATH, expected_sha256=GATE_SOURCE_SHA256)
+        raw = source.read_bytes()
+        if len(raw) != GATE_SOURCE_BYTES:
+            return False, "FOCUS_PIPELINE_GATE_SOURCE_IDENTITY_INVALID"
+        gate = json.loads(raw.decode("utf-8"))
+    except Exception:
         return False, "FOCUS_PIPELINE_GATE_UNAVAILABLE"
     if gate.get("contract_id") != GATE_CONTRACT_ID or not isinstance(
             gate.get("automatic_apply_enabled"), bool):

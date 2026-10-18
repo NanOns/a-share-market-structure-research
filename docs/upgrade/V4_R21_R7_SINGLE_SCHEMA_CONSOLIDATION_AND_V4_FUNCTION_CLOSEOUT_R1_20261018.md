@@ -132,3 +132,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `/v4/research/replay?as_of=2026-09-30` 显示该日期已绑定候选截面，但严格 PIT 可用日期为 0；说明无完整 first-available 证明，不展示未来状态/后续成员/结果。
 - `/v4/research/compare` 先显示严格 T0 冻结回放不可用，再由页面控件明确切换至事后重建（非 PIT）。以中华企业 `SH.600675` 对比起点 Universe 市场等权，返回 1.205% 与 -0.136%，共同窗口 2026-09-29 至 09-30，并明确声明事后重建不代表 T0 当时已知。
 - `/v4/research/forward?view=fep` 标注 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，质量及当前覆盖不可得，未训练模型保持 `PENDING`；不构成生产模型或正式发布。
+
+### 运行时 Schema 创建边界续修
+
+发现兼容函数 `create_schema(pg, "v4")` 仍会在每次 Writer 初始化时发送 `CREATE SCHEMA IF NOT EXISTS v4`。虽然不会增加 Schema，SOT 规定 v4 只由受控 bootstrap migration 创建，因此已将该运行时边界收紧为只读 `to_regnamespace('v4')` 校验：仅允许已预置 v4，缺失即 `V4_CANONICAL_SCHEMA_NOT_PROVISIONED`，任何非 v4 名称仍在 SQL 前拒绝。该函数的所有常规 Forward/History/Journal/ReadIndex/Owner/Jobs/Research 调用因此不会再发出 CREATE SCHEMA。
+
+- 单 Schema guard 定向验证从 5 项更新为 6 项，结果 `6 passed`；覆盖运行时已存在 v4 验证且无 DDL、缺失 v4 fail-closed、旧 Schema 拒绝、Alias/Shadow/Research staging 行为。
+- 本机静态调用扫描确认剩余运行时 `CREATE SCHEMA` 字面量只在 `NativeShadowDatabase` 被构造器首行拒绝之后的不可达旧实现；Shadow export writers 同样在数据库访问前拒绝。历史版本 migration SQL 保持原样，运行时代码路径不执行这些旧 Schema 创建语句。

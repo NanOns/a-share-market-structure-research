@@ -176,4 +176,10 @@ def connection(schema, *, read_only=False, dsn=None, row_factory=None):
 def create_schema(pg,schema):
     if schema != 'v4':
         raise RuntimeError('V4_SINGLE_SCHEMA_ONLY_SCHEMA_CREATION_BLOCKED')
-    pg.execute(sql.SQL('CREATE SCHEMA IF NOT EXISTS {}').format(sql.Identifier(schema)))
+    # Schema provisioning belongs to the explicit, versioned bootstrap
+    # migration. Runtime builders may verify the canonical namespace but must
+    # never create even `v4` implicitly (and therefore cannot revive a legacy
+    # v4_* namespace through a caller-controlled name).
+    row=pg.execute('SELECT to_regnamespace(%s)',(schema,)).fetchone()
+    if not row or row[0] is None:
+        raise RuntimeError('V4_CANONICAL_SCHEMA_NOT_PROVISIONED')

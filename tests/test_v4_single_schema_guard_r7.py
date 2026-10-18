@@ -21,6 +21,26 @@ def test_schema_creation_guard_rejects_every_noncanonical_schema():
         create_schema(NoWrite(), 'v4_research_0123456789abcdef')
 
 
+def test_runtime_schema_guard_only_verifies_preprovisioned_v4():
+    from workbench_db.v4_native import create_schema
+
+    class ExistingSchema:
+        def __init__(self): self.queries=[]
+        def execute(self, query, params):
+            self.queries.append((query,params))
+            return self
+        def fetchone(self): return ('v4',)
+
+    class MissingSchema(ExistingSchema):
+        def fetchone(self): return (None,)
+
+    existing=ExistingSchema()
+    create_schema(existing,'v4')
+    assert existing.queries==[('SELECT to_regnamespace(%s)',('v4',))]
+    with pytest.raises(RuntimeError, match='V4_CANONICAL_SCHEMA_NOT_PROVISIONED'):
+        create_schema(MissingSchema(),'v4')
+
+
 def test_application_connection_rejects_legacy_schemas_before_connect(monkeypatch):
     from workbench_db import v4_native
 

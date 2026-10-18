@@ -459,3 +459,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 再次使用 `REPEATABLE READ READ ONLY` 查询确认当前 PG 为 `market_research` / OID `646711` / `127.0.0.1:5432`，事务只读，V4 命名空间仅 `v4`；目录当前计数 123 表、85 例程、184 个非内部触发器。另按全库非系统命名空间核对：`public` 表/视图/序列均为 0，用户 Schema 仅 `v4`（123 表、5 序列），v4 到其他非系统用户 Schema 的目录依赖为 0。端口监听为 PostgreSQL `5432`、开发服务 `28766`；没有 `28765` 监听。现有 28766 浏览器仍在个股详情页，显示候选 T0 `2026-09-30`、日线 QFQ `120/253` 根及未具备来源的字段状态。
 - 依用户本轮“按任务卡继续完成”要求，尝试仅删除本仓库内与同目录 `.py` 源文件对应的 `.pyc`（此前清点为 2,159 项、28,981,840 字节），保留 6 个无对应源码文件；执行工具策略在 PowerShell 命令启动前拒绝该精确操作。未删除文件，未改用其他删除通道，DB-11 Workspace 物理清理仍为 `PARTIAL`。
 - 已补齐“全模块缺口与可执行验收路径”矩阵，将现有 PG/UI 工程状态、缺失的真实来源/Owner/日历/PIT 输入以及输入到位后的数值和浏览器验收路径逐模块对应。该报告变更已按暂存区策略检查后推送；本次未写入业务 PG、未重启服务、未改动 28765。
+
+### 2026-10-19 旧 Shadow writer 死代码移除
+
+- 继续静态扫描发现旧 `v4_shadow_live_pg_r3.NativeShadowDatabase` 虽然构造器开头已 fail-closed，但类体仍保留独立 PG 连接、路径哈希 Schema 和不可达的创建/写入逻辑。已删除整段退役 writer 实现；仅保留旧导入表面、构造即拒绝的兼容类以及仍有测试合同调用的显式模拟资格辅助函数。源码中不再有 Shadow 路径的 `CREATE SCHEMA` 或数据库连接实现。
+- 新增回归断言检查旧文件不含 Schema 创建语句且实例化在连接前按迁移错误拒绝。`tests/test_v4_single_schema_guard_r7.py` 定向运行 `7 passed`；两个变更 Python 文件 `py_compile` 成功，指定文件 `git diff --check` 通过。所有 pytest 临时目录与 Python 缓存均在 `G:\codex_tmp`。
+- 本次只改源码/回归/阶段报告；未连接或写入 PostgreSQL、未改变 Schema/业务 Head、未启动/停止服务，也未触碰 28765。数据库目录现状仍依据最近 RR/RO 实测；本条是运行时能力进一步移除，不构成新 PG 清理或模块数据验收。

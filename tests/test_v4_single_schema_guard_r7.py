@@ -64,6 +64,16 @@ def test_shadow_compatibility_builders_use_fixed_v4_exporter(monkeypatch):
     assert len(calls)==2
 
 
+def test_retired_native_shadow_writer_has_no_schema_creation_path():
+    from pathlib import Path
+    from workbench_db.v4_shadow_live_pg_r3 import NativeShadowDatabase
+
+    source = Path(NativeShadowDatabase.__init__.__code__.co_filename).read_text(encoding='utf-8')
+    assert 'CREATE SCHEMA' not in source.upper()
+    with pytest.raises(RuntimeError, match='V4_SINGLE_SCHEMA_SHADOW_STORAGE_MIGRATION_REQUIRED'):
+        NativeShadowDatabase(object(), 'unused')
+
+
 def test_research_builder_stages_locally_and_targets_fixed_schema(monkeypatch, tmp_path):
     from workbench_db import v4_snapshot_pg_r1
 

@@ -38,6 +38,9 @@ def test_dm01_freeze_and_daily_increment_use_pg_baostock_snapshot_binding():
     assert "_read_baostock_daily_update_from_pg" in freeze
     assert "load_baostock_runtime_pg(ROOT, args.target_date" in freeze
     assert ".read_text(" not in freeze and ".read_bytes(" not in freeze
+    assert "delta_receipt_path.read_text" not in freeze
+    assert "delta_path.is_file()" not in freeze
+    assert "TDX_PACKAGE_DELTA_{args.target_date.replace('-', '')}.json" in freeze
     assert "resolve_baostock_cache_root(ROOT)" in increment
     assert "data/v4/source_snapshots/baostock" not in freeze
     assert "data/v4/source_snapshots/baostock" not in increment

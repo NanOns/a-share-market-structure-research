@@ -93,17 +93,18 @@ def main() -> int:
                 or not (tdx_capture.get("download") or {}).get("sha256")):
             raise ValueError("FREEZE_TDX_PACKAGE_IDENTITY_MISMATCH")
 
-        delta_receipt_path = archive.parent / "delta" / args.target_date.replace("-", "") / "tdx_delta_build_receipt.json"
-        delta_receipt_logical = delta_receipt_path.resolve().relative_to(ROOT).as_posix()
+        snapshot_logical = archive.resolve().parent.relative_to(ROOT).as_posix()
+        delta_folder_logical = f"{snapshot_logical}/delta/{args.target_date.replace('-', '')}"
+        delta_receipt_logical = f"{delta_folder_logical}/tdx_delta_build_receipt.json"
         from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
         delta_receipt_source = read_path(ROOT, delta_receipt_logical)
         delta_receipt = json.loads(delta_receipt_source["raw"])
         delta_path = Path(str(delta_receipt.get("delta_path") or ""))
+        expected_delta_logical = f"{delta_folder_logical}/TDX_PACKAGE_DELTA_{args.target_date.replace('-', '')}.json"
         if (delta_receipt.get("current_snapshot_id") not in (None, snapshot_id)
-                or not delta_path.is_file()):
+                or delta_path.resolve().relative_to(ROOT).as_posix() != expected_delta_logical):
             raise ValueError("FREEZE_TDX_PACKAGE_DELTA_IDENTITY_MISMATCH")
-        delta_logical = delta_path.resolve().relative_to(ROOT).as_posix()
-        delta, delta_binding = _read_json_binding(dict(path=delta_logical,
+        delta, delta_binding = _read_json_binding(dict(path=expected_delta_logical,
             sha256=delta_receipt.get("delta_sha256")))
         if (delta.get("contract_id") != "TDX_PACKAGE_DELTA_V1" or delta.get("current_snapshot_id") != snapshot_id
                 or delta.get("target_date") != args.target_date):

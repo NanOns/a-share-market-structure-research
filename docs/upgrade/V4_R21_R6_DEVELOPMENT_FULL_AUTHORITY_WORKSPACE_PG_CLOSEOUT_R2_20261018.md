@@ -106,7 +106,7 @@
 
 ## DM-01 冻结消费者继续移除工作区回读
 
-- 冻结脚本现在以精确 PG SourceIngress binding 读取 TDX capture receipt、delta receipt/delta、BaoStock daily update、GBBQ accepted manifest/member；对每份 JSON 校验 path、SHA、字节数与业务日期/快照身份。官方日历继续由 PG-bound runtime reader选择，冻结清单直接引用其 binding；不再把本地副本重新算哈希后当作来源记录。
+- 冻结脚本现在以精确 PG SourceIngress binding 读取 TDX capture receipt、delta receipt/delta、BaoStock daily update、GBBQ accepted manifest/member；对每份 JSON 校验 path、SHA、字节数与业务日期/快照身份。Delta 收据/JSON 从 snapshot ID 与日期形成确定性 PG logical path，并核对收据路径声明；官方日历继续由 PG-bound runtime reader选择，冻结清单直接引用其 binding；不再把本地副本重新算哈希后当作来源记录。
 - 日更编排在启动冻结前把本次 TDX capture receipt 写入 SourceIngress 并将 binding 传给冻结脚本。GBBQ 首次边界现在对 manifest 声明的源成员校验原始 SHA/长度，逐件写入并从 PG 精确读回；冻结消费者只按 manifest 的 path/SHA 读 PG。TDX 原 ZIP 仍由上游受控捕获/差分构建负责读取；冻结阶段仅检查其捕获路径仍存在并引用已验证 receipt 中的 SHA，不在下游重复散列 ZIP。
 - 新增或更新定向回归覆盖 BaoStock 精确绑定、错误日期拒绝、通用 JSON binding SHA/长度拒绝以及冻结脚本无工作区 `read_text/read_bytes`；8 项通过，两个脚本 `py_compile` 和 `git diff --check` 通过。完整实际日更仍由 2026-10-08 中间交易日 TDX 源包缺失阻断，尚未据此宣称端到端接受 Head 通过。
 

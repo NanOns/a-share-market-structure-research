@@ -4,6 +4,7 @@ Reconstructs a declared successor market path, retaining the original path bytes
 No current membership is applied to historical market returns.
 """
 import gzip
+from io import BytesIO
 import json
 import sys
 from collections import defaultdict
@@ -14,45 +15,58 @@ from statistics import median, fmean
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
 from scripts.fp_domain_evidence import enter,operational_path
-from workbench_service.production_v4 import frozen_current_reader,reference
+from workbench_service.production_v4 import frozen_current_reader
+from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+from workbench_analysis.market_source_acquisition import load_bytes_binding_pg,load_json_source_pg
 from workbench_service.current_v4_context import canonical,digest
 from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
-from tdx.gbbq_reader import read_gbbq
+from tdx.gbbq_reader import decode_gbbq_bytes
 from v4.factors.native import market_axis_primitives,market_trend_axis
 from v4.market_regime_ui import project
 
 def verified(binding):
-    p=ROOT/binding['path'];assert reference(ROOT,p)['sha256']==binding['sha256'],binding['path'];return p
+    return load_bytes_binding_pg(ROOT,binding,source_origin='FP05_MARKET_INPUT')
+
+def source_binding(path):
+    relative=Path(path).resolve().relative_to(ROOT.resolve()).as_posix()
+    source=ingress_path(ROOT,relative)
+    record=source['record']
+    return dict(path=relative,sha256=record['source_sha256'],bytes=record['source_bytes']),source['raw']
+
+def rows_gzip(raw):
+    with gzip.GzipFile(fileobj=BytesIO(raw),mode='rb') as stream:
+        for line in stream:
+            yield json.loads(line)
 
 def main():
     out=enter(5);reader,_=frozen_current_reader(ROOT);contract,_=reader._contract();ctx=reader.load_context()['context'];date=ctx['accepted_trade_date']
     head_binding=ref('data/v4/V4_DATA_ACCEPTED_HEAD.json');assert head_binding['sha256']==ctx['data_head_digest'];head=reader._read(head_binding);chain=reader._read(head['accepted_chain'])
     nodes=[n for n in chain['nodes'] if n['trade_date']<=date]
     execution_path=next((ROOT/'data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2').glob('chain_execution_context*'))
-    execution=json.loads(execution_path.read_bytes());assert execution['calendar']['binding']==head['calendar']
-    sources={'data_head':head_binding,'accepted_chain':head['accepted_chain'],'execution':ref(execution_path),'projection_adapter':ref('scripts/build_fp05_market.py')}
-    history_receipt=ROOT/'reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json';hr=json.loads(history_receipt.read_bytes())
-    sources['history']=dict(path=hr['artifact_path'],sha256=hr['artifact_sha256']);sources['history_receipt']=ref(history_receipt)
+    execution_binding,execution_raw=source_binding(execution_path)
+    execution=json.loads(execution_raw);assert execution['calendar']['binding']==head['calendar']
+    sources={'data_head':head_binding,'accepted_chain':head['accepted_chain'],'execution':execution_binding,'projection_adapter':ref('scripts/build_fp05_market.py')}
+    history_receipt=ROOT/'reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json';history_receipt_binding,history_receipt_raw=source_binding(history_receipt);hr=json.loads(history_receipt_raw)
+    sources['history']=dict(path=hr['artifact_path'],sha256=hr['artifact_sha256']);sources['history_receipt']=history_receipt_binding
     history=defaultdict(list)
-    with gzip.open(verified(sources['history']),'rt',encoding='utf8') as f:
-        for line in f:
-            row=json.loads(line);d=str(row['trade_date']);d=f'{d[:4]}-{d[4:6]}-{d[6:]}'
-            if d<=date:history[row['security_id']].append(dict(trade_date=d,raw_ohlc=row['raw_ohlc'],volume=row['volume'],amount=row['amount'],symbol=row['source_security_key']))
+    for row in rows_gzip(verified(sources['history'])):
+        d=str(row['trade_date']);d=f'{d[:4]}-{d[4:6]}-{d[6:]}'
+        if d<=date:history[row['security_id']].append(dict(trade_date=d,raw_ohlc=row['raw_ohlc'],volume=row['volume'],amount=row['amount'],symbol=row['source_security_key']))
     components={};members={}
     for node in nodes:
         day=node['trade_date'];components[day]={}
         for kind in ('RAW_DAILY','ADJUSTED_DAILY','PRICE_LIMIT','TRADING_STATUS','IDENTITY_UNIVERSE'):
             b=node['components'][kind];binding=dict(path=b['artifact_path'],sha256=b['artifact_sha256']);sources[day+':'+kind]=binding
-            rows=json.loads(verified(binding).read_bytes())['rows'];components[day][kind]={r['security_id']:r for r in rows}
+            rows=json.loads(verified(binding))['rows'];components[day][kind]={r['security_id']:r for r in rows}
         members[day]={sid for sid,r in components[day]['IDENTITY_UNIVERSE'].items() if r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT')}
         for sid,row in components[day]['RAW_DAILY'].items():
             history[sid]=[b for b in history[sid] if b['trade_date']!=day]
             history[sid].append(dict(trade_date=day,raw_ohlc=[str(row[k]) for k in ('open','high','low','close')],volume=row['volume'],amount=row['amount'],symbol=row['source_security_key']))
     gbbq=execution['inputs'][date]['inputs']['GBBQ'];sources['gbbq']=gbbq
     events=defaultdict(list);target=int(date.replace('-',''))
-    for e in read_gbbq(verified(gbbq)):
+    for e in decode_gbbq_bytes(verified(gbbq),source=gbbq['path']):
         if e.event_date<=target:events[e.security_id].append(e)
-    dispositions=json.loads((ROOT/'config/v4_02_gbbq_price_impact_classification_v1.json').read_bytes())['dispositions']
+    dispositions=load_json_source_pg(ROOT,'config/v4_02_gbbq_price_impact_classification_v1.json',source_origin='FP05_MARKET_INPUT')['dispositions']
     sources['adjustment_classification']=ref('config/v4_02_gbbq_price_impact_classification_v1.json')
     for sid,bars in history.items():
         bars.sort(key=lambda b:b['trade_date']);bars[:]=bars[-253:]
@@ -65,10 +79,10 @@ def main():
             b['adjustment_reason']='UNSUPPORTED_OR_UNKNOWN_PRICE_IMPACT' if blocked else None
     sessions=execution['calendar']['session_dates'];sources['calendar']=head['calendar'];idx=sessions.index(date);prior3=sessions[idx-3]
     universe_path=ROOT/'data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz';sources['historical_universe']=ref(universe_path)
-    with gzip.open(universe_path,'rt',encoding='utf8') as f:
-        for line in f:
-            r=json.loads(line)
-            if r['trade_date']==prior3 and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):members.setdefault(prior3,set()).add(r['security_id'])
+    universe_binding,universe_raw=source_binding(universe_path)
+    sources['historical_universe']=universe_binding
+    for r in rows_gzip(universe_raw):
+        if r['trade_date']==prior3 and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):members.setdefault(prior3,set()).add(r['security_id'])
     returns=defaultdict(dict);ratios=defaultdict(dict)
     for sid,bars in history.items():
         by={b['trade_date']:b for b in bars}
@@ -82,11 +96,11 @@ def main():
                 actual={x['trade_date'] for x in prior}
                 needed=[s for s in sessions if prior[0]['trade_date']<=s<day]
                 if set(needed)==actual and fmean(x['amount'] for x in prior)>0:ratios[day][sid]=b['amount']/fmean(x['amount'] for x in prior)
-    path_source=ROOT/'reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz';sources['prior_market_path']=ref(path_source)
-    prior_path=[json.loads(l) for l in gzip.open(path_source,'rt',encoding='utf8')]
+    path_source=ROOT/'reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz';prior_path_binding,prior_path_raw=source_binding(path_source);sources['prior_market_path']=prior_path_binding
+    prior_path=list(rows_gzip(prior_path_raw))
     assert prior_path[-1]['trade_date']==prior3 and prior_path[-1]['level'] is not None
     # Explicit new version carries a frozen accepted prefix and links every bridge session.
-    path_contract=json.loads((ROOT/'config/v4_market_path_successor_contract_v1.json').read_bytes());sources['path_contract']=ref('config/v4_market_path_successor_contract_v1.json')
+    path_contract=load_json_source_pg(ROOT,'config/v4_market_path_successor_contract_v1.json',source_origin='FP05_MARKET_INPUT');sources['path_contract']=ref('config/v4_market_path_successor_contract_v1.json')
     levels=[r['level'] for r in prior_path];level=levels[-1];bridge=[];previous=prior3
     for day in components:
         start=members[previous];valid=sorted(start&returns[day].keys());coverage=len(valid)/len(start)
@@ -106,7 +120,8 @@ def main():
     ma=lambda xs:fmean(xs) if len(xs)==20 and all(x is not None for x in xs) else None
     trend=market_trend_axis(index_close=level,index_ma20=ma(levels[-20:]),index_ma20_t_minus_5=ma(levels[-25:-5]),**identity)
     row=dict(trade_date=date,trend_axis=trend['trend_axis'],**{k:axes[k] for k in ('breadth_axis','participation_axis','stress_level','stress_change')})
-    oldregime=[json.loads(l) for l in gzip.open(ROOT/'reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz','rt',encoding='utf8')]
+    oldregime_binding,oldregime_raw=source_binding(ROOT/'reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz')
+    oldregime=list(rows_gzip(oldregime_raw))
     # No fabricated intermediate axes: uncomputed bridge dates reset hysteresis explicitly.
     gaps=[dict(trade_date=day) for day in components if day!=date]
     regime=asdict(project([*oldregime,*gaps,row])[date])

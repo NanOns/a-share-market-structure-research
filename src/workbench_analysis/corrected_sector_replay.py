@@ -42,7 +42,7 @@ def materialize_sectors(root):
     sessions=official_sessions(root)
     for result in replay['owners']:
         owner=result['owner'];day=owner['trade_date'];folder=out/'owners'/day
-        factors=gzrows(checked(root,owner['core']));profiles=gzrows(checked(root,owner['profiles']))
+        factors=list(gzrows(checked(root,owner['core'])));profiles=gzrows(checked(root,owner['profiles']))
         profileby={r['security_id']:r for r in profiles};factorby={r['security_id']:r for r in factors}
         raw={r['security_id']:r for r in gzrows(checked(root,owner['raw']))};adjusted={r['security_id']:r for r in gzrows(checked(root,owner['adjusted']))}
         previous={r['security_id']:r for r in gzrows(checked(root,owner['prior_core']))}

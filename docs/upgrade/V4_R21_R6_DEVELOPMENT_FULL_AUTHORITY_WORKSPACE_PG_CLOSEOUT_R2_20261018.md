@@ -40,3 +40,20 @@
 - 在唯一 `market_research` PG 中一次性登记 `config/focus_daily_pipeline_gate_v1.json` 原始字节：SHA-256 `8d398694d8df852d2f623d74538afc4e77358a5de394ee2364c43a5fba7daaa2`、180 字节；同路径/摘要精确读回，并从运行函数默认路径实测得到 `(False, REAL_NEXT_DAY_ACCEPTED; MULTI_DAY_FORWARD_AND_DUE_OUTCOME_ACCEPTANCE_PENDING)`。
 - `tests/upgrade_v3/test_focus_07a_post_sync_stage.py` 定向验证 9 项通过，覆盖 PG 字节入口、不可用时关闭、既有 Focus preflight/apply 顺序和同步身份检查。`git diff --check` 通过。该修复关闭一个仍由 V4 运行时直接读取业务配置文件的调用点。
 - 28766 当前 HTTP/API 服务仍为 PG 候选上下文；本次 UI 自动化工具在无法确认 Chrome 当前 URL 时拒绝继续，未绕过。既有 R5 浏览器页面操作矩阵仍是最近一次真实浏览器验收证据；本次未运行日更/采集、创建正式 publication 或切换 Head。
+
+## 本轮续行实修与核验（2026-10-18）
+
+- 修复候选构建中两个迭代器被消费的问题：`corrected_structure_replay` 和 `corrected_sector_replay` 先物化同一日期输入后再供下游复用。重建 2026-09-28、09-29、09-30、10-08 四日 Owner 候选；Profile/Structure 均有完整运行行，Sector 每日分别得到 5,222、5,222、5,222、5,224 条成员和 83 个行业，行业相对强弱已知 5,135、5,137、5,135、5,129 条。其依据仍为日期有效重建分类，不是 PIT/accepted。
+- 修复 Focus/Forward 输入适配：精确登记所需配置、日历、状态与序列描述符到 PG SourceIngress，并从 PG 字节读回；时间序列描述符由 PG 读取、行情行通过专用不可变序列表读取。当前四日合计 505 个 Focus episodes、1,307 个 events；Forward outcomes 为 OBSERVED 518、PENDING 2,007，未将待观察状态伪装为已接受结果。
+- 修复历史 Owner 和压缩 Focus 历史输入的 PG 字节读回路径，支持 32 MiB 分块 SourceIngress 与流式 gzip 解压。本轮把 67,226,640 字节 Owner 历史包按精确绑定写入 PG 并读回；此前已登记的 551,726,664 字节 TDX 包仍在 PG。当前 Owner SourceIngress 汇总 78 条、494,213,060 字节；此数为事实行合计，不含另列的 TDX 大包。
+- 修复 `stock_prewatch.load_package` 的 PG 字节包装对象身份比较；修复 FP05 市场历史绑定校验对已移除 `production_v4.reference` 符号的依赖，改为仓库根目录约束下分块 SHA-256 校验。
+- 完成 Sector/Market Rotation 实际重跑。Market Rotation 四日输出均为 `UNKNOWN` 83 个行业；10-08 的 B0 为 TRUE 21、FALSE 32、UNKNOWN 30。该输出是有效的阻断证据，不能解释为模块业务验收完成。完整候选链状态为 `CORRECTED_OWNER_CANDIDATE_READY_PENDING_RELEASE_QA`，`production_admission=false`、`data_head_moved=false`、本轮 SourceIngress 自动请求数为 0。
+- 本轮在 28766 对 context、home、sectors、stocks、focus、forward、market、diagnostics/health 八个 API 端点重新请求，均为 HTTP 200；现场仍只有开发 28766 和唯一 PG 5432 监听，生产 28765 未监听。真实页面交互最近一次有效证据仍是 R5 浏览器矩阵；本轮未新增浏览器验收。
+- 回归：针对 Owner replay、Stock Prewatch、DM01 诊断日历的只读 PG 定向套件为 187 passed、1 deselected（6.72 秒）。被排除用例 `production_and_v4_09_acceptance_stay_disabled` 属历史冻结治理 profile，执行时将仓库根映射为历史临时快照，并尝试读取该历史根对应、当前不存在的 PG schema；它不构成当前 PG 候选的失败证据。此前未带只读 PG 定向开关的尝试在收集期被安全隔离插件拒绝，未产生写入。
+- 尚未完成全目标：所有现役 V4 业务文件读取迁移、工作空间消费者盘点/清理、完整模块业务 Head 连通、日更真实接受链、浏览器交互复验仍有缺口。现存显式数据阻断包括 2026-10-08 官方 TDX 日包暂不可用（不得以 10-16 倒填）、Market Rotation 核心输入未知、无 accepted calendar/publication Head，以及 Focus/Forward 多日结果待真实接受。当前只到开发候选与 API 验证，不是全模块验收。
+
+## FP05 与历史 Owner 收据的 PG 读链收口
+
+- 根据暂存准入策略发现并改正两处现役代码仍直接读取历史报告的路径。`scripts/build_fp05_market.py` 现通过 `ingress_path`/`load_bytes_binding_pg` 读取执行上下文、历史日报收据、历史行业指数、市场阶段序列、历史市场分类、合同和价格影响配置；压缩流与 GBBQ 均从 PG 读回字节解析。Owner pipeline 的当前 TDX source-capture 收据和其绑定收据也改为 PG SourceIngress JSON 读回。
+- 实际将 FP05 三个历史文件和 Owner 收据/绑定按精确路径、SHA 与字节数登记/读回 PG；例如两个 gzip 输入分别为 234,720 字节（`898a6554…1bdaedb`）与 356,287 字节（`89aae848…a9b139`），Owner capture receipt 为 3,019 字节。`tools/git_repository_policy.py --staged` 在这一修正后通过 16 个变更 blob 的准入检查。
+- 新命名空间 FP05 实跑到历史行情绑定处后 fail-closed：日报收据指向的历史坐标行情包 SHA 为 `7d67a7d4…79ff8c7`；仓内同路径只有 133 字节且 SHA 为 `aebc94d8…c9cbbdc`，PG 精确 source 和 package 也都不存在。未用占位文件替代，未生成 FP05 市场产物。符合 R2 新运行路径机制的空 ENTRY 记录已移出仓库并保存在 `G:\\codex_tmp\\r6_fp05_blocked_start\\fp05`。继续完成 FP05 需要恢复这一精确历史输入或基于已接受源重建并重新绑定其历史合同。

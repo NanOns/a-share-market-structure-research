@@ -31,6 +31,19 @@ def clean(x):
     return x
 
 
+def _ingress_exact_file(root,path):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import (
+        ingest_file,read_bound,source_id_for_path,
+    )
+    binding=ref(root,path)
+    result=ingest_file(root,source_id_for_path(binding['path']),path,
+                       expected_sha256=binding['sha256'])
+    exact=read_bound(root,binding['path'],binding['sha256'])
+    if exact['raw']!=Path(path).read_bytes() or result['source_sha256']!=binding['sha256']:
+        raise ValueError('FOCUS_GENERATED_BINDING_PG_READBACK_MISMATCH:'+binding['path'])
+    return binding
+
+
 def confirmation(values):
     _,manifest,_,machine,scanner=d0.package();legacy=scanner(values);evidence=[];matches=[];unknown=[]
     for scenario in machine['scenario_priority']:
@@ -69,12 +82,13 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     cal=dict(session_dates=sessions,sessions=[dict(trade_date=d,session_index=i) for i,d in enumerate(sessions)],
           lineage_id='R4_OFFICIAL_MASTER_CALENDAR',producer_contract_id='MARKET_CALENDAR_V1')
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
+    calendar_binding=_ingress_exact_file(root,out/'FOCUS_CALENDAR.json')
     sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
-        factors=gzrows(checked(root,owner['core']));profiles={r['security_id']:r for r in gzrows(checked(root,owner['profiles']))}
+        factors=list(gzrows(checked(root,owner['core'])));profiles={r['security_id']:r for r in gzrows(checked(root,owner['profiles']))}
         seeds={r['security_id']:r for r in gzrows(checked(root,sector['seed']))}
         window=sessions[max(0,sessions.index(day)-119):sessions.index(day)+1]
         from .focus_replay_history_r1 import read_history
@@ -156,7 +170,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=resolve_tdx_root(root))
         calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations)
         fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows)
-        write(folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=ref(root,folder/'focus_status.json')
+        write(folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=_ingress_exact_file(root,folder/'focus_status.json')
         for sid,bars in history.items():
             for bar in bars:
                 if bar['trade_date']==day:
@@ -170,9 +184,12 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     from workbench_db.v4_series_pg_r1 import build
     from workbench_service.current_v4_context import canonical,digest as content_digest
     build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
+    # The dated-series relation owns the bars; SourceIngress owns this exact
+    # immutable descriptor so existing PG-bound Focus readers can resolve it.
+    series_binding=_ingress_exact_file(root,series)
     for owner in native.values():owner['series']=ref(root,series)
-    bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
-          classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
+    bindings=dict(series=series_binding,calendar=calendar_binding,gbbq=sources['gbbq'],
+          classification=_ingress_exact_file(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
     bindings.update(security_identity=sources['identity'], path_contract=CONTRACT)
     from focus_tracker.v4_native_core_adapter import enriched_project
     from workbench_db.v4_series_pg_r1 import verified_series_scope

@@ -2,8 +2,7 @@
 from collections import defaultdict, Counter
 from pathlib import Path
 from statistics import fmean, median
-from .corrected_owner_replay import load, gzrows, gzwrite, ref, OUT
-from .r43_owner_replay import checked_pg as checked
+from .corrected_owner_replay import load, gzrows, gzwrite, ref, checked, OUT
 from .market_source_acquisition import official_sessions, write
 from .v4_13_descendant_contracts import DescendantContracts
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package
@@ -37,8 +36,8 @@ def materialize_market_rotation(root):
             ar=f['fields']['amount_ratio20']['value']
             if ar is not None:amounts.append(ar)
         # Endpoint membership is explicitly intersected with the saved historic owner.
-        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
-        historical=read_path(root,'config/v4_market_operational_authority_v1.json')['value']['market']
+        authority_binding=ref(root,root/'config/v4_market_operational_authority_v1.json')
+        historical=load(checked(root,authority_binding))['market']
         market=load(checked(root,historical));membership=market['sources']['historical_universe']
         members=defaultdict(set)
         for r in gzrows(checked(root,membership)):

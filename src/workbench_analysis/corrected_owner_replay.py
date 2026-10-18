@@ -3,6 +3,7 @@ from __future__ import annotations
 import bisect
 import gzip
 import hashlib
+from io import BytesIO
 import json
 import os
 import struct
@@ -24,7 +25,8 @@ OUT = 'data/v4/workspaces/owner_repair_v1'
 
 
 def load(path):
-    return json.loads(Path(path).read_bytes())
+    raw=path.read_bytes() if hasattr(path,'read_bytes') else Path(path).read_bytes()
+    return json.loads(raw)
 
 
 def ref(root, path):
@@ -33,11 +35,20 @@ def ref(root, path):
 
 
 def checked(root, binding):
-    p = (Path(root) / binding['path']).resolve()
-    p.relative_to(Path(root).resolve())
-    if sha256_file(p) != binding['sha256']:
-        raise ValueError('CORRECTED_INPUT_DIGEST_MISMATCH:' + binding['path'])
-    return p
+    from workbench_db.v4_historical_source_ingress_pg_r1 import (
+        PGSourceBytes,admit_source_binding_bytes,bound_bytes,read_package_bytes,
+    )
+    normalized=dict(binding)
+    if 'bytes' not in normalized and type(normalized.get('byte_count')) is int:
+        normalized['bytes']=normalized['byte_count']
+    try:
+        admit_source_binding_bytes(root,normalized,source_origin='V4_CORRECTED_OWNER_CANDIDATE')
+        try:return bound_bytes(root,normalized)
+        except ValueError as error:
+            if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+            return PGSourceBytes(read_package_bytes(root,normalized['path'],normalized['sha256']),root)
+    except (OSError,KeyError,ValueError) as error:
+        raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))+':'+str(error)) from error
 
 
 def gzwrite(root, path, rows):
@@ -48,8 +59,18 @@ def gzwrite(root, path, rows):
 
 
 def gzrows(path):
-    with gzip.open(path, 'rt', encoding='utf8') as stream:
-        return [json.loads(line) for line in stream if line.strip()]
+    if hasattr(path,'read_bytes'):
+        with gzip.GzipFile(fileobj=BytesIO(path.read_bytes()),mode='rb') as stream:
+            for line in stream:
+                if line.strip():yield json.loads(line)
+    elif isinstance(path,(bytes,bytearray,memoryview)):
+        with gzip.GzipFile(fileobj=BytesIO(path),mode='rb') as stream:
+            for line in stream:
+                if line.strip():yield json.loads(line)
+    else:
+        with gzip.open(path,'rb') as stream:
+            for line in stream:
+                if line.strip():yield json.loads(line)
 
 
 def transform_window(raw, events, dispositions, target):
@@ -147,7 +168,10 @@ def materialize_core(root, dates=None):
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
     historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
-    for r in gzrows(checked(root,historical)):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_source_binding_bytes
+    historical_status_bytes=admit_source_binding_bytes(root,historical,
+        source_origin='V4_CORRECTED_OWNER_HISTORICAL_STATUS')
+    for r in gzrows(historical_status_bytes):
         if r['status']=='SUSPENDED':status[r['security_id']][r['trade_date']]='SUSPENDED'
     chain=load(checked(root,head['accepted_chain']))
     dated_identity={}
@@ -156,7 +180,9 @@ def materialize_core(root, dates=None):
         dated_identity[d]={r['security_id'] for r in rs}
         for r in load(root/node['components']['TRADING_STATUS']['artifact_path'])['rows']:status[r['security_id']][d]=r['status']
     historical_universe=load(checked(root,load(root/'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
-    for r in gzrows(checked(root,historical_universe)):
+    historical_universe_bytes=admit_source_binding_bytes(root,historical_universe,
+        source_origin='V4_CORRECTED_OWNER_HISTORICAL_UNIVERSE')
+    for r in gzrows(historical_universe_bytes):
         if r['trade_date'] in required and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
             dated_identity.setdefault(r['trade_date'],set()).add(r['security_id'])
     for day,rows in batches.items():

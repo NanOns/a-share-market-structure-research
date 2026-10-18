@@ -26,7 +26,7 @@ def materialize_health(root):
         day=owner['owner']['trade_date'];manifest=load(checked(root,owner['structure_manifest']))
         binding=next(a for a in manifest['artifacts'] if a['path'].endswith('runtime_security.jsonl.gz'))
         rows={r['identity']['security_id']:r for r in gzrows(checked(root,binding))}
-        projected=gzrows(checked(root,owner['advanced_projection']))
+        projected=list(gzrows(checked(root,owner['advanced_projection'])))
         for p in projected:
             row=rows[p['security_id']];aid=row['active_selection'].get('active_anchor_id')
             state=next((s for s in row['anchor_states'] if s['anchor_id']==aid),None)

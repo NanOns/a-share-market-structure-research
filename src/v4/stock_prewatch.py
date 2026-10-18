@@ -55,7 +55,12 @@ def _validate_repair_freeze(root, freeze, repair):
         _verify_file_binding(root, repair[field], field)
     global_head = _pg_json(root, 'data/v4/V4_STAGE_ACCEPTED_HEAD.json')
     head_path, _ = _verify_file_binding(root, global_head['v4_09_binding'], 'accepted V4-09 head')
-    if head_path != _repo_path(root, 'data/v4/V4_09_ACCEPTED_HEAD.json'):
+    # PGSourceBytes are request-scoped wrappers and compare by object identity;
+    # compare their exact bound logical paths instead of wrapper instances.
+    head_source_path = getattr(head_path, 'source_path', head_path)
+    expected_head = _repo_path(root, 'data/v4/V4_09_ACCEPTED_HEAD.json')
+    expected_source_path = getattr(expected_head, 'source_path', expected_head)
+    if head_source_path != expected_source_path:
         raise ValueError('REPAIR_ACCEPTED_HEAD_PATH_INVALID')
     head = json.loads(head_path.read_text(encoding='utf8'))
     if head.get('stage') != 'V4-09' or head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':

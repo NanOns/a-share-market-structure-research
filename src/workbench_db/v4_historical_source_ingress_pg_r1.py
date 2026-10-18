@@ -28,6 +28,11 @@ LEGACY_VERSIONS = {"1.0.0", VERSION}
 MAX_INLINE_SOURCE_BYTES = 64 * 1024 * 1024
 KIND = "historical_source_ingress"
 FOLDER = "data/v4/historical_source_ingress_pg_r1"
+PACKAGE_CONTRACT = "V4_HISTORICAL_SOURCE_PACKAGE_INGRESS_PG_R1"
+PACKAGE_VERSION = "1.0.0"
+PACKAGE_KIND = "source_package_manifest"
+PACKAGE_CHUNK_KIND = "source_package_chunk"
+PACKAGE_CHUNK_BYTES = 32 * 1024 * 1024
 
 
 def source_id_for_path(source_path: str) -> str:
@@ -233,6 +238,189 @@ def ingest_captured_bytes(root: str | Path, source_path: str, raw: bytes, *,
     if actual["raw"]!=raw:raise ValueError("HISTORICAL_SOURCE_INGRESS_READBACK_MISMATCH")
     return {"status":"INGESTED_OR_ALREADY_PRESENT","source_path":relative,
             "source_sha256":sha,"source_bytes":len(raw),"binding":binding}
+
+
+def ingest_package_bytes(root: str | Path, source_path: str, raw: bytes, *,
+                         expected_sha256: str, source_revision: str,
+                         source_origin: str, chunk_bytes: int = PACKAGE_CHUNK_BYTES) -> dict[str, Any]:
+    """Append a large exact package to PG in bounded immutable byte chunks."""
+    project=_root(root);relative=Path(source_path).as_posix()
+    source_id=source_id_for_path(relative)
+    if (not isinstance(raw,(bytes,bytearray,memoryview)) or len(raw)<=MAX_INLINE_SOURCE_BYTES
+            or len(raw)>2*1024*1024*1024 or not isinstance(expected_sha256,str)
+            or not re.fullmatch(r"[0-9a-f]{64}",expected_sha256)
+            or not isinstance(source_revision,str) or not source_revision.strip()
+            or not isinstance(source_origin,str) or not source_origin.strip()
+            or type(chunk_bytes) is not int or not 1024*1024<=chunk_bytes<=PACKAGE_CHUNK_BYTES):
+        raise ValueError("HISTORICAL_SOURCE_PACKAGE_INGRESS_ARGUMENT_INVALID")
+    total=len(raw);sha=hashlib.sha256(raw).hexdigest()
+    if sha!=expected_sha256:
+        raise ValueError("HISTORICAL_SOURCE_PACKAGE_DIGEST_MISMATCH")
+    chunks=(total+chunk_bytes-1)//chunk_bytes
+    project_root=Path(project).resolve();folder=(project_root/FOLDER).resolve()
+    target=ForwardFactStore.__new__(ForwardFactStore)
+    target.root=project_root;target.folder=folder
+    target.schema=v4_native.workspace_schema(folder,"forward")
+    target.dsn=v4_native.configured_dsn()
+    target.database_identity=None
+    with v4_native.connection(target.schema,dsn=target.dsn) as pg:
+        pg.execute("SELECT set_config('statement_timeout','120s',true)")
+        relation=pg.execute("SELECT to_regclass('forward_facts')").fetchone()
+        if not relation or relation[0] is None:
+            raise ValueError("HISTORICAL_SOURCE_PACKAGE_STORE_NOT_PROVISIONED")
+        target.database_identity=ForwardFactStore._database_identity(pg)
+        chunk_refs=[]
+        for index,start in enumerate(range(0,total,chunk_bytes)):
+            piece=bytes(raw[start:min(start+chunk_bytes,total)])
+            chunk_sha=hashlib.sha256(piece).hexdigest()
+            record={"contract_id":PACKAGE_CONTRACT,"contract_version":PACKAGE_VERSION,
+                "source_id":source_id,"source_path":relative,"source_sha256":sha,
+                "source_bytes":total,"source_revision":source_revision,"source_origin":source_origin,
+                "chunk_index":index,"chunk_count":chunks,"chunk_sha256":chunk_sha,
+                "chunk_bytes":len(piece),"chunk_raw_base64":base64.b64encode(piece).decode("ascii")}
+            key=digest(canonical({"contract_id":PACKAGE_CONTRACT,"source_id":source_id,
+                "source_sha256":sha,"chunk_index":index}))
+            payload=canonical(record);payload_sha=digest(payload)
+            pg.execute("INSERT INTO forward_facts(kind,fact_key,payload,payload_sha256,source_sha256) "
+                "VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+                (PACKAGE_CHUNK_KIND,key,payload.decode("utf-8"),payload_sha,sha))
+            existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
+                (PACKAGE_CHUNK_KIND,key)).fetchone()
+            if existing!=(payload.decode("utf-8"),payload_sha):
+                raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_CONFLICT")
+            chunk_refs.append({"fact_key":key,"payload_sha256":payload_sha,
+                "chunk_sha256":chunk_sha,"chunk_bytes":len(piece)})
+        manifest={"contract_id":PACKAGE_CONTRACT,"contract_version":PACKAGE_VERSION,
+            "source_id":source_id,"source_path":relative,"source_sha256":sha,
+            "source_bytes":total,"source_revision":source_revision,"source_origin":source_origin,
+            "chunk_bytes":chunk_bytes,"chunk_count":chunks,"chunks":chunk_refs,
+            "first_ingested_at":datetime.now(timezone.utc).isoformat()}
+        manifest_key=digest(canonical({"contract_id":PACKAGE_CONTRACT,"source_id":source_id,"source_sha256":sha}))
+        manifest_payload=canonical(manifest);manifest_sha=digest(manifest_payload)
+        pg.execute("INSERT INTO forward_facts(kind,fact_key,payload,payload_sha256,source_sha256) "
+            "VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+            (PACKAGE_KIND,manifest_key,manifest_payload.decode("utf-8"),manifest_sha,sha))
+        existing=pg.execute("SELECT payload,payload_sha256 FROM forward_facts WHERE kind=%s AND fact_key=%s",
+            (PACKAGE_KIND,manifest_key)).fetchone()
+        if existing!=(manifest_payload.decode("utf-8"),manifest_sha):
+            raise ValueError("HISTORICAL_SOURCE_PACKAGE_MANIFEST_CONFLICT")
+    binding=target._binding(PACKAGE_KIND,manifest_key,manifest_sha)
+    return {"status":"INGESTED_OR_ALREADY_PRESENT","source_path":relative,
+        "source_sha256":sha,"source_bytes":total,"chunk_count":chunks,"binding":binding}
+
+
+def read_package_bytes(root: str | Path, source_path: str, expected_sha256: str) -> dict[str, Any]:
+    """Read and verify a chunked large package from PG without file fallback."""
+    project=_root(root);relative=Path(source_path).as_posix()
+    source_id=source_id_for_path(relative)
+    if not isinstance(expected_sha256,str) or not re.fullmatch(r"[0-9a-f]{64}",expected_sha256):
+        raise ValueError("HISTORICAL_SOURCE_PACKAGE_DIGEST_INVALID")
+    folder=(Path(project)/FOLDER).resolve();schema=v4_native.workspace_schema(folder,"forward")
+    def query(pg):
+        expected={}
+        try:expected=json.loads(os.environ.get("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON","{}"))
+        except ValueError as exc:raise ValueError("PG_DATABASE_IDENTITY_CONFIGURATION_INVALID") from exc
+        identity=ForwardFactStore._database_identity(pg)
+        if expected and identity!=expected:raise ValueError("HISTORICAL_SOURCE_PACKAGE_DATABASE_IDENTITY_MISMATCH")
+        rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE kind=%s "
+            "AND payload::jsonb->>'source_id'=%s AND payload::jsonb->>'source_sha256'=%s "
+            "ORDER BY fact_key COLLATE \"C\" LIMIT 2",
+            (PACKAGE_KIND,source_id,expected_sha256)).fetchall()
+        if len(rows)!=1:
+            raise ValueError("HISTORICAL_SOURCE_PACKAGE_NOT_UNIQUE" if rows else "HISTORICAL_SOURCE_PACKAGE_NOT_FOUND")
+        key,payload,payload_sha=rows[0]
+        if digest(payload.encode("utf-8"))!=payload_sha:raise ValueError("HISTORICAL_SOURCE_PACKAGE_MANIFEST_DIGEST_MISMATCH")
+        manifest=json.loads(payload)
+        if (manifest.get("contract_id")!=PACKAGE_CONTRACT or manifest.get("contract_version")!=PACKAGE_VERSION
+                or manifest.get("source_path")!=relative or manifest.get("source_sha256")!=expected_sha256
+                or manifest.get("source_id")!=source_id or type(manifest.get("source_bytes")) is not int
+                or not isinstance(manifest.get("chunks"),list)
+                or len(manifest["chunks"])!=manifest.get("chunk_count")):
+            raise ValueError("HISTORICAL_SOURCE_PACKAGE_MANIFEST_INVALID")
+        keys=[item.get("fact_key") for item in manifest["chunks"]]
+        if any(not isinstance(value,str) for value in keys):raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_LIST_INVALID")
+        chunk_rows=pg.execute("SELECT fact_key,payload,payload_sha256 FROM forward_facts WHERE kind=%s "
+            "AND fact_key=ANY(%s) ORDER BY fact_key COLLATE \"C\"",(PACKAGE_CHUNK_KIND,keys)).fetchall()
+        if len(chunk_rows)!=len(keys):raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_MISSING")
+        by_key={key:(payload,payload_sha) for key,payload,payload_sha in chunk_rows}
+        output=bytearray()
+        for index,ref in enumerate(manifest["chunks"]):
+            row=by_key.get(ref["fact_key"])
+            if row is None or digest(row[0].encode("utf-8"))!=row[1] or row[1]!=ref.get("payload_sha256"):
+                raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_PAYLOAD_INVALID")
+            chunk=json.loads(row[0])
+            try:piece=base64.b64decode(chunk.get("chunk_raw_base64",""),validate=True)
+            except (ValueError,TypeError) as exc:raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_ENCODING_INVALID") from exc
+            if (chunk.get("contract_id")!=PACKAGE_CONTRACT or chunk.get("source_id")!=source_id
+                    or chunk.get("source_path")!=relative or chunk.get("source_sha256")!=expected_sha256
+                    or chunk.get("chunk_index")!=index or chunk.get("chunk_count")!=manifest["chunk_count"]
+                    or len(piece)!=ref.get("chunk_bytes") or digest(piece)!=ref.get("chunk_sha256")):
+                raise ValueError("HISTORICAL_SOURCE_PACKAGE_CHUNK_IDENTITY_MISMATCH")
+            output.extend(piece)
+        raw=bytes(output)
+        if len(raw)!=manifest["source_bytes"] or digest(raw)!=expected_sha256:
+            raise ValueError("HISTORICAL_SOURCE_PACKAGE_READBACK_MISMATCH")
+        return {"record":manifest,"raw":raw}
+    active=v4_native.current_read_snapshot()
+    if active is not None:return query(active)
+    with _same_instance_read(schema) as pg:return query(pg)
+
+
+def admit_source_binding_bytes(root: str | Path, binding: dict[str, Any], *,
+                               source_origin: str) -> bytes:
+    """Return exact PG-bound bytes, performing one verified file/LFS ingress if absent."""
+    project=_root(root)
+    if (not isinstance(binding,dict) or not isinstance(binding.get('path'),str)
+            or not re.fullmatch(r'[0-9a-f]{64}',str(binding.get('sha256') or ''))
+            or type(binding.get('bytes')) is not int or binding['bytes']<1
+            or not isinstance(source_origin,str) or not source_origin.strip()):
+        raise ValueError('HISTORICAL_SOURCE_BINDING_INVALID')
+    relative=Path(binding['path']).as_posix();expected_sha=binding['sha256'];expected_bytes=binding['bytes']
+    try:
+        exact=read_bound(project,relative,expected_sha)
+        raw=exact['raw']
+    except ValueError as exc:
+        if str(exc)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+        try:
+            exact_package=read_package_bytes(project,relative,expected_sha)
+            raw=exact_package['raw']
+        except ValueError as package_exc:
+            if str(package_exc)!='HISTORICAL_SOURCE_PACKAGE_NOT_FOUND':raise
+            source=(project/relative).resolve()
+            if not source.is_relative_to(project) or not source.is_file():
+                raise ValueError('HISTORICAL_SOURCE_INGRESS_PATH_INVALID')
+            raw=source.read_bytes()
+            if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+                try:pointer=raw.decode('ascii').splitlines()
+                except UnicodeDecodeError:pointer=[]
+                oid=next((line.removeprefix('oid sha256:') for line in pointer if line.startswith('oid sha256:')),None)
+                declared=next((int(line.removeprefix('size ')) for line in pointer
+                               if line.startswith('size ') and line.removeprefix('size ').isdigit()),None)
+                if oid!=expected_sha or declared!=expected_bytes:
+                    raise ValueError('HISTORICAL_SOURCE_INGRESS_DIGEST_MISMATCH')
+                git_dir=project/'.git'
+                if git_dir.is_file():
+                    marker=git_dir.read_text(encoding='utf-8').strip()
+                    if not marker.lower().startswith('gitdir:'):
+                        raise ValueError('HISTORICAL_SOURCE_LFS_GITDIR_INVALID')
+                    git_dir=(project/marker.partition(':')[2].strip()).resolve()
+                object_path=git_dir/'lfs'/'objects'/oid[:2]/oid[2:4]/oid
+                if not object_path.is_file():raise ValueError('HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_UNAVAILABLE')
+                raw=object_path.read_bytes()
+            if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+                raise ValueError('HISTORICAL_SOURCE_INGRESS_SOURCE_IDENTITY_MISMATCH')
+            if len(raw)>MAX_INLINE_SOURCE_BYTES:
+                ingest_package_bytes(project,relative,raw,expected_sha256=expected_sha,
+                    source_revision=expected_sha,source_origin=source_origin)
+                del raw
+                raw=read_package_bytes(project,relative,expected_sha)['raw']
+            else:
+                ingest_file(project,source_id_for_path(relative),source,
+                    expected_sha256=expected_sha)
+                raw=read_bound(project,relative,expected_sha)['raw']
+    if len(raw)!=expected_bytes or digest(raw)!=expected_sha:
+        raise ValueError('HISTORICAL_SOURCE_INGRESS_SOURCE_IDENTITY_MISMATCH')
+    return raw
 
 
 def _query(root: str | Path, *, source_id: str | None = None,

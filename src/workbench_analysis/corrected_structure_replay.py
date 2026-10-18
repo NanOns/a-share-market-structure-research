@@ -111,7 +111,7 @@ def materialize_profiles_structure(root):
     cutoff=datetime.now(timezone.utc).isoformat()
     cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
-        day=owner['trade_date'];folder=out/'owners'/day;factors=gzrows(checked(root,owner['core']))
+        day=owner['trade_date'];folder=out/'owners'/day;factors=list(gzrows(checked(root,owner['core'])))
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
@@ -144,6 +144,8 @@ def materialize_profiles_structure(root):
              artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=ref(root,root/CONTRACT),
              owner_inputs=owner,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,formal_accepted=False,
              raw_fallback_count=0,provider_replacement_count=0,V4_11_candidate_substitution_count=0))
+        print(__import__('json').dumps(dict(stage='PROFILE_STRUCTURE_PRESEAL',day=day,
+            factor_rows=len(factors),profile_rows=len(profiles),result_rows=len(results)),sort_keys=True),flush=True)
         snapshot=EpisodeSnapshotMaterializer(c,store).seal(results,manifest,cutoff)
         prior={'frozen_manifest_episode':snapshot};previous_ids={r['security_id'] for r in factors}
         counts={}

@@ -7,6 +7,8 @@ import math
 import re
 import struct
 import time
+from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,6 +18,7 @@ from .tdx_official_daily_source import _atomic_write, capture_tdx_official_daily
 
 CONTRACT = 'V4_MARKET_SOURCE_FALLBACK_POLICY_V1'
 FIELDS = 'date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag'
+_DIAGNOSTIC_SESSION_AUTHORITY = ContextVar('v4_diagnostic_session_authority', default=None)
 
 
 def is_stock_code(code):
@@ -49,10 +52,63 @@ def official_sessions(root, *, pg_reader=None, source_mode=None):
     import os
     selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
     if selected_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+    bound=_DIAGNOSTIC_SESSION_AUTHORITY.get()
+    if bound is not None:
+        if Path(root).resolve()!=bound['root']:
+            raise ValueError('DIAGNOSTIC_CALENDAR_WORKSPACE_MISMATCH')
+        return list(bound['sessions'])
     if pg_reader is None:
         from workbench_db.v4_market_calendar_reader_r1 import from_environment
         pg_reader=from_environment()
     return pg_reader.sessions()
+
+
+@contextmanager
+def bind_dm01_calendar_for_diagnostic_candidate(root, calendar_snapshot):
+    """Use a verified accepted-base plus R4 extension only in a corrected-only candidate.
+
+    This does not create a market-calendar publication or alter the default
+    publication-backed reader. The caller must supply exact PG bindings for the
+    current accepted Data Head calendar and the validated R4 calendar extension.
+    The context is confined to the current workspace and call stack.
+    """
+    project=Path(root).resolve()
+    sources=calendar_snapshot.get('source_bindings') if isinstance(calendar_snapshot,dict) else None
+    sessions=calendar_snapshot.get('session_dates') if isinstance(calendar_snapshot,dict) else None
+    if (project.drive.upper()!='G:'
+            or not isinstance(calendar_snapshot,dict)
+            or calendar_snapshot.get('status')!='DM01_ACCEPTED_BASE_PLUS_R4_CALENDAR_DIAGNOSTIC_CANDIDATE'
+            or not isinstance(sources,list) or len(sources)<2
+            or any(not isinstance(source,dict)
+                   or not isinstance(source.get('path'),str)
+                   or not re.fullmatch(r'[0-9a-f]{64}',str(source.get('sha256') or ''))
+                   or type(source.get('bytes')) is not int or source['bytes']<1
+                   for source in sources)
+            or not isinstance(sessions,list) or not sessions
+            or sessions!=sorted(set(sessions))
+            or any(not isinstance(day,str) or len(day)!=10 for day in sessions)
+            or not re.fullmatch(r'[0-9a-f]{64}',str(calendar_snapshot.get('payload_digest') or ''))
+            or calendar_snapshot.get('production_admission') is not False):
+        raise ValueError('DM01_DIAGNOSTIC_CALENDAR_AUTHORITY_INVALID')
+    authority={
+        'contract_id':'V4_DM01_CALENDAR_COMPOSITE_DIAGNOSTIC_CANDIDATE_R1',
+        'status':calendar_snapshot['status'],
+        'source_bindings':[dict(source) for source in sources],
+        'calendar_payload_digest':calendar_snapshot.get('payload_digest'),
+        'session_count':len(sessions),
+        'production_admission':False,
+    }
+    token=_DIAGNOSTIC_SESSION_AUTHORITY.set({'root':project,'sessions':tuple(sessions),'authority':authority})
+    try:
+        yield authority
+    finally:
+        _DIAGNOSTIC_SESSION_AUTHORITY.reset(token)
+
+
+def diagnostic_session_authority():
+    """Return the explicit candidate calendar source active in this context."""
+    bound=_DIAGNOSTIC_SESSION_AUTHORITY.get()
+    return dict(bound['authority']) if bound is not None else None
 
 
 def load_source_acquisition_pg(root):
@@ -87,14 +143,48 @@ def load_json_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_C
 def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_CAPTURE'):
     """Capture exact bound bytes and return only the PG readback bytes."""
     relative_path = str(binding['path'])
+    from workbench_db.v4_historical_source_ingress_pg_r1 import (
+        MAX_INLINE_SOURCE_BYTES,ingest_captured_bytes,ingest_package_bytes,
+        read_bound,read_package_bytes,
+    )
+    expected_sha=binding.get('sha256')
+    if isinstance(expected_sha,str):
+        for path in (relative_path,f'external/v4_source_capture/{source_origin.lower()}/{expected_sha}.json'):
+            try:exact=read_bound(root,path,expected_sha)
+            except ValueError as exc:
+                if str(exc)=='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':continue
+                raise
+            raw=exact['raw']
+            if len(raw)!=binding.get('bytes',len(raw)) or digest(raw)!=expected_sha:
+                raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
+            return raw
+        try:exact_package=read_package_bytes(root,relative_path,expected_sha)
+        except ValueError as exc:
+            if str(exc)!='HISTORICAL_SOURCE_PACKAGE_NOT_FOUND':raise
+        else:
+            raw=exact_package['raw']
+            if len(raw)!=binding.get('bytes',len(raw)):
+                raise ValueError('V4_HASH_BOUND_PACKAGE_LENGTH_MISMATCH')
+            return raw
     source = (Path(root).resolve() / relative_path).resolve()
     source.relative_to(Path(root).resolve())
     raw = source.read_bytes()
     sha = digest(raw)
     if binding.get('sha256') and sha != binding['sha256']:
         raise ValueError('V4_HASH_BOUND_SOURCE_CAPTURE_MISMATCH')
+    if binding.get('bytes') is not None and binding['bytes']!=len(raw):
+        raise ValueError('V4_HASH_BOUND_SOURCE_LENGTH_MISMATCH')
     source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    if len(raw)>MAX_INLINE_SOURCE_BYTES:
+        ingested=ingest_package_bytes(root,relative_path,raw,expected_sha256=sha,
+            source_revision=sha,source_origin=source_origin)
+        if ingested['source_bytes']!=len(raw) or ingested['source_sha256']!=sha:
+            raise ValueError('V4_HASH_BOUND_PACKAGE_INGRESS_MISMATCH')
+        del raw
+        exact=read_package_bytes(root,relative_path,sha)['raw']
+        if len(exact)!=binding.get('bytes',len(exact)) or digest(exact)!=sha:
+            raise ValueError('V4_HASH_BOUND_PACKAGE_PG_READBACK_MISMATCH')
+        return exact
     ingest_captured_bytes(root, source_path, raw, source_revision=sha, source_origin=source_origin)
     exact = read_bound(root, source_path, sha)
     if exact['raw'] != raw:

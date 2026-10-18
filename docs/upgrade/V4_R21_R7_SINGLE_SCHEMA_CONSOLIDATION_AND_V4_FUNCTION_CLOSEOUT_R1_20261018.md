@@ -189,3 +189,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 065/066 的源文件 SHA-256 均与开发库台账一致。057 的已记录校验和 `509e66d6…` 与仓库 SQL 当前散列 `4c473184…` 不同；为不改写既有台账，在迁移入口加入仅针对该精确历史校验和的兼容分支，并要求 `v4.schema_migrations` 四列类型/空值属性及 `PRIMARY KEY(version)` 精确匹配且 `v4_meta` 已不存在，否则仍以校验和冲突失败。随后常规 `apply_v4_phase0_schema.py --apply` 成功遍历注册迁移集，结果 `ALREADY_CURRENT`，057 状态为 `ALREADY_APPLIED_COMPATIBILITY_VERIFIED`，其余版本包含 065/066 均为 `ALREADY_APPLIED`；数据库台账没有被重写。
 - 定向 Owner writer 回归 `1 passed`。初次关联旧测试集因 fake PG fixture 与旧静态断言未跟上固定表/共享只读事务契约，68 项结果为 29 passed、39 failed；随后更新 fixture 响应、物理关系断言，并将权限测试对齐 SOT 的共享连接显式只读事务要求，再运行 Owner/Publication/Schema 兼容回归，结果 `69 passed`，另覆盖只读事务关闭时 fail-closed。该结果是代码契约回归，不替代真实 publication 的端到端绑定写入。
 - 阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`；尚需真实 publication 端到端 Owner 绑定、迁移总入口校验和余下模块/输入门验收。
+
+### 2026-10-19 再次真实浏览器复核
+
+当前内置浏览器实际访问本机 `28766` 并等待异步数据渲染完成：Focus 路由返回 469 条；Forward 路由返回 117 条样本、首次冻结未知、期限计划 585、已发布期限状态 5（覆盖 1 个样本）、成熟合格 0；FEP 路由显示 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`、质量/当前观察覆盖不可得、未训练槽 `PENDING`。Market 路由显示历史截面截至 2026-09-30（上涨 2,344、下跌 2,712、平盘 155、未知 13、分母 5,224、行情 5,213、成交额 14,378.36 亿元），并明确非实时行情。日更路由显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`，worker 未启动，源检查/补齐/自动更新/重试/取消按钮均禁用。以上是实际 UI 与当前降级/未知状态核验，不是模块通过；页面未执行任何写操作。

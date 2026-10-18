@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import io
 import json
 import os
 import re
 import subprocess
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 from datetime import datetime, timezone
 from contextlib import contextmanager
@@ -289,28 +290,69 @@ def read_source(root: str | Path, source_id: str) -> dict[str, Any]:
             "text": text}
 
 
-def materialize_bound(root: str | Path, binding: dict[str, Any]) -> Path:
-    """Materialize an exact PG-ingressed source into the G-drive temp area for parsers."""
-    source = read_bound(root, str(binding.get("path") or ""), str(binding.get("sha256") or ""))
-    return _materialize_pg_source(root, source)
+class PGSourceBytes(io.BytesIO):
+    """Exact PG-bound source exposed as an in-memory, seekable file object."""
+
+    def __init__(self, source: dict[str, Any], root: str | Path):
+        super().__init__(source["raw"])
+        self.source_path = (Path(root).resolve() / PurePosixPath(source["record"]["source_path"])).resolve()
+        self.sha256 = source["record"]["source_sha256"]
+
+    @property
+    def name(self) -> str:
+        return self.source_path.name
+
+    @property
+    def suffix(self) -> str:
+        return self.source_path.suffix
+
+    @property
+    def parent(self) -> Path:
+        return self.source_path.parent
+
+    def read_bytes(self) -> bytes:
+        return self.getvalue()
+
+    def read_text(self, encoding: str = "utf-8", errors: str | None = None) -> str:
+        return self.getvalue().decode(encoding, errors or "strict")
+
+    def open(self, mode: str = "rb", *, encoding: str = "utf-8", errors: str | None = None):
+        if mode not in {"rb", "r", "rt"}:
+            raise ValueError("PG_BOUND_SOURCE_IS_READ_ONLY")
+        stream = io.BytesIO(self.getvalue())
+        return stream if "b" in mode else io.TextIOWrapper(stream, encoding=encoding, errors=errors)
+
+    def exists(self) -> bool:
+        return True
+
+    def is_file(self) -> bool:
+        return True
+
+    def resolve(self, *args, **kwargs) -> Path:
+        return self.source_path
+
+    def stat(self):
+        return type("PGSourceStat", (), {"st_size": len(self.getvalue())})()
+
+    def __fspath__(self) -> str:
+        raise TypeError("PG_BOUND_SOURCE_HAS_NO_FILESYSTEM_PATH")
 
 
-def _materialize_pg_source(root: str | Path, source: dict[str, Any]) -> Path:
-    project = _root(root)
-    from common.paths import resolve_ingest_temp_root
-    temp_root = resolve_ingest_temp_root(project)
-    path = (temp_root / "v4_historical_source_ingress" / source["record"]["source_sha256"] /
-            Path(source["record"]["source_path"]).name)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if path.is_file():
-        existing = path.read_bytes()
-        if existing != source["raw"]:
-            raise ValueError("HISTORICAL_SOURCE_TEMP_MATERIALIZATION_CONFLICT")
-    else:
-        temp = path.with_name(path.name + ".tmp")
-        temp.write_bytes(source["raw"])
-        temp.replace(path)
-    return path
+def bound_bytes(root: str | Path, binding: dict[str, Any]) -> PGSourceBytes:
+    """Read an exact imported source from PG without creating a workspace file."""
+    return PGSourceBytes(read_bound(root, str(binding.get("path") or ""), str(binding.get("sha256") or "")), root)
+
+
+def read_path_bytes(root: str | Path, source_path: str, *, expected_sha256: str | None = None) -> PGSourceBytes:
+    """Read one PG-ingressed path revision directly into memory."""
+    source = (read_bound(root, source_path, expected_sha256)
+              if expected_sha256 is not None else read_path(root, source_path))
+    return PGSourceBytes(source, root)
+
+
+def materialize_bound(root: str | Path, binding: dict[str, Any]) -> PGSourceBytes:
+    """Compatibility name; PG sources are now returned in memory, never materialized."""
+    return bound_bytes(root, binding)
 
 
 def read_bound(root: str | Path, source_path: str, expected_sha256: str) -> dict[str, Any]:
@@ -427,9 +469,9 @@ def ingress_path(root: str | Path, source_path: str, *, expected_sha256: str | N
     return read_bound(project, relative, result["source_sha256"])
 
 
-def materialize_path(root: str | Path, source_path: str, *, expected_sha256: str | None = None) -> Path:
-    """Materialize only an existing PG-ingressed revision; never auto-ingest on read."""
+def materialize_path(root: str | Path, source_path: str, *, expected_sha256: str | None = None) -> PGSourceBytes:
+    """Compatibility name; return existing PG-ingressed bytes without writing a file."""
     project = _root(root)
     source = (read_bound(project, source_path, expected_sha256)
               if expected_sha256 is not None else read_path(project, source_path))
-    return _materialize_pg_source(project, source)
+    return PGSourceBytes(source, project)

@@ -14,8 +14,8 @@ PARAMETERS = 'V4_10_STATE_REDUCER_PARAMETER_SET_V1'
 TRI = {'TRUE', 'FALSE', 'UNKNOWN'}
 
 def _pg_path(relative_path, *, sha256=None):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    return materialize_path(ROOT, relative_path, expected_sha256=sha256)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return read_path_bytes(ROOT, relative_path, expected_sha256=sha256)
 
 def load_package():
     from workbench_db.v4_historical_source_ingress_pg_r1 import read_source

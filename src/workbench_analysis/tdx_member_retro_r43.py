@@ -69,17 +69,17 @@ def _identity_records(payload):
 
 
 def parse_frozen_rows(root,snapshot):
-    root=Path(root).resolve();from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    root=Path(root).resolve();from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     from common.paths import resolve_ingest_temp_root
     temp_root=resolve_ingest_temp_root(root);temp_root.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='v4_tdx_member_parse_',dir=temp_root) as temporary:
         frozen=Path(temporary);cache=frozen/'T0002'/'hq_cache';cache.mkdir(parents=True)
         for source in snapshot['sources']:
-            original=materialize_bound(root,source)
+            original=bound_bytes(root,source)
             target=cache/Path(source['path']).name
             target.write_bytes(original.read_bytes())
         frame,_=build_snapshot(frozen,snapshot['membership_observed_at'])
-    identity_raw=materialize_bound(root,snapshot['identity_source']).read_bytes()
+    identity_raw=bound_bytes(root,snapshot['identity_source']).read_bytes()
     identity_payload=json.loads(identity_raw)
     mapping={r['source_security_key'].upper():r for r in _identity_records(identity_payload)}
     return normalize_member_rows(frame.to_dict('records'),mapping)
@@ -156,9 +156,9 @@ def validate_snapshot(snapshot, root, *, strict_pit=False):
     if snapshot['membership_snapshot_id']!=expected_snapshot_id:
         raise ValueError('SNAPSHOT_ID_DIGEST_MISMATCH')
     if len(snapshot['sources'])!=3:raise ValueError('COMPLETE_TDX_SOURCE_REQUIRED')
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    for source in snapshot['sources']:materialize_bound(root,source)
-    identity={r['source_security_key'].upper():r['security_id'] for r in _identity_records(load(materialize_bound(root,snapshot['identity_source'])))}
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    for source in snapshot['sources']:bound_bytes(root,source)
+    identity={r['source_security_key'].upper():r['security_id'] for r in _identity_records(load(bound_bytes(root,snapshot['identity_source'])))}
     candidate=_membership_candidate(root,snapshot)
     rows=candidate['record']['rows']
     if digest(rows)!=snapshot['member_digest']:raise ValueError('MEMBER_SET_DIGEST_MISMATCH')
@@ -224,7 +224,7 @@ def capture(root):
         target=out/'latest_member_raw'/sha/name;_atomic_write(target,raw,tdx_root=tdx)
         sources.append(dict(address=str(source),observed_at=now,**ref(root,target)))
     # Parse only exact PG-ingressed bytes in a disposable G: temp tree.
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     from common.paths import resolve_ingest_temp_root
     temp_root=resolve_ingest_temp_root(root);temp_root.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='v4_tdx_member_capture_',dir=temp_root) as temporary:
@@ -236,7 +236,7 @@ def capture(root):
     from .v4_current_stage_authority import CurrentStageAuthority
     current_authority=CurrentStageAuthority(root)
     identity_source=current_authority.identity_ref
-    identity_payload=json.loads(materialize_bound(root,identity_source).read_bytes())
+    identity_payload=json.loads(bound_bytes(root,identity_source).read_bytes())
     identity=_identity_records(identity_payload)
     mapping={r['source_security_key'].upper():r for r in identity}
     rows=normalize_member_rows(frame.to_dict('records'),mapping)
@@ -250,7 +250,7 @@ def capture(root):
         sources=sources,identity_source=identity_source,
         sector_counts=dict(Counter(t for t,s in {(r['sector_type'],r['sector_id']) for r in rows})),
         relation_count=len(rows),mapped_count=len(rows)-len(quarantine),unmapped_count=len(quarantine))
-    accepted_membership=json.loads(materialize_bound(root,current_authority.membership_ref).read_bytes())
+    accepted_membership=json.loads(bound_bytes(root,current_authority.membership_ref).read_bytes())
     oldbinding=accepted_membership['facts']
     # The accepted artifact is a historical source ingress: admit its exact
     # Head-bound bytes once, then downstream reads use the resulting PG binding.

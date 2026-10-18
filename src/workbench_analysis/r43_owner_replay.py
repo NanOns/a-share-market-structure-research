@@ -30,7 +30,8 @@ _SOURCE_IDS = {
 
 
 def load(path):
-    return json.loads(Path(path).read_bytes())
+    raw = path.read_bytes() if hasattr(path, 'read_bytes') else Path(path).read_bytes()
+    return json.loads(raw)
 
 
 def historical_source(root, key):
@@ -44,28 +45,28 @@ def ref(root, path):
 
 
 def checked(root, binding):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     try:
-        return materialize_path(root, binding['path'], expected_sha256=binding['sha256'])
+        return bound_bytes(root, binding)
     except ValueError as exc:
         raise ValueError('CORRECTED_PG_INPUT_UNAVAILABLE:' + binding['path'] + ':' + str(exc)) from exc
 
 
 def checked_pg(root, binding):
     """Read an already-ingressed exact source revision; do not admit disk bytes here."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     try:
-        return materialize_bound(root,binding)
+        return bound_bytes(root,binding)
     except (OSError,ValueError) as exc:
         raise ValueError('PG_BOUND_INPUT_UNAVAILABLE:'+str(binding.get('path'))+':'+str(exc)) from exc
 
 
 def source_ingress(root, binding):
-    """Explicitly admit one bounded historical/provider source, then parse PG bytes."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path, materialize_bound
+    """Explicitly admit one bounded historical/provider source, then return PG bytes."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path, PGSourceBytes
     try:
         admitted=ingress_path(root,binding['path'],expected_sha256=binding['sha256'])
-        return materialize_bound(root,dict(path=binding['path'],sha256=admitted['record']['source_sha256']))
+        return PGSourceBytes(admitted, root)
     except ValueError as exc:
         raise ValueError('SOURCE_INGRESS_UNAVAILABLE:' + binding['path'] + ':' + str(exc)) from exc
 
@@ -78,6 +79,9 @@ def gzwrite(root, path, rows):
 
 
 def gzrows(path):
+    if hasattr(path, 'read_bytes'):
+        stream = gzip.decompress(path.read_bytes()).decode('utf8').splitlines()
+        return [json.loads(line) for line in stream if line.strip()]
     with gzip.open(path, 'rt', encoding='utf8') as stream:
         return [json.loads(line) for line in stream if line.strip()]
 

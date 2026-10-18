@@ -20,8 +20,8 @@ UNKNOWN='UNKNOWN'
 PUBLICATION_ID=re.compile(r'^[A-Za-z0-9][A-Za-z0-9_.:\-/]{0,511}$')
 
 def _read(name):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    path=materialize_path(ROOT,f'config/v4_10_{name}_r1_2.json')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    path=read_path_bytes(ROOT,f'config/v4_10_{name}_r1_2.json')
     return json.loads(path.read_text(encoding='utf8'))
 
 def publication_ids(ids):

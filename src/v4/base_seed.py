@@ -78,13 +78,13 @@ def _read_json(path: Path) -> Any:
 
 
 def _repo_path(root: Path, relative: str) -> Path:
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    return materialize_path(root, relative)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return read_path_bytes(root, relative)
 
 
 def _verify_file_binding(root: Path, binding: Mapping[str, Any], label: str) -> tuple[Path, str]:
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    path = materialize_path(root, str(binding["path"]), expected_sha256=str(binding["sha256"]).lower())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    path = read_path_bytes(root, str(binding["path"]), expected_sha256=str(binding["sha256"]).lower())
     actual = sha256_file(path)
     expected = str(binding["sha256"]).lower()
     if actual != expected:

@@ -122,7 +122,7 @@ def capture_calendar_contract(root):
 
 
 def checked_dependency(root,binding):
-    """Materialize exact frozen code/config bytes from PG source ingress."""
+    """Read exact frozen code/config bytes from PG source ingress."""
     from pathlib import Path
     root=Path(root).resolve()
     relative=Path(binding['path'])
@@ -131,15 +131,15 @@ def checked_dependency(root,binding):
     if relative.parts and relative.parts[0] in ('src','config'):
         archive=root/'data/v4/artifact_store/producer_dependency_archive_v1'/(binding['sha256']+'.bin')
         try:
-            from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-            return materialize_bound(root,dict(path=archive.relative_to(root).as_posix(),
-                sha256=binding['sha256'],bytes=archive.stat().st_size))
+            from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+            return bound_bytes(root,dict(path=archive.relative_to(root).as_posix(),
+                sha256=binding['sha256']))
         except OSError as exc:
             raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
         except ValueError as exc:
             raise ValueError('HISTORICAL_COMPUTATION_BYTES_NOT_CAPTURED') from exc
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    return materialize_bound(root,binding)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    return bound_bytes(root,binding)
 
 
 def accepted_candidate_head(root, current, token, binding, day):

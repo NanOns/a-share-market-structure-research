@@ -37,8 +37,8 @@ def require(condition, reason):
         raise ValueError(reason)
 
 def path(root, binding):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    p = materialize_bound(Path(root).resolve(), binding)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    p = bound_bytes(Path(root).resolve(), binding)
     require(sha(p) == binding['sha256'], 'INPUT_DIGEST_MISMATCH')
     if 'bytes' in binding: require(p.stat().st_size == binding['bytes'], 'INPUT_SIZE_MISMATCH')
     return p

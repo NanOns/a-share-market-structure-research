@@ -78,3 +78,12 @@
 
 - 用重启后的当前分支服务及 Codex 内置浏览器重新验收：从首页进入个股，搜索 `SH.600675` 返回 1 条并打开详情；板块搜索“区域地产”返回 1 条。Forward 历史/结算/FEP、Diagnostics Health/Jobs/Sources/Contracts、市场、Compare、Replay 与日更状态页均加载；日更页面显示开发快照只读、worker 未启动。
 - UI 与直接 API 返回均绑定 `market_research`、OID `646711`、T0 `2026-09-30` 的同一 PG 候选快照。未触发采集、日更、正式 Head CAS 或生产部署；28765 未监听。
+
+## 再续行：PG 绑定源改为纯内存读取（2026-10-18）
+
+- 继续追查 `checked` / `checked_pg` / `source_ingress` 的现役 V4 引入点，发现共享入口仍把 PG 源写到临时文件供解析器使用。新增 `PGSourceBytes` / `bound_bytes`，按原始 path+SHA 从同一 PG 读取、校验后返回 seekable 内存文件对象；拒绝 `os.fspath()` 文件路径回退，并删除实际临时物化实现。兼容 API 名称现只返回内存字节对象。
+- 将 R43 共用 Owner reader 入口统一切到 `bound_bytes`；gzip JSONL、GBBQ、zip 包、日更 Owner 与增量计划、DM01 注册表/链、候选研究依赖、Native snapshot 等直接解析这些内存字节。日更增量统计不再尝试从 PG 绑定路径推导并读取旁置文件；精确策略读取不再创建本地归档副本。当前 `materialize_bound` / `materialize_path` 在 V4 源码内仅剩兼容函数定义，没有活动调用方。
+- 本次更改涉及 28 个现役 V4 Python 文件。定向 `py_compile` 和 `git diff --check` 通过；现场从 PostgreSQL 读取并解析 `V4_DATA_ACCEPTED_HEAD_V2`（T0 2026-09-30），验证返回值带精确 SHA/字节长度且不暴露文件系统路径。DM01 Builder Registry 校验仍为 BLOCKED：该冻结合同引用了若干已变更前的固定历史 blob SHA，Data/Stage Head 也绑定早期版本；未伪造旧内容或改写冻结 Registry 来消除真实版本差异。
+- 重启后通过 Codex 内置浏览器再次实际操作 28766：板块搜索“区域地产”唯一返回 1 条；个股搜索 `SH.600675` 唯一命中并打开详情；Focus 显示未绑定 Owner 的真实原因，Forward 显示 117 个样本并可切换结算视图；市场显示 `MARKET_CENTER_NOT_BOUND`；Diagnostics Health/Jobs 正常读取 PG 候选，Jobs 明示 worker 未启动、source requests=0。候选身份和 T0 与此前一致；未启动采集或日更任务。
+- 本续行新增 1 条 DB-only source ingress：`config/dm01_incremental_builders_contract_r1.json` 精确 SHA 版本，27,431 字节；同库 path/SHA/长度读回一致。未触碰合同审批、Owner、publication Head 或生产状态。
+- 当前未闭合项为正式合同审批/accepted publication Head、历史基线中 22 条缺原始 edge ID 的引用关系与 3 条缺 expected SHA 的历史 blob 对账，以及仅登记的非 V4 调用点。其余现役 V4 PG consumer 的临时文件物化调用已清零。

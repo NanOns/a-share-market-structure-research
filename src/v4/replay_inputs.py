@@ -24,8 +24,8 @@ def _hash(path: Path) -> str:
 
 
 def _verified(root: Path, ref: dict) -> Path:
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    path = materialize_bound(root, ref)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    path = bound_bytes(root, ref)
     if _hash(path) != ref["sha256"]:
         raise ValueError(f"accepted replay input identity mismatch: {ref['path']}")
     return path

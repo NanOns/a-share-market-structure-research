@@ -30,9 +30,9 @@ def ref(root,path):
 
 def checked(root,binding):
     """Materialize the exact V4 source binding from PG SourceIngress."""
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
     try:
-        return materialize_bound(root,binding)
+        return bound_bytes(root,binding)
     except ValueError as exc:
         raise ValueError('R43_PG_SOURCE_INGRESS_UNAVAILABLE:'+binding['path']) from exc
 

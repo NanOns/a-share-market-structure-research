@@ -15,15 +15,17 @@ ACCEPTED_NODE_SHAS=('b338caaea8f9e41228a62add7e987d946f4dc9a5a5297dbe02e9ee73df5
 
 class AcceptedChainError(ValueError):pass
 
-def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def sha(path):
+    raw=path.read_bytes() if hasattr(path,'read_bytes') else Path(path).read_bytes()
+    return hashlib.sha256(raw).hexdigest()
 def binding(root,path):
     from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
     record=read_path(root,path)['record']
     return dict(path=record['source_path'],sha256=record['source_sha256'],bytes=record['source_bytes'])
 def bound_path(root,ref):
     try:
-        from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-        path=materialize_bound(root,ref)
+        from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+        path=bound_bytes(root,ref)
     except (OSError,ValueError) as error:
         raise AcceptedChainError('PG_EXACT_BINDING_INVALID:'+str(ref.get('path'))) from error
     for key in ('bytes','byte_count'):

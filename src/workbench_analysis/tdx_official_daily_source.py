@@ -147,6 +147,8 @@ def sha256_bytes(data: bytes) -> str:
 
 
 def sha256_file(path: Path) -> str:
+    if hasattr(path, "read_bytes"):
+        return hashlib.sha256(path.read_bytes()).hexdigest()
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(COPY_CHUNK_BYTES), b""):

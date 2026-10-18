@@ -20,8 +20,8 @@ PARAMETER_SET = 'V4_09_STOCK_PREWATCH_PARAMETER_SET_V1'
 CONSUMER_CONTRACT = 'V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1'
 
 def _pg_json(root, relative_path):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    return json.loads(materialize_path(root, relative_path).read_text(encoding='utf8'))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return json.loads(read_path_bytes(root, relative_path).read_text(encoding='utf8'))
 
 def _pg_source_json(root, source_id):
     from workbench_db.v4_historical_source_ingress_pg_r1 import read_source

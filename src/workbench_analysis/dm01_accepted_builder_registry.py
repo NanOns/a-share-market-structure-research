@@ -29,9 +29,9 @@ EXPECTED_CALLABLES = {
 }
 
 def _pg_path(root: Path, path_or_binding):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound, materialize_path
-    return (materialize_bound(root, path_or_binding) if isinstance(path_or_binding, Mapping)
-            else materialize_path(root, Path(path_or_binding).as_posix()))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes, read_path, PGSourceBytes
+    return (bound_bytes(root, path_or_binding) if isinstance(path_or_binding, Mapping)
+            else PGSourceBytes(read_path(root, Path(path_or_binding).as_posix()), root))
 
 
 def validate_incremental_registry(*, project_root: Path) -> dict[str, Any]:
@@ -68,6 +68,8 @@ def validate_incremental_registry(*, project_root: Path) -> dict[str, Any]:
 
 
 def sha256_file(path: Path) -> str:
+    if hasattr(path, "read_bytes"):
+        return hashlib.sha256(path.read_bytes()).hexdigest()
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b""):

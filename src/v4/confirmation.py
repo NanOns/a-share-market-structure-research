@@ -14,8 +14,8 @@ def digest(value):
     from .state_identity import digest as canonical_digest
     return canonical_digest(value)
 def exact(ref):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    p=materialize_bound(ROOT,ref)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    p=bound_bytes(ROOT,ref)
     if p.stat().st_size!=ref.get('bytes',ref.get('byte_count',p.stat().st_size)):
         raise ConfirmationError('EXACT_INPUT_BINDING_INVALID:'+ref['path'])
     return p

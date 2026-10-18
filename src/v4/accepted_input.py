@@ -20,8 +20,8 @@ class AcceptedInput:
 
 
 def _verify(root: Path, relative: str, digest: str) -> Path:
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    path = materialize_bound(root, {"path": relative, "sha256": digest})
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    path = bound_bytes(root, {"path": relative, "sha256": digest})
     h = sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
@@ -35,8 +35,8 @@ def _json(root: Path, relative: str, digest: str | None = None) -> dict:
     if digest:
         path = _verify(root, relative, digest)
     else:
-        from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-        path = materialize_path(root, relative)
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+        path = read_path_bytes(root, relative)
     return json.loads(path.read_text(encoding="utf-8"))
 
 

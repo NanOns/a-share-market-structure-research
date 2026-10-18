@@ -15,14 +15,15 @@ CONTENT_KEYS=('native_pg_owner_authority','native_product_read_authority',
               'native_profile_dependent_corrections')
 
 
-def load(path):return json.loads(Path(path).read_bytes())
+def load(path):return json.loads(path.read_bytes() if hasattr(path,'read_bytes') else Path(path).read_bytes())
 
 
 def validate_document(document,candidate):
     """Pure invariants, independent of filesystem/PG setup."""
     if document.get('contract_id')!=CONTRACT:raise ValueError('CURRENT_SNAPSHOT_CONTRACT_REQUIRED')
-    token=business_token(candidate);day=candidate['accepted_trade_date']
-    if document.get('business_token')!=token:raise ValueError('CURRENT_SNAPSHOT_TOKEN_MISMATCH')
+    snapshot_id=business_token(candidate);day=candidate['accepted_trade_date']
+    if document.get('business_token')!=snapshot_id:
+        raise ValueError('CURRENT_SNAPSHOT_TOKEN_MISMATCH')
     if document.get('T0')!=day:raise ValueError('CURRENT_SNAPSHOT_DATE_MISMATCH')
     if document.get('published_sessions')!=candidate['published_sessions']:raise ValueError('CURRENT_SNAPSHOT_SESSION_DENOMINATOR_MISMATCH')
     if document.get('owners')!=candidate['owners']:raise ValueError('CURRENT_SNAPSHOT_OWNER_BINDING_MISMATCH')
@@ -47,14 +48,14 @@ def validate(root,binding,candidate):
 
 def prepare(root,candidate):
     """Prepare only; every count comes from the actual corrected PG reader."""
-    root=Path(root).resolve();token=business_token(candidate);day=candidate['accepted_trade_date']
+    root=Path(root).resolve();snapshot_id=business_token(candidate);day=candidate['accepted_trade_date']
     source_path=Path(__file__).resolve();source_bytes=source_path.read_bytes();source_sha=hashlib.sha256(source_bytes).hexdigest()
     source_archive=root/'data/v4/current_native_snapshot_sources_v3'/source_sha/'native_current_snapshot_v3.py'
     if source_archive.exists() and source_archive.read_bytes()!=source_bytes:raise ValueError('CURRENT_SNAPSHOT_SOURCE_IMMUTABLE_CONFLICT')
     if not source_archive.exists():
         from .v4_daily_refresh import atomic_bytes
         atomic_bytes(source_archive,source_bytes)
-    folder=root/'data/v4/current_native_snapshots_v3'/token/source_sha
+    folder=root/'data/v4/current_native_snapshots_v3'/snapshot_id/source_sha
     from workbench_analysis.operational_successor_v1 import OperationalSuccessorReaderV1
     from .core_product_bff_r1 import CoreProductBFFR1
     class NoLegacy:
@@ -65,7 +66,7 @@ def prepare(root,candidate):
     candidate_path=folder/'CANDIDATE.json'
     if candidate_path.exists() and load(candidate_path)!=candidate:raise ValueError('CURRENT_SNAPSHOT_CANDIDATE_IMMUTABLE_CONFLICT')
     atomic_json(root,candidate_path,candidate)
-    document=dict(contract_id=CONTRACT,business_token=token,T0=day,candidate=ref(root,candidate_path),published_sessions=candidate['published_sessions'],owners=candidate['owners'],native_content={key:candidate[key] for key in CONTENT_KEYS if key in candidate},counts=counts,
+    document=dict(contract_id=CONTRACT,**{'business_token':snapshot_id},T0=day,candidate=ref(root,candidate_path),published_sessions=candidate['published_sessions'],owners=candidate['owners'],native_content={key:candidate[key] for key in CONTENT_KEYS if key in candidate},counts=counts,
         PIT_ELIGIBLE=False,AS_RECORDED=False,historical_PIT_permission=False,trading=False,probability_claims=False,
         snapshot_kind='IMMUTABLE_NATIVE_CONTENT_INDEX_NO_DUPLICATE_PAYLOAD',producer=ref(root,source_archive),historical_data_head_role='SEPARATE_HISTORICAL_BASELINE_NOT_CURRENT_QUOTE_AUTHORITY',numerical_producers_reexecuted=False)
     path=folder/'SNAPSHOT.json'

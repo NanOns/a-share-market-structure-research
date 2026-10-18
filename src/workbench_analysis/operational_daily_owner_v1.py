@@ -341,15 +341,15 @@ def seal(root,context):
     # Original earlier periods remain in immutable predecessor publications.
     first_month=min(d for d in sessions if d[:7]==day[:7])
     import gzip
-    with gzip.open(checked(root,owner['history']),'rt',encoding='utf8') as stream:
-        for line in stream:
-            row=json.loads(line);sid=row['security_id'];identity=next(i for i in identities if i['security_id']==sid)
-            start=max(first_month,identity['list_date'])
-            start=next(d for d in sessions if start<=d<=day)
-            window=[b for b in row['bars'] if b['trade_date']>=start]
-            periods=derive_periods(dict(security_id=sid,source_security_key=identity['source_security_key']),window,
-                                   verified.get(sid,{}),sessions,day,sessions[-1],start_session=start)
-            for cap,rows in periods.items():period_rows[cap].extend(rows)
+    history_source=checked(root,owner['history'])
+    for line in gzip.decompress(history_source.read_bytes()).decode('utf8').splitlines():
+        row=json.loads(line);sid=row['security_id'];identity=next(i for i in identities if i['security_id']==sid)
+        start=max(first_month,identity['list_date'])
+        start=next(d for d in sessions if start<=d<=day)
+        window=[b for b in row['bars'] if b['trade_date']>=start]
+        periods=derive_periods(dict(security_id=sid,source_security_key=identity['source_security_key']),window,
+                               verified.get(sid,{}),sessions,day,sessions[-1],start_session=start)
+        for cap,rows in periods.items():period_rows[cap].extend(rows)
     periods={cap:gzwrite(root,out/'owners'/day/(cap+'.jsonl.gz'),rows) for cap,rows in period_rows.items()}
     owners=dict(raw=owner['raw'],adjusted=owner['adjusted'],core=owner['core'],profile=sector['enriched_profiles'],
                 base_profile=profile['owner']['profiles'],sector=sector['native'],relative_sector=sector['relative_sector'],

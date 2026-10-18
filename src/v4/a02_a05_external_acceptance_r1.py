@@ -6,12 +6,12 @@ from .rps_pit_history_a02_v1 import read_bound,read_publication,delta,digest
 from workbench_db.v4_historical_source_ingress_pg_r1 import read_source,source_id_for_path
 
 def _pg_path(root, path):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-    return materialize_path(root, path)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return read_path_bytes(root, path)
 
 def _pg_bound_path(root, ref):
-    from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_bound
-    return materialize_bound(root, ref)
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    return bound_bytes(root, ref)
 
 BASELINE='66ef2e342dd339cc9795c2d1fd774b8edec4c345'
 AUDIT_SOURCE_ID='f96e640992182f3fb9b94c0c1c04be69d9e206bbfbf9bd5d0ef5063f97800875'

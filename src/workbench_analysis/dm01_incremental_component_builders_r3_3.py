@@ -46,6 +46,8 @@ def digest(value):
     return hashlib.sha256(canonical(value)).hexdigest()
 
 def sha(path):
+    if hasattr(path, 'read_bytes'):
+        return hashlib.sha256(path.read_bytes()).hexdigest()
     h=hashlib.sha256()
     with Path(path).open('rb') as f:
         for block in iter(lambda:f.read(1024*1024),b''):h.update(block)

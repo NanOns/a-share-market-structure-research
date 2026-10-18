@@ -5,11 +5,11 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-from workbench_db.v4_historical_source_ingress_pg_r1 import materialize_path
-PARAMETER_PATH = materialize_path(PROJECT_ROOT, "config/v4_03_parameter_set_v1.json")
+from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+PARAMETER_PATH = read_path_bytes(PROJECT_ROOT, "config/v4_03_parameter_set_v1.json")
 PARAMETERS = json.loads(PARAMETER_PATH.read_text(encoding="utf-8"))
 assert PARAMETERS["parameter_set_id"] == "V4_03_CORE_FACTOR_PARAMETER_SET_V1"
-REGISTRY_PATH = materialize_path(PROJECT_ROOT, "config/v4_03_parameter_registry_v1.json")
+REGISTRY_PATH = read_path_bytes(PROJECT_ROOT, "config/v4_03_parameter_registry_v1.json")
 REGISTRY = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 REGISTRY_VALUES = {item["parameter_id"]: item["value"] for item in REGISTRY["entries"]}
 

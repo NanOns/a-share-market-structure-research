@@ -16,26 +16,26 @@ class AcceptedPaths(PricePaths):
                 raise SourceInvalid('FOCUS_NATIVE_CORE_CONTRACT_OR_COORDINATE')
             result={}
             for kind in ('factors','profiles'):
-                with gzip.open(checked(root,owner[kind]),'rt',encoding='utf8') as stream:
-                    for line in stream:
-                        row=json.loads(line)
-                        if row['trade_date']!=day:raise SourceInvalid('FOCUS_NATIVE_CORE_DATE_MIX')
-                        if kind=='profiles' and row['source_cutoff']!=day:raise SourceInvalid('FOCUS_NATIVE_PROFILE_CUTOFF')
-                        sid=row['security_id'];values=result.setdefault(sid,{})
-                        cells=row['fields'] if kind=='factors' else row['states']
-                        for key in (('ma20','ret5') if kind=='factors' else ('severe_extension',)):
-                            cell=cells.get(key)
-                            if not cell:raise SourceInvalid('FOCUS_NATIVE_CORE_PROVIDER_MISSING:'+key)
-                            parameter='V4_03_CORE_FACTOR_PARAMETER_SET_V1' if kind=='factors' else 'V4_04_CORE_PROFILE_PARAMETER_SET_V1'
-                            if cell.get('parameter_set_id')!=parameter:raise SourceInvalid('FOCUS_NATIVE_CORE_PARAMETER:'+key)
-                            if kind=='factors' and cell.get('value') is not None and not cell.get('unknown_reason') and cell.get('window_end_trade_date')!=day:raise SourceInvalid('FOCUS_NATIVE_CORE_WINDOW_END:'+key)
-                            value=cell.get('value')
-                            if cell.get('unknown_reason'):value=None
-                            if key=='severe_extension':
-                                if value is not None and type(value) is not bool:raise SourceInvalid('FOCUS_NATIVE_CORE_BOOLEAN')
-                            elif value is not None and (type(value) not in (int,float) or not math.isfinite(value)):
-                                raise SourceInvalid('FOCUS_NATIVE_CORE_NUMBER')
-                            values[key]=value
+                rows=gzip.decompress(checked(root,owner[kind]).read_bytes()).decode('utf8').splitlines()
+                for line in rows:
+                    row=json.loads(line)
+                    if row['trade_date']!=day:raise SourceInvalid('FOCUS_NATIVE_CORE_DATE_MIX')
+                    if kind=='profiles' and row['source_cutoff']!=day:raise SourceInvalid('FOCUS_NATIVE_PROFILE_CUTOFF')
+                    sid=row['security_id'];values=result.setdefault(sid,{})
+                    cells=row['fields'] if kind=='factors' else row['states']
+                    for key in (('ma20','ret5') if kind=='factors' else ('severe_extension',)):
+                        cell=cells.get(key)
+                        if not cell:raise SourceInvalid('FOCUS_NATIVE_CORE_PROVIDER_MISSING:'+key)
+                        parameter='V4_03_CORE_FACTOR_PARAMETER_SET_V1' if kind=='factors' else 'V4_04_CORE_PROFILE_PARAMETER_SET_V1'
+                        if cell.get('parameter_set_id')!=parameter:raise SourceInvalid('FOCUS_NATIVE_CORE_PARAMETER:'+key)
+                        if kind=='factors' and cell.get('value') is not None and not cell.get('unknown_reason') and cell.get('window_end_trade_date')!=day:raise SourceInvalid('FOCUS_NATIVE_CORE_WINDOW_END:'+key)
+                        value=cell.get('value')
+                        if cell.get('unknown_reason'):value=None
+                        if key=='severe_extension':
+                            if value is not None and type(value) is not bool:raise SourceInvalid('FOCUS_NATIVE_CORE_BOOLEAN')
+                        elif value is not None and (type(value) not in (int,float) or not math.isfinite(value)):
+                            raise SourceInvalid('FOCUS_NATIVE_CORE_NUMBER')
+                        values[key]=value
             from workbench_db.v4_series_pg_r1 import verified_series_read as read
             descriptor=json.loads(checked(root,owner['series']).read_bytes())
             with read(descriptor) as db:

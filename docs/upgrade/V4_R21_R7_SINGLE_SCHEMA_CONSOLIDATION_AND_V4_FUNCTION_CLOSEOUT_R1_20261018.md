@@ -242,6 +242,7 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 再次从项目 Reader DSN 建立显式 `REPEATABLE READ READ ONLY` 事务，实查 `market_research` OID `646711`、`127.0.0.1:5432`，`transaction_read_only=on`；V4 目录仅 `v4`（123 表、5 序列、85 例程），无 `v4_*`，跨 V4 Schema 依赖 0。端口实查为开发服务 `28766` 正在监听，生产端口 `28765` 未监听。
 - 本次复核只读，无数据库写入、服务重启、Head/Publication 改动或 28765 操作；此结果确认 DB-01 的当前目录事实，不补足 DB-05 缺少的历史逐项 DROP 执行方式收据，也不改变其 `PARTIAL` 状态。
+- 同一 RR/RO 会话复查 `market_calendar_sessions`、`source_packages`、`source_package_facts`、`publications`、`publication_heads`、`operational_research_heads`、`publication_module_results` 均为 0 行。`config/v4_daily_source_acceptance_authorities_r1.json` 仍为 `BLOCKED_NO_INDEPENDENT_ISSUER_APPROVED` 且 `issuers={}`；来源验收与日更/Accepted Head 缺口仍无法由本机工程候选代签。
 
 ### 2026-10-19 个股详情周期切换续验
 

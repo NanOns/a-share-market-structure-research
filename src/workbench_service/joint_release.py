@@ -6,6 +6,7 @@ from .v4_daily_refresh import atomic_bytes
 
 AUTHORITY='config/v4_joint_release_authority_v1.json'
 CONTRACTS=('V4_JOINT_RELEASE_V1','V4_JOINT_RELEASE_V2_PG_CONTENT')
+PG_SNAPSHOT='V4_PG_RESEARCH_SNAPSHOT_R2'
 
 def load(root):
     path=Path(root)/AUTHORITY
@@ -36,11 +37,44 @@ def checked_bytes(root,binding,cache=None):
     if cache is not None:cache[key]=raw
     return raw
 
+def snapshot_metadata(root,snapshot):
+    """Return metadata for either a legacy manifest pointer or a PG descriptor."""
+    if isinstance(snapshot,dict) and snapshot.get('contract_id')==PG_SNAPSHOT:
+        from workbench_db.v4_snapshot_pg_r2 import read
+        with read(snapshot):
+            pass
+        metadata=snapshot.get('content_manifest',{}).get('metadata')
+        if not isinstance(metadata,dict):raise SourceInvalid('JOINT_PG_SNAPSHOT_METADATA_MISSING')
+        return metadata
+    binding=snapshot.get('manifest') if isinstance(snapshot,dict) else None
+    if not isinstance(binding,dict):raise SourceInvalid('JOINT_SNAPSHOT_BINDING_INVALID')
+    return json.loads(checked_bytes(root,binding))
+
+def context_token_for_snapshot(snapshot):
+    """Use the token contract that matches the candidate snapshot identity."""
+    if isinstance(snapshot,dict) and snapshot.get('contract_id')==PG_SNAPSHOT:
+        logical_digest=snapshot.get('logical_digest')
+        if not isinstance(logical_digest,str) or len(logical_digest)!=64:
+            raise SourceInvalid('JOINT_PG_SNAPSHOT_DIGEST_INVALID')
+        return 'research-v4-pg-candidate-'+logical_digest
+    binding=snapshot.get('manifest') if isinstance(snapshot,dict) else None
+    if not isinstance(binding,dict) or not isinstance(binding.get('sha256'),str):
+        raise SourceInvalid('JOINT_SNAPSHOT_BINDING_INVALID')
+    return 'research-v4-'+binding['sha256']
+
 def validate(root,candidate,*,source_cache=None):
     if candidate.get('contract_id') not in CONTRACTS:raise SourceInvalid('JOINT_CONTRACT_INVALID')
     source_cache={} if source_cache is None else source_cache
-    manifest=json.loads(checked_bytes(root,candidate['snapshot']['manifest'],source_cache))
-    checked_bytes(root,manifest['database'],source_cache)
+    snapshot=candidate.get('snapshot')
+    if isinstance(snapshot,dict) and snapshot.get('contract_id')==PG_SNAPSHOT:
+        from workbench_db.v4_snapshot_pg_r2 import read
+        with read(snapshot):
+            pass
+        manifest=snapshot.get('content_manifest',{}).get('metadata')
+        if not isinstance(manifest,dict):raise SourceInvalid('JOINT_PG_SNAPSHOT_METADATA_MISSING')
+    else:
+        manifest=json.loads(checked_bytes(root,snapshot['manifest'],source_cache))
+        checked_bytes(root,manifest['database'],source_cache)
     for binding in manifest['sources'].values():checked_bytes(root,binding,source_cache)
     for binding in candidate['ui_assets'].values():checked_bytes(root,binding,source_cache)
     if manifest['context']['accepted_trade_date']!=candidate['trade_date']:raise SourceInvalid('JOINT_DATE_MISMATCH')
@@ -72,12 +106,19 @@ def validate(root,candidate,*,source_cache=None):
     if not candidate['operational_release_scope'] or candidate.get('trading') is not False:raise SourceInvalid('JOINT_SCOPE_INVALID')
     if candidate['contract_id']=='V4_JOINT_RELEASE_V2_PG_CONTENT':
         from workbench_db.v4_snapshot_pg_r2 import read
-        bindings=[manifest['database']]
+        bindings=[]
+        if isinstance(snapshot,dict) and snapshot.get('contract_id')==PG_SNAPSHOT:
+            bindings.append(snapshot)
+        elif manifest.get('database'):
+            bindings.append(manifest['database'])
         series=manifest.get('domain_features',{}).get('stocks',{}).get('series')
         if series:bindings.append(series)
         journal=manifest.get('sources',{}).get('focus_journal')
         if journal:bindings.append(journal)
         for binding in bindings:
+            if binding is snapshot:
+                with read(binding):pass
+                continue
             descriptor=json.loads(checked_bytes(root,binding,source_cache))
             with read(descriptor):pass
     return manifest

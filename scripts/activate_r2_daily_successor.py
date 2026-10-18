@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
 from scripts.fp01_evidence import write,ref
 from scripts.activate_v4_full_product import health
-from workbench_service.joint_release import AUTHORITY,activate,validate,checked_path
+from workbench_service.joint_release import AUTHORITY,activate,validate,checked_path,context_token_for_snapshot
 from workbench_service.current_v4_context import SourceInvalid,digest
 from workbench_service.continuous_daily_release import ADMISSION,_admitted_bytes
 OUT=ROOT/'docs/evidence/r2_continuous_daily_20261008'
@@ -28,7 +28,7 @@ def prepare():
     if not qa['iab_browser_pass'] or sources['result']!='PASS' or joint['result']!='PASS' or regression['passed']!=104:
         raise SourceInvalid('DAILY_ADMISSION_EVIDENCE_INCOMPLETE')
     if any(s['result']!='REBUILT' for s in chain['stages']):raise SourceInvalid('DAILY_NATIVE_OWNER_REBUILD_NOT_PROVEN')
-    if qa['ui_build_id']!=candidate['ui_build_id'] or qa['context_token']!='research-v4-'+candidate['snapshot']['manifest']['sha256']:
+    if qa['ui_build_id']!=candidate['ui_build_id'] or qa['context_token']!=context_token_for_snapshot(candidate['snapshot']):
         raise SourceInvalid('DAILY_QA_VERSION_CONFLICT')
     for binding in qa['evidence']:checked_path(ROOT,binding)
     paths=['scripts/run_fp02_research_snapshot.py','scripts/prepare_r2_daily_candidate.py','scripts/fp_domain_evidence.py',

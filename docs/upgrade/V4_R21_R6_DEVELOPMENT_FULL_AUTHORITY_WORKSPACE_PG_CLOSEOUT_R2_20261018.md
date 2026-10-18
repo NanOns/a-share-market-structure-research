@@ -76,6 +76,14 @@
 - 所有本轮 R2 过程回执（含成功的 FP10 readback 和前次中断/重跑入口）均已移至 `G:\\codex_tmp\\r6_daily_evidence`，不提交原始证据或过程输出。
 - FP10 缓存改动回归复验 `tests/test_r2_forward_daily.py` 与 `tests/test_v4_21_forward_observation_contract.py`：32 passed（0.20 秒）。此前首次复验中发现的 `__new__` 测试工厂兼容问题已修复。
 
+## 联合发布校验器适配 PG R2 descriptor（2026-10-18 续行）
+
+- 修复 `src/workbench_service/joint_release.py`：联合候选现可直接校验 `V4_PG_RESEARCH_SNAPSHOT_R2` descriptor，先经 PG snapshot `read()` 校验不可变表内容与数据库身份，再从 descriptor 内嵌 metadata 校验 SourceIngress 来源与 Owner 绑定；旧文件 manifest 仍走原路径。
+- 新增 snapshot context-token 解析，PG descriptor 使用其 `logical_digest` 对应的 `research-v4-pg-candidate-…` token；旧 authority 继续使用 manifest SHA token。全产品 QA 与连续日更候选门禁统一调用该解析器，避免把 PG 候选误判成不同 snapshot。
+- 新增 `tests/test_v4_joint_pg_descriptor_binding.py` 隔离回归：descriptor 联合候选校验和缺失/错误 digest 关闭路径共 2 项通过（0.09 秒）。此处没有执行 release CAS、没有改写 Joint authority、没有移动业务 Head，也未访问生产端口。
+- 实际 28766 当前 context token 与其服务 PG schema 的 snapshot logical digest 一致（`research-v4-pg-candidate-7461…9e6a`）。服务仍是 2026-09-30 的候选预览，operational scope 未绑定；这次修复解决校验格式差异，不把候选 preview 提升为发布验收。完整验证与 Head/namespace 联调继续进行。
+- 对 28766 真实运行 44 条 HTTP 功能矩阵，所有请求 HTTP 200，覆盖六入口、来源/诊断、Forward、Replay/Compare、个股图表六种 D/W/M×RAW/QFQ 组合，以及个股/板块/Focus 详情。发现 8 个仍准确标为缺源或候选状态的能力：FEP 当前日 inference Owner、媒体/官方事实事件源、日更 worker receipts、严格 PIT 与 Compare 证明、个股结构 timeline 字段、Sector 历史成员轨迹、Focus 到期 outcomes。原始矩阵在 `G:\codex_tmp\v4_28766_function_matrix_20261018.json`，仅过程证据不入 Git。
+
 ## 日更准入与补充业务读链（2026-10-18 续行）
 
 - `continuous_daily_release.promote` 与 `activate_r2_daily_successor` 现在按 Joint Head 中的 admission 路径/SHA 读取精确 PG SourceIngress 字节；配置、证据和实现 binding 不再由该调用点直接打开工作区文件。SourceIngress helper 支持既有 authority 只提供 path+SHA 的紧凑 binding；PG readback SHA 与 Head 一致。此次读取将当前 admission 及其证据/实现事实写入唯一开发 PG，所有记录均按原始 SHA 定位，没有提升外部签发或生产接受状态。
@@ -117,3 +125,10 @@
 - 实查 `127.0.0.1:5432/market_research` 的现有连接角色为 `postgres`，`rolsuper=true`、库级 CREATE 与当前 schema USAGE/CREATE 均为 true，事务非只读；这是实际连接能力，不是权限申请或凭据名义阻断。没有创建平行实例。
 - 28766 API 已按有效 context token 读验同一 PG candidate/T0=`2026-09-30`。首页、市场、板块 378 项、股票 5,213 项、Focus 469 项、Forward plans 585 项、settlement 5 项均返回 READY；样本股票日/周/月图分别返回 253/54/13 个有效聚合区间，周 QFQ 图返回 20 条并绑定 history version、Head 与 source digest。板块成员样本 25 项。FEP 返回 `SOURCE_INCOMPLETE / NO_CURRENT_DAY_MODEL_INFERENCE_OWNER`；日更状态仍 `PREVIEW_ONLY`、jobs disabled、worker `NOT_STARTED`。数据更新页及脚本、主/组件/API 静态资源 HTTP 200；这一轮是 HTTP/API 验证，没有把它扩称为新一轮浏览器交互验收。
 - 补验市场四轴 API：指数 5 项、涨跌停 5,224 项、梯队 56 项均 READY，breadth 汇总 READY；`market/facts-events` 明确 `SOURCE_UNAVAILABLE / NO_APPROVED_BOUND_OFFICIAL_OR_MEDIA_EVENT_DATASET`。事件列表 33 项、Focus events 469 项、Forward risk 5,213 项可读，诊断 health 返回 5 个模块。该事件源缺口保留为数据集/Owner 缺失，不用价格波动推断媒体事实。
+
+## 唯一工作区与衍生目录现场分类
+
+- `git worktree list` 仅登记唯一主仓 `G:\codex work\大A交易`，当前分支仍为 `codex/v4-workspace-cleanup`。监听核对仅见 PG `5432` 与开发 `28766`；未见 `28765` listener。28766 使用本主仓进程，且此前 PG identity 与 `market_research` 一致。
+- `G:\codex_tmp\v4_r6_tdx_20261016` 为 568,127,024 字节/39 文件的 TDX 原始源快照，`KEEP_SOURCE`；`r6_daily_evidence` 为 3,066,205 字节/22 文件，`KEEP_EVIDENCE`。`test_temp` 共 468,654,562 字节/20,462 文件，均为旧 pytest disposable basetemp 候选；当前无 pytest 进程，PostgreSQL 仅监听 5432，未见 disposable PG listener，列为 `DELETE_REBUILDABLE`。本轮自动生成的定向 pytest 子目录清理请求被执行器策略拒绝，未绕过该限制。
+- `data/v4/dynamic_daily_sources/tdx/20261008` 下两份页面捕获目录的 6 文件共 54,192 字节全部已 PG 精确读回、无现役消费者引用，分类为 `MIGRATE_TO_PG / DELETE_REBUILDABLE`；目录递归删除同样被执行器自动策略拒绝，文件副本保留并登记待清理，不影响 SourceIngress 运行路径。
+- `G:\codex_tmp\r7_active_baseline_20261015` 实测为未登记 worktree 的旧 Git clone：2,252,363,310 字节/2,726 文件、分支 `master`、23 条未提交路径，当前运行代码未发现其路径引用。因该副本带有未归属的源码/数据更改，分类 `UNKNOWN / PRESERVE`，未清理。`v4_repository_governance_r3_20261016` 为 4,675,814,273 字节/82 文件且无 `.git` 的恢复快照容器，分类 `KEEP_EVIDENCE/UNKNOWN`。当前主仓 5 个未跟踪路径（本地 hook、R75 报告、3 个审计脚本）同样保留，未覆盖或暂存。

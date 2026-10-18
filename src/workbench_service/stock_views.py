@@ -81,19 +81,10 @@ def chart(reader,item,query):
             as_of=reader.context['trade_date'],earliest_valid_date=rows[0]['trade_date'] if rows else None,
             volume_unit='SHARES',amount_unit='CNY',source=dict(history_version=version,head_token=head,source_digest=actual_source),
             factor_registry_ref=reader.manifest['source_contract_digest'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
-    path=reader.root/authority['series']['path'];stat=path.stat()
-    if reader.series_signature!=(stat.st_size,stat.st_mtime_ns):raise SourceInvalid('IMMUTABLE_CHART_INDEX_CHANGED')
-    from workbench_db.v4_series_pg_r1 import range_rows
-    rows=[bar for _,bar in range_rows(path,item['entity_id'],'1900-01-01',reader.context['trade_date'])]
-    bars=[]
-    for r in rows:
-        prices=r['raw_ohlc'] if basis=='RAW' else r['qfq_ohlc'];values=list(map(float,prices)) if prices else [None]*4
-        bars.append(dict(trade_date=r['trade_date'],**dict(zip(('open','high','low','close'),values)),volume=r['volume'],amount=r['amount'],quality='KNOWN' if prices else 'UNKNOWN',reason=r.get('adjustment_reason')))
-    result=aggregate(bars,period);total=len(result);end=max(0,total-offset);start=max(0,end-limit);items=result[start:end]
-    for i,b in enumerate(result):
-        for n in (5,20,60):
-            window=result[max(0,i-n+1):i+1];b['ma'+str(n)]=sum(x['close'] for x in window)/n if len(window)==n and all(x['close'] is not None for x in window) else None
-    return reader.envelope(status='READY' if items else 'EMPTY_VALID',items=items,total=total,limit=limit,offset=offset,has_next=start>0,period=period,price_basis=basis,split_adjustment=authority['price_basis'] if basis=='QFQ' else 'NONE',as_of=reader.context['trade_date'],earliest_valid_date=rows[0]['trade_date'] if rows else None,volume_unit='SHARES',amount_unit='CNY',source=authority['sources']['history'],factor_registry_ref=reader.manifest['source_contract_digest'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+    return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+        reason='PG_HISTORY_BINDING_REQUIRED',as_of=reader.context['trade_date'],
+        price_basis=basis,period=period,
+        source=dict(required='V4_PG_DATED_HISTORY_INDEX_R1',available=False))
 
 def membership_relations(reader,item):
     """Resolve only actual published current relations to bound sector identities."""

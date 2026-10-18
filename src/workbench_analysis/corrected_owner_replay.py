@@ -100,10 +100,13 @@ def midrank(returns, members):
 def materialize_core(root, dates=None):
     root = Path(root).resolve(); policy = load(root/CONTRACT)
     dates = dates or policy['target_sessions']; out = root/OUT; out.mkdir(parents=True, exist_ok=True)
-    protected = {p: sha256_file(root/p) for p in ('config/v4_joint_release_authority_v1.json','data/v4/V4_DATA_ACCEPTED_HEAD.json')}
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    head_state = read_current(root)
+    head = head_state['candidate']
+    protected = {'config/v4_joint_release_authority_v1.json': sha256_file(root/'config/v4_joint_release_authority_v1.json'),
+                 'data/v4/V4_DATA_ACCEPTED_HEAD.json': head_state['head_sha256']}
     write(out/'ENTRY.json', dict(contract=ref(root,root/CONTRACT), upgrade_document='R4.1', phase0='DEGRADED_PASS',
           acceptance='IN_PROGRESS', observed_at=now(), protected=protected, next_stage='CORRECTED_STRUCTURE_AND_MEMBER_OWNERS'))
-    head = load(root/'data/v4/V4_DATA_ACCEPTED_HEAD.json')
     identity = load(checked(root,head['component_artifacts']['IDENTITY_UNIVERSE']))['rows']
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)

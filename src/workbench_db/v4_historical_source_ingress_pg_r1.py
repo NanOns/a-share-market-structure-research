@@ -20,7 +20,12 @@ from . import v4_native
 from .v4_forward_pg_r1 import ForwardFactStore, canonical, digest
 
 CONTRACT = "V4_HISTORICAL_SOURCE_INGRESS_PG_R1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
+LEGACY_VERSIONS = {"1.0.0", VERSION}
+# Inline JSON/base64 is suitable only for small exact-byte sources. Large
+# archives must use the typed package/member ingest path, which stores the
+# verified package identity and normalized members without a 4/3-size copy.
+MAX_INLINE_SOURCE_BYTES = 64 * 1024 * 1024
 KIND = "historical_source_ingress"
 FOLDER = "data/v4/historical_source_ingress_pg_r1"
 
@@ -61,6 +66,8 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
     if not path.is_relative_to(project) or not path.is_file():
         raise ValueError("HISTORICAL_SOURCE_INGRESS_PATH_INVALID")
     relative = path.relative_to(project).as_posix()
+    if path.stat().st_size > MAX_INLINE_SOURCE_BYTES:
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_INLINE_SIZE_LIMIT_EXCEEDED")
     raw = path.read_bytes()
     if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
         # Git LFS keeps some historical evidence as a small pointer in the
@@ -80,6 +87,8 @@ def ingest_file(root: str | Path, source_id: str, source_path: str | Path, *,
         object_path = project / ".git" / "lfs" / "objects" / oid[:2] / oid[2:4] / oid
         if not object_path.is_file():
             raise ValueError("HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_UNAVAILABLE")
+        if declared_size > MAX_INLINE_SOURCE_BYTES:
+            raise ValueError("HISTORICAL_SOURCE_INGRESS_INLINE_SIZE_LIMIT_EXCEEDED")
         raw = object_path.read_bytes()
         if len(raw) != declared_size or hashlib.sha256(raw).hexdigest() != expected_sha256:
             raise ValueError("HISTORICAL_SOURCE_INGRESS_LFS_OBJECT_IDENTITY_MISMATCH")
@@ -194,6 +203,8 @@ def ingest_captured_bytes(root: str | Path, source_path: str, raw: bytes, *,
                           source_revision: str, source_origin: str) -> dict[str, Any]:
     """Append exact bytes captured at an explicitly declared external boundary."""
     project=_root(root);relative=Path(source_path).as_posix()
+    if len(raw) > MAX_INLINE_SOURCE_BYTES:
+        raise ValueError("HISTORICAL_SOURCE_INGRESS_INLINE_SIZE_LIMIT_EXCEEDED")
     if (not isinstance(source_origin,str) or not source_origin.strip()
             or not isinstance(source_revision,str) or not source_revision.strip()):
         raise ValueError("HISTORICAL_SOURCE_INGRESS_PROVENANCE_REQUIRED")
@@ -265,7 +276,8 @@ def _query(root: str | Path, *, source_id: str | None = None,
     if digest(encoded) != payload_sha:
         raise ValueError("HISTORICAL_SOURCE_INGRESS_PG_DIGEST_MISMATCH")
     record = json.loads(payload_raw)
-    if (record.get("contract_id"), record.get("contract_version")) != (CONTRACT, VERSION):
+    if (record.get("contract_id") != CONTRACT
+            or record.get("contract_version") not in LEGACY_VERSIONS):
         raise ValueError("HISTORICAL_SOURCE_INGRESS_CONTRACT_MISMATCH")
     raw = base64.b64decode(record.get("source_raw_base64", ""), validate=True)
     if (len(raw) != record.get("source_bytes")

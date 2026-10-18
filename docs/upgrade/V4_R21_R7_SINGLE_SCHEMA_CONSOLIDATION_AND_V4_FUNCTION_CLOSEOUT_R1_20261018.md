@@ -356,6 +356,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 以 67,108,865 字节的工程测试字节（超过 64 MiB 内联上限 1 字节）走 `ingest_package_bytes`，分成 5 个 16 MiB 上限内的 chunk，并由 `read_package_bytes` 在同一事务重组读回；长度与 SHA-256 `21cb3b4aac53f4501245ed1913e95357c443705cb68dd01addccd764f3811b29` 精确一致。事务随后回滚，独立 RR/RO 查询使用唯一 workspace namespace、manifest/chunk kind 与全部精确 fact_key 核对，持久探针行为 0 行。该工程探针验证边界、分块、SHA 和读回，不向数据库沉淀 67 MiB 测试内容；也不替代真实来源或历史 551 MB ZIP 的接纳。
 
+### DB-04 Forward 同名键跨 namespace 隔离续验
+
+- 在 `market_research.v4.forward_facts` 单个 RR 写事务中，使用一个随机探针 ID，写入两个不同 namespace、相同 `kind/fact_key`、不同内容与 SHA-256 的行；按三个主键列精确查询均读回各自原始内容和摘要。再对 namespace A 提交相同主键但不同 payload 的 `ON CONFLICT DO NOTHING` 重试，原始 payload 保持不变，没有覆盖或跨 namespace 合并。
+- 写入后显式 rollback；独立只读事务按探针 kind/key 和精确 namespace 族核实持久行数为 0。该工程样例证明固定表主键/追加写身份隔离，不代表实际多 workspace Forward 业务读链及 Focus 成熟结算验收通过，DB-04 仍为 `PARTIAL`。
+
 ### 2026-10-19 Focus、Forward 与日更页面续验
 
 - 28766 `/v4/research/focus` 异步加载后显示候选冻结源重建 Focus 469 条（首屏 30 条），并提供搜索/排序/证据控件；页面显式提示结构谓词缺失和旧账未核对。独立 Forward 分母 117、期限计划 585、已发布期限状态 5（覆盖 1 个样本）、成熟合格 0，明确不计算胜率和收益分位数。

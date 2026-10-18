@@ -5,25 +5,33 @@ import json
 import re
 from psycopg import sql
 from psycopg.types.json import Jsonb
-from .v4_native import (connection, create_schema, configured_dsn,
-                        configured_reader_dsn, workspace_schema, workspace_logical_id)
+from .v4_native import (connection, configured_dsn,
+                        configured_reader_dsn, workspace_logical_id)
 
 CONTRACT = 'V4_FORWARD_PG_FACT_STORE_R1'
-DDL = '''
-CREATE TABLE IF NOT EXISTS forward_facts(
- workspace_namespace text NOT NULL, kind text NOT NULL, fact_key text NOT NULL, payload text NOT NULL,
- payload_sha256 text NOT NULL, source_sha256 text,
- ordinal bigint GENERATED ALWAYS AS IDENTITY UNIQUE,
- PRIMARY KEY(workspace_namespace,kind,fact_key));
-CREATE TABLE IF NOT EXISTS forward_migration_r1(workspace_namespace text PRIMARY KEY,receipt jsonb NOT NULL);
-CREATE OR REPLACE FUNCTION reject_forward_fact_mutation() RETURNS trigger LANGUAGE plpgsql AS $$
-BEGIN RAISE EXCEPTION 'FORWARD_FACTS_APPEND_ONLY'; END $$;
-DO $$ BEGIN
- IF NOT EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid='forward_facts'::regclass AND tgname='forward_append_only_r1') THEN
- CREATE TRIGGER forward_append_only_r1 BEFORE UPDATE OR DELETE OR TRUNCATE ON forward_facts FOR EACH STATEMENT EXECUTE FUNCTION reject_forward_fact_mutation();
- END IF;
-END $$;
-'''
+
+def _require_fixed_forward_storage(pg):
+    expected = {
+        'forward_facts': 'v4.forward_facts',
+        'forward_migration_r1': 'v4.forward_migration_r1',
+        'forward_schema_migration_map_r1': 'v4.forward_schema_migration_map_r1',
+    }
+    actual = dict(pg.execute(
+        "SELECT c.relname, n.nspname || '.' || c.relname "
+        "FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
+        "WHERE n.nspname='v4' AND c.relname = ANY(%s)",
+        (list(expected),),
+    ).fetchall())
+    if actual != expected:
+        raise RuntimeError('V4_FORWARD_FIXED_STORAGE_MIGRATION_REQUIRED')
+    guard = pg.execute("""
+        SELECT t.tgname,p.proname FROM pg_trigger t
+        JOIN pg_proc p ON p.oid=t.tgfoid
+        WHERE t.tgrelid='v4.forward_facts'::regclass
+          AND NOT t.tgisinternal AND t.tgenabled='O'
+    """).fetchall()
+    if ('forward_append_only_r1', 'reject_forward_fact_mutation_r1') not in guard:
+        raise RuntimeError('V4_FORWARD_APPEND_ONLY_MIGRATION_REQUIRED')
 
 def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode()
@@ -113,12 +121,10 @@ class ForwardFactStore:
         if self.root.drive.upper() != 'G:' or not self.folder.is_relative_to(self.root):
             raise ValueError('FORWARD_G_ONLY_ROOT_REQUIRED')
         self.dsn = configured_dsn()
-        self.schema = workspace_schema(self.folder, 'forward')
+        self.schema = 'v4'
         self.workspace_namespace = self.namespace_for(self.folder)
-        with connection(self.schema, dsn=self.dsn) as pg:
-            create_schema(pg, self.schema)
-        with connection(self.schema, dsn=self.dsn) as pg:
-            pg.execute(DDL)
+        with connection('v4', dsn=self.dsn) as pg:
+            _require_fixed_forward_storage(pg)
             self.database_identity = self._database_identity(pg)
             pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))', (self.schema,))
             marker = pg.execute('SELECT receipt FROM forward_migration_r1 WHERE workspace_namespace=%s',

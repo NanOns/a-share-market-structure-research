@@ -503,3 +503,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 在真实 `127.0.0.1:28766/v4/research/diagnostics/jobs` 浏览器页面核对静态资产更新后的完整异步渲染。页面明确标注 `研究候选快照 T0：2026-09-30（此日期不代表日更任务账本最新日期）`，并将“worker 未启动”限定为当前没有运行中的 worker，说明本页面不展示日更任务记录；按钮也标注只查看本页快照诊断。顶部仍标示“PG 候选快照 · 不代表正式 Head”。
 - 该修正不硬编码或伪造任务日期、不改研究数据/日更账本/Head；没有重启 28766，没有启动 worker，也未触碰 28765。数据库日更账本仍以此前 RR/RO 实读结果为准（10-15 任务日期记录存在但当日 `QUEUED`）。
+
+### 2026-10-19 ForwardFactStore 运行期 DDL 收敛
+
+- `ForwardFactStore` 初始化不再调用 `create_schema()`，也不再内嵌创建 `forward_facts`、迁移账目、不可变函数或触发器的 DDL；消费端物理 Schema 固定为 `v4`，仅校验中央迁移 050/059 建立的三张固定关系和 `forward_facts` 上处于启用态的追加写保护触发器，随后执行原有 Forward 业务写读。workspace 只作为 `workspace_namespace` 行身份使用。
+- 当前开发 PG 的 RR/RO 只读现场核对通过上述关系/触发器校验，身份为 `market_research:5432`；非系统用户 Schema 仅 `public` 与 `v4`（`public` 无 V4 表），未建新 Schema。
+- 用 G 盘临时空目录执行真实 `ForwardFactStore` 构造路径，拦截事务仅为显式回滚；返回 `schema='v4'`。独立 RR/RO 事务按唯一 workspace namespace 读回迁移标记为 0，确认测试插入未持久化。语法编译成功，源码扫描不再发现该消费者中的 `CREATE SCHEMA/TABLE/FUNCTION/TRIGGER` 或 `create_schema()`。

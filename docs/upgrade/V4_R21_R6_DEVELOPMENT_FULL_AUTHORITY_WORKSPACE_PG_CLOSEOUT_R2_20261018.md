@@ -304,3 +304,9 @@
 - 恢复三个完全可校验的缺失对象到同一 PG SourceIngress：R19 静态归档 `scripts/validate_v4_12_promotion_r14.py` 的 Git 原始 blob（3,948 bytes，精确注册 SHA）；R14 Head 绑定配置 `config/v4_12_active_selector_vectors_r12.json`（19,020 bytes，仓内字节与 Head SHA 一致）；R10 runtime package（72,536,853 bytes，三块 package）。三个对象写后均按其精确 PG descriptor 读回；不改 accepted Data/Stage/V4-12 Head 或权限。
 - 口径澄清：R20/R21 的 266 是业务文件读取调用点；本条 1,718 是 R14 Head 的 R8–R13 历史验收/运行证据文件绑定数（每个 path+SHA 一项），不是新增业务文件数或调用点数，也不是本轮现役业务文件迁移清单。首次盘点时这 1,718 项里 40 项已在 PG、1,678 项缺失，缺失绑定合计 598,763,135 bytes。历史证据批次推进 50 项后即停止扩量；50 项均来自 Head 精确绑定，仓内长度/SHA 匹配且 PG 读回通过，失败 0。其余历史证据未继续导入；R14 validator 尚未全链通过，不能据此声称 V4-12 验收或现役模块验收完成。
 - 本阶段下一步仍是聚焦现役业务文件/运行链的 PG read/write 与 28766 实际功能；历史轮次只有在被明确证明为现役调用依赖后再按确切 Head binding 补齐。正式生产切换与最终生产包继续关闭。
+
+## 当前 workspace research alias 实际修复（2026-10-18）
+
+- 当前主仓稳定 `logical_workspace_id=v4w_760ed0b4cc7a236cd757c2116062721b` 原先只有 `history` 与 `publication` alias，没有 `research` alias；28766 现役启动器实际指定的 PG research 候选 schema 是 `v4_research_7f5f6c66a4681999ca5420f5`。
+- 在唯一 `market_research` PG 用事务登记当前 workspace 的 `research` alias 到该既有 schema。写后通过应用 `workspace_schema()` 解析为同一 schema；再以 G 盘临时 `.git/config` 模拟同仓异址读取，计算出的 logical workspace ID 一致，异址 `workspace_schema()` 仍解析到该 schema，并实际读回 6,917 objects。候选 `snapshot_identity` SHA 为 `91b4066e…2ec116935`，T0 为 2026-09-30；objects/members/aliases 行数 6,917/50,162/12,106 均未变化。此项只登记 PG namespace alias，不搬迁或复制数据，不修改 Head。
+- 当前 `v4.publication_heads` 仍为 0；28766 页面当前仍显示 2026-09-30 候选 T0。该 alias 修复解决 workspace 路径变化后的 research schema 可解析性，不能当作 10-16 候选接入、publication/Head 创建或全模块验收。

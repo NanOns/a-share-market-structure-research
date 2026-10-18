@@ -509,3 +509,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `ForwardFactStore` 初始化不再调用 `create_schema()`，也不再内嵌创建 `forward_facts`、迁移账目、不可变函数或触发器的 DDL；消费端物理 Schema 固定为 `v4`，仅校验中央迁移 050/059 建立的三张固定关系和 `forward_facts` 上处于启用态的追加写保护触发器，随后执行原有 Forward 业务写读。workspace 只作为 `workspace_namespace` 行身份使用。
 - 当前开发 PG 的 RR/RO 只读现场核对通过上述关系/触发器校验，身份为 `market_research:5432`；非系统用户 Schema 仅 `public` 与 `v4`（`public` 无 V4 表），未建新 Schema。
 - 用 G 盘临时空目录执行真实 `ForwardFactStore` 构造路径，拦截事务仅为显式回滚；返回 `schema='v4'`。独立 RR/RO 事务按唯一 workspace namespace 读回迁移标记为 0，确认测试插入未持久化。语法编译成功，源码扫描不再发现该消费者中的 `CREATE SCHEMA/TABLE/FUNCTION/TRIGGER` 或 `create_schema()`。
+
+### 2026-10-19 Journal Registry 运行期结构部署移除
+
+- Journal writer 固定将 `registry_schema` 绑定为 `v4`；初始化不再调用 `workspace_schema()`/`create_schema()` 或运行 `CREATE TABLE`，而是校验中央迁移 061 部署的 `v4.journal_heads` 与迁移映射表。Journal 仍使用 PostgreSQL 事务内临时表暂存版本数据，不创建第二个业务 Schema。
+- 修复 Journal 从精确旧 descriptor 读取临时表时 `with read(previous)` 代码块的缩进错误；该错误此前会使整个模块无法导入。新旧 descriptor 的数据库读取及历史迁移映射语义保持不变。
+- Python 编译成功，开发 PG RR/RO 对中央关系的现场校验通过；真实 `JournalConnection` 构造探针使用 G 盘临时目录并显式回滚，独立只读事务核验 `journal_heads` 对应唯一键 0 行，`transaction_read_only=on`。临时目录已清理；源码持久表 DDL、`create_schema()` 和 `workspace_schema()` 调用均已移除。

@@ -2,10 +2,9 @@
 import json
 from pathlib import Path
 import uuid
-from psycopg import sql
 from .v4_snapshot_pg_r1 import read
 from .v4_snapshot_pg_r2 import Builder
-from .v4_native import workspace_schema,create_schema,connection,workspace_logical_id
+from .v4_native import connection,workspace_logical_id
 from workbench_service.v4_daily_refresh import atomic_bytes
 from workbench_service.current_v4_context import canonical,digest
 
@@ -20,6 +19,20 @@ _JOURNAL_TABLE_INSERTS = {
     'day_inputs': 'INSERT INTO day_inputs VALUES(?,?)',
 }
 
+def _require_fixed_journal_registry(pg):
+    expected = {
+        'journal_heads': 'v4.journal_heads',
+        'journal_registry_migration_map_r1': 'v4.journal_registry_migration_map_r1',
+    }
+    actual = dict(pg.execute(
+        "SELECT c.relname, n.nspname || '.' || c.relname "
+        "FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
+        "WHERE n.nspname='v4' AND c.relname = ANY(%s)",
+        (list(expected),),
+    ).fetchall())
+    if actual != expected:
+        raise RuntimeError('V4_JOURNAL_REGISTRY_MIGRATION_REQUIRED')
+
 class JournalConnection(Builder):
     def __init__(self,path,root,contract):
         self.path=Path(path);self.contract=contract
@@ -31,15 +44,14 @@ class JournalConnection(Builder):
             self.pg.rollback();self.pg.close();raise
 
     def _initialize(self,root):
-        self.registry_schema=workspace_schema(root,'journal_registry')
+        self.registry_schema='v4'
         try:relative=self.path.resolve().relative_to(Path(root).resolve()).as_posix().casefold()
         except ValueError as exc:raise ValueError('PG_JOURNAL_PATH_OUTSIDE_WORKSPACE') from exc
         self.registry_key=workspace_logical_id(root)+':journal:'+relative
         # Lock the journal identity, not the new version identity. Hold this lock
         # through the CAS and PG commit; competing constructors see the new head.
         self.pg.execute('SELECT pg_advisory_xact_lock(hashtextextended(%s,0))',(self.registry_key,))
-        create_schema(self.pg,self.registry_schema)
-        self.pg.execute('CREATE TABLE IF NOT EXISTS v4.journal_heads(key text PRIMARY KEY,contract text NOT NULL,descriptor jsonb NOT NULL,updated_at timestamptz NOT NULL DEFAULT clock_timestamp())')
+        _require_fixed_journal_registry(self.pg)
         current=self.pg.execute('SELECT contract,descriptor FROM v4.journal_heads WHERE key=%s',(self.registry_key,)).fetchone()
         if current and current[0]!=self.contract:raise ValueError('PG_JOURNAL_CONTRACT_CONFLICT')
         previous=current[1] if current else None
@@ -51,7 +63,7 @@ class JournalConnection(Builder):
             if previous.get('registry_key')==self.registry_key:raise ValueError('PG_JOURNAL_REGISTRY_MISSING_NO_FALLBACK')
         if previous:
             with read(previous) as old:
-            tables={table:old.execute(_JOURNAL_TABLE_SELECTS[table]).fetchall() for table in _JOURNAL_TABLE_SELECTS}
+                tables={table:old.execute(_JOURNAL_TABLE_SELECTS[table]).fetchall() for table in _JOURNAL_TABLE_SELECTS}
         else:tables=None
         self.executescript('CREATE TABLE objects(domain text,id text,name text,symbol text,state text,payload text,PRIMARY KEY(domain,id));CREATE TABLE aliases(alias text,id text,PRIMARY KEY(alias,id));CREATE TABLE members(sector text,security text,PRIMARY KEY(sector,security));CREATE TABLE days(day text PRIMARY KEY,source_digest text NOT NULL,payload text NOT NULL);CREATE TABLE metadata(key text PRIMARY KEY,value text);CREATE TABLE day_inputs(day text PRIMARY KEY,payload text NOT NULL);')
         if tables:

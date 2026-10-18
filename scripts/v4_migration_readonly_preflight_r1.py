@@ -93,13 +93,13 @@ def _read_catalog() -> dict:
         if identity is None:
             raise RuntimeError("PREFLIGHT_DATABASE_IDENTITY_UNAVAILABLE")
         ledgers = []
-        if pg.execute("SELECT to_regclass('v4_meta.schema_migrations')").fetchone()[0]:
+        if pg.execute("SELECT to_regclass('v4.schema_migrations')").fetchone()[0]:
             columns = {r[0] for r in pg.execute(
-                "SELECT column_name FROM information_schema.columns WHERE table_schema='v4_meta' AND table_name='schema_migrations'"
+                "SELECT column_name FROM information_schema.columns WHERE table_schema='v4' AND table_name='schema_migrations'"
             ).fetchall()}
             if {"version", "checksum_sha256"}.issubset(columns):
                 ledgers = [dict(version=r[0], checksum_sha256=str(r[1]).strip()) for r in pg.execute(
-                    "SELECT version,checksum_sha256 FROM v4_meta.schema_migrations ORDER BY version"
+                    "SELECT version,checksum_sha256 FROM v4.schema_migrations ORDER BY version"
                 ).fetchall()]
             else:
                 ledgers = [{"status": "LEDGER_COLUMNS_UNRECOGNIZED", "columns": sorted(columns)}]

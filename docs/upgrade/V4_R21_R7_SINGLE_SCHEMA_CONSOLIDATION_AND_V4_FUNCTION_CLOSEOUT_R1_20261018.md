@@ -199,3 +199,25 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 首次用真实 `REPEATABLE READ READ ONLY` 会话逐项走 Owner 消费者，发现 `owner_schema_migration_map_r1.T0` 与固定 Owner 表 `T0` 是 `text`，绑定中的日期是 PG `date`；回执查询和版本查询均因此产生 `text = date`。已在消费者端严格规范化为 ISO `YYYY-MM-DD`，拒绝 `datetime` 和非规范日期字符串。该修复不改数据、不改迁移回执、不创建 Schema。
 - 再次通过三个真实 Owner 读取器逐项读取 7 份迁移凭证并校验 payload/聚合 digest 和行数：operational_risk 3 份（各 3 行）、research_priority 3 份（5,625 / 5,625 / 5,626 行）、sector_lifecycle 1 份（400 行）。7/7 状态 `FIXED_V4_READBACK_VERIFIED`；同一事务 `transaction_read_only=on`，数据库 `market_research` / OID `646711` / `127.0.0.1:5432`。这验证了已迁移 Owner 数据的固定表真实读取路径；因为 `publication_module_results` 仍为 0 行，不能代替完整 accepted Publication 绑定链验收。
 - 更新 Owner 测试夹具以覆盖迁移回执和日期文本对齐、固定 `v4` 表关系及显式只读事务；Owner 专项 `8 passed`。代码修改后仅重载了开发端口 `28766`（新 PID 30824），浏览器重新读取 Home 成功；`28765` 未启动。
+
+### 2026-10-19 比较与市场来源抽屉续验
+
+- 真实浏览器重新打开 `/v4/research/compare`：默认视图是“严格 T0 冻结回放”，绑定截面日期 `2026-09-30`，严格 PIT 可用日期 `0`；页面要求明确选择对象、日期及资料视图后才加载结果。此状态符合数据缺口合同，不构成严格 PIT 验收通过。
+- 真实浏览器重新打开 `/v4/research/market`：页面显示历史截面截至 `2026-09-30`，上涨 2,344、下跌 2,712、平盘 155、不可判定 13，分母 5,224、实际行情 5,213、成交额 14,378.36 亿元；涨跌停/停牌/不可判定为 56/12/11/1。手动打开“价格规则、ST/新股与来源”抽屉后，真实 API 回执中的候选上下文为 `market_research` / OID `646711`、Schema `v4`、Release `05cf8913242f46c8af53b3d89f323b64`、T0 `2026-09-30`；域 `released=false`。规则样本明确为 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`、`first_available_at_target_proven=false`，故规则输出可作候选诊断，不得作为 PIT/Accepted 证明。
+- 上述交互只读取 28766，无数据库写入。当前本轮复核没有执行生产端口切换。任务卡列出的 `r43_owner_replay.py`、`corrected_owner_replay.py` 与 `test_v4_r6_pg_only_owner_source_reads.py` 在本地无未提交 diff，已存在于已推送提交历史中；其 PG 精确来源校验路径须继续按固定 `v4` 读表审查，不得恢复旧物理 Schema 定位。
+
+### 2026-10-19 大表有界读取复核
+
+- `REPEATABLE READ READ ONLY` 当前目录查询测得 `v4.forward_facts` 总量 6,218,366,976 B（main 3,268,608 B、index 3,235,840 B；目录估算约 9,052 行）；`v4.forward_r7_facts_r1` 2,182,561,792 B（估算 312 行）；`v4.forward_legacy_evidence_r1` 8,394,104,832 B；`v4.read_items_r1` 4,230,397,952 B；`v4.read_items_r2` 1,951,940,608 B。估算行数只用于容量/计划判断，不代替精确逻辑数据账。
+- 两个 Forward 固定表的精确 `(namespace, kind, fact_key)` 读取计划均命中索引：R1 `forward_facts_pkey` 直接按三键扫描；R7 使用 `forward_r7_facts_namespace_kind_ordinal_r1` 锁定 namespace/kind 后过滤 fact_key。未对大表做无界内容扫描或复制。逻辑版本映射与完整性以迁移映射和逐来源收据为准；历史 1,678 项绑定仍未批量导入。
+- 本轮实际 gate 目录计数仍为市场日历会话、Publication/Publication Head、Operational Research Head、Publication Owner 绑定、Daily Core snapshot/rows 均 0；DM-01 仅 1 条 `AS_RECORDED=false` 且 production/focus/shadow 权限关闭的候选 Head。以上说明模块验收仍处于数据阻塞，不能将单 Schema 目录通过外推为业务通过。
+
+### 2026-10-19 个股详情周期切换续验
+
+- 真实浏览器打开候选个股三一重能 `/v4/research/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9`。详情实际显示截至 `2026-09-30` 的日线 `120/253` 根、周线 `54/54` 根、月线 `13/13` 根；逐项操作“行情周期”控件后，状态/蜡烛图容器均完成重新加载。页面同时显示按目标日坐标的前复权口径、成交量单位为股、成交额单位为元。
+- 同页接受状态、算法支持板块、资格判断、健康度、市场相对强度、相对板块等 Owner/历史事实不足字段保持“来源能力不足”；不把可显示图表或候选数值作为 Accepted/PIT 功能通过。本次只读，不改变 PG/Head。
+
+### 2026-10-19 迁移只读预检
+
+- 已用 `scripts/v4_migration_readonly_preflight_r1.py --out-dir G:\codex_tmp\v4_r21r7_preflight_20261019` 实际运行只读预检；结果 `READ_ONLY_PREFLIGHT_ONLY_NO_DDL_DML_NO_HEAD`，记录 67 个迁移 SQL 与重复序号 `010`，未执行 SQL migration、DDL/DML 或 Head 更新。证据 JSON 留在 G 临时目录。
+- 预检通过配置连接检查后识别当前会话角色为 PostgreSQL `postgres` 超级用户，故 Reader least-privilege 项为 `BLOCKED_PRIVILEGED_READER`，自动 apply decision 保持阻止。此项只表示角色未达到该只读预检器的受限 Reader 契约，不否认前述由显式 `READ ONLY` RR 事务完成的目录/数据读取；也不授权把普通开发 DDL 与正式迁移角色混为一谈。

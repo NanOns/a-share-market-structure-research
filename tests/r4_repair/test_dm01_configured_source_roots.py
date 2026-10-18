@@ -31,11 +31,13 @@ def test_lifecycle_snapshot_selector_uses_configured_baostock_cache(tmp_path, mo
     assert lifecycle.select_baostock_snapshot(day, snapshot_id) == (record, path)
 
 
-def test_dm01_freeze_and_daily_increment_use_central_baostock_cache_resolver():
+def test_dm01_freeze_and_daily_increment_use_pg_baostock_snapshot_binding():
     root = Path(__file__).resolve().parents[2]
     freeze = (root / "scripts/freeze_v4_dm01_daily_sources.py").read_text(encoding="utf-8")
     increment = (root / "scripts/run_v4_dm01_daily_increment.py").read_text(encoding="utf-8")
-    assert "resolve_baostock_cache_root(ROOT)" in freeze
+    assert "_read_baostock_daily_update_from_pg" in freeze
+    assert "load_baostock_runtime_pg(ROOT, args.target_date" in freeze
+    assert ".read_text(" not in freeze and ".read_bytes(" not in freeze
     assert "resolve_baostock_cache_root(ROOT)" in increment
     assert "data/v4/source_snapshots/baostock" not in freeze
     assert "data/v4/source_snapshots/baostock" not in increment

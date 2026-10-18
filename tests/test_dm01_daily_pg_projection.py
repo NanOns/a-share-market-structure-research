@@ -2,6 +2,7 @@ import hashlib
 import json
 
 from scripts import run_v4_dm01_daily_increment as daily
+from scripts import freeze_v4_dm01_daily_sources as freeze
 from workbench_db import v4_historical_source_ingress_pg_r1 as ingress
 
 
@@ -54,3 +55,63 @@ def test_daily_runtime_acceptance_uses_pg_registered_contract(monkeypatch):
     assert calls["contract"]==("BAOSTOCK_SUPPLEMENTAL_SOURCE_V1","1.1.0")
     assert calls["load"][1]==day
     assert result==manifest and error is None
+
+
+def test_freeze_reads_baostock_payload_from_exact_pg_binding(monkeypatch, tmp_path):
+    day = "2026-10-16"
+    snapshot_id = "sha256-" + "a" * 64
+    logical_path = f"external/baostock_daily/{day}/{snapshot_id}/daily_update.json"
+    payload = {"snapshot_id": snapshot_id, "trade_date": day, "provider_date": day,
+               "status": "BAOSTOCK_DAILY_SNAPSHOT_READY", "daily_rows": [{"code": "sh.600000"}]}
+    raw = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    calls = {}
+
+    def read_path(root, path):
+        calls.update(root=root, path=path)
+        return {"raw": raw, "record": {"source_path": path,
+                "source_sha256": hashlib.sha256(raw).hexdigest(), "source_bytes": len(raw)}}
+
+    monkeypatch.setattr(ingress, "read_path", read_path)
+    result, binding = freeze._read_baostock_daily_update_from_pg(day, snapshot_id)
+
+    assert calls == {"root": freeze.ROOT, "path": logical_path}
+    assert result == payload
+    assert binding == {"path": logical_path, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+
+
+def test_freeze_rejects_baostock_payload_with_wrong_date(monkeypatch):
+    day = "2026-10-16"
+    snapshot_id = "sha256-" + "a" * 64
+    logical_path = f"external/baostock_daily/{day}/{snapshot_id}/daily_update.json"
+    raw = json.dumps({"snapshot_id": snapshot_id, "trade_date": "2026-10-15",
+                      "provider_date": day}).encode("utf-8")
+
+    monkeypatch.setattr(ingress, "read_path", lambda *_args: {
+        "raw": raw, "record": {"source_path": logical_path,
+            "source_sha256": hashlib.sha256(raw).hexdigest(), "source_bytes": len(raw)}})
+
+    try:
+        freeze._read_baostock_daily_update_from_pg(day, snapshot_id)
+    except ValueError as exc:
+        assert str(exc) == "FREEZE_BAOSTOCK_PG_SOURCE_BINDING_MISMATCH"
+    else:
+        raise AssertionError("mismatched PG source identity must fail closed")
+
+
+def test_freeze_json_binding_checks_digest_and_size(monkeypatch):
+    path = "external/test/manifest.json"
+    raw = b'{"ok":true}'
+    digest = hashlib.sha256(raw).hexdigest()
+    monkeypatch.setattr(ingress, "read_bound", lambda *_args: {
+        "raw": raw, "record": {"source_path": path, "source_sha256": digest,
+                                 "source_bytes": len(raw)}})
+    payload, binding = freeze._read_json_binding({"path": path, "sha256": digest, "bytes": len(raw)})
+    assert payload == {"ok": True}
+    assert binding == {"path": path, "sha256": digest, "bytes": len(raw)}
+
+    try:
+        freeze._read_json_binding({"path": path, "sha256": "0" * 64, "bytes": len(raw)})
+    except ValueError as exc:
+        assert str(exc) == "FREEZE_PG_SOURCE_BINDING_MISMATCH"
+    else:
+        raise AssertionError("a PG byte binding with the wrong digest must fail closed")

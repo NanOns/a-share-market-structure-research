@@ -103,3 +103,9 @@
 - BaoStock 日线首次 SourceIngress 后保留原 path/SHA/bytes PG binding 并传给后续步骤；当前进程捕获的 TDX 收据、从 PG 接受事实加载的 BaoStock runtime manifest 分别用内容寻址方式登记 SourceIngress。`project_source_freeze` 下游继续通过 `dm01_runtime_r4.read()` 精确从 PG 读这三类输入，避免回开工作区副本。投影键含捕获内容摘要，重复捕获不会覆盖不同 receipt。
 - 将 BaoStock runtime acceptance fact store 在唯一开发 PG 中完成空库 DDL 初始化及稳定 workspace alias 注册：namespace `v4_forward_ca206ffd216e90b4`，alias `ACTIVE`，原路径目录不存在、原始文件迁移数为 0、当前事实数为 0；没有写入接受记录或移动 Head。对真实 PG 读路径核验后，缺事实按 `BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND` 返回，不再触发未初始化表的 SQL 异常。
 - 定向单测 7 passed；首次观察 PIT 套件 3 passed；修改模块 `py_compile` 通过。较宽的冻结 DM-01 系统套件由仓库隔离插件拒绝访问非 disposable 的共享 PG，未关闭或绕过该隔离。当前日更仍受 2026-10-08 官方 TDX 中间交易日源包缺失阻断；本修正尚未使日更或接受 Head 通过。
+
+## DM-01 冻结消费者继续移除工作区回读
+
+- 冻结脚本现在以精确 PG SourceIngress binding 读取 TDX capture receipt、delta receipt/delta、BaoStock daily update、GBBQ accepted manifest/member；对每份 JSON 校验 path、SHA、字节数与业务日期/快照身份。官方日历继续由 PG-bound runtime reader选择，冻结清单直接引用其 binding；不再把本地副本重新算哈希后当作来源记录。
+- 日更编排在启动冻结前把本次 TDX capture receipt 写入 SourceIngress 并将 binding 传给冻结脚本。GBBQ 首次边界现在对 manifest 声明的源成员校验原始 SHA/长度，逐件写入并从 PG 精确读回；冻结消费者只按 manifest 的 path/SHA 读 PG。TDX 原 ZIP 仍由上游受控捕获/差分构建负责读取；冻结阶段仅检查其捕获路径仍存在并引用已验证 receipt 中的 SHA，不在下游重复散列 ZIP。
+- 新增或更新定向回归覆盖 BaoStock 精确绑定、错误日期拒绝、通用 JSON binding SHA/长度拒绝以及冻结脚本无工作区 `read_text/read_bytes`；8 项通过，两个脚本 `py_compile` 和 `git diff --check` 通过。完整实际日更仍由 2026-10-08 中间交易日 TDX 源包缺失阻断，尚未据此宣称端到端接受 Head 通过。

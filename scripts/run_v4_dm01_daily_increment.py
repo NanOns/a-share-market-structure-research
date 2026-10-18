@@ -133,6 +133,24 @@ def _accepted_gbbq_snapshot(target_date: str, stage_binding: dict | None = None)
         manifest = json.loads(read_bound(ROOT,logical_path,ingested['source_sha256'])['raw'])
         if manifest.get("snapshot_id") != probe.get("accepted_snapshot_id"):
             return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_SNAPSHOT_ID_MISMATCH"}
+        for name, record in (manifest.get("files") or {}).items():
+            relative_member=Path(str(name))
+            source_path=(manifest_path.parent/relative_member).resolve()
+            if (relative_member.is_absolute() or not source_path.is_relative_to(manifest_path.parent.resolve())
+                    or not source_path.is_file()):
+                return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_FILE_PATH_INVALID"}
+            member_raw=source_path.read_bytes()
+            member_sha=hashlib.sha256(member_raw).hexdigest()
+            if (member_sha != record.get("sha256")
+                    or len(member_raw) != int(record.get("bytes", -1))):
+                return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_FILE_DIGEST_MISMATCH"}
+            member_logical=f"external/tdx_gbbq/{target_date}/{probe.get('accepted_snapshot_id')}/{relative_member.as_posix()}"
+            member_ingested=ingest_captured_bytes(ROOT,member_logical,member_raw,
+                source_revision=str(probe.get("accepted_snapshot_id")),
+                source_origin='TDX_GBBQ_ACCEPTED_MEMBER_EXPLICIT_READ_ONLY_SOURCE_BOUNDARY')
+            exact=read_bound(ROOT,member_logical,member_ingested['source_sha256'])['raw']
+            if exact != member_raw:
+                return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_FILE_PG_READBACK_MISMATCH"}
     except (OSError, ValueError):
         return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_MANIFEST_UNREADABLE"}
     return {**probe, "status": "REUSE_ACCEPTED_GBBQ_SNAPSHOT"}
@@ -303,15 +321,21 @@ def main() -> int:
                              baostock_capture_attempted=False, head_moved=False)
         if (not args.typed_scope_v2 and readiness.get("status") == "SOURCE_FREEZE_READY" and tdx and bao and gbbq_probe
                 and builder_registry_result.get('status') != 'BLOCKED_BUILDER_REGISTRY'):
-            tdx_capture_path = Path(str(tdx.get("receipt_path") or ""))
             if not all((gbbq_stage_binding, lifecycle_pg_state, special_pg_state)):
                 readiness = dict(readiness, status="BLOCKED_DM01_PG_STAGE_BINDING_MISSING",
                                  reason="GBBQ_LIFECYCLE_SPECIAL_PHASE_PG_BINDINGS_REQUIRED", head_moved=False)
                 freeze_code, source_freeze = 2, {"reason": "DM01_PG_STAGE_BINDING_MISSING"}
             else:
+                capture_revision=hashlib.sha256(json.dumps(
+                    tdx,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False
+                ).encode('utf-8')).hexdigest()
+                tdx_binding=_ingest_pg_json_projection(
+                    f"external/tdx_daily_capture/{args.target_date}/{capture_revision}/capture_receipt.json",
+                    tdx,source_revision=capture_revision,
+                    source_origin='TDX_OFFICIAL_DAILY_CAPTURE_RECEIPT_PROJECTION')
                 freeze_code, source_freeze = _run_json_cli(
                     "scripts/freeze_v4_dm01_daily_sources.py", "--target-date", args.target_date,
-                    "--tdx-capture-receipt", str(tdx_capture_path),
+                    "--tdx-capture-pg-binding", json.dumps(tdx_binding, separators=(',', ':')),
                     "--bao-snapshot-id", str(bao.get("snapshot_id") or ""),
                     "--gbbq-pg-stage-state", json.dumps(gbbq_stage_binding, separators=(",", ":")),
                     "--lifecycle-pg-stage-state", json.dumps(lifecycle_pg_state, separators=(",", ":")),
@@ -328,13 +352,6 @@ def main() -> int:
                 freeze = read_stage(ROOT, freeze_pg_state["binding"], trade_date=args.target_date,
                     stage="daily_source_freeze")
                 try:
-                    capture_revision=hashlib.sha256(json.dumps(
-                        tdx,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False
-                    ).encode('utf-8')).hexdigest()
-                    tdx_binding=_ingest_pg_json_projection(
-                        f"external/tdx_daily_capture/{args.target_date}/{capture_revision}/capture_receipt.json",
-                        tdx,source_revision=capture_revision,
-                        source_origin='TDX_OFFICIAL_DAILY_CAPTURE_RECEIPT_PROJECTION')
                     runtime_binding=_ingest_pg_json_projection(
                         f"external/baostock_runtime_acceptance/{args.target_date}/{runtime_manifest['manifest_sha256']}/accepted_runtime_manifest.json",
                         runtime_manifest,source_revision=runtime_manifest['manifest_sha256'],

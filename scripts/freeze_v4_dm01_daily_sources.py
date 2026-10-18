@@ -12,28 +12,55 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from workbench_analysis.daily_source_freeze import (  # noqa: E402
     build_source_freeze_manifest_v2,
-    file_record,
     source_freeze_complete_v2,
 )
 from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
-from common.paths import resolve_baostock_cache_root, resolve_tdx_root  # noqa: E402
-from workbench_analysis.operational_daily_executor_v1 import (  # noqa: E402
-    _daily_runtime_contract, _load_pg_runtime_acceptance,
-)
+from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_baostock_runtime_pg  # noqa: E402
 
 
-TDX_ROOT = resolve_tdx_root(ROOT)
+def _read_baostock_daily_update_from_pg(target_date: str, snapshot_id: str) -> tuple[dict, dict]:
+    """Read the already captured daily update from its exact PG ingress binding."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+
+    logical_path = f"external/baostock_daily/{target_date}/{snapshot_id}/daily_update.json"
+    source = read_path(ROOT, logical_path)
+    try:
+        payload = json.loads(source["raw"])
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("FREEZE_BAOSTOCK_PG_SOURCE_JSON_INVALID") from exc
+    binding = dict(path=logical_path, sha256=source["record"]["source_sha256"],
+                   bytes=source["record"]["source_bytes"])
+    if (source["record"].get("source_path") != logical_path
+            or payload.get("snapshot_id") != snapshot_id
+            or payload.get("trade_date") != target_date
+            or payload.get("provider_date") != target_date):
+        raise ValueError("FREEZE_BAOSTOCK_PG_SOURCE_BINDING_MISMATCH")
+    return payload, binding
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+def _read_json_binding(binding: dict) -> tuple[dict, dict]:
+    """Decode JSON from an exact SourceIngress binding without workspace fallback."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+
+    if not isinstance(binding, dict) or not isinstance(binding.get("path"), str):
+        raise ValueError("FREEZE_PG_SOURCE_BINDING_REQUIRED")
+    source = read_bound(ROOT, binding["path"], str(binding.get("sha256") or ""))
+    raw = source["raw"]
+    record = source["record"]
+    if (record.get("source_path") != binding["path"]
+            or record.get("source_sha256") != binding.get("sha256")
+            or len(raw) != binding.get("bytes", len(raw))
+            or record.get("source_bytes") != len(raw)
+            or hashlib.sha256(raw).hexdigest() != binding.get("sha256")):
+        raise ValueError("FREEZE_PG_SOURCE_BINDING_MISMATCH")
+    try:
+        payload = json.loads(raw)
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("FREEZE_PG_SOURCE_JSON_INVALID") from exc
+    return payload, dict(path=binding["path"], sha256=record["source_sha256"], bytes=len(raw))
 
 
 def row_digest(rows: list[dict]) -> str:
@@ -44,7 +71,7 @@ def row_digest(rows: list[dict]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Freeze the accepted DM-01 source set without promoting any data head.")
     parser.add_argument("--target-date", required=True)
-    parser.add_argument("--tdx-capture-receipt", type=Path, required=True)
+    parser.add_argument("--tdx-capture-pg-binding", required=True)
     parser.add_argument("--bao-snapshot-id", required=True)
     parser.add_argument("--gbbq-pg-stage-state", required=True)
     parser.add_argument("--lifecycle-pg-stage-state", required=True)
@@ -55,29 +82,34 @@ def main() -> int:
         from workbench_analysis.dm01_runtime_r4 import session_gate, calendar as accepted_calendar
         gate = session_gate(args.target_date, now)
         if gate['status'] == 'WAIT_MARKET_CLOSE': raise ValueError('WAIT_MARKET_CLOSE')
-        tdx_capture = json.loads(args.tdx_capture_receipt.read_text(encoding="utf-8"))
+        tdx_capture_binding = json.loads(args.tdx_capture_pg_binding)
+        tdx_capture, tdx_capture_binding = _read_json_binding(tdx_capture_binding)
         if (tdx_capture.get("target_date") != args.target_date or tdx_capture.get("update_date") != args.target_date
                 or tdx_capture.get("status") not in {"TDX_PACKAGE_READY", "NOOP_SOURCE_ALREADY_FROZEN"}):
             raise ValueError("FREEZE_TDX_TARGET_PACKAGE_NOT_READY")
         archive = Path(str((tdx_capture.get("download") or {}).get("path") or ""))
         snapshot_id = str(tdx_capture.get("snapshot_id") or "")
         if (not archive.is_file() or archive.parent.name != snapshot_id
-                or sha256(archive) != (tdx_capture.get("download") or {}).get("sha256")):
+                or not (tdx_capture.get("download") or {}).get("sha256")):
             raise ValueError("FREEZE_TDX_PACKAGE_IDENTITY_MISMATCH")
 
         delta_receipt_path = archive.parent / "delta" / args.target_date.replace("-", "") / "tdx_delta_build_receipt.json"
-        delta_receipt = json.loads(delta_receipt_path.read_text(encoding="utf-8"))
+        delta_receipt_logical = delta_receipt_path.resolve().relative_to(ROOT).as_posix()
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        delta_receipt_source = read_path(ROOT, delta_receipt_logical)
+        delta_receipt = json.loads(delta_receipt_source["raw"])
         delta_path = Path(str(delta_receipt.get("delta_path") or ""))
         if (delta_receipt.get("current_snapshot_id") not in (None, snapshot_id)
-                or not delta_path.is_file() or sha256(delta_path) != delta_receipt.get("delta_sha256")):
+                or not delta_path.is_file()):
             raise ValueError("FREEZE_TDX_PACKAGE_DELTA_IDENTITY_MISMATCH")
-        delta = json.loads(delta_path.read_text(encoding="utf-8"))
+        delta_logical = delta_path.resolve().relative_to(ROOT).as_posix()
+        delta, delta_binding = _read_json_binding(dict(path=delta_logical,
+            sha256=delta_receipt.get("delta_sha256")))
         if (delta.get("contract_id") != "TDX_PACKAGE_DELTA_V1" or delta.get("current_snapshot_id") != snapshot_id
                 or delta.get("target_date") != args.target_date):
             raise ValueError("FREEZE_TDX_PACKAGE_DELTA_BINDING_MISMATCH")
 
-        bao_path = resolve_baostock_cache_root(ROOT) / "baostock" / args.target_date.replace("-", "") / args.bao_snapshot_id / "daily_update.json"
-        bao = json.loads(bao_path.read_text(encoding="utf-8"))
+        bao, bao_binding = _read_baostock_daily_update_from_pg(args.target_date, args.bao_snapshot_id)
         if (bao.get("snapshot_id") != args.bao_snapshot_id or bao.get("trade_date") != args.target_date
                 or bao.get("provider_date") != args.target_date
                 or bao.get("status") not in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"}
@@ -101,12 +133,8 @@ def main() -> int:
         ).hexdigest()
         if expected_bao_snapshot_id != args.bao_snapshot_id:
             raise ValueError("FREEZE_BAOSTOCK_CONTENT_ADDRESSED_ID_MISMATCH")
-        runtime_template = _daily_runtime_contract(ROOT, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
-            "config/baostock_supplemental_contract_v1.json")["dm01_daily_updates"]["runtime_acceptance_manifest_template"]
-        runtime_path = ROOT / runtime_template.replace("{YYYYMMDD}", args.target_date.replace("-", ""))
-        runtime_bundle = _load_pg_runtime_acceptance(ROOT, args.target_date)
+        runtime_bundle = load_baostock_runtime_pg(ROOT, args.target_date, sdk=package_metadata())
         runtime_manifest = runtime_bundle["manifest"]
-        runtime_path = runtime_bundle["manifest_path"]
         runtime_error = runtime_acceptance_error(
             runtime_manifest, sdk=package_metadata(), auth_mode=str(runtime_manifest.get("auth_mode") or "")
         )
@@ -130,26 +158,31 @@ def main() -> int:
             raise ValueError("FREEZE_GBBQ_TARGET_DATE_MISMATCH")
         if gbbq_probe.get("status") == "REUSE_ACCEPTED_GBBQ_SNAPSHOT":
             gbbq_manifest_path = Path(str(gbbq_probe.get("accepted_manifest_path") or ""))
-            expected_gbbq_manifest_sha = gbbq_probe.get("accepted_manifest_sha256")
+            gbbq_logical = (f"external/tdx_gbbq/{args.target_date}/"
+                            f"{gbbq_probe.get('accepted_snapshot_id')}/manifest.json")
+            gbbq_manifest, gbbq_binding = _read_json_binding(dict(
+                path=gbbq_logical, sha256=gbbq_probe.get("accepted_manifest_sha256")))
         elif gbbq_probe.get("status") == "NEW_GBBQ_REVISION_FROZEN_REQUIRES_ADJUSTMENT_IMPACT":
             raise ValueError("FREEZE_GBBQ_NEW_REVISION_REQUIRES_ACCEPTED_ADJUSTMENT_IMPACT")
         else:
             raise ValueError("FREEZE_GBBQ_REVISION_PROBE_NOT_READY:" + str(gbbq_probe.get("status")))
-        if not gbbq_manifest_path.is_file() or sha256(gbbq_manifest_path) != expected_gbbq_manifest_sha:
-            raise ValueError("FREEZE_GBBQ_ACCEPTED_MANIFEST_DIGEST_MISMATCH")
-        gbbq_manifest = json.loads(gbbq_manifest_path.read_text(encoding="utf-8"))
+        if gbbq_manifest_path.resolve().relative_to(ROOT).as_posix() != gbbq_binding["path"]:
+            raise ValueError("FREEZE_GBBQ_ACCEPTED_MANIFEST_PATH_MISMATCH")
         if gbbq_manifest.get("snapshot_id") != gbbq_probe.get("accepted_snapshot_id"):
             raise ValueError("FREEZE_GBBQ_ACCEPTED_SNAPSHOT_ID_MISMATCH")
         for name, record in (gbbq_manifest.get("files") or {}).items():
-            source = gbbq_manifest_path.parent / name
-            if (not source.is_file() or sha256(source) != record.get("sha256")
-                    or source.stat().st_size != int(record.get("bytes", -1))):
+            source_path = f"external/tdx_gbbq/{args.target_date}/{gbbq_manifest.get('snapshot_id')}/{name}"
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+            try:
+                source = read_bound(ROOT, source_path, str(record.get("sha256") or ""))
+            except ValueError as exc:
+                raise ValueError("FREEZE_GBBQ_ACCEPTED_FILE_NOT_INGRESSED:" + str(name)) from exc
+            if len(source["raw"]) != int(record.get("bytes", -1)):
                 raise ValueError("FREEZE_GBBQ_ACCEPTED_FILE_INTEGRITY_MISMATCH:" + str(name))
         if args.target_date < str(gbbq_manifest.get("first_eligible_formal_trade_date") or "9999-99-99"):
             raise ValueError("FREEZE_GBBQ_NOT_PIT_ELIGIBLE_FOR_TARGET_DATE")
 
         cal = accepted_calendar(ROOT)
-        calendar_path = ROOT / cal['binding']['path']
         calendar = dict(status='PASS', calendar_revision=cal['publication_id'], official_sessions_after_base_cutoff=cal['session_dates'])
         lifecycle = read_stage(ROOT, stage_bindings["lifecycle_snapshot"]["binding"],
             trade_date=args.target_date, stage="lifecycle_snapshot")
@@ -167,22 +200,22 @@ def main() -> int:
                         source_revision=binding.get("payload_sha256"), source_family=source_family,
                         pg_stage=binding["stage"], pg_payload_sha256=binding.get("payload_sha256"))
 
-        page_capture_record = file_record(
-            args.tdx_capture_receipt, source_revision="sha256:" + sha256(args.tdx_capture_receipt),
-            source_family="TDX_OFFICIAL_PAGE_AND_INFO_RECEIPT",
-        )
-        delta_file_record = file_record(
-            delta_path, source_revision=str(delta.get("delta_sha256")), source_family="TDX_PACKAGE_DELTA_V1",
-        )
-        bao_file_record = file_record(
-            bao_path, source_revision=str(bao.get("snapshot_id")), source_family="BAOSTOCK_DAILY_UPDATE_V1",
-        )
+        page_capture_record = dict(**tdx_capture_binding, source_revision="sha256:" + tdx_capture_binding["sha256"],
+                                   source_family="TDX_OFFICIAL_PAGE_AND_INFO_RECEIPT")
+        delta_file_record = dict(**delta_binding, source_revision=str(delta.get("delta_sha256")),
+                                 source_family="TDX_PACKAGE_DELTA_V1")
+        bao_file_record = dict(path=bao_binding["path"], source_family="BAOSTOCK_DAILY_UPDATE_V1",
+            source_revision=str(bao.get("snapshot_id")), sha256=bao_binding["sha256"], bytes=bao_binding["bytes"])
         family_sources = {
             "TDX_PAGE_CAPTURE": page_capture_record,
-            "TDX_FULL_PACKAGE": file_record(archive, source_revision=snapshot_id, source_family="TDX_OFFICIAL_FULL_PACKAGE"),
+            "TDX_FULL_PACKAGE": dict(path=str(archive.resolve().relative_to(ROOT)),
+                source_revision=snapshot_id, source_family="TDX_OFFICIAL_FULL_PACKAGE",
+                sha256=str((tdx_capture.get("download") or {}).get("sha256")),
+                bytes=int((tdx_capture.get("download") or {}).get("bytes") or archive.stat().st_size)),
             "TDX_PACKAGE_DELTA": delta_file_record,
-            "OFFICIAL_CALENDAR": file_record(
-                calendar_path, source_revision=str(calendar.get("calendar_revision")), source_family="OFFICIAL_SESSION_BRIDGE"),
+            "OFFICIAL_CALENDAR": dict(path=cal["binding"]["path"], sha256=cal["binding"]["sha256"],
+                bytes=cal["binding"]["bytes"], source_revision=str(calendar.get("calendar_revision")),
+                source_family="OFFICIAL_SESSION_BRIDGE"),
             "BAOSTOCK_DAILY_UPDATE": bao_file_record,
             "BAOSTOCK_ADJUSTMENT_FACTOR": {
                 **bao_file_record,
@@ -190,7 +223,8 @@ def main() -> int:
                 "source_family": "BAOSTOCK_ADJUSTMENT_FACTOR_DAILY_V1",
                 "field_scope": "adjustment_factor_rows_only",
             },
-            "GBBQ": file_record(gbbq_manifest_path, source_revision=str(gbbq_manifest.get("snapshot_id")), source_family="V4_02_GBBQ_FORWARD_SNAPSHOT_V1"),
+            "GBBQ": dict(**gbbq_binding, source_revision=str(gbbq_manifest.get("snapshot_id")),
+                         source_family="V4_02_GBBQ_FORWARD_SNAPSHOT_V1"),
             "IDENTITY_LIFECYCLE": stage_file_record(stage_bindings["lifecycle_snapshot"], lifecycle, "CURRENT_LIFECYCLE_SNAPSHOT_V1"),
             "SPECIAL_PRICE_PHASE": stage_file_record(stage_bindings["special_phase_manifest"], special_manifest, "SPECIAL_PHASE_SOURCE_MANIFEST_V1"),
         }

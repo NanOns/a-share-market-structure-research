@@ -6,7 +6,7 @@
 
 ## 已完成的代码与 PG 实修
 
-- `src/workbench_db/v4_native.py`、Owner workspace mapping 与迁移 046/047：加入稳定 workspace logical ID/PG alias、保持只读读路径，并让已授权共享 PG 配置可用于开发写入。两项迁移在唯一 PG 应用并读回；4 个 ACTIVE alias 解析到原有 schema。搬动模拟确认 logical ID、history/publication namespace 与 Owner mapping 稳定。
+- `src/workbench_db/v4_native.py`、Owner workspace mapping 与迁移 046/047：加入稳定 workspace logical ID/PG alias、保持只读读路径，并让已授权共享 PG 配置可用于开发写入。两项迁移在唯一 PG 应用并读回；PG 现场现有 6 个 ACTIVE alias 均解析到其原有 schema。搬动模拟确认 logical ID、history/publication namespace 与 Owner mapping 稳定。
 - TDX 官方 2026-10-16 包：ZIP 校验通过，12,205 个条目，549,184,442 字节，SHA-256 `c0ea0dff…3248219`；抽取 5,567 根目标日 bars。包首见时间在 10-18，故只作诊断候选，未宣称 PIT 或 accepted。
 - 将精确 TDX 目标行集作为 1,502,467 字节 SourceIngress 原始绑定写入 PG，并完成字节读回；创建 5,567 行 `core` Owner、Owner authority manifest 和 `development_head_candidate`，均从 PG 精确读回。
 - 修复 `dm01_corrected_source_capture_v2.py`：临时 smoke 收据可绑定在配置的 G 盘 ingest temp root；绝对临时路径只用于内存中的 staging-only manifest，Durable runtime loader 仍只接受仓内收据。6 项路径/归一化定向测试通过。

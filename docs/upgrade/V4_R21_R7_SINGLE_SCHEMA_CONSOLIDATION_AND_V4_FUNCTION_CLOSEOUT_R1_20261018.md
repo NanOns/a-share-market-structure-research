@@ -300,3 +300,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 静态审查确认 `resolve_legacy_schema()` 没有现役调用者，但仍接受任意 `v4_research_` 前缀并只按 canonical version 去重。将其收紧为冻结的 `v4_research_<24位小写hex>` 形式，并要求该来源 Schema 的全部版本映射都带 `verification.status=VERIFIED` 后才返回唯一 canonical release；该函数只查询 `v4.legacy_schema_migration_map`，不连接或扫描历史物理 Schema。
 - 新增纯读回夹具覆盖非法 locator 在触库前拒绝、混合/未验证映射拒绝、完整验证映射成功。定向用例 `3 passed`，相关文件 `py_compile` 与 `git diff --check` 通过；本补丁没有访问 PG 或改变候选数据。
+
+### 2026-10-19 BaoStock 同日覆盖受限探测
+
+- 按现存 BaoStock 合同的 bounded smoke gate 使用匿名固定版 `0.9.3`，对单只 `sh.600000` 请求 `2026-10-08` 日线；记录 UTC 时间 `2026-10-18T21:34:14Z`，实际端点 `public-api.baostock.com:10030`，登录/查询/退出均成功，返回目标日 1 行。请求预算 ledger 从当前仓库 ledger 读入后仅写 G 临时目录，原始 provider payload 未持久化、未写 PG。
+- 收据位于 `G:\\codex_tmp\\v4_r21r7_baostock_20261008_smoke\\coverage_receipt.json`。`BAOSTOCK_DAILY_FINGERPRINT_V1.enabled=false` 且其状态仍为 `PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING`；这次单证券诊断不能证明全市场覆盖、数据字段容差/独立接纳、PIT、SourceIngress 或 Accepted 日更，不改变 DB-09/10 与模块数据门状态。

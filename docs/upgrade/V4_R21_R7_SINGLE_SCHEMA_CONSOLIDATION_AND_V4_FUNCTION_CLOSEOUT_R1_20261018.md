@@ -161,3 +161,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 以任务卡发布 HEAD `2d838f28342664e26cdd78c01d0a6638048da3e7` 为基线，当前开发分支 6 个提交的增量改动共覆盖固定 Schema 迁移、`v4_native` 运行时护栏、R2 Research Snapshot/Series/Journal、Forward/Focus/History/ReadIndex/Jobs/Owner/Publication/SourceIngress 消费者、BFF/股票图表/Replay/开发服务、Corrected/R43 Owner PG-only 精确来源读取及针对性测试。新增点名的 Owner Delta 为 `src/workbench_analysis/corrected_owner_replay.py`、`src/workbench_analysis/r43_owner_replay.py` 和 `tests/test_v4_r6_pg_only_owner_source_reads.py`；Forward/History/Jobs/ReadIndex 的 Schema Delta 由对应固定表迁移及消费者文件列在 `git diff 2d838f28342664e26cdd78c01d0a6638048da3e7..HEAD --name-only` 中。当前额外工作区修改没有计入这些已提交增量。
 - 上述变动可证明指定路径已有单 Schema 代码实现及局部真实调用验收，不消除原 266 的历史源边界对账工作；在生产业务读全量盘点、PG 数据身份/Head 验收和 per-ID 对账完成前，266 仍保留为独立历史基线，新增 delta 继续按“代码 / 实际 PG / 28766 DEV / Accepted”分层追踪。
 - R14 历史 1,678 项绑定继续处于暂停扩量状态；本轮未批量迁移，也未改写 append-only 历史绑定。仅已核验为活动依赖的确切 Forward/History/Owner/ReadIndex/Research 事实通过各自版本化迁移台账承载，不能把台账行数解释为 1,678 项整体验收。
+
+### 2026-10-19 FEP 旧读入口与隔离探针续修
+
+- 复核发现历史 R4 `scripts/execute_r4_next_acceptance_r1.py::db_receipts()` 仍会连接 55547 隔离 PostgreSQL 并执行 `DROP SCHEMA fep CASCADE`。该入口现于任何连接前直接 fail-closed；不再保留该数据库探针。
+- `tests/fep_e5/test_canonical_authority_read.py` 旧隔离 SQL 测试改为只读来源发现测试。`CanonicalExpectancyReadAPI` 与 FEP canonical identity availability reader 均不再查询旧 `fep.*`，在 `v4` 固定 FEP 表迁移合同缺失时返回/记录 `V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED`，且不进行 PG 读取或写入。对应身份负例测试改为纯内存输入核验。
+- 28766 真实浏览器复看 `/v4/research/forward?view=fep`：范围仍为 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`，质量及当前观察覆盖不可得，未训练预测槽为 `PENDING`；没有声明生产模型验收。
+- 新增定向覆盖与单 Schema guard 合跑 `15 passed`；仓库暂存 Blob 准入检查通过，精确提交 `7fbd6606f` 已推送至 `codex/v4-workspace-cleanup`。没有连接 55547、没有新增数据库/Schema、没有改动 PG 事实。FEP 固定表迁移与缺失业务源仍未完成，整体阶段仍为 `PARTIAL_DATA_AND_MODULE_ACCEPTANCE_OPEN`。

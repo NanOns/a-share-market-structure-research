@@ -92,11 +92,10 @@ def test_e5_missing_exact_identity_stays_conflict():
     from workbench_analysis.fep_e5.canonical_identity import readback_population,CONFLICT
     class ReadOnlyFixture:
         def execute(self,sql,params):
-            assert sql.startswith('select count(*)')
-            return self
-        def fetchone(self):return (0,)
+            raise AssertionError('legacy FEP identity reader must not query PostgreSQL')
     result=readback_population(ReadOnlyFixture(),[dict(observation_id='FIXTURE',entity_id='A',trade_date=BASIS,original_e2_row_digest='fixture')],{})
     assert result['status']==CONFLICT and result['population'][0]['canonical_identity'] is None
+    assert 'V4_SINGLE_SCHEMA_FEP_STORAGE_MIGRATION_REQUIRED' in result['population'][0]['reasons']
     assert result['no_database_writes'] and not result['canonical_integration_accepted']
 
 def test_confirmed_suspension_omits_coordinates_without_fabrication():

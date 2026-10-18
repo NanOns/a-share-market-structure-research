@@ -83,3 +83,9 @@
 - 尝试把同一 admission 刷新进 Joint control authority 并使用 28766 做 CAS 健康读回时，健康门发现候选 manifest token 与正在服务的 PG candidate schema token 不同而拒绝；Joint CAS 按契约恢复了原 authority，admission 文件也恢复到提交版本。具体现状：authority 指向 manifest digest `d9d052…e72f3`，28766 提供 token `research-v4-pg-candidate-7461…9e6a`。因此没有报告开发 Head 刷新成功；该处仍是实际的 28766 Head/namespace 集成缺口。28765 未访问。
 - 修复 `corrected_owner_replay.materialize_core`、`r43_owner_replay.materialize_core` 对 accepted-chain `IDENTITY_UNIVERSE`/`TRADING_STATUS` artifact 的直接文件读取，改为按链内 artifact SHA 读取 PG bytes。R43 GBBQ 下游由 PG 精确 bytes 直接解析，取消原本的仓内临时镜像和二次文件读取。实测当前链 3 个日期、6 份 artifact 共 31,338 行，两生产器读到完全相同 payload；R43 GBBQ 5,613,070 字节解码 193,554 条事件，摘要与 PG binding 一致。
 - 本续行新增验证：Forward/Joint 定向测试 13 passed；Forward 子集 5 passed；上述 Head-bound PG validation 通过。28766 的全候选健康 CAS 未通过，原因是服务注入 schema 与联合 authority manifest 不一致，已按 CAS 机制回滚而非强行改写。
+
+## 28766 浏览器交互续验
+
+- 在已运行的 `127.0.0.1:28766` 实际浏览器页进入“数据与诊断 → 日更与失败状态”，页面与 API 均返回同一候选上下文：T0=`2026-09-30`，事件33、Focus469、Forward117、Market1、Sector378、结算5、来源4、股票5213。展开“查看快照缺口与日更状态”后证实 `SOURCE_INCOMPLETE`、`worker_started=false`、`source_requests=0`，原因 `PG_CANDIDATE_DOES_NOT_CONTAIN_DAILY_WORKER_RECEIPTS`，策略 `NO_WORKSPACE_RECEIPT_FALLBACK`。
+- 市场页实测显示盘后截面、宽度分母5,224/实际行情5,213、上涨2,344/下跌2,712/平盘155/未知13及成交额14,378.36亿元；点击展开上证指数后真实走势图可见，收盘3,842.19，并明确显示指数成交量原始单位待核实。页面继续标注 `PG 候选快照·不代表正式 Head`。
+- 这补齐了日更诊断抽屉与市场图表两个实际交互点；它们仍是候选态功能核验。没有启动日更写入进程，没有改动 Joint authority，也没有触碰28765。

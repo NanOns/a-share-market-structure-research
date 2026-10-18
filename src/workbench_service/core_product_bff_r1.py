@@ -752,9 +752,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if not source:raise ValueError('PG_HISTORY_SOURCE_BINDING_REQUIRED')
             if history.get('source_digest')!=source.get('sha256'):
                 raise ValueError('PG_HISTORY_SOURCE_DIGEST_MISMATCH')
-            from workbench_db.v4_native import workspace_schema
-            index_root=self.chart_history_index_root or self.api.root
-            if history.get('schema')!=workspace_schema(index_root,'history'):
+            from workbench_db.v4_history_pg_r1 import valid_history_schema_locator
+            if not valid_history_schema_locator(history.get('schema')):
                 raise ValueError('PG_HISTORY_CONTEXT_MISMATCH')
             self.api.cache[key]=(manifest,None)
         return self.api.cache[key]

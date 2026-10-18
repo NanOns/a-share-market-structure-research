@@ -7,6 +7,15 @@ from .v4_native import connection, create_schema, workspace_schema, configured_d
 import psycopg
 
 CONTRACT='V4_PG_DATED_HISTORY_INDEX_R1'
+
+def valid_history_schema_locator(schema):
+    """Accept canonical v4 and frozen legacy locators for map-only reads.
+
+    Legacy names are descriptor provenance only. ``read`` below resolves them
+    through ``v4.history_migration_map_r1`` and never connects to that schema.
+    """
+    return schema=='v4' or (isinstance(schema,str) and re.fullmatch(r'v4_history_[a-f0-9]{16}',schema) is not None)
+
 DDL='''
 CREATE TABLE IF NOT EXISTS history_versions_r1(version text PRIMARY KEY,head_token text NOT NULL,t0 date NOT NULL,source_digest text NOT NULL,logical_digest text NOT NULL,symbol_count bigint NOT NULL,bar_count bigint NOT NULL,created_at timestamptz NOT NULL DEFAULT clock_timestamp());
 CREATE TABLE IF NOT EXISTS history_bars_r1(version text NOT NULL CONSTRAINT history_bars_r1_version_fkey REFERENCES history_versions_r1(version) DEFERRABLE INITIALLY DEFERRED,security text NOT NULL,payload jsonb NOT NULL,PRIMARY KEY(version,security));

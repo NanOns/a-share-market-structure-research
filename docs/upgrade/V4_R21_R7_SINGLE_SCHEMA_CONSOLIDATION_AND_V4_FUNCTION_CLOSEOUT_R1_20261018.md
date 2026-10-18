@@ -241,3 +241,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 内置浏览器实际展开 `/v4/research/diagnostics/health` 的“上游与影响字段”：候选 T0 `2026-09-30`，股票 5,213、板块 378、Focus 469、Forward 117、Market 1；股票质量面板明确记录 `acceptance_state`、结构锚点、行业上下文等字段未知，不以零值代替缺失来源。`/diagnostics/sources` 与 `/diagnostics/contracts` 的诊断抽屉实际打开并返回 `READY` 源登记，身份均为候选快照 Release `05cf8913242f46c8af53b3d89f323b64`、数据库 `market_research` / OID `646711` / `v4`，域 `released=false`。
 - `/v4/research/diagnostics/jobs` 展示现有 PG 快照的逐域记录计数，并明示未启动日更 worker、快照没有作业回执；展开“查看快照缺口与日更状态”返回 `SOURCE_INCOMPLETE`、worker `false`、来源请求 `0`、缺少 worker receipts。三页浏览器操作均为只读，不签发或伪造 Accepted Head/日更回执；日更/模块完整验收仍未通过。
+
+### 2026-10-19 History 旧 locator 经固定表读回续修
+
+- 代码审查发现 `CoreProductBFFR1.chart_history_pack` 只接受 `schema='v4'`，会在调用支持迁移映射的 History Reader 前拒绝冻结的旧 History locator。调整为只接受 `v4` 或合同格式 `v4_history_<16位十六进制>`；后者仍必须由 `v4_history_pg_r1.read` 在 `v4.history_migration_map_r1` 中精确匹配，实际条目、版本与条数校验仍在 `v4` 固定表执行，不连接旧 Schema，也不使用工作区路径定位。
+- 在真实开发库以显式只读 RR 连接读取一条已迁移映射：旧 locator `v4_history_64d0f9c30983a3ac` → canonical version `51cbf9a29c866f9b7afa07e07fa8fd567af4059c617ce61e20a83bdac8c0f6b6`，T0 `2026-10-15`，证券 `SEC-00096141BD5420F5CB3120E687CDA5B9`；实际 Reader 经映射从 `v4.history_bars_r1` 读回 420 根，日期 `2025-01-16` 至 `2026-10-15`。实证旧名称仅作为迁移 locator，物理读 Schema 为 `v4`。
+- locator 纯函数定向用例 `1 passed`，相关模块及用例 `py_compile` 通过。对旧集成测试文件的定向 pytest 因测试收集时模块导入触发仓库 disposable-PG 插件而在执行前被拒绝；没有绕过隔离、创建数据库或写 PG，该次不计通过。真实旧 locator 读回独立于此 pytest 收集结果完成。

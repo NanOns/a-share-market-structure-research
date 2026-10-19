@@ -64,6 +64,17 @@ def test_machine_paths_credentials_and_dynamic_sql_are_flagged_without_echoing_v
     assert all("SuperSecretValue" not in item.detail for item in findings)
 
 
+def test_psycopg_identifier_composition_is_allowed_but_untrusted_sql_text_is_not():
+    safe = b"from psycopg import sql\nquery = sql.SQL('SELECT * FROM {}').format(sql.Identifier(schema_name))\n"
+    assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe)}
+    safe_alias = b"from psycopg import sql\nquery = sql.SQL('SELECT * FROM {}')\nquery.format(sql.Identifier(schema_name))\n"
+    assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe_alias)}
+    unsafe = b"from psycopg import sql\nquery = sql.SQL(sql_from_user).format(sql.SQL(identifier_from_user))\n"
+    assert "DYNAMIC_SQL" in {item.code for item in policy.inspect_blob("scripts/migrate.py", unsafe)}
+    unsafe_alias = b"from psycopg import sql\nquery = sql.SQL('SELECT * FROM {}')\nquery.format(sql.SQL(identifier_from_user))\n"
+    assert "DYNAMIC_SQL" in {item.code for item in policy.inspect_blob("scripts/migrate.py", unsafe_alias)}
+
+
 def test_credentials_in_config_are_flagged_but_runtime_secret_lookup_is_allowed():
     sample = b'{"pass' + b'word":"Static' + b'Secret42"}'
     findings = policy.inspect_blob("config/runtime.json", sample)

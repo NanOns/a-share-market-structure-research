@@ -61,6 +61,7 @@ DYNAMIC_SQL = re.compile(
     r"(?is)(?:f['\"]\s*(?:select|insert|update|delete)\b[^'\"]*\{|"
     r"(?:^|[=(:,])\s*['\"]\s*(?:select|insert|update|delete)\b[^\n]{0,100}\s*\+\s*(?:str\(|[A-Za-z_][\w.]*)|"
     r"['\"]\s*(?:select|insert|update|delete)\b[^'\"]{0,100}['\"]\s*\.format(?:_map)?\s*\()")
+SQL_HEAD = re.compile(r"(?is)^\s*(?:select|insert|update|delete|alter|drop|create|truncate)\b")
 LFS_POINTER = re.compile(
     rb"\Aversion https://git-lfs\.github\.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n?\Z"
 )
@@ -222,7 +223,7 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
             findings.append(Finding("PROCESS_DATA_DEPENDENCY", path, "production/tool code reads a task, evidence, or historical report path"))
         if path.startswith("src/") and TARGET_BRANCH.search(text):
             findings.append(Finding("TARGET_SPECIFIC_BRANCH", path, "production code contains a fixed security or sector branch candidate"))
-        if path.endswith((".sql", ".py", ".js", ".ts", ".tsx")) and DYNAMIC_SQL.search(text):
+        if path.endswith((".sql", ".py", ".js", ".ts", ".tsx")) and _has_unsafe_dynamic_sql(text, path):
             findings.append(Finding("DYNAMIC_SQL", path, "SQL appears to interpolate or concatenate a dynamic query"))
 
     if not path.startswith("tests/") and REPORT_PAYLOAD.search(text):
@@ -236,6 +237,92 @@ def inspect_blob(path: str, blob: bytes) -> list[Finding]:
         if not text.lstrip().startswith("---"):
             findings.append(Finding("STAGE_REPORT_TEMPLATE", path, "formal stage report must use the versioned front matter template"))
     return findings
+
+
+def _sql_call(node: ast.AST, method: str) -> bool:
+    return (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+            and node.func.attr == method and isinstance(node.func.value, ast.Name)
+            and node.func.value.id == "sql")
+
+
+def _safe_sql_component(node: ast.AST) -> bool:
+    """Recognize psycopg composables that quote identifiers or hold fixed SQL text."""
+    if _sql_call(node, "Identifier"):
+        return bool(node.args) and not node.keywords
+    if _sql_call(node, "SQL"):
+        return (len(node.args) == 1 and isinstance(node.args[0], ast.Constant)
+                and isinstance(node.args[0].value, str) and not node.keywords)
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+        if node.func.attr == "format" and _sql_call(node.func.value, "SQL"):
+            return (_safe_sql_component(node.func.value)
+                    and all(_safe_sql_component(arg) for arg in node.args)
+                    and all(_safe_sql_component(item.value) for item in node.keywords))
+        if node.func.attr == "join" and _sql_call(node.func.value, "SQL") and len(node.args) == 1:
+            iterable = node.args[0]
+            return (_safe_sql_component(node.func.value)
+                    and isinstance(iterable, ast.Call) and isinstance(iterable.func, ast.Name)
+                    and iterable.func.id == "map" and len(iterable.args) == 2
+                    and _sql_call(iterable.args[0], "Identifier"))
+    return False
+
+
+def _has_unsafe_dynamic_sql(text: str, path: str) -> bool:
+    """Flag raw SQL interpolation while allowing psycopg.sql.Identifier composition.
+
+    Identifier composition is the safe way to bind schema/table/column names in
+    PostgreSQL; values still belong in query parameters. The previous regex
+    rejected that safe pattern along with string concatenation.
+    """
+    regex_match = DYNAMIC_SQL.search(text)
+    if not regex_match and not path.endswith(".py"):
+        return False
+    if not path.endswith(".py"):
+        return True
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return True
+    safe_sql_names: set[str] = set()
+    for item in ast.walk(tree):
+        if isinstance(item, (ast.Assign, ast.AnnAssign)) and item.value is not None:
+            if isinstance(item, ast.Assign):
+                targets = item.targets
+            else:
+                targets = [item.target]
+            if _safe_sql_component(item.value):
+                safe_sql_names.update(target.id for target in targets if isinstance(target, ast.Name))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.JoinedStr):
+            prefix = ""
+            for value in node.values:
+                if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                    prefix += value.value
+                else:
+                    break
+            if SQL_HEAD.match(prefix):
+                return True
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+            for side in (node.left, node.right):
+                if isinstance(side, ast.Constant) and isinstance(side.value, str) and SQL_HEAD.match(side.value):
+                    return True
+        if not isinstance(node, ast.Call):
+            continue
+        if isinstance(node.func, ast.Attribute) and node.func.attr in {"format", "format_map"}:
+            receiver = node.func.value
+            receiver_is_safe = (_sql_call(receiver, "SQL")
+                                or isinstance(receiver, ast.Name) and receiver.id in safe_sql_names)
+            if receiver_is_safe:
+                if all(_safe_sql_component(arg) for arg in node.args) and all(
+                        _safe_sql_component(item.value) for item in node.keywords):
+                    continue
+                return True
+            if isinstance(receiver, ast.Constant) and isinstance(receiver.value, str) and SQL_HEAD.match(receiver.value):
+                return True
+            if _sql_call(receiver, "SQL") and not _safe_sql_component(receiver):
+                return True
+        if _sql_call(node, "SQL") and not _safe_sql_component(node):
+            return True
+    return False
 
 
 def _direct_forbidden_path_read(text: str) -> bool:

@@ -358,3 +358,52 @@ R3代码、测试及规范实现提交 SHA：`e21849b21226d364d4f79678d416126e58
 未运行包含共享PG写入的`test_postgres_schema.py`。无正式来源或RAW收据的真实阻断不是fixture成功可以替代的。当前八子阶段真实状态：00A `DEGRADED_PASS`、00B `DEGRADED_PASS`、00C `DEGRADED_PASS`、00D `DEGRADED_PASS`、00E `BLOCKED`、00F `DEGRADED_PASS`、00G `BLOCKED`、00H `BLOCKED`；`STAGE00_DOCTOR_PASS + STAGE00_ACCEPTANCE_LOGIC_REACHABLE + STAGE00_REAL_DATA_BLOCKED`。不得表述为`STAGE00_PASS`或`V4_01_AUTHORIZED`。
 
 R5源码与测试实现提交SHA：`c3ef409c648a892108c5033ed4d57420654133c4`；该SHA由提交后真实doctor输出的`git_commit_sha`复核。报告本次更新提交的最终远端SHA及PR记录以PR #3最新评论为准。
+
+## R6｜Source/RAW生产者—消费者接线定向实修
+
+执行基线 `903b297c6df5c3017f3aea2eb1256093be747ff5`，分支 `codex/v4-workspace-cleanup`；代码与测试提交 `6a9c87a008dcb92df051be35698002911b0057e1`。本节仅记录R6，不重跑R5的D/E模拟验收。未写共享PG、未执行迁移、未改Head或生产服务。
+
+### 代码交付
+
+- `build_source_ingest_plan` 从同一冻结的 TDX target-bars 和同T0 security-universe 派生 `accepted_board_coverage`，将四板计数、T0和摘要作为 `tdx_board_coverage` source fact 加入 `source_fact_bindings_sha256`。它校验代码到板块映射、TDX与universe成员绑定、显式停牌/非交易状态；缺板留为零计数，阶段00 D 会拒绝。Gate 重算覆盖摘要并核对fact SHA、绑定locator和record count，不能由manifest中的自报计数单独放行。
+- 新增跨模块隔离正例：以现役 `build_source_ingest_plan` 生成冻结输入、经测试Ed25519 issuer独立签署接受receipt，再把计划的manifest/facts/revision形状交给Stage00 D验证。真实生产者输出可通过；摘要/签名篡改、缺板及停牌输入均不能通过。样本在隔离临时目录生成，没有写共享PG。
+- `persist_source_ingest_plan` 不再在 `ACCEPTED` 状态下恒定拒绝；它先通过PG批准的独立签发者注册表验证Ed25519 receipt，再调用原不可变 package/revision 持久化事务。原事务仍核验Publication身份、时间和冲突，使用savepoint，不自行commit、不切Head；提交/rollback由调用者负责。隔离测试证明可信签名能到达有界事务入口，伪签名及未注册issuer在首条写SQL之前拒绝；未调用共享PG写入分支。
+- 新增 `produce_raw_owner_receipt`、`produce_and_persist_raw_owner_receipt`、`verify_raw_owner_receipt`、`read_raw_owner_receipt`。E收据绑定接受包、T0、TDX source revision/digest、RAW basis、知识/交易状态和B/C/D Owner结果；由外注入的独立签名能力签署，并按PG批准的 `V4_STAGE00_RAW_OWNER_RECEIPT_AUTHORITY_REGISTRY_R1/1.0.0` 验签。`_pg_snapshot` 在有合法接受来源时按 package/T0/revision 定位实际receipt并验签；不再把常量 `None` 当作唯一消费实现。缺表、无receipt或authority无效仍闭锁。
+- 增加单Schema `v4` 迁移定义 `src/workbench_db/migrations/v4_postgres/003_stage00_raw_owner_receipts.sql`，包含receipt表、来源包/修订外键、唯一键、身份CHECK及禁止UPDATE/DELETE的触发器。本轮未执行迁移。SHA-256：`dc71a3a38a55e03d59ce3905819b95d56ce4387c712516b83d1b5a0fe4746c5f`。
+- acceptance现要求 `--trade-date YYYY-MM-DD`，PG候选按该T0过滤；超过有界候选上限会阻断，避免任意截断后错判。00F只看PG批准的 `BAOSTOCK_SUPPLEMENTAL_SOURCE_V1/1.1.0`合同状态及接受包中的 `native_baostock` revision；通用source revision数量不会再推导BaoStock能力。实库合同虽为 `APPROVED_READ`，其内容状态仍是 `PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING`，无接受的native BaoStock revision，所以补充能力被明确限制。
+
+### 验证结果
+
+运行环境的默认Python缺少 `cryptography`；测试依赖仅安装在 `G:/codex_tmp/test_pkgs`，没有修改项目依赖或全局环境。所有临时文件、pytest目录与pycache位于 `G:/codex_tmp`。
+
+| 检查 | 实际结果 |
+|---|---|
+| `pytest -q tests/v4_phase0/test_stage00_producer_consumer_r6.py tests/test_v4_daily_ingest_r6.py` | `19 passed`；跨生产者→D、持久化授权门、RAW生产→验签→PG形状存储/读回、00F、T0参数均覆盖 |
+| `pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py -k 'not postgres_schema and not stage00_runtime'` | `154 passed, 45 deselected`；未重跑R5 D/E模拟测试；`test_postgres_schema.py`共享PG写入型用例不执行 |
+| `python -m py_compile ...`（Source ingest、Stage00 gate及R6跨模块测试） | 退出 `0` |
+| `git diff --check` | 退出 `0` |
+| `python -m v4.contracts.phase0_gate doctor --json` | 退出 `0`；`execution_status=OK`、`git_commit_sha=6a9c87a008dcb92df051be35698002911b0057e1`、PG身份 `market_research@127.0.0.1:5432`、只读角色能力已核、accepted source package `0`、source revisions `40455`、TDX有界样本观察日 `20260911`、无副作用 |
+| `python -m v4.contracts.phase0_gate acceptance --json --trade-date 2026-09-11` | 退出 `2`；`execution_status=OK`、回显 `target_trade_date=2026-09-11`，正式状态 `BLOCKED`；accepted source `0`，来源authority版本缺失，RAW receipt生产表缺失 |
+
+真实八子阶段状态（不是模拟夹具结果）：
+
+| 子阶段 | 实测状态 | 当前事实 |
+|---|---|---|
+| 00A | `DEGRADED_PASS` | PG身份及只读诊断运行正常；备份恢复回执未核 |
+| 00B | `DEGRADED_PASS` | 生命周期关系存在；完整数据覆盖未证明 |
+| 00C | `DEGRADED_PASS` | Publication身份关系存在；真实head为0 |
+| 00D | `DEGRADED_PASS` | 四板TDX小样本可读；PG accepted package为0，来源scope阻断 |
+| 00E | `BLOCKED` | 新生产/验签/读回路径已在隔离测试走通；共享库无Stage00表和真实收据 |
+| 00F | `DEGRADED_PASS` | PG合同可读但字段绑定仍pending，且无接受的BaoStock revision；仅补充scope阻断 |
+| 00G | `BLOCKED` | 五个本阶段必要合同版本均缺少有效批准读取 |
+| 00H | `BLOCKED` | 最终合同及完整阶段证据不足 |
+
+本轮证明的是生产者/消费者代码路径可达并通过隔离测试，不代表真实来源已接受或RAW收据已写入；真实doctor可运行也不等于Stage00验收通过。当前 `phase0_status=BLOCKED`、V4-01 `BLOCKED`。源码不会因fixture测试成功宣称正式通过。
+
+### 尚待单独授权的PG工作
+
+目前无真实accepted package、有效 `V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1/1.0.0`、已签署的RAW authority注册表或B/C/D实际Owner结果，因此不能构造真实来源/RAW写入参数。若后续授权，第一项数据库变更只针对 `market_research.v4.stage00_raw_owner_receipts` 应用上述迁移：初始新增0行；创建receipt表、索引、约束和不可变触发器；须先核对迁移SHA；同一DDL事务失败则整体回滚，回滚需删除该触发器、表及其索引和函数。除此之外，source接受写入必须先取得真实独立签名、注册authority和明确Publication身份，再核验将写入的 `source_packages`、`source_package_facts`、`source_revisions`、`publication_consumed_sources` 精确键/摘要/行数；RAW行只能在合法B/C/D Owner结果、独立签发者、package/T0/revision均可复核后再单独批准。当前未执行任何共享PG DDL/DML，也没有批准或补造合同/Owner事实。
+
+源码与测试提交为 `6a9c87a008dcb92df051be35698002911b0057e1`；报告更新提交及远端最终HEAD将在本报告提交后记入PR #3最新评论。
+
+R6收尾静态检查：`python -m compileall -q src/workbench_db/v4_daily_source_ingest_r6.py src/v4/contracts/phase0_gate.py tests/v4_phase0/test_stage00_producer_consumer_r6.py`退出0（`PYTHONPYCACHEPREFIX=G:/codex_tmp/pycache`）；报告更新后的`git diff --check`退出0。源码提交SHA为代码运行时doctor回报的SHA；报告提交的最终远端SHA以PR #3最新评论为准。

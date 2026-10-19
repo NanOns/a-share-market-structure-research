@@ -407,3 +407,35 @@ R5源码与测试实现提交SHA：`c3ef409c648a892108c5033ed4d57420654133c4`；
 源码与测试提交为 `6a9c87a008dcb92df051be35698002911b0057e1`；报告更新提交及远端最终HEAD将在本报告提交后记入PR #3最新评论。
 
 R6收尾静态检查：`python -m compileall -q src/workbench_db/v4_daily_source_ingest_r6.py src/v4/contracts/phase0_gate.py tests/v4_phase0/test_stage00_producer_consumer_r6.py`退出0（`PYTHONPYCACHEPREFIX=G:/codex_tmp/pycache`）；报告更新后的`git diff --check`退出0。源码提交SHA为代码运行时doctor回报的SHA；报告提交的最终远端SHA以PR #3最新评论为准。
+
+## R7｜四板真实范围、同PG快照授权与RAW事实收据
+
+执行基线 `507cd50b0d477b9016375bb6664db2db16067757`；代码提交 `5c92964ddf6f97ca6a934f9c214c65c4bebec83d`。本轮仅修改阶段00源码、测试、原有RAW迁移定义和本报告；未写共享PG、未执行迁移、未创建批准记录、未切Head或部署。
+
+### 修复内容
+
+- `build_source_ingest_plan` 不再把每板任意一条TDX行当作覆盖。它校验同T0的类型化证券名单、证券身份、交易所、板块及生命周期；按已知A股范围逐只要求活跃/新上市/代码迁移成员有TDX记录，并允许有明确停牌状态和来源名单证明的证券不产生当日成交行。四板计数来自完整名单与逐行匹配。名单中有明确分类的ETF、指数、B股及北交所A股可以留在完整市场Universe中，但不能混进四板TDX交易行；北交所行不会虚增四板计数。无法识别的A股板块、错配证券类型或遗漏的应收录活跃证券均fail-closed。
+- 对TDX原始OHLCVA逐行校验日期、数值、价格区间及原始entry摘要，并将规范化OHLCVA集合摘要纳入受独立接受receipt签名的coverage事实。coverage同时绑定Universe摘要、全量名单数量、四板范围名单数量、交易行数、停牌数量及名单摘要；Stage00 Gate独立核对这些字段、来源fact和manifest摘要，不再只检查每板非零。
+- `verify_source_package_manifest_authority`、source package持久化复核、RAW收据生产/持久化/读取验签均把调用方游标传入批准合同读取；存在PG游标时不另开连接。RAW生产要求同一个PG快照，读取当前数据库身份和B/C所需PG关系，并从已接受source package派生D结果；调用方提交的Owner字典只能与PG派生结果逐字段相符，不能替代上游事实。owner证据摘要、T0、package、revision及数据库身份均进入收据。
+- RAW身份状态由Universe和身份绑定导出；交易状态根据同T0名单中的停牌/交易范围导出；知识状态由已验签的AS_RECORDED/PIT接受receipt导出；价格基准取已接受manifest。收据同时绑定实际TDX记录数量及OHLCVA摘要。停牌情形使用`TRADING_WITH_SUSPENSIONS`，不伪称每只股票均有成交。
+- RAW收据迁移增加`BEFORE TRUNCATE`保护，与既有UPDATE/DELETE拒绝约束共同形成append-only；在原迁移runner登记唯一版本 `V4_STAGE00_RAW_OWNER_RECEIPTS_R1`、SHA-256、前置关系及既有 `v4.schema_migrations`追踪位置，并提供不连接PG的单项定义校验。runner仍处于未授权执行状态。本机PostgreSQL驱动不变；项目现有Windows运行依赖已声明`cryptography>=44,<47`，R7未依赖临时目录作为产品依赖。
+
+### 验证结果
+
+| 检查 | 实际结果 |
+|---|---|
+| 受限Stage00、R5/R6既有回归、source ingest及合同registry集合 | 退出0，`179 passed`；只排除任务卡明确禁止触碰共享PG的`tests/v4_phase0/test_postgres_schema.py` |
+| 新生产者→PG-shaped reader→现役Gate正反例 | 包含多证券四板名单正例、每板计数篡改、缺活跃成员、停牌成员、BSE市场成员、Universe ETF但TDX bar混入、ETF/B股/指数代码、RAW OHLCVA错误、伪造Owner字段及T0/签名篡改 |
+| PG授权快照cursor spy | source receipt复核、source持久化复核、RAW验签与RAW持久化均使用传入的同一个PG对象；没有另开只读连接 |
+| RAW迁移 | 本地PostgreSQL语法解析7条语句成功；明确含UPDATE/DELETE与TRUNCATE保护、来源外键且未创建新schema。单项迁移ID/摘要/前置关系静态核验成功，状态`DEFINED_NOT_APPLIED` |
+| `compileall`、`git diff --check`及暂存区仓库准入 | 均退出0；仓库准入报告`7 changed blob(s)` |
+| `python -m v4.contracts.phase0_gate doctor --json` | 退出0，`execution_status=OK`、`phase0_status=BLOCKED`；真实只读身份`market_research@127.0.0.1:5432`；accepted package候选0；00A/B/C/D/F为`DEGRADED_PASS`，00E/G/H为`BLOCKED` |
+| `python -m v4.contracts.phase0_gate acceptance --json --trade-date 2026-09-11` | 退出2，`execution_status=OK`、目标日精确回显、正式阶段`BLOCKED`；accepted package候选0，RAW receipt不可读；八子阶段状态与doctor一致 |
+
+测试没有排除旧R5 Stage00正反例。上述隔离正例证明生产者可接受完整、可追溯的范围并通过Gate，不代表用户共享PG现有数据已经具备正式接受能力。真实本机PG报告仍是`SOURCE_REPORTED_REAL_PG`：accepted source package为0；因此00D当前无实际接受来源，00E没有实际receipt表/收据，00G缺少5个批准合同版本，00H最终合同和完整阶段证据不足。doctor能运行不等于正式Stage00验收通过。
+
+### 状态和未关闭事项
+
+本轮结果为`R7_CODE_PARTIAL_PASS / REAL_STAGE00_ACCEPTANCE_BLOCKED`。代码静态/隔离测试已确认四板名单校验、Raw OHLCVA摘要、同PG快照验权、PG派生B/C/D证据及不可变迁移定义；共享库目前没有受理包和R7迁移，因此真实00D/00E验收仍BLOCKED。下一步需单独授权最小实际source/RAW/contract事实接收及对应的单项迁移；本轮没有取得或执行该授权。
+
+R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与acceptance输出一致）。本报告提交及推送后的分支HEAD由PR #3最新评论记录。

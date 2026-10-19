@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "G:\codex work\r4-pg-only-20261011\scripts\audit_full_system_r4_chart_http.py", line 61, in <module>
-    if __name__=='__main__':main()
-                            ~~~~^^
-  File "G:\codex work\r4-pg-only-20261011\scripts\audit_full_system_r4_chart_http.py", line 46, in main
-    if data.get('production_accepted') is not False:raise ValueError('ISOLATED_READ_MISLABELED_PRODUCTION')
-                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: ISOLATED_READ_MISLABELED_PRODUCTION

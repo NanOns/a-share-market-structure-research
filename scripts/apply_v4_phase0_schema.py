@@ -11,6 +11,8 @@ import psycopg
 
 ROOT=Path(__file__).resolve().parents[1]
 MIGRATIONS=ROOT/"src/workbench_db/migrations/v4_postgres"
+_LEGACY_LEDGER_MIGRATION="057_v4_schema_migration_ledger_r1.sql"
+_LEGACY_LEDGER_MIGRATION_SHA256="4c47318427e2805afe46e92ffdcd5d21495e7e58cabe745a2efd12732af2d885"
 VERSIONS={
     "021_v4_09_stock_prewatch.sql":"V4_09_STOCK_PREWATCH_V1",
     "010_source_manifest_contract_r1.sql":"V4_PG_CONSUMED_SOURCE_MANIFEST_R1",
@@ -108,9 +110,17 @@ def normalize_migration_schema(filename,text):
 
     The historical foundation used ``v4_meta`` for its migration ledger.  Its
     SQL bytes/checksum remain untouched; at execution time that one known
-    target is routed to ``v4``. No later migration may create a namespace or
-    refer to the retired ledger schema.
+    target is routed to ``v4``. The separately registered historical ledger
+    migration is hash-pinned and becomes a no-op here because ``apply`` has
+    already copied and verified the old ledger before running registered
+    migrations. No later migration may create a namespace or refer to the
+    retired ledger schema.
     """
+    if filename==_LEGACY_LEDGER_MIGRATION:
+        checksum=hashlib.sha256(text.encode()).hexdigest()
+        if checksum!=_LEGACY_LEDGER_MIGRATION_SHA256:
+            raise RuntimeError('V4_LEGACY_LEDGER_MIGRATION_IDENTITY_MISMATCH')
+        return "-- Exact historical 057 bytes are hash-pinned; ledger reconciliation ran in apply() before this entry.\nSELECT 1;"
     schema_targets={m.group(1).strip('"').casefold() for m in re.finditer(
         r'(?im)^\s*CREATE\s+SCHEMA\s+(?:IF\s+NOT\s+EXISTS\s+)?("?[a-z_][a-z0-9_]*"?)',text)}
     foundation="001_v4_phase0_foundation.sql"

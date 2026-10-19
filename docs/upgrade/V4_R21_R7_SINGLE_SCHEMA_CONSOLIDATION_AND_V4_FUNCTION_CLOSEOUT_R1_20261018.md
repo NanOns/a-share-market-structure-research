@@ -615,3 +615,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `migrate_v4_current_accepted_ingress_bindings_r1.py` 与 `migrate_v4_read_index_single_schema_r1.py` 将剩余关系名改为 `psycopg.sql.Identifier` 组合；ReadIndex R1/R2 guard 函数按固定合同定义，不再由字符串插值生成 DDL。`cleanup_v4_verified_legacy_schemas_r1.py` 仅接受零参数旧函数并用 `RESTRICT` 删除；遇到其他函数签名即 fail-closed。
 - 仓库准入规则补充识别 Psycopg 的安全 Identifier/Literal 组合，同时继续拒绝不可信 SQL 文本与原始 SQL 字符串拼接。`tests/test_git_repository_policy.py` 与 `tests/test_v4_r7_sql_schema_compatibility.py` 合并执行 20 项通过；3 个迁移工具 AST 解析通过，暂存内容通过 `tools/git_repository_policy.py --staged`。
 - 本项没有重跑已退役源 Schema 的迁移/清理写操作；当前开发库只读核验仍仅有 `v4`。代码推送提交为 `3e7e0df40`、`e3b03751d`、`d9a2b62fd`。历史 `DROP RESTRICT` 回执缺口和业务 Accepted/模块验收门保持原状态。
+
+### 2026-10-19 注册迁移清单的单 Schema 冷启动续修
+
+- 全面规范化当前 PG runner 的 55 个已登记迁移时，发现 `057_v4_schema_migration_ledger_r1.sql` 仍含历史 `v4_meta` 条件搬账语句，而 runner 仅对已在 ledger 的 057 跳过规范化；现役库因已有记录未暴露问题，但新库从零初始化会在 057 处被 `V4_SINGLE_SCHEMA_RETIRED_META_SCHEMA_REFERENCE_BLOCKED` 拒绝。
+- 未改历史 SQL 字节或其登记 SHA。`scripts/apply_v4_phase0_schema.py` 现在仅对文件名与原始 SHA-256 `4c473184…af2d885` 同时匹配的该 057 文件做执行期 `SELECT 1` 规范化；实际旧 ledger 的复制、逐行校验已由 runner 在执行登记迁移前完成。文件内容任何变化都会 fail-closed。基础迁移 001 仍仅在受控初次部署时创建 `v4`，并执行期移除 `v4_meta` 创建与引用。
+- `tests/test_v4_r7_sql_schema_compatibility.py` 现在遍历并规范化完整 55 项 runner 登记清单，要求 001 外的 SQL 不含 `CREATE SCHEMA` 或 `v4_meta`；057 哈希身份及被修改后拒绝路径也有断言。定向回归 `5 passed`。同轮独立只读审计确认 DB `market_research` / OID `646711` 唯一 V4 Schema 仍为 `v4`，55 项迁移都可被规范化，固定 workspace 定位抽样均返回 `v4`。
+- 当前源码扫描中的 `workspace_schema()` 均汇聚到中央固定 `v4` 定位器；`physical_schema` 命中属于仅供迁移审计的历史表，`pg_namespace` 命中用于固定对象/触发器目录核验，没有 `pg_candidate_schema` 或按 `v4_forward_%`/`v4_research_%`/`v4_history_%` 扫描的现役 Reader。历史 FEP `028` 不在当前 runner 登记集，固定 FEP 表迁移 `068` 已登记；FEP E5 旧 ledger 适配器在 SQL 安装前 fail-closed。
+- 机器证据与只读复验脚本保存在 `G:\codex_tmp\v4_live_schema_locator_audit_r1_20261019\LIVE_SCHEMA_LOCATOR_AUDIT_R1.json` 与 `audit_live_schema_locator_r1.py`。该项关闭的是迁移清单冷启动与固定 Schema 定位代码缺口；不改变当前库业务数据、Head 或生产状态，也不代表日更/模块 Accepted 通过。

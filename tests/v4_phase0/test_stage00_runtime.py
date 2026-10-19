@@ -59,6 +59,7 @@ def _raw_receipt_fixture(package, facts):
         "source_revision_sha256": revision["digest"], "raw_basis": "TDX_RAW_NATIVE",
         "source_identity_status": "RESOLVED", "source_trading_status": "TRADING",
         "source_knowledge_status": "AS_RECORDED",
+        "signed_at": "2026-09-11T08:03:00+08:00",
         "owner_results": {
             owner: {
                 "owner": owner, "status": "DEGRADED_PASS", "accepted_scopes": [scope],

@@ -142,7 +142,7 @@ def test_actual_style_freeze_stays_diagnostic_without_accepted_pit_receipt(tmp_p
     assert plan["readiness_status"] == "SOURCE_PIT_AUTHORITY_UNAVAILABLE"
     assert plan["capture_status"] == "CAPTURED"
     assert plan["write_mode"] == "PLAN_ONLY_NO_DATABASE_IO"
-    assert {row["source_key"] for row in plan["source_facts"]} == {"tdx", "native_baostock", "runtime_manifest", "security_universe"}
+    assert {row["source_key"] for row in plan["source_facts"]} == {"tdx", "native_baostock", "runtime_manifest", "security_universe", "tdx_board_coverage"}
 
 
 def test_self_hashed_receipt_cannot_create_acceptance_authority(tmp_path, monkeypatch):
@@ -324,7 +324,7 @@ def test_detected_conflict_rolls_back_all_prior_plan_writes(tmp_path, monkeypatc
         "package_manifest": manifest, "source_facts": facts,
     }
     public_pg = _AtomicityFakePg()
-    with pytest.raises(SourceIngestError, match="INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE"):
+    with pytest.raises(SourceIngestError, match="INDEPENDENT_ACCEPTANCE_RECEIPT_REQUIRED"):
         persist_source_ingest_plan(
             public_pg, plan, publication_id="pub-1", publication_revision=3,
             ingested_at="2026-10-16T12:30:00+00:00",
@@ -346,7 +346,7 @@ def test_detected_conflict_rolls_back_all_prior_plan_writes(tmp_path, monkeypatc
     plan_digest = hashlib.sha256(_json_bytes(plan)).hexdigest()
     monkeypatch.setattr(
         ingest, "_verify_independent_acceptance_authority",
-        lambda _plan: ingest._IndependentAcceptanceProof(plan_digest, "TEST_ONLY_ATOMICITY_FIXTURE"),
+        lambda _plan, **_kwargs: ingest._IndependentAcceptanceProof(plan_digest, "TEST_ONLY_ATOMICITY_FIXTURE"),
     )
 
     pg = _AtomicityFakePg()

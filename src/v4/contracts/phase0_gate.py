@@ -182,7 +182,7 @@ STAGE00_CONTRACTS = {
 STAGE00_TABLES = (
     "contract_versions", "contract_approval_events", "source_packages",
     "source_package_facts", "source_revisions", "security_lifecycle_facts", "security_lifecycle_history",
-    "publications", "model_namespaces", "publication_heads",
+    "publications", "model_namespaces", "publication_heads", "stage00_raw_owner_receipts",
 )
 TDX_BOARD_SCOPES = ("SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR")
 TDX_SAMPLES = TDX_BOARD_SCOPES
@@ -292,20 +292,26 @@ def _package_acceptance_errors(
     # inventory bound into its accepted manifest.
     coverage = manifest.get("accepted_board_coverage")
     coverage_counts = coverage.get("counts") if isinstance(coverage, Mapping) else None
+    coverage_body = ({"boards": coverage.get("boards"), "counts": coverage_counts,
+                      "target_trade_date": coverage.get("target_trade_date")}
+                     if isinstance(coverage, Mapping) and isinstance(coverage_counts, Mapping) else None)
+    coverage_digest = hashlib.sha256(json.dumps(
+        coverage_body, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")).hexdigest() if coverage_body is not None else None
     if (not isinstance(coverage, Mapping) or not isinstance(coverage_counts, Mapping)
             or set(coverage.get("boards", ())) != set(TDX_BOARD_SCOPES)
-            or any(not isinstance(coverage_counts.get(board), int)
+            or any(isinstance(coverage_counts.get(board), bool)
+                   or not isinstance(coverage_counts.get(board), int)
                    or coverage_counts[board] <= 0 for board in TDX_BOARD_SCOPES)
             or coverage.get("target_trade_date") != target
-            or not re.fullmatch(r"[0-9a-f]{64}", str(coverage.get("digest") or ""))):
+            or coverage.get("digest") != coverage_digest):
         errors.append("FOUR_BOARD_COVERAGE_UNPROVEN")
     elif not any(
         row.get("source_key") == "tdx_board_coverage"
         and row.get("fact_digest") == coverage.get("digest")
-        and row.get("record_locator") == {
-            "boards": coverage.get("boards"), "counts": coverage_counts,
-            "target_trade_date": target,
-        }
+        and row.get("source_fact_sha256") == coverage.get("digest")
+        and row.get("record_locator") == coverage_body
+        and row.get("record_count") == sum(coverage_counts.values())
         for row in bindings if isinstance(row, Mapping)
     ):
         errors.append("FOUR_BOARD_COVERAGE_NOT_BOUND_TO_ACCEPTED_PACKAGE")
@@ -344,6 +350,17 @@ def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str
         errors.append("RAW_RECEIPT_SOURCE_NOT_TRADING")
     if receipt.get("source_knowledge_status") != "AS_RECORDED":
         errors.append("RAW_RECEIPT_SOURCE_KNOWLEDGE_NOT_AS_RECORDED")
+    try:
+        signed_at = datetime.fromisoformat(str(receipt.get("signed_at")).replace("Z", "+00:00"))
+        if signed_at.tzinfo is None:
+            raise ValueError
+        available = [datetime.fromisoformat(str(row.get(key)).replace("Z", "+00:00"))
+                     for row in facts if row.get("source_revision_id") == receipt.get("source_revision_id")
+                     for key in ("observed_at", "ingested_at", "system_available_at")]
+        if available and signed_at.astimezone(timezone.utc) < max(value.astimezone(timezone.utc) for value in available):
+            errors.append("RAW_RECEIPT_SIGNED_BEFORE_SOURCE_AVAILABLE")
+    except (TypeError, ValueError):
+        errors.append("RAW_RECEIPT_SIGNED_AT_INVALID")
     if receipt.get("source_package_sha256") != (package.get("package_sha256") if isinstance(package, Mapping) else None):
         errors.append("RAW_RECEIPT_PACKAGE_DIGEST_MISMATCH")
     owner_results = receipt.get("owner_results")
@@ -524,12 +541,14 @@ def _read_tdx_samples(root: Path) -> dict[str, Any]:
     }
 
 
-def _pg_snapshot() -> dict[str, Any]:
+def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
     from workbench_db.v4_publication_reader import PgPublicationReader, readonly_connection
     from workbench_analysis.contract_registry_pg_v1 import (
         ContractRegistryError, load_unique_current_approved_contract,
     )
-    from workbench_db.v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
+    from workbench_db.v4_daily_source_ingest_r6 import (
+        verify_source_package_manifest_authority, read_raw_owner_receipt,
+    )
 
     with readonly_connection() as pg:
         identity = PgPublicationReader._read_database_identity(pg)
@@ -579,24 +598,52 @@ def _pg_snapshot() -> dict[str, Any]:
             }
         except ContractRegistryError as exc:
             source_acceptance_authority = {"status": "MISSING", "reason": str(exc)}
+        try:
+            bao_contract = load_unique_current_approved_contract(
+                cursor, "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1", "1.1.0",
+                expected_database_identity=identity,
+            )
+            bao_document = bao_contract.parsed_json
+            baostock_supplemental_contract = {
+                "registry_status": "APPROVED_READ", "raw_sha256": bao_contract.raw_sha256,
+                "contract_status": bao_document.get("status") if isinstance(bao_document, Mapping) else None,
+            }
+        except ContractRegistryError as exc:
+            baostock_supplemental_contract = {"registry_status": "MISSING", "reason": str(exc)}
         source_candidates = []
         source_candidate_errors = []
         source_relations = ("source_packages", "source_package_facts", "source_revisions")
         missing_source_relations = [name for name in source_relations if not catalog[name]]
+        candidate_overflow = False
         if missing_source_relations:
             source_candidate_errors.append(
                 "SOURCE_ACCEPTANCE_RELATION_MISSING:" + ",".join(missing_source_relations)
             )
         else:
-            packages = cursor.execute(
-                """SELECT package_id, package_sha256, target_trade_date, manifest, accepted_scope
-                     FROM v4.source_packages
-                    WHERE accepted_scope='ACCEPTED_SOURCE_PACKAGE'
-                      AND pg_column_size(manifest) <= 1048576
-                    ORDER BY target_trade_date DESC, created_at DESC, package_id
-                    LIMIT %s""",
-                (MAX_ACCEPTED_PACKAGE_CANDIDATES,),
-            ).fetchall()
+            if target_trade_date is not None and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", target_trade_date):
+                raise ValueError("TARGET_TRADE_DATE_INVALID")
+            if target_trade_date is None:
+                package_rows = cursor.execute(
+                    """SELECT package_id, package_sha256, target_trade_date, manifest, accepted_scope
+                         FROM v4.source_packages
+                        WHERE accepted_scope='ACCEPTED_SOURCE_PACKAGE'
+                          AND pg_column_size(manifest) <= 1048576
+                        ORDER BY target_trade_date DESC, created_at DESC, package_id
+                        LIMIT %s""", (MAX_ACCEPTED_PACKAGE_CANDIDATES + 1,),
+                ).fetchall()
+            else:
+                package_rows = cursor.execute(
+                    """SELECT package_id, package_sha256, target_trade_date, manifest, accepted_scope
+                         FROM v4.source_packages
+                        WHERE accepted_scope='ACCEPTED_SOURCE_PACKAGE'
+                          AND target_trade_date=%s AND pg_column_size(manifest) <= 1048576
+                        ORDER BY created_at DESC, package_id
+                        LIMIT %s""", (target_trade_date, MAX_ACCEPTED_PACKAGE_CANDIDATES + 1),
+                ).fetchall()
+            candidate_overflow = len(package_rows) > MAX_ACCEPTED_PACKAGE_CANDIDATES
+            packages = package_rows[:MAX_ACCEPTED_PACKAGE_CANDIDATES]
+            if candidate_overflow:
+                source_candidate_errors.append("SOURCE_CANDIDATE_LIMIT_EXCEEDED")
             for package_id, package_sha, target_date, manifest, accepted_scope in packages:
                 package = {
                     "package_id": package_id, "package_sha256": str(package_sha).strip().lower(),
@@ -642,15 +689,30 @@ def _pg_snapshot() -> dict[str, Any]:
                 source_candidates.append(item)
                 if errors:
                     source_candidate_errors.extend(errors)
-        accepted_source = next((item for item in source_candidates if item["accepted"]), None)
-        # There is no Stage00 RAW receipt producer or PG relation in the current
-        # schema. Never infer this receipt from a DM01 file Head or PG publication alone.
-        raw_receipt = None
+        accepted_source = None if candidate_overflow else next((item for item in source_candidates if item["accepted"]), None)
+        raw_receipt, raw_receipt_verified = None, False
+        raw_reason = "MISSING_RUNTIME_RECEIPT_PRODUCER"
+        if accepted_source and catalog.get("stage00_raw_owner_receipts"):
+            tdx_fact = next((row for row in accepted_source["facts"] if row.get("source_key") == "tdx"), None)
+            if tdx_fact and tdx_fact.get("source_revision_id"):
+                try:
+                    raw_receipt, raw_receipt_verified = read_raw_owner_receipt(
+                        cursor, trade_date=accepted_source["package"]["target_trade_date"],
+                        source_package_id=accepted_source["package"]["package_id"],
+                        source_revision_id=tdx_fact["source_revision_id"],
+                    )
+                    raw_reason = "RAW_OWNER_RECEIPT_NOT_FOUND" if raw_receipt is None else ""
+                except Exception as exc:
+                    raw_receipt = None
+                    raw_reason = "RAW_OWNER_RECEIPT_READ_OR_VERIFY_FAILED:" + str(exc)
+        elif not catalog.get("stage00_raw_owner_receipts"):
+            raw_reason = "MISSING_RUNTIME_RECEIPT_PRODUCER"
         catalog_missing = [name for name, found in catalog.items() if not found]
         return {
             "database_identity": identity, "read_role": role, "catalog": catalog,
             "catalog_missing": catalog_missing, "contracts": contracts,
             "source_acceptance_authority": source_acceptance_authority,
+            "baostock_supplemental_contract": baostock_supplemental_contract,
             "missing_contract_versions": [key for key, value in contracts.items() if value["status"] != "APPROVED_READ"],
             **counts,
             "source_acceptance": {
@@ -661,11 +723,46 @@ def _pg_snapshot() -> dict[str, Any]:
                 "accepted_evidence": accepted_source,
             },
             "raw_bootstrap_receipt": raw_receipt,
-            "raw_bootstrap": {"status": "NOT_PRESENT", "reason": "MISSING_RUNTIME_RECEIPT_PRODUCER"},
+            "raw_bootstrap_receipt_verified": raw_receipt_verified,
+            "raw_bootstrap": {"status": "PRESENT" if raw_receipt_verified else "NOT_PRESENT", "reason": raw_reason or None},
+            "target_trade_date": target_trade_date,
         }
 
 
-def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None) -> dict[str, Any]:
+
+def _supplemental_baostock_stage(pg: Mapping[str, Any]) -> dict[str, Any]:
+    contract = pg.get("baostock_supplemental_contract", {})
+    source = pg.get("source_acceptance", {})
+    evidence = source.get("accepted_evidence") if isinstance(source, Mapping) else None
+    facts = evidence.get("facts", []) if isinstance(evidence, Mapping) else []
+    bound = bool(source.get("status") == "ACCEPTED" and any(
+        row.get("source_key") == "native_baostock" and row.get("source_revision_id")
+        for row in facts if isinstance(row, Mapping)
+    ))
+    operational_contract = (
+        contract.get("registry_status") == "APPROVED_READ"
+        and contract.get("contract_status") in {"ACCEPTED", "OPERATIONAL_ACCEPTED"}
+    )
+    ready = operational_contract and bound
+    reasons = []
+    if contract.get("registry_status") != "APPROVED_READ":
+        reasons.append("BAOSTOCK_SUPPLEMENTAL_PG_CONTRACT_NOT_APPROVED")
+    elif not operational_contract:
+        reasons.append("BAOSTOCK_SUPPLEMENTAL_CONTRACT_NOT_OPERATIONALLY_ACCEPTED")
+    if not bound:
+        reasons.append("BAOSTOCK_SUPPLEMENTAL_ACCEPTED_SOURCE_EVIDENCE_MISSING")
+    return {
+        "status": "DEGRADED_PASS", "owner": "V4-00F",
+        "source": "PG-approved BaoStock supplemental contract and accepted native source revision",
+        "evidence": [f"baostock_contract={contract}", f"accepted_native_baostock_revision={bound}"],
+        "degraded_scopes": [] if ready else ["BAOSTOCK_SUPPLEMENTAL"],
+        "blocked_scopes": [] if ready else ["BAOSTOCK_SUPPLEMENTAL"],
+        "allowed_capabilities": ["BAOSTOCK_SUPPLEMENTAL"] if ready else [],
+        "blocks_v4_01": False, "reason_codes": reasons or ["SUPPLEMENTAL_SOURCE_OPTIONAL"],
+    }
+
+
+def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None, trade_date: str | None = None) -> dict[str, Any]:
     """Run bounded real Stage00 diagnostics without modifying PG or source files."""
     report: dict[str, Any] = {
         "git_commit_sha": _source_head_sha(), "sampled_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -676,7 +773,10 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
         "raw_bootstrap": {"status": "UNKNOWN", "reason": "NOT_CHECKED"}, "side_effects": "NONE",
     }
     try:
-        pg = _pg_snapshot()
+        if mode == "acceptance" and not trade_date:
+            raise ValueError("TARGET_TRADE_DATE_REQUIRED")
+        pg = _pg_snapshot(target_trade_date=trade_date) if trade_date else _pg_snapshot()
+        report["target_trade_date"] = trade_date
         report["database_identity"] = pg["database_identity"]
         report["pg_read_role"] = pg["read_role"]
         report["pg_catalog"] = pg["catalog"]
@@ -712,6 +812,7 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
         report["raw_bootstrap"] = {
             "status": "ACCEPTED" if not raw_errors else "BLOCKED",
             "reason_codes": raw_errors,
+            "receipt_read_status": pg.get("raw_bootstrap", {}).get("reason"),
         }
         namespaces_present = bool(pg["model_namespace_count"])
         publication_schema_ready = all(pg["catalog"].get(name, False) for name in ("publications", "model_namespaces", "publication_heads"))
@@ -724,7 +825,7 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
             "V4-00C": {"status": "DEGRADED_PASS" if publication_schema_ready else "BLOCKED", "owner": "V4-00C", "scope": "PUBLICATION_IDENTITY", "source": "PG catalog and read-only row counts", "evidence": ["publication identity relations present" if publication_schema_ready else "publication identity relation missing", f"publication_heads={pg['publication_head_count']}"], "blocked_scopes": [] if publication_schema_ready else ["PUBLICATION_IDENTITY"], "allowed_capabilities": ["PUBLICATION_IDENTITY"] if publication_schema_ready else [], "blocks_v4_01": not publication_schema_ready, "reason_codes": ["NO_HEAD_PRESENT" if not heads_present else "HEAD_PRESENT_NOT_SELECTED"]},
             "V4-00D": _source_owner_stage(source_acceptance, sample_ready, tdx),
             "V4-00E": _raw_owner_stage(raw_errors),
-            "V4-00F": {"status": "DEGRADED_PASS" if pg["source_revision_count"] is not None else "BLOCKED", "owner": "V4-00F", "source": "PG source revision catalog", "evidence": [f"source_revisions={pg['source_revision_count']}"], "reason_codes": ["SOURCE_SCOPE_AND_ACCEPTANCE_INCOMPLETE"]},
+            "V4-00F": _supplemental_baostock_stage(pg),
             "V4-00G": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00G", "source": "PG-only approved contract registry", "evidence": [f"approved_required_contracts={len(STAGE00_CONTRACTS)-len(contract_missing)}/{len(STAGE00_CONTRACTS)}"], "reason_codes": ["APPROVED_STAGE00_CONTRACTS_MISSING"] if contract_missing else ["PARAMETER_EFFECTIVE_STATE_NOT_PROVEN"]},
             "V4-00H": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00H", "source": "PG-only final acceptance contract and actual Stage00 evidence", "evidence": [f"missing_contract_versions={len(contract_missing)}"], "reason_codes": ["FINAL_ACCEPTANCE_CONTRACT_OR_EVIDENCE_MISSING"] if contract_missing else ["EXTERNAL_ACCEPTANCE_NOT_COMPLETE"]},
         }
@@ -765,6 +866,7 @@ def main(argv: list[str] | None = None) -> int:
         child = sub.add_parser(command)
         child.add_argument("--json", action="store_true", help="emit structured JSON")
         child.add_argument("--tdx-root", help="read-only source root override for bounded diagnostics")
+        child.add_argument("--trade-date", required=command == "acceptance", help="exact T0 required for acceptance")
     fixture = sub.add_parser("fixture-test")
     fixture.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
@@ -772,7 +874,8 @@ def main(argv: list[str] | None = None) -> int:
         result = fixture_test_result()
         exit_code = 0 if result["execution_status"] == "OK" else 1
     else:
-        result = run_stage00_diagnostic(mode=args.command, tdx_root=args.tdx_root)
+        result = run_stage00_diagnostic(mode=args.command, tdx_root=args.tdx_root,
+                                        trade_date=getattr(args, "trade_date", None))
         if result["execution_status"] != "OK":
             exit_code = 1
         elif args.command == "acceptance" and result["phase0_status"] == "BLOCKED":

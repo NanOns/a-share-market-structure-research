@@ -25,6 +25,7 @@ ACCEPTANCE_CONTRACT_ID = "V4_DAILY_SOURCE_ACCEPTANCE_RECEIPT_R3"
 PIT_CLOCK_CONTRACT_ID = "V4_DAILY_PIT_DECISION_CLOCK_R1"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _SOURCE_NAMES = ("tdx", "native_baostock", "runtime_manifest")
+_TDX_BOARD_SCOPES = ("SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR")
 
 
 class SourceIngestError(ValueError):
@@ -202,12 +203,187 @@ def verify_source_package_manifest_authority(
         "source_facts": manifest.get("source_fact_bindings"),
         "acceptance_receipt": dict(receipt),
     }
-    verified = _verify_independent_acceptance_authority(plan, pg=pg)
+    verified = _verify_independent_acceptance_authority(plan)
     if (proof.get("receipt_sha256") != verified.receipt_sha256
             or proof.get("issuer_id") != verified.authority_id
             or proof.get("contract_id") != ACCEPTANCE_CONTRACT_ID):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_PERSISTED_PROOF_MISMATCH")
     return {"issuer_id": verified.authority_id, "receipt_sha256": verified.receipt_sha256}
+
+
+
+RAW_OWNER_AUTHORITY_CONTRACT_ID = "V4_STAGE00_RAW_OWNER_RECEIPT_AUTHORITY_REGISTRY_R1"
+RAW_OWNER_RECEIPT_CONTRACT_ID = "V4_STAGE00_RAW_OWNER_RECEIPT_R1"
+
+
+def _raw_owner_authority_registry(pg: Any | None = None) -> Mapping[str, Any]:
+    from workbench_analysis.contract_registry_pg_v1 import load_unique_current_approved_contract
+    from .v4_publication_reader import PgPublicationReader, readonly_connection
+    def read(cursor: Any) -> Mapping[str, Any]:
+        identity = PgPublicationReader._read_database_identity(cursor)
+        registered = load_unique_current_approved_contract(
+            cursor, RAW_OWNER_AUTHORITY_CONTRACT_ID, "1.0.0",
+            expected_database_identity=identity,
+        )
+        return registered.parsed_json
+    if pg is not None:
+        value = read(pg)
+    else:
+        with readonly_connection() as cursor:
+            value = read(cursor)
+    if not isinstance(value, Mapping) or value.get("contract_id") != RAW_OWNER_AUTHORITY_CONTRACT_ID or value.get("status") != "ACTIVE":
+        raise SourceIngestError("RAW_OWNER_AUTHORITY_REGISTRY_INVALID")
+    return value
+
+
+def produce_raw_owner_receipt(
+    source: Mapping[str, Any], owner_results: Mapping[str, Any], *,
+    signed_at: str, signer: Any,
+) -> dict[str, Any]:
+    """Build a RAW Owner receipt from accepted PG-shaped source evidence.
+
+    ``signer`` is an injected independent signing capability; the gate never
+    signs its own result. The returned receipt is verified against the current
+    PG-approved issuer registry before it can be persisted or consumed.
+    """
+    package = source.get("package") if isinstance(source, Mapping) else None
+    facts = source.get("facts", []) if isinstance(source, Mapping) else []
+    if not source.get("accepted") or not isinstance(package, Mapping):
+        raise SourceIngestError("RAW_OWNER_SOURCE_NOT_ACCEPTED")
+    manifest = package.get("manifest")
+    if (package.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE"
+            or not isinstance(manifest, Mapping)
+            or manifest.get("package_id") != package.get("package_id")
+            or manifest.get("package_sha256") != package.get("package_sha256")
+            or manifest.get("trade_date") != package.get("target_trade_date")):
+        raise SourceIngestError("RAW_OWNER_PACKAGE_IDENTITY_INVALID")
+    verify_source_package_manifest_authority(manifest)
+    tdx_fact = next((row for row in facts if row.get("source_key") == "tdx" and row.get("source_revision_id")), None)
+    if not isinstance(tdx_fact, Mapping):
+        raise SourceIngestError("RAW_OWNER_TDX_REVISION_REQUIRED")
+    normalized_signed_at = _utc_timestamp(signed_at, "RAW_OWNER_SIGNED_TIME_INVALID")
+    signed_clock = datetime.fromisoformat(normalized_signed_at.replace("Z", "+00:00"))
+    latest_source_clock = max(
+        datetime.fromisoformat(_utc_timestamp(tdx_fact.get(key), "RAW_OWNER_SOURCE_TIME_INVALID").replace("Z", "+00:00"))
+        for key in ("observed_at", "ingested_at", "system_available_at")
+    )
+    if signed_clock < latest_source_clock:
+        raise SourceIngestError("RAW_OWNER_SIGNED_BEFORE_SOURCE_AVAILABLE")
+    expected_owners = {"V4-00B": "LIFECYCLE_SCHEMA", "V4-00C": "PUBLICATION_IDENTITY", "V4-00D": "A_STOCK_TDX_SOURCE"}
+    normalized_owners = {}
+    for owner, scope in expected_owners.items():
+        item = owner_results.get(owner) if isinstance(owner_results, Mapping) else None
+        if (not isinstance(item, Mapping) or item.get("owner") != owner
+                or item.get("status") not in {"FULL_PASS", "DEGRADED_PASS"}
+                or scope not in item.get("accepted_scopes", [])
+                or item.get("trade_date") != package.get("target_trade_date")
+                or item.get("source_package_id") != package.get("package_id")
+                or item.get("source_package_sha256") != package.get("package_sha256")
+                or item.get("source_revision_id") != tdx_fact.get("source_revision_id")):
+            raise SourceIngestError("RAW_OWNER_INPUT_INVALID:" + owner)
+        normalized_owners[owner] = dict(item)
+    issuer_id = signer.get("issuer_id") if isinstance(signer, Mapping) else getattr(signer, "issuer_id", None)
+    sign_bytes = signer.get("sign") if isinstance(signer, Mapping) else getattr(signer, "sign", None)
+    if not isinstance(issuer_id, str) or not callable(sign_bytes):
+        raise SourceIngestError("RAW_OWNER_SIGNING_CAPABILITY_INVALID")
+    body = {
+        "contract_id": RAW_OWNER_RECEIPT_CONTRACT_ID,
+        "receipt_id": f"v4-00e-raw-{package['target_trade_date']}-{package['package_id']}-{tdx_fact['source_revision_id']}",
+        "owner": "V4-00E", "status": "ACCEPTED", "scope": "RAW_BOOTSTRAP",
+        "trade_date": package["target_trade_date"],
+        "source_package_id": package["package_id"],
+        "source_package_sha256": package["package_sha256"],
+        "source_revision_id": tdx_fact["source_revision_id"],
+        "source_revision_sha256": tdx_fact["digest"],
+        "raw_basis": "TDX_RAW_NATIVE", "source_identity_status": "RESOLVED",
+        "source_trading_status": "TRADING", "source_knowledge_status": "AS_RECORDED",
+        "owner_results": normalized_owners, "issuer_id": str(issuer_id),
+        "signed_at": normalized_signed_at,
+    }
+    signature = sign_bytes(_canonical(body))
+    receipt = {**body, "signature_ed25519": str(signature)}
+    receipt["receipt_sha256"] = hashlib.sha256(_canonical(receipt)).hexdigest()
+    verify_raw_owner_receipt(receipt)
+    return receipt
+
+
+def verify_raw_owner_receipt(receipt: Mapping[str, Any], *, pg: Any | None = None) -> str:
+    if not isinstance(receipt, Mapping) or receipt.get("contract_id") != RAW_OWNER_RECEIPT_CONTRACT_ID:
+        raise SourceIngestError("RAW_OWNER_RECEIPT_CONTRACT_INVALID")
+    signature = receipt.get("signature_ed25519")
+    issuer_id = receipt.get("issuer_id")
+    registry = _raw_owner_authority_registry(pg)
+    issuers = registry.get("issuers")
+    issuer = issuers.get(issuer_id) if isinstance(issuers, Mapping) else None
+    if (not isinstance(issuer, Mapping) or issuer.get("status") != "ACTIVE"
+            or "SIGN_RAW_OWNER_RECEIPT" not in issuer.get("capabilities", [])):
+        raise SourceIngestError("RAW_OWNER_ISSUER_NOT_APPROVED")
+    digest = receipt.get("receipt_sha256")
+    unsigned = {k: v for k, v in receipt.items() if k not in {"signature_ed25519", "receipt_sha256"}}
+    if hashlib.sha256(_canonical({**unsigned, "signature_ed25519": signature})).hexdigest() != digest:
+        raise SourceIngestError("RAW_OWNER_RECEIPT_DIGEST_MISMATCH")
+    try:
+        from cryptography.exceptions import InvalidSignature
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+        public_key = Ed25519PublicKey.from_public_bytes(base64.b64decode(issuer["public_key_b64"], validate=True))
+        public_key.verify(base64.b64decode(str(signature), validate=True), _canonical(unsigned))
+    except ImportError as exc:
+        raise SourceIngestError("RAW_OWNER_CRYPTO_PROVIDER_UNAVAILABLE") from exc
+    except (KeyError, TypeError, ValueError, InvalidSignature) as exc:
+        raise SourceIngestError("RAW_OWNER_SIGNATURE_INVALID") from exc
+    return str(issuer_id)
+
+
+def persist_raw_owner_receipt(pg: Any, receipt: Mapping[str, Any]) -> None:
+    """Insert an immutable, independently signed Owner receipt in caller transaction."""
+    verify_raw_owner_receipt(receipt)
+    pg.execute(
+        """INSERT INTO v4.stage00_raw_owner_receipts
+           (receipt_id, trade_date, source_package_id, source_revision_id,
+            receipt_sha256, receipt, issuer_id)
+           VALUES (%s,%s,%s,%s,%s,%s::jsonb,%s)
+           ON CONFLICT (receipt_id) DO NOTHING""",
+        (receipt["receipt_id"], receipt["trade_date"], receipt["source_package_id"],
+         receipt["source_revision_id"], receipt["receipt_sha256"],
+         json.dumps(dict(receipt), ensure_ascii=False, sort_keys=True), receipt["issuer_id"]),
+    )
+    row = pg.execute(
+        "SELECT receipt_sha256 FROM v4.stage00_raw_owner_receipts WHERE receipt_id=%s FOR KEY SHARE",
+        (receipt["receipt_id"],),
+    ).fetchone()
+    if row is None or str(row[0]).strip() != receipt["receipt_sha256"]:
+        raise SourceIngestError("RAW_OWNER_RECEIPT_IMMUTABLE_CONFLICT")
+
+
+def produce_and_persist_raw_owner_receipt(
+    pg: Any, source: Mapping[str, Any], owner_results: Mapping[str, Any], *,
+    signed_at: str, signer: Any,
+) -> dict[str, Any]:
+    """Produce and persist an independently signed E receipt in caller transaction."""
+    receipt = produce_raw_owner_receipt(
+        source, owner_results, signed_at=signed_at, signer=signer,
+    )
+    persist_raw_owner_receipt(pg, receipt)
+    return receipt
+
+
+def read_raw_owner_receipt(pg: Any, *, trade_date: str, source_package_id: str,
+                           source_revision_id: str) -> tuple[Mapping[str, Any] | None, bool]:
+    row = pg.execute(
+        """SELECT receipt, receipt_sha256 FROM v4.stage00_raw_owner_receipts
+             WHERE trade_date=%s AND source_package_id=%s AND source_revision_id=%s
+             ORDER BY receipt_id LIMIT 2""",
+        (trade_date, source_package_id, source_revision_id),
+    ).fetchall()
+    if not row:
+        return None, False
+    if len(row) != 1 or not isinstance(row[0][0], Mapping):
+        raise SourceIngestError("RAW_OWNER_RECEIPT_AMBIGUOUS")
+    receipt = row[0][0]
+    if str(row[0][1]).strip() != receipt.get("receipt_sha256"):
+        raise SourceIngestError("RAW_OWNER_RECEIPT_STORAGE_DIGEST_MISMATCH")
+    verify_raw_owner_receipt(receipt, pg=pg)
+    return receipt, True
 
 
 def _canonical(value: Any) -> bytes:
@@ -220,6 +396,18 @@ def _file_sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _tdx_board_scope(source_security_key: Any) -> str | None:
+    """Map a native TDX code to the four Stage00 core board scopes."""
+    value = str(source_security_key or "").strip().upper()
+    match = re.fullmatch(r"(SH|SZ)\.(\d{6})", value)
+    if not match:
+        return None
+    exchange, code = match.groups()
+    if exchange == "SH":
+        return "STAR" if code.startswith(("688", "689")) else "SH_MAIN"
+    return "CHINEXT" if code.startswith(("300", "301")) else "SZ_MAIN"
 
 
 def _load_bound_file(root: Path, ref: Mapping[str, Any], *, code: str) -> tuple[Path, str, int]:
@@ -378,6 +566,7 @@ def build_source_ingest_plan(
             raise SourceIngestError("SOURCE_READINESS_FREEZE_BINDING_MISMATCH")
 
     sources = {}
+    tdx_document: Mapping[str, Any] | None = None
     for name in _SOURCE_NAMES:
         ref = freeze.get(name) if name != "runtime_manifest" else freeze.get("runtime_manifest")
         if not isinstance(ref, Mapping):
@@ -391,6 +580,7 @@ def build_source_ingest_plan(
             if (not isinstance(document, Mapping) or document.get("target_session") != target.isoformat()
                     or not isinstance(document.get("target_bars"), list) or not document["target_bars"]):
                 raise SourceIngestError("TDX_BAR_ARTIFACT_T0_OR_ROWS_INVALID")
+            tdx_document = document
             security_keys = [str(row.get("source_security_key") or "") for row in document["target_bars"]]
             if (any(not key for key in security_keys) or len(security_keys) != len(set(security_keys))
                     or any(str(row.get("trade_date") or "") != target.isoformat()
@@ -432,6 +622,7 @@ def build_source_ingest_plan(
     # bar rowset. Older freezes may omit it and remain diagnostic, but they
     # cannot receive source acceptance.
     universe_ref = freeze.get("security_universe")
+    universe_source_keys: set[str] | None = None
     if universe_ref is not None:
         universe_path, universe_sha, universe_bytes = _load_bound_file(root, universe_ref, code="SECURITY_UNIVERSE")
         try:
@@ -447,6 +638,10 @@ def build_source_ingest_plan(
             raise SourceIngestError("SECURITY_UNIVERSE_CONTRACT_T0_OR_ROWS_INVALID")
         universe_ids = [str(row.get("security_id") or "").strip().upper()
                         for row in universe_doc["securities"] if isinstance(row, Mapping)]
+        universe_source_keys = {
+            str(row.get("source_security_key") or row.get("security_id") or "").strip().upper()
+            for row in universe_doc["securities"] if isinstance(row, Mapping)
+        }
         if len(universe_ids) != len(universe_doc["securities"]) or any(not sid for sid in universe_ids) or len(universe_ids) != len(set(universe_ids)):
             raise SourceIngestError("SECURITY_UNIVERSE_SECURITY_ID_INVALID")
         universe_fact = {
@@ -461,6 +656,35 @@ def build_source_ingest_plan(
         }
         universe_fact["fact_digest"] = hashlib.sha256(_canonical(universe_fact)).hexdigest()
         sources["security_universe"] = universe_fact
+
+    # Stage00 D consumes coverage from this same immutable TDX artifact. The
+    # derived fact is included in the bindings digest and independent receipt.
+    if tdx_document is not None:
+        coverage_counts = {board: 0 for board in _TDX_BOARD_SCOPES}
+        for row in tdx_document["target_bars"]:
+            board = _tdx_board_scope(row.get("source_security_key"))
+            declared = row.get("board_scope")
+            status = row.get("trading_status", row.get("trade_status"))
+            if board is None or (declared is not None and declared != board):
+                raise SourceIngestError("TDX_BOARD_IDENTITY_INVALID")
+            if universe_source_keys is None or str(row.get("source_security_key") or "").strip().upper() not in universe_source_keys:
+                raise SourceIngestError("TDX_UNIVERSE_SOURCE_BINDING_MISMATCH")
+            if status is not None and str(status).upper() not in {"TRADING", "TRADED"}:
+                raise SourceIngestError("TDX_BOARD_COVERAGE_NON_TRADING_SOURCE")
+            coverage_counts[board] += 1
+        coverage_body = {"boards": list(_TDX_BOARD_SCOPES), "counts": coverage_counts,
+                         "target_trade_date": target.isoformat()}
+        coverage_digest = hashlib.sha256(_canonical(coverage_body)).hexdigest()
+        accepted_board_coverage = {**coverage_body, "digest": coverage_digest}
+        sources["tdx_board_coverage"] = {
+            "source_key": "tdx_board_coverage",
+            "logical_fact_id": f"daily-source:{target.isoformat()}:tdx_board_coverage",
+            "record_locator": coverage_body, "source_fact_sha256": coverage_digest,
+            "record_count": sum(coverage_counts.values()),
+            "byte_count": len(_canonical(coverage_body)), "fact_digest": coverage_digest,
+        }
+    else:
+        accepted_board_coverage = None
 
     package_sources = _tdx_package_metadata(freeze, target.isoformat())
     for package in package_sources:
@@ -502,6 +726,7 @@ def build_source_ingest_plan(
         "source_readiness_observed_at": (_utc_timestamp(readiness_doc.get("observed_at"), "SOURCE_READINESS_TIME_INVALID")
                                          if isinstance(readiness_doc, Mapping) and readiness_doc.get("observed_at") is not None else None),
         "source_fact_bindings": bindings,
+        "accepted_board_coverage": accepted_board_coverage,
         "tdx_source_packages": package_sources,
         "tdx_source_packages_sha256": hashlib.sha256(_canonical(package_sources)).hexdigest(),
         "adjustment_factor_role": freeze.get("factor_role"),
@@ -831,14 +1056,20 @@ def persist_source_ingest_plan(
     ingested_at: str,
     system_available_at: str,
 ) -> dict[str, Any]:
-    """Public persistence entry point, blocked until independent authority exists.
+    """Persist a plan verified against the PG-approved issuer registry.
 
-    Neither this adapter nor its caller-supplied mappings can verify an
-    independent acceptance authority today. In particular, a hand-built plan
-    with ``status=ACCEPTED`` must not reach any SQL write.
+    The caller owns the surrounding transaction and its commit/rollback. This
+    entry point performs no DSN lookup, commit, or publication Head mutation.
     """
     if not isinstance(plan, Mapping) or plan.get("contract_id") != CONTRACT_ID:
         raise SourceIngestError("SOURCE_INGEST_PLAN_CONTRACT_INVALID")
     if plan.get("status") != "ACCEPTED":
         return {"status": plan.get("status", "DATA_UNAVAILABLE"), "persisted": False}
-    raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE")
+    proof = _verify_independent_acceptance_authority(plan)
+    return _persist_accepted_source_ingest_plan_transaction(
+        pg, plan,
+        publication_id=publication_id,
+        publication_revision=publication_revision,
+        ingested_at=ingested_at,
+        system_available_at=system_available_at,
+    )

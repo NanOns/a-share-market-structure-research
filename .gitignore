@@ -81,3 +81,7 @@ artifacts/**/parser_deps/
 Thumbs.db
 
 # Local research-workbench launchers contain machine-local paths
+
+# 用户明确要求的清理前物理备份，仅供后续阶段恢复；禁止进入Git。
+/config_back/
+/script_back/

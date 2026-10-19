@@ -153,12 +153,18 @@ def _refresh_existing_downloader():
     # V1's challenge adapter can share a one-hour receipt. A provider revision
     # must refresh that receipt too, including when the new ZIP has equal size.
     root=Path(__file__).resolve().parents[2]
+    downloader=root/'scripts/capture_dm01_a01_r3_tdx_package.py'
+    # The legacy R3 helper is not part of every current checkout. Its absence
+    # must not prevent this module's own bounded official-page/package path
+    # from running; any challenge response still fails closed in the adapter.
+    if not downloader.is_file():
+        return
     from common.paths import resolve_ingest_temp_root
     temp=str(resolve_ingest_temp_root(root))
     Path(temp).mkdir(parents=True,exist_ok=True)
     env={**os.environ,'TMP':temp,'TEMP':temp,'TMPDIR':temp}
     result=subprocess.run([sys.executable,'-X','utf8','-B',
-        str(root/'scripts/capture_dm01_a01_r3_tdx_package.py')],cwd=root,env=env,
+        str(downloader)],cwd=root,env=env,
         capture_output=True,timeout=480)
     if result.returncode:raise ValueError('TDX_REVISED_PACKAGE_FRESH_ADAPTER_FAILED')
 

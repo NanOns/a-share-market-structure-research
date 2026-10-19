@@ -552,3 +552,28 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - **一次性剩余实物清单**：①可追溯至指定目标T0及完整四板覆盖的真实source freeze/readiness；②与该来源摘要和scope绑定、可由已登记独立签发者验证的source acceptance receipt及PG authority registry版本；③PG中的已接受身份/生命周期Owner事实（当前history候选不能替代accepted facts）；④00E独立RAW signer与已批准authority registry/真实receipt；⑤五份必需Stage00合同的真实业务批准事件。当前TDX有界样本日期为`20260911`，四个样本均显示`security_id=null`/`UNRESOLVED_LIST_DATE`，不能充当规范身份或完整验收来源。
 
 代码语义修复已完成；真实`PHASE0_ACCEPTANCE`继续`BLOCKED`，本轮未产生正式业务批准，也未授权阶段01。`git diff --check`通过；Stage00 PG没有新增持久化业务事实。
+
+## R10｜真实来源采集尝试、Source-first PG回滚与阶段00闭环复核
+
+基线`9f406c6e3a2afa686babff3d91d161711b8b6b7c`。本轮只处理00A–00H、现有TDX采集调用及本报告，不进入阶段01，不切换28765或正式Head，不打包。
+
+### 代码与真实来源结果
+
+- 第10节要求的实际Freeze与Source Ingest输入合同已逐字段核对：`operational_daily_executor_v1.execute_sources`生成`DYNAMIC_DAILY_SOURCE_FREEZE_V1`，其中T0原始TDX bars、BaoStock原始响应、已读取的PG运行清单和真实Package/availability时钟均有独立绑定；`build_source_ingest_plan`会读取并验证这些真实字节、目标日和价格基准。通用Freeze构造器生成的是`V4_DAILY_SOURCE_FREEZE_V1/V2`，其字段、来源族与动态执行器输入不同，不能只改`contract_id`伪装兼容。本轮没有手工构造动态Freeze或Readiness。
+- 现役TDX最新版采集器原先在自己的官方页/ZIP校验前，无条件启动当前checkout中不存在的旧`capture_dm01_a01_r3_tdx_package.py`。已作定点修复：旧脚本不存在时跳过该可选刷新，继续由当前采集器走原有官方直连与校验；新增回归保证不会启动缺失脚本。挑战响应仍按既有fail-closed规则处理。
+- 已实际调用官方采集与配置中的`D:/new_tdx`边界。官方页面元数据能解析，但ZIP返回挑战响应，既有挑战回退依赖的R3旧下载器脚本不在当前checkout，最终`TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED`。没有生成已校验官方包，因此本轮没有TDX package/barset PG候选、Source Ingest plan、Owner候选或Readiness通过态，也没有把本地`.day`/测试夹具改名为官方来源。
+- 当前业务可核验T0仍只能用PG诊断输出确认至`2026-09-11`；本机四板有界样本仅4/4文件可读，样本`security_id`仍未解析；它们不是全市场Universe或已接受T0来源。正式来源签发authority和RAW authority注册表版本均不存在；accepted source package、lifecycle facts、publication/head、RAW receipt均为0。BaoStock合同已批准读取但字段绑定仍pending、无已接受native revision。不得据此创建正式事实或历史PIT资格。
+
+### 真实PostgreSQL事务集成
+
+新增的`test_source_first_candidate_uses_real_postgres_and_rolls_back_without_publication`直接连接现有开发`market_research.v4`，在外层显式ROLLBACK事务中调用正式Source Ingest持久化事务函数；验明source package→fact→revision真实PG写入和独立查询读回、无Publication时不查Head、同包重放幂等、错误Publication绑定回滚不留下消费关系，最后外层ROLLBACK后用新连接确认package/fact/revision均为零。独立验签步骤仅注入有明确`TEST_ONLY_ROLLBACK_FIXTURE`标记的测试proof，未产生、也不声称真实Source acceptance。该回滚集成不能替代外部Source E2E。
+
+### 回归和当前状态
+
+- 定向Stage00全量回归命令`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`：`223 passed`（含本机PostgreSQL schema集成）。
+- `phase0_gate doctor --json`真实只读执行：`execution_status=OK`、`phase0_status=BLOCKED`、`head_present=false`；PG身份`market_research@127.0.0.1:5432`；accepted packages=0、source revisions=40455、lifecycle facts=0、lifecycle history=6440/5805证券、publication heads=0、RAW receipts=0；00G必需批准合同0/5，五份仍为`DEV_CANDIDATE_READ / APPROVAL_EVENT_REQUIRED`。
+- `acceptance --json --trade-date 2026-09-11`执行成功并返回业务`BLOCKED`（退出码2）；00A/00B/00C/00D/00F状态及00E/00G/00H阻断按PG真实事实输出；未改Head。
+- 开发端到端：`DATA_DEPENDENCY_BLOCKED`，不标`DEV_VALIDATED`。已完成真实PG事务回滚验证，但缺少能进入Source→Owner→Contract→Reader→Gate的真实已验证输入。
+- 外部凭证/数据一次性缺口：①可用的官方R3挑战下载器或官方端不再返回挑战的真实包下载路径；②同T0完整四板证券身份/Universe及TDX、BaoStock真实原始响应、PG运行接受清单；③独立Source acceptance签发者及PG批准authority registry；④已接受身份/生命周期Owner事实；⑤独立RAW签发者/批准registry与实际B/C/D Owner证据；⑥五个必需Stage00合同的真实业务批准事件及最终验收合同。普通盘后来源可以AS_RECORDED且PIT_ELIGIBLE为false；不能把本次盘后采集改记为历史PIT。
+
+本轮结论：代码修复已通过阶段00回归，Source-first真实PG事务集成回滚通过；实际开发Source E2E和正式业务批准均未通过，阶段00仍`BLOCKED`。本轮未持久化任何业务Source/Owner/Publication/Head/批准事实，未进入阶段01。

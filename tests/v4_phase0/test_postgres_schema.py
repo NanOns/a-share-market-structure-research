@@ -678,6 +678,82 @@ def test_current_universe_member_is_not_historical_membership_proof():
         assert pg.execute("select count(*) from v4.security_membership_facts where security_id='SH.600000'").fetchone()[0] == 0
 
 
+def test_source_first_candidate_uses_real_postgres_and_rolls_back_without_publication(monkeypatch):
+    """Exercise source-first inserts and rollback against v4 in an isolated fixture transaction."""
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+
+    suffix = uuid.uuid4().hex
+    day = date(2026, 10, 16)
+    package_id = f"STAGE00-SOURCE-FIRST-{suffix}"
+    fact = {
+        "source_key": "tdx", "logical_fact_id": f"daily-source:{day}:tdx:{suffix}",
+        "fact_digest": hashlib.sha256(("fact:" + suffix).encode()).hexdigest(),
+        "source_fact_sha256": hashlib.sha256(("bytes:" + suffix).encode()).hexdigest(),
+        "record_locator": {"fixture": "real-postgres-rollback-only"},
+        "record_count": 1, "byte_count": 16,
+    }
+    manifest = {
+        "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": True,
+        "PIT_ELIGIBLE": False,
+        "source_observed_at": "2026-10-16T08:00:00+00:00",
+        "source_readiness_observed_at": "2026-10-16T10:00:00+00:00",
+        "acceptance_receipt_id": f"TEST-ONLY-{suffix}",
+        "source_freeze_sha256": "a" * 64,
+        "source_fact_bindings": [{
+            "source_key": fact["source_key"], "logical_fact_id": fact["logical_fact_id"],
+            "fact_digest": fact["fact_digest"], "source_fact_sha256": fact["source_fact_sha256"],
+            "record_locator": fact["record_locator"], "record_count": fact["record_count"],
+            "acceptance_receipt_id": f"TEST-ONLY-{suffix}",
+        }],
+    }
+    plan = {
+        "contract_id": ingest.CONTRACT_ID, "contract_version": ingest.CONTRACT_VERSION,
+        "status": "ACCEPTED", "trade_date": day.isoformat(), "package_id": package_id,
+        "package_sha256": hashlib.sha256(("package:" + suffix).encode()).hexdigest(),
+        "package_manifest": manifest, "source_facts": [fact],
+    }
+    plan_sha = hashlib.sha256(ingest._canonical(plan)).hexdigest()
+    monkeypatch.setattr(
+        ingest, "_verify_independent_acceptance_authority",
+        lambda _plan, **_kwargs: ingest._IndependentAcceptanceProof(
+            plan_sha, f"TEST_ONLY_ROLLBACK_FIXTURE_{suffix}"),
+    )
+
+    with connect() as pg, rollback_only(pg):
+        source_only = ingest.persist_source_ingest_plan(
+            pg, plan, ingested_at="2026-10-16T10:05:00+00:00",
+            system_available_at="2026-10-16T10:06:00+00:00",
+        )
+        assert source_only["persisted"] is True and source_only["publication_id"] is None
+        assert pg.execute("select count(*) from v4.publications where publication_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_package_facts where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.publication_consumed_sources where source_key=%s", (fact["source_key"],)).fetchone()[0] == 0
+
+        replay = ingest.persist_source_ingest_plan(
+            pg, plan, ingested_at="2026-10-16T10:05:00+00:00",
+            system_available_at="2026-10-16T10:06:00+00:00",
+        )
+        assert replay["status"] == "ALREADY_PRESENT_IDENTICAL"
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+
+        with pytest.raises(ingest.SourceIngestConflict, match="PUBLICATION_IDENTITY_CONFLICT"):
+            ingest.persist_source_ingest_plan(
+                pg, plan, publication_id=f"MISSING-PUBLICATION-{suffix}", publication_revision=1,
+                ingested_at="2026-10-16T10:05:00+00:00",
+                system_available_at="2026-10-16T10:06:00+00:00",
+            )
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.publication_consumed_sources where source_key=%s", (fact["source_key"],)).fetchone()[0] == 0
+
+    with connect() as pg:
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_package_facts where package_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 0
+
+
 def test_source_revision_fork_is_rejected():
     suffix = uuid.uuid4().hex
     with connect() as pg, rollback_only(pg):

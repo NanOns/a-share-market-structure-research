@@ -582,3 +582,15 @@ def test_stage00_diagnostic_candidate_uses_stable_pg_namespace(monkeypatch):
     result = persist_diagnostic_source_candidate(root, plan)
     assert result["persisted"] is True and result["readback"] == "PASS"
     assert captured["namespace"] == "V4_STAGE00_SOURCE_INGRESS_DIAGNOSTIC_R1"
+
+
+def test_latest_tdx_capture_does_not_require_removed_legacy_refresh_script(monkeypatch):
+    from workbench_analysis import tdx_latest_daily_source_v2 as latest
+
+    root = Path(latest.__file__).resolve().parents[2]
+    if (root / "scripts/capture_dm01_a01_r3_tdx_package.py").is_file():
+        pytest.skip("legacy refresh script is present in this checkout")
+    calls = []
+    monkeypatch.setattr(latest.subprocess, "run", lambda *args, **kwargs: calls.append(args))
+    latest._refresh_existing_downloader()
+    assert calls == []

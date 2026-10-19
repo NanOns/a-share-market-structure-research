@@ -4,7 +4,7 @@ import pytest
 
 from v4.contracts.phase0_gate import STAGES, evaluate_phase0
 
-ROOT = Path(__file__).resolve().parents[2]
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
 
 def records(status):
@@ -126,16 +126,16 @@ def test_non_entry_blocked_capability_requires_degraded_stage():
 
 
 def test_cutover_and_benchmark_contract_does_not_promote_unset_thresholds():
-    policy = json.loads((ROOT / "config/v4_capability_cutover_policy_v1.json").read_text("utf-8"))
+    policy = json.loads((FIXTURES / "v4_capability_cutover_policy_v1.json").read_text("utf-8"))
     benchmark = policy["benchmark_missing_and_consumer_policy"]
     assert benchmark["coverage_gate_value"] is None
     assert benchmark["suspension_quote_age_gate_value"] is None
     assert benchmark["quality_consumer_matrix_status"] == "UNSET_PENDING_REPRESENTATIVE_SAMPLE_ACCEPTANCE"
     assert benchmark["marked_relative_permission"] is False
-    perf = json.loads((ROOT / "config/v4_performance_measurement_contract_v1.json").read_text("utf-8"))
+    perf = json.loads((FIXTURES / "v4_performance_measurement_contract_v1.json").read_text("utf-8"))
     assert "V4-00" in perf["measurement_stage"]
     assert "NOT_IMPLEMENTED" in perf["unavailable_metric_policy"]
-    final_gate = json.loads((ROOT / "config/v4_phase0_final_gate_v1.json").read_text("utf-8"))
+    final_gate = json.loads((FIXTURES / "v4_phase0_final_gate_v1.json").read_text("utf-8"))
     assert final_gate["physical_backup_is_acceptance_requirement"] is False
     assert final_gate["physical_backup_role"] == "INFORMATIONAL_NON_AUTHORITATIVE"
     assert final_gate["physical_backup_request_truth"] == "USER_EXPLICITLY_REQUESTED_PRE_DELETE_SAFETY_MEASURE"

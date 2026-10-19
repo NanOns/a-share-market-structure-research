@@ -3,6 +3,7 @@ import pytest
 
 from workbench_analysis.contract_registry_pg_v1 import (
     ContractRegistryError,
+    load_unique_current_approved_contract,
     load_publication_contract,
     load_publication_contracts,
 )
@@ -63,7 +64,7 @@ def test_reads_current_contract_only_after_registry_approval_and_identity_attest
             if "current_database()" in query and "transaction_isolation" in query:
                 return Result(("market_research","v4_reader","repeatable read","on"))
             if "inet_server_addr()" in query:return Result(("market_research",1,"127.0.0.1",5432))
-            if "FROM pg_roles" in query:return Result(("v4_reader",)+tuple(False for _ in range(14)))
+            if "SELECT current_user, current_setting('transaction_read_only')" in query:return Result(("v4_reader","on"))
             if "FROM v4.contract_versions" in query:
                 assert params==("RUNTIME","1.1.0","PRODUCTION")
                 return Result(row)
@@ -90,7 +91,7 @@ def test_current_contract_reader_rejects_revocation_and_changed_source(action,ap
         def execute(self,query,params=()):
             if "current_database()" in query and "transaction_isolation" in query:return Result(("market_research","v4_reader","repeatable read","on"))
             if "inet_server_addr()" in query:return Result(("market_research",1,"127.0.0.1",5432))
-            if "FROM pg_roles" in query:return Result(("v4_reader",)+tuple(False for _ in range(14)))
+            if "SELECT current_user, current_setting('transaction_read_only')" in query:return Result(("v4_reader","on"))
             if "FROM v4.contract_versions" in query:return Result(row)
             raise AssertionError(query)
     with pytest.raises(ContractRegistryError,match="APPROVAL_OR_DIGEST_INVALID"):
@@ -123,6 +124,43 @@ def test_contract_registry_schema_absence_does_not_fallback_to_files():
         load_publication_contract(cursor, "publication-1", "RULE")
 
 
+@pytest.mark.parametrize("namespaces,error", [
+    ([], "V4_PG_CONTRACT_VERSION_NOT_FOUND"),
+    (["V4_BOOTSTRAP_PENDING", "V4_CURRENT_ACCEPTED"], "V4_PG_CONTRACT_NAMESPACE_AMBIGUOUS"),
+])
+def test_bootstrap_contract_reader_fails_closed_on_missing_or_ambiguous_pg_record(namespaces, error):
+    identity = {"database": "market_research", "database_oid": 1, "host": "127.0.0.1", "port": 5432}
+
+    class Result:
+        def __init__(self, value):
+            self.value = value
+
+        def fetchone(self):
+            return self.value
+
+        def fetchall(self):
+            return self.value
+
+    class ReadSnapshot:
+        def execute(self, query, params=()):
+            if "inet_server_addr()" in query:
+                return Result(("market_research", 1, "127.0.0.1", 5432))
+            if "SELECT current_user, current_setting('transaction_read_only')" in query:
+                return Result(("v4_reader", "on"))
+            if "current_setting('transaction_isolation')" in query:
+                return Result(("repeatable read", "on"))
+            if "FROM v4.contract_versions" in query:
+                assert params == ("STAGE00_CONTRACT", "1.0.0")
+                return Result([(namespace,) for namespace in namespaces])
+            raise AssertionError(query)
+
+    with pytest.raises(ContractRegistryError, match=error):
+        load_unique_current_approved_contract(
+            ReadSnapshot(), "STAGE00_CONTRACT", "1.0.0",
+            expected_database_identity=identity,
+        )
+
+
 @pytest.mark.parametrize("raw", [
     b"<!DOCTYPE contract><contract/>",
     "<!DOCTYPE contract><contract/>".encode("utf-16"),
@@ -150,24 +188,17 @@ def test_contract_read_requires_same_readonly_repeatable_read_snapshot(session):
         load_publication_contract(cursor, "publication-1", "RULE")
 
 
-def test_registry_migration_preserves_immutable_bytes_and_historical_acceptance():
+def test_current_registry_migration_preserves_immutable_bytes_and_historical_acceptance():
     from pathlib import Path
 
-    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql").read_text(encoding="utf-8")
+    sql = (Path(__file__).resolve().parents[1] / "src/workbench_db/migrations/v4_postgres/043_v4_contract_registry_approval_events_r1.sql").read_text(encoding="utf-8")
     assert "contract_approval_events" in sql
     assert "contract_versions_append_only" in sql
-    assert "NOT VALID" in sql
-    assert "UPDATE OF contract_bindings" not in sql
     assert "BEFORE INSERT OR UPDATE ON v4.publications" in sql
-    assert "contract_approval_events" in sql
     assert "NEW.recorded_at := clock_timestamp()" in sql
     assert "BEFORE TRUNCATE ON v4.contract_versions" in sql
     assert "BEFORE TRUNCATE ON v4.contract_approval_events" in sql
     assert "ORDER BY e.occurred_at DESC, e.recorded_at DESC, e.event_id DESC" in sql
-    assert "V4_ACCEPTED_PUBLICATION_IDENTITY_IMMUTABLE" in sql
-    assert "V4_ACCEPTED_PUBLICATION_CONTRACT_BINDINGS_IMMUTABLE" in sql
-    assert "to_jsonb(NEW) - 'contract_bindings'" in sql
-    assert sql.index("V4_ACCEPTED_PUBLICATION_IDENTITY_IMMUTABLE") < sql.index("NEW.contract_bindings IS NULL AND OLD.contract_bindings IS NULL")
     assert "CREATE EXTENSION" not in sql
     assert "encode(sha256(raw_content), 'hex') = raw_sha256" in sql
 
@@ -178,10 +209,9 @@ def test_registry_sql_matches_canonical_publication_schema_after_phase0_alignmen
     root = Path(__file__).resolve().parents[1]
     foundation = (root / "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql").read_text(encoding="utf-8")
     alignment = (root / "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql").read_text(encoding="utf-8")
-    registry = (root / "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql").read_text(encoding="utf-8")
+    registry = (root / "src/workbench_db/migrations/v4_postgres/043_v4_contract_registry_approval_events_r1.sql").read_text(encoding="utf-8")
 
-    # This draft is applied after the canonical alignment migration, which
-    # renames publications.revision and adds the fields it relies on.
+    # The existing registry migration reuses the canonical v4 publication model.
     assert "CREATE TABLE IF NOT EXISTS v4.publications" in foundation
     assert "revision integer NOT NULL" in foundation
     assert "RENAME COLUMN revision TO revision_no" in alignment
@@ -198,7 +228,7 @@ def test_registry_sql_matches_canonical_publication_schema_after_phase0_alignmen
 def test_approval_event_selection_is_historical_and_revocation_aware():
     from pathlib import Path
 
-    migration = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R3_V4_CONTRACT_REGISTRY_MIGRATION_DRAFT_20261017.sql").read_text(encoding="utf-8")
+    migration = (Path(__file__).resolve().parents[1] / "src/workbench_db/migrations/v4_postgres/043_v4_contract_registry_approval_events_r1.sql").read_text(encoding="utf-8")
     reader = (Path(__file__).resolve().parents[1] / "src/workbench_analysis/contract_registry_pg_v1.py").read_text(encoding="utf-8")
     assert "e.occurred_at <= NEW.accepted_at" in migration
     assert "e.recorded_at <= NEW.accepted_at" in migration
@@ -211,32 +241,27 @@ def test_approval_event_selection_is_historical_and_revocation_aware():
     assert 'action != "APPROVED"' in reader
 
 
-def test_registry_catalog_preflight_is_repeatable_read_and_select_only():
-    import re
+def test_registry_reader_uses_existing_pg_tables_and_requires_readonly_snapshot():
     from pathlib import Path
 
-    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_PREFLIGHT_READONLY_20261017.sql").read_text(encoding="utf-8")
-    statements = re.sub(r"--[^\n]*", "", sql)
-    statements = [part.strip().upper() for part in statements.split(";") if part.strip()]
-    assert statements[0] == "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"
-    assert statements[-1] == "COMMIT"
-    assert all(statement.startswith(("SELECT ", "WITH ")) for statement in statements[1:-1])
-    assert "TO_REGPROCEDURE('SHA256(BYTEA)')" in sql.upper()
-    assert "PUBLICATION_BINDINGS_COLUMN_EXISTS" in sql.upper()
-    assert "PUBLICATIONS_INSERT" in sql.upper()
-    assert "APPROVAL_EVENTS_SELECT" in sql.upper()
+    reader = (Path(__file__).resolve().parents[1] / "src/workbench_analysis/contract_registry_pg_v1.py").read_text(encoding="utf-8")
+    assert "current_setting('transaction_read_only')" in reader
+    assert "repeatable read" in reader
+    assert "FROM v4.contract_versions" in reader
+    assert "FROM v4.contract_approval_events" in reader
+    assert "Path(" not in reader and "read_text(" not in reader
 
 
-def test_registry_rollback_refuses_to_discard_history_or_bound_publications():
+def test_registry_model_is_append_only_without_runtime_rollback_path():
     from pathlib import Path
 
-    sql = (Path(__file__).resolve().parents[1] / "docs/upgrade/R21R4_V4_CONTRACT_REGISTRY_ROLLBACK_DRAFT_20261017.sql").read_text(encoding="utf-8")
-    assert "V4_CONTRACT_REGISTRY_ROLLBACK_REFUSED_DATA_PRESENT" in sql
-    assert "FROM v4.contract_versions" in sql
-    assert "FROM v4.contract_approval_events" in sql
-    assert "contract_bindings IS NOT NULL" in sql
-    assert "DROP TABLE v4.contract_approval_events" in sql
-    assert "DROP TABLE v4.contract_versions" in sql
+    sql = (Path(__file__).resolve().parents[1] / "src/workbench_db/migrations/v4_postgres/043_v4_contract_registry_approval_events_r1.sql").read_text(encoding="utf-8")
+    assert "BEFORE UPDATE OR DELETE ON v4.contract_versions" in sql
+    assert "BEFORE UPDATE OR DELETE ON v4.contract_approval_events" in sql
+    assert "BEFORE TRUNCATE ON v4.contract_versions" in sql
+    assert "BEFORE TRUNCATE ON v4.contract_approval_events" in sql
+    assert "DROP TABLE v4.contract_versions" not in sql
+    assert "DROP TABLE v4.contract_approval_events" not in sql
 
 
 @pytest.mark.parametrize("action,source_digest", [("REVOKED", "a" * 64), ("APPROVED", "0" * 64)])

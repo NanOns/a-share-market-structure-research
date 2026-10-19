@@ -313,7 +313,7 @@ def _prior_state_digest(pg, namespace_id, publication_id):
 
 
 def test_lifecycle_machine_contract_matches_schema():
-    contract = json.loads((ROOT / "config/v4_security_lifecycle_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_lifecycle_fact_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_facts'").fetchall()}
     assert set(contract["required_fields"]) <= columns
@@ -321,7 +321,7 @@ def test_lifecycle_machine_contract_matches_schema():
 
 
 def test_r5_security_lifecycle_history_contract_matches_formal_schema():
-    contract = json.loads((ROOT / "config/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute(
             "select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_history'"
@@ -338,8 +338,8 @@ def test_r5_security_lifecycle_history_contract_matches_formal_schema():
 
 
 def test_r6_2_provider_facts_and_normalized_intervals_are_separate_append_only_contracts():
-    provider_contract = json.loads((ROOT / "config/v4_provider_lifecycle_fact_v1.json").read_text("utf-8"))
-    interval_contract = json.loads((ROOT / "config/v4_security_membership_interval_v1.json").read_text("utf-8"))
+    provider_contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_provider_lifecycle_fact_v1.json").read_text("utf-8"))
+    interval_contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_membership_interval_v1.json").read_text("utf-8"))
     with connect() as pg:
         provider_columns = {r[0] for r in pg.execute(
             "select column_name from information_schema.columns where table_schema='v4' and table_name='provider_lifecycle_fact_history'"
@@ -411,7 +411,7 @@ def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable(
 
 
 def test_membership_machine_contract_matches_schema():
-    contract = json.loads((ROOT / "config/v4_pit_membership_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_pit_membership_fact_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='security_membership_facts'").fetchall()}
     assert set(contract["required_fields"]) <= columns
@@ -467,7 +467,7 @@ def test_pit_fact_revision_chain_and_late_correction_are_append_only():
 
 
 def test_current_universe_member_is_not_historical_membership_proof():
-    contract = json.loads((ROOT / "config/v4_pit_membership_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_pit_membership_fact_v1.json").read_text("utf-8"))
     assert contract["current_membership_replay"] == "DIAGNOSTIC_ONLY"
     assert contract["selection_rule"].find("system_available_at") >= 0
     with connect() as pg, rollback_only(pg):

@@ -553,3 +553,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - TDX 10-16 官方包 SHA `c0ea0dffad66e06351596fb3855ffde0d80536e3d962867a09f42ddf32448219` 的目标日抽取覆盖 `2026-10-16`，5,567 行，固定 v4 PG 事实读回 `PASS`、`DIAGNOSTIC_ONLY`。BaoStock 10-16 固定 v4 运行时接受事实按合同读回成功：5,226 条日行情、48 条复权审计因子，manifest 与 payload 绑定 SHA `6d709f1f049ebd3aa1481e8d8479c71dcd1b03a88c03a0c953561548a76e8820` / `9c5e0c6d78ba328aa4293301f50e150907fd2beedbe85ed5094c07e536b2f82d`。这证明输入候选可读，不等同于 Accepted 日更发布；TDX 包于目标日后捕获，不能标为 `AS_RECORDED` 或 PIT。
 - 非 capture-only 的正式执行入口在读取日历时以 `PG_MARKET_CALENDAR_IDENTITY_REQUIRED` 停止；capture-only 路径能落盘/读回候选，但无法通过正式 Owner/Head 门。当前开发 PG RR/RO 实读仍为 Accepted Data Head T0 `2026-09-30`、Accepted Operational Head 缺失、接受市场日历事实 0、Source Package/Publication/Head 事实均 0；日更作业账本 through_date 目前为 10-15 且状态 `QA_BLOCKED`，10-15 日期仍 `QUEUED`。因此不更新正式 Head 或伪造 10-15 基线；本轮可确认的 10-16 结果是回溯诊断候选，正式日更验收仍被现有日历与 Owner 门阻断。
 - 为避免旧研究快照日期被读成日更最新日期，三个研究前端入口的顶栏现显示“研究视图 T0”并说明该日期属于本页快照、日更状态查看数据更新/日更作业。真实 `127.0.0.1:28766` 个股浏览器页刷新后实际显示新文案，同时保留 `PG 候选快照 · 不代表正式 Head` 与图表截至 9-30；没有重启服务或触碰 28765。
+
+### 2026-10-19 日更日期口径与官方交易日证据复核
+
+- 更正对用户的表述：10-15 BaoStock runtime manifest 中已有 5,226 条日行情和 22 条因子，因此本轮业务增量基线是 10-15，目标是 10-16；作业账本中 10-15 的 `QUEUED` 只表示该日期的日更作业验收状态，并不否定来源事实已在系统中。个股页的 9-30 仅是 `V4_DATA_ACCEPTED_HEAD`/研究视图 T0，不是日更基线。
+- 交易日核对：上交所 2026 年中秋、国庆休市公告说明 10-1 至 10-7 休市、10-8 起照常开市；深交所同日通知给出相同复市安排。10-16 为星期五且不在公告休市范围，因此本轮目标日期是 10-16。官方来源：[上交所公告](https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml)、[深交所通知](https://www.szse.cn/www/disclosure/notice/general/t20260917_622911.html)。此网页核对可确认日期，但不会自行创建或接受 PG 日历合同/Head。
+- 本轮新鲜 `REPEATABLE READ READ ONLY` 开发库复核身份仍为 `market_research` / OID `646711` / `127.0.0.1:5432`；`v4.model_namespaces`、`v4.operational_research_heads`、`v4.publications`、`v4.market_calendar_sessions` 当前分别为空、空、空、0 行。数据库没有正式日历或 Operational Head 的事实继续阻断正式日更验收；不得将来源回执、公告网页或 9-30 研究 T0 伪装为已接受发布。

@@ -598,3 +598,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 修正 `scripts/verify_v4_forward_active_alias_receipts_r1.py`：别名迁移后只在 `v4.workspace_namespace_alias_history_r1` 留存 `MIGRATION_HISTORY_ONLY`，原活跃别名表已不存在；校验器改为核历史表，并支持明确的 `--verify-only` 只读模式与单独的 `--apply` 回执写入模式。
 - 对 `v4_forward_812843566da3f180` 与 `v4_forward_eb17ba1165c8c2a5` 运行 `--verify-only`，数据库身份为 `market_research` / `127.0.0.1:5432`，目标均为固定 `v4.forward_facts`。96 行和 2,769 行映射分别与目标完整行键、payload/source SHA 摘要一致，摘要分别为 `4cbc1744…09bc48` 与 `106155b4…9d8a454`；旧源表当前均不存在，固定 `v4.forward_migration_r1` 中已有回执，未执行数据库写入。
 - 代码提交 `bf858f380` 已推送到开发分支。该核验补强的是两组数据迁移完整性；仍不补造旧 Schema 的历史删除收据，也不改变 S3 的 38 项历史 `DROP RESTRICT` 证据缺口。
+
+### 2026-10-19 固定 Schema 迁移工具与测试消费者续修
+
+- `migrate_v4_current_accepted_ingress_bindings_r1.py` 与 `migrate_v4_read_index_single_schema_r1.py` 将剩余关系名改为 `psycopg.sql.Identifier` 组合；ReadIndex R1/R2 guard 函数按固定合同定义，不再由字符串插值生成 DDL。`cleanup_v4_verified_legacy_schemas_r1.py` 仅接受零参数旧函数并用 `RESTRICT` 删除；遇到其他函数签名即 fail-closed。
+- 仓库准入规则补充识别 Psycopg 的安全 Identifier/Literal 组合，同时继续拒绝不可信 SQL 文本与原始 SQL 字符串拼接。`tests/test_git_repository_policy.py` 与 `tests/test_v4_r7_sql_schema_compatibility.py` 合并执行 20 项通过；3 个迁移工具 AST 解析通过，暂存内容通过 `tools/git_repository_policy.py --staged`。
+- 本项没有重跑已退役源 Schema 的迁移/清理写操作；当前开发库只读核验仍仅有 `v4`。代码推送提交为 `3e7e0df40`、`e3b03751d`、`d9a2b62fd`。历史 `DROP RESTRICT` 回执缺口和业务 Accepted/模块验收门保持原状态。

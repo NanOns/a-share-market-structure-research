@@ -645,3 +645,11 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 对 10-14、10-15、10-16 再次调用完整 `execute_sources(..., 'CATCH_UP', capture_only=False)`。三日均在来源采集前由缺失的 PG Accepted 市场日历身份拒绝（`PG_MARKET_CALENDAR_IDENTITY_REQUIRED`）；未进入 Owner/Publication，也未写入新的 Jobs 成功回执。
 - 随后按现有 `bind_dm01_calendar_for_diagnostic_candidate` 诊断入口逐日执行 `capture_only=True`。三日均完成来源冻结/PG 输入路径后，在缺失的 `v4.operational_research_heads` 处停止（`PG_ACCEPTED_OPERATIONAL_HEAD_REQUIRED_NO_FILE_FALLBACK`）。新鲜 `REPEATABLE READ READ ONLY` 复核 `v4.forward_facts` 中 BaoStock 回执 SHA 均匹配：10-14 为 5,225 行/22 因子（`1a26b487…fa1f9d1e`）；10-15 为 5,226/22（`24682bbd…2bffc`）；10-16 为 5,226/48（`9c5e0c6d…b2f82d`）。这些是已写入并读回的来源事实，不等同正式日更。
 - 日更 Job 表现状仍为 10-14 `QA_BLOCKED`（attempt_count=2，Owner/lifecycle 守恒差异）、10-15 `QUEUED`（attempt_count=0），无 10-16 日的 Job Day；正式市场日历、Operational Head、Publication Head、Publication 仍均 0 行。未构造 predecessor 或伪造 `PUBLISHED_FULL`。完整入口结果和采集复跑结果分别记录于 `G:\codex_tmp\v4_daily_catchup_user_rerun_20261019.json`、`G:\codex_tmp\v4_daily_capture_user_rerun_20261019.json`。
+
+### 2026-10-19 日更 Head 依赖与 28766 只读预览复核
+
+- 再查同一开发库 `market_research`（OID 646711，127.0.0.1:5432）：正式 `v4.operational_research_heads`、`v4.market_calendar_sessions`、`v4.publications`、`v4.publication_heads` 仍为 0 行。最近成功日更 Job 收据是 2026-10-13（候选 SHA `974c60e0095de0e37e2089edca710876d25f43de604fecafd115b675745375c3`）；它只证明历史 Job 报告成功，不是当前 Head。10-14 为 `QA_BLOCKED`（2 次，Owner/lifecycle conservation）、10-15 为 `QUEUED`（0 次），10-16 没有 Job Day。
+- 10-14/15/16 BaoStock acceptance record 均由当前 PG reader 按合同加载并读回：日线 5,225/5,226/5,226 行，因子 22/22/48 行；三日对应的真实 TDX target barset 已在 `v4.forward_facts` 固定表逐日读回，5,563/5,565/5,567 行，SHA 校验一致。TDX target 仍为 `DIAGNOSTIC_ONLY`，三日事实不构成正式日更发布。
+- 对 10-13 历史候选文件（63,535 字节，SHA 与历史 `PUBLISHED` Job 完全相符）进行精确依赖审计：220 个唯一 path/SHA 中，现行 PG SourceIngress API 仅 2 个可读回；84 个可在旧审计索引中按路径/SHA 定位，但这 84 个均与现有文件重叠；当前主仓、R7 基线及 G:/codex_tmp 各顶层既有目录中有 163 个原路径文件，另 57 个（申报 289,924,599 字节）未找到。候选不满足现行依赖完整性，未恢复或写入 Operational Head，也未迁移 1,678 项历史绑定。
+- 真实 28766 `/v4/research/data-update` 页面显示 `NO_ACCEPTED_MARKET_CALENDAR_HEAD`、日更 Worker 未启动，页面明确标记只读 PG 预览；检查、补齐、自动更新、重试、取消操作均禁用。页面显示 10-15/16 为来源运行回执而非正式发布。该实浏览器状态与当前无正式 Calendar/Head 一致，不触碰 28765。
+- 本次原始复核记录：`G:\codex_tmp\v4_daily_head_check_20261019.json`。下一步需在不伪造 Head 的前提下恢复正式来源日历/可验证 predecessor 依赖，并继续已有候选数据的日更 Owner QA。

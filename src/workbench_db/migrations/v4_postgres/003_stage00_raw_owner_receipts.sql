@@ -30,3 +30,7 @@ DROP TRIGGER IF EXISTS trg_stage00_raw_owner_receipts_immutable ON v4.stage00_ra
 CREATE TRIGGER trg_stage00_raw_owner_receipts_immutable
     BEFORE UPDATE OR DELETE ON v4.stage00_raw_owner_receipts
     FOR EACH ROW EXECUTE FUNCTION v4.reject_stage00_raw_owner_receipt_mutation();
+DROP TRIGGER IF EXISTS trg_stage00_raw_owner_receipts_no_truncate ON v4.stage00_raw_owner_receipts;
+CREATE TRIGGER trg_stage00_raw_owner_receipts_no_truncate
+    BEFORE TRUNCATE ON v4.stage00_raw_owner_receipts
+    FOR EACH STATEMENT EXECUTE FUNCTION v4.reject_stage00_raw_owner_receipt_mutation();

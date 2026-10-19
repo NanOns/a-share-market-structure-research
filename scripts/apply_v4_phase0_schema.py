@@ -69,7 +69,29 @@ VERSIONS={
     "072_v4_fixed_schema_consumer_guards_r1.sql":"V4_FIXED_SCHEMA_CONSUMER_GUARDS_R1",
     "073_v4_history_immutability_fixed_schema_r1.sql":"V4_HISTORY_IMMUTABILITY_FIXED_SCHEMA_R1",
     "074_v4_fixed_job_migration_receipts_r1.sql":"V4_FIXED_JOB_MIGRATION_RECEIPTS_R1",
+    "003_stage00_raw_owner_receipts.sql":"V4_STAGE00_RAW_OWNER_RECEIPTS_R1",
 }
+
+STAGE00_SINGLE_MIGRATION = {
+    "filename": "003_stage00_raw_owner_receipts.sql",
+    "version": "V4_STAGE00_RAW_OWNER_RECEIPTS_R1",
+    "sha256": "eb3caa947e25bae118c0bcbc5687bdec8ff12d5928301a924859fd384a2ac084",
+    "prerequisites": (
+        "v4.schema_migrations", "v4.source_packages", "v4.source_revisions",
+    ),
+    "tracking": "v4.schema_migrations(version, checksum_sha256, applied_at, contract_id)",
+    "execution_policy": "UNDEPLOYED_REQUIRES_SEPARATE_STAGE00_MIGRATION_AUTHORIZATION",
+}
+
+def verify_stage00_single_migration_definition():
+    """Verify the one undeployed Stage00 migration without opening PostgreSQL."""
+    item = STAGE00_SINGLE_MIGRATION
+    path = MIGRATIONS / item["filename"]
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    if actual != item["sha256"] or VERSIONS.get(item["filename"]) != item["version"]:
+        raise RuntimeError("STAGE00_RAW_OWNER_MIGRATION_IDENTITY_MISMATCH")
+    return {**item, "path": str(path), "verified_sha256": actual,
+            "status": "DEFINED_NOT_APPLIED"}
 
 def dsn():
     value=os.environ.get("V4_NATIVE_PG_DSN")

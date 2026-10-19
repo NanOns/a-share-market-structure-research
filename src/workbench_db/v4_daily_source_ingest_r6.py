@@ -12,6 +12,7 @@ from datetime import date, datetime, time, timezone
 import base64
 import hashlib
 import json
+import math
 from zoneinfo import ZoneInfo
 from pathlib import Path
 import re
@@ -203,7 +204,7 @@ def verify_source_package_manifest_authority(
         "source_facts": manifest.get("source_fact_bindings"),
         "acceptance_receipt": dict(receipt),
     }
-    verified = _verify_independent_acceptance_authority(plan)
+    verified = _verify_independent_acceptance_authority(plan, pg=pg)
     if (proof.get("receipt_sha256") != verified.receipt_sha256
             or proof.get("issuer_id") != verified.authority_id
             or proof.get("contract_id") != ACCEPTANCE_CONTRACT_ID):
@@ -214,6 +215,49 @@ def verify_source_package_manifest_authority(
 
 RAW_OWNER_AUTHORITY_CONTRACT_ID = "V4_STAGE00_RAW_OWNER_RECEIPT_AUTHORITY_REGISTRY_R1"
 RAW_OWNER_RECEIPT_CONTRACT_ID = "V4_STAGE00_RAW_OWNER_RECEIPT_R1"
+
+
+def _derive_raw_owner_results(pg: Any, source: Mapping[str, Any],
+                              package: Mapping[str, Any], tdx_fact: Mapping[str, Any],
+                              database_identity: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+    """Derive B/C/D receipt inputs from this PG snapshot and verified package."""
+    def relation_exists(name: str) -> bool:
+        row = pg.execute("SELECT to_regclass(%s)", (name,)).fetchone()
+        return bool(row and row[0])
+
+    lifecycle_ready = all(relation_exists(name) for name in (
+        "v4.security_lifecycle_facts", "v4.security_lifecycle_history",
+    ))
+    publication_ready = all(relation_exists(name) for name in (
+        "v4.publications", "v4.publication_heads", "v4.model_namespaces",
+    ))
+    if not lifecycle_ready:
+        raise SourceIngestError("RAW_OWNER_UPSTREAM_BLOCKED:V4-00B")
+    if not publication_ready:
+        raise SourceIngestError("RAW_OWNER_UPSTREAM_BLOCKED:V4-00C")
+    if not source.get("accepted") or package.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE":
+        raise SourceIngestError("RAW_OWNER_UPSTREAM_BLOCKED:V4-00D")
+    base = {
+        "trade_date": package.get("target_trade_date"),
+        "source_package_id": package.get("package_id"),
+        "source_package_sha256": package.get("package_sha256"),
+        "source_revision_id": tdx_fact.get("source_revision_id"),
+        "database_identity": dict(database_identity),
+        "evidence_source": "PG_STAGE00_DIAGNOSTIC",
+    }
+    results = {}
+    for owner, scope in (
+        ("V4-00B", "LIFECYCLE_SCHEMA"), ("V4-00C", "PUBLICATION_IDENTITY"),
+        ("V4-00D", "A_STOCK_TDX_SOURCE"),
+    ):
+        result = {
+            **base, "owner": owner,
+            "status": "FULL_PASS" if owner == "V4-00D" else "DEGRADED_PASS",
+            "accepted_scopes": [scope],
+        }
+        result["evidence_sha256"] = hashlib.sha256(_canonical(result)).hexdigest()
+        results[owner] = result
+    return results
 
 
 def _raw_owner_authority_registry(pg: Any | None = None) -> Mapping[str, Any]:
@@ -237,8 +281,8 @@ def _raw_owner_authority_registry(pg: Any | None = None) -> Mapping[str, Any]:
 
 
 def produce_raw_owner_receipt(
-    source: Mapping[str, Any], owner_results: Mapping[str, Any], *,
-    signed_at: str, signer: Any,
+    source: Mapping[str, Any], owner_results: Mapping[str, Any] | None = None, *,
+    signed_at: str, signer: Any, pg: Any | None = None,
 ) -> dict[str, Any]:
     """Build a RAW Owner receipt from accepted PG-shaped source evidence.
 
@@ -257,10 +301,43 @@ def produce_raw_owner_receipt(
             or manifest.get("package_sha256") != package.get("package_sha256")
             or manifest.get("trade_date") != package.get("target_trade_date")):
         raise SourceIngestError("RAW_OWNER_PACKAGE_IDENTITY_INVALID")
-    verify_source_package_manifest_authority(manifest)
+    verify_source_package_manifest_authority(manifest, pg=pg)
     tdx_fact = next((row for row in facts if row.get("source_key") == "tdx" and row.get("source_revision_id")), None)
     if not isinstance(tdx_fact, Mapping):
         raise SourceIngestError("RAW_OWNER_TDX_REVISION_REQUIRED")
+    coverage = manifest.get("accepted_board_coverage")
+    if (not isinstance(coverage, Mapping)
+            or not isinstance(coverage.get("roster_sha256"), str)
+            or not _SHA256.fullmatch(coverage["roster_sha256"])
+            or coverage.get("target_trade_date") != package.get("target_trade_date")):
+        raise SourceIngestError("RAW_OWNER_VERIFIED_ROSTER_REQUIRED")
+    universe_fact = next((row for row in facts if row.get("source_key") == "security_universe"), None)
+    universe_locator = universe_fact.get("record_locator") if isinstance(universe_fact, Mapping) else None
+    if (not isinstance(universe_locator, Mapping)
+            or universe_locator.get("universe_sha256") != coverage.get("universe_sha256")
+            or universe_locator.get("universe_id") != coverage.get("universe_id")
+            or universe_locator.get("record_count") != coverage.get("roster_count")):
+        raise SourceIngestError("RAW_OWNER_ROSTER_SOURCE_BINDING_MISMATCH")
+    acceptance_proof = manifest.get("acceptance_proof")
+    acceptance = acceptance_proof.get("receipt", {}) if isinstance(acceptance_proof, Mapping) else {}
+    if (manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True
+            or acceptance.get("as_recorded") is not True or acceptance.get("pit_eligible") is not True):
+        raise SourceIngestError("RAW_OWNER_KNOWLEDGE_CLOCK_NOT_ACCEPTED")
+    if manifest.get("price_basis") != "TDX_GBBQ_UNCHANGED":
+        raise SourceIngestError("RAW_OWNER_RAW_PRICE_BASIS_UNPROVEN")
+    identity_status = "RESOLVED" if (
+        universe_locator.get("universe_id") and universe_locator.get("universe_sha256")
+        and universe_locator.get("record_count") == coverage.get("roster_count")
+    ) else "UNRESOLVED"
+    trading_status = (
+        "TRADING_WITH_SUSPENSIONS" if coverage.get("suspended_row_count", 0) > 0 else "TRADING"
+    )
+    knowledge_status = (
+        "AS_RECORDED" if acceptance.get("as_recorded") is True
+        and acceptance.get("pit_eligible") is True else "POST_HOC_OR_UNKNOWN"
+    )
+    if identity_status != "RESOLVED" or knowledge_status != "AS_RECORDED":
+        raise SourceIngestError("RAW_OWNER_SOURCE_FACT_STATUS_NOT_ACCEPTED")
     normalized_signed_at = _utc_timestamp(signed_at, "RAW_OWNER_SIGNED_TIME_INVALID")
     signed_clock = datetime.fromisoformat(normalized_signed_at.replace("Z", "+00:00"))
     latest_source_clock = max(
@@ -269,19 +346,29 @@ def produce_raw_owner_receipt(
     )
     if signed_clock < latest_source_clock:
         raise SourceIngestError("RAW_OWNER_SIGNED_BEFORE_SOURCE_AVAILABLE")
-    expected_owners = {"V4-00B": "LIFECYCLE_SCHEMA", "V4-00C": "PUBLICATION_IDENTITY", "V4-00D": "A_STOCK_TDX_SOURCE"}
-    normalized_owners = {}
-    for owner, scope in expected_owners.items():
-        item = owner_results.get(owner) if isinstance(owner_results, Mapping) else None
-        if (not isinstance(item, Mapping) or item.get("owner") != owner
-                or item.get("status") not in {"FULL_PASS", "DEGRADED_PASS"}
-                or scope not in item.get("accepted_scopes", [])
-                or item.get("trade_date") != package.get("target_trade_date")
-                or item.get("source_package_id") != package.get("package_id")
-                or item.get("source_package_sha256") != package.get("package_sha256")
-                or item.get("source_revision_id") != tdx_fact.get("source_revision_id")):
-            raise SourceIngestError("RAW_OWNER_INPUT_INVALID:" + owner)
-        normalized_owners[owner] = dict(item)
+    from .v4_publication_reader import PgPublicationReader
+    if pg is None:
+        raise SourceIngestError("RAW_OWNER_SAME_PG_SNAPSHOT_REQUIRED")
+    database_identity = PgPublicationReader._read_database_identity(pg)
+    from v4.contracts.phase0_gate import _package_acceptance_errors
+    source_errors = _package_acceptance_errors(package, list(facts),
+                                                acceptance_verified=True)
+    if source_errors:
+        raise SourceIngestError("RAW_OWNER_SOURCE_PACKAGE_INVALID:" + ",".join(source_errors))
+    normalized_owners = _derive_raw_owner_results(
+        pg, source, package, tdx_fact, database_identity,
+    )
+    if owner_results is not None:
+        for owner, expected in normalized_owners.items():
+            supplied = owner_results.get(owner) if isinstance(owner_results, Mapping) else None
+            if not isinstance(supplied, Mapping) or any(
+                supplied.get(key) != expected.get(key) for key in (
+                    "owner", "status", "accepted_scopes", "trade_date", "source_package_id",
+                    "source_package_sha256", "source_revision_id", "database_identity",
+                    "evidence_source", "evidence_sha256",
+                )
+            ):
+                raise SourceIngestError("RAW_OWNER_INPUT_INVALID:" + owner)
     issuer_id = signer.get("issuer_id") if isinstance(signer, Mapping) else getattr(signer, "issuer_id", None)
     sign_bytes = signer.get("sign") if isinstance(signer, Mapping) else getattr(signer, "sign", None)
     if not isinstance(issuer_id, str) or not callable(sign_bytes):
@@ -289,21 +376,35 @@ def produce_raw_owner_receipt(
     body = {
         "contract_id": RAW_OWNER_RECEIPT_CONTRACT_ID,
         "receipt_id": f"v4-00e-raw-{package['target_trade_date']}-{package['package_id']}-{tdx_fact['source_revision_id']}",
-        "owner": "V4-00E", "status": "ACCEPTED", "scope": "RAW_BOOTSTRAP",
+        "owner": "V4-00E",
+        "status": ("DEGRADED_ACCEPTED" if any(
+            item.get("status") == "DEGRADED_PASS" for item in normalized_owners.values()
+        ) else "ACCEPTED"),
+        "scope": "RAW_BOOTSTRAP",
         "trade_date": package["target_trade_date"],
         "source_package_id": package["package_id"],
         "source_package_sha256": package["package_sha256"],
         "source_revision_id": tdx_fact["source_revision_id"],
         "source_revision_sha256": tdx_fact["digest"],
-        "raw_basis": "TDX_RAW_NATIVE", "source_identity_status": "RESOLVED",
-        "source_trading_status": "TRADING", "source_knowledge_status": "AS_RECORDED",
+        "raw_basis": manifest["price_basis"], "source_identity_status": identity_status,
+        "source_trading_status": trading_status,
+        "source_knowledge_status": knowledge_status,
+        "source_universe_id": coverage["universe_id"],
+        "source_universe_sha256": coverage["universe_sha256"],
+        "source_roster_sha256": coverage["roster_sha256"],
+        "source_roster_count": coverage["roster_count"],
+        "source_scope_roster_count": coverage["scope_roster_count"],
+        "source_trading_row_count": coverage["trading_row_count"],
+        "source_suspended_row_count": coverage["suspended_row_count"],
+        "source_tdx_record_count": tdx_fact.get("record_count"),
+        "source_tdx_ohlcva_sha256": coverage["tdx_ohlcva_sha256"],
         "owner_results": normalized_owners, "issuer_id": str(issuer_id),
         "signed_at": normalized_signed_at,
     }
     signature = sign_bytes(_canonical(body))
     receipt = {**body, "signature_ed25519": str(signature)}
     receipt["receipt_sha256"] = hashlib.sha256(_canonical(receipt)).hexdigest()
-    verify_raw_owner_receipt(receipt)
+    verify_raw_owner_receipt(receipt, pg=pg)
     return receipt
 
 
@@ -336,7 +437,7 @@ def verify_raw_owner_receipt(receipt: Mapping[str, Any], *, pg: Any | None = Non
 
 def persist_raw_owner_receipt(pg: Any, receipt: Mapping[str, Any]) -> None:
     """Insert an immutable, independently signed Owner receipt in caller transaction."""
-    verify_raw_owner_receipt(receipt)
+    verify_raw_owner_receipt(receipt, pg=pg)
     pg.execute(
         """INSERT INTO v4.stage00_raw_owner_receipts
            (receipt_id, trade_date, source_package_id, source_revision_id,
@@ -356,12 +457,12 @@ def persist_raw_owner_receipt(pg: Any, receipt: Mapping[str, Any]) -> None:
 
 
 def produce_and_persist_raw_owner_receipt(
-    pg: Any, source: Mapping[str, Any], owner_results: Mapping[str, Any], *,
+    pg: Any, source: Mapping[str, Any], owner_results: Mapping[str, Any] | None = None, *,
     signed_at: str, signer: Any,
 ) -> dict[str, Any]:
     """Produce and persist an independently signed E receipt in caller transaction."""
     receipt = produce_raw_owner_receipt(
-        source, owner_results, signed_at=signed_at, signer=signer,
+        source, owner_results, signed_at=signed_at, signer=signer, pg=pg,
     )
     persist_raw_owner_receipt(pg, receipt)
     return receipt
@@ -401,13 +502,167 @@ def _file_sha256(path: Path) -> str:
 def _tdx_board_scope(source_security_key: Any) -> str | None:
     """Map a native TDX code to the four Stage00 core board scopes."""
     value = str(source_security_key or "").strip().upper()
-    match = re.fullmatch(r"(SH|SZ)\.(\d{6})", value)
+    match = re.fullmatch(r"(SH|SZ|BJ)\.(\d{6})", value)
     if not match:
         return None
     exchange, code = match.groups()
+    if exchange == "BJ":
+        return "BSE" if code.startswith(("4", "8", "92")) else None
     if exchange == "SH":
-        return "STAR" if code.startswith(("688", "689")) else "SH_MAIN"
-    return "CHINEXT" if code.startswith(("300", "301")) else "SZ_MAIN"
+        if code.startswith(("688", "689")):
+            return "STAR"
+        if code.startswith(("600", "601", "603", "605")):
+            return "SH_MAIN"
+        return None
+    if code.startswith(("300", "301")):
+        return "CHINEXT"
+    if code.startswith(("000", "001", "002", "003")):
+        return "SZ_MAIN"
+    return None
+
+
+def _same_t0_a_share_roster(universe_doc: Mapping[str, Any], target_bars: list[Mapping[str, Any]]) -> dict[str, Any]:
+    """Reconcile the complete signed same-T0 roster with native TDX rows."""
+    entries = universe_doc.get("securities")
+    if not isinstance(entries, list) or not entries:
+        raise SourceIngestError("SECURITY_UNIVERSE_SECURITIES_REQUIRED")
+    expected: dict[str, tuple[str, str]] = {}
+    out_of_scope_a_shares: dict[str, str] = {}
+    suspended = {board: 0 for board in _TDX_BOARD_SCOPES}
+    seen_security_ids: set[str] = set()
+    for row in entries:
+        if not isinstance(row, Mapping):
+            raise SourceIngestError("SECURITY_UNIVERSE_ROW_INVALID")
+        key = str(row.get("source_security_key") or row.get("security_id") or "").strip().upper()
+        board = _tdx_board_scope(key)
+        security_id = str(row.get("security_id") or "").strip().upper()
+        if not key or not re.fullmatch(r"(SH|SZ|BJ)\.\d{6}", key):
+            raise SourceIngestError("SECURITY_UNIVERSE_NON_A_SHARE_OR_BOARD_UNKNOWN:" + (key or "<empty>"))
+        if not security_id or security_id in seen_security_ids:
+            raise SourceIngestError("SECURITY_UNIVERSE_SECURITY_ID_INVALID_OR_DUPLICATE")
+        seen_security_ids.add(security_id)
+        asset_class, share_class = row.get("asset_class"), row.get("share_class")
+        exchange, lifecycle = row.get("exchange"), row.get("status")
+        if (asset_class not in {"COMMON_STOCK", "PREFERRED_STOCK", "ETF", "INDEX", "BOND", "OTHER"}
+                or share_class not in {"A", "B", "NOT_APPLICABLE"}
+                or exchange not in {"SSE", "SZSE", "BSE", "OTHER"}
+                or lifecycle not in {"ACTIVE", "SUSPENDED", "NEWLY_LISTED", "DELISTED", "CODE_MIGRATION"}
+                or not isinstance(row.get("source_id"), str) or not row["source_id"].strip()):
+            raise SourceIngestError("SECURITY_UNIVERSE_CLASSIFICATION_OR_LIFECYCLE_INVALID:" + key)
+        exchange_for_key = {"SH": "SSE", "SZ": "SZSE", "BJ": "BSE"}[key.split(".", 1)[0]]
+        if exchange != exchange_for_key:
+            raise SourceIngestError("SECURITY_UNIVERSE_EXCHANGE_IDENTITY_MISMATCH:" + key)
+        if asset_class != "COMMON_STOCK" or share_class != "A":
+            if board in _TDX_BOARD_SCOPES:
+                raise SourceIngestError("SECURITY_UNIVERSE_SECURITY_CLASS_CODE_CONFLICT:" + key)
+            continue
+        if lifecycle == "DELISTED":
+            continue
+        if board == "BSE":
+            if key in out_of_scope_a_shares:
+                raise SourceIngestError("SECURITY_UNIVERSE_DUPLICATE_SOURCE_SECURITY_KEY:" + key)
+            out_of_scope_a_shares[key] = str(lifecycle)
+            continue
+        if board not in _TDX_BOARD_SCOPES:
+            raise SourceIngestError("SECURITY_UNIVERSE_A_SHARE_BOARD_UNKNOWN:" + key)
+        if row.get("board_scope") is not None and row.get("board_scope") != board:
+            raise SourceIngestError("SECURITY_UNIVERSE_BOARD_SCOPE_MISMATCH:" + key)
+        if key in expected:
+            raise SourceIngestError("SECURITY_UNIVERSE_DUPLICATE_SOURCE_SECURITY_KEY:" + key)
+        expected[key] = (board, str(lifecycle))
+        if lifecycle == "SUSPENDED":
+            suspended[board] += 1
+    normalized_universe = []
+    for row in entries:
+        key = str(row.get("source_security_key") or row.get("security_id") or "").strip().upper()
+        normalized_universe.append({
+            "security_id": str(row.get("security_id") or key).strip().upper(),
+            "asset_class": row["asset_class"], "share_class": row["share_class"],
+            "exchange": row["exchange"], "status": row["status"], "source_id": row["source_id"],
+        })
+    universe_digest = hashlib.sha256(_canonical({
+        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "contract_version": "1.0.0",
+        "trade_date": universe_doc.get("trade_date"), "universe_id": universe_doc.get("universe_id"),
+        "exchange_scope": ["BSE", "SSE", "SZSE"],
+        "securities": sorted(normalized_universe, key=lambda item: item["security_id"]),
+    })).hexdigest()
+    if universe_doc.get("universe_sha256") != universe_digest:
+        raise SourceIngestError("SECURITY_UNIVERSE_DIGEST_MISMATCH")
+    bar_keys: set[str] = set()
+    board_counts = {board: 0 for board in _TDX_BOARD_SCOPES}
+    for row in target_bars:
+        key = str(row.get("source_security_key") or "").strip().upper()
+        if key in out_of_scope_a_shares:
+            if str(row.get("trading_status", row.get("trade_status", "TRADING"))).upper() not in {
+                "TRADING", "TRADED", "SUSPENDED",
+            }:
+                raise SourceIngestError("TDX_TARGET_TRADING_STATUS_INVALID:" + key)
+            continue
+        if key not in expected:
+            raise SourceIngestError("TDX_TARGET_SECURITY_OUTSIDE_A_SHARE_ROSTER:" + (key or "<empty>"))
+        if key in bar_keys:
+            raise SourceIngestError("TDX_TARGET_SECURITY_DUPLICATE:" + key)
+        bar_keys.add(key)
+        board, lifecycle = expected[key]
+        declared_status = str(row.get("trading_status", row.get("trade_status", "TRADING"))).upper()
+        if declared_status not in {"TRADING", "TRADED", "SUSPENDED"}:
+            raise SourceIngestError("TDX_TARGET_TRADING_STATUS_INVALID:" + key)
+        if lifecycle == "SUSPENDED":
+            if declared_status not in {"SUSPENDED", "TRADING", "TRADED"}:
+                raise SourceIngestError("TDX_SUSPENDED_SECURITY_STATUS_MISMATCH:" + key)
+        else:
+            if declared_status == "SUSPENDED":
+                raise SourceIngestError("TDX_ACTIVE_SECURITY_REPORTED_SUSPENDED:" + key)
+            board_counts[board] += 1
+    for key, (board, lifecycle) in expected.items():
+        if lifecycle != "SUSPENDED" and key not in bar_keys:
+            raise SourceIngestError("TDX_ACTIVE_A_SHARE_MISSING_AT_T0:" + board + ":" + key)
+        if lifecycle == "SUSPENDED" and key in bar_keys:
+            # Some native snapshots retain a status row for a suspended code;
+            # that is valid identity evidence, but it is not a traded bar.
+            continue
+    empty = [board for board, count in board_counts.items() if count == 0]
+    if empty:
+        raise SourceIngestError("TDX_A_SHARE_BOARD_HAS_NO_TRADING_ROWS:" + ",".join(empty))
+    return {"board_counts": board_counts, "suspended_counts": suspended,
+            "roster_count": len(entries), "scope_roster_count": len(expected),
+            "trading_row_count": sum(board_counts.values()),
+            "suspended_row_count": sum(suspended.values()),
+            "trading_keys": sorted(key for key, (_, status) in expected.items() if status != "SUSPENDED"),
+            "roster_sha256": hashlib.sha256(_canonical(sorted(
+                [{"source_security_key": key, "board_scope": board, "lifecycle_status": status}
+                 for key, (board, status) in expected.items()], key=lambda item: item["source_security_key"]
+            ))).hexdigest()}
+
+
+def _verified_tdx_raw_bars(target_bars: list[Mapping[str, Any]], target_date: str) -> tuple[list[dict[str, Any]], str]:
+    """Validate and digest the native unadjusted TDX OHLCVA rows."""
+    normalized = []
+    for row in target_bars:
+        if row.get("trade_date") != target_date:
+            raise SourceIngestError("TDX_RAW_BAR_T0_MISMATCH")
+        values = {}
+        for key in ("open", "high", "low", "close", "amount", "volume"):
+            value = row.get(key)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise SourceIngestError("TDX_RAW_OHLCVA_VALUE_INVALID:" + key)
+            values[key] = value
+        if (values["low"] <= 0 or values["open"] <= 0 or values["close"] <= 0
+                or values["high"] < max(values["open"], values["close"])
+                or values["low"] > min(values["open"], values["close"])
+                or values["amount"] < 0 or values["volume"] < 0):
+            raise SourceIngestError("TDX_RAW_OHLCVA_RANGE_INVALID")
+        if (not isinstance(row.get("source_entry"), str) or not row["source_entry"]
+                or not isinstance(row.get("entry_sha256"), str)
+                or not _SHA256.fullmatch(row["entry_sha256"])):
+            raise SourceIngestError("TDX_RAW_ENTRY_PROVENANCE_MISSING")
+        normalized.append({
+            "source_security_key": str(row.get("source_security_key") or "").strip().upper(),
+            "trade_date": target_date, **values,
+            "source_entry": row["source_entry"], "entry_sha256": row["entry_sha256"],
+        })
+    normalized.sort(key=lambda item: item["source_security_key"])
+    return normalized, hashlib.sha256(_canonical(normalized)).hexdigest()
 
 
 def _load_bound_file(root: Path, ref: Mapping[str, Any], *, code: str) -> tuple[Path, str, int]:
@@ -567,6 +822,7 @@ def build_source_ingest_plan(
 
     sources = {}
     tdx_document: Mapping[str, Any] | None = None
+    tdx_raw_sha256: str | None = None
     for name in _SOURCE_NAMES:
         ref = freeze.get(name) if name != "runtime_manifest" else freeze.get("runtime_manifest")
         if not isinstance(ref, Mapping):
@@ -581,6 +837,7 @@ def build_source_ingest_plan(
                     or not isinstance(document.get("target_bars"), list) or not document["target_bars"]):
                 raise SourceIngestError("TDX_BAR_ARTIFACT_T0_OR_ROWS_INVALID")
             tdx_document = document
+            _, tdx_raw_sha256 = _verified_tdx_raw_bars(document["target_bars"], target.isoformat())
             security_keys = [str(row.get("source_security_key") or "") for row in document["target_bars"]]
             if (any(not key for key in security_keys) or len(security_keys) != len(set(security_keys))
                     or any(str(row.get("trade_date") or "") != target.isoformat()
@@ -623,6 +880,7 @@ def build_source_ingest_plan(
     # cannot receive source acceptance.
     universe_ref = freeze.get("security_universe")
     universe_source_keys: set[str] | None = None
+    universe_doc: Mapping[str, Any] | None = None
     if universe_ref is not None:
         universe_path, universe_sha, universe_bytes = _load_bound_file(root, universe_ref, code="SECURITY_UNIVERSE")
         try:
@@ -636,6 +894,11 @@ def build_source_ingest_plan(
                 or not isinstance(universe_doc.get("securities"), list)
                 or not universe_doc.get("securities")):
             raise SourceIngestError("SECURITY_UNIVERSE_CONTRACT_T0_OR_ROWS_INVALID")
+        if universe_doc.get("exchange_scope") != ["SSE", "SZSE", "BSE"]:
+            raise SourceIngestError("SECURITY_UNIVERSE_EXCHANGE_SCOPE_NOT_EXPLICIT")
+        if not isinstance(universe_doc.get("universe_sha256"), str) or not _SHA256.fullmatch(universe_doc["universe_sha256"]):
+            raise SourceIngestError("SECURITY_UNIVERSE_DIGEST_REQUIRED")
+        universe_doc = universe_doc
         universe_ids = [str(row.get("security_id") or "").strip().upper()
                         for row in universe_doc["securities"] if isinstance(row, Mapping)]
         universe_source_keys = {
@@ -660,20 +923,32 @@ def build_source_ingest_plan(
     # Stage00 D consumes coverage from this same immutable TDX artifact. The
     # derived fact is included in the bindings digest and independent receipt.
     if tdx_document is not None:
+        if universe_doc is None:
+            raise SourceIngestError("SECURITY_UNIVERSE_SAME_T0_ROSTER_REQUIRED")
+        roster = _same_t0_a_share_roster(universe_doc, tdx_document["target_bars"])
         coverage_counts = {board: 0 for board in _TDX_BOARD_SCOPES}
         for row in tdx_document["target_bars"]:
             board = _tdx_board_scope(row.get("source_security_key"))
             declared = row.get("board_scope")
-            status = row.get("trading_status", row.get("trade_status"))
             if board is None or (declared is not None and declared != board):
                 raise SourceIngestError("TDX_BOARD_IDENTITY_INVALID")
             if universe_source_keys is None or str(row.get("source_security_key") or "").strip().upper() not in universe_source_keys:
                 raise SourceIngestError("TDX_UNIVERSE_SOURCE_BINDING_MISMATCH")
-            if status is not None and str(status).upper() not in {"TRADING", "TRADED"}:
-                raise SourceIngestError("TDX_BOARD_COVERAGE_NON_TRADING_SOURCE")
-            coverage_counts[board] += 1
+            if str(row.get("source_security_key") or "").strip().upper() in roster["trading_keys"]:
+                coverage_counts[board] += 1
+        if coverage_counts != roster["board_counts"]:
+            raise SourceIngestError("TDX_ROSTER_COVERAGE_COUNT_MISMATCH")
         coverage_body = {"boards": list(_TDX_BOARD_SCOPES), "counts": coverage_counts,
-                         "target_trade_date": target.isoformat()}
+                         "target_trade_date": target.isoformat(),
+                         "universe_id": universe_doc["universe_id"],
+                         "universe_sha256": universe_doc["universe_sha256"],
+                         "roster_count": roster["roster_count"],
+                         "scope_roster_count": roster["scope_roster_count"],
+                         "trading_row_count": roster["trading_row_count"],
+                         "suspended_row_count": roster["suspended_row_count"],
+                         "suspended_counts": roster["suspended_counts"],
+                         "roster_sha256": roster["roster_sha256"],
+                         "tdx_ohlcva_sha256": tdx_raw_sha256}
         coverage_digest = hashlib.sha256(_canonical(coverage_body)).hexdigest()
         accepted_board_coverage = {**coverage_body, "digest": coverage_digest}
         sources["tdx_board_coverage"] = {
@@ -825,7 +1100,7 @@ def _persist_accepted_source_ingest_plan_transaction(
         raise SourceIngestError("SOURCE_INGEST_PLAN_CONTRACT_INVALID")
     if plan.get("status") != "ACCEPTED":
         return {"status": plan.get("status", "DATA_UNAVAILABLE"), "persisted": False}
-    proof = _verify_independent_acceptance_authority(plan)
+    proof = _verify_independent_acceptance_authority(plan, pg=pg)
     plan_digest = hashlib.sha256(_canonical(dict(plan))).hexdigest()
     if (not isinstance(proof, _IndependentAcceptanceProof)
             or proof.plan_sha256 != plan_digest
@@ -1065,7 +1340,7 @@ def persist_source_ingest_plan(
         raise SourceIngestError("SOURCE_INGEST_PLAN_CONTRACT_INVALID")
     if plan.get("status") != "ACCEPTED":
         return {"status": plan.get("status", "DATA_UNAVAILABLE"), "persisted": False}
-    proof = _verify_independent_acceptance_authority(plan)
+    proof = _verify_independent_acceptance_authority(plan, pg=pg)
     return _persist_accepted_source_ingest_plan_transaction(
         pg, plan,
         publication_id=publication_id,

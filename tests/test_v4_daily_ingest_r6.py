@@ -25,9 +25,18 @@ def _write(root, relative, value):
 
 
 def _frozen_inputs(root, *, day="2026-10-16", as_recorded=False, pit_eligible=False):
+    core_keys = [
+        ("SH.600000", "SSE", "SH_MAIN"),
+        ("SZ.000001", "SZSE", "SZ_MAIN"),
+        ("SZ.300001", "SZSE", "CHINEXT"),
+        ("SH.688001", "SSE", "STAR"),
+    ]
     tdx = _write(root, "data/v4/frozen/tdx.json", {
         "target_session": day,
-        "target_bars": [{"trade_date": day, "source_security_key": "SH.600000", "close": 10.0}],
+        "target_bars": [{"trade_date": day, "source_security_key": key, "board_scope": board,
+                         "source_entry": "fixture/" + key, "entry_sha256": hashlib.sha256(key.encode()).hexdigest(),
+                         "open": 10.0, "high": 11.0, "low": 9.0, "close": 10.0,
+                         "amount": 100.0, "volume": 10} for key, _, board in core_keys],
     })
     bao = _write(root, "data/v4/frozen/bao.json", {
         "target_date": day, "daily_rows": [{"code": "sh.600000"}], "adjustment_factor_rows": [],
@@ -37,11 +46,14 @@ def _frozen_inputs(root, *, day="2026-10-16", as_recorded=False, pit_eligible=Fa
     universe_doc = seal_universe_snapshot(
         trade_date=day, universe_id="TEST_MARKET_A_SHARE_T0",
         exchange_scope=["SSE", "SZSE", "BSE"],
-        securities=[{"security_id": "SH.600000", "asset_class": "COMMON_STOCK",
-                     "share_class": "A", "exchange": "SSE", "status": "ACTIVE",
-                     "source_id": "test-security-master"}],
+        securities=[{"security_id": key, "asset_class": "COMMON_STOCK",
+                     "share_class": "A", "exchange": exchange, "status": "ACTIVE",
+                     "source_id": "test-security-master"} for key, exchange, _ in core_keys],
         source_fact_sha256="TEST_FIXTURE_SOURCE_BYTES_NOT_PROOF",
     )
+    boards = {key: board for key, _, board in core_keys}
+    for row in universe_doc["securities"]:
+        row.update(source_security_key=row["security_id"], board_scope=boards[row["security_id"]])
     universe = _write(root, "data/v4/frozen/security_universe.json", universe_doc)
     freeze_doc = {
         "contract_id": "DYNAMIC_DAILY_SOURCE_FREEZE_V1", "target_session": day,

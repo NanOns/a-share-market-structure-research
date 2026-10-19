@@ -15,7 +15,42 @@ def _canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
 
 
-def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None):
+_DEFAULT_SECURITIES = [
+    ("SH.600001", "SH_MAIN"), ("SH.600002", "SH_MAIN"),
+    ("SZ.000001", "SZ_MAIN"), ("SZ.000002", "SZ_MAIN"),
+    ("SZ.300001", "CHINEXT"), ("SZ.300002", "CHINEXT"),
+    ("SH.688001", "STAR"), ("SH.688002", "STAR"),
+]
+
+
+def _universe_document(day, securities):
+    rows = []
+    for key, board in securities:
+        exchange = "SSE" if key.startswith("SH.") else "BSE" if key.startswith("BJ.") else "SZSE"
+        code = key.split(".", 1)[1]
+        rows.append({
+            "security_id": key, "source_security_key": key,
+            "asset_class": "COMMON_STOCK", "share_class": "A",
+            "exchange": exchange, "status": "ACTIVE", "source_id": "TDX_SECURITY_MASTER",
+            "board_scope": board,
+        })
+    normalized = [{key: row[key] for key in (
+        "security_id", "asset_class", "share_class", "exchange", "status", "source_id",
+    )} for row in rows]
+    digest = hashlib.sha256(_canonical({
+        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "contract_version": "1.0.0",
+        "trade_date": day, "universe_id": "fixture-universe",
+        "exchange_scope": ["BSE", "SSE", "SZSE"],
+        "securities": sorted(normalized, key=lambda row: row["security_id"]),
+    })).hexdigest()
+    return {
+        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "trade_date": day,
+        "universe_id": "fixture-universe", "exchange_scope": ["SSE", "SZSE", "BSE"],
+        "securities": rows, "universe_sha256": digest,
+    }
+
+
+def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=None):
     private = Ed25519PrivateKey.generate()
     public = private.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)
     registry = {"contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1", "status": "ACTIVE",
@@ -32,19 +67,26 @@ def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None):
         path.write_bytes(raw)
         return {"path": name, "sha256": hashlib.sha256(raw).hexdigest()}
 
+    securities = universe_securities or _DEFAULT_SECURITIES
     bars = tdx_bars or [
-        {"trade_date": day, "source_security_key": "SH.600001", "board_scope": "SH_MAIN"},
-        {"trade_date": day, "source_security_key": "SZ.000001", "board_scope": "SZ_MAIN"},
-        {"trade_date": day, "source_security_key": "SZ.300001", "board_scope": "CHINEXT"},
-        {"trade_date": day, "source_security_key": "SH.688001", "board_scope": "STAR"},
+        {"trade_date": day, "source_security_key": key, "board_scope": board}
+        for key, board in securities
     ]
+    for row in bars:
+        row.setdefault("open", 10.0)
+        row.setdefault("high", 11.0)
+        row.setdefault("low", 9.0)
+        row.setdefault("close", 10.0)
+        row.setdefault("amount", 100.0)
+        row.setdefault("volume", 10)
+        row.setdefault("source_entry", "fixture/" + row["source_security_key"])
+        row.setdefault("entry_sha256", hashlib.sha256(row["source_security_key"].encode()).hexdigest())
     tdx_ref = write("inputs/tdx.json", {"target_session": day, "target_bars": bars})
     bao_ref = write("inputs/bao.json", {"target_date": day, "daily_rows": [], "adjustment_factor_rows": []})
     runtime_ref = write("inputs/runtime.json", {"observed": True})
-    universe_ref = write("inputs/universe.json", {
-        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "trade_date": day,
-        "universe_id": "fixture-universe", "securities": [{"security_id": row["source_security_key"]} for row in bars],
-    })
+    universe_doc = (universe_securities if isinstance(universe_securities, dict)
+                    else _universe_document(day, securities))
+    universe_ref = write("inputs/universe.json", universe_doc)
     freeze = {
         "contract_id": "DYNAMIC_DAILY_SOURCE_FREEZE_V1", "target_session": day,
         "canonical_qfq_authority": "TDX_GBBQ_UNCHANGED", "observed_at": day + "T16:00:00+08:00",
@@ -117,7 +159,7 @@ def test_real_source_producer_output_flows_into_stage00_d_and_rejects_tamper(tmp
     plan, _ = _signed_fixture(tmp_path, monkeypatch)
     package, facts = _pg_shaped(plan)
     assert package["manifest"]["accepted_board_coverage"]["counts"] == {
-        "SH_MAIN": 1, "SZ_MAIN": 1, "CHINEXT": 1, "STAR": 1,
+        "SH_MAIN": 2, "SZ_MAIN": 2, "CHINEXT": 2, "STAR": 2,
     }
     assert phase0_gate._package_acceptance_errors(package, facts, acceptance_verified=True) == []
 
@@ -140,23 +182,96 @@ def test_real_source_producer_output_flows_into_stage00_d_and_rejects_tamper(tmp
 
 def test_tdx_suspension_or_missing_board_cannot_release_d(tmp_path, monkeypatch):
     rows = [
-        {"trade_date": "2026-09-11", "source_security_key": "SH.600001", "board_scope": "SH_MAIN"},
-        {"trade_date": "2026-09-11", "source_security_key": "SZ.000001", "board_scope": "SZ_MAIN"},
-        {"trade_date": "2026-09-11", "source_security_key": "SZ.300001", "board_scope": "CHINEXT"},
+        {"trade_date": "2026-09-11", "source_security_key": key, "board_scope": board}
+        for key, board in _DEFAULT_SECURITIES if board != "STAR"
     ]
-    plan, _ = _signed_fixture(tmp_path / "missing-board", monkeypatch, tdx_bars=rows)
-    package, facts = _pg_shaped(plan)
-    assert "FOUR_BOARD_COVERAGE_UNPROVEN" in phase0_gate._package_acceptance_errors(
-        package, facts, acceptance_verified=True,
-    )
-    suspended = [*rows, {"trade_date": "2026-09-11", "source_security_key": "SH.688001",
-                         "board_scope": "STAR", "trading_status": "SUSPENDED"}]
-    with pytest.raises(ingest.SourceIngestError, match="TDX_BOARD_COVERAGE_NON_TRADING_SOURCE"):
-        _signed_fixture(tmp_path / "suspended", monkeypatch, tdx_bars=suspended)
+    with pytest.raises(ingest.SourceIngestError, match="TDX_ACTIVE_A_SHARE_MISSING_AT_T0"):
+        _signed_fixture(tmp_path / "missing-board", monkeypatch, tdx_bars=rows)
+
+    securities = [(key, board) for key, board in _DEFAULT_SECURITIES]
+    bars = [{"trade_date": "2026-09-11", "source_security_key": key, "board_scope": board}
+            for key, board in securities if key != "SH.688001"]
+    suspended_universe = _universe_document("2026-09-11", securities)
+    next(row for row in suspended_universe["securities"] if row["security_id"] == "SH.688001")["status"] = "SUSPENDED"
+    normalized = [{key: row[key] for key in (
+        "security_id", "asset_class", "share_class", "exchange", "status", "source_id",
+    )} for row in suspended_universe["securities"]]
+    suspended_universe["universe_sha256"] = hashlib.sha256(_canonical({
+        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "contract_version": "1.0.0",
+        "trade_date": "2026-09-11", "universe_id": "fixture-universe",
+        "exchange_scope": ["BSE", "SSE", "SZSE"],
+        "securities": sorted(normalized, key=lambda row: row["security_id"]),
+    })).hexdigest()
+    plan, _ = _signed_fixture(tmp_path / "suspended", monkeypatch, tdx_bars=bars,
+                              universe_securities=suspended_universe)
+    assert plan["package_manifest"]["accepted_board_coverage"]["suspended_row_count"] == 1
+
+
+@pytest.mark.parametrize("key", ["SH.510050", "SZ.159915", "SH.900901", "SH.000001"])
+def test_non_common_equity_tdx_codes_are_rejected(tmp_path, monkeypatch, key):
+    bad = [* _DEFAULT_SECURITIES]
+    bad.append((key, "SH_MAIN" if key.startswith("SH.") else "SZ_MAIN"))
+    bars = [{"trade_date": "2026-09-11", "source_security_key": code, "board_scope": board}
+            for code, board in bad]
+    with pytest.raises(ingest.SourceIngestError, match="SECURITY_UNIVERSE_(NON_A_SHARE_OR_BOARD_UNKNOWN|A_SHARE_BOARD_UNKNOWN)"):
+        _signed_fixture(tmp_path / key.replace(".", "_"), monkeypatch,
+                        tdx_bars=bars, universe_securities=bad)
+
+
+def test_real_tdx_producer_rejects_invalid_raw_ohlcva(tmp_path, monkeypatch):
+    bad = [{"trade_date": "2026-09-11", "source_security_key": key, "board_scope": board}
+           for key, board in _DEFAULT_SECURITIES]
+    bad[0]["high"] = 8.0
+    with pytest.raises(ingest.SourceIngestError, match="TDX_RAW_OHLCVA_RANGE_INVALID"):
+        _signed_fixture(tmp_path, monkeypatch, tdx_bars=bad)
+
+
+def test_complete_universe_may_include_bse_outside_the_four_tdx_boards(tmp_path, monkeypatch):
+    securities = [*_DEFAULT_SECURITIES, ("BJ.830001", "BSE")]
+    bars = [{"trade_date": "2026-09-11", "source_security_key": key, "board_scope": board}
+            for key, board in securities]
+    plan, _ = _signed_fixture(tmp_path, monkeypatch, tdx_bars=bars, universe_securities=securities)
+    coverage = plan["package_manifest"]["accepted_board_coverage"]
+    assert coverage["roster_count"] == 9
+    assert coverage["scope_roster_count"] == 8
+
+
+def test_universe_may_classify_etfs_but_tdx_bars_cannot_include_them(tmp_path, monkeypatch):
+    universe = _universe_document("2026-09-11", _DEFAULT_SECURITIES)
+    universe["securities"].append({
+        "security_id": "SH.510050", "source_security_key": "SH.510050",
+        "asset_class": "ETF", "share_class": "NOT_APPLICABLE",
+        "exchange": "SSE", "status": "ACTIVE", "source_id": "TDX_SECURITY_MASTER",
+    })
+    normalized = [{key: row[key] for key in (
+        "security_id", "asset_class", "share_class", "exchange", "status", "source_id",
+    )} for row in universe["securities"]]
+    universe["universe_sha256"] = hashlib.sha256(_canonical({
+        "contract_id": "V4_MARKET_UNIVERSE_COMPLETENESS_R1", "contract_version": "1.0.0",
+        "trade_date": "2026-09-11", "universe_id": "fixture-universe",
+        "exchange_scope": ["BSE", "SSE", "SZSE"],
+        "securities": sorted(normalized, key=lambda row: row["security_id"]),
+    })).hexdigest()
+    bars = [{"trade_date": "2026-09-11", "source_security_key": key, "board_scope": board}
+            for key, board in _DEFAULT_SECURITIES]
+    plan, _ = _signed_fixture(tmp_path / "listed-only", monkeypatch, tdx_bars=bars,
+                              universe_securities=universe)
+    assert plan["status"] == "ACCEPTED"
+    with pytest.raises(ingest.SourceIngestError, match="TDX_TARGET_SECURITY_OUTSIDE_A_SHARE_ROSTER"):
+        _signed_fixture(
+            tmp_path / "mixed-bars", monkeypatch,
+            tdx_bars=[*bars, {"trade_date": "2026-09-11", "source_security_key": "SH.510050",
+                              "board_scope": "SH_MAIN"}],
+            universe_securities=universe,
+        )
 
 
 def test_accepted_source_persist_path_verifies_before_first_sql_write(tmp_path, monkeypatch):
     plan, _ = _signed_fixture(tmp_path, monkeypatch)
+    authority = ingest._acceptance_authority_registry()
+    seen_pg = []
+    monkeypatch.setattr(ingest, "_acceptance_authority_registry",
+                        lambda pg=None: (seen_pg.append(pg), authority)[1])
     class StopAtSavepoint(Exception):
         pass
     class FakePG:
@@ -173,6 +288,7 @@ def test_accepted_source_persist_path_verifies_before_first_sql_write(tmp_path, 
             ingested_at="2026-09-11T16:05:00+08:00", system_available_at="2026-09-11T16:06:00+08:00",
         )
     assert fake.calls == [("SAVEPOINT v4_source_ingest_r6", None)]
+    assert len(seen_pg) == 2 and all(item is fake for item in seen_pg)
 
     bad = dict(plan)
     bad["acceptance_receipt"] = {**plan["acceptance_receipt"], "signature_ed25519": base64.b64encode(b"x" * 64).decode()}
@@ -194,31 +310,42 @@ def test_raw_receipt_is_produced_signed_verified_and_consumed_from_reader_shape(
     registry = {"contract_id": ingest.RAW_OWNER_AUTHORITY_CONTRACT_ID, "status": "ACTIVE",
                 "issuers": {"fixture-raw-owner": {"status": "ACTIVE",
                     "capabilities": ["SIGN_RAW_OWNER_RECEIPT"], "public_key_b64": base64.b64encode(public).decode()}}}
-    monkeypatch.setattr(ingest, "_raw_owner_authority_registry", lambda pg=None: registry)
+    seen_pg = []
+    monkeypatch.setattr(ingest, "_raw_owner_authority_registry",
+                        lambda pg=None: (seen_pg.append(pg), registry)[1])
     tdx = next(row for row in facts if row["source_key"] == "tdx")
-    owners = {
-        owner: {"owner": owner, "status": "DEGRADED_PASS", "accepted_scopes": [scope],
-                "trade_date": plan["trade_date"], "source_package_id": plan["package_id"],
-                "source_package_sha256": plan["package_sha256"], "source_revision_id": tdx["source_revision_id"]}
-        for owner, scope in (("V4-00B", "LIFECYCLE_SCHEMA"), ("V4-00C", "PUBLICATION_IDENTITY"),
-                             ("V4-00D", "A_STOCK_TDX_SOURCE"))
-    }
     signer = {"issuer_id": "fixture-raw-owner", "sign": lambda raw: base64.b64encode(raw_key.sign(raw)).decode()}
-    receipt = ingest.produce_raw_owner_receipt(
-        source, owners, signed_at="2026-09-11T16:10:00Z", signer=signer,
-    )
-    assert ingest.verify_raw_owner_receipt(receipt) == "fixture-raw-owner"
-
     class FakeReceiptPG:
         def __init__(self): self.receipt = None; self.sha = None; self.query = ""
         def execute(self, sql, params=None):
             self.query = sql
-            if sql.startswith("INSERT INTO v4.stage00_raw_owner_receipts"):
-                self.receipt = json.loads(params[5]); self.sha = params[4]
+            self.params = params
             return self
-        def fetchone(self): return (self.sha,)
+        def fetchone(self):
+            if "current_database()" in self.query:
+                return ("market_research", 1, "127.0.0.1/32", 5432)
+            if "to_regclass" in self.query:
+                return (self.params[0],)
+            return (self.sha,)
         def fetchall(self): return [(self.receipt, self.sha)] if self.receipt else []
     fake_pg = FakeReceiptPG()
+    owners = ingest._derive_raw_owner_results(
+        fake_pg, source, package, tdx, {"database": "market_research", "database_oid": 1,
+                                        "host": "127.0.0.1/32", "port": 5432},
+    )
+    receipt = ingest.produce_raw_owner_receipt(
+        source, owners, signed_at="2026-09-11T16:10:00Z", signer=signer, pg=fake_pg,
+    )
+    assert ingest.verify_raw_owner_receipt(receipt, pg=fake_pg) == "fixture-raw-owner"
+    assert seen_pg and all(item is fake_pg for item in seen_pg)
+
+    old_execute = fake_pg.execute
+    def receipt_execute(sql, params=None):
+        old_execute(sql, params)
+        if sql.startswith("INSERT INTO v4.stage00_raw_owner_receipts"):
+            fake_pg.receipt = json.loads(params[5]); fake_pg.sha = params[4]
+        return fake_pg
+    fake_pg.execute = receipt_execute
     ingest.persist_raw_owner_receipt(fake_pg, receipt)
     loaded, verified = ingest.read_raw_owner_receipt(
         fake_pg, trade_date=plan["trade_date"], source_package_id=plan["package_id"],
@@ -231,6 +358,48 @@ def test_raw_receipt_is_produced_signed_verified_and_consumed_from_reader_shape(
     bad_signature = {**receipt, "signature_ed25519": base64.b64encode(b"z" * 64).decode()}
     with pytest.raises(ingest.SourceIngestError, match="DIGEST_MISMATCH|SIGNATURE_INVALID"):
         ingest.verify_raw_owner_receipt(bad_signature)
+
+    fake_owner = {key: dict(value) for key, value in owners.items()}
+    fake_owner["V4-00D"]["status"] = "DEGRADED_PASS"
+    with pytest.raises(ingest.SourceIngestError, match="RAW_OWNER_INPUT_INVALID:V4-00D"):
+        ingest.produce_raw_owner_receipt(
+            source, fake_owner, signed_at="2026-09-11T16:10:00Z", signer=signer, pg=fake_pg,
+        )
+
+
+def test_source_acceptance_reverification_uses_supplied_pg_snapshot(tmp_path, monkeypatch):
+    plan, _ = _signed_fixture(tmp_path, monkeypatch)
+    seen = []
+    registry = ingest._acceptance_authority_registry()
+    monkeypatch.setattr(ingest, "_acceptance_authority_registry",
+                        lambda pg=None: (seen.append(pg), registry)[1])
+    sentinel_cursor = object()
+    proof = ingest.verify_source_package_manifest_authority(
+        plan["package_manifest"], pg=sentinel_cursor,
+    )
+    assert proof["receipt_sha256"] == plan["package_manifest"]["acceptance_proof"]["receipt_sha256"]
+    assert seen == [sentinel_cursor]
+
+
+def test_raw_migration_registry_and_truncate_guard_are_static_and_hash_bound():
+    import importlib.util
+    from pathlib import Path
+    sql_path = Path("src/workbench_db/migrations/v4_postgres/003_stage00_raw_owner_receipts.sql")
+    sql = sql_path.read_text(encoding="utf-8")
+    assert "BEFORE TRUNCATE ON v4.stage00_raw_owner_receipts" in sql
+    assert "REFERENCES v4.source_packages(package_id)" in sql
+    assert "REFERENCES v4.source_revisions(source_revision_id)" in sql
+    assert "CREATE SCHEMA" not in sql.upper()
+    registry_text = Path("scripts/apply_v4_phase0_schema.py").read_text(encoding="utf-8")
+    assert "STAGE00_SINGLE_MIGRATION" in registry_text
+    assert "UNDEPLOYED_REQUIRES_SEPARATE_STAGE00_MIGRATION_AUTHORIZATION" in registry_text
+    assert "cryptography>=44,<47" in Path("requirements-windows-package.txt").read_text(encoding="utf-8")
+    spec = importlib.util.spec_from_file_location(
+        "stage00_migration_registry", "scripts/apply_v4_phase0_schema.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.verify_stage00_single_migration_definition()["status"] == "DEFINED_NOT_APPLIED"
 
 
 def test_persistence_with_unregistered_issuer_rejects_before_sql(tmp_path, monkeypatch):

@@ -292,9 +292,11 @@ def _package_acceptance_errors(
     # inventory bound into its accepted manifest.
     coverage = manifest.get("accepted_board_coverage")
     coverage_counts = coverage.get("counts") if isinstance(coverage, Mapping) else None
-    coverage_body = ({"boards": coverage.get("boards"), "counts": coverage_counts,
-                      "target_trade_date": coverage.get("target_trade_date")}
+    coverage_body = ({key: value for key, value in coverage.items() if key != "digest"}
                      if isinstance(coverage, Mapping) and isinstance(coverage_counts, Mapping) else None)
+    universe_fact = next((row for row in facts if row.get("source_key") == "security_universe"), None)
+    universe_locator = universe_fact.get("record_locator") if isinstance(universe_fact, Mapping) else None
+    suspended_counts = coverage.get("suspended_counts") if isinstance(coverage, Mapping) else None
     coverage_digest = hashlib.sha256(json.dumps(
         coverage_body, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
     ).encode("utf-8")).hexdigest() if coverage_body is not None else None
@@ -304,6 +306,26 @@ def _package_acceptance_errors(
                    or not isinstance(coverage_counts.get(board), int)
                    or coverage_counts[board] <= 0 for board in TDX_BOARD_SCOPES)
             or coverage.get("target_trade_date") != target
+            or not isinstance(coverage.get("roster_count"), int)
+            or not isinstance(coverage.get("scope_roster_count"), int)
+            or not isinstance(coverage.get("trading_row_count"), int)
+            or not isinstance(coverage.get("suspended_row_count"), int)
+            or not isinstance(suspended_counts, Mapping)
+            or any(isinstance(suspended_counts.get(board), bool)
+                   or not isinstance(suspended_counts.get(board), int)
+                   or suspended_counts[board] < 0 for board in TDX_BOARD_SCOPES)
+            or coverage.get("scope_roster_count") != coverage.get("trading_row_count") + coverage.get("suspended_row_count")
+            or coverage.get("scope_roster_count") > coverage.get("roster_count")
+            or sum(coverage_counts.values()) != coverage.get("trading_row_count")
+            or sum(suspended_counts.values()) != coverage.get("suspended_row_count")
+            or not isinstance(universe_locator, Mapping)
+            or coverage.get("universe_id") != universe_locator.get("universe_id")
+            or coverage.get("universe_sha256") != universe_locator.get("universe_sha256")
+            or coverage.get("roster_count") != universe_locator.get("record_count")
+            or not isinstance(coverage.get("roster_sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", coverage["roster_sha256"])
+            or not isinstance(coverage.get("tdx_ohlcva_sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", coverage["tdx_ohlcva_sha256"])
             or coverage.get("digest") != coverage_digest):
         errors.append("FOUR_BOARD_COVERAGE_UNPROVEN")
     elif not any(
@@ -311,7 +333,7 @@ def _package_acceptance_errors(
         and row.get("fact_digest") == coverage.get("digest")
         and row.get("source_fact_sha256") == coverage.get("digest")
         and row.get("record_locator") == coverage_body
-        and row.get("record_count") == sum(coverage_counts.values())
+        and row.get("record_count") == coverage.get("roster_count")
         for row in bindings if isinstance(row, Mapping)
     ):
         errors.append("FOUR_BOARD_COVERAGE_NOT_BOUND_TO_ACCEPTED_PACKAGE")
@@ -342,11 +364,11 @@ def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str
             or receipt.get("source_revision_sha256") != next((row.get("digest") for row in facts
                 if row.get("source_revision_id") == receipt.get("source_revision_id")), None)):
         errors.append("RAW_RECEIPT_SOURCE_REVISION_MISMATCH")
-    if receipt.get("raw_basis") != "TDX_RAW_NATIVE":
+    if receipt.get("raw_basis") != "TDX_GBBQ_UNCHANGED":
         errors.append("RAW_RECEIPT_BASIS_MISMATCH")
     if receipt.get("source_identity_status") != "RESOLVED":
         errors.append("RAW_RECEIPT_SOURCE_IDENTITY_UNRESOLVED")
-    if receipt.get("source_trading_status") != "TRADING":
+    if receipt.get("source_trading_status") not in {"TRADING", "TRADING_WITH_SUSPENSIONS"}:
         errors.append("RAW_RECEIPT_SOURCE_NOT_TRADING")
     if receipt.get("source_knowledge_status") != "AS_RECORDED":
         errors.append("RAW_RECEIPT_SOURCE_KNOWLEDGE_NOT_AS_RECORDED")
@@ -363,6 +385,20 @@ def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str
         errors.append("RAW_RECEIPT_SIGNED_AT_INVALID")
     if receipt.get("source_package_sha256") != (package.get("package_sha256") if isinstance(package, Mapping) else None):
         errors.append("RAW_RECEIPT_PACKAGE_DIGEST_MISMATCH")
+    manifest = package.get("manifest") if isinstance(package, Mapping) else None
+    coverage = manifest.get("accepted_board_coverage") if isinstance(manifest, Mapping) else None
+    if (not isinstance(coverage, Mapping)
+            or receipt.get("source_universe_id") != coverage.get("universe_id")
+            or receipt.get("source_universe_sha256") != coverage.get("universe_sha256")
+            or receipt.get("source_roster_sha256") != coverage.get("roster_sha256")
+            or receipt.get("source_roster_count") != coverage.get("roster_count")
+            or receipt.get("source_scope_roster_count") != coverage.get("scope_roster_count")
+            or receipt.get("source_trading_row_count") != coverage.get("trading_row_count")
+            or receipt.get("source_suspended_row_count") != coverage.get("suspended_row_count")
+            or receipt.get("source_tdx_ohlcva_sha256") != coverage.get("tdx_ohlcva_sha256")
+            or receipt.get("source_tdx_record_count") != next((row.get("record_count") for row in facts
+                if row.get("source_revision_id") == receipt.get("source_revision_id")), None)):
+        errors.append("RAW_RECEIPT_ROSTER_OR_TDX_BINDING_MISMATCH")
     owner_results = receipt.get("owner_results")
     if not isinstance(owner_results, Mapping):
         errors.append("RAW_RECEIPT_OWNER_RESULTS_MISSING")

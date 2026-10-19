@@ -9,24 +9,41 @@ from v4.contracts import phase0_gate
 def _accepted_package_fixture():
     package_id, package_sha, fact_digest, revision_id = "fixture-package", "a" * 64, "b" * 64, "fixture-revision"
     target = "2026-09-11"
+    universe_id, universe_sha, roster_sha = "fixture-universe", "f" * 64, "9" * 64
     coverage = {
         "boards": list(phase0_gate.TDX_BOARD_SCOPES),
         "counts": {board: 1 for board in phase0_gate.TDX_BOARD_SCOPES},
         "target_trade_date": target,
-        "digest": fact_digest,
+        "universe_id": universe_id, "universe_sha256": universe_sha,
+        "roster_count": 4, "scope_roster_count": 4,
+        "trading_row_count": 4, "suspended_row_count": 0,
+        "suspended_counts": {board: 0 for board in phase0_gate.TDX_BOARD_SCOPES},
+        "roster_sha256": roster_sha, "tdx_ohlcva_sha256": "8" * 64,
     }
-    locator = {"boards": coverage["boards"], "counts": coverage["counts"],
-               "target_trade_date": target}
-    binding = {
+    coverage["digest"] = hashlib.sha256(json.dumps(
+        coverage, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")).hexdigest()
+    bindings = [{
+        "source_key": "tdx", "logical_fact_id": "fixture-tdx",
+        "fact_digest": "d" * 64, "source_fact_sha256": "d" * 64,
+        "record_locator": {"record_count": 4}, "record_count": 4, "byte_count": 120,
+    }, {
+        "source_key": "security_universe", "logical_fact_id": "fixture-universe",
+        "fact_digest": "e" * 64, "source_fact_sha256": "e" * 64,
+        "record_locator": {"universe_id": universe_id, "universe_sha256": universe_sha, "record_count": 4},
+        "record_count": 4, "byte_count": 240,
+    }, {
         "source_key": "tdx_board_coverage", "logical_fact_id": "fixture-coverage",
-        "fact_digest": fact_digest, "source_fact_sha256": "e" * 64,
-        "record_locator": locator, "record_count": 4, "byte_count": 128,
-    }
+        "fact_digest": coverage["digest"], "source_fact_sha256": coverage["digest"],
+        "record_locator": {key: value for key, value in coverage.items() if key != "digest"},
+        "record_count": 4, "byte_count": 128,
+    }]
     manifest = {
         "package_id": package_id, "package_sha256": package_sha, "trade_date": target,
         "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": True,
+        "price_basis": "TDX_GBBQ_UNCHANGED",
         "PIT_ELIGIBLE": True, "acceptance_proof": {"issuer_id": "fixture", "receipt_sha256": "c" * 64},
-        "source_fact_bindings": [binding], "accepted_board_coverage": coverage,
+        "source_fact_bindings": bindings, "accepted_board_coverage": coverage,
         "tdx_source_packages": [{
             "source_role": "OFFICIAL_CURRENT_PACKAGE", "T0": target,
             "provider_package_date": target, "first_available_at": "2026-09-11T08:00:00+08:00",
@@ -37,28 +54,37 @@ def _accepted_package_fixture():
     package = {"package_id": package_id, "package_sha256": package_sha,
                "target_trade_date": target, "accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
                "manifest": manifest}
-    facts = [{
-        **binding, "source_revision_id": revision_id, "revision_no": 1,
-        "digest": fact_digest, "source_package_id": package_id,
-        "source_package_source_key": "tdx_board_coverage", "source_fact_digest": fact_digest,
-        "observed_at": "2026-09-11T08:00:00+08:00", "ingested_at": "2026-09-11T08:01:00+08:00",
-        "system_available_at": "2026-09-11T08:02:00+08:00",
-    }]
+    facts = [{**binding, "source_revision_id": revision_id + "-" + str(index), "revision_no": 1,
+              "digest": binding["fact_digest"], "source_package_id": package_id,
+              "source_package_source_key": binding["source_key"], "source_fact_digest": binding["fact_digest"],
+              "observed_at": "2026-09-11T08:00:00+08:00", "ingested_at": "2026-09-11T08:01:00+08:00",
+              "system_available_at": "2026-09-11T08:02:00+08:00"}
+             for index, binding in enumerate(bindings)]
+    facts[0]["source_revision_id"] = revision_id
+    facts[0]["record_count"] = 4
+    facts[0]["digest"] = "d" * 64
+    facts[0]["source_fact_digest"] = "d" * 64
     return package, facts
 
 
 def _raw_receipt_fixture(package, facts):
     package_id = package["package_id"]
     digest = package["package_sha256"]
-    revision = facts[0]
+    revision = next(row for row in facts if row["source_key"] == "tdx")
     receipt = {
         "receipt_id": "fixture-raw-receipt", "owner": "V4-00E",
         "status": "ACCEPTED", "scope": "RAW_BOOTSTRAP",
         "trade_date": package["target_trade_date"], "source_package_id": package_id,
         "source_package_sha256": digest, "source_revision_id": revision["source_revision_id"],
-        "source_revision_sha256": revision["digest"], "raw_basis": "TDX_RAW_NATIVE",
+        "source_revision_sha256": revision["digest"], "raw_basis": "TDX_GBBQ_UNCHANGED",
         "source_identity_status": "RESOLVED", "source_trading_status": "TRADING",
         "source_knowledge_status": "AS_RECORDED",
+        "source_universe_id": "fixture-universe", "source_universe_sha256": "f" * 64,
+        "source_roster_sha256": "9" * 64, "source_roster_count": 4,
+        "source_scope_roster_count": 4,
+        "source_trading_row_count": 4, "source_suspended_row_count": 0,
+        "source_tdx_record_count": 4,
+        "source_tdx_ohlcva_sha256": "8" * 64,
         "signed_at": "2026-09-11T08:03:00+08:00",
         "owner_results": {
             owner: {

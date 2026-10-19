@@ -85,7 +85,7 @@ def fresh_schema_rebuild_probe() -> dict:
             with psycopg.connect(temp_dsn) as pg:
                 with pg.transaction():
                     pg.execute(text)
-                    pg.execute("insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)", (version, checksum, version))
+                    pg.execute("insert into v4.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)", (version, checksum, version))
             applied.append({"version": version, "checksum_sha256": checksum})
         with psycopg.connect(temp_dsn) as pg:
             size_after = int(pg.execute("select pg_database_size(current_database())").fetchone()[0])

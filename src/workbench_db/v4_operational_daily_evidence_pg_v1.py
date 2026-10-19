@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from .v4_forward_pg_r1 import canonical, digest
+from .v4_historical_source_ingress_pg_r1 import read_bound
 from .v4_operational_owner_pg_closeout import (
     prepare as append_owner_fact,
     read as read_owner_fact,
@@ -21,6 +22,19 @@ def _fact_token(day, name, source_binding):
         source_binding=source_binding)))
 
 
+def _owner_source_binding(root, source_binding, *, raw=None):
+    """Supply the byte count required by Owner facts without changing the Head locator."""
+    if not isinstance(source_binding, dict) or not isinstance(source_binding.get('path'), str) or not isinstance(source_binding.get('sha256'), str):
+        raise ValueError('DAILY_EVIDENCE_SOURCE_BINDING_INVALID')
+    if type(source_binding.get('bytes')) is int and source_binding['bytes'] >= 0:
+        return {key: source_binding[key] for key in ('path', 'sha256', 'bytes')}
+    if raw is None:
+        raw = read_bound(root, source_binding['path'], source_binding['sha256'])['raw']
+    if digest(raw) != source_binding['sha256']:
+        raise ValueError('DAILY_EVIDENCE_SOURCE_DIGEST_MISMATCH')
+    return {'path': source_binding['path'], 'sha256': source_binding['sha256'], 'bytes': len(raw)}
+
+
 def prepare(root, candidate):
     """Copy exact daily QA evidence into immutable PG facts for a successor Head."""
     root = Path(root).resolve()
@@ -31,9 +45,12 @@ def prepare(root, candidate):
         return dict(contract_id=CONTRACT, T0=day, documents=list(DOCUMENTS), reused=True,
             publication=False)
     receipt_binding = candidate['day_receipt']
-    receipt = json.loads(checked(root, receipt_binding).read_bytes())
+    receipt_raw = checked(root, receipt_binding).read_bytes()
+    receipt = json.loads(receipt_raw)
+    owners = candidate.get('owners')
+    target_owners = owners.get(day) if isinstance(owners, dict) else None
     if (receipt.get('target_session') != day or receipt.get('acceptance') != 'DERIVED_READY'
-            or receipt.get('owners') != candidate.get('owners')):
+            or not isinstance(target_owners, dict) or receipt.get('owners') != target_owners):
         raise ValueError('DAILY_EVIDENCE_RECEIPT_IDENTITY_MISMATCH')
     sources = {
         'day_receipt': receipt_binding,
@@ -45,10 +62,12 @@ def prepare(root, candidate):
     entries = {}
     for name in DOCUMENTS:
         source_binding = sources[name]
-        value = receipt if name == 'day_receipt' else json.loads(checked(root, source_binding).read_bytes())
+        raw = receipt_raw if name == 'day_receipt' else checked(root, source_binding).read_bytes()
+        value = receipt if name == 'day_receipt' else json.loads(raw)
+        owner_source_binding = _owner_source_binding(root, source_binding, raw=raw)
         fact_key = _fact_token(day, name, source_binding)
-        descriptor = append_owner_fact(root, fact_key, day, DOMAIN, source_binding, [value])
-        if read_owner_fact(root, descriptor, fact_key, day, DOMAIN, source_binding) != [value]:
+        descriptor = append_owner_fact(root, fact_key, day, DOMAIN, owner_source_binding, [value])
+        if read_owner_fact(root, descriptor, fact_key, day, DOMAIN, owner_source_binding) != [value]:
             raise ValueError('DAILY_EVIDENCE_PG_PAYLOAD_DIFFERENCE:'+name)
         entries[name] = dict(source_binding=source_binding, descriptor=descriptor,
             fact_token=_fact_token(day, name, source_binding))
@@ -76,8 +95,9 @@ def read(root, candidate, name, *, source_binding=None, workspace_root=None):
         raise ValueError('DAILY_EVIDENCE_FACT_TOKEN_MISMATCH')
     if name in ('day_receipt', 'period_numeric_oracle') and candidate.get(name) != entry.get('descriptor'):
         raise ValueError('DAILY_EVIDENCE_HEAD_DESCRIPTOR_MISMATCH')
+    owner_source_binding = _owner_source_binding(root, binding)
     content = read_owner_fact(root, entry['descriptor'], entry['fact_token'], authority['T0'],
-        DOMAIN, binding, workspace_root=workspace_root)
+        DOMAIN, owner_source_binding, workspace_root=workspace_root)
     if not isinstance(content, list) or len(content) != 1:
         raise ValueError('DAILY_EVIDENCE_PG_PAYLOAD_SHAPE_INVALID')
     return content[0]

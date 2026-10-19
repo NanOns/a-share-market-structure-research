@@ -86,7 +86,7 @@ def _assert_empty_or_replayable(pg) -> None:
         raise RuntimeError("ISOLATED_SCHEMA_PARTIAL_STATE")
     if schemas:
         exists = pg.execute(
-            "SELECT to_regclass('v4_meta.schema_migrations')"
+            "SELECT to_regclass('v4.schema_migrations')"
         ).fetchone()[0]
         if exists is None:
             raise RuntimeError("ISOLATED_SCHEMA_LEDGER_MISSING")
@@ -100,9 +100,9 @@ def apply_and_verify(pg) -> dict:
     with pg.transaction():
         _assert_empty_or_replayable(pg)
         for path, version, checksum in files:
-            ledger = pg.execute("SELECT checksum_sha256 FROM v4_meta.schema_migrations WHERE version=%s",
+            ledger = pg.execute("SELECT checksum_sha256 FROM v4.schema_migrations WHERE version=%s",
                                 (version,)).fetchone() if pg.execute(
-                                    "SELECT to_regclass('v4_meta.schema_migrations')"
+                                    "SELECT to_regclass('v4.schema_migrations')"
                                 ).fetchone()[0] else None
             if ledger:
                 if ledger[0].strip() != checksum:
@@ -111,7 +111,7 @@ def apply_and_verify(pg) -> dict:
                 continue
             pg.execute(path.read_text(encoding="utf-8"))
             pg.execute(
-                "INSERT INTO v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) "
+                "INSERT INTO v4.schema_migrations(version,checksum_sha256,applied_at,contract_id) "
                 "VALUES (%s,%s,clock_timestamp(),%s)",
                 (version, checksum, version),
             )
@@ -145,7 +145,7 @@ def apply_and_verify(pg) -> dict:
                                          for _, deferred, initially_deferred in trigger_rows):
             raise RuntimeError("DEFERRED_CONSTRAINT_TRIGGER_CATALOG_MISMATCH")
         ledger_rows = pg.execute(
-            "SELECT version,checksum_sha256 FROM v4_meta.schema_migrations ORDER BY version"
+            "SELECT version,checksum_sha256 FROM v4.schema_migrations ORDER BY version"
         ).fetchall()
         wanted = {version: checksum for _, version, checksum in files}
         actual = {version: checksum.strip() for version, checksum in ledger_rows}

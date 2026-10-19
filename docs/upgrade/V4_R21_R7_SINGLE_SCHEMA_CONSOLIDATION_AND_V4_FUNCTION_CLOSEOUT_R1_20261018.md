@@ -668,3 +668,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 三日输入及写入结果：10-14 TDX 行 5,563、BaoStock 日线 5,225/因子 22；10-15 TDX 行 5,565、BaoStock 日线 5,226/因子 22；10-16 TDX 行 5,567、BaoStock 日线 5,226/因子 48。三日均有 4 项来源事实；`persisted=true`、接口读回 `PASS`。
 - 随后通过新的 PG reader 逐日按 namespace/kind/key 读取，重新核验 trade date、package ID、诊断状态、全部事实键及 payload digest；三日均 `pg_readback=PASS`，payload SHA 分别为 `83d972808737dd80c685627d848a6209361cebb5463e3530958013beeed5a25c`、`93b4d095de14f9783ab617a9f6eb55925a593527a394761d9baa373fc4dd4a04`、`43c7a84146f67907b7bbc684b2c3fb759ed7c1062fc16fa12167cbe250cf2ed9`。
 - 三日均按合同保持 `DIAGNOSTIC_ONLY`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`，未生成 Owner/Publication/Accepted Head，也未把来源候选写成成功 Job。目前正式日更 Job 最新成功日仍为 2026-10-13；候选源数据落库和读回通过不等于完整 Owner 生命周期及正式日更发布验收通过。
+
+### 2026-10-19 本轮代码收口与清理证据复核
+
+- 本轮代码差异已按单 Schema 方向统一多个 PG 迁移验收及隔离夹具脚本：迁移账本 `v4.schema_migrations` 的读取、写入和校验不再指向旧 `v4_meta`。日更 PG Owner 证据路径补充缺失字节数时，会从已绑定 PG SourceIngress 精确读取并核对 SHA；日更回执中的 Owner 对照改为目标交易日的 Owner 集合，避免把跨日 Owner map 与单日回执混比。
+- 28766 只读日更预览新增最近一笔 `PUBLISHED_FULL` 历史 Job 的查询，并显式分别展示研究快照日期、历史日更日期和当前 Head 是否一致；前端入口标签同步调整。历史 Job 结果不会被提升成当前 Head。BaoStock 请求账本补记 10-18/19 请求计数。
+- PG 中 `v4.schema_migrations` 为统一后的迁移账本。当前开发库目录复核仅有业务 Schema `v4`，其余 75 个登记的旧 V4 Schema 均已不存在；但 `DROP_RESTRICT_SUCCESS` 持久回执只有 37/75。PostgreSQL 配置为 `log_statement=none` 且无慢语句日志，现存错误日志只能证明部分 `RESTRICT` 删除尝试因依赖而失败，无法追溯缺少回执项的成功删除。因此不得把其余 38 项补记为成功，也不得执行 `CASCADE`；清理完成度仍为部分通过。
+- 本轮单 Schema 表结构/消费者和日更模块总验收未完成：正式 Calendar、Operational Head、Publication Head 仍缺失，10-14 日 Owner/lifecycle QA 失败、10-15 仍排队，10-16 无正式 Job Day；10-14 至 10-16 的来源候选已写入 `v4.forward_facts` 并通过精确 PG 读回，但保持 `DIAGNOSTIC_ONLY`。28766 只读页面确认对应门禁，生产 28765 未变更，产品打包未执行。

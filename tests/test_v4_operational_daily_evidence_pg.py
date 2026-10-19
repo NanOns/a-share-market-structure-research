@@ -21,18 +21,27 @@ def test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles(tmp_path,monke
     sources={}
     for name,value in (('core.json',core),('sector.json',sector),('freeze.json',freeze),('period.json',period)):
         sources[name]=_document(name,value)
-    receipt={'target_session':day,'acceptance':'DERIVED_READY','owners':{},
+    source_freeze=sources['freeze.json'][0]
+    source_freeze.pop('bytes')
+    prior_day='2026-10-09'
+    prior_owners={'core':{'path':'prior-core.json','sha256':'a'*64,'bytes':1}}
+    target_owners={'core':{'path':'target-core.json','sha256':'b'*64,'bytes':1}}
+    receipt={'target_session':day,'acceptance':'DERIVED_READY','owners':target_owners,
         'numeric_core_oracle':sources['core.json'][0],
         'sector_oracle':sources['sector.json'][0],
-        'source_freeze':sources['freeze.json'][0]}
+        'source_freeze':source_freeze}
     receipt_binding,receipt_raw=_document('receipt.json',receipt)
     sources['receipt.json']=(receipt_binding,receipt_raw)
-    candidate={'accepted_trade_date':day,'owners':{},'day_receipt':receipt_binding,
+    candidate={'accepted_trade_date':day,'owners':{prior_day:prior_owners,day:target_owners},'day_receipt':receipt_binding,
         'period_numeric_oracle':sources['period.json'][0]}
     persisted={};descriptors={}
 
     def local_file(root,binding):
         return type('Payload',(),{'read_bytes':lambda self:sources[binding['path']][1]})()
+    def pg_read_bound(root,path,sha):
+        binding,raw=sources[path]
+        assert binding['sha256']==sha
+        return {'raw':raw,'source_path':path,'source_sha256':sha}
     def append(root,token,target_day,domain,source_binding,rows):
         descriptor={'path':domain+'/'+token+'.pg.json','sha256':token,'bytes':64,
             'pg_descriptor':{'kind':domain,'fact_key':token}}
@@ -44,6 +53,7 @@ def test_prepare_and_reader_use_pg_for_daily_receipts_and_oracles(tmp_path,monke
         return persisted[token]
 
     monkeypatch.setattr(evidence,'checked',local_file)
+    monkeypatch.setattr(evidence,'read_bound',pg_read_bound)
     monkeypatch.setattr(evidence,'append_owner_fact',append)
     monkeypatch.setattr(evidence,'read_owner_fact',read_owner)
 

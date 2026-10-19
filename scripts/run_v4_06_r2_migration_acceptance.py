@@ -119,11 +119,11 @@ def run_acceptance() -> dict:
             base = migration_receipt(pg)
             pg.execute(MIGRATION_013.read_text(encoding="utf-8"))
             checksum_013 = sha256(MIGRATION_013.read_bytes()).hexdigest()
-            pg.execute("insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)",
+            pg.execute("insert into v4.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)",
                        ("V4_06_STOCK_PROFILE_ENRICHMENTS_V1", checksum_013, "V4_06_STOCK_PROFILE_ENRICHMENTS_V1"))
             pg.execute(MIGRATION_014.read_text(encoding="utf-8"))
             checksum_014 = sha256(MIGRATION_014.read_bytes()).hexdigest()
-            pg.execute("insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)",
+            pg.execute("insert into v4.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)",
                        ("V4_06_TURNOVER_CONTRACT_SEMANTICS_R2", checksum_014, "V4_06_TURNOVER_CONTRACT_SEMANTICS_R2"))
 
             pg.execute("SAVEPOINT v4_06_r2_rollback_probe")

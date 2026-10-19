@@ -97,6 +97,52 @@ def _daily_source_runtime_receipts_preview(root):
     )
 
 
+def _latest_successful_daily_job_preview():
+    """Read the last durable daily success without treating it as a live Head."""
+    from workbench_db.v4_native import connection
+
+    with connection('v4', read_only=True) as pg:
+        row = pg.execute("""
+            SELECT j.job_id, j.through_date::text, j.finished_at,
+                   d.trade_date::text, e.safe_detail,
+                   (SELECT head_sha256 FROM v4.operational_research_heads
+                     WHERE singleton=true) AS current_head_sha256
+              FROM v4.jobs_update_jobs_r1 j
+              LEFT JOIN LATERAL (
+                  SELECT trade_date FROM v4.jobs_update_job_days_r1
+                   WHERE job_id=j.job_id AND state='PUBLISHED'
+                   ORDER BY trade_date DESC LIMIT 1
+              ) d ON true
+              LEFT JOIN LATERAL (
+                  SELECT safe_detail FROM v4.jobs_update_events_r1
+                   WHERE job_id=j.job_id AND event_code='PUBLISHED'
+                   ORDER BY event_id DESC LIMIT 1
+              ) e ON true
+             WHERE j.mode='CATCH_UP' AND j.status='PUBLISHED_FULL'
+             ORDER BY j.finished_at DESC NULLS LAST, j.created_at DESC
+             LIMIT 1
+        """).fetchone()
+    if row is None:
+        return None
+    job_id, through_date, finished_at, published_date, detail, current_head_sha256 = row
+    if isinstance(detail, str):
+        detail = json.loads(detail)
+    detail = detail if isinstance(detail, dict) else {}
+    candidate_sha256 = detail.get('head_sha256')
+    if not isinstance(candidate_sha256, str):
+        candidate_sha256 = None
+    return dict(
+        job_id=job_id,
+        through_date=through_date,
+        published_trade_date=published_date,
+        finished_at=finished_at.isoformat() if hasattr(finished_at, 'isoformat') else finished_at,
+        candidate_sha256=candidate_sha256,
+        current_head_sha256=current_head_sha256,
+        head_is_current=(candidate_sha256 is not None and candidate_sha256 == current_head_sha256),
+        status='HISTORICAL_PUBLISHED_FULL_JOB',
+    )
+
+
 def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_candidate_release_id=None, static_root=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
@@ -156,8 +202,12 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                     if tail==['status']:
                         context=candidate_reader().context
                         source_receipts=_daily_source_runtime_receipts_preview(root)
+                        latest_daily_job=_latest_successful_daily_job_preview()
                         return self.send(200,dict(contract_id='V4_DAILY_STATUS_CANDIDATE_PREVIEW_R1',
                             status='PREVIEW_ONLY',last_good_trade_date=context['accepted_trade_date'],
+                            research_snapshot_trade_date=context['accepted_trade_date'],
+                            latest_successful_daily_date=(latest_daily_job or {}).get('published_trade_date'),
+                            latest_successful_daily_job=latest_daily_job,
                             missing_sessions=None,calendar_status='NO_ACCEPTED_MARKET_CALENDAR_HEAD',
                             context_token=context.get('context_token'),publication_id=context.get('publication_id'),
                             database_identity=context.get('database_identity'),source_mode='PG_CANDIDATE_SNAPSHOT',

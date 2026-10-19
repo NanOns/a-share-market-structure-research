@@ -245,24 +245,39 @@ def _sql_call(node: ast.AST, method: str) -> bool:
             and node.func.value.id == "sql")
 
 
-def _safe_sql_component(node: ast.AST) -> bool:
+def _sql_reference(node: ast.AST, method: str) -> bool:
+    return (isinstance(node, ast.Attribute) and node.attr == method
+            and isinstance(node.value, ast.Name) and node.value.id == "sql")
+
+
+def _safe_sql_component(node: ast.AST, safe_names: set[str] | None = None) -> bool:
     """Recognize psycopg composables that quote identifiers or hold fixed SQL text."""
+    safe_names = safe_names or set()
+    if isinstance(node, ast.Name) and node.id in safe_names:
+        return True
     if _sql_call(node, "Identifier"):
         return bool(node.args) and not node.keywords
+    if _sql_call(node, "Literal"):
+        return len(node.args) == 1 and not node.keywords
     if _sql_call(node, "SQL"):
         return (len(node.args) == 1 and isinstance(node.args[0], ast.Constant)
                 and isinstance(node.args[0].value, str) and not node.keywords)
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-        if node.func.attr == "format" and _sql_call(node.func.value, "SQL"):
-            return (_safe_sql_component(node.func.value)
-                    and all(_safe_sql_component(arg) for arg in node.args)
-                    and all(_safe_sql_component(item.value) for item in node.keywords))
-        if node.func.attr == "join" and _sql_call(node.func.value, "SQL") and len(node.args) == 1:
+        if node.func.attr == "format" and (_sql_call(node.func.value, "SQL")
+                                             or isinstance(node.func.value, ast.Name) and node.func.value.id in safe_names):
+            return (_safe_sql_component(node.func.value, safe_names)
+                    and all(_safe_sql_component(arg, safe_names) for arg in node.args)
+                    and all(_safe_sql_component(item.value, safe_names) for item in node.keywords))
+        if node.func.attr == "join" and (_sql_call(node.func.value, "SQL")
+                                           or isinstance(node.func.value, ast.Name) and node.func.value.id in safe_names) and len(node.args) == 1:
             iterable = node.args[0]
-            return (_safe_sql_component(node.func.value)
-                    and isinstance(iterable, ast.Call) and isinstance(iterable.func, ast.Name)
-                    and iterable.func.id == "map" and len(iterable.args) == 2
-                    and _sql_call(iterable.args[0], "Identifier"))
+            identifier_map = (isinstance(iterable, ast.Call) and isinstance(iterable.func, ast.Name)
+                              and iterable.func.id == "map" and len(iterable.args) == 2
+                              and _sql_reference(iterable.args[0], "Identifier"))
+            literal_list = isinstance(iterable, (ast.List, ast.Tuple)) and all(
+                _safe_sql_component(item, safe_names) for item in iterable.elts)
+            return (_safe_sql_component(node.func.value, safe_names)
+                    and (identifier_map or literal_list))
     return False
 
 
@@ -283,14 +298,18 @@ def _has_unsafe_dynamic_sql(text: str, path: str) -> bool:
     except SyntaxError:
         return True
     safe_sql_names: set[str] = set()
-    for item in ast.walk(tree):
-        if isinstance(item, (ast.Assign, ast.AnnAssign)) and item.value is not None:
-            if isinstance(item, ast.Assign):
-                targets = item.targets
-            else:
-                targets = [item.target]
-            if _safe_sql_component(item.value):
-                safe_sql_names.update(target.id for target in targets if isinstance(target, ast.Name))
+    assignments = [item for item in ast.walk(tree) if isinstance(item, (ast.Assign, ast.AnnAssign)) and item.value is not None]
+    for _ in range(len(assignments) + 1):
+        changed = False
+        for item in assignments:
+            targets = item.targets if isinstance(item, ast.Assign) else [item.target]
+            if _safe_sql_component(item.value, safe_sql_names):
+                for target in targets:
+                    if isinstance(target, ast.Name) and target.id not in safe_sql_names:
+                        safe_sql_names.add(target.id)
+                        changed = True
+        if not changed:
+            break
     for node in ast.walk(tree):
         if isinstance(node, ast.JoinedStr):
             prefix = ""
@@ -312,15 +331,15 @@ def _has_unsafe_dynamic_sql(text: str, path: str) -> bool:
             receiver_is_safe = (_sql_call(receiver, "SQL")
                                 or isinstance(receiver, ast.Name) and receiver.id in safe_sql_names)
             if receiver_is_safe:
-                if all(_safe_sql_component(arg) for arg in node.args) and all(
-                        _safe_sql_component(item.value) for item in node.keywords):
+                if all(_safe_sql_component(arg, safe_sql_names) for arg in node.args) and all(
+                        _safe_sql_component(item.value, safe_sql_names) for item in node.keywords):
                     continue
                 return True
             if isinstance(receiver, ast.Constant) and isinstance(receiver.value, str) and SQL_HEAD.match(receiver.value):
                 return True
             if _sql_call(receiver, "SQL") and not _safe_sql_component(receiver):
                 return True
-        if _sql_call(node, "SQL") and not _safe_sql_component(node):
+        if _sql_call(node, "SQL") and not _safe_sql_component(node, safe_sql_names):
             return True
     return False
 

@@ -69,6 +69,10 @@ def test_psycopg_identifier_composition_is_allowed_but_untrusted_sql_text_is_not
     assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe)}
     safe_alias = b"from psycopg import sql\nquery = sql.SQL('SELECT * FROM {}')\nquery.format(sql.Identifier(schema_name))\n"
     assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe_alias)}
+    safe_nested = b"from psycopg import sql\nrel = sql.SQL('{}.facts').format(sql.Identifier(schema))\nquery = sql.SQL('SELECT * FROM {}').format(rel)\n"
+    assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe_nested)}
+    safe_literal = b"from psycopg import sql\nquery = sql.SQL('ALTER TABLE {} SET DEFAULT {}').format(sql.Identifier(table), sql.Literal(value))\n"
+    assert "DYNAMIC_SQL" not in {item.code for item in policy.inspect_blob("scripts/migrate.py", safe_literal)}
     unsafe = b"from psycopg import sql\nquery = sql.SQL(sql_from_user).format(sql.SQL(identifier_from_user))\n"
     assert "DYNAMIC_SQL" in {item.code for item in policy.inspect_blob("scripts/migrate.py", unsafe)}
     unsafe_alias = b"from psycopg import sql\nquery = sql.SQL('SELECT * FROM {}')\nquery.format(sql.SQL(identifier_from_user))\n"

@@ -1,5 +1,5 @@
 """Additional full-regression guard: protected filesystem and isolated PG only."""
-import os,json,sys
+import contextvars,os,json,sys
 from pathlib import Path
 import pytest
 from tests.historical_r9_fixture_closeout import isolated_r9_replay
@@ -12,6 +12,18 @@ GUARDED_ROOTS=[]
 PG_DISPOSABLE_BASE=DISPOSABLE_BASE
 READONLY_TARGETED_PG_TESTS=False
 WRITE_TARGETED_STAGE00_PG_TESTS=False
+_STAGE00_PG_WRITE_TEST_ACTIVE=contextvars.ContextVar('stage00_pg_write_test_active',default=False)
+
+@pytest.fixture(autouse=True)
+def stage00_authorized_pg_test_context(request):
+    relative=request.node.path.resolve().relative_to(REPOSITORY).as_posix()
+    enabled=(WRITE_TARGETED_STAGE00_PG_TESTS
+             and relative=='tests/v4_phase0/test_postgres_schema.py')
+    token=_STAGE00_PG_WRITE_TEST_ACTIVE.set(enabled)
+    try:
+        yield
+    finally:
+        _STAGE00_PG_WRITE_TEST_ACTIVE.reset(token)
 
 @pytest.fixture(autouse=True)
 def original_v3_tray_labels_read_only_git_scope(request,monkeypatch):
@@ -94,7 +106,11 @@ def pytest_configure(config):
         and bool(requested) and requested<=readonly_allowlist)
     stage00_write_allowlist={'tests/v4_phase0/test_postgres_schema.py'}
     WRITE_TARGETED_STAGE00_PG_TESTS=(os.environ.get('V4_STAGE00_DEV_PG_TESTS')=='1'
-        and bool(requested) and requested<=stage00_write_allowlist)
+        and any(
+            allowed_path==selected_path
+            or allowed_path.startswith(selected_path.rstrip('/')+'/')
+            for selected_path in requested for allowed_path in stage00_write_allowlist
+        ))
     if READONLY_TARGETED_PG_TESTS:
         EVENTS.append(dict(event='targeted_pg_test_mode',decision='ALLOW_READ_ONLY_MARKET_RESEARCH',tests=sorted(requested)))
     if WRITE_TARGETED_STAGE00_PG_TESTS:
@@ -154,7 +170,7 @@ def pytest_configure(config):
             readonly_kw=dict(kw);readonly_kw['options']='-c default_transaction_read_only=on'
             EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_READ_ONLY_TARGETED_PG',database='market_research',port='5432'))
             return connect(conninfo,*args,**readonly_kw)
-        if (WRITE_TARGETED_STAGE00_PG_TESTS and params.get('host')=='127.0.0.1'
+        if (_STAGE00_PG_WRITE_TEST_ACTIVE.get() and params.get('host')=='127.0.0.1'
                 and params.get('port')=='5432' and params.get('dbname')=='market_research'):
             write_kw=dict(kw);write_kw['options']='-c default_transaction_read_only=off'
             EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_USER_AUTHORIZED_STAGE00_DEV_PG',database='market_research',port='5432'))

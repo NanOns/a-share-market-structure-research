@@ -463,7 +463,7 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 
 - `phase0_gate`把RAW状态原因区分为无accepted source、无receipt、producer/read错误，避免错误下结论；contract reader仅在approval event缺失时展示PG候选，正式gate仍fail-closed。
 - Stage00 RAW单项迁移实现精确身份与哈希防护，执行后确认ledger、目标关系及空receipt表真实读回。Forward/Stage00 namespace不再从目录路径决定业务身份。
-- 测试：`tests/v4_phase0`（排除`test_postgres_schema.py`）及`tests/test_v4_daily_ingest_r6.py`、`tests/test_v4_contract_registry_pg_v1.py`，`182 passed`。`test_postgres_schema.py`单独接入当前PG结果`7 passed, 22 failed`；失败用例尝试插入当前约束要求先绑定的publication contract或source package fact，因此不能证明Stage00代码回归失败，也不能通过放松现行PG约束修复。本报告明确保留该集成测试不通过结果。
+- 测试修复：PG schema测试夹具改为在外层回滚事务中建立精确的publication合同批准绑定及accepted package→fact→revision链，保留现行PG保护约束；完整测试集合也可在显式授权下运行，隔离插件只在该schema测试模块上下文允许本机PG写。生命周期history契约字段从错误的`system_from`更正为现行schema字段`system_available_at`。本次最终命令`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`为`211 passed`，其中真实PG schema集成测试29项全部通过；先前的22个失败已修复，不再作为未关闭项。
 - 真实`acceptance --json --trade-date 2026-09-11`可成功连到`market_research`并执行诊断，但业务返回`BLOCKED`（命令退出1；V4-01权限`BLOCKED`）：5个Stage00合同缺批准读取，accepted source package为0，LIFECYCLE_SCHEMA、PUBLICATION_IDENTITY、RAW_BOOTSTRAP及来源scope缺实际事实。doctor执行入口正常不等于阶段通过。
 - `git diff --check`通过。未运行生产服务、未写Head、未启动远端CI。
 

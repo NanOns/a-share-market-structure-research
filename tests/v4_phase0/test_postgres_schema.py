@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import date
+import hashlib
 import json
 from pathlib import Path
 import uuid
@@ -44,15 +45,41 @@ def add_calendar_session(pg, calendar_id, trade_date, session_no=None):
 def add_publication(pg, *, publication_id, namespace_id, trade_date, lineage_id, calendar_id=None, revision_no=1, core_revision=1, parent_id=None, prior_id=None, prior_state_head=None, prior_logical_digest=None, gap="INITIAL_BOUNDARY", status="ACCEPTED"):
     calendar_id = calendar_id or f"CAL-{namespace_id}"
     add_calendar_session(pg, calendar_id, trade_date)
+    # 测试事务内构造最小、精确的合同绑定；调用方最终ROLLBACK，不形成真实批准事实。
+    namespace = pg.execute(
+        "select namespace from v4.model_namespaces where namespace_id=%s", (namespace_id,)
+    ).fetchone()[0]
+    contract_id = f"TEST_SCHEMA_{publication_id}"
+    contract_version = "1.0.0"
+    raw_content = b'{"test_fixture":true}'
+    raw_sha256 = hashlib.sha256(raw_content).hexdigest()
+    source_revision = f"test-fixture:{publication_id}"
+    pg.execute(
+        """insert into v4.contract_versions
+             (contract_id,version,raw_content,raw_sha256,content_format,schema_version,namespace,source_revision)
+           values (%s,%s,%s,%s,'JSON','1.0',%s,%s)""",
+        (contract_id, contract_version, raw_content, raw_sha256, namespace, source_revision),
+    )
+    pg.execute(
+        """insert into v4.contract_approval_events
+             (contract_id,version,raw_sha256,action,authorized_by,authorization_ref,occurred_at,source_revision,source_sha256)
+           values (%s,%s,%s,'APPROVED','test-fixture-only','rollback-only-test-fixture',clock_timestamp(),%s,%s)""",
+        (contract_id, contract_version, raw_sha256, source_revision, raw_sha256),
+    )
+    contract_bindings = json.dumps(
+        {contract_id: {"version": contract_version, "raw_sha256": raw_sha256}}
+    )
     pg.execute(
         """insert into v4.publications(
              publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
              core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
-             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
-           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,case when %s='ACCEPTED' then now() else null end)""",
+             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,
+             source_manifest_contract_id,contract_bindings,accepted_at)
+           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'V4_PG_CONSUMED_SOURCE_MANIFEST_R3',%s::jsonb,
+                   case when %s='ACCEPTED' then clock_timestamp() else null end)""",
         (publication_id, lineage_id, trade_date, calendar_id, revision_no, status, namespace_id, core_revision,
          "a" * 64, (publication_id.encode().hex() * 64)[:64], parent_id, prior_id, prior_logical_digest,
-         prior_state_head, None if prior_id else gap, status),
+         prior_state_head, None if prior_id else gap, contract_bindings, status),
     )
 
 
@@ -68,12 +95,54 @@ def add_publication_state_head(pg, *, publication_id, namespace_id, trade_date, 
     )
 
 
-def add_source_revision(pg, *, revision_id, logical_id, revision_no, now, parent_id=None, provider_available_at=None):
+def add_source_revision(
+    pg, *, revision_id, logical_id, revision_no, now, parent_id=None,
+    provider_available_at=None, digest="b" * 64, effective_from=None, effective_to=None,
+):
+    # 为触发器提供完整的测试包→fact→revision绑定，所有记录均由外层测试事务回滚。
+    package_id = f"TEST-PACKAGE-{revision_id}"
+    source_key = "test_source"
+    fact_digest = digest
+    source_fact_sha256 = hashlib.sha256(f"source-fact:{revision_id}".encode()).hexdigest()
+    receipt_id = f"TEST-RECEIPT-{revision_id}"
+    logical_locator = {"revision_id": revision_id}
+    binding = {
+        "source_key": source_key,
+        "logical_fact_id": logical_id,
+        "fact_digest": fact_digest,
+        "source_fact_sha256": source_fact_sha256,
+        "acceptance_receipt_id": receipt_id,
+        "record_locator": logical_locator,
+        "record_count": 1,
+    }
+    pg.execute(
+        """insert into v4.source_packages
+             (package_id,contract_version,package_sha256,source_page_url,page_observed_at,
+              declared_update_date,target_trade_date,parser_version,manifest,accepted_scope)
+           values (%s,'TEST_SOURCE_PACKAGE_V1',%s,'test://fixture',%s,%s,%s,'test-parser-v1',%s::jsonb,'ACCEPTED_SOURCE_PACKAGE')""",
+        (package_id, hashlib.sha256(package_id.encode()).hexdigest(), now, date(2026, 9, 24),
+         date(2026, 9, 24), json.dumps({"source_fact_bindings": [binding]})),
+    )
+    pg.execute(
+        """insert into v4.source_package_facts
+             (package_id,source_key,logical_fact_id,fact_digest,source_fact_sha256,record_locator,
+              record_count,byte_count,acceptance_receipt_id)
+           values (%s,%s,%s,%s,%s,%s::jsonb,1,1,%s)""",
+        (package_id, source_key, logical_id, fact_digest, source_fact_sha256,
+         json.dumps(logical_locator), receipt_id),
+    )
+    payload = json.dumps({
+        "source_fact_sha256": source_fact_sha256,
+        "source_key": source_key,
+        "producer_receipt_id": receipt_id,
+    })
     pg.execute(
         """insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
-             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id)
-           values (%s,%s,%s,'{}',%s,%s,%s,%s,%s,%s)""",
-        (revision_id, logical_id, revision_no, "b" * 64, provider_available_at, now, now, now, parent_id),
+             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id,
+             source_package_id,source_package_source_key,source_fact_digest,effective_from,effective_to)
+           values (%s,%s,%s,%s::jsonb,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+        (revision_id, logical_id, revision_no, payload, fact_digest, provider_available_at, now, now, now,
+         parent_id, package_id, source_key, fact_digest, effective_from, effective_to),
     )
 
 
@@ -376,12 +445,9 @@ def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable(
             (first_id, 1, now, None, "1" * 64),
             (later_id, 2, later, first_id, "2" * 64),
         ):
-            pg.execute(
-                """insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
-                     provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id,
-                     effective_from,effective_to)
-                   values (%s,%s,%s,'{}',%s,null,%s,%s,%s,%s,%s,null)""",
-                (source_id, fact_key, rev, digest, observed, observed, observed, parent, effective_from),
+            add_source_revision(
+                pg, revision_id=source_id, logical_id=fact_key, revision_no=rev,
+                now=observed, parent_id=parent, digest=digest, effective_from=effective_from,
             )
             pg.execute(
                 """insert into v4.security_lifecycle_history(lifecycle_fact_key,security_id,symbol,security_type,

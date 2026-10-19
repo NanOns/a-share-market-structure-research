@@ -1,4 +1,4 @@
-"""Apply the hash-checked, transactional V4 Phase 0 PostgreSQL foundation."""
+"""Historical multi-stage migration runner; execution is not authorized in Phase 0 R2."""
 from __future__ import annotations
 
 import argparse
@@ -139,6 +139,10 @@ def normalize_migration_schema(filename,text):
     return text
 
 def apply():
+    raise RuntimeError(
+        "NOT_AUTHORIZED_TO_EXECUTE: this historical runner registers V4-00 through later-stage migrations; "
+        "do not execute it from the Phase 0 repair task"
+    )
     applied=[]
     with psycopg.connect(dsn()) as pg:
         identity=pg.execute("""select current_database(),pg_get_userbyid(datdba),pg_encoding_to_char(encoding),datcollate,datctype,
@@ -201,6 +205,10 @@ def apply():
     return {"status":"APPLIED" if any(x['status']=='APPLIED' for x in applied) else "ALREADY_CURRENT","migrations":applied,"v4_table_count":table_count,"migration_ledger_table_count":ledger_count}
 
 if __name__=="__main__":
-    ap=argparse.ArgumentParser(); ap.add_argument("--apply",action="store_true"); args=ap.parse_args()
+    ap=argparse.ArgumentParser(
+        description="Historical V4 migration runner spanning Phase 0 and later stages; currently NOT_AUTHORIZED_TO_EXECUTE."
+    )
+    ap.add_argument("--apply",action="store_true",help="historical flag; execution is currently not authorized")
+    args=ap.parse_args()
     if not args.apply: raise SystemExit("Refusing DB mutation without --apply")
-    print(json.dumps(apply()))
+    raise SystemExit("NOT_AUTHORIZED_TO_EXECUTE: use only after a separately authorized migration task")

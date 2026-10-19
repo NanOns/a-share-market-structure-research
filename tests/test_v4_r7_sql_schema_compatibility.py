@@ -84,3 +84,15 @@ def test_migration_schema_normalizer_allows_only_historical_foundation_rewrite()
         normalize_migration_schema("071_new.sql", "CREATE SCHEMA v4;")
     with pytest.raises(RuntimeError, match="V4_SINGLE_SCHEMA_RETIRED_META_SCHEMA_REFERENCE_BLOCKED"):
         normalize_migration_schema("071_new.sql", "SELECT * FROM v4_meta.schema_migrations;")
+
+
+def test_phase0_runner_is_not_authorized_and_apply_fails_before_database_access(monkeypatch):
+    import pytest
+    from scripts import apply_v4_phase0_schema as runner
+
+    calls = []
+    monkeypatch.setattr(runner.psycopg, "connect", lambda *args, **kwargs: calls.append((args, kwargs)))
+    with pytest.raises(RuntimeError, match="NOT_AUTHORIZED_TO_EXECUTE"):
+        runner.apply()
+    assert calls == []
+    assert len(runner.VERSIONS) > 50

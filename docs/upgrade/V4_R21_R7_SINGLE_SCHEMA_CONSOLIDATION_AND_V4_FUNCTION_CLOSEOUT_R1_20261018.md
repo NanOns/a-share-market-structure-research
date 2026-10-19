@@ -566,3 +566,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - `src/workbench_service/static/daily-update/app.js` 与 `index.html` 将研究快照 T0 和日更来源运行回执分开显示。真实 PG 数据显示最近两日为 2026-10-15（5,226 日行情/22 因子）与 2026-10-16（5,226 日行情/48 因子）；文案注明来源运行回执不等于正式发布。无接受日历时，检查、补齐、自动更新、重试、取消按钮仍全部禁用。
 - 目标 28766 服务按原 G 盘启动脚本在同一端口重载；真实 `http://127.0.0.1:28766/v4/research/data-update` 浏览器验收显示 T0 2026-09-30、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、Worker 未启动及上述 10-15/10-16 来源事实。截图证据：`G:\codex_tmp\v4_daily_update_28766_20261019.png`。检查时 28766 监听 PID 46304，PostgreSQL 5432 PID 8640；28765 无监听且未触碰。
 - 正式日更仍为 `PREVIEW_ONLY`，任务 worker 未启动，页面和 API 均未声称发布 10-16；全链路正式验收继续等待 PG 接受交易日历及 Operational Head 等既有前置项。
+
+### 2026-10-19 DB-05 PostgreSQL 错误日志补充审计
+
+- 对同一 `market_research` 实例执行 `REPEATABLE READ READ ONLY` 检查，身份为 `postgres` / `127.0.0.1:5432`，PostgreSQL 启动时间 `2026-10-18 11:06:30+08`。检查并筛读 2026-10-10 至 2026-10-19 的 14 个现存日志文件；当前用户 Schema 仍只有 `v4`。
+- 日志配置为 `log_statement=none`、`log_min_duration_statement=-1`、`log_min_error_statement=error`。筛选到的 `DROP SCHEMA ... RESTRICT` 文本来自错误日志上下文（`v4_meta`、`v4_jobs_2169e77ca47db3a6`、`v4_00bd3ea17fe4cd57d84f9171aa8e725fbd9edab55a754087aac5b2f5`）；这些只证明相关受限语句出现在错误上下文，不能证明成功删除。由于成功 SQL 默认不入日志，此日志无法补齐 38 项缺失的成功回执，也不能证明全历史绝无 `CASCADE`。
+- 机器可读审计结果保存在 G 盘临时证据 `G:\codex_tmp\v4_pg_log_drop_audit_r1_20261019.json`；DB-05、S3 继续为 `PARTIAL`，没有把错误上下文升级为 `DROP_RESTRICT_SUCCESS`。

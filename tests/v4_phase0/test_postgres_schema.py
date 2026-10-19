@@ -99,6 +99,7 @@ def add_publication_state_head(pg, *, publication_id, namespace_id, trade_date, 
 def add_source_revision(
     pg, *, revision_id, logical_id, revision_no, now, parent_id=None,
     provider_available_at=None, digest="b" * 64, effective_from=None, effective_to=None,
+    target_trade_date=date(2026, 9, 24),
 ):
     # 为触发器提供完整的测试包→fact→revision绑定，所有记录均由外层测试事务回滚。
     package_id = f"TEST-PACKAGE-{revision_id}"
@@ -121,8 +122,8 @@ def add_source_revision(
              (package_id,contract_version,package_sha256,source_page_url,page_observed_at,
               declared_update_date,target_trade_date,parser_version,manifest,accepted_scope)
            values (%s,'TEST_SOURCE_PACKAGE_V1',%s,'test://fixture',%s,%s,%s,'test-parser-v1',%s::jsonb,'ACCEPTED_SOURCE_PACKAGE')""",
-        (package_id, hashlib.sha256(package_id.encode()).hexdigest(), now, date(2026, 9, 24),
-         date(2026, 9, 24), json.dumps({"source_fact_bindings": [binding]})),
+        (package_id, hashlib.sha256(package_id.encode()).hexdigest(), now, target_trade_date,
+         target_trade_date, json.dumps({"source_fact_bindings": [binding]})),
     )
     pg.execute(
         """insert into v4.source_package_facts
@@ -508,32 +509,105 @@ def test_lifecycle_fact_revision_and_knowledge_timestamps_match_source_revision(
 
 def test_stage00_lifecycle_scope_query_requires_exact_t0_package_and_four_board_facts():
     suffix = uuid.uuid4().hex
-    t0 = date(2026, 9, 24)
-    available = datetime(2026, 9, 24, 9, 0, tzinfo=timezone(timedelta(hours=8)))
+    t0 = date(2026, 9, 11)
+    # Legitimate late EOD/reconstruction availability stays at its true timestamp.
+    available = datetime(2026, 10, 19, 9, 0, tzinfo=timezone(timedelta(hours=8)))
     board_rows = (
-        ("SH.600001", "MAIN", "SH_MAIN"),
-        ("SZ.000001", "MAIN", "SZ_MAIN"),
-        ("SZ.300001", "CHINEXT", "CHINEXT"),
-        ("SH.688001", "STAR", "STAR"),
+        ("SEC-" + "A" * 32, "SH.600001", "A_STOCK", "MAIN", "SH_MAIN"),
+        ("SEC-" + "B" * 32, "SZ.000001", "A_STOCK", "MAIN", "SZ_MAIN"),
+        ("SEC-" + "C" * 32, "SZ.300001", "A_STOCK", "CHINEXT", "CHINEXT"),
+        ("SEC-" + "D" * 32, "SH.688001", "A_STOCK", "STAR", "STAR"),
+        ("SEC-" + "E" * 32, "BJ.430001", "A_STOCK", "BEIJING", "BSE"),
+        ("SEC-" + "F" * 32, "SH.510300", "ETF", "MAIN", "ETF"),
     )
     with connect() as pg, rollback_only(pg):
-        for index, (security_id, board, _) in enumerate(board_rows):
+        for index, (security_id, symbol, security_type, board, _) in enumerate(board_rows):
             revision_id = f"STAGE00-LIFE-{suffix}-{index}"
             add_source_revision(
                 pg, revision_id=revision_id, logical_id=f"STAGE00-FACT-{suffix}-{index}",
-                revision_no=1, now=available, effective_from=date(2020, 1, 1),
+                revision_no=1, now=available, effective_from=date(2020, 1, 1), target_trade_date=t0,
             )
             pg.execute(
                 """insert into v4.security_lifecycle_facts(
                        security_id,security_type,board,effective_from,effective_to,observed_at,
                        ingested_at,system_available_at,source_revision_id,source_identity,quality)
-                   values (%s,'A_STOCK',%s,%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
-                (security_id, board, date(2020, 1, 1), available, available, available, revision_id),
+                   values (%s,%s,%s,%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
+                (security_id, security_type, board, date(2020, 1, 1), available, available, available, revision_id),
             )
+            pg.execute(
+                """insert into v4.security_lifecycle_history(
+                       lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,
+                       status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                       source_revision_id,source_identity)
+                   values (%s,%s,%s,%s,%s,%s,%s,'LISTED','OBSERVED','TEST_LIFECYCLE_V1',%s,%s,%s,%s,
+                           'fixture-accepted-identity')""",
+                (f"STAGE00-FACT-{suffix}-{index}", security_id, symbol, security_type, board,
+                 date(2020, 1, 1), date(2020, 1, 1), available, available, available, revision_id),
+            )
+        # A prior code for the same entity is valid only in its old effective interval.
+        old_revision = f"STAGE00-OLD-ALIAS-{suffix}"
+        add_source_revision(
+            pg, revision_id=old_revision, logical_id=f"STAGE00-OLD-ALIAS-FACT-{suffix}",
+            revision_no=1, now=available, effective_from=date(2010, 1, 1),
+            effective_to=date(2019, 12, 31), target_trade_date=t0,
+        )
+        pg.execute(
+            """insert into v4.security_lifecycle_history(
+                   lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,effective_to,
+                   status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                   source_revision_id,source_identity)
+               values (%s,%s,'SH.600000','A_STOCK','MAIN',%s,%s,%s,'LISTED','OBSERVED',
+                       'TEST_LIFECYCLE_V1',%s,%s,%s,%s,'fixture-accepted-identity')""",
+            (f"STAGE00-OLD-ALIAS-FACT-{suffix}", "SEC-" + "A" * 32,
+             date(2010, 1, 1), date(2010, 1, 1), date(2019, 12, 31),
+             available, available, available, old_revision),
+        )
         assert _count_lifecycle_t0_board_facts(pg, t0.isoformat()) == {
-            board_key: 1 for _, _, board_key in board_rows
+            "SH_MAIN": 1, "SZ_MAIN": 1, "CHINEXT": 1, "STAR": 1,
         }
+        # PIT mode at the actual T0 cutoff excludes late availability.
+        pit_cutoff = datetime(2026, 9, 11, 23, 59, tzinfo=timezone(timedelta(hours=8)))
+        assert _count_lifecycle_t0_board_facts(
+            pg, t0.isoformat(), knowledge_cutoff=pit_cutoff,
+        ) == {}
+        with pytest.raises(ValueError, match="TIMEZONE_AWARE"):
+            _count_lifecycle_t0_board_facts(
+                pg, t0.isoformat(), knowledge_cutoff=datetime(2026, 9, 11, 23, 59),
+            )
         assert _count_lifecycle_t0_board_facts(pg, date(2026, 9, 25).isoformat()) == {}
+
+
+def test_stage00_lifecycle_scope_rejects_one_source_symbol_bound_to_two_entities():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 24)
+    available = datetime(2026, 9, 24, 9, 0, tzinfo=timezone(timedelta(hours=8)))
+    with connect() as pg, rollback_only(pg):
+        for index, security_id in enumerate(("SEC-" + "1" * 32, "SEC-" + "2" * 32)):
+            revision_id = f"STAGE00-DUPLICATE-SYMBOL-{suffix}-{index}"
+            logical_id = f"STAGE00-DUPLICATE-FACT-{suffix}-{index}"
+            add_source_revision(
+                pg, revision_id=revision_id, logical_id=logical_id, revision_no=1,
+                now=available, effective_from=date(2020, 1, 1), target_trade_date=t0,
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_facts(
+                       security_id,security_type,board,effective_from,effective_to,observed_at,
+                       ingested_at,system_available_at,source_revision_id,source_identity,quality)
+                   values (%s,'A_STOCK','MAIN',%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
+                (security_id, date(2020, 1, 1), available, available, available, revision_id),
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_history(
+                       lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,
+                       status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                       source_revision_id,source_identity)
+                   values (%s,%s,'SH.600001','A_STOCK','MAIN',%s,%s,'LISTED','OBSERVED',
+                           'TEST_LIFECYCLE_V1',%s,%s,%s,%s,'fixture-accepted-identity')""",
+                (logical_id, security_id, date(2020, 1, 1), date(2020, 1, 1),
+                 available, available, available, revision_id),
+            )
+        # Ambiguous symbol identity is excluded instead of being counted twice.
+        assert _count_lifecycle_t0_board_facts(pg, t0.isoformat()) == {}
 
 
 def test_stage00_publication_scope_query_requires_t0_and_closed_state_head_binding():

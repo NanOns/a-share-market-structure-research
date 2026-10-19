@@ -159,13 +159,13 @@ def test_diagnostic_execution_and_acceptance_status_are_separate(monkeypatch):
     assert result["stages"]["V4-00C"]["status"] == "DEGRADED_PASS"
     assert result["stages"]["V4-00B"]["allowed_capabilities"] == []
     assert result["stages"]["V4-00B"]["blocked_scopes"] == ["LIFECYCLE_SCHEMA"]
-    assert result["stages"]["V4-00C"]["allowed_capabilities"] == []
-    assert result["stages"]["V4-00C"]["blocked_scopes"] == ["PUBLICATION_IDENTITY"]
-    assert result["stages"]["V4-00C"]["reason_codes"] == ["PUBLICATION_T0_DATE_REQUIRED"]
+    assert result["stages"]["V4-00C"]["allowed_capabilities"] == ["PUBLICATION_IDENTITY"]
+    assert result["stages"]["V4-00C"]["blocked_scopes"] == []
+    assert result["stages"]["V4-00C"]["reason_codes"] == ["PUBLICATION_IDENTITY_MECHANISM_READY"]
     assert result["side_effects"] == "NONE"
 
 
-def test_schema_presence_and_non_t0_head_count_do_not_grant_b_or_c_scope(monkeypatch):
+def test_empty_lifecycle_blocks_b_but_publication_mechanism_does_not_need_existing_t0_head(monkeypatch):
     monkeypatch.setattr(phase0_gate, "_pg_snapshot", lambda **_: {
         "database_identity": {"database": "market_research"}, "read_role": {"role": "test"},
         "catalog": {name: True for name in phase0_gate.STAGE00_TABLES}, "catalog_missing": [],
@@ -190,8 +190,9 @@ def test_schema_presence_and_non_t0_head_count_do_not_grant_b_or_c_scope(monkeyp
     result = phase0_gate.run_stage00_diagnostic()
     assert result["stages"]["V4-00B"]["allowed_capabilities"] == []
     assert result["stages"]["V4-00B"]["reason_codes"] == ["LIFECYCLE_T0_DATE_REQUIRED"]
-    assert result["stages"]["V4-00C"]["allowed_capabilities"] == []
-    assert result["stages"]["V4-00C"]["reason_codes"] == ["PUBLICATION_T0_DATE_REQUIRED"]
+    assert result["stages"]["V4-00C"]["allowed_capabilities"] == ["PUBLICATION_IDENTITY"]
+    assert result["stages"]["V4-00C"]["blocked_scopes"] == []
+    assert result["stages"]["V4-00C"]["reason_codes"] == ["PUBLICATION_IDENTITY_MECHANISM_READY"]
 
 
 def test_accepted_source_package_can_release_d_scope_only_with_bound_four_board_evidence():

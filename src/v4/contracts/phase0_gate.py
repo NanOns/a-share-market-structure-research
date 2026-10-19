@@ -182,7 +182,7 @@ STAGE00_CONTRACTS = {
 STAGE00_TABLES = (
     "contract_versions", "contract_approval_events", "source_packages",
     "source_package_facts", "source_revisions", "security_lifecycle_facts", "security_lifecycle_history",
-    "publications", "model_namespaces", "publication_heads", "stage00_raw_owner_receipts",
+    "publications", "model_namespaces", "publication_heads", "state_heads", "stage00_raw_owner_receipts",
 )
 TDX_BOARD_SCOPES = ("SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR")
 TDX_SAMPLES = TDX_BOARD_SCOPES
@@ -594,15 +594,20 @@ def _read_tdx_samples(root: Path) -> dict[str, Any]:
     }
 
 
-def _count_lifecycle_t0_board_facts(cursor: Any, target_trade_date: str) -> dict[str, int]:
+def _count_lifecycle_t0_board_facts(
+    cursor: Any, target_trade_date: str, *, knowledge_cutoff: datetime | None = None,
+) -> dict[str, int]:
+    """Count accepted T0 identities; omit the cutoff for ordinary as-recorded EOD use.
+
+    Strict historical PIT callers must pass the actual knowledge cutoff. Source
+    availability timestamps are never rewritten to the target trade date.
+    """
+    if (knowledge_cutoff is not None
+            and (knowledge_cutoff.tzinfo is None or knowledge_cutoff.utcoffset() is None)):
+        raise ValueError("LIFECYCLE_PIT_CUTOFF_MUST_BE_TIMEZONE_AWARE")
     rows = cursor.execute(
-        """SELECT CASE
-                   WHEN left(f.security_id,3)='SH.' AND f.board='MAIN' THEN 'SH_MAIN'
-                   WHEN left(f.security_id,3)='SZ.' AND f.board='MAIN' THEN 'SZ_MAIN'
-                   WHEN left(f.security_id,3)='SZ.' AND f.board='CHINEXT' THEN 'CHINEXT'
-                   WHEN left(f.security_id,3)='SH.' AND f.board='STAR' THEN 'STAR'
-                 END AS board_key,
-                 count(DISTINCT f.security_id)
+        """WITH accepted_identity_map AS (
+                 SELECT DISTINCT f.security_id, h.symbol, f.board
               FROM v4.security_lifecycle_facts f
               JOIN v4.source_revisions r
                 ON r.source_revision_id=f.source_revision_id
@@ -625,14 +630,67 @@ def _count_lifecycle_t0_board_facts(cursor: Any, target_trade_date: str) -> dict
                AND sf.source_fact_sha256=r.payload->>'source_fact_sha256'
                AND sf.source_key=r.payload->>'source_key'
                AND sf.acceptance_receipt_id=r.payload->>'producer_receipt_id'
+              JOIN v4.security_lifecycle_history h
+                ON h.security_id=f.security_id
+               AND h.board=f.board
+               AND h.security_type='A_STOCK'
+               AND h.effective_from <= %s
+               AND (h.effective_to IS NULL OR h.effective_to >= %s)
+              JOIN v4.source_revisions hr
+                ON hr.source_revision_id=h.source_revision_id
+               AND hr.observed_at=h.observed_at
+               AND hr.ingested_at=h.ingested_at
+               AND hr.system_available_at=h.system_available_at
+               AND hr.effective_from=h.effective_from
+               AND hr.effective_to IS NOT DISTINCT FROM h.effective_to
+               AND hr.supersedes_revision_id IS NOT DISTINCT FROM h.supersedes_revision_id
+              JOIN v4.source_packages hp
+                ON hp.package_id=hr.source_package_id
+               AND hp.accepted_scope='ACCEPTED_SOURCE_PACKAGE'
+               AND hp.target_trade_date=%s
+              JOIN v4.source_package_facts hsf
+                ON hsf.package_id=hr.source_package_id
+               AND hsf.source_key=hr.source_package_source_key
+               AND hsf.logical_fact_id=hr.logical_fact_id
+               AND hsf.fact_digest=hr.source_fact_digest
+               AND hsf.fact_digest=hr.digest
+               AND hsf.source_fact_sha256=hr.payload->>'source_fact_sha256'
+               AND hsf.source_key=hr.payload->>'source_key'
+               AND hsf.acceptance_receipt_id=hr.payload->>'producer_receipt_id'
              WHERE f.security_type='A_STOCK'
                AND f.effective_from <= %s
                AND (f.effective_to IS NULL OR f.effective_to >= %s)
                AND btrim(f.source_identity) <> ''
                AND f.quality IN ('OBSERVED','CORRECTED','ACCEPTED','PIT_OBSERVED_ACCEPTED')
-               AND (f.system_available_at AT TIME ZONE 'Asia/Shanghai')::date=%s
-             GROUP BY board_key""",
-        (target_trade_date, target_trade_date, target_trade_date, target_trade_date),
+               AND h.quality IN ('OBSERVED','CORRECTED','ACCEPTED','PIT_OBSERVED_ACCEPTED')
+               AND btrim(h.source_identity) <> ''
+               AND (%s::timestamptz IS NULL OR f.system_available_at <= %s)
+               AND (%s::timestamptz IS NULL OR h.system_available_at <= %s)
+             ), unambiguous_symbol AS (
+                 SELECT security_id, symbol, board
+                   FROM accepted_identity_map
+                  WHERE symbol IN (
+                        SELECT symbol FROM accepted_identity_map
+                         GROUP BY symbol HAVING count(DISTINCT security_id)=1
+                  )
+             ), unambiguous_identity AS (
+                 SELECT security_id, min(symbol) AS symbol, min(board) AS board
+                   FROM unambiguous_symbol
+                  GROUP BY security_id
+                 HAVING count(DISTINCT symbol)=1 AND count(DISTINCT board)=1
+             )
+             SELECT CASE
+                      WHEN left(symbol,3)='SH.' AND board='MAIN' THEN 'SH_MAIN'
+                      WHEN left(symbol,3)='SZ.' AND board='MAIN' THEN 'SZ_MAIN'
+                      WHEN left(symbol,3)='SZ.' AND board='CHINEXT' THEN 'CHINEXT'
+                      WHEN left(symbol,3)='SH.' AND board='STAR' THEN 'STAR'
+                    END AS board_key,
+                    count(DISTINCT security_id)
+               FROM unambiguous_identity
+              GROUP BY board_key""",
+        (target_trade_date, target_trade_date, target_trade_date,
+         target_trade_date, target_trade_date, target_trade_date,
+         knowledge_cutoff, knowledge_cutoff, knowledge_cutoff, knowledge_cutoff),
     ).fetchall()
     return {row[0]: int(row[1]) for row in rows if row[0]}
 
@@ -986,7 +1044,9 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
             "receipt_read_status": pg.get("raw_bootstrap", {}).get("reason"),
         }
         namespaces_present = bool(pg["model_namespace_count"])
-        publication_schema_ready = all(pg["catalog"].get(name, False) for name in ("publications", "model_namespaces", "publication_heads"))
+        publication_schema_ready = all(pg["catalog"].get(name, False) for name in (
+            "publications", "model_namespaces", "publication_heads", "state_heads",
+        ))
         heads_present = bool(pg["publication_head_count"])
         lifecycle_schema_ready = pg["catalog"]["security_lifecycle_facts"] and pg["catalog"]["security_lifecycle_history"]
         accepted_evidence = source_acceptance.get("accepted_evidence") or {}
@@ -1015,13 +1075,15 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
             "LIFECYCLE_ACCEPTED_SOURCE_REQUIRED" if not source_accepted else
             "LIFECYCLE_OWNER_FACTS_OR_BOARD_COVERAGE_MISMATCH"
         )
-        publication_scope_ready = bool(
-            publication_schema_ready and trade_date and pg.get("valid_publication_head_count", 0) > 0
-        )
+        # PUBLICATION_IDENTITY is the usable publication/namespace mechanism,
+        # which V4-01 needs in order to create its first candidate. Requiring an
+        # already accepted T0 Head here would make first startup circular.
+        publication_scope_ready = publication_schema_ready
         publication_reason = (
-            "PUBLICATION_HEAD_AND_NAMESPACE_BINDING_VERIFIED" if publication_scope_ready else
-            "PUBLICATION_T0_DATE_REQUIRED" if not trade_date else
-            "PUBLICATION_ACCEPTED_HEAD_NAMESPACE_STATE_BINDING_MISSING"
+            "PUBLICATION_IDENTITY_MECHANISM_READY"
+            if publication_scope_ready and pg.get("valid_publication_head_count", 0) == 0 else
+            "PUBLICATION_T0_HEAD_BINDING_VERIFIED" if publication_scope_ready else
+            "PUBLICATION_IDENTITY_RELATION_MISSING"
         )
         sample_ready = not tdx["failures"] and tdx["valid_sample_count"] == len(TDX_SAMPLES)
         stages = {

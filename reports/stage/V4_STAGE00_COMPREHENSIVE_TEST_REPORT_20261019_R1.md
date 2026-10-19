@@ -511,3 +511,25 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 真实剩余缺口：不能用现有6440行候选history代替accepted lifecycle facts；须由真实接受authority签署/登记后才能写source package/facts/revisions；真实B/C Owner结果和独立RAW签名authority/receipt缺失；五个必需Stage00合同尚无批准事件，00H因真实合同和证据不全继续BLOCKED。没有合法来源凭证或批准事实可迁入，故本轮只完成真实只读读回和可合法的代码闭环，不伪造PG行。00A–00H报告已更新；Stage01仍未进入。
 
 代码与测试提交`10a168fb060ed950e1a982b7468f8364a1625a24`已推送到`origin/codex/v4-workspace-cleanup`；PR #3已记录本次最终审计、验收退出码与真实PG剩余缺口。
+
+### 第8节语义复核与本次收尾（代码提交 `1d30cb6b7c9c0abb966cb78de4ee337003271200`）
+
+#### 00B：规范身份、来源代码映射与知识时点
+
+- 修复前，`_count_lifecycle_t0_board_facts`用`security_id`的`SH.`/`SZ.`前缀判板块，并要求`system_available_at`的上海日期等于T0。两条规则分别违背`SEC-<稳定身份>`与真实symbol分离的身份合同，以及普通盘后可晚采集、严格PIT才按知识cutoff回放的时点合同。
+- 现改为将`security_lifecycle_facts.security_id`作为规范实体键，连接同一接受来源链上的`security_lifecycle_history`有效身份行；该映射包含日期有效的symbol、A股类型和显式board，并且身份行及生命周期事实各自回连T0 accepted package/fact/revision。只按symbol中的交易所代码标记与显式board组合到四板，不按证券代码数字前缀猜板；同一有效symbol绑定多个规范实体或同一实体存在多个有效映射时拒绝计入。查询仍按`count(DISTINCT canonical security_id)`统计。BSE、ETF不能进入四板事实；历史更名代码只在自身有效区间内参与映射。
+- 普通EOD/重建查询省略知识cutoff，保留原`observed_at`、`ingested_at`、`system_available_at`；明确的严格PIT调用需传入带时区的真实cutoff，事实和身份映射均须在cutoff前已系统可用。无时区cutoff直接报错，不构造或回填历史资格。
+- 新增/更新PG回滚集成正反例：规范`SEC-*`与`SH./SZ./BJ.`来源symbol分列；2026-09-11 T0事实于2026-10-19真实可用时，普通盘后查询仍正确得到四板各1条，而T0当日PIT cutoff不返回该晚采集事实；BSE与ETF混入仍不入四板；一证券旧代码的有效区间结束于T0前，不替代T0映射；一个symbol同时指向两个SEC实体时两者均被排除。目标日错配返回空、错误/缺失身份不能给出四板归属。
+
+#### 00C：首次启动闭环核验
+
+- 对照现有`V4_PHASE0_FINAL_ACCEPTANCE_R3`，`PUBLICATION_IDENTITY`是V4-01启动必需scope；而`v4_publication_candidate.plan_publication_head`在无当前head时走`INSERT_IF_ABSENT`首版候选路径，正式Head要待Core结果读回后再发布。要求00C预先具有同一T0的已接受Publication/Head，确会阻断首个V4-01 Core从候选进入发布，构成首次启动循环依赖。
+- 00C现在只在PG中的`publications`、`model_namespaces`、`publication_heads`、`state_heads`机制关系齐备时接受`PUBLICATION_IDENTITY`能力；这表示机制可供首版候选使用，不表示业务Head已发布。零Head仍原样报告`head_present=false`、`valid_publication_head_count=0`；错误T0/状态Head摘要错绑的独立PG回滚反例仍保持拒绝。
+- doctor/acceptance的00C reason为`PUBLICATION_IDENTITY_MECHANISM_READY`；此机制scope本身不解除其他真实阻断，也未创建Head或跳过签名/发布校验。
+
+#### 阶段00回归与真实开发PG读回
+
+- 阶段00原回归集合及直接依赖集合：`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`，结果`215 passed`（G盘临时区`G:/codex_tmp/test_temp/stage00-r9`；包括真实开发PG事务内回滚的schema集成例）。`git diff --check`通过，暂存准入`tools/git_repository_policy.py --staged`通过，3个代码/测试文件。
+- 在实际`market_research.v4`只读诊断读回，数据库OID `646711`，连接`127.0.0.1:5432`，角色事务只读。source revisions `40455`、accepted source packages `0`、security lifecycle facts `0`、security lifecycle history `6440`（5805个security_id）、publication heads `0`、model namespaces `0`、Stage00 RAW receipts `0`；本轮没有向共享PG新增正式Source、Lifecycle、Publication、Head、批准或PIT记录。
+- 最新提交运行`doctor --json`：退出`0`、`execution_status=OK`、`phase0_status=BLOCKED`、`failure_type=null`、V4-01 `BLOCKED`。运行`acceptance --json --trade-date 2026-09-11`：退出`2`、`execution_status=OK`、`execution_reason=DIAGNOSTICS_COMPLETED; BUSINESS_ACCEPTANCE_GAPS_REPORTED_AS_BLOCKED`、`failure_type=null`、`phase0_status=BLOCKED`，目标T0正确回显；00B为`LIFECYCLE_ACCEPTED_SOURCE_REQUIRED`，00C为`PUBLICATION_IDENTITY_MECHANISM_READY`。这是软件执行成功后的真实业务事实阻断，不是PG SQL执行失败。
+- 本次代码与测试提交：`1d30cb6b7c9c0abb966cb78de4ee337003271200`。阶段00其他原R8/R9成果与PG既有RAW迁移保持不变。剩余真实阻断仍包括无accepted source package、无accepted lifecycle facts/Owner结果、无RAW签发收据及五份必需合同无approved event；因此阶段00的最终业务acceptance仍为`STAGE00_REAL_DATA_BLOCKED`，不能宣布阶段00完成或进入阶段01。代码语义修复已验证；正式生产切换与最终打包仍未授权。

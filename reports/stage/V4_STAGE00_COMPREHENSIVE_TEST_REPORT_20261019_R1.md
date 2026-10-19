@@ -509,3 +509,5 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 真实PG重复读回身份为`market_research@127.0.0.1:5432`。计数：source revisions 40455、accepted source packages 0、lifecycle history 6440行/5805证券、accepted lifecycle facts 0、publication heads 0、model namespaces 0、Stage00 RAW receipts 0、目标日合法Publication/namespace/state head 0。R8的单项迁移`V4_STAGE00_RAW_OWNER_RECEIPTS_R1`仍在唯一`v4` schema及ledger中，checksum `eb3caa947e25bae118c0bcbc5687bdec8ff12d5928301a924859fd384a2ac084`；本轮无额外PG写入。五份Stage00开发合同候选仍各自SHA正确可读回且无审批事件；来源接受authority版本和RAW authority版本在PG中的行数均为0。未写入签名、source acceptance、Owner结果、PIT或批准事实。
 
 真实剩余缺口：不能用现有6440行候选history代替accepted lifecycle facts；须由真实接受authority签署/登记后才能写source package/facts/revisions；真实B/C Owner结果和独立RAW签名authority/receipt缺失；五个必需Stage00合同尚无批准事件，00H因真实合同和证据不全继续BLOCKED。没有合法来源凭证或批准事实可迁入，故本轮只完成真实只读读回和可合法的代码闭环，不伪造PG行。00A–00H报告已更新；Stage01仍未进入。
+
+代码与测试提交`10a168fb060ed950e1a982b7468f8364a1625a24`已推送到`origin/codex/v4-workspace-cleanup`；PR #3已记录本次最终审计、验收退出码与真实PG剩余缺口。

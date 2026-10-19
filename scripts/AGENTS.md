@@ -1,11 +1,25 @@
-# Script execution storage policy
+# 脚本目录执行规范
 
-Inherited project guardrails in the root AGENTS.md remain applicable.
+本目录继承根 AGENTS.md。本文件只补充脚本职责，不另设工作区、数据库或发布权限。
 
-Use G: only for project temporary checkouts, regression workspaces, test temporary directories and large caches. Do not allocate project temporary space on C:.
+## 一、脚本职责
 
-The current explicit roots are G:/codex_tmp for clean regression checkouts and G:/codex_tmp/test_temp for test temporary directories. Consult config/project_workspace_storage_policy_v1.json. Do not invoke a legacy helper that hardcodes a C: checkout; use the G-only checkout helper or implement a successor without modifying frozen historical source.
+- 可维护脚本仅承担明确入口、运维、迁移或验证职责；业务算法归属 src，不在脚本中复制另一套实现。
+- 临时探针、一次性修复、测试输出和证据打包放在 根规范指定的 G 盘临时目录，不进入本目录；可复用既有入口时不再增加同类脚本。
+- 脚本说明、注释及面向用户的提示使用中文；外部协议、接口标识和错误码保持兼容。
 
-The user plans a dedicated 3 TB mechanical disk for Codex projects, the PGS database and stock/TDX data. Its drive and paths are not configured yet. Existing TDX source roots remain read-only.
+## 二、运行边界
 
-User instruction dated 2026-10-09 supersedes the previous E/F rule: all newly created Codex temporary files and workspaces use G:. Set child-process TMP/TEMP/TMPDIR to G:/codex_tmp.
+- 唯一源码目录为 根规范指定的唯一主仓库；禁止临时克隆、工作树和回归 checkout。旧脚本中的其他工作区不能成为现役入口。
+- 子进程 TMP、TEMP、TMPDIR 使用 根规范指定的 G 盘临时目录，测试目录使用 根规范指定的测试临时目录。禁止向通达信或其他只读源写入。
+- 路径从 config/paths.yaml 或明确部署参数读取，不将阶段报告、桌面文件和某次快照路径固定进代码。
+- PostgreSQL 唯一连接目标、v4 唯一业务 Schema、28765/28766 服务边界均按根规范执行。连接高权限不代表当前任务已授权写入。
+- 导入模块、构造存储对象或读取配置不得隐式扫描磁盘、导入来源、迁移、建表或修复数据；写操作使用明确入口。
+
+## 三、迁移、验证与交付
+
+- 当前业务开发暂停；此次规范配置修改不授权执行历史迁移、清理、首启或日更脚本。
+- 后续迁移逐项说明输入、目标结构、现役消费者、幂等与失败恢复；不为“备份”复制整域业务表，不为每个发布建立新 Schema。
+- 验证优先限定输入和范围；不默认全历史重算、不默认启动服务。只读验证显式使用只读事务。
+- 仅运行本地适用检查，不启用 GitHub 自动持续集成。过程输出放 Git 外，只提交正式脚本及精简规范。
+- 不清理无关用户文件、源数据和唯一证据。脚本退休先核实消费者，不按文件名批量删除。

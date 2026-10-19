@@ -1,21 +1,22 @@
 {
   "contract_id": "PROJECT_WORKSPACE_STORAGE_POLICY_V1",
-  "version": "1.1.0",
-  "authority": "EXPLICIT_USER_G_ONLY_STORAGE_PREFERENCE_20261009",
+  "version": "1.2.0",
+  "authority": "用户2026年10月9日存储指令及10月15日唯一工作区指令",
   "allowed_temporary_drives": [
     "G:"
   ],
   "C_project_temporary_allocation": "FORBIDDEN",
-  "regression_workspace_root": "G:/codex_tmp",
+  "regression_workspace_root": "G:/codex work/大A交易",
   "test_temporary_root": "G:/codex_tmp/test_temp",
   "scope": [
-    "temporary_checkouts",
-    "regression_workspaces",
-    "test_temporary_directories",
-    "large_project_caches"
+    "临时文件",
+    "测试临时目录",
+    "项目缓存",
+    "唯一现役源码工作区"
   ],
-  "planned_dedicated_disk": "USER_PLANNED_3_TB_MECHANICAL_DISK_FOR_PROJECT_DATABASE_AND_STOCK_DATA",
-  "future_disk_paths": "G_DRIVE_CONFIGURED_BY_USER",
+  "planned_dedicated_disk": "不得根据历史磁盘规划自行分配新路径",
+  "future_disk_paths": "未经用户明确指令不得迁移或新增源码工作区",
   "existing_TDX_source_roots": "READ_ONLY",
-  "new_workspace_root": "G:/codex work"
+  "new_workspace_root": "G:/codex work/大A交易",
+  "说明": "回归验证直接使用唯一主仓库；不新建克隆、工作树或临时源码副本。程序常量保留原值。"
 }

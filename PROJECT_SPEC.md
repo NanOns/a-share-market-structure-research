@@ -1,81 +1,84 @@
-# 通达信市场结构扫描器——实现基线
+# 大A交易：现役 V4 项目规范
 
-采用的基线文档为 `TDX_Market_Structure_Scanner_V0.3_FINAL_Implementation_Baseline.md`，日期为 2026-09-04。
+更新日期：2026年10月19日。本文件从项目目标、功能、结构和验收角度规定现役 V4；代理执行规则见 AGENTS.md，配置规则见 config/AGENTS.md。早期扫描器阶段报告保留各自历史意义，不再在本文件叠加多个“当前生产状态”。
 
-用户提供的权威设计文档位于：
+## 一、项目目标与当前状态
 
-```text
-E:/codex work/大A交易/requirementTDX_Market_Structure_Scanner_V0.3_FINAL_Implementation_Baseline.md
-```
+建设可解释、可追溯、可恢复、能够按真实交易日增量更新的 A 股市场结构研究系统，贯通市场研究、板块研究、个股画像、Focus、Forward 和研究页面。系统提供研究与验证，不执行自动交易，不将回溯重建宣称为真实历史可得或前瞻业绩。
 
-本工作区实现阶段 0 至阶段 0.2C。必须执行的约束如下：
+当前处于技术规范整理及设计评审，业务开发暂停。用户本轮授权更新规范和相关配置；业务代码、数据库结构、数据迁移、日更改造与生产发布尚未解禁。设计最终稿不是业务验收，已有页面也不是完整日更证明。
 
-- 本地通达信文件是只读输入；
-- 解析确定的源根目录为 `D:/new_tdx`；
-- 不允许使用网络或外部复权来源；
-- 阶段 0 的输出决定后续扫描器属于正式模式还是实验模式；
-- 当前板块成员关系不代表历史时点的成员关系；
-- 所有产物都必须在通达信源根目录之外，以原子方式写入。
+既有功能和多轮修复成果应准确复用。当前问题分别标明算法缺失、接线断开、存储不合理、版本不一致或验证不足，不以结构整理为理由重写全部系统。
 
-已实现的合同和当前判定见 `docs/DATA_FACTOR_SPEC.md`、`docs/ADJUSTMENT_CONTRACT_V0_3.md` 和 `reports/phase0_2c/PHASE0_2C_RELEASE_SEAL.json`。较早阶段的收据作为历史证据保留。
+## 二、工程内部结构
 
-阶段 0.1 新增了主交易日历、近期窗口证券全集规则、最小板块角色划分，以及初步复权审计。阶段 0.2 独立实现本地 GBBQ 解码器和仿射前复权/后复权（QFQ/HFQ）引擎，并验证了三段完整的本地历史数据。该阶段的历史最终状态为 `DEGRADED_PASS`，原因是要求执行的通达信桌面端前复权对照仍待完成；因此，该阶段项目价格口径仍为 `RAW`，正式趋势扫描器保持禁用。
+采用模块化单体，不引入微服务或第二套业务数据库。
 
-阶段 0.2A 曾临时允许使用公开前复权数据，但严格限定为验证参考。
-其历史门禁判定替代阶段 0.2，状态为 `BLOCKED_FOR_FORMAL_ADJUSTMENT`，原因是四个固定点位不匹配，且保留的批次证据不完整。根本原因尚未解决，因此该阶段不允许进入正式因子或扫描器阶段，继续执行 `RAW` 和 `LOCAL_TDX_ONLY` 限制。请求数量限制和证据覆盖方面的缺陷已在阶段 0.2A 报告中披露，并在验证层修复。
+| 位置 | 职责 |
+|---|---|
+| src/v4 | 现役因子、Profile 及纯业务计算；输入、输出、质量与窗口合同明确 |
+| src/workbench_analysis | 研究编排、现有 Owner 适配、状态传播及领域结果生产 |
+| src/workbench_db | PostgreSQL 存储、来源版本、完整性、发布与显式迁移 |
+| src/workbench_service | 同版读取、页面/API 适配与能力状态呈现 |
+| src/workbench_ops | 作业与运行管理，复用业务接口，不复制算法 |
+| config | 可审查静态参数、合同源码和部署路径；不存密钥、业务快照和备份 |
+| tests | 与功能和合同对应的独立样本、集成与恢复验证 |
+| scripts、tools | 明确的运维/验证入口及仓库准入工具 |
+| docs | 正式需求、技术设计和必要历史说明；单一当前入口 |
 
-## 当前发布状态——阶段 0.2C
+这是职责边界，尚未声明已完成所有依赖拆分或目录迁移。历史兼容实现按真实消费者逐步退出，不为追求目录整齐一次性搬迁。
 
-本节替代上文及较早阶段文档中关于原始价格（`RAW`）、手工界面核验和外部精确匹配的历史发布限制。历史研究结论保持不变。生产输入仍限定为 `LOCAL_TDX_ONLY`；此前已授权的数据提供方快照仅作为验证参考。
+## 三、现役能力与源码索引
 
-```text
-CURRENT_DATA_STATUS = TDX_NATIVE_ADJUSTMENT_RELEASED
-PHASE_0_STATUS = FULL_PASS
-PHASE_0_CLOSED = TRUE
-ADJUSTMENT_IDENTITY = TDX_NATIVE_AFFINE_QFQ
-PROJECT_PRICE_BASIS = FORWARD_ADJUSTED
-ADJUSTMENT_STATUS = VERIFIED_REPRODUCIBLE_TDX_NATIVE
-FORMAL_TREND_SCANNERS_ALLOWED = TRUE
-NEXT_PHASE = PHASE_1_NORMALIZATION_AND_FORMAL_FACTOR_ENGINE
-```
+| 能力 | 现有实现依据 | 输入、输出与边界 |
+|---|---|---|
+| 来源与身份 | workbench_db 来源合同、修订与生命周期结构 | 真实来源字节、证券/日期/单位、有效与可得时钟；不伪造来源资格 |
+| 核心因子 | src/v4/factors/core.py | 显式交易会话与实际成交窗口；质量、价格基准与版本可解释 |
+| 个股画像 | src/v4/profile_primitives.py、profile_core.py | 复用现役派生字段及状态；MA10 是既有 Profile 内部输入 |
+| 板块与市场 | workbench_analysis 现役 Sector/Market、Rotation 计算链 | 成员版本、横截面总体、覆盖率、状态与前态明确 |
+| Focus | 现役结构、确认状态及 Focus 业务链 | 实体、episode、锚点、状态与事件可追溯 |
+| Forward | forward_r7_pipeline、forward_r7_store | 观察、到期、路径指标与来源时钟；未来未到期保持待完成 |
+| 研究封存与页面 | production_v4、快照构建器、Research 读取器及 BFF | 列表、详情、图表消费同一封存版本与令牌 |
+| 日更与恢复 | operational_daily_jobs、执行器及 Publication 链 | 按交易日顺序处理，真实前驱、幂等与提交恢复 |
 
-当前发布依据为 `Phase0.2C`、`adjustment-contract-v0.3`、`adjusted-daily-contract-v0.3` 和 `known-limitations-v0.3`。阶段 1 可按各自合同生成 `adjusted_daily.parquet` 和正式因子。本次发布封存本身并未实现数据生成、因子或扫描器。不同数据提供方之间的前复权差异，以及对数据提供方口径敏感的较早历史数据，属于已知限制，不构成当前生产阻断项。
+源码存在不代表独立数值验收通过。具体入口、数据库表、消费者和精确缺口以本轮合并技术设计第八节映射为依据；后续将该唯一设计入口纳入正式文档时维护原映射，不新增并列设计体系。
 
-## 当前生产状态——阶段 1
+## 四、数据库与来源设计
 
-PHASE1_STATUS = PASS
-PROJECT_PRICE_BASIS = FORWARD_ADJUSTED
-ADJUSTMENT_IDENTITY = TDX_NATIVE_AFFINE_QFQ
-NORMAL_UNIVERSE_COUNT = 5461
-NEXT_PHASE = PHASE_2_MARKET_REGIME_AND_SYNTHETIC_SECTOR_FACTOR
+- 唯一 PostgreSQL 为 `127.0.0.1:5432/market_research`，V4 唯一业务 Schema 为 `v4`；版本通过行身份及引用区分，不按日期或 Release 新建表、库和 Schema。
+- 来源字节、来源修订、标准事实、计算结果、状态事件、页面索引和物理备份分开建模。可共享内容不代表可合并来源身份和知识时点。
+- 保留现有 Core 完整日物理行集及完整性保护；Research 重建复用原 Core 绑定。实际同日修订允许有界单日投影复制，不隐式重算完整历史。
+- 本轮技术设计仅纳入来源内容及内容块两张新固定表；尚未建表。撤回泛型 Owner 仓、独立行情表及 Core 行引用新表方案。研究对象和 Series 优先通过已有表中的受约束引用共享。
+- 按实际业务键、字段类型、索引、消费者、事务和保留期限设计每个活动对象。禁止将整市场、完整历史、源图和备份反复封装成大 JSON。
+- 旧数据不因表空、名字旧或摘要相同直接删除；先核用途、来源时点和活动引用。物理备份独立管理，数据库保留必要引用。
 
-本节状态替代先前阶段 0.2C 的下一阶段指向。详见 `docs/PHASE1_REPORT.md` 和 `reports/phase1/PHASE1_FINAL_RECEIPT.json`。
+## 五、版本、发布与页面一致性
 
-## 当前生产状态——阶段 2
+- 每个 namespace 的 publication_heads 是该范围消费版本选择入口；Operational 单例仅属于明确执行链，开发推进不能改变生产消费合法性。
+- Data Head 表达输入基线，Publication 关联真实来源、Core、状态和封存 Research；不能从不同版本各取最新再拼接。
+- 候选预览、开发重建、严格历史 PIT、真实前瞻观察和生产授权分开校验；开发成功不自动获得其他资格。
+- 发布协议为候选持久化、独立重复读只读验证、短写事务原子切换；最终事务复核前驱、摘要、合同有效性及权限，不以 HTTP 成功作为提交依据。
+- Core、Profile、Market、Sector、Focus、Forward 分别封存状态、实际日期、结果引用及原因。基础更新成功不表示所有模块完成。
+- Forward 后补产生新的封存修订，禁止修改旧 Release 或在旧令牌下动态替换业务结果。页面清楚呈现未知、降级、滞后和待完成。
 
-PHASE2_STATUS = PASS
-SNAPSHOT_BASIS = CURRENT_SNAPSHOT_ONLY
-SECTOR_MEMBERSHIP_BASIS = CURRENT_TDX_MEMBERSHIP
-NEXT_PHASE = PHASE_3_SECTOR_SCANNER
+## 六、增量计算与算法边界
 
-本节替代较早的下一阶段指向。本节对应阶段尚未实现阶段 3 扫描器。
+正常新增日仅计算新增日、必要前态、排名端点/闭合桶及实际到期集合。修订先定位证券、字段、日期、价格基准和真实来源版本，再按实际因子窗口扩展。
 
-## 当前生产状态——阶段 3
+实际成交窗口与交易会话不同；停牌不能补造价格。排名变化重算该日完整有效总体，板块与市场按成员及全局排序依赖传播。结构、Rotation、Focus 等递归状态按完整状态和后续输入证明收敛；未知依赖显式给出有界保守范围。
 
-PHASE3_STATUS = PASS
-SCANNER_RULE_VERSION = sector-scanner-ruleset-v1.2-evidence-binding
-SNAPSHOT_BASIS = CURRENT_SNAPSHOT_ONLY
-SECTOR_MEMBERSHIP_BASIS = CURRENT_TDX_MEMBERSHIP
-NEXT_PHASE = PHASE_4_FORMAL_STOCK_SCANNER
+保留核心 MA5/20/60 产品口径和 Profile 内部 MA10 原消费者，不擅自扩展或删减公式。复权坐标、单位、质量、证券身份和知识时点进入计算合同，不只比较数值相同。
 
-## 当前生产状态——阶段 4
+## 七、运行与配置
 
-PHASE4_STATUS = PASS
-RULE_VERSION = stock-scanner-ruleset-v1.0
-NEXT_PHASE = PHASE_5_CANDIDATE_POOL_AND_RESEARCH_PRIORITY
+唯一代码目录为 `G:/codex work/大A交易`；开发服务固定 `127.0.0.1:28766`，生产固定 `127.0.0.1:28765`。临时目录与测试缓存仅 G 盘。机器路径在部署配置声明，不能绑定桌面文件和阶段报告。
 
-## 当前生产状态——阶段 5
+现有运行配置和历史合同不因本文件生效就自动迁移。V4 的目标约束与遗留 workbench 配置分别说明，不能直接改旧 schema 值并宣称完成迁移。凭据不进入仓库。
 
-PHASE5_STATUS = PASS
-RULE_VERSION = research-priority-ruleset-v1.1-correctness
-NEXT_PHASE = PHASE_6_DAILY_PRODUCTION_CLOSURE_REPORTING_SMOKE_TEST
+## 八、验证与后续阶段
+
+后续按具体功能推进，每阶段明确需求、复用实现、最小修改、数据范围和成功标准。独立数值样本、版本一致性、真实数据库读回、失败恢复及增量工作量按影响范围验证，不要求重新审计全部模块或先关闭全部历史表。
+
+只运行本地相关检查和仓库准入，不开启 GitHub 自动持续集成。过程证据位于 Git 外，正式文档保持单一入口，不重复打包任务卡和报告。
+
+生产服务、生产调度、正式 Head 与最终部署仍需实际业务验收及用户明确指令。M14 属当前 V4 范围外跟踪，不混入当前关闭条件。

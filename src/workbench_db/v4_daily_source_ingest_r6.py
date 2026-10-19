@@ -1310,7 +1310,9 @@ def persist_diagnostic_source_candidate(project_root: str | Path,
     }
     from .v4_forward_pg_r1 import ForwardFactStore
     folder = "data/v4/historical_source_ingress_pg_r1"
-    store = ForwardFactStore(root, folder)
+    store = ForwardFactStore(
+        root, folder, workspace_namespace="V4_STAGE00_SOURCE_INGRESS_DIAGNOSTIC_R1",
+    )
     binding = store.append("daily_source_candidate", str(plan["package_id"]), record,
                            migration_timeout_seconds=120)
     readback = store.read(binding)

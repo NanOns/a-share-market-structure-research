@@ -77,6 +77,42 @@ def test_reads_current_contract_only_after_registry_approval_and_identity_attest
     assert contract.approved_by=="owner" and contract.approval_ref=="approval-r7"
 
 
+def test_development_candidate_read_preserves_missing_approval_state():
+    from workbench_analysis.contract_registry_pg_v1 import load_unapproved_dev_contract_candidate
+    raw=b'{"contract_id":"CANDIDATE","version":"1.0.0"}'
+    sha=hashlib.sha256(raw).hexdigest()
+    identity={"database":"market_research","database_oid":1,"host":"127.0.0.1","port":5432}
+
+    class Result:
+        def __init__(self,value): self.value=value
+        def fetchone(self): return self.value
+
+    class ReadSnapshot:
+        def __init__(self,event_count=0): self.event_count=event_count
+        def execute(self,query,params=()):
+            if "current_database()" in query and "transaction_isolation" in query:
+                return Result(("market_research","v4_reader","repeatable read","on"))
+            if "inet_server_addr()" in query:
+                return Result(("market_research",1,"127.0.0.1",5432))
+            if "SELECT current_user, current_setting('transaction_read_only')" in query:
+                return Result(("v4_reader","on"))
+            if "FROM v4.contract_versions" in query:
+                assert params==("CANDIDATE","1.0.0","V4_STAGE00_DEV_CANDIDATE")
+                return Result((raw,sha,"JSON","1","V4_STAGE00_DEV_CANDIDATE","git:head:contract.json"))
+            if "FROM v4.contract_approval_events" in query:
+                return Result((self.event_count,))
+            raise AssertionError(query)
+
+    contract=load_unapproved_dev_contract_candidate(ReadSnapshot(),"CANDIDATE","1.0.0",
+        expected_database_identity=identity)
+    assert contract.raw_content==raw and contract.raw_sha256==sha
+    assert contract.parsed_json["contract_id"]=="CANDIDATE"
+    assert contract.approved_by=="" and contract.approval_ref==""
+    with pytest.raises(ContractRegistryError,match="CANDIDATE_HAS_APPROVAL_HISTORY"):
+        load_unapproved_dev_contract_candidate(ReadSnapshot(event_count=1),"CANDIDATE","1.0.0",
+            expected_database_identity=identity)
+
+
 @pytest.mark.parametrize("action,approval_sha",[("REVOKED","a"*64),("APPROVED","0"*64)])
 def test_current_contract_reader_rejects_revocation_and_changed_source(action,approval_sha):
     from workbench_analysis.contract_registry_pg_v1 import load_current_approved_contract

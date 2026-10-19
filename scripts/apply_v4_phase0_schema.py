@@ -1,4 +1,4 @@
-"""Historical multi-stage migration runner; execution is not authorized in Phase 0 R2."""
+"""按明确授权执行阶段00单项迁移；历史跨阶段总迁移仍拒绝执行。"""
 from __future__ import annotations
 
 import argparse
@@ -80,7 +80,7 @@ STAGE00_SINGLE_MIGRATION = {
         "v4.schema_migrations", "v4.source_packages", "v4.source_revisions",
     ),
     "tracking": "v4.schema_migrations(version, checksum_sha256, applied_at, contract_id)",
-    "execution_policy": "UNDEPLOYED_REQUIRES_SEPARATE_STAGE00_MIGRATION_AUTHORIZATION",
+    "execution_policy": "USER_AUTHORIZED_STAGE00_DEVELOPMENT_WRITE",
 }
 
 def verify_stage00_single_migration_definition():
@@ -92,6 +92,49 @@ def verify_stage00_single_migration_definition():
         raise RuntimeError("STAGE00_RAW_OWNER_MIGRATION_IDENTITY_MISMATCH")
     return {**item, "path": str(path), "verified_sha256": actual,
             "status": "DEFINED_NOT_APPLIED"}
+
+def apply_stage00_raw_receipts():
+    """仅在唯一 market_research.v4 内应用哈希固定的00E收据迁移。"""
+    item=verify_stage00_single_migration_definition()
+    text=(MIGRATIONS/item["filename"]).read_text("utf-8")
+    with psycopg.connect(dsn()) as pg:
+        with pg.transaction():
+            pg.execute("SET TRANSACTION READ WRITE")
+            identity=pg.execute("""select current_database(),inet_server_addr()::text,
+                inet_server_port(),current_setting('transaction_read_only')""").fetchone()
+            if identity != ("market_research","127.0.0.1/32",5432,"off"):
+                raise RuntimeError("STAGE00_MIGRATION_DATABASE_IDENTITY_MISMATCH")
+            if pg.execute("select to_regnamespace('v4')").fetchone()[0] is None:
+                raise RuntimeError("STAGE00_MIGRATION_SCHEMA_MISSING")
+            if pg.execute("select to_regclass('v4.schema_migrations')").fetchone()[0] is None:
+                raise RuntimeError("STAGE00_MIGRATION_LEDGER_MISSING")
+            missing=[name for name in ("v4.source_packages","v4.source_revisions")
+                     if pg.execute("select to_regclass(%s)",(name,)).fetchone()[0] is None]
+            if missing:
+                raise RuntimeError("STAGE00_MIGRATION_PREREQUISITE_MISSING:"+",".join(missing))
+            old=pg.execute("select checksum_sha256,contract_id from v4.schema_migrations where version=%s",
+                           (item["version"],)).fetchone()
+            if old:
+                if old[0].strip()!=item["sha256"] or old[1]!=item["version"]:
+                    raise RuntimeError("STAGE00_MIGRATION_CHECKSUM_CONFLICT")
+                status="ALREADY_APPLIED"
+            else:
+                pg.execute(text)
+                pg.execute("""insert into v4.schema_migrations
+                    (version,checksum_sha256,applied_at,contract_id)
+                    values (%s,%s,now(),%s)""",
+                    (item["version"],item["sha256"],item["version"]))
+                status="APPLIED"
+    with psycopg.connect(dsn()) as pg:
+        pg.execute("SET TRANSACTION READ ONLY")
+        readback=pg.execute("""select (select count(*) from v4.stage00_raw_owner_receipts),
+            to_regclass('v4.stage00_raw_owner_receipts')::text,
+            (select count(*) from v4.schema_migrations where version=%s and checksum_sha256=%s)""",
+            (item["version"],item["sha256"])).fetchone()
+        if readback[1]!="v4.stage00_raw_owner_receipts" or readback[2]!=1:
+            raise RuntimeError("STAGE00_MIGRATION_READBACK_FAILED")
+        return {"status":status,"version":item["version"],"sha256":item["sha256"],
+                "receipt_rows":readback[0],"relation":readback[1],"ledger_rows":readback[2]}
 
 def dsn():
     value=os.environ.get("V4_NATIVE_PG_DSN")
@@ -228,9 +271,13 @@ def apply():
 
 if __name__=="__main__":
     ap=argparse.ArgumentParser(
-        description="Historical V4 migration runner spanning Phase 0 and later stages; currently NOT_AUTHORIZED_TO_EXECUTE."
+        description="按精确版本应用阶段00单项迁移；历史跨阶段总迁移始终拒绝。"
     )
-    ap.add_argument("--apply",action="store_true",help="historical flag; execution is currently not authorized")
+    ap.add_argument("--apply",action="store_true",help="历史全量迁移选项；始终拒绝执行")
+    ap.add_argument("--stage00-raw-receipts",action="store_true",help="应用哈希固定的00E RAW收据迁移")
     args=ap.parse_args()
+    if args.stage00_raw_receipts:
+        print(json.dumps(apply_stage00_raw_receipts(),ensure_ascii=False,sort_keys=True))
+        raise SystemExit(0)
     if not args.apply: raise SystemExit("Refusing DB mutation without --apply")
     raise SystemExit("NOT_AUTHORIZED_TO_EXECUTE: use only after a separately authorized migration task")

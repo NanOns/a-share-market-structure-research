@@ -115,20 +115,28 @@ def resolve_migrated_legacy_fact(source_schema, kind, key, expected_sha256=None)
         return row[0]
 
 class ForwardFactStore:
-    def __init__(self, root, folder):
+    def __init__(self, root, folder, *, workspace_namespace=None):
         self.root = Path(root).resolve()
         self.folder = (self.root / folder).resolve()
         if self.root.drive.upper() != 'G:' or not self.folder.is_relative_to(self.root):
             raise ValueError('FORWARD_G_ONLY_ROOT_REQUIRED')
         self.dsn = configured_dsn()
         self.schema = 'v4'
-        self.workspace_namespace = self.namespace_for(self.folder)
+        if workspace_namespace is not None and (
+                not isinstance(workspace_namespace, str)
+                or not re.fullmatch(r'[A-Za-z0-9:_-]{1,160}', workspace_namespace)):
+            raise ValueError('FORWARD_STABLE_NAMESPACE_INVALID')
+        self.workspace_namespace = workspace_namespace or self.namespace_for(self.folder)
         with connection('v4', dsn=self.dsn) as pg:
             _require_fixed_forward_storage(pg)
             self.database_identity = self._database_identity(pg)
-            pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))', (self.schema,))
-            marker = pg.execute('SELECT receipt FROM forward_migration_r1 WHERE workspace_namespace=%s',
-                                (self.workspace_namespace,)).fetchone()
+            if workspace_namespace is None:
+                pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))', (self.schema,))
+                marker = pg.execute('SELECT receipt FROM forward_migration_r1 WHERE workspace_namespace=%s',
+                                    (self.workspace_namespace,)).fetchone()
+            else:
+                # 固定业务命名空间不根据本地目录迁入或生成身份。
+                marker = True
             if marker is None:
                 # One transaction imports original raw bytes and records SHA.
                 originals = []

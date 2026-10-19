@@ -11,6 +11,7 @@ EVENTS=[]
 GUARDED_ROOTS=[]
 PG_DISPOSABLE_BASE=DISPOSABLE_BASE
 READONLY_TARGETED_PG_TESTS=False
+WRITE_TARGETED_STAGE00_PG_TESTS=False
 
 @pytest.fixture(autouse=True)
 def original_v3_tray_labels_read_only_git_scope(request,monkeypatch):
@@ -74,7 +75,7 @@ def hook(event,args):
         raise ValueError('FULL_REGRESSION_PROTECTED_FILESYSTEM_WRITE_FORBIDDEN')
 
 def pytest_configure(config):
-    global ACTIVE,GUARDED_ROOTS,DISPOSABLE_BASE,READONLY_TARGETED_PG_TESTS
+    global ACTIVE,GUARDED_ROOTS,DISPOSABLE_BASE,READONLY_TARGETED_PG_TESTS,WRITE_TARGETED_STAGE00_PG_TESTS
     from tests import runtime_isolation, runtime_isolation_plugin
     from tests.remainder_storage import ALLOWED
     selected=Path(os.environ.get('REMAINDER_TEST_TEMP_BASE',str(DISPOSABLE_BASE))).resolve()
@@ -91,8 +92,13 @@ def pytest_configure(config):
         except (OSError,ValueError):requested.add(selected_arg.replace('\\','/'))
     READONLY_TARGETED_PG_TESTS=(os.environ.get('V4_R6_READONLY_CURRENT_PG_TESTS')=='1'
         and bool(requested) and requested<=readonly_allowlist)
+    stage00_write_allowlist={'tests/v4_phase0/test_postgres_schema.py'}
+    WRITE_TARGETED_STAGE00_PG_TESTS=(os.environ.get('V4_STAGE00_DEV_PG_TESTS')=='1'
+        and bool(requested) and requested<=stage00_write_allowlist)
     if READONLY_TARGETED_PG_TESTS:
         EVENTS.append(dict(event='targeted_pg_test_mode',decision='ALLOW_READ_ONLY_MARKET_RESEARCH',tests=sorted(requested)))
+    if WRITE_TARGETED_STAGE00_PG_TESTS:
+        EVENTS.append(dict(event='targeted_pg_test_mode',decision='ALLOW_USER_AUTHORIZED_STAGE00_DEV_PG',tests=sorted(requested)))
     if selected not in ALLOWED:raise ValueError('UNREGISTERED_DISPOSABLE_STORAGE_ROOT')
     storage=pytest.MonkeyPatch();config._remainder_storage_patch=storage
     storage.setattr(runtime_isolation,'DISPOSABLE_BASE',selected)
@@ -148,6 +154,11 @@ def pytest_configure(config):
             readonly_kw=dict(kw);readonly_kw['options']='-c default_transaction_read_only=on'
             EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_READ_ONLY_TARGETED_PG',database='market_research',port='5432'))
             return connect(conninfo,*args,**readonly_kw)
+        if (WRITE_TARGETED_STAGE00_PG_TESTS and params.get('host')=='127.0.0.1'
+                and params.get('port')=='5432' and params.get('dbname')=='market_research'):
+            write_kw=dict(kw);write_kw['options']='-c default_transaction_read_only=off'
+            EVENTS.append(dict(event='psycopg.connect',decision='ALLOW_USER_AUTHORIZED_STAGE00_DEV_PG',database='market_research',port='5432'))
+            return connect(conninfo,*args,**write_kw)
         if params.get('host')!='127.0.0.1' or params.get('port') not in allowed:
             EVENTS.append(dict(event='psycopg.connect',decision='REJECT_NONDISPOSABLE_PG',database=params.get('dbname'),port=params.get('port')))
             raise ValueError('DISPOSABLE_PG_CLUSTER_REQUIRED')

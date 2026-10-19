@@ -56,6 +56,7 @@ class RegisteredContract:
     approval_occurred_at: Any = None
     approval_recorded_at: Any = None
     approval_source_sha256: str = ""
+    source_revision: str = ""
 
 
 def _mapping(value: Any, code: str) -> dict[str, Any]:
@@ -402,6 +403,73 @@ def load_unique_current_approved_contract(
         cursor, contract_id, version, namespaces[0],
         expected_database_identity=expected_database_identity,
     )
+
+
+def load_unapproved_dev_contract_candidate(
+    cursor: Any,
+    contract_id: str,
+    version: str,
+    *,
+    expected_database_identity: dict[str, Any],
+    namespace: str = "V4_STAGE00_DEV_CANDIDATE",
+) -> RegisteredContract:
+    """Read exact development candidate bytes without granting approval."""
+    if not all(isinstance(value, str) and value.strip()
+               for value in (contract_id, version, namespace)):
+        raise ContractRegistryError("V4_CONTRACT_LOOKUP_ID_REQUIRED")
+    try:
+        session = _fetchone(cursor,
+            """SELECT current_database(), current_user,
+                      current_setting('transaction_isolation'),
+                      current_setting('transaction_read_only')""")
+        if (not session or len(session) < 4
+                or str(session[2]).lower() != "repeatable read"
+                or str(session[3]).lower() not in ("on", "true", "1")):
+            raise ContractRegistryError("V4_PG_READONLY_REPEATABLE_READ_REQUIRED")
+        from workbench_db.v4_publication_reader import PgPublicationReader
+        identity = PgPublicationReader._read_database_identity(cursor)
+        if identity != expected_database_identity:
+            raise ContractRegistryError("V4_PG_DATABASE_IDENTITY_MISMATCH")
+        PgPublicationReader._attest_read_role(cursor)
+        row = _fetchone(cursor,
+            """SELECT raw_content,raw_sha256,content_format,schema_version,
+                      namespace,source_revision
+                 FROM v4.contract_versions
+                WHERE contract_id=%s AND version=%s AND namespace=%s""",
+            (contract_id, version, namespace),
+        )
+        if not row:
+            raise ContractRegistryError("V4_PG_CONTRACT_VERSION_NOT_FOUND")
+        raw, stored_digest, content_format, schema_version, actual_namespace, source_revision = row
+        raw = bytes(raw)
+        actual_digest = hashlib.sha256(raw).hexdigest()
+        if str(stored_digest).strip() != actual_digest or str(actual_namespace) != namespace:
+            raise ContractRegistryError("V4_PG_CONTRACT_CANDIDATE_DIGEST_INVALID")
+        event_count = _fetchone(cursor,
+            """SELECT count(*) FROM v4.contract_approval_events
+                WHERE contract_id=%s AND version=%s AND raw_sha256=%s""",
+            (contract_id, version, actual_digest),
+        )
+        if not event_count or int(event_count[0]) != 0:
+            raise ContractRegistryError("V4_PG_CONTRACT_CANDIDATE_HAS_APPROVAL_HISTORY")
+    except ContractRegistryError:
+        raise
+    except Exception as exc:
+        raise ContractRegistryError("V4_PG_CONTRACT_REGISTRY_UNAVAILABLE") from exc
+    parsed_json = None
+    if str(content_format).upper() == "JSON":
+        try:
+            parsed_json = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, ValueError) as exc:
+            raise ContractRegistryError("V4_PG_CONTRACT_JSON_INVALID") from exc
+    elif str(content_format).upper() == "XML":
+        if _xml_contains_dtd_or_entity(raw):
+            raise ContractRegistryError("V4_PG_CONTRACT_XML_DTD_FORBIDDEN")
+    elif str(content_format).upper() != "TEXT":
+        raise ContractRegistryError("V4_PG_CONTRACT_FORMAT_UNSUPPORTED")
+    return RegisteredContract(contract_id, version, actual_digest,
+        str(content_format).upper(), str(schema_version), namespace, raw, parsed_json,
+        database_identity=(str(session[0]), str(session[1])), source_revision=str(source_revision))
 
 
 def load_current_approved_contract_by_digest(

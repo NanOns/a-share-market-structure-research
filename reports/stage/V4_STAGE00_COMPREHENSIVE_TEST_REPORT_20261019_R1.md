@@ -439,3 +439,36 @@ R6收尾静态检查：`python -m compileall -q src/workbench_db/v4_daily_source
 本轮结果为`R7_CODE_PARTIAL_PASS / REAL_STAGE00_ACCEPTANCE_BLOCKED`。代码静态/隔离测试已确认四板名单校验、Raw OHLCVA摘要、同PG快照验权、PG派生B/C/D证据及不可变迁移定义；共享库目前没有受理包和R7迁移，因此真实00D/00E验收仍BLOCKED。下一步需单独授权最小实际source/RAW/contract事实接收及对应的单项迁移；本轮没有取得或执行该授权。
 
 R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与acceptance输出一致）。本报告提交及推送后的分支HEAD由PR #3最新评论记录。
+
+## R8｜阶段00A–00H全量收尾、PG候选读回与真实阻断复核
+
+执行依据：阶段00唯一执行卡`V4_阶段00_全模块代码文件Owner合同引用PG化与Bug闭环_统一执行卡_R1_20261019.md`及开发高权限SOT R2。分支`codex/v4-workspace-cleanup`，代码基线`98957302d007f7beb60fb49a9bd94f646aff7638`。本轮只处理00A–00H代码、合同/参数引用、必要Stage00 PG结构及本报告；不进入阶段01实现，不处理FEP、生产28765、Head切换、部署或打包。
+
+### 全模块与调用链扫描结论
+
+- 现役诊断/验收入口为`python -m v4.contracts.phase0_gate`。它按PG当前读取contract版本/approval events、source package/facts/revisions、security lifecycle及membership事实、publication/head、Owner/source scope和RAW receipt；不会把本地JSON、TDX目录名、普通revision计数或无关publication当业务权威。
+- 00A/00G/00H相关代码集中在`src/v4/contracts/phase0_gate.py`与`src/workbench_analysis/contract_registry_pg_v1.py`：修复RAW缺收据时把“无来源/无收据”误报为“无生产者”的诊断；增加只读、固定namespace、字节摘要匹配且必须无approval event的PG开发候选读取。候选仅帮助看见PG中尚未批准合同内容，阶段状态仍保留`APPROVAL_EVENT_REQUIRED`和缺少有效合同计数，不作为批准读取。
+- 00B/00C及身份/发布消费者复核仍读取`v4`的类型化生命周期、membership、publication与head结构；不从本地证券代码推断永久security_id，不把现存历史候选行提升为accepted facts。TDX路径仍属机器采集边界配置。
+- 00D/00E链路为`src/workbench_db/v4_daily_source_ingest_r6.py`、现役Gate和新增的`v4.stage00_raw_owner_receipts`。修复开发诊断namespace不再由workspace目录派生；单项迁移被哈希/数据库身份/前置表/ledger绑定，并在唯一`v4` schema中执行及读回。
+- 00F继续读取PG已批准BaoStock合同与已接受native来源修订；实库合同正文仍标记字段绑定pending，未将它扩大解释为已接入来源。
+- Forward工作区引用在`src/workbench_db/v4_forward_pg_r1.py`可显式使用稳定业务namespace；Stage00诊断调用者使用固定namespace，避免将本地目录路径当业务身份。旧Phase0 runner、历史验证脚本和其他阶段模块没有接入现役Gate调用链；本轮未重写、删除或迁移它们。
+
+### PG写入及读回
+
+- 在唯一`market_research.v4`执行唯一授权迁移`V4_STAGE00_RAW_OWNER_RECEIPTS_R1`，migration SHA-256=`eb3caa947e25bae118c0bcbc5687bdec8ff12d5928301a924859fd384a2ac084`。migration ledger有且仅有此项记录，实际receipt行数为0，关系`v4.stage00_raw_owner_receipts`存在。迁移加入来源包/修订外键、唯一约束及UPDATE/DELETE/TRUNCATE保护。
+- 将5份本地合同候选原始字节按其原SHA写入PG开发候选namespace`V4_STAGE00_DEV_CANDIDATE`，绑定基线commit与精确config来源路径。真实PG只读重复读回核对字节和摘要一致；5份均无批准事件。状态均为`DEV_CANDIDATE_READ / APPROVAL_EVENT_REQUIRED`。未写批准事件、正式Owner、PIT、签名或生产批准事实。
+- 其他真实数据未人为补造：accepted `source_packages`=0，`source_package_facts`=0，`security_lifecycle_facts`=0，`security_membership_facts`=0，publication/head=0。`security_lifecycle_history`虽有6440行，所查样本为候选状态，不能视为接受事实。TDX只读四板样本通过格式/数值检查，不能代表完整市场或PG身份映射。BaoStock supplemental contract已批准但其字段绑定状态仍pending且无已接受native revision。
+
+### Bug修复及验证
+
+- `phase0_gate`把RAW状态原因区分为无accepted source、无receipt、producer/read错误，避免错误下结论；contract reader仅在approval event缺失时展示PG候选，正式gate仍fail-closed。
+- Stage00 RAW单项迁移实现精确身份与哈希防护，执行后确认ledger、目标关系及空receipt表真实读回。Forward/Stage00 namespace不再从目录路径决定业务身份。
+- 测试：`tests/v4_phase0`（排除`test_postgres_schema.py`）及`tests/test_v4_daily_ingest_r6.py`、`tests/test_v4_contract_registry_pg_v1.py`，`182 passed`。`test_postgres_schema.py`单独接入当前PG结果`7 passed, 22 failed`；失败用例尝试插入当前约束要求先绑定的publication contract或source package fact，因此不能证明Stage00代码回归失败，也不能通过放松现行PG约束修复。本报告明确保留该集成测试不通过结果。
+- 真实`acceptance --json --trade-date 2026-09-11`可成功连到`market_research`并执行诊断，但业务返回`BLOCKED`（命令退出1；V4-01权限`BLOCKED`）：5个Stage00合同缺批准读取，accepted source package为0，LIFECYCLE_SCHEMA、PUBLICATION_IDENTITY、RAW_BOOTSTRAP及来源scope缺实际事实。doctor执行入口正常不等于阶段通过。
+- `git diff --check`通过。未运行生产服务、未写Head、未启动远端CI。
+
+### 阶段结论
+
+本轮代码与PG候选/结构闭环为`STAGE00_CODE_PG_CANDIDATE_REPAIR_COMPLETE`；真实业务验收为`STAGE00_REAL_DATA_BLOCKED`，不得标记`STAGE00_PASS`或`V4_01_AUTHORIZED`。当前00E、00G、00H仍BLOCKED；其余子阶段状态按实库doctor结果保留降级/阻断状态。后续只有获得真实来源接受凭证、Owner事实、完整身份/生命周期事实及合同批准事件后，才可重新运行正式验收；本轮没有伪造这些事实。阶段01未在本次执行；阶段00报告提交推送后，按唯一执行卡边界等待阶段01任务授权再进入下一阶段。
+
+代码、测试、本规范授权状态及本节报告均属于本轮限定变更；提交/推送仅记录开发交付，不代表生产验收或部署。

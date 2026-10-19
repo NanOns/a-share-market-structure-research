@@ -494,6 +494,6 @@ def test_failed_schema_migration_rolls_back_all_ddl():
     with connect() as pg:
         with pytest.raises(psycopg.Error):
             with pg.transaction():
-                pg.execute("create table v4_meta.\"" + probe + "\" (id integer primary key)")
-                pg.execute("CREATE TABLE v4_meta.__intentionally_invalid_ddl ( id this_is_not_a_type )")
-        assert pg.execute("select to_regclass(%s)", (f"v4_meta.{probe}",)).fetchone()[0] is None
+                pg.execute("create table v4.\"" + probe + "\" (id integer primary key)")
+                pg.execute("CREATE TABLE v4.__intentionally_invalid_ddl ( id this_is_not_a_type )")
+        assert pg.execute("select to_regclass(%s)", (f"v4.{probe}",)).fetchone()[0] is None

@@ -343,7 +343,7 @@ def _package_acceptance_errors(
 def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str, Any], *, receipt_verified: bool = False) -> list[str]:
     """Check a normalized RAW receipt against accepted source and B/C/D owner evidence."""
     if not isinstance(receipt, Mapping):
-        return ["MISSING_RUNTIME_RECEIPT_PRODUCER"]
+        return ["RAW_RECEIPT_SOURCE_NOT_ACCEPTED"] if not source.get("accepted") else ["RAW_OWNER_RECEIPT_NOT_FOUND"]
     errors: list[str] = []
     if not receipt_verified:
         errors.append("RAW_RECEIPT_AUTHORITY_NOT_VERIFIED")
@@ -460,6 +460,23 @@ def _raw_owner_stage(raw_errors: list[str]) -> dict[str, Any]:
         "blocks_v4_01": not accepted,
         "reason_codes": raw_errors,
     }
+
+
+def _raw_receipt_reason(*, table_exists: bool, accepted_source_exists: bool,
+                        receipt_exists: bool = False, verified: bool = False,
+                        read_error: str | None = None) -> str | None:
+    """区分运行组件缺失与上游真实来源/收据尚未到位。"""
+    if not table_exists:
+        return "MISSING_RUNTIME_RECEIPT_PRODUCER"
+    if not accepted_source_exists:
+        return "NO_ACCEPTED_SOURCE_PACKAGE"
+    if read_error:
+        return "RAW_OWNER_RECEIPT_READ_OR_VERIFY_FAILED:" + read_error
+    if not receipt_exists:
+        return "RAW_OWNER_RECEIPT_NOT_FOUND"
+    if not verified:
+        return "RAW_OWNER_RECEIPT_NOT_VERIFIED"
+    return None
 
 
 def _tdx_root(config_path: Path, override: str | None) -> Path:
@@ -581,6 +598,7 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
     from workbench_db.v4_publication_reader import PgPublicationReader, readonly_connection
     from workbench_analysis.contract_registry_pg_v1 import (
         ContractRegistryError, load_unique_current_approved_contract,
+        load_unapproved_dev_contract_candidate,
     )
     from workbench_db.v4_daily_source_ingest_r6 import (
         verify_source_package_manifest_authority, read_raw_owner_receipt,
@@ -604,6 +622,10 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
             ("accepted_source_package_count", "source_packages", "SELECT count(*) FROM v4.source_packages WHERE accepted_scope='ACCEPTED_SOURCE_PACKAGE'"),
             ("publication_head_count", "publication_heads", "SELECT count(*) FROM v4.publication_heads"),
             ("model_namespace_count", "model_namespaces", "SELECT count(*) FROM v4.model_namespaces"),
+            ("lifecycle_history_count", "security_lifecycle_history", "SELECT count(*) FROM v4.security_lifecycle_history"),
+            ("lifecycle_history_security_count", "security_lifecycle_history", "SELECT count(DISTINCT security_id) FROM v4.security_lifecycle_history"),
+            ("lifecycle_fact_count", "security_lifecycle_facts", "SELECT count(*) FROM v4.security_lifecycle_facts"),
+            ("raw_owner_receipt_count", "stage00_raw_owner_receipts", "SELECT count(*) FROM v4.stage00_raw_owner_receipts"),
         ):
             counts[key] = int(cursor.execute(sql).fetchone()[0]) if catalog[table] else None
         contracts = {}
@@ -621,6 +643,16 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
                              namespace=registered.namespace, source_revision=registered.approval_source_revision)
             except ContractRegistryError as exc:
                 entry["reason"] = str(exc)
+                if str(exc) == "V4_PG_CONTRACT_VERSION_NOT_FOUND":
+                    try:
+                        candidate = load_unapproved_dev_contract_candidate(
+                            cursor, contract_id, version, expected_database_identity=identity,
+                        )
+                        entry.update(status="DEV_CANDIDATE_READ", raw_sha256=candidate.raw_sha256,
+                                     namespace=candidate.namespace, source_revision=candidate.source_revision,
+                                     reason="APPROVAL_EVENT_REQUIRED")
+                    except ContractRegistryError:
+                        pass
             contracts[contract_id] = entry
         try:
             acceptance_authority = load_unique_current_approved_contract(
@@ -727,7 +759,10 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
                     source_candidate_errors.extend(errors)
         accepted_source = None if candidate_overflow else next((item for item in source_candidates if item["accepted"]), None)
         raw_receipt, raw_receipt_verified = None, False
-        raw_reason = "MISSING_RUNTIME_RECEIPT_PRODUCER"
+        raw_reason = _raw_receipt_reason(
+            table_exists=bool(catalog.get("stage00_raw_owner_receipts")),
+            accepted_source_exists=bool(accepted_source),
+        )
         if accepted_source and catalog.get("stage00_raw_owner_receipts"):
             tdx_fact = next((row for row in accepted_source["facts"] if row.get("source_key") == "tdx"), None)
             if tdx_fact and tdx_fact.get("source_revision_id"):
@@ -737,12 +772,16 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
                         source_package_id=accepted_source["package"]["package_id"],
                         source_revision_id=tdx_fact["source_revision_id"],
                     )
-                    raw_reason = "RAW_OWNER_RECEIPT_NOT_FOUND" if raw_receipt is None else ""
+                    raw_reason = _raw_receipt_reason(
+                        table_exists=True, accepted_source_exists=True,
+                        receipt_exists=raw_receipt is not None,
+                        verified=bool(raw_receipt_verified),
+                    )
                 except Exception as exc:
                     raw_receipt = None
-                    raw_reason = "RAW_OWNER_RECEIPT_READ_OR_VERIFY_FAILED:" + str(exc)
-        elif not catalog.get("stage00_raw_owner_receipts"):
-            raw_reason = "MISSING_RUNTIME_RECEIPT_PRODUCER"
+                    raw_reason = _raw_receipt_reason(
+                        table_exists=True, accepted_source_exists=True, read_error=str(exc),
+                    )
         catalog_missing = [name for name, found in catalog.items() if not found]
         return {
             "database_identity": identity, "read_role": role, "catalog": catalog,
@@ -820,12 +859,16 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
         report["contract_registry"] = pg["contracts"]
         report["source_acceptance_authority"] = pg.get("source_acceptance_authority", {"status": "UNKNOWN"})
         report["contract_versions_read"] = [
-            {"contract_id": key, **{name: value[name] for name in ("version", "raw_sha256", "namespace") if name in value}}
-            for key, value in pg["contracts"].items() if value["status"] == "APPROVED_READ"
+            {"contract_id": key, **{name: value[name] for name in ("version", "raw_sha256", "namespace", "source_revision", "status", "reason") if name in value}}
+            for key, value in pg["contracts"].items() if value.get("raw_sha256")
         ]
         report["missing_contract_versions"] = pg["missing_contract_versions"]
         report["pg_counts"] = {
-            key: pg[key] for key in ("source_revision_count", "accepted_source_package_count", "publication_head_count", "model_namespace_count")
+            key: pg.get(key) for key in (
+                "source_revision_count", "accepted_source_package_count", "publication_head_count",
+                "model_namespace_count", "lifecycle_history_count", "lifecycle_history_security_count",
+                "lifecycle_fact_count", "raw_owner_receipt_count",
+            )
         }
         report["raw_bootstrap"] = pg["raw_bootstrap"]
         report["source_acceptance"] = {
@@ -845,6 +888,9 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
             pg.get("raw_bootstrap_receipt"), source_acceptance.get("accepted_evidence") or {},
             receipt_verified=bool(pg.get("raw_bootstrap_receipt_verified", False)),
         )
+        read_status = pg.get("raw_bootstrap", {}).get("reason")
+        if read_status and read_status.startswith(("MISSING_RUNTIME_RECEIPT_PRODUCER", "RAW_OWNER_RECEIPT_READ_OR_VERIFY_FAILED")):
+            raw_errors.append(read_status)
         report["raw_bootstrap"] = {
             "status": "ACCEPTED" if not raw_errors else "BLOCKED",
             "reason_codes": raw_errors,
@@ -857,12 +903,12 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
         sample_ready = not tdx["failures"] and tdx["valid_sample_count"] == len(TDX_SAMPLES)
         stages = {
             "V4-00A": {"status": "DEGRADED_PASS", "owner": "V4-00A", "source": "PG identity/catalog read", "evidence": ["database identity attested", "repeatable-read transaction is read-only"], "reason_codes": ["BACKUP_RECOVERY_RECEIPT_NOT_CHECKED"]},
-            "V4-00B": {"status": "DEGRADED_PASS" if lifecycle_ready else "BLOCKED", "owner": "V4-00B", "scope": "LIFECYCLE_SCHEMA", "source": "PG catalog", "evidence": ["security lifecycle relations present" if lifecycle_ready else "security lifecycle relation missing"], "blocked_scopes": [] if lifecycle_ready else ["LIFECYCLE_SCHEMA"], "allowed_capabilities": ["LIFECYCLE_SCHEMA"] if lifecycle_ready else [], "blocks_v4_01": not lifecycle_ready, "reason_codes": ["LIFECYCLE_DATA_COVERAGE_NOT_PROVEN"]},
+            "V4-00B": {"status": "DEGRADED_PASS" if lifecycle_ready else "BLOCKED", "owner": "V4-00B", "scope": "LIFECYCLE_SCHEMA", "source": "PG lifecycle history/fact rows", "evidence": [f"history_rows={pg.get('lifecycle_history_count')}", f"history_security_ids={pg.get('lifecycle_history_security_count')}", f"lifecycle_fact_rows={pg.get('lifecycle_fact_count')}", "T0 scope coverage not proven by schema presence"], "blocked_scopes": [] if lifecycle_ready else ["LIFECYCLE_SCHEMA"], "allowed_capabilities": ["LIFECYCLE_SCHEMA"] if lifecycle_ready else [], "blocks_v4_01": not lifecycle_ready, "reason_codes": ["LIFECYCLE_DATA_COVERAGE_NOT_PROVEN"]},
             "V4-00C": {"status": "DEGRADED_PASS" if publication_schema_ready else "BLOCKED", "owner": "V4-00C", "scope": "PUBLICATION_IDENTITY", "source": "PG catalog and read-only row counts", "evidence": ["publication identity relations present" if publication_schema_ready else "publication identity relation missing", f"publication_heads={pg['publication_head_count']}"], "blocked_scopes": [] if publication_schema_ready else ["PUBLICATION_IDENTITY"], "allowed_capabilities": ["PUBLICATION_IDENTITY"] if publication_schema_ready else [], "blocks_v4_01": not publication_schema_ready, "reason_codes": ["NO_HEAD_PRESENT" if not heads_present else "HEAD_PRESENT_NOT_SELECTED"]},
             "V4-00D": _source_owner_stage(source_acceptance, sample_ready, tdx),
             "V4-00E": _raw_owner_stage(raw_errors),
             "V4-00F": _supplemental_baostock_stage(pg),
-            "V4-00G": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00G", "source": "PG-only approved contract registry", "evidence": [f"approved_required_contracts={len(STAGE00_CONTRACTS)-len(contract_missing)}/{len(STAGE00_CONTRACTS)}"], "reason_codes": ["APPROVED_STAGE00_CONTRACTS_MISSING"] if contract_missing else ["PARAMETER_EFFECTIVE_STATE_NOT_PROVEN"]},
+            "V4-00G": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00G", "source": "PG-only contract registry", "evidence": [f"approved_required_contracts={len(STAGE00_CONTRACTS)-len(contract_missing)}/{len(STAGE00_CONTRACTS)}", f"dev_candidate_contracts={sum(1 for row in pg['contracts'].values() if row['status'] == 'DEV_CANDIDATE_READ')}"], "reason_codes": ["CONTRACT_APPROVAL_EVENT_REQUIRED"] if any(row["status"] == "DEV_CANDIDATE_READ" for row in pg["contracts"].values()) else (["APPROVED_STAGE00_CONTRACTS_MISSING"] if contract_missing else ["PARAMETER_EFFECTIVE_STATE_NOT_PROVEN"])},
             "V4-00H": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00H", "source": "PG-only final acceptance contract and actual Stage00 evidence", "evidence": [f"missing_contract_versions={len(contract_missing)}"], "reason_codes": ["FINAL_ACCEPTANCE_CONTRACT_OR_EVIDENCE_MISSING"] if contract_missing else ["EXTERNAL_ACCEPTANCE_NOT_COMPLETE"]},
         }
         # Keep the gate's existing scope ownership and required-scope semantics.

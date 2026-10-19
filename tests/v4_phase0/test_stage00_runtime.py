@@ -227,10 +227,29 @@ def test_e_rejects_unknown_suspended_post_event_and_wrong_owner_or_revision(fiel
     assert expected_error in errors
 
 
-def test_missing_raw_receipt_producer_is_reported_explicitly():
+def test_missing_source_and_missing_receipt_are_reported_as_business_gaps():
     assert phase0_gate._raw_bootstrap_errors(None, {"accepted": False}) == [
-        "MISSING_RUNTIME_RECEIPT_PRODUCER",
+        "RAW_RECEIPT_SOURCE_NOT_ACCEPTED",
     ]
+    assert phase0_gate._raw_bootstrap_errors(None, {"accepted": True, "package": {}}) == [
+        "RAW_OWNER_RECEIPT_NOT_FOUND",
+    ]
+
+
+def test_raw_receipt_reason_distinguishes_missing_source_from_missing_producer():
+    assert phase0_gate._raw_receipt_reason(
+        table_exists=True, accepted_source_exists=False,
+    ) == "NO_ACCEPTED_SOURCE_PACKAGE"
+    assert phase0_gate._raw_receipt_reason(
+        table_exists=False, accepted_source_exists=False,
+    ) == "MISSING_RUNTIME_RECEIPT_PRODUCER"
+    assert phase0_gate._raw_receipt_reason(
+        table_exists=True, accepted_source_exists=True,
+    ) == "RAW_OWNER_RECEIPT_NOT_FOUND"
+    assert phase0_gate._raw_receipt_reason(
+        table_exists=True, accepted_source_exists=True, receipt_exists=True,
+        verified=True,
+    ) is None
 
 
 def test_raw_bootstrap_self_hash_does_not_establish_authority():

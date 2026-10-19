@@ -1,6 +1,7 @@
 import hashlib
 import json
 import base64
+from pathlib import Path
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -9,6 +10,7 @@ import pytest
 from workbench_db.v4_daily_source_ingest_r6 import (
     SourceIngestError,
     build_source_ingest_plan,
+    persist_diagnostic_source_candidate,
 )
 
 
@@ -384,3 +386,42 @@ def test_source_readiness_must_bind_exact_freeze_and_t0(tmp_path):
     readiness["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
     with pytest.raises(SourceIngestError, match="SOURCE_READINESS_FREEZE_BINDING_MISMATCH"):
         build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze, source_readiness=readiness)
+
+
+def test_stage00_diagnostic_candidate_uses_stable_pg_namespace(monkeypatch):
+    from workbench_db import v4_forward_pg_r1
+    captured = {}
+
+    class Store:
+        def __init__(self, project_root, folder, *, workspace_namespace=None):
+            captured["root"] = project_root
+            captured["folder"] = folder
+            captured["namespace"] = workspace_namespace
+
+        def append(self, kind, key, value, **kwargs):
+            captured.update(kind=kind, key=key, value=value)
+            return {"path": "pg-only-binding", "sha256": hashlib.sha256(b"binding").hexdigest()}
+
+        def read(self, binding):
+            return captured["value"]
+
+    monkeypatch.setattr(v4_forward_pg_r1, "ForwardFactStore", Store)
+    root = Path("G:/codex_tmp/test_temp/stage00-stable-candidate-root")
+    embedded = {"rows": [{"symbol": "SH.600000"}]}
+    digest = hashlib.sha256(_json_bytes(embedded)).hexdigest()
+    plan = {
+        "contract_id": "V4_DAILY_SOURCE_INGEST_ADAPTER_R6",
+        "status": "DIAGNOSTIC_ONLY", "trade_date": "2026-09-11",
+        "package_id": "candidate-package", "package_sha256": "a" * 64,
+        "package_manifest": {
+            "package_id": "candidate-package", "package_sha256": "a" * 64,
+            "tdx_source_packages": [], "tdx_source_packages_sha256": "b" * 64,
+        },
+        "source_facts": [{
+            "source_key": "tdx", "fact_digest": digest, "source_fact_sha256": digest,
+            "record_count": 1, "record_locator": {"embedded_metadata": embedded},
+        }],
+    }
+    result = persist_diagnostic_source_candidate(root, plan)
+    assert result["persisted"] is True and result["readback"] == "PASS"
+    assert captured["namespace"] == "V4_STAGE00_SOURCE_INGRESS_DIAGNOSTIC_R1"

@@ -392,7 +392,8 @@ def test_raw_migration_registry_and_truncate_guard_are_static_and_hash_bound():
     assert "CREATE SCHEMA" not in sql.upper()
     registry_text = Path("scripts/apply_v4_phase0_schema.py").read_text(encoding="utf-8")
     assert "STAGE00_SINGLE_MIGRATION" in registry_text
-    assert "UNDEPLOYED_REQUIRES_SEPARATE_STAGE00_MIGRATION_AUTHORIZATION" in registry_text
+    assert "USER_AUTHORIZED_STAGE00_DEVELOPMENT_WRITE" in registry_text
+    assert "--stage00-raw-receipts" in registry_text
     assert "cryptography>=44,<47" in Path("requirements-windows-package.txt").read_text(encoding="utf-8")
     spec = importlib.util.spec_from_file_location(
         "stage00_migration_registry", "scripts/apply_v4_phase0_schema.py",

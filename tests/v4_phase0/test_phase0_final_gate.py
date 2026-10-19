@@ -23,6 +23,13 @@ def test_all_full_stages_without_limits_yield_full_pass():
     assert result["scanner_permission"] == "NOT_APPLICABLE_UNTIL_V4_05"
 
 
+def test_repeated_evaluation_of_identical_stage_evidence_is_deterministic():
+    evidence = records("FULL_PASS")
+    first = evaluate_phase0(evidence)
+    second = evaluate_phase0(evidence)
+    assert first == second
+
+
 def test_independent_degraded_scope_yields_degraded_pass_and_authorizes_raw():
     data = records("FULL_PASS")
     data["V4-00H"] = {"status": "DEGRADED_PASS", "blocked_scopes": ["MARKED_RELATIVE_BENCHMARK_CONSUMER"], "degraded_scopes": ["BENCHMARK_THRESHOLDS_UNSET"], "blocks_v4_01": False}

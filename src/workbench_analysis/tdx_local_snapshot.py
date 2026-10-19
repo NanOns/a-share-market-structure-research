@@ -84,8 +84,13 @@ def _safe_relative(path: Path, base: Path) -> str:
     return relative
 
 
-def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]:
-    """Read only `{root}/vipdoc/{sh,sz,bj}/lday/*.day` and atomically copy out."""
+def build_local_snapshot(
+    source_root: Path,
+    output_root: Path,
+    *,
+    persist_to_pg: bool = False,
+) -> dict[str, Any]:
+    """仅读取本地日线文件并原子复制到独立快照目录；入库须显式启用。"""
     def reject_reparse(path):
         info=path.lstat()
         if path.is_symlink() or stat.S_ISLNK(info.st_mode) or getattr(info,'st_file_attributes',0) & getattr(stat,'FILE_ATTRIBUTE_REPARSE_POINT',0x400):
@@ -175,29 +180,32 @@ def build_local_snapshot(source_root: Path, output_root: Path) -> dict[str, Any]
                 if not stored.is_file() or stored.stat().st_size != item["byte_count"] or _sha256(stored) != item["sha256"]:
                     raise LocalSnapshotError("IMMUTABLE_SNAPSHOT_CONTENT_CHANGED")
             shutil.rmtree(staging)
-            binding = _persist_manifest_pg(output_root, prior)
+            binding = _persist_manifest_pg(output_root, prior) if persist_to_pg else None
             return {"snapshot_id": snapshot_id, "manifest_path": str(prior_path), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "pg_binding": binding, "status": "REUSED_IDENTICAL_SNAPSHOT"}
         os.replace(staging, final)
-        binding = _persist_manifest_pg(output_root, manifest)
+        binding = _persist_manifest_pg(output_root, manifest) if persist_to_pg else None
         return {"snapshot_id": snapshot_id, "manifest_path": str(final / "snapshot_manifest.json"), "file_count": len(inventory), "byte_count": total_bytes, "content_digest": content_digest, "pg_binding": binding, "status": "SNAPSHOT_CREATED"}
     except Exception:
         shutil.rmtree(staging, ignore_errors=True)
         raise
 
 
-def verify_local_snapshot(snapshot_root: Path, snapshot_id: str) -> dict[str, Any]:
-    """Re-hash a project snapshot without consulting or writing the source TDX root."""
+def verify_local_snapshot(
+    snapshot_root: Path,
+    snapshot_id: str,
+    *,
+    require_pg_binding: bool = False,
+) -> dict[str, Any]:
+    """重新计算本地快照摘要；仅显式要求时才读取 PostgreSQL 绑定。"""
     snapshot = (snapshot_root / snapshot_id).resolve(strict=True)
     manifest_path = snapshot / "snapshot_manifest.json"
-    pg_manifest = _read_manifest_pg(snapshot_root, snapshot_id)
-    if pg_manifest is None:
-        # A never-ingressed immutable snapshot manifest is a source boundary.
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        binding = _persist_manifest_pg(snapshot_root, manifest)
+    binding = None
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if require_pg_binding:
         pg_manifest = _read_manifest_pg(snapshot_root, snapshot_id)
-        if pg_manifest is None or pg_manifest[1] != binding:
+        if pg_manifest is None:
             raise LocalSnapshotError("LOCAL_SNAPSHOT_PG_INGRESS_READBACK_REQUIRED")
-    manifest, binding = pg_manifest
+        manifest, binding = pg_manifest
     if manifest.get("snapshot_id") != snapshot_id or manifest.get("content_digest_algorithm") != "SHA256(sorted relative_path NUL byte_count NUL file_sha256 LF)":
         raise LocalSnapshotError("LOCAL_SNAPSHOT_MANIFEST_IDENTITY_MISMATCH")
     digest = hashlib.sha256()

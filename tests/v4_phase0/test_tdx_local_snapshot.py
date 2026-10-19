@@ -7,7 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from workbench_analysis.tdx_local_snapshot import LocalSnapshotError, build_local_snapshot
+from workbench_analysis.tdx_local_snapshot import (
+    LocalSnapshotError,
+    build_local_snapshot,
+    verify_local_snapshot,
+)
 
 
 def fixture_root(root: Path) -> Path:
@@ -20,7 +24,14 @@ def fixture_root(root: Path) -> Path:
     return tdx
 
 
-def test_local_tdx_snapshot_is_content_addressed_outside_input_and_repeatable(tmp_path: Path):
+def test_local_tdx_snapshot_is_content_addressed_outside_input_and_repeatable(tmp_path: Path, monkeypatch):
+    import workbench_analysis.tdx_local_snapshot as snapshots
+
+    def reject_implicit_pg(*args, **kwargs):
+        raise AssertionError("snapshot operation must not access PostgreSQL by default")
+
+    monkeypatch.setattr(snapshots, "_persist_manifest_pg", reject_implicit_pg)
+    monkeypatch.setattr(snapshots, "_read_manifest_pg", reject_implicit_pg)
     source = fixture_root(tmp_path)
     output = tmp_path / "project/data/v4/local_tdx_snapshots"
     result = build_local_snapshot(source, output)
@@ -30,6 +41,10 @@ def test_local_tdx_snapshot_is_content_addressed_outside_input_and_repeatable(tm
     assert manifest["source_root_read_only"] is True
     assert manifest["copied_outside_source_root"] is True
     assert manifest["file_count"] == 2
+    assert result["pg_binding"] is None
+    verified = verify_local_snapshot(output, result["snapshot_id"])
+    assert verified["status"] == "PASS"
+    assert verified["pg_binding"] is None
     second = build_local_snapshot(source, output)
     assert second["status"] == "REUSED_IDENTICAL_SNAPSHOT"
     assert second["snapshot_id"] == result["snapshot_id"]

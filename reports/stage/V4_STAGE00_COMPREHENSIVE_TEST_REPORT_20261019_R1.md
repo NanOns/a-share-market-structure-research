@@ -577,3 +577,25 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - 外部凭证/数据一次性缺口：①可用的官方R3挑战下载器或官方端不再返回挑战的真实包下载路径；②同T0完整四板证券身份/Universe及TDX、BaoStock真实原始响应、PG运行接受清单；③独立Source acceptance签发者及PG批准authority registry；④已接受身份/生命周期Owner事实；⑤独立RAW签发者/批准registry与实际B/C/D Owner证据；⑥五个必需Stage00合同的真实业务批准事件及最终验收合同。普通盘后来源可以AS_RECORDED且PIT_ELIGIBLE为false；不能把本次盘后采集改记为历史PIT。
 
 本轮结论：代码修复已通过阶段00回归，Source-first真实PG事务集成回滚通过；实际开发Source E2E和正式业务批准均未通过，阶段00仍`BLOCKED`。本轮未持久化任何业务Source/Owner/Publication/Head/批准事实，未进入阶段01。
+
+## R11｜本地 TDX `.day` 开发候选 PG 读回与官方 ZIP 一次性阻断
+
+执行基线为`3e4e0dd89206d2ccfa9535b5e607e5c72b62b7d2`。本轮仅执行阶段00统一任务卡第11节限定的本地来源查找、既有 PG 候选写入/读回、T0/SHA核验及本报告更新；不重做R4–R10审计，不重复官方挑战请求，不进入阶段01。
+
+### 官方 TDX ZIP 与已登记来源
+
+- 按当前配置检查`data/v4/dynamic_daily_sources/tdx_latest_v2.json`、未配置的`tdx.daily_download_root`默认位置`G:/market_data/tdx/daily`、`source_evidence/dm01_a01_r3/tdx`及`hsjday.zip`绑定位置，均无可复验文件；配置快照目录只有两份2026-10-19的`REJECTED_INVALID_PACKAGE_RESPONSE / TDX_ZIP_INVALID`回执。D盘TDX安装目录内发现的ZIP为客户端缓存/配置文件，未发现官方日线包，未将其当作官方源。基于此前官方挑战响应和本次本地缺件，状态冻结为`OFFICIAL_ZIP_CHALLENGE_OR_DOWNLOADER_UNAVAILABLE`，不再重试、不恢复R3下载器。
+- 唯一开发PG中只读查到51条既有`tdx_source_package_candidate`。它们均为诊断候选，指向2026-10-16官方包SHA-256 `c0ea0dffad66e06351596fb3855ffde0d80536e3d962867a09f42ddf32448219`、声明包大小549,184,442字节及ZIP元数据校验PASS；PG记录不含当前可读包路径，且本机所查缓存位置没有对应ZIP，故该记录不是本轮可重新验证的包字节，也不构成正式接受来源。PG中现存BaoStock日线校验对象T0为2026-10-16，与本机所选TDX `.day` 目标日不重叠。
+
+### 本地 `.day` 真实输入与PG候选读回
+
+- 选择本地只读源`D:/new_tdx/vipdoc`中可核验的已完成交易日T0=`2026-09-10`，以现有`src/tdx/day_reader.py`格式解码4个真实文件：`sh.600000`、`sh.600036`、`sz.000001`、`sz.000002`。逐条OHLC区间/金额、精确T0记录通过；本次只引用4个文件，共933,600字节，不复制全市场或多年文件。
+- 全文件SHA-256：`sh.600000`=`a9a3182db0ef4ffdffcce0ed1710d08bd05ead3f730a1e7bab36c6fb84582a66`；`sh.600036`=`0c2262ceda0dd8b39e616fed9948ca97ffbf22980f2b9f55a13f29cc1101c57f`；`sz.000001`=`02541b657d133e30379f496b041cb97a0a73d0bfb482e76a0718c6dc18ec42d7`；`sz.000002`=`8382bc489dc9d9cf544512e25cf1fdb70f45a22904d6834f3bba88f477beacdf`。从4行T0 OHLCVA构成的摘要为`bd0bfcb886d1162f1025aa20c3d1e014011d1f014a83a7300d80c78159d4d40a`；来源清单摘要/候选键为`dfe069b1eb0ca94ed595be3481e687745a5f5aed3dcf616c0468299c8d1b327b`。
+- 复用现有`tdx_local_snapshot_candidate` PG类型及其`ForwardFactStore`写入/只读Reader，在`market_research.v4.forward_facts`追加1条诊断候选。PG身份为`market_research@127.0.0.1:5432`、OID `646711`；Reader独立读回的manifest、候选键、payload摘要均与写入一致。随后重新读取D盘4个原始文件，文件SHA、T0和OHLCVA逐项匹配。PG payload SHA-256=`2043cfb3fa01f4a4971635c26b9a4a55cd2fa4c11f52b62d0bbe37c1a44b0aa1`；独立读回状态`PASS`。
+- 候选显式标记`DIAGNOSTIC_ONLY`、`AS_RECORDED=false`、`PIT_ELIGIBLE=false`、`official_tdx_zip=false`、`accepted_source_package=false`、`full_market_coverage=false`。来源时间只保留文件系统mtime元数据，不推断采集时间；代码仅为TDX source symbol，`canonical_security_id=null`、身份状态`SYMBOL_ONLY_UNRESOLVED`。候选成功只证明真实本地输入→现有PG候选→独立Reader→源文件SHA/T0核对，不生成Source acceptance、Owner、合同批准、PIT或正式Head。
+
+### BaoStock与阶段状态
+
+- 既有PG BaoStock日线候选为2026-10-16；本轮真实TDX样本日为2026-09-10，因此不调用比较器制造跨日比较，也不报告BaoStock同日核数通过。阶段00现有BaoStock supplemental合同字段绑定仍为pending；能完成同日核数所缺的是T0相同的真实BaoStock日线输入。也没有用测试数据补齐这一输入。
+- 状态：保留先前已验证的`STAGE00_CODE_PG_ONLY_CLOSED`及223项回归成果；本轮新增`STAGE00_REAL_INPUT_DEV_PG_READBACK_PASS`。真实`STAGE00_DEV_E2E_PASSED`仍未授予：四个symbol尚无规范身份映射/完整T0 Universe与Owner，PG无真实accepted Source/独立Source authority；正式`PHASE0_ACCEPTANCE`继续`BLOCKED`。正式外部签发/Owner/合同批准事实与同T0 BaoStock校验输入仍是准确缺口；不得将本地候选晋升官方接受来源。阶段01未开始，生产Head和28765未变，未打包。
+- 本轮未改业务源码、未增建表/Schema、未复跑223项既有测试。既有Stage00代码/回归结论照前节保留。本报告`git diff --check`及`tools/git_repository_policy.py --staged`均通过（1 changed blob）。代码与业务接受状态不因本次PG诊断候选改变。

@@ -17,6 +17,8 @@ production_changed: false
 
 唯一业务数据库为 `market_research`，唯一 V4 业务 Schema 为 `v4`。所有新运行时写入使用 `v4` 下固定版本化表；工作区、模块和版本不得决定物理 Schema。未创建 Alias 或附加 Schema；未使用 `DROP CASCADE`；不得批量导入 1,678 项历史绑定。
 
+**日更日期口径：**本轮日更基线为 `2026-10-15`，目标/测试日为 `2026-10-16`。数据库已有两日的 BaoStock runtime acceptance receipts，10-16 目标日读回 5,226 条日行情和 48 条因子；这证明来源运行回执可读，不代表正式 Accepted 日更已发布。个股/日更页面的 `2026-09-30` 是当前 `V4_DATA_ACCEPTED_HEAD` 的研究快照 T0，不是日更最新日期，也不是本轮测试日。正式日更仍被接受交易日历与 Accepted Operational Head 缺失阻断。
+
 ## 阶段结果
 
 | 阶段 | 结果 | 证据与范围 |
@@ -585,3 +587,8 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 个股详情的行情周期控件实际从日线切至周线和月线；Focus 页面读取 469 条候选、117 个 Forward 样本、585 个期限计划、5 条已发布期限状态覆盖 1 个样本、成熟合格 0。打开 Focus 来源抽屉确认 `FP08_FOCUS_SUCCESSOR_PUBLICATION_V1`、source_as_of `2026-09-30`，该行事件值为 `DATA_UNAVAILABLE`。
 - Forward 期限结算页展示 5/5 条候选期限均为 `PENDING`，展开 T+10 后到期日、收益和路径仍未知。FEP 证据抽屉显示 Champion `NONE`、生产 `UNGRANTED`、范围 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。市场页实际显示分母 5,224、行情 5,213、涨停 56、跌停 12、停牌 11、未知 1；价格规则来源抽屉保留 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`。诊断健康与来源页的抽屉可读：股票来源 `BOUND`；来源诊断合同摘要前缀 `f3e6c986`，缺口含 profile_identity 11 项及未准入 Focus 独立写入。
 - 机器可读交互记录：`G:\codex_tmp\v4_28766_browser_interaction_addendum_r1_20261019.json`。这些操作证明页面功能和证据抽屉可交互，不把候选数据或研究 T0 算作正式接受；研究 T0 `2026-09-30` 与日更基线 `2026-10-15`、本轮日更测试目标 `2026-10-16` 分开记录。模块业务验收仍为 `PARTIAL_DATA`，缺 PIT、成熟结果或独立来源的字段保持未知/受限。
+
+### 2026-10-19 旧 R7 基线工作区只读盘点
+
+- 只读盘点 `G:\codex_tmp\r7_active_baseline_20261015`：该独立副本位于 `master` / HEAD `9d40f3750b73465b59139dccb24d3a886271ea5e`，有 5 个跟踪文件修改（合计 34 行新增、111 行删除）及未跟踪的 `data/`、`v4/`、`runtime/`、文档和第三方资料目录。3 个未跟踪 Python 适配器里，Forward API 路由和 Accepted Head 后的 R7 捕获逻辑已由当前分支原生代码覆盖；R6 runtime compatibility wrapper 不在当前启动路径。副本还含有未归属数据，无法据当前证据证明全部可重建且无活动依赖，因此没有执行清理或搬迁。
+- 逐文件 SHA-256、分支/HEAD、跟踪改动和目录清单保存在 `G:\codex_tmp\v4_r7_baseline_workspace_inventory_r1_20261019.json`。当前仓库中的 `source_view.py` 与该副本哈希相同；其余 4 个跟踪文件有差异，3 个未跟踪适配器在当前仓库不存在。该清单仅记录状态，不把缺失的旧 hook 恢复到当前运行时。

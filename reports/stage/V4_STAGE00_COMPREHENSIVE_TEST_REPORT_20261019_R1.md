@@ -599,3 +599,9 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - 既有PG BaoStock日线候选为2026-10-16；本轮真实TDX样本日为2026-09-10，因此不调用比较器制造跨日比较，也不报告BaoStock同日核数通过。阶段00现有BaoStock supplemental合同字段绑定仍为pending；能完成同日核数所缺的是T0相同的真实BaoStock日线输入。也没有用测试数据补齐这一输入。
 - 状态：保留先前已验证的`STAGE00_CODE_PG_ONLY_CLOSED`及223项回归成果；本轮新增`STAGE00_REAL_INPUT_DEV_PG_READBACK_PASS`。真实`STAGE00_DEV_E2E_PASSED`仍未授予：四个symbol尚无规范身份映射/完整T0 Universe与Owner，PG无真实accepted Source/独立Source authority；正式`PHASE0_ACCEPTANCE`继续`BLOCKED`。正式外部签发/Owner/合同批准事实与同T0 BaoStock校验输入仍是准确缺口；不得将本地候选晋升官方接受来源。阶段01未开始，生产Head和28765未变，未打包。
 - 本轮未改业务源码、未增建表/Schema、未复跑223项既有测试。既有Stage00代码/回归结论照前节保留。本报告`git diff --check`及`tools/git_repository_policy.py --staged`均通过（1 changed blob）。代码与业务接受状态不因本次PG诊断候选改变。
+
+#### 最新指示下的现役最新版包提取尝试
+
+- 按用户补充指示，在本报告R11首轮提交后调用一次现役`capture_latest_tdx_package`最新版官方包入口，目标T0为PG中已有BaoStock日线校验记录的`2026-10-16`。入口返回`TDX_EXISTING_DOWNLOADER_EXECUTION_FAILED`，未返回可校验的ZIP字节，故没有执行包内目标日提取，也没有新增官方包/目标barset候选。此前记录已确认上游返回`TDX_ZIP_INVALID`挑战响应，缺少的正是当前checkout不存在的旧R3挑战下载器。
+- 按第11节“官方挑战不可用时停止、不恢复R3”的边界，本次为一次现役入口尝试；结果仍为`OFFICIAL_ZIP_CHALLENGE_OR_DOWNLOADER_UNAVAILABLE`，不继续重试或另建下载器。2026-10-16 BaoStock记录仍无法与本地TDX行做同日核价；此前2026-09-10的本地`.day`诊断候选PG写入及独立读回结果不受影响。
+- 本补记只更新本唯一阶段00报告，无源码、PG结构或正式业务事实变更；不改变`STAGE00_REAL_INPUT_DEV_PG_READBACK_PASS / STAGE00_DEV_E2E_BLOCKED / PHASE0_ACCEPTANCE_BLOCKED`结论。

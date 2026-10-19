@@ -594,6 +594,81 @@ def _read_tdx_samples(root: Path) -> dict[str, Any]:
     }
 
 
+def _count_lifecycle_t0_board_facts(cursor: Any, target_trade_date: str) -> dict[str, int]:
+    rows = cursor.execute(
+        """SELECT CASE
+                   WHEN left(f.security_id,3)='SH.' AND f.board='MAIN' THEN 'SH_MAIN'
+                   WHEN left(f.security_id,3)='SZ.' AND f.board='MAIN' THEN 'SZ_MAIN'
+                   WHEN left(f.security_id,3)='SZ.' AND f.board='CHINEXT' THEN 'CHINEXT'
+                   WHEN left(f.security_id,3)='SH.' AND f.board='STAR' THEN 'STAR'
+                 END AS board_key,
+                 count(DISTINCT f.security_id)
+              FROM v4.security_lifecycle_facts f
+              JOIN v4.source_revisions r
+                ON r.source_revision_id=f.source_revision_id
+               AND r.observed_at=f.observed_at
+               AND r.ingested_at=f.ingested_at
+               AND r.system_available_at=f.system_available_at
+               AND r.effective_from=f.effective_from
+               AND r.effective_to IS NOT DISTINCT FROM f.effective_to
+               AND r.supersedes_revision_id IS NOT DISTINCT FROM f.supersedes_revision_id
+              JOIN v4.source_packages p
+                ON p.package_id=r.source_package_id
+               AND p.accepted_scope='ACCEPTED_SOURCE_PACKAGE'
+               AND p.target_trade_date=%s
+              JOIN v4.source_package_facts sf
+                ON sf.package_id=r.source_package_id
+               AND sf.source_key=r.source_package_source_key
+               AND sf.logical_fact_id=r.logical_fact_id
+               AND sf.fact_digest=r.source_fact_digest
+               AND sf.fact_digest=r.digest
+               AND sf.source_fact_sha256=r.payload->>'source_fact_sha256'
+               AND sf.source_key=r.payload->>'source_key'
+               AND sf.acceptance_receipt_id=r.payload->>'producer_receipt_id'
+             WHERE f.security_type='A_STOCK'
+               AND f.effective_from <= %s
+               AND (f.effective_to IS NULL OR f.effective_to >= %s)
+               AND btrim(f.source_identity) <> ''
+               AND f.quality IN ('OBSERVED','CORRECTED','ACCEPTED','PIT_OBSERVED_ACCEPTED')
+               AND (f.system_available_at AT TIME ZONE 'Asia/Shanghai')::date=%s
+             GROUP BY board_key""",
+        (target_trade_date, target_trade_date, target_trade_date, target_trade_date),
+    ).fetchall()
+    return {row[0]: int(row[1]) for row in rows if row[0]}
+
+
+def _count_valid_t0_publication_heads(cursor: Any, target_trade_date: str) -> int:
+    return int(cursor.execute(
+        """SELECT count(*)
+             FROM v4.publication_heads h
+             JOIN v4.publications p
+               ON p.publication_id=h.publication_id
+              AND p.trade_date=h.trade_date
+              AND p.model_namespace_id=h.model_namespace_id
+              AND p.status='ACCEPTED'
+              AND p.accepted_at IS NOT NULL
+             JOIN v4.model_namespaces n
+               ON n.namespace_id=h.model_namespace_id
+              AND btrim(n.namespace) <> ''
+              AND n.execution_mode IN ('PRODUCTION','SHADOW','REPLAY')
+             JOIN v4.state_heads sh
+               ON sh.namespace_id=h.model_namespace_id
+              AND sh.state_head_id=h.state_head_id
+              AND sh.publication_id=h.publication_id
+              AND sh.logical_digest=h.state_logical_digest
+            WHERE h.trade_date=%s
+              AND h.state_head_id IS NOT NULL
+              AND btrim(h.state_head_id) <> ''
+              AND h.state_logical_digest IS NOT NULL
+              AND jsonb_typeof(p.contract_bindings)='object'
+              AND p.contract_bindings <> '{}'::jsonb
+              AND p.source_manifest_contract_id IN (
+                  'V4_PG_CONSUMED_SOURCE_MANIFEST_R2',
+                  'V4_PG_CONSUMED_SOURCE_MANIFEST_R3')""",
+        (target_trade_date,),
+    ).fetchone()[0])
+
+
 def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
     from workbench_db.v4_publication_reader import PgPublicationReader, readonly_connection
     from workbench_analysis.contract_registry_pg_v1 import (
@@ -628,6 +703,16 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
             ("raw_owner_receipt_count", "stage00_raw_owner_receipts", "SELECT count(*) FROM v4.stage00_raw_owner_receipts"),
         ):
             counts[key] = int(cursor.execute(sql).fetchone()[0]) if catalog[table] else None
+        lifecycle_t0_board_counts = {}
+        valid_publication_head_count = 0
+        if target_trade_date and catalog["security_lifecycle_facts"] and all(
+            catalog.get(name, False) for name in ("source_revisions", "source_packages", "source_package_facts")
+        ):
+            lifecycle_t0_board_counts = _count_lifecycle_t0_board_facts(cursor, target_trade_date)
+        if target_trade_date and all(catalog.get(name, False) for name in (
+            "publication_heads", "publications", "model_namespaces", "state_heads",
+        )):
+            valid_publication_head_count = _count_valid_t0_publication_heads(cursor, target_trade_date)
         contracts = {}
         for contract_id, version in STAGE00_CONTRACTS.items():
             entry = {"version": version, "status": "MISSING", "reason": None}
@@ -800,6 +885,8 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
             "raw_bootstrap_receipt": raw_receipt,
             "raw_bootstrap_receipt_verified": raw_receipt_verified,
             "raw_bootstrap": {"status": "PRESENT" if raw_receipt_verified else "NOT_PRESENT", "reason": raw_reason or None},
+            "lifecycle_t0_board_counts": lifecycle_t0_board_counts,
+            "valid_publication_head_count": valid_publication_head_count,
             "target_trade_date": target_trade_date,
         }
 
@@ -868,8 +955,10 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
                 "source_revision_count", "accepted_source_package_count", "publication_head_count",
                 "model_namespace_count", "lifecycle_history_count", "lifecycle_history_security_count",
                 "lifecycle_fact_count", "raw_owner_receipt_count",
+                "valid_publication_head_count",
             )
         }
+        report["lifecycle_t0_board_counts"] = pg.get("lifecycle_t0_board_counts", {})
         report["raw_bootstrap"] = pg["raw_bootstrap"]
         report["source_acceptance"] = {
             key: pg["source_acceptance"][key]
@@ -899,12 +988,46 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
         namespaces_present = bool(pg["model_namespace_count"])
         publication_schema_ready = all(pg["catalog"].get(name, False) for name in ("publications", "model_namespaces", "publication_heads"))
         heads_present = bool(pg["publication_head_count"])
-        lifecycle_ready = pg["catalog"]["security_lifecycle_facts"] and pg["catalog"]["security_lifecycle_history"]
+        lifecycle_schema_ready = pg["catalog"]["security_lifecycle_facts"] and pg["catalog"]["security_lifecycle_history"]
+        accepted_evidence = source_acceptance.get("accepted_evidence") or {}
+        package = accepted_evidence.get("package") if isinstance(accepted_evidence, Mapping) else None
+        coverage = package.get("manifest", {}).get("accepted_board_coverage") if isinstance(package, Mapping) else None
+        expected_lifecycle_counts = {}
+        if isinstance(coverage, Mapping):
+            coverage_counts = coverage.get("counts", {})
+            suspended_counts = coverage.get("suspended_counts", {})
+            if isinstance(coverage_counts, Mapping) and isinstance(suspended_counts, Mapping):
+                expected_lifecycle_counts = {
+                    board: int(coverage_counts.get(board, 0)) + int(suspended_counts.get(board, 0))
+                    for board in TDX_BOARD_SCOPES
+                }
+        actual_lifecycle_counts = pg.get("lifecycle_t0_board_counts", {})
+        lifecycle_scope_ready = bool(
+            lifecycle_schema_ready and trade_date and source_accepted and package
+            and package.get("target_trade_date") == trade_date
+            and set(expected_lifecycle_counts) == set(TDX_BOARD_SCOPES)
+            and actual_lifecycle_counts == expected_lifecycle_counts
+            and all(value > 0 for value in expected_lifecycle_counts.values())
+        )
+        lifecycle_reason = (
+            "LIFECYCLE_T0_SOURCE_SCOPE_VERIFIED" if lifecycle_scope_ready else
+            "LIFECYCLE_T0_DATE_REQUIRED" if not trade_date else
+            "LIFECYCLE_ACCEPTED_SOURCE_REQUIRED" if not source_accepted else
+            "LIFECYCLE_OWNER_FACTS_OR_BOARD_COVERAGE_MISMATCH"
+        )
+        publication_scope_ready = bool(
+            publication_schema_ready and trade_date and pg.get("valid_publication_head_count", 0) > 0
+        )
+        publication_reason = (
+            "PUBLICATION_HEAD_AND_NAMESPACE_BINDING_VERIFIED" if publication_scope_ready else
+            "PUBLICATION_T0_DATE_REQUIRED" if not trade_date else
+            "PUBLICATION_ACCEPTED_HEAD_NAMESPACE_STATE_BINDING_MISSING"
+        )
         sample_ready = not tdx["failures"] and tdx["valid_sample_count"] == len(TDX_SAMPLES)
         stages = {
             "V4-00A": {"status": "DEGRADED_PASS", "owner": "V4-00A", "source": "PG identity/catalog read", "evidence": ["database identity attested", "repeatable-read transaction is read-only"], "reason_codes": ["BACKUP_RECOVERY_RECEIPT_NOT_CHECKED"]},
-            "V4-00B": {"status": "DEGRADED_PASS" if lifecycle_ready else "BLOCKED", "owner": "V4-00B", "scope": "LIFECYCLE_SCHEMA", "source": "PG lifecycle history/fact rows", "evidence": [f"history_rows={pg.get('lifecycle_history_count')}", f"history_security_ids={pg.get('lifecycle_history_security_count')}", f"lifecycle_fact_rows={pg.get('lifecycle_fact_count')}", "T0 scope coverage not proven by schema presence"], "blocked_scopes": [] if lifecycle_ready else ["LIFECYCLE_SCHEMA"], "allowed_capabilities": ["LIFECYCLE_SCHEMA"] if lifecycle_ready else [], "blocks_v4_01": not lifecycle_ready, "reason_codes": ["LIFECYCLE_DATA_COVERAGE_NOT_PROVEN"]},
-            "V4-00C": {"status": "DEGRADED_PASS" if publication_schema_ready else "BLOCKED", "owner": "V4-00C", "scope": "PUBLICATION_IDENTITY", "source": "PG catalog and read-only row counts", "evidence": ["publication identity relations present" if publication_schema_ready else "publication identity relation missing", f"publication_heads={pg['publication_head_count']}"], "blocked_scopes": [] if publication_schema_ready else ["PUBLICATION_IDENTITY"], "allowed_capabilities": ["PUBLICATION_IDENTITY"] if publication_schema_ready else [], "blocks_v4_01": not publication_schema_ready, "reason_codes": ["NO_HEAD_PRESENT" if not heads_present else "HEAD_PRESENT_NOT_SELECTED"]},
+            "V4-00B": {"status": "DEGRADED_PASS" if lifecycle_schema_ready else "BLOCKED", "owner": "V4-00B", "scope": "LIFECYCLE_SCHEMA", "source": "T0 accepted-source-bound PG Owner facts", "evidence": [f"history_rows={pg.get('lifecycle_history_count')}", f"lifecycle_fact_rows={pg.get('lifecycle_fact_count')}", f"accepted_t0_board_counts={actual_lifecycle_counts}", f"expected_t0_board_counts={expected_lifecycle_counts}"], "blocked_scopes": [] if lifecycle_scope_ready else ["LIFECYCLE_SCHEMA"], "allowed_capabilities": ["LIFECYCLE_SCHEMA"] if lifecycle_scope_ready else [], "blocks_v4_01": not lifecycle_scope_ready, "reason_codes": [lifecycle_reason]},
+            "V4-00C": {"status": "DEGRADED_PASS" if publication_schema_ready else "BLOCKED", "owner": "V4-00C", "scope": "PUBLICATION_IDENTITY", "source": "Accepted publication, namespace and state-head PG bindings", "evidence": ["publication identity relations present" if publication_schema_ready else "publication identity relation missing", f"publication_heads={pg['publication_head_count']}", f"valid_t0_publication_heads={pg.get('valid_publication_head_count', 0)}"], "blocked_scopes": [] if publication_scope_ready else ["PUBLICATION_IDENTITY"], "allowed_capabilities": ["PUBLICATION_IDENTITY"] if publication_scope_ready else [], "blocks_v4_01": not publication_scope_ready, "reason_codes": [publication_reason]},
             "V4-00D": _source_owner_stage(source_acceptance, sample_ready, tdx),
             "V4-00E": _raw_owner_stage(raw_errors),
             "V4-00F": _supplemental_baostock_stage(pg),

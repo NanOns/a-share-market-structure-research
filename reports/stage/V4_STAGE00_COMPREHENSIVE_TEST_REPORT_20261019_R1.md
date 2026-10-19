@@ -464,7 +464,7 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - `phase0_gate`把RAW状态原因区分为无accepted source、无receipt、producer/read错误，避免错误下结论；contract reader仅在approval event缺失时展示PG候选，正式gate仍fail-closed。
 - Stage00 RAW单项迁移实现精确身份与哈希防护，执行后确认ledger、目标关系及空receipt表真实读回。Forward/Stage00 namespace不再从目录路径决定业务身份。
 - 测试修复：PG schema测试夹具改为在外层回滚事务中建立精确的publication合同批准绑定及accepted package→fact→revision链，保留现行PG保护约束；完整测试集合也可在显式授权下运行，隔离插件只在该schema测试模块上下文允许本机PG写。生命周期history契约字段从错误的`system_from`更正为现行schema字段`system_available_at`。本次最终命令`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`为`211 passed`，其中真实PG schema集成测试29项全部通过；先前的22个失败已修复，不再作为未关闭项。
-- 真实`acceptance --json --trade-date 2026-09-11`可成功连到`market_research`并执行诊断，但业务返回`BLOCKED`（命令退出1；V4-01权限`BLOCKED`）：5个Stage00合同缺批准读取，accepted source package为0，LIFECYCLE_SCHEMA、PUBLICATION_IDENTITY、RAW_BOOTSTRAP及来源scope缺实际事实。doctor执行入口正常不等于阶段通过。
+- R8原记录将真实`acceptance --json --trade-date 2026-09-11`写成业务`BLOCKED`且退出1；本次独立复核更正：现役`main()`对执行失败返回1、对业务`BLOCKED`返回2。以R8基线复跑的有效输出应为`execution_status=OK`、业务`BLOCKED`、退出2，原R8报告未保存能证明执行失败的JSON/异常，不能把退出1归因于正常业务阻断。本次新增绑定查询曾出现一个可复现的SQL执行异常，详见R9修复记录；修正后当前验收再次退出2。
 - `git diff --check`通过。未运行生产服务、未写Head、未启动远端CI。
 
 ### 阶段结论
@@ -472,3 +472,40 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 本轮代码与PG候选/结构闭环为`STAGE00_CODE_PG_CANDIDATE_REPAIR_COMPLETE`；真实业务验收为`STAGE00_REAL_DATA_BLOCKED`，不得标记`STAGE00_PASS`或`V4_01_AUTHORIZED`。当前00E、00G、00H仍BLOCKED；其余子阶段状态按实库doctor结果保留降级/阻断状态。后续只有获得真实来源接受凭证、Owner事实、完整身份/生命周期事实及合同批准事件后，才可重新运行正式验收；本轮没有伪造这些事实。阶段01未在本次执行；阶段00报告提交推送后，按唯一执行卡边界等待阶段01任务授权再进入下一阶段。
 
 代码、测试、本规范授权状态及本节报告均属于本轮限定变更；提交/推送仅记录开发交付，不代表生产验收或部署。
+
+## R9｜第7节独立审计、能力scope收紧与调用点闭环
+
+基线为`47d72915a24da0ee05c6de0276e8cae3e5c973e2`，沿用分支`codex/v4-workspace-cleanup`及R8已提交的代码、PG迁移和测试结果。本轮仅修复阶段00A–00H可达链路并更新本报告，不进入阶段01。
+
+### 逐调用点与业务引用核查
+
+以下为当前Stage00唯一实际运行入口的逐阶段调用/读取点；外部业务事实以`market_research.v4`为准。`config/paths.yaml`仅提供本机TDX只读源路径和运行连接边界，不承载合同、参数或批准事实。
+
+| 阶段及实际调用点 | Owner / 合同 / 参数 | 来源与业务对象 | PG消费者与结果 |
+|---|---|---|---|
+| 00A：`phase0_gate.main → run_stage00_diagnostic → _pg_snapshot`；`PgPublicationReader._read_database_identity/_attest_read_role` | V4-00A；当前无独立可验证的备份恢复回执合同 | PG数据库身份、只读角色、Stage00所需关系目录；不从文件推导Head或发布身份 | 固定`market_research@127.0.0.1:5432`、事务`REPEATABLE READ READ ONLY`；备份恢复事实仍缺 |
+| 00B：`_pg_snapshot`的T0生命周期聚合及`run_stage00_diagnostic`阶段装配 | V4-00B / `LIFECYCLE_SCHEMA`；要求精确目标T0及四板覆盖 | `security_lifecycle_facts`的security_id、A_STOCK类型、board、来源身份、质量、有效区间、`system_available_at`；必须追溯到同T0 accepted package、revision及精确package fact；expected范围取已验收TDX coverage的交易数+停牌数 | 新增真实绑定聚合和四板计数相等判定；无accepted来源、事实为零、错误T0、不同日可用或覆盖不等即保留blocked scope、不给能力 |
+| 00C：`_pg_snapshot` publication identity查询及`run_stage00_diagnostic`阶段装配 | V4-00C / `PUBLICATION_IDENTITY`；目标T0 | `publication_heads → publications → model_namespaces → state_heads`：日期、publication/ns身份、ACCEPTED状态、accepted_at、命名空间、state_head及摘要一致、合同绑定非空、来源清单合同ID有效 | 新增精确T0一致性查询；仅统计闭合Head映射。仅有表、namespace计数或其他日期Head均不授权 |
+| 00D：`_pg_snapshot → verify_source_package_manifest_authority → _package_acceptance_errors → _source_owner_stage`；生产者为`v4_daily_source_ingest_r6.build_source_ingest_plan/persist_source_ingest_plan` | V4-00D / `A_STOCK_TDX_SOURCE`；source acceptance authority `V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1/1.0.0` | 本机TDX四板只读样本经`config/paths.yaml`定位；PG source package、manifest、package facts、revisions、独立接受receipt及board coverage；完整计划包含T0、universe、四板交易/停牌计数和hash绑定 | Gate逐条重验PG接受authority、来源修订及精确fact绑定；实库无接受authority/package时保持BLOCKED。TDX小样本只证明可读，不提升为接受来源 |
+| 00E：`_pg_snapshot → read_raw_owner_receipt → _raw_bootstrap_errors → _raw_owner_stage`；生产者位于`v4_daily_source_ingest_r6.produce_*_raw_owner_receipt` | V4-00E / `RAW_BOOTSTRAP`；`V4_STAGE00_RAW_OWNER_RECEIPT_AUTHORITY_REGISTRY_R1/1.0.0`及receipt合同 | 收据须绑定接受package、T0、TDX revision/digest、RAW basis、身份/交易/知识状态及B/C/D Owner结果，并经独立签名authority核验 | `v4.stage00_raw_owner_receipts`只读定位和验签；已有R8迁移真实存在、ledger/hash匹配，但零receipt、零RAW authority，不插入虚构行 |
+| 00F：`_pg_snapshot → _supplemental_baostock_stage` | V4-00F；PG批准`BAOSTOCK_SUPPLEMENTAL_SOURCE_V1/1.1.0` | 合同正文状态及accepted package中的`native_baostock` source revision | 批准合同可读但正文仍为`PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING`且无accepted revision；只降级可选能力 |
+| 00G：`_pg_snapshot`逐合同`load_unique_current_approved_contract`，缺少批准版本时只读`load_unapproved_dev_contract_candidate`；阶段装配 | V4-00G；`V4_PHASE0_FINAL_ACCEPTANCE_R3/3.0.0`、`V4_ALGORITHM_CONTRACT_FRAMEWORK_V1/1.1.0`、`PARAMETER_REGISTRY_V1/1.1.0`、`CAPABILITY_CUTOVER_AND_ROLLBACK_V1/1.0.0`、`V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1/1.1.0` | 原字节来自对应`config/v4_phase0_final_gate_v1.json`、`v4_algorithm_contract_framework_v1.json`、`v4_parameter_registry_v1.json`、`v4_capability_cutover_policy_v1.json`、`v4_performance_measurement_contract_v1.json`；仅作为开发候选来源证据 | 只读PG合同版本/approval events。R8五份候选已PG字节及SHA读回，但均无approval event；状态维持`DEV_CANDIDATE_READ / APPROVAL_EVENT_REQUIRED`，不生成正式批准 |
+| 00H：`evaluate_phase0 → run_stage00_diagnostic → main(acceptance)` | V4-00H；由00G读取最终验收合同并消费A–G真实证据 | 所有阶段状态、required scopes、合同/参数状态、命令T0及失败分类 | 业务缺事实返回`execution_status=OK`、`phase0_status=BLOCKED`、CLI退出2；程序/PG异常返回`execution_status=FAILED`、退出1；不得混报 |
+
+相关文件交叉核查结果：`src/workbench_analysis/source_authority_accepted_owners_v1.py`、`source_authority_owner_bootstrap_r1.py`、`source_authority_producers_r3/r4.py`、`source_authority_governance_r1/r4.py`被DM01、official-event或parallel acceptance调用，当前没有进入上述Stage00 Gate入口；`source_bundle_identity.py`未被Stage00 Gate或source ingest调用；`tdx_snapshot.py`由V4-02脚本调用，Stage00现役入口仅做有界TDX只读样本解析。它们属于其他阶段现役链路或阶段00测试/夹具引用，本次只核引用、未把其外部文件合同误当Stage00 PG运行权威，也未改动其他阶段。旧Phase0脚本亦不在本Gate入口调用链。Stage00生产/读取文件、合同、Owner、source、parameter、package/fact/revision、publication/head和receipt的实际消费者均列于上表。
+
+### 独立异常复现与修复
+
+- R8旧报告的`acceptance`退出1没有保留相应原始JSON或异常；以基线主程序分支语义和本次复跑结果看，业务`BLOCKED`应退出2，故修正R8记录，不能将R8历史的退出1作为已证实执行异常根因。
+- 本次新增T0生命周期聚合初跑确实捕获到执行退出1：异常为psycopg `ProgrammingError: only '%s', '%b', '%t' are allowed as placeholders, got '%''`，由SQL `LIKE 'SH.%'`中的百分号误作参数标记引起。将证券前缀判断换为`left(security_id, 3)`后消除异常；之后PG快照和验收命令成功执行。这是新增查询的执行Bug，已修复并回归。
+- 00B旧逻辑用两张关系存在即授予`LIFECYCLE_SCHEMA`；现改为要求accepted source package、T0、source identity、有效区间、上海时区同日可用、revision到package fact精确绑定，并且四板Lifecycle事实数与accepted coverage交易+停牌数逐板相等。零事实、无接受来源、缺T0及错范围均不给能力。
+- 00C旧逻辑用identity关系存在即授权，虽Head为0仍可能授予。现要求目标T0的accepted publication/accepted_at、namespace、精确state head与digest闭合、非空contract bindings及受支持source manifest contract。空head、其他T0、namespace/state不匹配或合同绑定缺失均不给能力。
+- 新增负例断言：表齐全但生命周期/Head事实均为零时不给00B/00C能力；存在普通Head计数但没有目标日有效绑定仍不给能力；doctor没有T0时两个scope均被阻断。回滚事务中的PG集成测试以四板真实package/fact/revision/lifecycle fixture验证同日计数可读、错T0不可读；publication fixture验证精确T0闭合state-head可读、错T0不可读且数据库拒绝Head摘要错绑。实际PG本身亦读回0 accepted packages、0 lifecycle facts、0 namespace/Head、0有效T0 Head，证明当前实库负例。
+
+### 最终验收与真实PG读回
+
+本轮执行`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`：`214 passed`（包括授权范围内的PostgreSQL schema事务测试；测试临时目录在`G:/codex_tmp/test_temp`）。运行时接线定向测试为`18 passed`。`acceptance --json --trade-date 2026-09-11`最新真实命令退出`2`，JSON为`execution_status=OK`、`execution_reason=DIAGNOSTICS_COMPLETED; BUSINESS_ACCEPTANCE_GAPS_REPORTED_AS_BLOCKED`、`failure_type=null`、`phase0_status=BLOCKED`、V4-01 `BLOCKED`。00B为`LIFECYCLE_ACCEPTED_SOURCE_REQUIRED`并阻断scope；00C为`PUBLICATION_ACCEPTED_HEAD_NAMESPACE_STATE_BINDING_MISSING`并阻断scope。
+
+真实PG重复读回身份为`market_research@127.0.0.1:5432`。计数：source revisions 40455、accepted source packages 0、lifecycle history 6440行/5805证券、accepted lifecycle facts 0、publication heads 0、model namespaces 0、Stage00 RAW receipts 0、目标日合法Publication/namespace/state head 0。R8的单项迁移`V4_STAGE00_RAW_OWNER_RECEIPTS_R1`仍在唯一`v4` schema及ledger中，checksum `eb3caa947e25bae118c0bcbc5687bdec8ff12d5928301a924859fd384a2ac084`；本轮无额外PG写入。五份Stage00开发合同候选仍各自SHA正确可读回且无审批事件；来源接受authority版本和RAW authority版本在PG中的行数均为0。未写入签名、source acceptance、Owner结果、PIT或批准事实。
+
+真实剩余缺口：不能用现有6440行候选history代替accepted lifecycle facts；须由真实接受authority签署/登记后才能写source package/facts/revisions；真实B/C Owner结果和独立RAW签名authority/receipt缺失；五个必需Stage00合同尚无批准事件，00H因真实合同和证据不全继续BLOCKED。没有合法来源凭证或批准事实可迁入，故本轮只完成真实只读读回和可合法的代码闭环，不伪造PG行。00A–00H报告已更新；Stage01仍未进入。

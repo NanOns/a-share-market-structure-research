@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
-from datetime import date
+from datetime import date, datetime, timezone, timedelta
 import hashlib
 import json
 from pathlib import Path
@@ -11,6 +11,7 @@ import pytest
 
 psycopg = pytest.importorskip("psycopg")
 from scripts.apply_v4_phase0_schema import dsn
+from v4.contracts.phase0_gate import _count_lifecycle_t0_board_facts, _count_valid_t0_publication_heads
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -503,6 +504,64 @@ def test_lifecycle_fact_revision_and_knowledge_timestamps_match_source_revision(
                             ingested_at,system_available_at,source_revision_id,provider_available_at,supersedes_revision_id,
                             source_identity,quality) values (%s,'A_STOCK',%s,%s,%s,%s,%s,%s,null,'bad','OBSERVED')""",
                            (security_id, date(2020, 1, 1), now, now, now, source_id, now))
+
+
+def test_stage00_lifecycle_scope_query_requires_exact_t0_package_and_four_board_facts():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 24)
+    available = datetime(2026, 9, 24, 9, 0, tzinfo=timezone(timedelta(hours=8)))
+    board_rows = (
+        ("SH.600001", "MAIN", "SH_MAIN"),
+        ("SZ.000001", "MAIN", "SZ_MAIN"),
+        ("SZ.300001", "CHINEXT", "CHINEXT"),
+        ("SH.688001", "STAR", "STAR"),
+    )
+    with connect() as pg, rollback_only(pg):
+        for index, (security_id, board, _) in enumerate(board_rows):
+            revision_id = f"STAGE00-LIFE-{suffix}-{index}"
+            add_source_revision(
+                pg, revision_id=revision_id, logical_id=f"STAGE00-FACT-{suffix}-{index}",
+                revision_no=1, now=available, effective_from=date(2020, 1, 1),
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_facts(
+                       security_id,security_type,board,effective_from,effective_to,observed_at,
+                       ingested_at,system_available_at,source_revision_id,source_identity,quality)
+                   values (%s,'A_STOCK',%s,%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
+                (security_id, board, date(2020, 1, 1), available, available, available, revision_id),
+            )
+        assert _count_lifecycle_t0_board_facts(pg, t0.isoformat()) == {
+            board_key: 1 for _, _, board_key in board_rows
+        }
+        assert _count_lifecycle_t0_board_facts(pg, date(2026, 9, 25).isoformat()) == {}
+
+
+def test_stage00_publication_scope_query_requires_t0_and_closed_state_head_binding():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 24)
+    namespace_id = f"STAGE00-NS-{suffix}"
+    publication_id = f"STAGE00-PUB-{suffix}"
+    state_head_id = f"STAGE00-STATE-{suffix}"
+    logical_digest = "d" * 64
+    with connect() as pg, rollback_only(pg):
+        add_namespace(pg, namespace_id)
+        add_publication(
+            pg, publication_id=publication_id, namespace_id=namespace_id,
+            trade_date=t0, lineage_id=f"STAGE00-LINE-{suffix}",
+        )
+        add_publication_state_head(
+            pg, publication_id=publication_id, namespace_id=namespace_id,
+            trade_date=t0, state_head_id=state_head_id, logical_digest=logical_digest,
+        )
+        assert _count_valid_t0_publication_heads(pg, t0.isoformat()) == 1
+        assert _count_valid_t0_publication_heads(pg, date(2026, 9, 25).isoformat()) == 0
+        pg.execute("SAVEPOINT stage00_bad_head_digest")
+        with pytest.raises(psycopg.Error):
+            pg.execute(
+                "update v4.publication_heads set state_logical_digest=%s where trade_date=%s and model_namespace_id=%s",
+                ("e" * 64, t0, namespace_id),
+            )
+        pg.execute("ROLLBACK TO SAVEPOINT stage00_bad_head_digest")
 
 
 def test_pit_fact_revision_chain_and_late_correction_are_append_only():

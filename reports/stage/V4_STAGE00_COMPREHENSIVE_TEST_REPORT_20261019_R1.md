@@ -310,3 +310,51 @@ R3代码、测试及规范实现提交 SHA：`e21849b21226d364d4f79678d416126e58
 另有负例测试模拟 `source_packages` relation缺失，确认doctor可报告 `pg_catalog_missing` 并保持执行/业务状态分离；真实现场未删除或改动PG表。未运行 `test_postgres_schema.py`，因为其包含共享PG写入，即使回滚也不在本轮授权范围。旧runner语义保持未变。报告中 `FULL_PASS` 不适用；当前真实八子阶段状态为 **00A `DEGRADED_PASS`，00B `DEGRADED_PASS`，00C `DEGRADED_PASS`，00D `DEGRADED_PASS`，00E `BLOCKED`，00F `DEGRADED_PASS`，00G `BLOCKED`，00H `BLOCKED`**。阶段状态 `BLOCKED`、V4-01准入 `BLOCKED`，但诊断入口为 `DIAGNOSTIC_RUNNABLE`。
 
 **R4结论：`DIAGNOSTIC_RUNNABLE / STAGE00_REPAIR_PARTIAL / V4_01_BLOCKED`。** 当前完成真实只读可运行诊断和PG/TDX证据收集，未满足阶段正式验收。提交SHA及最终HEAD记于本段完成后的现有PR #3评论；本轮PG写入、批准、真实来源接受及RAW派生均未执行。
+
+
+## R5｜准入可达性与真实来源收据定向修复
+
+本轮在R4基础上只修改Stage00 gate、对应定向测试和本唯一报告；未改共享PG、合同表、数据、Head或生产。执行前分支为`codex/v4-workspace-cleanup`，HEAD `5ae3b5b1ada8d8d734ea79e1a7f15633f60990df`，工作区干净。
+
+### 代码修复及边界
+
+- `V4-00D` 不再因计数大于0或本地四个样本自动放行，也不再被常量永久阻断。gate现在有界读取最多50个accepted package候选、每包最多500条package fact/revision关系，并逐项验证独立接受凭证、manifest/PG package身份与T0、完整fact集合、source revision外键/摘要/时钟、官方TDX包信息，以及被接受包摘要绑定的沪主板/深主板/创业板/科创板覆盖计数。只有全部条件成立，才给D `A_STOCK_TDX_SOURCE`。
+- `V4-00E` 采用可达的收据校验路径，绑定真实接受的package、T0、source revision和digest、`TDX_RAW_NATIVE`基准，以及B/C/D三个Owner各自的实际接受scope；拒绝身份未知、非交易状态、后验知识、错Owner、错日期/来源/修订/基准和未验证authority。收据自摘要仅校验完整性，不作为真实授权；必须由可信读取器证明authority。
+- 正反例通过D/E stage构造器进入原`evaluate_phase0`。隔离fixture可证明正确D/E证据下V4-01授权路径可达；fixture未写入PG，也不代表真实通过。
+- `V4-00F`仍不从通用`source_revisions`计数推导BaoStock能力，没有新增该scope。
+- PG当前不存在Stage00 RAW receipt relation或生产者；gate明确报告`MISSING_RUNTIME_RECEIPT_PRODUCER`，不会把DM01文件Data Head、通用Publication或本地TDX样本伪装为RAW receipt。`v4.acceptance_receipts`是FEP运行收据，未挪作Stage00用途。
+
+### 真实来源/生产者证据
+
+本机真实只读运行于`2026-10-19T18:54:12.891408+08:00`（doctor；后续acceptance为`2026-10-19T18:54:13.687695+08:00`），配置数据库为`market_research`，accepted package计数0、D候选数0、TDX有界样本观察末日`20260911`。五个Stage00精确合同版本均未在PG批准读取；另精确查询来源接受所需`V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1/1.0.0`也返回`V4_PG_CONTRACT_VERSION_NOT_FOUND`。
+
+已定位来源候选/接受代码入口：`src/workbench_db/v4_daily_source_ingest_r6.py::build_source_ingest_plan`，其候选默认为`DIAGNOSTIC_ONLY`；持久化入口`persist_source_ingest_plan`在接受计划时仍明确抛出`INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE`，内部事务persist函数要求独立验证且不自行commit。当前PG缺少其批准authority合同，因此没有可用的正式接受写入闭环。只读实际Schema有`source_packages`、`source_package_facts`、`source_revisions`，accepted package/fact均为0；列出`v4`所有含raw/receipt/package/owner的表名未发现Stage00 RAW回执结构。`CURRENT_BLOCKER: MISSING_ACCEPTANCE_PRODUCER`，具体包括来源接受authority尚未在PG登记批准事实、RAW_STAGE00无持久化receipt生产者/读取关系。没有执行写入。解除条件是按真实授权补齐既有接受authority及可审计签名接受事实，并在既有V4持久化路径外提供经确认的最小RAW Owner receipt生产/只读读取约定；随后由本gate验证，不新增第二套合同注册或擅自建表。
+
+### R5验收字段
+
+| 项目 | 当前结果 | EVIDENCE_LEVEL | 说明 |
+|---|---|---|---|
+| `RUNTIME_DIAGNOSIS` | `PASS` | `SOURCE_REPORTED_REAL_PG` | doctor真实PG/TDX运行退出0，`execution_status=OK`；当前数据不足仍显示BLOCKED。 |
+| `REACHABILITY_LOGIC_FIX` | `PASS` | `CODE_CONFIRMED` + `TEST_FIXTURE` | D/E不再常量写死；正确夹具经原聚合器获得`V4_01_AUTHORIZED`，错误条件阻断。 |
+| `REAL_ACCEPTED_SOURCE` | `BLOCKED` | `SOURCE_REPORTED_REAL_PG` | accepted package=0；来源接受authority版本缺失。 |
+| `RAW_RECEIPT_PRODUCER` | `BLOCKED` | `SOURCE_REPORTED_REAL_PG` + `CODE_CONFIRMED` | 当前Schema无Stage00 receipt relation/producer；唯一诊断为`MISSING_RUNTIME_RECEIPT_PRODUCER`。 |
+| `CONTRACT_APPROVAL_DATA` | `BLOCKED` | `SOURCE_REPORTED_REAL_PG` | 五个Stage00精确合同版本缺失；独立来源接受authority版本也缺失。未写合同或批准事件。 |
+| `V4_01_ENTRY` | `BLOCKED` | `SOURCE_REPORTED_REAL_PG` | acceptance退出2；D `DEGRADED_PASS`并阻断required scope，E `BLOCKED`。 |
+
+### 命令与测试结果
+
+以下均设置`TMP/TEMP/TMPDIR=G:/codex_tmp`、`PYTHONPATH=src`，pytest临时目录在`G:/codex_tmp/test_temp`：
+
+| 命令 | 退出码 | 结果 |
+|---|---:|---|
+| `python -m v4.contracts.phase0_gate doctor --json` | `0` | `execution_status=OK`；PG `market_research`；0 accepted package/0候选；TDX观察日`20260911`；真实阶段BLOCKED。 |
+| `python -m v4.contracts.phase0_gate acceptance --json` | `2` | `execution_status=OK`；D `DEGRADED_PASS` / `NO_ACCEPTED_SOURCE_PACKAGE`；E `BLOCKED` / `MISSING_RUNTIME_RECEIPT_PRODUCER`；V4-01 `BLOCKED`。 |
+| `python -m v4.contracts.phase0_gate fixture-test --json` | `0` | 纯Gate规则fixture通过，不连接PG。 |
+| `python -m pytest -q tests/v4_phase0 --ignore=tests/v4_phase0/test_postgres_schema.py --basetemp G:/codex_tmp/test_temp/stage00_r5_full` | `0` | `125 passed`；包括D/E正例、四板不全、package scope/revision错绑、RAW错T0/修订/basis/Owner/身份/停牌/后验及未验证authority负例。 |
+| `python -m pytest -q tests/test_v4_contract_registry_pg_v1.py --basetemp G:/codex_tmp/test_temp/stage00_r5_registry` | `0` | `26 passed`，测试使用模拟cursor。 |
+| `python -m compileall -q src/v4/contracts/phase0_gate.py` | `0` | 通过。 |
+| `git diff --check` | `0` | 通过。 |
+
+未运行包含共享PG写入的`test_postgres_schema.py`。无正式来源或RAW收据的真实阻断不是fixture成功可以替代的。当前八子阶段真实状态：00A `DEGRADED_PASS`、00B `DEGRADED_PASS`、00C `DEGRADED_PASS`、00D `DEGRADED_PASS`、00E `BLOCKED`、00F `DEGRADED_PASS`、00G `BLOCKED`、00H `BLOCKED`；`STAGE00_DOCTOR_PASS + STAGE00_ACCEPTANCE_LOGIC_REACHABLE + STAGE00_REAL_DATA_BLOCKED`。不得表述为`STAGE00_PASS`或`V4_01_AUTHORIZED`。
+
+R5源码与测试实现提交SHA：`c3ef409c648a892108c5033ed4d57420654133c4`；该SHA由提交后真实doctor输出的`git_commit_sha`复核。报告本次更新提交的最终远端SHA及PR记录以PR #3最新评论为准。

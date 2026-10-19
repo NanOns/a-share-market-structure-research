@@ -24,7 +24,7 @@ production_changed: false
 | 阶段 | 结果 | 证据与范围 |
 |---|---|---|
 | S0 真实对象、消费者和权限盘点 | PASS | 合并前只读快照为 76 个 V4 物理 Schema；2026-10-19 最终只读快照确认 DB OID 646711、`127.0.0.1:5432`、只读事务开启，现只剩 `v4`。完整最终快照在 `G:\codex_tmp\v4_single_schema_inventory_20261019.json`。 |
-| S1 停止动态 Schema 生成 | PASS | `workspace_schema()` 固定返回 `v4`；应用连接拒绝任何其他 Schema；Schema 创建边界拒绝非 `v4`；Alias 注册禁用；旧独立 live Shadow writer 在连接数据库前 fail-closed，R1/R2 导出 API 仅委托固定 v4 R3 writer。 |
+| S1 停止动态 Schema 生成 | PASS | `workspace_schema()` 固定返回 `v4`；应用连接拒绝任何其他 Schema；Schema 创建边界拒绝非 `v4`；Alias 注册禁用；旧独立 live Shadow writer 在连接数据库前 fail-closed，R1/R2 导出 API 仅委托固定 v4 R3 writer。另在真实 `market_research` 中以 QA-only 记录完成 Snapshot/Series/Journal 各 A/B 两个不同 release 的写入、精确版本读回与隔离核验，前后业务 Schema 集合均为 `v4`。 |
 | S2 固定表结构 | PASS | 最新 `REPEATABLE READ READ ONLY` 目录核验为 `v4` 下 124 张表、88 个例程、194 个非内部触发器。计数包括已部署的固定版本化存储迁移；这些触发器是现役关系的约束，不是旧 Schema 残留。 |
 | S3 精确迁移与旧 Schema 清理 | PARTIAL | 当前全库非系统用户 Schema 仅 `v4`，旧 75 项均不在目录，跨用户 Schema 依赖为 0；但逐项清理执行收据不足：G 盘证据审计仅找到 37 项持久 `DROP_RESTRICT_SUCCESS` 收据，38 项没有可回读的逐项执行收据，其中 8 项 Forward/R8 在仓库也没有对应清理执行器。不能将目录缺席等同于逐项 RESTRICT 成功证明。Forward 映射 11 个来源 Schema 的 9,256 条行映射均为 `VERIFIED`，另有 R8 的独立 251 行 digest 回执。 |
 | S4 全部运行时消费者切换 | PARTIAL | 主研究、股票图表、板块成员、Focus/Forward、诊断、Owner 精确 SourceIngress、日更仓储和 Shadow 导出/读回均经唯一 `v4` 边界；历史引用只通过固定表中的精确迁移回执解析。Shadow 固定存储已部署，真实接受清单仍缺失并 fail-closed。 |
@@ -48,8 +48,8 @@ production_changed: false
 
 | ID | 状态 | 任务卡验收与证据 |
 |---|---|---|
-| DB-01 | PASS | 当前只读 RR 事务实查唯一 V4 业务 Schema 为 `v4`，`v4_*` 为 0；Research 双 Release 写读回并回滚；单 Schema 守卫拒绝非 `v4`。 |
-| DB-02 | PASS | 两个 Research Release 分别在固定 `v4` 表中读回；descriptor、T0、release_id 和内容摘要经验证，不跨版本混读。 |
+| DB-01 | PASS | 当前只读 RR 事务实查唯一 V4 业务 Schema 为 `v4`，`v4_*` 为 0；真实 PG 中 6 个 QA-only 版本（Snapshot/Series/Journal 各 A/B）分别写入并读回；单 Schema 守卫拒绝非 `v4`。 |
+| DB-02 | PASS | 六个不同 Research Release 分别在固定 `v4` 版本表中完成 descriptor、T0、release_id、完整内容摘要验证；每个 release 精确只读回自己的 QA key，A/B 无串读。 |
 | DB-03 | PASS | RAW/QFQ Series、多日 Journal 固定表正向样例读回并回滚；错 T0/缺版本校验 fail-closed。 |
 | DB-04 | PARTIAL | Forward 数据按 namespace/run/T0 使用固定 `v4` 表并保留旧键碰撞身份；Focus 历史到期/自动写入与完整成熟 outcome 尚缺真实验收输入。 |
 | DB-05 | PARTIAL | 75 个旧 V4 Schema 的最终缺席、来源映射和 37 项持久 `DROP_RESTRICT_SUCCESS` 收据已交叉核验；另 38 项无逐项持久执行收据，8 项 Forward/R8 名称无现存清理执行器。Forward 9,256 条精确映射回执仍为 `VERIFIED`，当前 Data Head 30 条原始绑定字节级读回也保持通过。未发现 `CASCADE` 执行证据；完整逐项清理方式尚未全部证明。 |
@@ -592,6 +592,17 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 只读盘点 `G:\codex_tmp\r7_active_baseline_20261015`：该独立副本位于 `master` / HEAD `9d40f3750b73465b59139dccb24d3a886271ea5e`，有 5 个跟踪文件修改（合计 34 行新增、111 行删除）及未跟踪的 `data/`、`v4/`、`runtime/`、文档和第三方资料目录。3 个未跟踪 Python 适配器里，Forward API 路由和 Accepted Head 后的 R7 捕获逻辑已由当前分支原生代码覆盖；R6 runtime compatibility wrapper 不在当前启动路径。副本还含有未归属数据，无法据当前证据证明全部可重建且无活动依赖，因此没有执行清理或搬迁。
 - 逐文件 SHA-256、分支/HEAD、跟踪改动和目录清单保存在 `G:\codex_tmp\v4_r7_baseline_workspace_inventory_r1_20261019.json`。当前仓库中的 `source_view.py` 与该副本哈希相同；其余 4 个跟踪文件有差异，3 个未跟踪适配器在当前仓库不存在。该清单仅记录状态，不把缺失的旧 hook 恢复到当前运行时。
+
+### 2026-10-19 S1 固定版本表真实 PG 双版本写读验收
+
+- 在授权开发库 `market_research` / OID `646711` / `127.0.0.1:5432` 中，使用代码分支 HEAD `9db4c23ecaba6d9306c094c9c6eb92aaff1e0dff` 创建明确标记 `V4_R21_R7_S1_RUNTIME_QA_R1` 的 QA-only 微型版本：Snapshot A/B、Series A/B、Journal A/B 共 6 个 release，T0 均为 2026-10-16。QA 元数据与键均显式标为 `qa_only`，不属于接受业务来源，不绑定任何 Research/Operational/Publication Head。
+- 对每个 release 使用 `load_release(..., verify_content=True)` 与只读 `read()` 路径完成版本摘要校验，并分别只读回本版本的 QA object；Series bar 和 Journal day 按精确 key、T0、payload 读回。A/B 的 release ID 与逻辑摘要均不同，未跨版本串读。创建前后同一只读事务核验的用户 V4 Schema 集合均为 `[v4]`。
+- 六条 QA 版本保留在固定 `v4.research_*` 版本表中，供本轮架构回归审计；它们没有更改正式 Head、Publication 或日更作业状态。完整机器证据与只读复验脚本位于 `G:\codex_tmp\v4_single_schema_s1_runtime_qa_20261019\S1_RUNTIME_QA_R1.json`、`audit_s1_runtime_qa_r1.py`、`S1_RUNTIME_READBACK_AUDIT_R1.json`。该工程验收证明固定版本表的版本隔离，不替代完整业务数据或模块 Accepted 验收。
+
+### 2026-10-19 28766 最新代码运行状态复核
+
+- 真实监听进程为 PID `46304`，命令行指向 `G:\codex_tmp\start_v4_28766_single_schema.py`，创建时间 `08:03:50 +08:00`；最新应用代码相关提交 `b7be7effe` 于 `08:05:00 +08:00` 提交，因此该进程未加载该提交后的 BFF 代码。启动脚本目标为当前仓库和 `market_research` OID `646711`；当前 `/api/v4/context` 返回 PG 候选 release `05cf8913242f46c8af53b3d89f323b64`、研究 T0 `2026-09-30`，仍不是日更日期。
+- 对 28766 执行受控重载的命令被本机执行策略拒绝；拒绝后没有换用其他进程控制通道。28765 当时无监听且未操作。故本报告不将旧进程页面算作最新提交的浏览器验收，DB-07 继续保持 PARTIAL，需在允许的 28766 重载后再实测。
 
 ### 2026-10-19 Forward history-only 别名迁移回执只读核验
 

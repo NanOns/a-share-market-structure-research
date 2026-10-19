@@ -181,11 +181,13 @@ STAGE00_CONTRACTS = {
 }
 STAGE00_TABLES = (
     "contract_versions", "contract_approval_events", "source_packages",
-    "source_revisions", "security_lifecycle_facts", "security_lifecycle_history",
+    "source_package_facts", "source_revisions", "security_lifecycle_facts", "security_lifecycle_history",
     "publications", "model_namespaces", "publication_heads",
 )
 TDX_BOARD_SCOPES = ("SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR")
 TDX_SAMPLES = TDX_BOARD_SCOPES
+MAX_ACCEPTED_PACKAGE_CANDIDATES = 50
+MAX_PACKAGE_FACT_ROWS = 500
 
 
 def _repo_root() -> Path:
@@ -203,6 +205,208 @@ def _source_head_sha() -> str:
         return value if re.fullmatch(r"[0-9a-f]{40}", value) else "UNKNOWN"
     except (OSError, subprocess.SubprocessError):
         return "UNKNOWN"
+
+
+def _package_acceptance_errors(
+    package: Mapping[str, Any], facts: list[Mapping[str, Any]], *,
+    acceptance_verified: bool,
+) -> list[str]:
+    """Validate persisted, accepted package provenance for the Stage00 D scope."""
+    errors: list[str] = []
+    manifest = package.get("manifest")
+    if package.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE":
+        errors.append("PACKAGE_SCOPE_NOT_ACCEPTED")
+    if not acceptance_verified:
+        errors.append("INDEPENDENT_ACCEPTANCE_PROOF_INVALID")
+    if not isinstance(manifest, Mapping):
+        return errors + ["PACKAGE_MANIFEST_INVALID"]
+    package_id = package.get("package_id")
+    package_sha = str(package.get("package_sha256") or "").strip().lower()
+    target = str(package.get("target_trade_date") or "")
+    if (not package_id or manifest.get("package_id") != package_id
+            or manifest.get("package_sha256") != package_sha):
+        errors.append("PACKAGE_IDENTITY_BINDING_MISMATCH")
+    if (not re.fullmatch(r"\d{4}-\d{2}-\d{2}", target)
+            or manifest.get("trade_date") != target):
+        errors.append("PACKAGE_T0_BINDING_MISMATCH")
+    if manifest.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE":
+        errors.append("MANIFEST_SCOPE_NOT_ACCEPTED")
+    if manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True:
+        errors.append("PACKAGE_CLOCK_AUTHORITY_NOT_ACCEPTED")
+    proof = manifest.get("acceptance_proof")
+    if not isinstance(proof, Mapping) or not proof.get("receipt_sha256") or not proof.get("issuer_id"):
+        errors.append("PACKAGE_ACCEPTANCE_RECEIPT_MISSING")
+    bindings = manifest.get("source_fact_bindings")
+    if not isinstance(bindings, list) or not bindings:
+        errors.append("PACKAGE_SOURCE_FACT_BINDINGS_MISSING")
+    else:
+        binding_rows = {(row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest")): row
+                        for row in bindings if isinstance(row, Mapping)}
+        binding_keys = set(binding_rows)
+        fact_keys = {(row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest"))
+                     for row in facts}
+        if len(fact_keys) != len(facts) or binding_keys != fact_keys:
+            errors.append("PACKAGE_FACT_SET_MISMATCH")
+        revisions = [row for row in facts if row.get("source_revision_id")]
+        if len(revisions) != len(bindings):
+            errors.append("PACKAGE_SOURCE_REVISION_SET_INCOMPLETE")
+        if any(row.get("source_package_id") != package_id
+               or row.get("source_package_source_key") != row.get("source_key")
+               or row.get("source_fact_digest") != row.get("fact_digest")
+               or row.get("digest") != row.get("fact_digest")
+               or row.get("revision_no", 0) < 1
+               or not row.get("observed_at") or not row.get("ingested_at")
+               or not row.get("system_available_at")
+               for row in revisions):
+            errors.append("PACKAGE_SOURCE_REVISION_BINDING_INVALID")
+        if any(
+            binding_rows.get((row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest")), {}).get("record_locator")
+            != row.get("record_locator")
+            or binding_rows.get((row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest")), {}).get("source_fact_sha256")
+            != row.get("source_fact_sha256")
+            or binding_rows.get((row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest")), {}).get("record_count")
+            != row.get("record_count")
+            or binding_rows.get((row.get("source_key"), row.get("logical_fact_id"), row.get("fact_digest")), {}).get("byte_count")
+            != row.get("byte_count")
+            for row in facts
+        ):
+            errors.append("PACKAGE_FACT_MANIFEST_BINDING_MISMATCH")
+    tdx_packages = manifest.get("tdx_source_packages")
+    if not isinstance(tdx_packages, list) or not tdx_packages:
+        errors.append("TDX_OFFICIAL_PACKAGE_EVIDENCE_MISSING")
+    else:
+        official = [row for row in tdx_packages if isinstance(row, Mapping)
+                    and row.get("source_role") == "OFFICIAL_CURRENT_PACKAGE"]
+        if not official:
+            errors.append("TDX_OFFICIAL_PACKAGE_EVIDENCE_MISSING")
+        for row in official:
+            if (row.get("T0") != target or not row.get("provider_package_date")
+                    or not isinstance(row.get("first_available_at"), str)
+                    or not re.fullmatch(r"[0-9a-f]{64}", str(row.get("package_sha256") or ""))
+                    or not isinstance(row.get("package_bytes"), int) or row.get("package_bytes", 0) <= 0
+                    or not isinstance(row.get("source_revision_number"), int)
+                    or row.get("AS_RECORDED") is not False or row.get("PIT_ELIGIBLE") is not False):
+                errors.append("TDX_OFFICIAL_PACKAGE_BINDING_INVALID")
+    # Stage00's accepted source scope is four boards; exchange-only universe
+    # coverage is insufficient. The producing acceptance must report a board
+    # inventory bound into its accepted manifest.
+    coverage = manifest.get("accepted_board_coverage")
+    coverage_counts = coverage.get("counts") if isinstance(coverage, Mapping) else None
+    if (not isinstance(coverage, Mapping) or not isinstance(coverage_counts, Mapping)
+            or set(coverage.get("boards", ())) != set(TDX_BOARD_SCOPES)
+            or any(not isinstance(coverage_counts.get(board), int)
+                   or coverage_counts[board] <= 0 for board in TDX_BOARD_SCOPES)
+            or coverage.get("target_trade_date") != target
+            or not re.fullmatch(r"[0-9a-f]{64}", str(coverage.get("digest") or ""))):
+        errors.append("FOUR_BOARD_COVERAGE_UNPROVEN")
+    elif not any(
+        row.get("source_key") == "tdx_board_coverage"
+        and row.get("fact_digest") == coverage.get("digest")
+        and row.get("record_locator") == {
+            "boards": coverage.get("boards"), "counts": coverage_counts,
+            "target_trade_date": target,
+        }
+        for row in bindings if isinstance(row, Mapping)
+    ):
+        errors.append("FOUR_BOARD_COVERAGE_NOT_BOUND_TO_ACCEPTED_PACKAGE")
+    return sorted(set(errors))
+
+
+def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str, Any], *, receipt_verified: bool = False) -> list[str]:
+    """Check a normalized RAW receipt against accepted source and B/C/D owner evidence."""
+    if not isinstance(receipt, Mapping):
+        return ["MISSING_RUNTIME_RECEIPT_PRODUCER"]
+    errors: list[str] = []
+    if not receipt_verified:
+        errors.append("RAW_RECEIPT_AUTHORITY_NOT_VERIFIED")
+    package = source.get("package") if isinstance(source, Mapping) else None
+    facts = source.get("facts", []) if isinstance(source, Mapping) else []
+    if not source.get("accepted") or not isinstance(package, Mapping):
+        errors.append("RAW_RECEIPT_SOURCE_NOT_ACCEPTED")
+    package_id = package.get("package_id") if isinstance(package, Mapping) else None
+    target = package.get("target_trade_date") if isinstance(package, Mapping) else None
+    source_revision_ids = {row.get("source_revision_id") for row in facts if row.get("source_revision_id")}
+    if (receipt.get("owner") != RAW_BOOTSTRAP_OWNER
+            or receipt.get("status") not in {"ACCEPTED", "DEGRADED_ACCEPTED"}
+            or receipt.get("scope") != "RAW_BOOTSTRAP"):
+        errors.append("RAW_RECEIPT_OWNER_OR_STATUS_INVALID")
+    if receipt.get("trade_date") != target or receipt.get("source_package_id") != package_id:
+        errors.append("RAW_RECEIPT_T0_OR_PACKAGE_MISMATCH")
+    if (receipt.get("source_revision_id") not in source_revision_ids
+            or receipt.get("source_revision_sha256") != next((row.get("digest") for row in facts
+                if row.get("source_revision_id") == receipt.get("source_revision_id")), None)):
+        errors.append("RAW_RECEIPT_SOURCE_REVISION_MISMATCH")
+    if receipt.get("raw_basis") != "TDX_RAW_NATIVE":
+        errors.append("RAW_RECEIPT_BASIS_MISMATCH")
+    if receipt.get("source_identity_status") != "RESOLVED":
+        errors.append("RAW_RECEIPT_SOURCE_IDENTITY_UNRESOLVED")
+    if receipt.get("source_trading_status") != "TRADING":
+        errors.append("RAW_RECEIPT_SOURCE_NOT_TRADING")
+    if receipt.get("source_knowledge_status") != "AS_RECORDED":
+        errors.append("RAW_RECEIPT_SOURCE_KNOWLEDGE_NOT_AS_RECORDED")
+    if receipt.get("source_package_sha256") != (package.get("package_sha256") if isinstance(package, Mapping) else None):
+        errors.append("RAW_RECEIPT_PACKAGE_DIGEST_MISMATCH")
+    owner_results = receipt.get("owner_results")
+    if not isinstance(owner_results, Mapping):
+        errors.append("RAW_RECEIPT_OWNER_RESULTS_MISSING")
+    else:
+        expected = {"V4-00B": "LIFECYCLE_SCHEMA", "V4-00C": "PUBLICATION_IDENTITY",
+                    "V4-00D": "A_STOCK_TDX_SOURCE"}
+        for owner, scope in expected.items():
+            result = owner_results.get(owner)
+            if (not isinstance(result, Mapping) or result.get("status") not in ACCEPTED
+                    or result.get("owner") != owner or scope not in result.get("accepted_scopes", [])
+                    or result.get("trade_date") != target
+                    or result.get("source_package_id") != package_id
+                    or result.get("source_package_sha256") != (package.get("package_sha256") if isinstance(package, Mapping) else None)
+                    or result.get("source_revision_id") != receipt.get("source_revision_id")):
+                errors.append("RAW_RECEIPT_OWNER_EVIDENCE_INVALID:" + owner)
+    receipt_sha = receipt.get("receipt_sha256")
+    unsigned_receipt = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    expected_receipt_sha = hashlib.sha256(json.dumps(
+        unsigned_receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")).hexdigest()
+    if (not receipt.get("receipt_id") or not isinstance(receipt_sha, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", receipt_sha)
+            or receipt_sha != expected_receipt_sha):
+        errors.append("RAW_RECEIPT_IDENTITY_MISSING")
+    return sorted(set(errors))
+
+
+def _source_owner_stage(source_acceptance: Mapping[str, Any], sample_ready: bool, tdx: Mapping[str, Any]) -> dict[str, Any]:
+    accepted = source_acceptance.get("status") == "ACCEPTED"
+    errors = list(source_acceptance.get("candidate_errors", []))
+    if not accepted and not errors and not source_acceptance.get("candidate_count"):
+        errors = ["NO_ACCEPTED_SOURCE_PACKAGE"]
+    elif not accepted and not errors:
+        errors = ["ACCEPTED_SOURCE_PACKAGE_EVIDENCE_INVALID"]
+    return {
+        "status": "FULL_PASS" if accepted else ("DEGRADED_PASS" if sample_ready else "BLOCKED"),
+        "owner": "V4-00D", "scope": "A_STOCK_TDX_SOURCE",
+        "source": "PG accepted source package/facts/revisions plus independent receipt verification",
+        "evidence": [
+            f"accepted_source_packages={source_acceptance.get('accepted_candidate_count', 0)}",
+            f"tdx_samples={tdx.get('valid_sample_count', 0)}/{len(TDX_SAMPLES)}",
+        ],
+        "blocked_scopes": [] if accepted else ["A_STOCK_TDX_SOURCE"],
+        "allowed_capabilities": ["A_STOCK_TDX_SOURCE"] if accepted else [],
+        "blocks_v4_01": not accepted,
+        "reason_codes": [] if accepted else errors,
+    }
+
+
+def _raw_owner_stage(raw_errors: list[str]) -> dict[str, Any]:
+    accepted = not raw_errors
+    return {
+        "status": "FULL_PASS" if accepted else "BLOCKED",
+        "owner": "V4-00E", "scope": "RAW_BOOTSTRAP",
+        "source": "PG RAW receipt bound to accepted source and B/C/D owner evidence",
+        "evidence": ["receipt fields and source/owner bindings verified" if accepted else "RAW receipt or binding evidence missing/invalid"],
+        "blocked_scopes": [] if accepted else ["RAW_BOOTSTRAP"],
+        "allowed_capabilities": ["RAW_BOOTSTRAP"] if accepted else [],
+        "blocks_v4_01": not accepted,
+        "reason_codes": raw_errors,
+    }
 
 
 def _tdx_root(config_path: Path, override: str | None) -> Path:
@@ -325,6 +529,7 @@ def _pg_snapshot() -> dict[str, Any]:
     from workbench_analysis.contract_registry_pg_v1 import (
         ContractRegistryError, load_unique_current_approved_contract,
     )
+    from workbench_db.v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
 
     with readonly_connection() as pg:
         identity = PgPublicationReader._read_database_identity(pg)
@@ -362,22 +567,108 @@ def _pg_snapshot() -> dict[str, Any]:
             except ContractRegistryError as exc:
                 entry["reason"] = str(exc)
             contracts[contract_id] = entry
-        raw_receipt = {"status": "NOT_PRESENT", "reason": "NO_STAGE00_RAW_BOOTSTRAP_RECEIPT_RELATION_OR_ACCEPTED_SOURCE"}
+        try:
+            acceptance_authority = load_unique_current_approved_contract(
+                cursor, "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1", "1.0.0",
+                expected_database_identity=identity,
+            )
+            source_acceptance_authority = {
+                "status": "APPROVED_READ", "raw_sha256": acceptance_authority.raw_sha256,
+                "namespace": acceptance_authority.namespace,
+                "source_revision": acceptance_authority.approval_source_revision,
+            }
+        except ContractRegistryError as exc:
+            source_acceptance_authority = {"status": "MISSING", "reason": str(exc)}
+        source_candidates = []
+        source_candidate_errors = []
+        source_relations = ("source_packages", "source_package_facts", "source_revisions")
+        missing_source_relations = [name for name in source_relations if not catalog[name]]
+        if missing_source_relations:
+            source_candidate_errors.append(
+                "SOURCE_ACCEPTANCE_RELATION_MISSING:" + ",".join(missing_source_relations)
+            )
+        else:
+            packages = cursor.execute(
+                """SELECT package_id, package_sha256, target_trade_date, manifest, accepted_scope
+                     FROM v4.source_packages
+                    WHERE accepted_scope='ACCEPTED_SOURCE_PACKAGE'
+                      AND pg_column_size(manifest) <= 1048576
+                    ORDER BY target_trade_date DESC, created_at DESC, package_id
+                    LIMIT %s""",
+                (MAX_ACCEPTED_PACKAGE_CANDIDATES,),
+            ).fetchall()
+            for package_id, package_sha, target_date, manifest, accepted_scope in packages:
+                package = {
+                    "package_id": package_id, "package_sha256": str(package_sha).strip().lower(),
+                    "target_trade_date": target_date.isoformat() if hasattr(target_date, "isoformat") else str(target_date),
+                    "manifest": manifest, "accepted_scope": accepted_scope,
+                }
+                rows = cursor.execute(
+                    """SELECT f.source_key, f.logical_fact_id, trim(f.fact_digest),
+                              f.source_fact_sha256, f.record_locator, f.record_count, f.byte_count,
+                              r.source_revision_id, r.revision_no, r.digest,
+                              r.source_package_id, r.source_package_source_key,
+                              trim(r.source_fact_digest), r.observed_at, r.ingested_at,
+                              r.system_available_at
+                         FROM v4.source_package_facts AS f
+                         LEFT JOIN v4.source_revisions AS r
+                           ON r.source_package_id=f.package_id
+                          AND r.logical_fact_id=f.logical_fact_id
+                        WHERE f.package_id=%s
+                        ORDER BY f.source_key, f.logical_fact_id
+                        LIMIT %s""",
+                    (package_id, MAX_PACKAGE_FACT_ROWS + 1),
+                ).fetchall()
+                facts = [{
+                    "source_key": row[0], "logical_fact_id": row[1], "fact_digest": row[2],
+                    "source_fact_sha256": str(row[3]).strip() if row[3] else None,
+                    "record_locator": row[4], "record_count": row[5], "byte_count": row[6],
+                    "source_revision_id": row[7], "revision_no": row[8], "digest": str(row[9]).strip() if row[9] else None,
+                    "source_package_id": row[10], "source_package_source_key": row[11],
+                    "source_fact_digest": str(row[12]).strip() if row[12] else None,
+                    "observed_at": row[13], "ingested_at": row[14], "system_available_at": row[15],
+                } for row in rows]
+                if len(facts) > MAX_PACKAGE_FACT_ROWS:
+                    errors = ["PACKAGE_FACT_ROW_LIMIT_EXCEEDED"]
+                    verified = False
+                else:
+                    try:
+                        verify_source_package_manifest_authority(manifest, pg=cursor)
+                        verified = True
+                    except Exception:
+                        verified = False
+                    errors = _package_acceptance_errors(package, facts, acceptance_verified=verified)
+                item = {"package": package, "facts": facts, "accepted": not errors, "errors": errors}
+                source_candidates.append(item)
+                if errors:
+                    source_candidate_errors.extend(errors)
+        accepted_source = next((item for item in source_candidates if item["accepted"]), None)
+        # There is no Stage00 RAW receipt producer or PG relation in the current
+        # schema. Never infer this receipt from a DM01 file Head or PG publication alone.
+        raw_receipt = None
         catalog_missing = [name for name, found in catalog.items() if not found]
         return {
             "database_identity": identity, "read_role": role, "catalog": catalog,
             "catalog_missing": catalog_missing, "contracts": contracts,
+            "source_acceptance_authority": source_acceptance_authority,
             "missing_contract_versions": [key for key, value in contracts.items() if value["status"] != "APPROVED_READ"],
             **counts,
-            "raw_bootstrap": (raw_receipt if catalog["source_packages"] else
-                              {"status": "UNKNOWN", "reason": "SOURCE_PACKAGE_RELATION_MISSING"}),
+            "source_acceptance": {
+                "status": "ACCEPTED" if accepted_source else ("UNKNOWN" if missing_source_relations else "BLOCKED"),
+                "candidate_count": len(source_candidates),
+                "accepted_candidate_count": sum(1 for item in source_candidates if item["accepted"]),
+                "candidate_errors": sorted(set(source_candidate_errors)),
+                "accepted_evidence": accepted_source,
+            },
+            "raw_bootstrap_receipt": raw_receipt,
+            "raw_bootstrap": {"status": "NOT_PRESENT", "reason": "MISSING_RUNTIME_RECEIPT_PRODUCER"},
         }
 
 
 def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None) -> dict[str, Any]:
     """Run bounded real Stage00 diagnostics without modifying PG or source files."""
     report: dict[str, Any] = {
-        "source_head_sha": _source_head_sha(), "sampled_at_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit_sha": _source_head_sha(), "sampled_at_utc": datetime.now(timezone.utc).isoformat(),
         "run_mode": mode, "execution_status": "FAILED", "phase0_status": "BLOCKED",
         "v4_01_entry_permission": "BLOCKED", "database_identity": "UNKNOWN",
         "contract_versions_read": [], "missing_contract_versions": list(STAGE00_CONTRACTS),
@@ -391,6 +682,7 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
         report["pg_catalog"] = pg["catalog"]
         report["pg_catalog_missing"] = pg["catalog_missing"]
         report["contract_registry"] = pg["contracts"]
+        report["source_acceptance_authority"] = pg.get("source_acceptance_authority", {"status": "UNKNOWN"})
         report["contract_versions_read"] = [
             {"contract_id": key, **{name: value[name] for name in ("version", "raw_sha256", "namespace") if name in value}}
             for key, value in pg["contracts"].items() if value["status"] == "APPROVED_READ"
@@ -400,17 +692,27 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
             key: pg[key] for key in ("source_revision_count", "accepted_source_package_count", "publication_head_count", "model_namespace_count")
         }
         report["raw_bootstrap"] = pg["raw_bootstrap"]
-        report["real_source_acceptance"] = (
-            "ACCEPTED_PACKAGE_PRESENT" if pg["accepted_source_package_count"]
-            else "NO_ACCEPTED_SOURCE_PACKAGE"
-        ) if pg["accepted_source_package_count"] is not None else "UNKNOWN"
+        report["source_acceptance"] = {
+            key: pg["source_acceptance"][key]
+            for key in ("status", "candidate_count", "accepted_candidate_count", "candidate_errors")
+        }
+        report["real_source_acceptance"] = pg["source_acceptance"]["status"]
         config_path = _repo_root() / "config" / "paths.yaml"
         root = _tdx_root(config_path, tdx_root)
         tdx = _read_tdx_samples(root)
         report["tdx"] = tdx
         report["tdx_observation_date"] = tdx["tdx_observation_date"]
         contract_missing = pg["missing_contract_versions"]
-        accepted_source_count = pg["accepted_source_package_count"]
+        source_acceptance = pg["source_acceptance"]
+        source_accepted = source_acceptance["status"] == "ACCEPTED"
+        raw_errors = _raw_bootstrap_errors(
+            pg.get("raw_bootstrap_receipt"), source_acceptance.get("accepted_evidence") or {},
+            receipt_verified=bool(pg.get("raw_bootstrap_receipt_verified", False)),
+        )
+        report["raw_bootstrap"] = {
+            "status": "ACCEPTED" if not raw_errors else "BLOCKED",
+            "reason_codes": raw_errors,
+        }
         namespaces_present = bool(pg["model_namespace_count"])
         publication_schema_ready = all(pg["catalog"].get(name, False) for name in ("publications", "model_namespaces", "publication_heads"))
         heads_present = bool(pg["publication_head_count"])
@@ -420,8 +722,8 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None)
             "V4-00A": {"status": "DEGRADED_PASS", "owner": "V4-00A", "source": "PG identity/catalog read", "evidence": ["database identity attested", "repeatable-read transaction is read-only"], "reason_codes": ["BACKUP_RECOVERY_RECEIPT_NOT_CHECKED"]},
             "V4-00B": {"status": "DEGRADED_PASS" if lifecycle_ready else "BLOCKED", "owner": "V4-00B", "scope": "LIFECYCLE_SCHEMA", "source": "PG catalog", "evidence": ["security lifecycle relations present" if lifecycle_ready else "security lifecycle relation missing"], "blocked_scopes": [] if lifecycle_ready else ["LIFECYCLE_SCHEMA"], "allowed_capabilities": ["LIFECYCLE_SCHEMA"] if lifecycle_ready else [], "blocks_v4_01": not lifecycle_ready, "reason_codes": ["LIFECYCLE_DATA_COVERAGE_NOT_PROVEN"]},
             "V4-00C": {"status": "DEGRADED_PASS" if publication_schema_ready else "BLOCKED", "owner": "V4-00C", "scope": "PUBLICATION_IDENTITY", "source": "PG catalog and read-only row counts", "evidence": ["publication identity relations present" if publication_schema_ready else "publication identity relation missing", f"publication_heads={pg['publication_head_count']}"], "blocked_scopes": [] if publication_schema_ready else ["PUBLICATION_IDENTITY"], "allowed_capabilities": ["PUBLICATION_IDENTITY"] if publication_schema_ready else [], "blocks_v4_01": not publication_schema_ready, "reason_codes": ["NO_HEAD_PRESENT" if not heads_present else "HEAD_PRESENT_NOT_SELECTED"]},
-            "V4-00D": {"status": "DEGRADED_PASS" if sample_ready else "BLOCKED", "owner": "V4-00D", "scope": "A_STOCK_TDX_SOURCE", "source": "configured read-only TDX .day samples", "evidence": [f"valid_samples={tdx['valid_sample_count']}/{len(TDX_SAMPLES)}", f"observation_date={tdx['tdx_observation_date']}"], "blocked_scopes": ["A_STOCK_TDX_SOURCE"], "blocks_v4_01": True, "reason_codes": ["SAMPLE_VALID_BUT_NO_ACCEPTED_SOURCE_PACKAGE"] if sample_ready and accepted_source_count == 0 else (["ACCEPTED_SOURCE_PACKAGE_COUNT_UNKNOWN"] if accepted_source_count is None else (["ACCEPTED_SOURCE_PACKAGE_PRESENT_REQUIRES_SCOPE_VALIDATION"] if accepted_source_count else tdx["failures"]))},
-            "V4-00E": {"status": "BLOCKED", "owner": "V4-00E", "scope": "RAW_BOOTSTRAP", "source": "PG accepted source and RAW receipt state", "evidence": [f"accepted_source_packages={accepted_source_count}", pg["raw_bootstrap"]["status"]], "blocked_scopes": ["RAW_BOOTSTRAP"], "blocks_v4_01": True, "reason_codes": ["RAW_BOOTSTRAP_NOT_DERIVED_FROM_ACCEPTED_INPUT"]},
+            "V4-00D": _source_owner_stage(source_acceptance, sample_ready, tdx),
+            "V4-00E": _raw_owner_stage(raw_errors),
             "V4-00F": {"status": "DEGRADED_PASS" if pg["source_revision_count"] is not None else "BLOCKED", "owner": "V4-00F", "source": "PG source revision catalog", "evidence": [f"source_revisions={pg['source_revision_count']}"], "reason_codes": ["SOURCE_SCOPE_AND_ACCEPTANCE_INCOMPLETE"]},
             "V4-00G": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00G", "source": "PG-only approved contract registry", "evidence": [f"approved_required_contracts={len(STAGE00_CONTRACTS)-len(contract_missing)}/{len(STAGE00_CONTRACTS)}"], "reason_codes": ["APPROVED_STAGE00_CONTRACTS_MISSING"] if contract_missing else ["PARAMETER_EFFECTIVE_STATE_NOT_PROVEN"]},
             "V4-00H": {"status": "BLOCKED" if contract_missing else "DEGRADED_PASS", "owner": "V4-00H", "source": "PG-only final acceptance contract and actual Stage00 evidence", "evidence": [f"missing_contract_versions={len(contract_missing)}"], "reason_codes": ["FINAL_ACCEPTANCE_CONTRACT_OR_EVIDENCE_MISSING"] if contract_missing else ["EXTERNAL_ACCEPTANCE_NOT_COMPLETE"]},

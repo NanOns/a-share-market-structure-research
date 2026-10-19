@@ -1,7 +1,7 @@
 ---
 stage_id: V4-00
-code_sha: e21849b21226d364d4f79678d416126e58ffb5b1
-test_scope: V4-00A-H、R3 PG-only合同纠偏、定向测试与只读数据库核验
+code_sha: 7babddcfe4c91375d229de85f59f4c40567f85c5
+test_scope: V4-00A-H、R3 PG-only合同纠偏、R4可运行性与定向测试/真实只读诊断
 conclusion: STAGE00_REPAIR_PARTIAL
 approval_status: USER_AUTHORIZED_STAGE00_ONLY
 ---
@@ -234,3 +234,79 @@ ROLLBACK;
 **R3结论：`STAGE00_REPAIR_PARTIAL`，`STAGE00_ENTRY_GATE=BLOCKED`。** `RUNTIME_CONSUMER_PG_ONLY` 仅证明没有阶段00本地 JSON 运行读取，不代表已有 PG runtime 消费链；阶段00合同版本迁入及其原始批准事实需要单独授权和事实依据。D/E真实来源阻断继续存在。本报告不表示阶段00 PASS、阶段01启动或生产发布。
 
 R3代码、测试及规范实现提交 SHA：`e21849b21226d364d4f79678d416126e58ffb5b1`。最终报告提交及分支 HEAD 由现有 PR #3 注释给出。
+
+## R4｜可运行性恢复与首启闭环
+
+本轮按R4覆盖此前R1-R3执行范围，不重复执行历史工作包。现场起点为 `codex/v4-workspace-cleanup`、HEAD `952c93dccc894e56082e03bf6e4c0fdfd27b8ff1`，工作区初始干净。仅修改Stage00运行入口、相关测试和本唯一报告；没有执行迁移脚本、共享PG DDL/DML、Head切换、生产服务、大表查询或CI。旧 `run_phase0.py` 仍是 `tdx.tdx_audit.main`，没有冒称Stage00验收入口；`scripts/apply_v4_phase0_schema.py::apply()` 的拒绝保护保持原状。
+
+### 运行入口与状态语义
+
+在既有 `src/v4/contracts/phase0_gate.py` 内增加三种命令：
+
+- `python -m v4.contracts.phase0_gate doctor --json`：实连配置的PG只读连接，设置RR/RO和查询超时；读取小型catalog/计数及精确合同版本，并解析配置中的TDX部署路径，只读取按板块规则从本地文件名中各选出的一个四板样本。程序完成即 `execution_status=OK`、退出码0；数据/合同/准入不足仍显示 `phase0_status=BLOCKED`。
+- `python -m v4.contracts.phase0_gate fixture-test --json`：只检查纯Gate缺证据时fail-closed规则，不连接PG、不读行情；通过不是运行或正式验收通过。
+- `python -m v4.contracts.phase0_gate acceptance --json`：走同一真实读取和聚合路径。成功执行但真实阶段被阻断时退出码2；运行故障退出码1；只有完整阶段状态才退出码0。
+
+医生入口复用 `readonly_connection()`、`PgPublicationReader` 的数据库身份/read-role核验、`load_unique_current_approved_contract()`、`tdx.day_reader.validate_day_file/read_edge_records()`、`bao_source_entity()`、`required_board()` 与原有 `evaluate_phase0()`。运行参数只从PG已批准合同Reader读取；本模块没有业务合同JSON、历史data、docs evidence或fixture的runtime回退。TDX本机文件只作为采集边界上的原始观察，不视为已接受source package，不提供正式PG身份；缺上市日时现有身份工具真实返回 `UNRESOLVED_LIST_DATE`。
+
+输出包含源码HEAD、模式、执行状态与阶段状态、数据库身份和RO证明、关键relation、记录计数、合同精确缺项、A-H状态/Owner/scope/source/evidence/reason、TDX观察日和逐样本SHA/RAW字段校验、来源包/RAW状态以及 `side_effects=NONE`。缺PG relation可形成结构阻断诊断；PG不可连接/身份不符、配置源根不可用或所选样本损坏则执行失败。无Head仅是00C的一条运行状态原因，不否定Publication身份Schema结构。
+
+### 真实只读闭环结果
+
+使用上列doctor命令原样连续运行两次，退出码分别为0；删除两个JSON唯一变化字段 `sampled_at_utc` 后，结构化对象完全相等。提交后的真实运行 `source_head_sha=7babddcfe4c91375d229de85f59f4c40567f85c5`。运行输出读到数据库 `market_research` / OID `646711` / `127.0.0.1:5432`，事务身份为当前共享PG用户并由事务级READ ONLY约束；9个Stage00关键relation均存在。小型PG读取实际给出 `source_revisions=40455`、`accepted_source_package_count=0`、`model_namespace_count=0`、`publication_head_count=0`。合同表共19版本/16审批事件，但五个精确Stage00版本均无对应版本行，现有Reader逐项真实返回 `V4_PG_CONTRACT_VERSION_NOT_FOUND`；`contract_versions_read=[]`。另以同一只读RR事务检查v4 relation目录，未发现名称含`raw`或`bootstrap`的表/view，故没有可读的Stage00 RAW receipt对象。
+
+四个真实TDX文件均完整解析、OHLC有效且RAW单位保留原生坐标（TDX价格除数100）；身份板块分类为沪主板、深主板、创业板、科创板。样本及原文件摘要如下：
+
+| TDX样本 | 记录数 | 文件首日—末日 | 文件SHA-256 | RAW结构 |
+|---|---:|---|---|---|
+| `SH.600000` | 6,387 | `19991110`—`20260910` | `a9a3182db0ef4ffdffcce0ed1710d08bd05ead3f730a1e7bab36c6fb84582a66` | PASS |
+| `SZ.000001` | 8,452 | `19910403`—`20260911` | `02541b657d133e30379f496b041cb97a0a73d0bfb482e76a0718c6dc18ec42d7` | PASS |
+| `SZ.300001` | 4,006 | `20091030`—`20260910` | `1fae4b112e60231d8d43a6d510f56f156ddf7785695204f99ffe1c298e46a4ad` | PASS |
+| `SH.688001` | 1,734 | `20190722`—`20260910` | `fdcc2754f03f938ae5c81258c2d0720ac7ccee14d2ef46e46ab204c47c4fa5ce` | PASS |
+
+整体 `tdx_observation_date=20260911` 是四个样本末日的最大值；并非全市场齐备/最新目标日，也不代表来源正式接受。按文件mtime仅输出 `file_mtime_utc`，不冒充来源首次可得时间。PG中0个已接受package，因此D只能 `DEGRADED_PASS`、scope仍阻断；E因无accepted输入和RAW派生receipt为 `BLOCKED`。
+
+当前精确合同字节对照冻结基准 `952c93dccc894e56082e03bf6e4c0fdfd27b8ff1` 的Git blob SHA如下；每项当前PG `(contract_id,version)` 查询均为0行，而不是“已经批准但Head未创建”：
+
+| 合同版本 | 冻结Git blob SHA-256 | PG精确版本/有效批准事件 |
+|---|---|---|
+| `V4_PHASE0_FINAL_ACCEPTANCE_R3/3.0.0` | `2a5b4c6b5b6be107636c49c79806c62fbc05ba18e2acf474bd5d25116bb5ab28` | 均无 |
+| `V4_ALGORITHM_CONTRACT_FRAMEWORK_V1/1.1.0` | `a03fda92aaf608edfb5dd86b533fae576c3d121bc413a61768985e6e53cb4455` | 均无 |
+| `PARAMETER_REGISTRY_V1/1.1.0` | `b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7` | 均无 |
+| `CAPABILITY_CUTOVER_AND_ROLLBACK_V1/1.0.0` | `26aa335d3c59d8fd5b4454bfa142ba5064f8ea6b176bfd405b0b810da8a83de3` | 均无 |
+| `V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1/1.1.0` | `266558fb6137d6cc6894b85fbf51b45e8a05fd32a661f6a0d5c27f556fefac55` | 均无 |
+
+### 首启闭环与未授权PG写入计划
+
+| 能力 | 当前PG Schema/records | 本地真实观察/合同 | 当前判定 |
+|---|---|---|---|
+| 00A 数据库身份和诊断运行 | DB身份可核、RR/RO有效；未读取/验证本实例备份恢复回执 | 真实doctor连续运行一致 | `DEGRADED_PASS`，备份恢复事实仍待核 |
+| 00B 生命周期Schema | `security_lifecycle_facts/history` relation存在 | lifecycle真实数据覆盖及四板全量事实未验 | `DEGRADED_PASS`；仅允许 `LIFECYCLE_SCHEMA` 结构scope |
+| 00C Publication身份Schema | `publications/model_namespaces/publication_heads` relation存在；namespace/head均0 | 无正式Head；表合同结构与Head状态分开 | `DEGRADED_PASS`；允许 `PUBLICATION_IDENTITY` 结构scope |
+| 00D 来源 | `source_packages`/`source_revisions`存在，已接受package 0 | 四板四个只读样本有效，末日最大为2026-09-11 | `DEGRADED_PASS`，正式来源scope仍阻断 |
+| 00E RAW | 未找到RAW/bootstrap relation；accepted package 0 | 无基于已接受输入派生的receipt | `BLOCKED` |
+| 00F 来源版本骨架 | `source_revisions=40455` | package acceptance/阶段来源范围尚无证据 | `DEGRADED_PASS` |
+| 00G 算法/参数版本 | 合同注册和审批表存在；本阶段五个精确版本均无记录 | 参数候选值和冻结原文未被当成运行批准合同 | `BLOCKED` |
+| 00H 总准入 | `evaluate_phase0`实际汇总 | 正式准入合同缺失，且D/E未达required scopes | `BLOCKED` |
+
+若日后单独授权，仅针对已校验的上述五个候选字节，写入既有 `v4.contract_versions`，复合主键精确为各行 `(contract_id,version)`，内容SHA如上、`content_format=JSON`、`schema_version=version`、`source_revision=git:952c93dccc894e56082e03bf6e4c0fdfd27b8ff1:config/<对应冻结文件名>`；预计新增最多5行、目标交易日不适用（合同版本不带交易日）、不写 `contract_approval_events`。在SERIALIZABLE事务中逐项先查PK：缺行可作为待审批候选追加；相同PK且SHA相同为幂等跳过；相同PK但SHA不同立即回滚。提交前复核行数和原始字节SHA；任意数量/身份不符整笔ROLLBACK。当前没有授权，故实际写入数为0。该操作即使以后获批也不会产生正式批准事件，Reader仍会fail closed；批准主体、授权引用、发生时间及来源修订必须来自真实合法事实，不能由导入脚本补造。五份合同候选也不能解决D/E：仍需真实TDX正式包身份/目标日期/校验清单、source_package及source_revision关联接受记录，以及由accepted输入和真实Owner流程派生的RAW receipt；不创建Publication Head来替代这些事实。
+
+### 真实命令、退出码与回归
+
+以下使用PowerShell，临时区为 `G:/codex_tmp/test_temp`，调用时 `PYTHONPATH=src`，未改动TDX只读源：
+
+| 命令/负例 | 实际退出码 | 实际结论 |
+|---|---:|---|
+| `python -m v4.contracts.phase0_gate doctor --json`（连续两次） | `0, 0` | 两次真实PG+TDX运行成功；去除采样时钟后结构化JSON完全一致；`execution_status=OK` 且 `phase0_status=BLOCKED` |
+| `python -m v4.contracts.phase0_gate acceptance --json` | `2` | 读取链运行成功，正式验收因D/E、G/H证据不足为 `BLOCKED` |
+| `python -m v4.contracts.phase0_gate fixture-test --json` | `0` | 纯Gate规则PASS，明确标记 `PURE_GATE_RULES_ONLY` |
+| `doctor --json --tdx-root G:/codex_tmp/no_such_tdx_root` | `1` | `TDX_SOURCE_ROOT_UNAVAILABLE` |
+| PG连接设置为不可达本地端口后运行doctor | `1` | `PG_READ_FAILED`；输出不含DSN或凭据 |
+| 用真实四样本复制到G盘临时目录并将一份替代为3字节损坏记录后运行doctor | `1` | `TDX_SAMPLE_DATA_DAMAGED`；仅临时副本被改写 |
+| `tests/v4_phase0`（排除包含共享PG写入的`test_postgres_schema.py`） | `0` | `113 passed` |
+| `tests/test_v4_contract_registry_pg_v1.py` | `0` | `26 passed`（模拟cursor，不写真实PG） |
+| `compileall`、`git diff --check` | `0, 0` | 均通过 |
+
+另有负例测试模拟 `source_packages` relation缺失，确认doctor可报告 `pg_catalog_missing` 并保持执行/业务状态分离；真实现场未删除或改动PG表。未运行 `test_postgres_schema.py`，因为其包含共享PG写入，即使回滚也不在本轮授权范围。旧runner语义保持未变。报告中 `FULL_PASS` 不适用；当前真实八子阶段状态为 **00A `DEGRADED_PASS`，00B `DEGRADED_PASS`，00C `DEGRADED_PASS`，00D `DEGRADED_PASS`，00E `BLOCKED`，00F `DEGRADED_PASS`，00G `BLOCKED`，00H `BLOCKED`**。阶段状态 `BLOCKED`、V4-01准入 `BLOCKED`，但诊断入口为 `DIAGNOSTIC_RUNNABLE`。
+
+**R4结论：`DIAGNOSTIC_RUNNABLE / STAGE00_REPAIR_PARTIAL / V4_01_BLOCKED`。** 当前完成真实只读可运行诊断和PG/TDX证据收集，未满足阶段正式验收。提交SHA及最终HEAD记于本段完成后的现有PR #3评论；本轮PG写入、批准、真实来源接受及RAW派生均未执行。

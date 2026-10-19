@@ -50,12 +50,12 @@ def _universe_document(day, securities):
     }
 
 
-def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=None):
+def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=None, *, pit_eligible=True):
     private = Ed25519PrivateKey.generate()
     public = private.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)
     registry = {"contract_id": "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1", "status": "ACTIVE",
                 "issuers": {"fixture-source-issuer": {"status": "ACTIVE", "capabilities": [
-                    "ACCEPT_SOURCE_PACKAGE", "AS_RECORDED", "PIT_ELIGIBLE"],
+                    "ACCEPT_SOURCE_PACKAGE", "AS_RECORDED"] + (["PIT_ELIGIBLE"] if pit_eligible else []),
                     "public_key_b64": base64.b64encode(public).decode()}}}
     monkeypatch.setattr(ingest, "_acceptance_authority_registry", lambda pg=None: registry)
     day = "2026-09-11"
@@ -90,7 +90,7 @@ def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=No
     freeze = {
         "contract_id": "DYNAMIC_DAILY_SOURCE_FREEZE_V1", "target_session": day,
         "canonical_qfq_authority": "TDX_GBBQ_UNCHANGED", "observed_at": day + "T16:00:00+08:00",
-        "AS_RECORDED": True, "PIT_ELIGIBLE": True,
+        "AS_RECORDED": True, "PIT_ELIGIBLE": pit_eligible,
         "tdx": tdx_ref, "native_baostock": bao_ref, "runtime_manifest": runtime_ref,
         "security_universe": universe_ref,
         "effective_package": {
@@ -105,7 +105,7 @@ def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=No
         "contract_id": "V4_DAILY_SOURCE_READINESS_V2", "trade_date": day,
         "source_freeze": {"sha256": freeze_ref["sha256"]},
         "observed_at": day + "T16:01:00+08:00", "source_ready": True,
-        "AS_RECORDED": True, "PIT_ELIGIBLE": True,
+        "AS_RECORDED": True, "PIT_ELIGIBLE": pit_eligible,
     }
     readiness_ref = write("inputs/readiness.json", readiness)
     # Build a first diagnostic plan to obtain its producer-computed descriptor,
@@ -121,11 +121,15 @@ def _signed_fixture(tmp_path, monkeypatch, tdx_bars=None, universe_securities=No
         "source_fact_bindings_sha256": manifest["source_fact_bindings_sha256"],
         "package_sha256": manifest["package_sha256"], "source_ready": True,
         "readiness_observed_at": manifest["source_readiness_observed_at"],
-        "as_recorded": True, "pit_eligible": True, "pit_clock_contract_id": ingest.PIT_CLOCK_CONTRACT_ID,
+        "as_recorded": True, "pit_eligible": pit_eligible,
         "accepted_at": day + "T16:02:00+08:00", "signed_at": day + "T16:03:00+08:00",
-        "pit_cutoff_at": day + "T16:04:00+08:00", "trading_calendar_sha256": "f" * 64,
-        "decision_session": "T0_AFTER_CLOSE", "issuer_id": "fixture-source-issuer",
+        "issuer_id": "fixture-source-issuer",
     }
+    if pit_eligible:
+        receipt_body.update(pit_clock_contract_id=ingest.PIT_CLOCK_CONTRACT_ID,
+                            pit_cutoff_at=day + "T16:04:00+08:00",
+                            trading_calendar_sha256="f" * 64,
+                            decision_session="T0_AFTER_CLOSE")
     receipt = {**receipt_body,
                "receipt_sha256": hashlib.sha256(_canonical(receipt_body)).hexdigest(),
                "signature_ed25519": base64.b64encode(private.sign(_canonical(receipt_body))).decode()}
@@ -301,8 +305,9 @@ def test_accepted_source_persist_path_verifies_before_first_sql_write(tmp_path, 
     assert fake.calls == []
 
 
-def test_raw_receipt_is_produced_signed_verified_and_consumed_from_reader_shape(tmp_path, monkeypatch):
-    plan, _ = _signed_fixture(tmp_path, monkeypatch)
+@pytest.mark.parametrize("pit_eligible", [True, False])
+def test_raw_receipt_is_produced_signed_verified_and_consumed_from_reader_shape(tmp_path, monkeypatch, pit_eligible):
+    plan, _ = _signed_fixture(tmp_path, monkeypatch, pit_eligible=pit_eligible)
     package, facts = _pg_shaped(plan)
     source = {"accepted": True, "package": package, "facts": facts}
     raw_key = Ed25519PrivateKey.generate()
@@ -336,6 +341,8 @@ def test_raw_receipt_is_produced_signed_verified_and_consumed_from_reader_shape(
     receipt = ingest.produce_raw_owner_receipt(
         source, owners, signed_at="2026-09-11T16:10:00Z", signer=signer, pg=fake_pg,
     )
+    assert receipt["source_knowledge_status"] == "AS_RECORDED"
+    assert receipt["source_pit_eligible"] is pit_eligible
     assert ingest.verify_raw_owner_receipt(receipt, pg=fake_pg) == "fixture-raw-owner"
     assert seen_pg and all(item is fake_pg for item in seen_pg)
 

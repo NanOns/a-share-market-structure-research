@@ -533,3 +533,22 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - 在实际`market_research.v4`只读诊断读回，数据库OID `646711`，连接`127.0.0.1:5432`，角色事务只读。source revisions `40455`、accepted source packages `0`、security lifecycle facts `0`、security lifecycle history `6440`（5805个security_id）、publication heads `0`、model namespaces `0`、Stage00 RAW receipts `0`；本轮没有向共享PG新增正式Source、Lifecycle、Publication、Head、批准或PIT记录。
 - 最新提交运行`doctor --json`：退出`0`、`execution_status=OK`、`phase0_status=BLOCKED`、`failure_type=null`、V4-01 `BLOCKED`。运行`acceptance --json --trade-date 2026-09-11`：退出`2`、`execution_status=OK`、`execution_reason=DIAGNOSTICS_COMPLETED; BUSINESS_ACCEPTANCE_GAPS_REPORTED_AS_BLOCKED`、`failure_type=null`、`phase0_status=BLOCKED`，目标T0正确回显；00B为`LIFECYCLE_ACCEPTED_SOURCE_REQUIRED`，00C为`PUBLICATION_IDENTITY_MECHANISM_READY`。这是软件执行成功后的真实业务事实阻断，不是PG SQL执行失败。
 - 本次代码与测试提交：`1d30cb6b7c9c0abb966cb78de4ee337003271200`。阶段00其他原R8/R9成果与PG既有RAW迁移保持不变。剩余真实阻断仍包括无accepted source package、无accepted lifecycle facts/Owner结果、无RAW签发收据及五份必需合同无approved event；因此阶段00的最终业务acceptance仍为`STAGE00_REAL_DATA_BLOCKED`，不能宣布阶段00完成或进入阶段01。代码语义修复已验证；正式生产切换与最终打包仍未授权。
+
+### 第9节：Source首次持久化、知识权限拆分与收尾证据
+
+基线为`ced5452a176055b1d09b1c1a867a0132307ed978`。本轮仅修改阶段00 Source/Gate代码、对应测试及本唯一阶段00报告；R8/R9和第8节成果保留，不复做SEC身份、普通晚采集、00C首次Head等既有修复，不进入阶段01。
+
+#### 代码结果
+
+- `_persist_accepted_source_ingest_plan_transaction`仅在调用方提供Publication ID及revision时核验该精确版本并写`publication_consumed_sources`；二者均省略时，仍要求PG批准签发者的真实签名验收、完整来源绑定与摘要，并在调用方事务中先写`source_packages`、`source_package_facts`和`source_revisions`。将来Publication真实存在后，重放同一已验收计划会按既有包/修订幂等校验，再绑定消费关系；Publication revision错误时拒绝且不改已有消费绑定。未放宽正式来源签名或accepted package约束。
+- `_verify_independent_acceptance_authority`按收据实际声明的`as_recorded`/`pit_eligible`验签。普通盘后来源仍需独立`ACCEPT_SOURCE_PACKAGE`及`AS_RECORDED`权限、真实收据签名和来源/就绪/签署时间顺序；仅当收据声明严格PIT时才额外要求`PIT_ELIGIBLE`权限、知识cutoff、交易日历与session证明。收据及来源观察、就绪、签署、入库和系统可用时间原样保存；晚采集不获得PIT资格。
+- Gate 00D以真实验收的`AS_RECORDED`来源为条件，不再将严格PIT资格当作普通EOD来源入库前提。00E RAW Owner对普通盘后来源仍校验`AS_RECORDED`，并把`source_pit_eligible`显式签入既有收据、由Gate核对其与来源包标记一致；PIT来源仍必须通过上游PIT签发权及时钟验证。没有新增表或审批机制。
+
+#### 测试与开发E2E等级
+
+- 定向及阶段00全量回归：`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py`，显式启用已授权Stage00开发PG回滚测试，`221 passed`。新增反例覆盖普通AS_RECORDED且无PIT权限/时间字段、PIT声明缺PIT签发权限、receipt与PIT标记不一致、错误Publication revision；正例覆盖Source先持久化、无正式Head/Publication前不查Publication、同包重放后精确绑定，以及非PIT EOD source可经00D和00E消费。PG schema集成写入均在事务内回滚。
+- `doctor --json`真实只读执行退出0；`acceptance --json --trade-date 2026-09-11`退出2，`execution_status=OK`、`phase0_status=BLOCKED`、V4-01仍BLOCKED。真实开发PG身份仍为`market_research@127.0.0.1:5432`（OID `646711`）；读回accepted source package=0、lifecycle facts=0、Publication Head=0、RAW receipt=0、source revisions=40455、lifecycle history=6440/5805证券。00C仅证明Publication机制可供首版使用，未创建Publication/Head。
+- 阶段00代码及已有PG合同候选/结构读回满足代码层闭环，状态记为`STAGE00_CODE_PG_ONLY_CLOSED`；外部事实仍为`DATA_DEPENDENCY_BLOCKED`。真实开发端到端状态**未通过**，不标记`STAGE00_DEV_E2E_PASSED`：D盘存在TDX本地历史日线，但配置的`data/v4/dynamic_daily_sources` freeze/readiness落地不存在；PG精确版本`V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1/1.0.0`及`V4_STAGE00_RAW_OWNER_RECEIPT_AUTHORITY_REGISTRY_R1/1.0.0`均只读查询为`V4_PG_CONTRACT_VERSION_NOT_FOUND`，没有真实签名接受收据、完整目标T0接受来源/四板Owner事实、B/C Owner结果或E receipt；阶段00所需正式批准合同仍为0/5（五份只是PG开发候选）。因此不能以测试密钥、文件快照或开发候选代替DEV_VALIDATED真实数据验收，也没有写入任何新Source、Owner、PIT、Publication、Head或批准事实。
+- **一次性剩余实物清单**：①可追溯至指定目标T0及完整四板覆盖的真实source freeze/readiness；②与该来源摘要和scope绑定、可由已登记独立签发者验证的source acceptance receipt及PG authority registry版本；③PG中的已接受身份/生命周期Owner事实（当前history候选不能替代accepted facts）；④00E独立RAW signer与已批准authority registry/真实receipt；⑤五份必需Stage00合同的真实业务批准事件。当前TDX有界样本日期为`20260911`，四个样本均显示`security_id=null`/`UNRESOLVED_LIST_DATE`，不能充当规范身份或完整验收来源。
+
+代码语义修复已完成；真实`PHASE0_ACCEPTANCE`继续`BLOCKED`，本轮未产生正式业务批准，也未授权阶段01。`git diff --check`通过；Stage00 PG没有新增持久化业务事实。

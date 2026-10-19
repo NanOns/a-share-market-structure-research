@@ -99,7 +99,7 @@ def _receipt(day, freeze, readiness, *, accepted_at="2026-10-16T13:00:00+00:00")
     return value
 
 
-def _signed_receipt(plan, private_key, *, signed_at=None, accepted_at=None, cutoff=None):
+def _signed_receipt(plan, private_key, *, signed_at=None, accepted_at=None, cutoff=None, pit_eligible=True):
     manifest = plan["package_manifest"]
     day = plan["trade_date"]
     signed_at = signed_at or day + "T07:25:00+00:00"
@@ -113,17 +113,24 @@ def _signed_receipt(plan, private_key, *, signed_at=None, accepted_at=None, cuto
         "source_fact_bindings_sha256": manifest["source_fact_bindings_sha256"],
         "package_sha256": plan["package_sha256"],
         "source_ready": True,
-        "as_recorded": True, "pit_eligible": True,
+        "as_recorded": True, "pit_eligible": pit_eligible,
         "accepted_at": accepted_at, "signed_at": signed_at, "pit_cutoff_at": cutoff,
         "readiness_observed_at": manifest["source_readiness_observed_at"],
-        "pit_clock_contract_id": "V4_DAILY_PIT_DECISION_CLOCK_R1",
-        "decision_session": "T0_AFTER_CLOSE",
-        "trading_calendar_sha256": "a" * 64,
-        "next_trade_date": "2026-10-19",
         "issuer_id": "TEST_AUTHORITY_ONLY",
     }
+    if pit_eligible:
+        value.update(pit_clock_contract_id="V4_DAILY_PIT_DECISION_CLOCK_R1",
+                     decision_session="T0_AFTER_CLOSE", trading_calendar_sha256="a" * 64,
+                     next_trade_date="2026-10-19")
     value["receipt_sha256"] = hashlib.sha256(_json_bytes(value)).hexdigest()
     value["signature_ed25519"] = base64.b64encode(private_key.sign(_json_bytes({k:v for k,v in value.items() if k != "receipt_sha256"}))).decode("ascii")
+    return value
+
+
+def _resign_receipt(value, private_key):
+    unsigned = {k: v for k, v in value.items() if k not in {"signature_ed25519", "receipt_sha256"}}
+    value["receipt_sha256"] = hashlib.sha256(_json_bytes(unsigned)).hexdigest()
+    value["signature_ed25519"] = base64.b64encode(private_key.sign(_json_bytes(unsigned))).decode("ascii")
     return value
 
 
@@ -153,7 +160,7 @@ def test_actual_style_freeze_stays_diagnostic_without_accepted_pit_receipt(tmp_p
         acceptance_receipt=_receipt(day, freeze, readiness),
     )
     assert plan["status"] == "DIAGNOSTIC_ONLY"
-    assert plan["readiness_status"] == "SOURCE_PIT_AUTHORITY_UNAVAILABLE"
+    assert plan["readiness_status"] == "SOURCE_AS_RECORDED_AUTHORITY_UNAVAILABLE"
     assert plan["capture_status"] == "CAPTURED"
     assert plan["write_mode"] == "PLAN_ONLY_NO_DATABASE_IO"
     assert {row["source_key"] for row in plan["source_facts"]} == {"tdx", "native_baostock", "runtime_manifest", "security_universe", "tdx_board_coverage"}
@@ -225,6 +232,65 @@ def test_post_close_source_is_eligible_for_evening_and_t1_preopen_cutoffs(tmp_pa
     next_plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
                                          source_readiness=readiness, acceptance_receipt=preopen)
     assert next_plan["status"] == "ACCEPTED", next_plan["acceptance_status"]
+
+
+def test_as_recorded_eod_acceptance_does_not_require_or_claim_pit(tmp_path, monkeypatch):
+    day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=False)
+    private = _trust_test_authority(tmp_path, monkeypatch)
+    diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                          source_readiness=readiness)
+    receipt = _signed_receipt(diagnostic, private, pit_eligible=False,
+                              accepted_at="2026-10-16T08:00:00+00:00",
+                              signed_at="2026-10-16T08:05:00+00:00", cutoff=None)
+    receipt.pop("pit_cutoff_at")
+    _resign_receipt(receipt, private)
+    plan = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                    source_readiness=readiness, acceptance_receipt=receipt)
+    assert plan["status"] == "ACCEPTED", plan["acceptance_status"]
+    assert plan["package_manifest"]["accepted_scope"] == "ACCEPTED_SOURCE_PACKAGE"
+    assert plan["package_manifest"]["AS_RECORDED"] is True
+    assert plan["package_manifest"]["PIT_ELIGIBLE"] is False
+    from workbench_db.v4_daily_source_ingest_r6 import verify_source_package_manifest_authority
+    assert verify_source_package_manifest_authority(plan["package_manifest"])["issuer_id"] == "TEST_AUTHORITY_ONLY"
+
+
+def test_eod_authority_does_not_need_pit_capability_but_pit_claim_does(tmp_path, monkeypatch):
+    day, freeze, readiness, _ = _frozen_inputs(tmp_path, as_recorded=True, pit_eligible=False)
+    private = _trust_test_authority(tmp_path, monkeypatch)
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+    registry_reader = ingest._acceptance_authority_registry
+
+    def no_pit_registry(pg=None):
+        value = dict(registry_reader(pg))
+        value["issuers"]["TEST_AUTHORITY_ONLY"]["capabilities"] = ["ACCEPT_SOURCE_PACKAGE", "AS_RECORDED"]
+        return value
+    monkeypatch.setattr(ingest, "_acceptance_authority_registry", no_pit_registry)
+    diagnostic = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                          source_readiness=readiness)
+    eod = _signed_receipt(diagnostic, private, pit_eligible=False,
+                          accepted_at="2026-10-16T08:00:00+00:00",
+                          signed_at="2026-10-16T08:05:00+00:00", cutoff=None)
+    eod.pop("pit_cutoff_at")
+    _resign_receipt(eod, private)
+    assert build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                    source_readiness=readiness, acceptance_receipt=eod)["status"] == "ACCEPTED"
+    pit = _signed_receipt(diagnostic, private)
+    rejected = build_source_ingest_plan(tmp_path, trade_date=day, source_freeze=freeze,
+                                       source_readiness=readiness, acceptance_receipt=pit)
+    assert rejected["status"] == "DIAGNOSTIC_ONLY"
+    assert rejected["acceptance_status"] == "SOURCE_RECEIPT_SCOPE_EXCEEDS_READINESS"
+
+    pit_day, pit_freeze, pit_readiness, _ = _frozen_inputs(
+        tmp_path / "pit-case", as_recorded=True, pit_eligible=True,
+    )
+    pit_diagnostic = build_source_ingest_plan(tmp_path / "pit-case", trade_date=pit_day,
+                                               source_freeze=pit_freeze, source_readiness=pit_readiness)
+    pit = _signed_receipt(pit_diagnostic, private)
+    pit_rejected = build_source_ingest_plan(tmp_path / "pit-case", trade_date=pit_day,
+                                            source_freeze=pit_freeze, source_readiness=pit_readiness,
+                                            acceptance_receipt=pit)
+    assert pit_rejected["status"] == "DIAGNOSTIC_ONLY"
+    assert pit_rejected["acceptance_status"] == "INDEPENDENT_ACCEPTANCE_AUTHORITY_SCOPE_INVALID"
 
 
 def test_decision_before_source_first_observation_is_rejected(tmp_path, monkeypatch):
@@ -310,6 +376,97 @@ class _Row:
 
     def fetchone(self):
         return self.value
+
+
+class _SourceFirstFakePg:
+    def __init__(self):
+        self.publication_revision = None
+        self.publication_lookups = 0
+        self.packages = {}
+        self.revisions = {}
+        self.consumed = {}
+        self.writes = []
+
+    def execute(self, sql, params=None):
+        normalized = " ".join(sql.split()).lower()
+        params = params or ()
+        if normalized.startswith("select pg_advisory_xact_lock") or normalized.startswith(("savepoint", "release savepoint", "rollback to savepoint")):
+            return _Row(None)
+        if normalized.startswith("select revision_no from v4.publications"):
+            self.publication_lookups += 1
+            return _Row((self.publication_revision,) if self.publication_revision is not None else None)
+        if normalized.startswith("select package_id, package_sha256, manifest, accepted_scope"):
+            return _Row(self.packages.get(params[0]))
+        if normalized.startswith("insert into v4.source_packages"):
+            self.writes.append(normalized)
+            self.packages[params[0]] = (params[0], params[2], json.loads(params[8]), params[9])
+            return _Row(None)
+        if normalized.startswith("select logical_fact_id,revision_no,digest,payload,source_package_id"):
+            return _Row(self.revisions.get(params[0]))
+        if normalized.startswith("select revision_no,source_revision_id from v4.source_revisions"):
+            prior = [v for v in self.revisions.values() if v[0] == params[0]]
+            return _Row(max(((v[1], key) for key, v in self.revisions.items()), default=None))
+        if normalized.startswith("insert into v4.source_revisions"):
+            self.writes.append(normalized)
+            self.revisions[params[0]] = (params[1], params[2], params[4], json.loads(params[3]),
+                                         params[11], params[12], params[13])
+            return _Row(None)
+        if normalized.startswith("select source_revision_id,digest from v4.publication_consumed_sources"):
+            return _Row(self.consumed.get((params[0], params[1])))
+        if normalized.startswith("insert into v4.publication_consumed_sources"):
+            self.writes.append(normalized)
+            self.consumed[(params[0], params[1])] = (params[2], params[3])
+            return _Row(None)
+        if normalized.startswith("insert into v4.source_package_facts"):
+            self.writes.append(normalized)
+            return _Row(None)
+        raise AssertionError("unhandled test SQL: " + normalized)
+
+
+def test_accepted_source_persists_before_publication_then_binds_exact_revision(tmp_path, monkeypatch):
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+    fact = {
+        "source_key": "tdx", "logical_fact_id": "daily-source:2026-10-16:tdx",
+        "fact_digest": "a" * 64, "source_fact_sha256": "b" * 64,
+        "record_locator": {"path": "actual-freeze/tdx.json"}, "record_count": 1, "byte_count": 64,
+    }
+    manifest = {
+        "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": True, "PIT_ELIGIBLE": False,
+        "source_observed_at": "2026-10-16T12:00:00+00:00", "acceptance_receipt_id": "signed-acceptance",
+        "source_freeze_sha256": "d" * 64,
+    }
+    plan = {
+        "contract_id": "V4_DAILY_SOURCE_INGEST_ADAPTER_R6", "status": "ACCEPTED",
+        "package_id": "pkg-source-first", "package_sha256": "c" * 64, "trade_date": "2026-10-16",
+        "package_manifest": manifest, "source_facts": [fact],
+    }
+    monkeypatch.setattr(ingest, "_verify_independent_acceptance_authority", lambda p, **kw:
+                        ingest._IndependentAcceptanceProof(hashlib.sha256(_json_bytes(p)).hexdigest(), "signed-acceptance"))
+    pg = _SourceFirstFakePg()
+    source_only = ingest.persist_source_ingest_plan(
+        pg, plan, ingested_at="2026-10-16T12:30:00+00:00", system_available_at="2026-10-16T12:31:00+00:00",
+    )
+    assert source_only["persisted"] is True and source_only["publication_id"] is None
+    assert pg.publication_lookups == 0 and pg.packages["pkg-source-first"][3] == "ACCEPTED_SOURCE_PACKAGE"
+    assert len(pg.revisions) == 1 and not pg.consumed
+
+    pg.publication_revision = 3
+    bound = ingest.persist_source_ingest_plan(
+        pg, plan, publication_id="pub-first-core", publication_revision=3,
+        ingested_at="2026-10-16T12:30:00+00:00", system_available_at="2026-10-16T12:31:00+00:00",
+    )
+    assert bound["status"] == "ALREADY_PRESENT_IDENTICAL"
+    revision_id = next(iter(pg.revisions))
+    assert pg.consumed[("pub-first-core", "tdx")] == (revision_id, fact["fact_digest"])
+    assert len(pg.packages) == 1 and len(pg.revisions) == 1
+
+    pg.publication_revision = 4
+    with pytest.raises(ingest.SourceIngestConflict, match="PUBLICATION_IDENTITY_CONFLICT"):
+        ingest.persist_source_ingest_plan(
+            pg, plan, publication_id="pub-first-core", publication_revision=3,
+            ingested_at="2026-10-16T12:30:00+00:00", system_available_at="2026-10-16T12:31:00+00:00",
+        )
+    assert pg.consumed[("pub-first-core", "tdx")] == (revision_id, fact["fact_digest"])
 
 
 def test_detected_conflict_rolls_back_all_prior_plan_writes(tmp_path, monkeypatch):

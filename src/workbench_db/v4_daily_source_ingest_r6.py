@@ -98,7 +98,7 @@ def _verify_independent_acceptance_authority(
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_UNAVAILABLE")
     capabilities = issuer.get("capabilities")
     if (not isinstance(capabilities, list)
-            or not {"ACCEPT_SOURCE_PACKAGE", "AS_RECORDED", "PIT_ELIGIBLE"}.issubset(set(capabilities))):
+            or not {"ACCEPT_SOURCE_PACKAGE", "AS_RECORDED"}.issubset(set(capabilities))):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_SCOPE_INVALID")
     signature_text = receipt.get("signature_ed25519")
     if not isinstance(signature_text, str) or not signature_text:
@@ -135,6 +135,12 @@ def _verify_independent_acceptance_authority(
     )}
     if hashlib.sha256(_canonical(descriptor)).hexdigest() != manifest.get("package_sha256"):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_PACKAGE_DIGEST_MISMATCH")
+    as_recorded = receipt.get("as_recorded") is True
+    pit_eligible = receipt.get("pit_eligible") is True
+    if not as_recorded:
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AS_RECORDED_REQUIRED")
+    if pit_eligible and "PIT_ELIGIBLE" not in capabilities:
+        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_AUTHORITY_SCOPE_INVALID")
     required = {
         "contract_id": ACCEPTANCE_CONTRACT_ID,
         "acceptance_id": manifest.get("acceptance_receipt_id") if isinstance(manifest, Mapping) else None,
@@ -145,41 +151,45 @@ def _verify_independent_acceptance_authority(
         "package_sha256": manifest.get("package_sha256") if isinstance(manifest, Mapping) else None,
         "source_ready": True,
         "readiness_observed_at": manifest.get("source_readiness_observed_at"),
-        "as_recorded": True,
-        "pit_eligible": True,
-        "pit_clock_contract_id": PIT_CLOCK_CONTRACT_ID,
+        "as_recorded": as_recorded,
+        "pit_eligible": pit_eligible,
     }
+    if pit_eligible:
+        required["pit_clock_contract_id"] = PIT_CLOCK_CONTRACT_ID
     for key, expected in required.items():
         if receipt.get(key) != expected:
             raise SourceIngestError("INDEPENDENT_ACCEPTANCE_RECEIPT_BINDING_MISMATCH:" + key)
     if (not isinstance(manifest, Mapping) or manifest.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE"
-            or manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True):
+            or manifest.get("AS_RECORDED") is not as_recorded
+            or manifest.get("PIT_ELIGIBLE") is not pit_eligible):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_SCOPE_NOT_GRANTED")
     accepted_at = _utc_timestamp(receipt.get("accepted_at"), "INDEPENDENT_ACCEPTANCE_TIME_INVALID")
     signed_at = _utc_timestamp(receipt.get("signed_at"), "INDEPENDENT_ACCEPTANCE_SIGNATURE_TIME_INVALID")
-    pit_cutoff_at = _utc_timestamp(receipt.get("pit_cutoff_at"), "INDEPENDENT_ACCEPTANCE_CUTOFF_INVALID")
     observed_at = manifest.get("source_observed_at") if isinstance(manifest, Mapping) else None
     ready_at = _utc_timestamp(manifest.get("source_readiness_observed_at"), "SOURCE_READINESS_TIME_INVALID")
-    if (accepted_at < max(_utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID"), ready_at)
-            or signed_at < max(_utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID"), ready_at)
-            or accepted_at > signed_at or signed_at > pit_cutoff_at
-            or observed_at is None or _utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID") > pit_cutoff_at):
+    observed = _utc_timestamp(observed_at, "SOURCE_OBSERVATION_TIME_INVALID")
+    if (accepted_at < max(observed, ready_at) or signed_at < max(observed, ready_at)
+            or accepted_at > signed_at):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TIME_ORDER_INVALID")
-    target = date.fromisoformat(str(plan.get("trade_date")))
-    cutoff = datetime.fromisoformat(pit_cutoff_at.replace("Z", "+00:00")).astimezone(ZoneInfo("Asia/Shanghai"))
-    calendar_sha = receipt.get("trading_calendar_sha256")
-    if not isinstance(calendar_sha, str) or not _SHA256.fullmatch(calendar_sha):
-        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TRADING_CALENDAR_PROOF_MISSING")
-    session = receipt.get("decision_session")
-    if (session == "T0_AFTER_CLOSE" and cutoff.date() == target
-            and cutoff.time() >= time(15, 0)):
-        pass
-    elif (session == "T1_PREOPEN"
-          and receipt.get("next_trade_date") == cutoff.date().isoformat()
-          and cutoff.date() > target and cutoff.time() < time(9, 30)):
-        pass
-    else:
-        raise SourceIngestError("INDEPENDENT_ACCEPTANCE_CUTOFF_SESSION_INVALID")
+    if pit_eligible:
+        pit_cutoff_at = _utc_timestamp(receipt.get("pit_cutoff_at"), "INDEPENDENT_ACCEPTANCE_CUTOFF_INVALID")
+        if signed_at > pit_cutoff_at or observed > pit_cutoff_at:
+            raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TIME_ORDER_INVALID")
+        target = date.fromisoformat(str(plan.get("trade_date")))
+        cutoff = datetime.fromisoformat(pit_cutoff_at.replace("Z", "+00:00")).astimezone(ZoneInfo("Asia/Shanghai"))
+        calendar_sha = receipt.get("trading_calendar_sha256")
+        if not isinstance(calendar_sha, str) or not _SHA256.fullmatch(calendar_sha):
+            raise SourceIngestError("INDEPENDENT_ACCEPTANCE_TRADING_CALENDAR_PROOF_MISSING")
+        session = receipt.get("decision_session")
+        if (session == "T0_AFTER_CLOSE" and cutoff.date() == target
+                and cutoff.time() >= time(15, 0)):
+            pass
+        elif (session == "T1_PREOPEN"
+              and receipt.get("next_trade_date") == cutoff.date().isoformat()
+              and cutoff.date() > target and cutoff.time() < time(9, 30)):
+            pass
+        else:
+            raise SourceIngestError("INDEPENDENT_ACCEPTANCE_CUTOFF_SESSION_INVALID")
     _receipt_id = receipt.get("acceptance_id")
     if not isinstance(_receipt_id, str) or not _receipt_id.strip():
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_RECEIPT_ID_INVALID")
@@ -320,8 +330,8 @@ def produce_raw_owner_receipt(
         raise SourceIngestError("RAW_OWNER_ROSTER_SOURCE_BINDING_MISMATCH")
     acceptance_proof = manifest.get("acceptance_proof")
     acceptance = acceptance_proof.get("receipt", {}) if isinstance(acceptance_proof, Mapping) else {}
-    if (manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True
-            or acceptance.get("as_recorded") is not True or acceptance.get("pit_eligible") is not True):
+    if (manifest.get("AS_RECORDED") is not True or acceptance.get("as_recorded") is not True
+            or manifest.get("PIT_ELIGIBLE") is not acceptance.get("pit_eligible")):
         raise SourceIngestError("RAW_OWNER_KNOWLEDGE_CLOCK_NOT_ACCEPTED")
     if manifest.get("price_basis") != "TDX_GBBQ_UNCHANGED":
         raise SourceIngestError("RAW_OWNER_RAW_PRICE_BASIS_UNPROVEN")
@@ -332,10 +342,7 @@ def produce_raw_owner_receipt(
     trading_status = (
         "TRADING_WITH_SUSPENSIONS" if coverage.get("suspended_row_count", 0) > 0 else "TRADING"
     )
-    knowledge_status = (
-        "AS_RECORDED" if acceptance.get("as_recorded") is True
-        and acceptance.get("pit_eligible") is True else "POST_HOC_OR_UNKNOWN"
-    )
+    knowledge_status = "AS_RECORDED" if acceptance.get("as_recorded") is True else "POST_HOC_OR_UNKNOWN"
     if identity_status != "RESOLVED" or knowledge_status != "AS_RECORDED":
         raise SourceIngestError("RAW_OWNER_SOURCE_FACT_STATUS_NOT_ACCEPTED")
     normalized_signed_at = _utc_timestamp(signed_at, "RAW_OWNER_SIGNED_TIME_INVALID")
@@ -388,7 +395,7 @@ def produce_raw_owner_receipt(
         "source_revision_sha256": tdx_fact["digest"],
         "raw_basis": manifest["price_basis"], "source_identity_status": identity_status,
         "source_trading_status": trading_status,
-        "source_knowledge_status": knowledge_status,
+        "source_knowledge_status": knowledge_status, "source_pit_eligible": manifest["PIT_ELIGIBLE"],
         "source_universe_id": coverage["universe_id"],
         "source_universe_sha256": coverage["universe_sha256"],
         "source_roster_sha256": coverage["roster_sha256"],
@@ -1017,50 +1024,59 @@ def build_source_ingest_plan(
     if isinstance(readiness_doc, Mapping) and readiness_doc.get("source_ready") is not True:
         receipt_status = "SOURCE_READINESS_NOT_READY"
     elif (isinstance(readiness_doc, Mapping)
-          and (readiness_doc.get("AS_RECORDED") is not True or readiness_doc.get("PIT_ELIGIBLE") is not True
-               or freeze.get("AS_RECORDED") is not True or freeze.get("PIT_ELIGIBLE") is not True)):
-        receipt_status = "SOURCE_PIT_AUTHORITY_UNAVAILABLE"
+          and (readiness_doc.get("AS_RECORDED") is not True
+               or freeze.get("AS_RECORDED") is not True
+               or (readiness_doc.get("PIT_ELIGIBLE") is True and freeze.get("PIT_ELIGIBLE") is not True))):
+        receipt_status = "SOURCE_AS_RECORDED_AUTHORITY_UNAVAILABLE"
     elif acceptance_receipt is not None and readiness_doc is None:
         receipt_status = "SOURCE_READINESS_REQUIRED_FOR_ACCEPTANCE"
     elif acceptance_receipt is not None and not any(row.get("source_key") == "security_universe" for row in bindings):
         receipt_status = "UNIVERSE_INDEPENDENT_SOURCE_FACT_REQUIRED_FOR_ACCEPTANCE"
     elif acceptance_receipt is not None:
-        candidate_manifest = {
-            **package_manifest, "acceptance_receipt_id": proposed_acceptance_id,
-            "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": True,
-            "PIT_ELIGIBLE": True,
-        }
-        candidate = {
-            "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
-            "trade_date": target.isoformat(), "package_id": package_id,
-            "package_sha256": package_sha, "package_manifest": candidate_manifest,
-            "source_facts": bindings, "acceptance_receipt": dict(acceptance_receipt),
-        }
-        try:
-            proof = _verify_independent_acceptance_authority(candidate)
-        except SourceIngestError as exc:
-            receipt_status = str(exc)
+        receipt_as_recorded = acceptance_receipt.get("as_recorded") is True
+        receipt_pit_eligible = acceptance_receipt.get("pit_eligible") is True
+        if (not receipt_as_recorded
+                or (receipt_pit_eligible and (readiness_doc.get("PIT_ELIGIBLE") is not True
+                                              or freeze.get("PIT_ELIGIBLE") is not True))):
+            receipt_status = "SOURCE_RECEIPT_SCOPE_EXCEEDS_READINESS"
+            candidate_manifest = None
         else:
-            accepted = True
-            acceptance_id = proof.authority_receipt_id
-            package_manifest.update({
-                "acceptance_receipt_id": acceptance_id,
-                "accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
-                "AS_RECORDED": True,
-                "PIT_ELIGIBLE": True,
-                "acceptance_proof": {
-                    "contract_id": ACCEPTANCE_CONTRACT_ID,
-                    "issuer_id": proof.authority_id,
-                    "receipt_sha256": proof.receipt_sha256,
-                    "accepted_at": acceptance_receipt["accepted_at"],
-                    "pit_cutoff_at": acceptance_receipt["pit_cutoff_at"],
-                    "receipt": dict(acceptance_receipt),
-                },
-            })
-            for fact in bindings:
-                fact["acceptance_receipt_id"] = acceptance_id
-            package_manifest["source_fact_bindings"] = bindings
-            receipt_status = "INDEPENDENT_ACCEPTANCE_RECEIPT_VERIFIED"
+            candidate_manifest = {
+                **package_manifest, "acceptance_receipt_id": proposed_acceptance_id,
+                "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": receipt_as_recorded,
+                "PIT_ELIGIBLE": receipt_pit_eligible,
+            }
+            candidate = {
+                "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
+                "trade_date": target.isoformat(), "package_id": package_id,
+                "package_sha256": package_sha, "package_manifest": candidate_manifest,
+                "source_facts": bindings, "acceptance_receipt": dict(acceptance_receipt),
+            }
+            try:
+                proof = _verify_independent_acceptance_authority(candidate)
+            except SourceIngestError as exc:
+                receipt_status = str(exc)
+            else:
+                accepted = True
+                acceptance_id = proof.authority_receipt_id
+                package_manifest.update({
+                    "acceptance_receipt_id": acceptance_id,
+                    "accepted_scope": "ACCEPTED_SOURCE_PACKAGE",
+                    "AS_RECORDED": receipt_as_recorded,
+                    "PIT_ELIGIBLE": receipt_pit_eligible,
+                    "acceptance_proof": {
+                        "contract_id": ACCEPTANCE_CONTRACT_ID,
+                        "issuer_id": proof.authority_id,
+                        "receipt_sha256": proof.receipt_sha256,
+                        "accepted_at": acceptance_receipt["accepted_at"],
+                        "pit_cutoff_at": acceptance_receipt.get("pit_cutoff_at"),
+                        "receipt": dict(acceptance_receipt),
+                    },
+                })
+                for fact in bindings:
+                    fact["acceptance_receipt_id"] = acceptance_id
+                package_manifest["source_fact_bindings"] = bindings
+                receipt_status = "INDEPENDENT_ACCEPTANCE_RECEIPT_VERIFIED"
     else:
         receipt_status = "INDEPENDENT_ACCEPTANCE_AUTHORITY_REQUIRED"
     return {
@@ -1085,8 +1101,8 @@ def _persist_accepted_source_ingest_plan_transaction(
     pg: Any,
     plan: Mapping[str, Any],
     *,
-    publication_id: str,
-    publication_revision: int,
+    publication_id: str | None,
+    publication_revision: int | None,
     ingested_at: str,
     system_available_at: str,
 ) -> dict[str, Any]:
@@ -1107,10 +1123,13 @@ def _persist_accepted_source_ingest_plan_transaction(
             or not isinstance(proof.authority_receipt_id, str)
             or not proof.authority_receipt_id.strip()):
         raise SourceIngestError("INDEPENDENT_ACCEPTANCE_PROOF_INVALID")
-    if not isinstance(publication_id, str) or not publication_id.strip():
-        raise SourceIngestError("PUBLICATION_ID_REQUIRED")
-    if isinstance(publication_revision, bool) or not isinstance(publication_revision, int) or publication_revision <= 0:
-        raise SourceIngestError("PUBLICATION_REVISION_INVALID")
+    if (publication_id is None) != (publication_revision is None):
+        raise SourceIngestError("PUBLICATION_BINDING_PAIR_REQUIRED")
+    if publication_id is not None:
+        if not isinstance(publication_id, str) or not publication_id.strip():
+            raise SourceIngestError("PUBLICATION_ID_REQUIRED")
+        if isinstance(publication_revision, bool) or not isinstance(publication_revision, int) or publication_revision <= 0:
+            raise SourceIngestError("PUBLICATION_REVISION_INVALID")
     ingested = _utc_timestamp(ingested_at, "INGESTED_TIME_INVALID")
     system_available = _utc_timestamp(system_available_at, "SYSTEM_AVAILABLE_TIME_INVALID")
     if system_available < max(ingested, plan["package_manifest"]["source_observed_at"]):
@@ -1121,12 +1140,13 @@ def _persist_accepted_source_ingest_plan_transaction(
         # Stable package and logical-fact lock ordering makes same-package
         # retries idempotent and revision allocation race-safe.
         pg.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (plan["package_id"],))
-        publication = pg.execute(
-            "SELECT revision_no FROM v4.publications WHERE publication_id=%s FOR KEY SHARE",
-            (publication_id,),
-        ).fetchone()
-        if publication is None or int(publication[0]) != publication_revision:
-            raise SourceIngestConflict("PUBLICATION_IDENTITY_CONFLICT")
+        if publication_id is not None:
+            publication = pg.execute(
+                "SELECT revision_no FROM v4.publications WHERE publication_id=%s FOR KEY SHARE",
+                (publication_id,),
+            ).fetchone()
+            if publication is None or int(publication[0]) != publication_revision:
+                raise SourceIngestConflict("PUBLICATION_IDENTITY_CONFLICT")
         manifest = plan["package_manifest"]
         if manifest.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE":
             raise SourceIngestConflict("SOURCE_PACKAGE_AUTHORITY_NOT_ACCEPTED")
@@ -1214,21 +1234,22 @@ def _persist_accepted_source_ingest_plan_transaction(
                      ingested, system_available, plan["package_id"], fact["source_key"], fact["fact_digest"],
                      supersedes_revision_id),
                 )
-            consumed = pg.execute(
-                """SELECT source_revision_id,digest FROM v4.publication_consumed_sources
-                    WHERE publication_id=%s AND source_key=%s FOR KEY SHARE""",
-                (publication_id, fact["source_key"]),
-            ).fetchone()
-            if consumed:
-                if consumed[0] != source_revision_id or str(consumed[1]).strip() != fact["fact_digest"]:
-                    raise SourceIngestConflict("PUBLICATION_CONSUMED_SOURCE_CONFLICT")
-            else:
-                pg.execute(
-                    """INSERT INTO v4.publication_consumed_sources
-                       (publication_id, source_key, source_revision_id, digest)
-                       VALUES (%s,%s,%s,%s)""",
-                    (publication_id, fact["source_key"], source_revision_id, fact["fact_digest"]),
-                )
+            if publication_id is not None:
+                consumed = pg.execute(
+                    """SELECT source_revision_id,digest FROM v4.publication_consumed_sources
+                        WHERE publication_id=%s AND source_key=%s FOR KEY SHARE""",
+                    (publication_id, fact["source_key"]),
+                ).fetchone()
+                if consumed:
+                    if consumed[0] != source_revision_id or str(consumed[1]).strip() != fact["fact_digest"]:
+                        raise SourceIngestConflict("PUBLICATION_CONSUMED_SOURCE_CONFLICT")
+                else:
+                    pg.execute(
+                        """INSERT INTO v4.publication_consumed_sources
+                           (publication_id, source_key, source_revision_id, digest)
+                           VALUES (%s,%s,%s,%s)""",
+                        (publication_id, fact["source_key"], source_revision_id, fact["fact_digest"]),
+                    )
             persisted_facts += 1
         pg.execute("RELEASE SAVEPOINT " + savepoint)
         return {"status": "ALREADY_PRESENT_IDENTICAL" if existing and persisted_facts else "ACCEPTED",
@@ -1328,8 +1349,8 @@ def persist_source_ingest_plan(
     pg: Any,
     plan: Mapping[str, Any],
     *,
-    publication_id: str,
-    publication_revision: int,
+    publication_id: str | None = None,
+    publication_revision: int | None = None,
     ingested_at: str,
     system_available_at: str,
 ) -> dict[str, Any]:

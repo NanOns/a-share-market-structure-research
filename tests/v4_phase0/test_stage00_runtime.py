@@ -79,6 +79,7 @@ def _raw_receipt_fixture(package, facts):
         "source_revision_sha256": revision["digest"], "raw_basis": "TDX_GBBQ_UNCHANGED",
         "source_identity_status": "RESOLVED", "source_trading_status": "TRADING",
         "source_knowledge_status": "AS_RECORDED",
+        "source_pit_eligible": package["manifest"]["PIT_ELIGIBLE"],
         "source_universe_id": "fixture-universe", "source_universe_sha256": "f" * 64,
         "source_roster_sha256": "9" * 64, "source_roster_count": 4,
         "source_scope_roster_count": 4,
@@ -244,10 +245,21 @@ def test_d_rejects_unaccepted_scope_or_unbound_source_revision():
     )
 
 
+def test_d_accepts_as_recorded_eod_without_strict_pit_eligibility():
+    package, facts = _accepted_package_fixture()
+    package["manifest"]["PIT_ELIGIBLE"] = False
+    assert phase0_gate._package_acceptance_errors(package, facts, acceptance_verified=True) == []
+    receipt = _raw_receipt_fixture(package, facts)
+    assert phase0_gate._raw_bootstrap_errors(
+        receipt, {"accepted": True, "package": package, "facts": facts}, receipt_verified=True,
+    ) == []
+
+
 @pytest.mark.parametrize(("field", "value", "expected_error"), [
     ("source_identity_status", "UNKNOWN", "RAW_RECEIPT_SOURCE_IDENTITY_UNRESOLVED"),
     ("source_trading_status", "SUSPENDED", "RAW_RECEIPT_SOURCE_NOT_TRADING"),
     ("source_knowledge_status", "POST_EVENT", "RAW_RECEIPT_SOURCE_KNOWLEDGE_NOT_AS_RECORDED"),
+    ("source_pit_eligible", False, "RAW_RECEIPT_PIT_SCOPE_MISMATCH"),
     ("owner", "V4-00D", "RAW_RECEIPT_OWNER_OR_STATUS_INVALID"),
     ("source_revision_sha256", "f" * 64, "RAW_RECEIPT_SOURCE_REVISION_MISMATCH"),
 ])

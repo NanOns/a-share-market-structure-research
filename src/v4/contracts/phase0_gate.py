@@ -231,8 +231,8 @@ def _package_acceptance_errors(
         errors.append("PACKAGE_T0_BINDING_MISMATCH")
     if manifest.get("accepted_scope") != "ACCEPTED_SOURCE_PACKAGE":
         errors.append("MANIFEST_SCOPE_NOT_ACCEPTED")
-    if manifest.get("AS_RECORDED") is not True or manifest.get("PIT_ELIGIBLE") is not True:
-        errors.append("PACKAGE_CLOCK_AUTHORITY_NOT_ACCEPTED")
+    if manifest.get("AS_RECORDED") is not True:
+        errors.append("PACKAGE_AS_RECORDED_AUTHORITY_NOT_ACCEPTED")
     proof = manifest.get("acceptance_proof")
     if not isinstance(proof, Mapping) or not proof.get("receipt_sha256") or not proof.get("issuer_id"):
         errors.append("PACKAGE_ACCEPTANCE_RECEIPT_MISSING")
@@ -372,6 +372,10 @@ def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str
         errors.append("RAW_RECEIPT_SOURCE_NOT_TRADING")
     if receipt.get("source_knowledge_status") != "AS_RECORDED":
         errors.append("RAW_RECEIPT_SOURCE_KNOWLEDGE_NOT_AS_RECORDED")
+    manifest = package.get("manifest") if isinstance(package, Mapping) else None
+    if (not isinstance(manifest, Mapping)
+            or receipt.get("source_pit_eligible") is not manifest.get("PIT_ELIGIBLE")):
+        errors.append("RAW_RECEIPT_PIT_SCOPE_MISMATCH")
     try:
         signed_at = datetime.fromisoformat(str(receipt.get("signed_at")).replace("Z", "+00:00"))
         if signed_at.tzinfo is None:
@@ -385,7 +389,6 @@ def _raw_bootstrap_errors(receipt: Mapping[str, Any] | None, source: Mapping[str
         errors.append("RAW_RECEIPT_SIGNED_AT_INVALID")
     if receipt.get("source_package_sha256") != (package.get("package_sha256") if isinstance(package, Mapping) else None):
         errors.append("RAW_RECEIPT_PACKAGE_DIGEST_MISMATCH")
-    manifest = package.get("manifest") if isinstance(package, Mapping) else None
     coverage = manifest.get("accepted_board_coverage") if isinstance(manifest, Mapping) else None
     if (not isinstance(coverage, Mapping)
             or receipt.get("source_universe_id") != coverage.get("universe_id")

@@ -578,3 +578,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 新鲜 `REPEATABLE READ READ ONLY` 查询确认数据库 `market_research` / OID `646711` / 角色 `postgres` / `127.0.0.1:5432`，事务 `read_only=on`、隔离级别 `repeatable read`；当前 V4 用户 Schema 名称仅 `v4`。
 - 当前 `v4` 目录计数为 124 张表、88 个例程、194 个非内部触发器。该结果更新本报告开头 S2 与 DB-12 的“最新目录”计数；本报告中先前按时间记录的 123/85/184 仍是当时现场值，不代表本次复核。
 - 机器可读结果：`G:\codex_tmp\v4_single_schema_catalog_recheck_r2_20261019.json`。
+
+### 2026-10-19 28766 全模块交互补充核验
+
+- 在真实内置浏览器对 `127.0.0.1:28766` 继续进行页面操作，当前研究身份为 Release `05cf8913242f46c8af53b3d89f323b64`、T0 `2026-09-30`、物理 Schema `v4`。板块列表搜索“煤炭开采”返回 1 条；打开详情有 25 名完整成员；成员搜索“中国神华”返回 1 条（`SH.601088`，收盘 47.800），并从成员页进入个股详情。
+- 个股详情的行情周期控件实际从日线切至周线和月线；Focus 页面读取 469 条候选、117 个 Forward 样本、585 个期限计划、5 条已发布期限状态覆盖 1 个样本、成熟合格 0。打开 Focus 来源抽屉确认 `FP08_FOCUS_SUCCESSOR_PUBLICATION_V1`、source_as_of `2026-09-30`，该行事件值为 `DATA_UNAVAILABLE`。
+- Forward 期限结算页展示 5/5 条候选期限均为 `PENDING`，展开 T+10 后到期日、收益和路径仍未知。FEP 证据抽屉显示 Champion `NONE`、生产 `UNGRANTED`、范围 `HISTORICAL_ENGINEERING_EVIDENCE_ONLY`。市场页实际显示分母 5,224、行情 5,213、涨停 56、跌停 12、停牌 11、未知 1；价格规则来源抽屉保留 `RECONSTRUCTED_CORRECTED`、`AS_RECORDED=false`。诊断健康与来源页的抽屉可读：股票来源 `BOUND`；来源诊断合同摘要前缀 `f3e6c986`，缺口含 profile_identity 11 项及未准入 Focus 独立写入。
+- 机器可读交互记录：`G:\codex_tmp\v4_28766_browser_interaction_addendum_r1_20261019.json`。这些操作证明页面功能和证据抽屉可交互，不把候选数据或研究 T0 算作正式接受；研究 T0 `2026-09-30` 与日更基线 `2026-10-15`、本轮日更测试目标 `2026-10-16` 分开记录。模块业务验收仍为 `PARTIAL_DATA`，缺 PIT、成熟结果或独立来源的字段保持未知/受限。

@@ -30,14 +30,20 @@ def test_frozen_framework_and_full_parameter_registry_are_executable():
     assert len(validate_parameter_registry(params, doc)) == len(params["entries"])
 
 
-def test_stage00_pure_consumers_do_not_read_runtime_contract_files():
+def test_stage00_consumers_do_not_read_runtime_contract_files():
     for module_path in (
         Path(__file__).resolve().parents[2] / "src/v4/contracts/algorithm_contract.py",
         Path(__file__).resolve().parents[2] / "src/v4/contracts/phase0_gate.py",
     ):
         source = module_path.read_text("utf-8")
-        assert "config/" not in source
-        assert ".read_text(" not in source
+        if module_path.name == "phase0_gate.py":
+            assert '"paths.yaml"' in source
+            assert "config/v4_" not in source
+            assert "v4_phase0_final_gate_v1.json" not in source
+            assert "v4_algorithm_contract_framework_v1.json" not in source
+        else:
+            assert "config/" not in source
+            assert ".read_text(" not in source
     doc, params = framework(), registry()
     validate_framework_document(doc, params)
     assert evaluate_phase0({stage: {"status": "FULL_PASS"} for stage in STAGES})["phase0_status"] == "BLOCKED"

@@ -592,3 +592,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 
 - 只读盘点 `G:\codex_tmp\r7_active_baseline_20261015`：该独立副本位于 `master` / HEAD `9d40f3750b73465b59139dccb24d3a886271ea5e`，有 5 个跟踪文件修改（合计 34 行新增、111 行删除）及未跟踪的 `data/`、`v4/`、`runtime/`、文档和第三方资料目录。3 个未跟踪 Python 适配器里，Forward API 路由和 Accepted Head 后的 R7 捕获逻辑已由当前分支原生代码覆盖；R6 runtime compatibility wrapper 不在当前启动路径。副本还含有未归属数据，无法据当前证据证明全部可重建且无活动依赖，因此没有执行清理或搬迁。
 - 逐文件 SHA-256、分支/HEAD、跟踪改动和目录清单保存在 `G:\codex_tmp\v4_r7_baseline_workspace_inventory_r1_20261019.json`。当前仓库中的 `source_view.py` 与该副本哈希相同；其余 4 个跟踪文件有差异，3 个未跟踪适配器在当前仓库不存在。该清单仅记录状态，不把缺失的旧 hook 恢复到当前运行时。
+
+### 2026-10-19 Forward history-only 别名迁移回执只读核验
+
+- 修正 `scripts/verify_v4_forward_active_alias_receipts_r1.py`：别名迁移后只在 `v4.workspace_namespace_alias_history_r1` 留存 `MIGRATION_HISTORY_ONLY`，原活跃别名表已不存在；校验器改为核历史表，并支持明确的 `--verify-only` 只读模式与单独的 `--apply` 回执写入模式。
+- 对 `v4_forward_812843566da3f180` 与 `v4_forward_eb17ba1165c8c2a5` 运行 `--verify-only`，数据库身份为 `market_research` / `127.0.0.1:5432`，目标均为固定 `v4.forward_facts`。96 行和 2,769 行映射分别与目标完整行键、payload/source SHA 摘要一致，摘要分别为 `4cbc1744…09bc48` 与 `106155b4…9d8a454`；旧源表当前均不存在，固定 `v4.forward_migration_r1` 中已有回执，未执行数据库写入。
+- 代码提交 `bf858f380` 已推送到开发分支。该核验补强的是两组数据迁移完整性；仍不补造旧 Schema 的历史删除收据，也不改变 S3 的 38 项历史 `DROP RESTRICT` 证据缺口。

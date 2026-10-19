@@ -1,7 +1,7 @@
 ---
 stage_id: V4-00
-code_sha: da5b72f0e2e5313197f9c60f49053b837ca4c862
-test_scope: V4-00A-H、阶段00配置与入口修复、只读数据库核验
+code_sha: e21849b21226d364d4f79678d416126e58ffb5b1
+test_scope: V4-00A-H、R3 PG-only合同纠偏、定向测试与只读数据库核验
 conclusion: STAGE00_REPAIR_PARTIAL
 approval_status: USER_AUTHORIZED_STAGE00_ONLY
 ---
@@ -148,3 +148,89 @@ approval_status: USER_AUTHORIZED_STAGE00_ONLY
 - `test_postgres_schema.py` 写入/rollback 测试未运行；不因 rollback 视为已授权。备份目录未读取、删除或恢复，生产服务未启动。
 
 **R2 结论：`STAGE00_REPAIR_PARTIAL`，独立复核状态 `EXTERNAL_REVIEW_PENDING`。** 合同/schema 修复范围完成，但真实 source acceptance 和 RAW bootstrap 仍阻断阶段00准入及 V4-01；本报告不表示阶段00 PASS、阶段01启动或生产发布。
+
+## R3｜合同与参数 PG-only 纠偏（当前权威结论）
+
+本节仅执行 R3 最高优先级订正，R1/R2保留为历史。开始现场为分支 `codex/v4-workspace-cleanup`、HEAD `7b05b47f454b9e4decd0d0beaea2cf5d72296156`、工作区干净。范围限阶段00及其直接 V4-01 合同读取测试，不扩展重构其余阶段；未写 PG、切换 Head、执行 DDL/DML、处理大表或触发 CI。
+
+### 运行消费者与测试边界
+
+- 对任务卡列出的阶段00合同文件及 `src/v4/contracts` 的调用点定向搜索结果：产品源码没有读取这些 JSON 的调用点；`evaluate_phase0` 与算法合同校验器是纯输入函数，当前没有被产品运行链调用。故本轮确认的阶段00“业务合同 JSON runtime consumers”为 **0**，没有真实文件消费者可迁移；不能把新增未接线包装函数宣称成已迁移 runtime。`src/workbench_analysis/contract_registry_pg_v1.py` 的既有只读 reader 保留原样、无文件回退，且不新增第二套 registry。
+- `tests/v4_phase0` 原有合同配置读取已改为 `tests/v4_phase0/fixtures/` 固定样本；PostgreSQL schema 测试所需的schema断言样本也改为测试夹具。夹具只服务独立代码/catalog断言，不代表 PG 已登记、批准或当前生效。指定阶段合同 JSON 在 `src/` 和阶段00测试中不再作为运行读取路径。
+- 更新了 `AGENTS.md`、`PROJECT_SPEC.md`、`config/AGENTS.md`：明确 `market_research.v4` 是业务合同正文/版本、算法参数、Owner、业务结果及发布身份的唯一运行权威；`config/` 例外仅限采集/临时传输路径、机器连接、凭据环境变量与部署配置；PG 缺记录或读取失败不得回退文件。
+- 增补既有 reader 的缺失合同版本、多 namespace 歧义 fail-closed 回归；更新原测试以验证已存在迁移 `043_v4_contract_registry_approval_events_r1.sql`，不再引用已删除的历史 R21 草案 SQL。reader 对应测试明确覆盖只读 RR 快照、审批/摘要校验与无文件回退。
+
+### 只读 PG 合同核验与待授权迁入
+
+所有目录查询均使用 `REPEATABLE READ, READ ONLY` 及 3 秒超时。确认唯一 `market_research.v4` 中现有 `contract_versions`、`contract_approval_events` 模型及约束存在；当前有 **19** 个合同版本记录和 **16** 个审批事件。该计数不表示阶段00所需合同齐备。
+
+| 状态项 | R3 结果 | 说明 |
+|---|---|---|
+| `PG_CONTRACT_MODEL_PRESENT` | `PASS` | 已有表、版本摘要、namespace、source_revision、版本不可变及追加审批事件模型；不新增表或 registry。 |
+| `PG_CONTRACT_VERSION_DATA_PRESENT` | `PARTIAL` | PG中有19版本/16事件，但以下五项阶段00精确合同版本均无记录：`V4_PHASE0_FINAL_ACCEPTANCE_R3/3.0.0`、`V4_ALGORITHM_CONTRACT_FRAMEWORK_V1/1.1.0`、`PARAMETER_REGISTRY_V1/1.1.0`、`CAPABILITY_CUTOVER_AND_ROLLBACK_V1/1.0.0`、`V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1/1.1.0`。 |
+| `RUNTIME_CONSUMER_PG_ONLY` | `PARTIAL_NO_RUNTIME_CALLSITE` | 阶段00源码无文件读取消费者可改；算法/聚合函数无产品调用链。现有 PG reader 经模拟验证 fail closed，但这不等于阶段00业务已有 PG runtime 接线。 |
+| `PG_IMPORT_PENDING_AUTH` | `BLOCKED_NEEDS_SEPARATE_AUTHORIZATION` | 未写入。下列精确原始文件字节及 SHA 可作为复用现有表的一次性受控迁入输入；不包含审批事件。参数注册表明确标记候选值非正式，不得由导入自动变为 approved。 |
+| `REAL_SOURCE_ACCEPTANCE` | `BLOCKED` | 延续 R2：没有当前被接受的完整 TDX source package/revision 证据。 |
+| `RAW_BOOTSTRAP` | `BLOCKED` | 无来自已接受真实输入的 RAW bootstrap receipt。 |
+| `STAGE00_ENTRY_GATE` | `BLOCKED` | D 的 source acceptance 与 E 的 RAW bootstrap 仍不满足 required scopes；无阶段01准入。 |
+
+如用户之后单独授权向共享 PG 追加**未批准版本字节**，范围只涉及现有 `v4.contract_versions`，影响为新增最多5条不可变版本记录；不会新增/修改审批事件、Head、Publication、Owner绑定、参数生效状态或计算结果。需将以下参数绑定为源文件原始字节（hex）、列示 SHA、`schema_version=version`、`namespace=V4_BOOTSTRAP_PENDING`、列示 source revision，并在同一事务读回校验摘要；任何主键已存在但 SHA 不同必须回滚并人工审查。此 SQL 未执行，`contract_approval_events` 不提供可伪造的用户授权者、授权引用或发生时间，故本轮不提出/执行审批 INSERT。
+
+| psql 变量 | 唯一字节输入 | SHA-256 |
+|---|---|---|
+| `phase00_final_gate_hex` | `config/v4_phase0_final_gate_v1.json` 原始字节转小写hex | `2a5b4c6b5b6be107636c49c79806c62fbc05ba18e2acf474bd5d25116bb5ab28` |
+| `algorithm_framework_hex` | `config/v4_algorithm_contract_framework_v1.json` 原始字节转小写hex | `a03fda92aaf608edfb5dd86b533fae576c3d121bc413a61768985e6e53cb4455` |
+| `parameter_registry_hex` | `config/v4_parameter_registry_v1.json` 原始字节转小写hex | `b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7` |
+| `capability_cutover_hex` | `config/v4_capability_cutover_policy_v1.json` 原始字节转小写hex | `26aa335d3c59d8fd5b4454bfa142ba5064f8ea6b176bfd405b0b810da8a83de3` |
+| `performance_contract_hex` | `config/v4_performance_measurement_contract_v1.json` 原始字节转小写hex | `266558fb6137d6cc6894b85fbf51b45e8a05fd32a661f6a0d5c27f556fefac55` |
+
+```sql
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+INSERT INTO v4.contract_versions
+    (contract_id, version, raw_content, raw_sha256, content_format,
+     schema_version, namespace, source_revision)
+VALUES
+    ('V4_PHASE0_FINAL_ACCEPTANCE_R3','3.0.0',decode(:'phase00_final_gate_hex','hex'),'2a5b4c6b5b6be107636c49c79806c62fbc05ba18e2acf474bd5d25116bb5ab28','JSON','3.0.0','V4_BOOTSTRAP_PENDING','git:7b05b47f454b9e4decd0d0beaea2cf5d72296156:config/v4_phase0_final_gate_v1.json'),
+    ('V4_ALGORITHM_CONTRACT_FRAMEWORK_V1','1.1.0',decode(:'algorithm_framework_hex','hex'),'a03fda92aaf608edfb5dd86b533fae576c3d121bc413a61768985e6e53cb4455','JSON','1.1.0','V4_BOOTSTRAP_PENDING','git:7b05b47f454b9e4decd0d0beaea2cf5d72296156:config/v4_algorithm_contract_framework_v1.json'),
+    ('PARAMETER_REGISTRY_V1','1.1.0',decode(:'parameter_registry_hex','hex'),'b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7','JSON','1.1.0','V4_BOOTSTRAP_PENDING','git:7b05b47f454b9e4decd0d0beaea2cf5d72296156:config/v4_parameter_registry_v1.json'),
+    ('CAPABILITY_CUTOVER_AND_ROLLBACK_V1','1.0.0',decode(:'capability_cutover_hex','hex'),'26aa335d3c59d8fd5b4454bfa142ba5064f8ea6b176bfd405b0b810da8a83de3','JSON','1.0.0','V4_BOOTSTRAP_PENDING','git:7b05b47f454b9e4decd0d0beaea2cf5d72296156:config/v4_capability_cutover_policy_v1.json'),
+    ('V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1','1.1.0',decode(:'performance_contract_hex','hex'),'266558fb6137d6cc6894b85fbf51b45e8a05fd32a661f6a0d5c27f556fefac55','JSON','1.1.0','V4_BOOTSTRAP_PENDING','git:7b05b47f454b9e4decd0d0beaea2cf5d72296156:config/v4_performance_measurement_contract_v1.json')
+ON CONFLICT (contract_id, version) DO NOTHING;
+SELECT contract_id, version, encode(sha256(raw_content),'hex') AS actual_sha256,
+       raw_sha256, namespace, source_revision
+  FROM v4.contract_versions
+ WHERE (contract_id,version) IN (
+    ('V4_PHASE0_FINAL_ACCEPTANCE_R3','3.0.0'),
+    ('V4_ALGORITHM_CONTRACT_FRAMEWORK_V1','1.1.0'),
+    ('PARAMETER_REGISTRY_V1','1.1.0'),
+    ('CAPABILITY_CUTOVER_AND_ROLLBACK_V1','1.0.0'),
+    ('V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1','1.1.0'))
+ ORDER BY contract_id,version;
+-- 只有逐行身份与摘要全匹配后才可由另行获批的操作 COMMIT；否则 ROLLBACK。
+ROLLBACK;
+```
+
+该 SQL 仅供后续单独授权时审核，当前事务以 `ROLLBACK` 收尾，不表示已执行。五份原始字节对应 SHA 已按本地原文件计算；`V4_01_HISTORY_LINEAGE_POLICY_V1/1.0.0` 也未见 PG 版本，属于后续 V4-01 直接依赖，本轮不迁入。其文件仅由测试夹具覆盖，不扩展改造其他阶段。
+
+### R3验证与八子阶段真实状态
+
+- `PYTHONPATH=src python -m pytest -q tests/v4_phase0 --ignore=tests/v4_phase0/test_postgres_schema.py --basetemp=G:/codex_tmp/test_temp/stage00_r3_pass`：**109 passed**。含 gate/算法独立夹具、无 config runtime 文件读取回归及原阶段00用例。
+- `PYTHONPATH=src python -m pytest -q tests/test_v4_contract_registry_pg_v1.py --basetemp=G:/codex_tmp/test_temp/stage00_r3_registry_pass`：**26 passed**。PG版本读取通过模拟 cursor，不触达真实 PG。
+- `python -m compileall -q src/v4/contracts tests/v4_phase0 tests/test_v4_contract_registry_pg_v1.py`：通过；`git diff --check`：通过。
+- `tests/v4_phase0/test_postgres_schema.py` 未运行；其用例包含对共享 PG 的 INSERT/rollback，继续标记 `DB_WRITE_TEST_NOT_AUTHORIZED`。此轮只执行 PG只读目录查询。未执行 DDL/DML、Head操作、来源采集、大表、服务切换或 CI。
+
+| 子阶段 | R3状态 | R3更新后的事实 |
+|---|---|---|
+| V4-00A | `DEGRADED_PASS` | 00A原始依据与冻结记录沿用R2；PG合同数据缺口不替代仍未闭合的备份/恢复回执。 |
+| V4-00B | `DEGRADED_PASS` | Schema目录结构沿用R2 `SCHEMA_READY=PASS`；业务数据覆盖仍 `DATA_READY=NOT_PROVEN`，PG现役合同记录也未齐。 |
+| V4-00C | `DEGRADED_PASS` | 静态Publication身份合同沿用R2；无正式Head不等于代码合同失败，且没有阶段00产品 runtime callsite。 |
+| V4-00D | `DEGRADED_PASS` | 本地真实TDX小样本存在；正式source package/revision未接受，required scope仍阻断。 |
+| V4-00E | `BLOCKED` | 缺真实接受输入及其派生RAW receipt，仍不能准入。 |
+| V4-00F | `DEGRADED_PASS` | 沿用R2限度；不将bootstrap namespace合同记录或夹具升级为live-source验收。 |
+| V4-00G | `BLOCKED` | 算法校验代码与测试夹具存在，但阶段00算法框架及参数版本未在PG找到，夹具不能替代正式运行版本。 |
+| V4-00H | `DEGRADED_PASS` | gate规则纯函数与夹具回归通过；无Stage00业务runtime接线，最终准入合同版本未在PG找到。 |
+
+**R3结论：`STAGE00_REPAIR_PARTIAL`，`STAGE00_ENTRY_GATE=BLOCKED`。** `RUNTIME_CONSUMER_PG_ONLY` 仅证明没有阶段00本地 JSON 运行读取，不代表已有 PG runtime 消费链；阶段00合同版本迁入及其原始批准事实需要单独授权和事实依据。D/E真实来源阻断继续存在。本报告不表示阶段00 PASS、阶段01启动或生产发布。
+
+R3代码、测试及规范实现提交 SHA：`e21849b21226d364d4f79678d416126e58ffb5b1`。最终报告提交及分支 HEAD 由现有 PR #3 注释给出。

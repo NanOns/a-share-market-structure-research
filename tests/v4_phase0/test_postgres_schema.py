@@ -87,7 +87,7 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
     with connect() as pg:
         tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
         assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
-        versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
+        versions = pg.execute("select version from v4.schema_migrations order by version").fetchall()
         assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1", "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1", "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"} <= {x[0] for x in versions}
         indexes = {r[0] for r in pg.execute("select indexname from pg_indexes where schemaname='v4'").fetchall()}
         assert {"uq_source_revision_single_successor", "ix_source_revisions_cutoff", "ix_publication_consumed_source_revision", "uq_publication_same_day_parent_single_successor", "ix_membership_effective"} <= indexes
@@ -327,7 +327,7 @@ def test_r5_security_lifecycle_history_contract_matches_formal_schema():
             "select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_history'"
         ).fetchall()}
         migration = pg.execute(
-            "select checksum_sha256 from v4_meta.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
+            "select checksum_sha256 from v4.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
         ).fetchone()
         triggers = {r[0] for r in pg.execute(
             "select tgname from pg_trigger where tgrelid='v4.security_lifecycle_history'::regclass and not tgisinternal"

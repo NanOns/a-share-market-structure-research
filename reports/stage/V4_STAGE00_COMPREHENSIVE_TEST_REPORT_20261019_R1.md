@@ -1,6 +1,6 @@
 ---
 stage_id: V4-00
-code_sha: 052baa28400a95035946f94c361501891971ef89
+code_sha: da5b72f0e2e5313197f9c60f49053b837ca4c862
 test_scope: V4-00A-H、阶段00配置与入口修复、只读数据库核验
 conclusion: STAGE00_REPAIR_PARTIAL
 approval_status: USER_AUTHORIZED_STAGE00_ONLY
@@ -9,6 +9,8 @@ approval_status: USER_AUTHORIZED_STAGE00_ONLY
 # V4 阶段00｜清理后基础能力恢复与八子阶段验收
 
 日期：2026-10-19。本文是阶段00唯一当前报告；不表示阶段01开始、V4业务验收通过或生产切换。
+
+> R2 独立审计纠偏于 2026-10-19 追加在文末。该 R2 结论是 A–H 与阶段00准入的当前权威状态；文中原 R1 状态仅保留为审计历史，遇到冲突以 R2 为准。R2 代码提交：`da5b72f0e`。
 
 ## 一、现场与授权
 
@@ -85,3 +87,64 @@ approval_status: USER_AUTHORIZED_STAGE00_ONLY
 最终结论：**`STAGE00_REPAIR_PARTIAL`**。阶段00已修复部分清理后断链并通过受控代码验证，但真实业务必需范围仍阻断，未形成阶段00 PASS 或 V4-01 准入。
 
 实现代码与精确恢复文件提交：`052baa28400a95035946f94c361501891971ef89`。本报告随后作为单独文档提交；最终分支 HEAD（包含本报告提交）另在 PR #3 评论与交付回报中给出。此报告不授权恢复日更、阶段01或生产运行。
+
+## 七、R2｜独立审计纠偏与定向续修（当前权威结论）
+
+本节按任务卡附录“阶段00 R2｜独立审计纠偏与定向续修”执行；不重复 R1 的恢复和修复，不恢复历史文件，不运行 overlap、不执行数据库写入、DDL、迁移或 Head 切换。原 R1 对 B/C 将空运行表等价为能力缺失的结论已由本节更正；D/E 的真实数据阻断继续保留。
+
+### R2 原始目标溯源与合同/运行态分离
+
+通过 Git 历史 `a4b3412b3` 找到旧正式记录 `docs/V4_00A_BASELINE_FREEZE_20260925.md` 至 `docs/V4_00E_HISTORICAL_ADJUSTMENT_COORDINATES_20260925.md`，确认原始目标如下；这些文件只作 Git 来源证据，不恢复到工作树：
+
+- **00A**：REV2 §78，冻结 HEAD、数据库备份/恢复回执、accepted/Focus Head、旧输出和继承审计；原记录状态为 `DEGRADED_PASS / BASELINE_IDENTITIES_FROZEN_RECOVERY_EVIDENCE_OPEN`。历史报告明确当前 PG 的备份/恢复证据未闭合。
+- **00B**：REV2 §5.1–5.3、§6A、§7.10、§78；日期有效身份、知识时间、历史覆盖与不支持范围。当前 Universe 不冒充 PIT Universe；旧正式记录将 PIT 历史身份标为不可用，并将阶段判为 `DEGRADED_PASS`，而非因缺少数据行判定 Schema 不存在。
+- **00C**：REV2 §4.1–4.9、§6A、§78；publication 身份/修订、实际消费来源、前一会话状态、事件修订投影及 Execution Namespace。原目标是冻结合同语义；没有证据要求 00C 自行生成被接受的正式 Head。
+- **00D**：REV2 §3B.4、§3E、§3F、§78；官方来源声明日期门、有界下载、source manifest、包校验及全市场 overlap。旧包虽曾被比较，但历史结论是 `NOT_ACCEPTED`，并有开放的 mismatch 判据审计项。本轮依 R2 明令不重跑 overlap。
+- **00E**：REV2 §3B、§3F、§7.7、§41A.3、§78；固定复权合同和坐标语义，并独立保留真实经验验收未完成状态；RAW readiness 与 adjusted readiness 分离。
+
+### R2 有界运行证据
+
+- **B｜代码合同与 Schema**：只读连接确认数据库 `market_research`、`transaction_read_only=on`。`security_lifecycle_history`、`security_lifecycle_facts`、`security_membership_interval_history`、`provider_lifecycle_fact_history` 均存在。Catalog 核对了生命周期列、有效区间、来源修订/替代关系、provider/observed/ingested/system 时钟、主键、有效期与 cutoff 索引、时间约束、来源 revision 外键及 append-only 触发器。SQL 合同与独立静态回归通过，因此 `SCHEMA_READY=PASS`。
+- **B｜正式数据**：`security_lifecycle_facts` 无行；`security_lifecycle_history` 有行，但有界读回的 6 条排序样本均为北交所 `BEIJING`，其有效期止于 2025-10-08，且只证明该小样本引用的 source_revision 可解析。它不证明沪主板、深主板、创业板、科创板的完整生命周期覆盖，也不证明 PIT/AS_RECORDED 全链。故 `DATA_READY=NOT_PROVEN`；此结果不反推 Schema 错误。
+- **C｜代码合同与 Schema**：Publication 候选代码校验稳定 `publication_id`、日期、namespace、revision 和来源身份；迁移定义 Head 只能指向已接受且日期/namespace 一致的 publication，namespace 与 state identity 有外键/唯一约束，reader 有身份校验。只读 catalog 确认 `model_namespaces`、`publication_heads` 表及约束存在。因此 `PUBLICATION_IDENTITY_CONTRACT=PASS`。
+- **C｜正式运行 Head**：`model_namespaces`、`publication_heads` 当前均无行，`ACCEPTED_HEAD_OPERATIONAL=NOT_PRESENT`。按找到的 00C 原文，不要求在阶段00创建正式 Head；本轮没有伪造 Head。该状态不是代码合同失败，也不单独证明正式发布已运行。
+- **D｜本地只读真实 TDX 样本**：源根 `D:/new_tdx` 下的 `T0002/hq_cache/tdxhy.cfg` 可读，当前身份解析有 5,589 个 A 股 ID。抽查固定证券 `SH.600000`、`SZ.000001`、`SZ.300001`、`SH.688001`，均通过现有身份分类并各有对应 `.day` 文件；每个文件大小为 32 字节记录整数倍，末条记录可解析为 TDX 原生 RAW OHLC/amount/volume，样本交易日分别为 2026-09-10、2026-09-11、2026-09-10、2026-09-10。完整读取并校验的四个文件大小均小于 300 KB；本地修改时钟为 2026-09-10、2026-09-14，早于本轮，不能代表当前来源更新时钟。未遍历全历史、未改动源文件、未重跑 overlap。此证据证明本机存在有界真实四板文件样本，不证明官方来源包验收。
+- **D｜来源接受**：只读 PostgreSQL 确认 `source_packages` 表存在但没有记录；`source_revisions` 有记录不能建立已接受包身份。既无当前已接受官方 package，也无 package-to-revision 的接受证据，所以 `REAL_SOURCE_ACCEPTANCE=BLOCKED_REQUIRED_SCOPE (A_STOCK_TDX_SOURCE)`。文件样本日期较旧，且样本末日存在跨证券日期不一致；不将其描述为当前交易日完整包。
+- **E｜RAW bootstrap**：`.day` 文件可读只证明本地 RAW 输入存在；现有 Stage00 合同要求 RAW 权限从已接受的阶段和 D/B/C owner scope 派生，单独自声明不算授权。当前无已接受 source package / RAW bootstrap receipt，故 `RAW_BOOTSTRAP=BLOCKED_REQUIRED_SCOPE`。未合成四板清单、未倒填 PIT、未把 DM01 Head 或未绑定 package 的 revision 当作 V4 RAW 正式 Head。
+
+### R2 入口安全与定向回归
+
+- 修复 `scripts/apply_v4_phase0_schema.py` 的使用面：该历史入口注册了 **57** 项迁移，包含 Phase 0 到后续 V4 阶段。当前 `apply()` 在连接 PG 前抛出 `NOT_AUTHORIZED_TO_EXECUTE`，CLI 的 `--apply` 也明确拒绝；模块普通导入仍不连接数据库。保留迁移定义，不在本任务执行任何 DDL/DML。将来需在获批的具体迁移阶段重新评估该入口范围。
+- 新增 B/C 静态合同测试，覆盖生命周期日期/知识时间、来源 revision、关键索引与 append-only，以及 publication/namespace 身份约束；断言不把事实行或正式 Head 存在作为静态合同成立条件。现有 gate 聚合器保持原样，没有降低 required scope，也没有新增第二套总 gate。
+- 定向测试：`tests/v4_phase0`（排除含写入的 `test_postgres_schema.py`）**108 passed**；`tests/test_v4_r7_sql_schema_compatibility.py` **6 passed**。`compileall` 与 `git diff --check` 通过。实际执行迁移入口 `--apply` 仅验证拒绝保护，返回 `NOT_AUTHORIZED_TO_EXECUTE`，没有尝试连接或迁移数据库。
+- 数据库目录/小样本查询均显式只读并设 3 秒 statement timeout；无写入、DDL、迁移、大表扫描、Head 操作、来源下载或服务启动。00D overlap 性能/全市场 workload 未重跑。
+
+### R2 当前八子阶段与准入
+
+| 子阶段 | 当前状态 | 合同实现与运行数据判定 |
+|---|---|---|
+| V4-00A | `DEGRADED_PASS` | 原目标已由 Git 历史定位并冻结本轮 HEAD/数据库身份；当前数据库备份及恢复回执未验证，沿用原 00A 开放项，不扩大恢复工作。 |
+| V4-00B | `DEGRADED_PASS` | `SCHEMA_READY=PASS`；`DATA_READY=NOT_PROVEN`。空 `security_lifecycle_facts` 不再作为 Schema 失败依据；现有 history 小样本不证明完整四板与 PIT。 |
+| V4-00C | `DEGRADED_PASS` | `PUBLICATION_IDENTITY_CONTRACT=PASS`；`ACCEPTED_HEAD_OPERATIONAL=NOT_PRESENT`。原文没有要求阶段00生成 Head；未伪造或切换 Head。 |
+| V4-00D | `DEGRADED_PASS` | 本机 RAW 文件/固定身份样本真实可读；当前无接受的 V4 source package，`A_STOCK_TDX_SOURCE=BLOCKED_REQUIRED_SCOPE`。未重跑 overlap。 |
+| V4-00E | `BLOCKED` | 没有真实被接受的 RAW bootstrap 输入及派生 receipt；不接受合成样本或孤立 Head。 |
+| V4-00F | `DEGRADED_PASS` | 延续 R1：BaoStock supplemental contract/fixture 状态通过，正式 live route/field binding 仍待后续阶段；R2 未声称在线来源验收。 |
+| V4-00G | `DEGRADED_PASS` | 延续 R1：算法合同和参数框架夹具通过，参数/部分合同仍属候选；本轮未改算法成果。 |
+| V4-00H | `DEGRADED_PASS` | 延续 R1：Gate 与性能规则测试通过；没有重跑基准或设定未授权阈值。 |
+
+| R2 汇总项 | 状态 | 依据 |
+|---|---|---|
+| `CODE_REPAIR` | `PASS` | 00A 原始合同溯源、B/C 合同/运行态区分、迁移入口拒绝保护及其回归已完成。 |
+| `SCHEMA_CONTRACT` | `PASS`（B/C） | 静态 SQL/代码合同与只读 catalog 相符；未执行迁移。 |
+| `REAL_SOURCE_ACCEPTANCE` | `BLOCKED` | 本机存在真实 TDX 样本，但无已接受且完整的 V4 source package/revision 证据。 |
+| `OPERATIONAL_HEAD` | `NOT_PRESENT` | 当前没有 V4 namespace/publication Head；00C 不以阶段00造 Head 为验收前提。 |
+| `STAGE00_ENTRY_GATE` | `BLOCKED` | `A_STOCK_TDX_SOURCE` 和派生 `RAW_BOOTSTRAP` 未接受；不因 B/C 合同通过放行 V4-01。 |
+
+### R2 未关闭项和权限边界
+
+- 保持阻断：D 的官方来源日期/包身份/接受证据与所需来源 revision 尚缺；E RAW bootstrap receipt 未从被接受的真实输入派生。B 的真实生命周期事实完整性与四板覆盖仍未证实；C 暂无正式运行 Head，但这不是本阶段静态身份合同的缺陷。
+- 00A 当前 PG 实例的备份/隔离恢复验收仍未完成；历史回执只能定位目标，不能替代当前实例证据。
+- 若后续要完成 D/E，需另按授权将官方包及合同接受后的 source package/revision/必要 typed facts 追加至现有 `v4` 结构；本轮未执行。事务提交前可回滚未接受候选；已接受不可变记录不得删除，应按合同追加修订。任何 DML 与具体对象范围应在后续明确授权任务中核定。本轮不要求 B/C Schema DDL，也不要求阶段00创建 Publication Head。
+- `test_postgres_schema.py` 写入/rollback 测试未运行；不因 rollback 视为已授权。备份目录未读取、删除或恢复，生产服务未启动。
+
+**R2 结论：`STAGE00_REPAIR_PARTIAL`，独立复核状态 `EXTERNAL_REVIEW_PENDING`。** 合同/schema 修复范围完成，但真实 source acceptance 和 RAW bootstrap 仍阻断阶段00准入及 V4-01；本报告不表示阶段00 PASS、阶段01启动或生产发布。

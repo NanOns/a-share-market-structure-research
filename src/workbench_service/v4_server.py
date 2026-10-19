@@ -52,6 +52,51 @@ def _require_candidate_contract_proofs(context):
             raise PublicationReadError('PG_CANDIDATE_CONTRACT_PROOF_INVALID')
 
 
+def _daily_source_runtime_receipts_preview(root):
+    """Expose recent, digest-checked BaoStock runtime receipts in candidate UI.
+
+    These source receipts describe available date inputs only. They do not
+    authorize a publication, accepted calendar, PIT use, or operational Head.
+    """
+    from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import FOLDER, KIND, CONTRACT
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore, canonical, digest
+    from workbench_db.v4_native import connection
+
+    namespace = ForwardFactStore.namespace_for(Path(root) / FOLDER)
+    with connection('v4', read_only=True) as pg:
+        rows = pg.execute(
+            """SELECT fact_key,payload,payload_sha256 FROM v4.forward_facts
+                 WHERE workspace_namespace=%s AND kind=%s
+                 ORDER BY fact_key DESC LIMIT 5""",
+            (namespace, KIND),
+        ).fetchall()
+    receipts = []
+    for day, payload, stored_digest in rows:
+        raw = payload.encode('utf-8') if isinstance(payload, str) else canonical(payload)
+        if digest(raw) != stored_digest:
+            raise ValueError('DAILY_RUNTIME_RECEIPT_PAYLOAD_DIGEST_MISMATCH')
+        record = json.loads(raw.decode('utf-8'))
+        manifest = record.get('manifest') if isinstance(record, dict) else None
+        smoke = manifest.get('live_smoke') if isinstance(manifest, dict) else None
+        if (not isinstance(record, dict) or not isinstance(manifest, dict) or not isinstance(smoke, dict)
+                or record.get('contract_id') != CONTRACT or record.get('trade_date') != day
+                or manifest.get('status') != 'ACCEPTED' or smoke.get('target_date') != day):
+            raise ValueError('DAILY_RUNTIME_RECEIPT_BINDING_INVALID')
+        receipts.append(dict(
+            trade_date=day,
+            receipt_status='ACCEPTED_RUNTIME_RECEIPT',
+            daily_rows=smoke.get('daily', {}).get('row_count'),
+            factor_rows=smoke.get('adjustment_factor', {}).get('row_count'),
+            payload_sha256=stored_digest,
+        ))
+    return dict(
+        status='READABLE' if receipts else 'NO_RECEIPTS',
+        authority='PG_ACCEPTED_DAILY_RUNTIME_FACT',
+        publication_status='NOT_IMPLIED',
+        receipts=receipts,
+    )
+
+
 def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, pg_candidate_release_id=None, static_root=None):
     """Build the V4 BFF; PG candidates require explicit injection and opt-in."""
     root=Path(root)
@@ -110,6 +155,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                 try:
                     if tail==['status']:
                         context=candidate_reader().context
+                        source_receipts=_daily_source_runtime_receipts_preview(root)
                         return self.send(200,dict(contract_id='V4_DAILY_STATUS_CANDIDATE_PREVIEW_R1',
                             status='PREVIEW_ONLY',last_good_trade_date=context['accepted_trade_date'],
                             missing_sessions=None,calendar_status='NO_ACCEPTED_MARKET_CALENDAR_HEAD',
@@ -118,6 +164,7 @@ def make_v4_handler(root, pg_current_adapter=None, *, allow_pg_candidate=False, 
                             jobs_enabled=False,worker_status='NOT_STARTED',
                             settings=dict(auto_enabled=False,service_alive=False,
                                 operational_mode='CANDIDATE_PREVIEW_NO_WORKER',publication_ready=False),
+                            daily_source_runtime_receipts=source_receipts,
                             last_job=None,active_job=None,last_catch_up_job=None,worker_error=None))
                     if tail==['settings']:
                         return self.send(200,dict(auto_enabled=False,service_alive=False,

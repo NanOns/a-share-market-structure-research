@@ -559,3 +559,10 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 更正对用户的表述：10-15 BaoStock runtime manifest 中已有 5,226 条日行情和 22 条因子，因此本轮业务增量基线是 10-15，目标是 10-16；作业账本中 10-15 的 `QUEUED` 只表示该日期的日更作业验收状态，并不否定来源事实已在系统中。个股页的 9-30 仅是 `V4_DATA_ACCEPTED_HEAD`/研究视图 T0，不是日更基线。
 - 交易日核对：上交所 2026 年中秋、国庆休市公告说明 10-1 至 10-7 休市、10-8 起照常开市；深交所同日通知给出相同复市安排。10-16 为星期五且不在公告休市范围，因此本轮目标日期是 10-16。官方来源：[上交所公告](https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml)、[深交所通知](https://www.szse.cn/www/disclosure/notice/general/t20260917_622911.html)。此网页核对可确认日期，但不会自行创建或接受 PG 日历合同/Head。
 - 本轮新鲜 `REPEATABLE READ READ ONLY` 开发库复核身份仍为 `market_research` / OID `646711` / `127.0.0.1:5432`；`v4.model_namespaces`、`v4.operational_research_heads`、`v4.publications`、`v4.market_calendar_sessions` 当前分别为空、空、空、0 行。数据库没有正式日历或 Operational Head 的事实继续阻断正式日更验收；不得将来源回执、公告网页或 9-30 研究 T0 伪装为已接受发布。
+
+### 2026-10-19 日更中心来源日期可见性修复与真实浏览器验收
+
+- `src/workbench_service/v4_server.py` 的只读候选状态增加从 `v4.forward_facts` 读取最新五笔 BaoStock runtime acceptance facts；使用固定 `v4`、精确 forward namespace 与 kind 查询，并校验 PG payload SHA、业务合同、交易日、manifest 状态和 smoke target。回执字段明确标注 `ACCEPTED_RUNTIME_RECEIPT`，并返回 `publication_status=NOT_IMPLIED`；查询为 `REPEATABLE READ READ ONLY`，不创建任务或写入数据。
+- `src/workbench_service/static/daily-update/app.js` 与 `index.html` 将研究快照 T0 和日更来源运行回执分开显示。真实 PG 数据显示最近两日为 2026-10-15（5,226 日行情/22 因子）与 2026-10-16（5,226 日行情/48 因子）；文案注明来源运行回执不等于正式发布。无接受日历时，检查、补齐、自动更新、重试、取消按钮仍全部禁用。
+- 目标 28766 服务按原 G 盘启动脚本在同一端口重载；真实 `http://127.0.0.1:28766/v4/research/data-update` 浏览器验收显示 T0 2026-09-30、`NO_ACCEPTED_MARKET_CALENDAR_HEAD`、Worker 未启动及上述 10-15/10-16 来源事实。截图证据：`G:\codex_tmp\v4_daily_update_28766_20261019.png`。检查时 28766 监听 PID 46304，PostgreSQL 5432 PID 8640；28765 无监听且未触碰。
+- 正式日更仍为 `PREVIEW_ONLY`，任务 worker 未启动，页面和 API 均未声称发布 10-16；全链路正式验收继续等待 PG 接受交易日历及 Operational Head 等既有前置项。

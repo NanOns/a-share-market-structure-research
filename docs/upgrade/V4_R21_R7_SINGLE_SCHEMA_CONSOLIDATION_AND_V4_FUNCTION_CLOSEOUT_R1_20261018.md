@@ -23,7 +23,7 @@ production_changed: false
 |---|---|---|
 | S0 真实对象、消费者和权限盘点 | PASS | 合并前只读快照为 76 个 V4 物理 Schema；2026-10-19 最终只读快照确认 DB OID 646711、`127.0.0.1:5432`、只读事务开启，现只剩 `v4`。完整最终快照在 `G:\codex_tmp\v4_single_schema_inventory_20261019.json`。 |
 | S1 停止动态 Schema 生成 | PASS | `workspace_schema()` 固定返回 `v4`；应用连接拒绝任何其他 Schema；Schema 创建边界拒绝非 `v4`；Alias 注册禁用；旧独立 live Shadow writer 在连接数据库前 fail-closed，R1/R2 导出 API 仅委托固定 v4 R3 writer。 |
-| S2 固定表结构 | PASS | 最新 `REPEATABLE READ READ ONLY` 目录核验为 `v4` 下 123 张表、85 个例程、184 个非内部触发器。计数包括 FEP 与 Shadow 固定存储迁移；这些触发器是现役版本化表的约束，不是旧 Schema 残留。 |
+| S2 固定表结构 | PASS | 最新 `REPEATABLE READ READ ONLY` 目录核验为 `v4` 下 124 张表、88 个例程、194 个非内部触发器。计数包括已部署的固定版本化存储迁移；这些触发器是现役关系的约束，不是旧 Schema 残留。 |
 | S3 精确迁移与旧 Schema 清理 | PARTIAL | 当前全库非系统用户 Schema 仅 `v4`，旧 75 项均不在目录，跨用户 Schema 依赖为 0；但逐项清理执行收据不足：G 盘证据审计仅找到 37 项持久 `DROP_RESTRICT_SUCCESS` 收据，38 项没有可回读的逐项执行收据，其中 8 项 Forward/R8 在仓库也没有对应清理执行器。不能将目录缺席等同于逐项 RESTRICT 成功证明。Forward 映射 11 个来源 Schema 的 9,256 条行映射均为 `VERIFIED`，另有 R8 的独立 251 行 digest 回执。 |
 | S4 全部运行时消费者切换 | PARTIAL | 主研究、股票图表、板块成员、Focus/Forward、诊断、Owner 精确 SourceIngress、日更仓储和 Shadow 导出/读回均经唯一 `v4` 边界；历史引用只通过固定表中的精确迁移回执解析。Shadow 固定存储已部署，真实接受清单仍缺失并 fail-closed。 |
 | S5 全模块续修 | PARTIAL | 可执行的消费者修复和 28766 浏览器检查已推进。候选快照未发布为正式 Head；缺少接受交易日历及若干模块历史输入，不能将候选可读视为模块验收完成。 |
@@ -57,7 +57,7 @@ production_changed: false
 | DB-09 | PARTIAL | 当前 Data Head 的 30 项精确 Path/SHA/bytes 绑定共 60,488,930 字节均在 PG 读回相等；另用 64 MiB+1 字节事务内工程负载验证 5 块写入、重组读回、长度/SHA 与回滚。未把真实 551 MB TDX ZIP Base64 复制到 Forward facts；其真实包/独立接受合同仍未验，历史 1,678 项未导入。 |
 | DB-10 | PARTIAL | 日更和 Jobs 只读/幂等路径可运行；`market_calendar_sessions` 与正式 publication Head 为空、没有 worker 回执，故不签发 Accepted/DEV Head、不宣称重试/增量真实作业通过。 |
 | DB-11 | PARTIAL | 仓库唯一、28766 单槽已复核。旧 baseline、治理恢复证据及其他历史目录经实际计量；存在未提交/独有内容或不可替代恢复证据，保留，物理工作区清理未完成。 |
-| DB-12 | PASS | 当前 RR/RO 库目录仅 `v4`，交叉 Schema 依赖 0；最新现场复核为 123 张表、85 例程、184 个非内部触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有迁移删除为 `RESTRICT`。 |
+| DB-12 | PASS | 当前 RR/RO 库目录仅 `v4`，交叉 Schema 依赖 0；2026-10-19 最新目录复核为 124 张表、88 个例程、194 个非内部触发器。Schema owner 为 `postgres`、ACL 为默认值；目录中只有 `postgres` 登录角色有 `v4` USAGE/CREATE，已退出的 closeout 登录角色均为 false。系统 Schema 未改动，所有已审阅迁移删除均显式使用 `RESTRICT`。 |
 
 ## 全模块缺口与可执行验收路径
 
@@ -572,3 +572,9 @@ R7 Delta 单独登记：Research snapshot/series/journal 固定表、Forward/His
 - 对同一 `market_research` 实例执行 `REPEATABLE READ READ ONLY` 检查，身份为 `postgres` / `127.0.0.1:5432`，PostgreSQL 启动时间 `2026-10-18 11:06:30+08`。检查并筛读 2026-10-10 至 2026-10-19 的 14 个现存日志文件；当前用户 Schema 仍只有 `v4`。
 - 日志配置为 `log_statement=none`、`log_min_duration_statement=-1`、`log_min_error_statement=error`。筛选到的 `DROP SCHEMA ... RESTRICT` 文本来自错误日志上下文（`v4_meta`、`v4_jobs_2169e77ca47db3a6`、`v4_00bd3ea17fe4cd57d84f9171aa8e725fbd9edab55a754087aac5b2f5`）；这些只证明相关受限语句出现在错误上下文，不能证明成功删除。由于成功 SQL 默认不入日志，此日志无法补齐 38 项缺失的成功回执，也不能证明全历史绝无 `CASCADE`。
 - 机器可读审计结果保存在 G 盘临时证据 `G:\codex_tmp\v4_pg_log_drop_audit_r1_20261019.json`；DB-05、S3 继续为 `PARTIAL`，没有把错误上下文升级为 `DROP_RESTRICT_SUCCESS`。
+
+### 2026-10-19 最新 PostgreSQL 单 Schema 目录复核
+
+- 新鲜 `REPEATABLE READ READ ONLY` 查询确认数据库 `market_research` / OID `646711` / 角色 `postgres` / `127.0.0.1:5432`，事务 `read_only=on`、隔离级别 `repeatable read`；当前 V4 用户 Schema 名称仅 `v4`。
+- 当前 `v4` 目录计数为 124 张表、88 个例程、194 个非内部触发器。该结果更新本报告开头 S2 与 DB-12 的“最新目录”计数；本报告中先前按时间记录的 123/85/184 仍是当时现场值，不代表本次复核。
+- 机器可读结果：`G:\codex_tmp\v4_single_schema_catalog_recheck_r2_20261019.json`。

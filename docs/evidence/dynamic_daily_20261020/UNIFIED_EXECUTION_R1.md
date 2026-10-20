@@ -86,3 +86,4 @@
 - 10-12 当前源码候选本地阶段读回：CORE `5,224` 行、原始行 `5,212`、独立 core oracle `0` 错误；PROFILE `5,224` 行、结构锚点 `2,630`；SECTOR 与 rotation 各 `400` 行，sector oracle `FOUR_DAY_RETRO_SECTOR_PASS`；Focus D0/D2 `5,224` 行。读回摘要在 G 盘临时快照，formal Head SHA 仍为 `55d78be5…`。
 - 尚未得到可封存 successor：Focus 收尾调用 `v4_series_pg_r1.build()`，它会在共享 `127.0.0.1:5432/market_research` 新建确定性 `v4_research_*` candidate schema、创建 immutable-series tables/index/triggers 并插入本候选的 dated bars。当前没有执行该数据库写入；运行在缺少 producer DSN 时按合同失败关闭（`V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK`）。这是下一步所需的唯一数据操作，不能写成只读验收或候选已封存。
 - PostgreSQL 写入前仍需用户确认该单个 candidate-only schema 的创建和数据范围；获准后可从 G 盘已完成的 CORE/PROFILE/SECTOR 缓存续跑，随后再执行 10-12 数值读回门、10-13 身份延续和 10-14 source gate。未写入 PG、未封存 candidate、未动正式/数据 Head、28765 或生产调度。
+- 代码推送后按最新分支 HEAD `792a3000e93efcb644c34a0dab49f29711ccb02a` 重启 28766；旧预览候选 registry 对 `r43_focus_replay.py` 的源码摘要不再匹配，严格 reader 在启动时拒绝旧 token，进程退出。未绕过校验；当前 28766 无监听、28765 无监听，PG 5432 仍为原实例。重建/封存当前候选后再恢复 28766 只读预览。

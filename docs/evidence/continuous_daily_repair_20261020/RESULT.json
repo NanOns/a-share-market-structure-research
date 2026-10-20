@@ -393,6 +393,59 @@
       "production_scheduler_started": false,
       "new_postgresql_schemas": [],
       "destructive_database_operations": false
+    },
+    "baostock_live_smoke_by_date": {
+      "package_version": "0.9.3",
+      "auth_mode": "PUBLIC_ANONYMOUS",
+      "endpoint": "public-api.baostock.com:10030",
+      "note": "bs.login() initializes the anonymous SDK session without user credentials; daily-history rows differ from normalized candidate RAW Owner rows. query_all_stock probes are separate.",
+      "dates": [
+        {
+          "date": "2026-10-12",
+          "observed_at": "2026-10-20T10:19:45.760110+08:00",
+          "daily_method": "query_daily_history_k_AStock",
+          "daily_error_code": "0",
+          "daily_rows": 5224,
+          "daily_response_sha256": "78dff5765f009df261e2ad9104792e270cf4f630a2be4ec73c1852499f9f1b1f",
+          "adjustment_method": "query_daily_adjust_factor",
+          "adjustment_error_code": "0",
+          "adjustment_rows": 17,
+          "adjustment_response_sha256": "8b2b0f24c585686a576ce78061e501690e766b1ebf086f3a2fd1faa01cf8c1fb",
+          "receipt_path": "reports/v4_baostock/runtime_acceptance/20261012/20261020T101923507952_live_smoke_receipt.json",
+          "receipt_sha256": "46a49e0c6371f8f9e61bccba044db125ec679f24bf6cc0d9a59ff24f59b3a95d",
+          "query_all_stock_probe_rows": null
+        },
+        {
+          "date": "2026-10-13",
+          "observed_at": "2026-10-20T13:05:26.349408+08:00",
+          "daily_method": "query_daily_history_k_AStock",
+          "daily_error_code": "0",
+          "daily_rows": 5225,
+          "daily_response_sha256": "76930566e4b138a71b5ed6945dd49f54f7fa2bbc63a777e2999e680ea4b20135",
+          "adjustment_method": "query_daily_adjust_factor",
+          "adjustment_error_code": "0",
+          "adjustment_rows": 20,
+          "adjustment_response_sha256": "accc1434d6fac81c93682781b05196b2104a8f00681e885df6dce296b7073ac2",
+          "receipt_path": "reports/v4_baostock/runtime_acceptance/20261013/20261020T130454735928_live_smoke_receipt.json",
+          "receipt_sha256": "475605f2d598009f8db86fe9de96849662ad21caa754a565da31cfabc8a1f8db",
+          "query_all_stock_probe_rows": 7427
+        },
+        {
+          "date": "2026-10-14",
+          "observed_at": "2026-10-20T17:52:01.039345+08:00",
+          "daily_method": "query_daily_history_k_AStock",
+          "daily_error_code": "0",
+          "daily_rows": 5225,
+          "daily_response_sha256": "e1ee85c3bb73b9436a198a18438fd693cc1c0d838a0686f450bcebe8d4a600ad",
+          "adjustment_method": "query_daily_adjust_factor",
+          "adjustment_error_code": "0",
+          "adjustment_rows": 22,
+          "adjustment_response_sha256": "1d709d1d7ad6fda61d0a94f89588fcd780e21d503cef270e50c9cb901ef085cf",
+          "receipt_path": "reports/v4_baostock/runtime_acceptance/20261014/20261020T175128444262_live_smoke_receipt.json",
+          "receipt_sha256": "b52b98247332f847237cc96b2d07b83d116b480426e84dceab756624f61ce0d6",
+          "query_all_stock_probe_rows": 7430
+        }
+      ]
     }
   }
 }

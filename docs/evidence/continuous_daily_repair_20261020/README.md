@@ -138,6 +138,15 @@
 
 - **候选 QFQ**：根因是 `CoreProductBFFR1._candidate_daily_owner_chart()` 把所有非 RAW 请求直接短路为空，即使 10-12 至 10-14 候选已逐日绑定 RAW Owner，T0 也已冻结并绑定 TDX GBBQ。现在以逐日 RAW Owner 和经 `checked()` 校验的 T0 GBBQ 为输入，使用 `tdx_adjustment_v0_3` 构造精确有理数仿射因子，再通过 `ExactFactorTransport` / `consume_exact_ohlc` 产出 QFQ；未知或未支持的价格影响事件将对应 bars 降为 UNKNOWN。接口不依赖新的 PG 图表索引，不读取其他 Head，显式标记 `PIT_ELIGIBLE=false`。
 - **真实端点读回**（28766，token 为该候选运行时 token）：个股 `SEC-00096141BD5420F5CB3120E687CDA5B9` / SH.688349，10-12 为 HTTP 200/READY、6/6 bars、末收 13.70；10-13 为 200/READY、7/7、末收 13.54；10-14 为 200/READY、8/8、末收 12.55。每个返回项均含 exact transport receipt；T0 GBBQ SHA-256 为 `c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739`。该证券窗口无价格影响公司行动，故 QFQ 与 RAW 数值相同；单元测试另用已分类股息事件验证非平凡变换。
+- **BaoStock 逐日原始回执补充**：三日 live-smoke 均由包版本 `0.9.3`、`PUBLIC_ANONYMOUS` 模式发起；调用 `query_daily_history_k_AStock(date=...)` 和 `query_daily_adjust_factor(date=...)`，两接口 `error_code=0`、各一页。SDK 来源的 `bs.login()` 是无凭据的匿名会话初始化；没有用户名、密码或 API key，也没有在文档/日志中保存凭据。调用端为 `public-api.baostock.com:10030`。回执与 raw response 都保存在 G 盘候选根 `G:\codex_tmp\v4_daily_candidate_chain_20261020\reports\v4_baostock\runtime_acceptance`：
+
+  | 交易日 | live-smoke 观察时间（北京时间） | 日线行数 / SHA-256 | 复权因子行数 / SHA-256 | 回执文件 SHA-256 |
+  |---|---|---|---|---|
+  | 10-12 | 10:19:45 | 5,224 / `78dff5765f009df261e2ad9104792e270cf4f630a2be4ec73c1852499f9f1b1f` | 17 / `8b2b0f24c585686a576ce78061e501690e766b1ebf086f3a2fd1faa01cf8c1fb` | `46a49e0c6371f8f9e61bccba044db125ec679f24bf6cc0d9a59ff24f59b3a95d` |
+  | 10-13 | 13:05:26 | 5,225 / `76930566e4b138a71b5ed6945dd49f54f7fa2bbc63a777e2999e680ea4b20135` | 20 / `accc1434d6fac81c93682781b05196b2104a8f00681e885df6dce296b7073ac2` | `475605f2d598009f8db86fe9de96849662ad21caa754a565da31cfabc8a1f8db` |
+  | 10-14 | 17:52:01 | 5,225 / `e1ee85c3bb73b9436a198a18438fd693cc1c0d838a0686f450bcebe8d4a600ad` | 22 / `1d709d1d7ad6fda61d0a94f89588fcd780e21d503cef270e50c9cb901ef085cf` | `b52b98247332f847237cc96b2d07b83d116b480426e84dceab756624f61ce0d6` |
+
+  上表是 provider 日线/复权因子的真实返回行数；下方逐日结果表中的 `raw_stock_rows`（5,212 / 5,212 / 5,214）是流水规范化后的 RAW Owner 证券行数，两者口径不同。另行执行的 `query_all_stock(day=...)` 探测只记录到 10-13 的 7,427 行、10-14 的 7,430 行；它不是上表的历史日线接口，也不代表候选 RAW 行数。10-12 的该项探测行数没有保存，本记录不推算或补填。
 - **图表页面**：28766 页面实际加载当前 checkout 资产；AX 读回显示“原生前复权”、8/8 蜡烛图、截至 10-14 末收 12.55，并展示候选/非严格 PIT 免责声明。`stock.js` 对缺来源 empty state 和有效的部分来源图表分开呈现；loading 文案不再误称“当前生产快照”。
 - **snapshot / joint candidate activation**：上一节已记录将旧 authority 缺失的原 snapshot DB 替换为候选根现存且真实可校验的 2026-09-30 snapshot，恢复 4 项哈希匹配依赖后，通过 joint validation 和现役 refresh 的 `SCOPED_OPERATIONAL_RELEASE_PASS`。该候选发布 `full_product_release=false`、`production_changed=false`。原正式 authority/Head 未变；不是伪造旧 manifest，也不表示正式发布。此处 QFQ 重试未再改动 snapshot authority。
 

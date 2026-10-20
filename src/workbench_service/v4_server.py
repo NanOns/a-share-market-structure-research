@@ -93,10 +93,14 @@ def make_v4_handler(root):
                 return self.send(200,(static/'v4-workbench.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/v4/assets/'):
                 name=parsed.path.removeprefix('/v4/assets/')
-                if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
+                if name not in ('app.js','api.js','components.js','labels.js','stock.js','replay.js','rotation-auto-acceptance.js','style.css'):return self.send(404,dict(code='ASSET_NOT_FOUND'))
                 joint=joint_load(root)
                 asset=checked_path(root,joint['ui_assets'][name]) if joint else static/'research'/name
-                if name in ('api.js','components.js','app.js'):
+                # A joint release binds a mutually compatible HTML/JS bundle.
+                # Do not replace only the entrypoint modules with the older
+                # R43 compatibility bundle: that creates a mixed UI build
+                # (for example app.js cannot import a newly bound module).
+                if not joint and name in ('api.js','components.js','app.js'):
                     try:operational=operational_reader()
                     except (ValueError,KeyError,OSError) as error:return self.send(503,dict(code='OPERATIONAL_ACCEPTED_SOURCE_INVALID',reason=str(error)))
                     if operational is not None:

@@ -22,7 +22,7 @@ def main():
     if authority.get('full_product_release') is not False:raise ValueError('PRESENTATION_ONLY_FULL_RELEASE_FORBIDDEN')
     (out/'AUTHORITY_BEFORE.bin').write_bytes(prior)
     sources={name:SOURCE/'src/workbench_service/static/research'/name for name in ('index.html','style.css')}
-    sources.update({name:SOURCE/'src/workbench_service/static/core-product-r1'/name for name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js')})
+    sources.update({name:SOURCE/'src/workbench_service/static/core-product-r1'/name for name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js','rotation-auto-acceptance.js')})
     build=digest(canonical({name:digest(path.read_bytes()) for name,path in sources.items()}))
     assets={}
     for name,path in sources.items():

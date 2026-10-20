@@ -66,7 +66,11 @@ class ForwardFactStore:
         if not re.fullmatch('[a-z][a-z0-9_]{0,60}', kind):
             raise ValueError('FORWARD_FACT_KIND_INVALID')
         descriptor = dict(contract_id=CONTRACT, engine='postgresql', database_identity=self.database_identity, schema=self.schema, kind=kind, fact_key=key, payload_sha256=payload_digest)
-        path = self.folder / kind / (digest(str(key).encode()) + '.pg.json')
+        # Candidate workspaces can contain copied descriptor files from a
+        # predecessor workspace. Keep the immutable local binding namespace
+        # aligned with the PG schema so identical fact keys in a new,
+        # candidate-only schema never collide with predecessor descriptors.
+        path = self.folder / kind / (self.schema + '_' + digest(str(key).encode()) + '.pg.json')
         raw = canonical(descriptor)
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.exists():

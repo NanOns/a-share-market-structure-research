@@ -1,0 +1,165 @@
+{
+  "contract_id": "V4_CONTINUOUS_DAILY_REPAIR_EVIDENCE_R1",
+  "task_date": "2026-10-20",
+  "branch": "codex/v4-unified-development",
+  "audit_baseline": "bc931afea2e2e49905a2550d9b982ea12bce0da1",
+  "head_at_rework_start": "acac3524c07d74fb0694607b6170eb2d55f26c1d",
+  "candidate_root": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020",
+  "candidate_only": true,
+  "formal_head_modified": false,
+  "formal_head_date": "2026-10-09",
+  "formal_head_sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+  "production_head_modified": false,
+  "production_scheduler_started": false,
+  "database": {
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "market_research",
+    "database_oid": 646711,
+    "new_database_instance": false,
+    "roles_created_or_changed": false
+  },
+  "service": {
+    "host": "127.0.0.1",
+    "port": 28766,
+    "pid": 41680,
+    "mode": "V4_DEVELOPMENT_CANDIDATE_PREVIEW",
+    "ready": true,
+    "formal_head_date": "2026-10-09",
+    "candidate_date": "2026-10-14",
+    "port_28765_touched": false,
+    "port_28765_listening": false
+  },
+  "baostock": {
+    "version": "0.9.3",
+    "auth_mode": "PUBLIC_ANONYMOUS_DEFAULT_SESSION",
+    "user_supplied_credentials": false,
+    "unauthenticated_query_error": "10001001",
+    "retry_flow": ["bs.login()", "query", "bs.logout()"],
+    "query_all_stock_rows": {
+      "2026-10-13": 7427,
+      "2026-10-14": 7430
+    }
+  },
+  "daily_results": [
+    {
+      "date": "2026-10-12",
+      "candidate_token": "c60294526a43085aa3777fc84c198a4104c528f5300b8981fcf493b12bef44b7",
+      "raw_stock_rows": 5212,
+      "stock_owner_rows": 5224,
+      "sector_rows": 400,
+      "focus_rows": 3025,
+      "radar_rows": 311,
+      "priority_stock_rows": 1752,
+      "focus_d0": 164,
+      "prewatch": 646,
+      "d2_fresh": 92,
+      "period_oracle_checks": 219408,
+      "period_oracle_errors": 0,
+      "core_numeric_errors": 0
+    },
+    {
+      "date": "2026-10-13",
+      "candidate_token": "5dadf2426bf4b758e8f33c00e2b054328e8cd1fc613632d6749ffac41c98d48f",
+      "raw_stock_rows": 5212,
+      "stock_owner_rows": 5225,
+      "sector_rows": 400,
+      "focus_rows": 3151,
+      "radar_rows": 163,
+      "priority_stock_rows": 1410,
+      "focus_d0": 180,
+      "prewatch": 480,
+      "d2_fresh": 104,
+      "period_oracle_checks": 219436,
+      "period_oracle_errors": 0,
+      "core_numeric_errors": 0,
+      "new_listing_identity": "SZ.301660"
+    },
+    {
+      "date": "2026-10-14",
+      "candidate_token": "91409211777997a2e95933fb2aeb075a212716d6cbd455778fef23db4eabd721",
+      "raw_stock_rows": 5214,
+      "stock_owner_rows": 5225,
+      "sector_rows": 400,
+      "focus_rows": 3247,
+      "radar_rows": 177,
+      "priority_stock_rows": 967,
+      "focus_d0": 145,
+      "prewatch": 397,
+      "d2_fresh": 65,
+      "period_oracle_checks": 219436,
+      "period_oracle_errors": 0,
+      "core_numeric_errors": 0,
+      "new_listing_identity": "SZ.301660"
+    }
+  ],
+  "priority_owner_schemas": [
+    "v4_e9d16a7c4e621a6fe5946f3d1f849a1a0ab54b7fb0c0738c42255375",
+    "v4_5869198625dbebd780c6bb9004a293c1b2dd2a70269218f07c58d635",
+    "v4_f6212ca8b75a552619f071364ede69115dee7035fee25b5c213759c5"
+  ],
+  "read_index_schemas": [
+    "v4_909aa7f00f88fc2b894facebfec8bc0ec1507c016bc11e3401542a56",
+    "v4_2aba60621019002fc7f5b2cd13509fdf4a841de7554ca24103f069bd",
+    "v4_2c5a277ce8f846e3de7d0d396b678d897c89a30b2ab40d14381d76bd"
+  ],
+  "forward_isolation": {
+    "contract_id": "R8_ISOLATED_FORWARD_NAMESPACE_R1",
+    "schema": "v4_r8_forward_0c2b84fb3e1a0c42",
+    "baseline_source_schema": "v4_forward_1eab1e832f0f04d0",
+    "baseline_source_count": 160,
+    "baseline_copy_count": 160,
+    "baseline_sha256": "a74245e2596b20d6e5a195d27772441bdea36e0c0b2e1add341eae044e4def33",
+    "source_unchanged": true,
+    "receipt_sha256": "3bb6164491ce5b2b2a6d7826f0bcbca10b7e9dca9c67208a440001e5b70f21e8",
+    "candidate_config_sha256": "cf3b8bf4fb6e21e7ebdbf9c565b63c06072dac35c76e4bb2aef7bd18e6d123f5"
+  },
+  "forward_readback": {
+    "statistics": "READY",
+    "candidate_late_observation": "CANDIDATE_ONLY_LATE_OBSERVED",
+    "historical_observations": "EMPTY_VALID",
+    "historical_settlement": "EMPTY_VALID",
+    "plans": "SOURCE_INCOMPLETE_NO_AUTHORIZED_COHORT_OWNER",
+    "PIT_ELIGIBLE": false
+  },
+  "ui": {
+    "candidate_build_id": "a346e86267a82d9795d8528db806bc66e2f1bcc37b448aa5c7242b6ffa9f7fe0",
+    "route": "/v4/research/forward",
+    "page_http": 200,
+    "all_bound_assets_http_200_and_sha_match": true,
+    "rotation_module_http": 200,
+    "joint_activation": false,
+    "activation_blocker": "Bound research snapshot manifest missing from source workspace and candidate root"
+  },
+  "tests": {
+    "command_scope": [
+      "tests/test_fp04_ui_authority.py",
+      "candidate_schema_binding regression",
+      "tests/test_r8_forward_namespace.py"
+    ],
+    "passed": 11,
+    "deselected_pg_write_tests": 4,
+    "diff_check": "PASS",
+    "test_basetemp_root": "G:\\codex_tmp\\test_temp"
+  },
+  "new_or_updated_candidate_configuration": [
+    {
+      "path": "config/r8_forward_candidate_namespace_r1.json",
+      "sha256": "cf3b8bf4fb6e21e7ebdbf9c565b63c06072dac35c76e4bb2aef7bd18e6d123f5"
+    },
+    {
+      "path": "config/v4_read_index_authority_r2.json",
+      "sha256": "f0ec5db17d060efbda430a55520ef25dcf80341fe58e63d907694312d5e1e2b4"
+    },
+    {
+      "path": "data/v4/research_priority_authority_r1.json",
+      "sha256": "4d0042c9857e70c9482fbaaa40f7e1e4fb29cfffb920f2f0b95531207cbe6a3c"
+    },
+    {
+      "path": "config/v4_joint_release_authority_v1.json",
+      "sha256": "e3fee2907424c78a9d68acc9f69ea521baa618e1763f80a4cf7777ac72f31490"
+    }
+  ],
+  "credentials_logged": false,
+  "destructive_database_operations": false
+}

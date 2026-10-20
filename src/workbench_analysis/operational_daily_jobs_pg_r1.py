@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from datetime import datetime,date
 import hashlib
 import os
+import re
 import json
 from pathlib import Path
 import threading
@@ -51,7 +52,7 @@ def row_factory(cursor):
 
 class JobTransaction:
     """Translate the frozen state-machine parameter syntax to native PG SQL."""
-    def __init__(self,pg,key): self.pg=pg;self.key=key;self.locked=False
+    def __init__(self,pg,key,table_map=None): self.pg=pg;self.key=key;self.locked=False;self.table_map=table_map or {}
     def execute(self,query,params=()):
         if query=='BEGIN IMMEDIATE':
             self.locked=True
@@ -62,14 +63,38 @@ class JobTransaction:
             'INSERT OR REPLACE INTO scheduler_rearm VALUES(?,?,?)':'INSERT INTO scheduler_rearm VALUES(%s,%s,%s) ON CONFLICT(target) DO UPDATE SET revision=EXCLUDED.revision,reason=EXCLUDED.reason',
             'INSERT OR REPLACE INTO scheduler_dispatch VALUES(?,?)':'INSERT INTO scheduler_dispatch VALUES(%s,%s) ON CONFLICT(target) DO UPDATE SET job_id=EXCLUDED.job_id',
         }
-        return self.pg.execute(replacements.get(query,query.replace('?', '%s')),params)
+        query=replacements.get(query,query.replace('?', '%s'))
+        if self.table_map:
+            names=sorted(self.table_map,key=len,reverse=True)
+            query=re.sub(r'\b('+'|'.join(map(re.escape,names))+r')\b',
+                         lambda match:self.table_map[match.group(0)],query)
+        return self.pg.execute(query,params)
+
+
+V4_TABLE_MAP={
+    'scheduler_policy':'jobs_scheduler_policy_r1',
+    'update_jobs':'jobs_update_jobs_r1',
+    'scheduler_dispatch':'jobs_scheduler_dispatch_r1',
+    'scheduler_attempts':'jobs_scheduler_attempts_r1',
+    'scheduler_rearm':'jobs_scheduler_rearm_r1',
+    'update_job_days':'jobs_update_job_days_r1',
+    'update_events':'jobs_update_events_r1',
+    'update_job_progress':'jobs_update_job_progress_r1',
+    'source_probe_state':'jobs_source_probe_state_r1',
+}
 
 class DailyJobs(StateMachine):
     def __init__(self,root,executor=None,clock=None,source_probe=None):
         self.root=Path(root).resolve();self.clock=clock or (lambda:datetime.now(SHANGHAI))
         self.executor=executor;self.stop=threading.Event();self.thread=None;self.worker_error=None
         self.active_job_id=None;self.source_probe=source_probe;self.policy_binding=None
-        self.dsn=configured_dsn();self.schema=workspace_schema(self.root,'jobs')
+        self.dsn=configured_dsn()
+        # Disposable regression databases may retain their per-fixture schema.
+        # The real project always uses its one business schema and its already
+        # migrated, namespaced job tables; it never creates a workspace schema.
+        self.isolated=os.environ.get('R4_NATIVE_ISOLATION')=='1'
+        self.schema=workspace_schema(self.root,'jobs') if self.isolated else 'v4'
+        self.table_map={} if self.isolated else V4_TABLE_MAP
         self.lock_key=int.from_bytes(hashlib.sha256(self.schema.encode()).digest()[:8],'big',signed=True)
         if (self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').is_file():
             policy_path=self.root/'config/read_only_operational_daily_release_policy_v1_1.json'
@@ -78,16 +103,26 @@ class DailyJobs(StateMachine):
             task=(self.root/policy['task_contract']['path']).resolve()
             if not task.is_relative_to(self.root) or hashlib.sha256(task.read_bytes()).hexdigest()!=policy['task_contract']['sha256']: raise ValueError('DAILY_POLICY_TASK_BINDING_INVALID')
             self.policy_binding=dict(path=policy_path.relative_to(self.root).as_posix(),sha256=hashlib.sha256(policy_path.read_bytes()).hexdigest())
-        with psycopg.connect(self.dsn,connect_timeout=5) as pg:
-            create_schema(pg,self.schema)
-        with connection(self.schema,dsn=self.dsn) as pg:
-            pg.execute('SELECT pg_advisory_xact_lock(%s)',(self.lock_key,))
-            pg.execute(DDL)
+        if self.isolated:
+            with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+                create_schema(pg,self.schema)
+            with connection(self.schema,dsn=self.dsn) as pg:
+                pg.execute('SELECT pg_advisory_xact_lock(%s)',(self.lock_key,))
+                pg.execute(DDL)
+        else:
+            with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+                pg.execute('SET TRANSACTION READ ONLY')
+                names=tuple(self.table_map.values())
+                found={row[0] for row in pg.execute(
+                    "SELECT table_name FROM information_schema.tables WHERE table_schema='v4' AND table_name=ANY(%s)",
+                    (list(names),))}
+            missing=sorted(set(names)-found)
+            if missing:raise RuntimeError('V4_DAILY_JOB_TABLES_MISSING:'+','.join(missing))
 
     @contextmanager
     def connect(self):
         with connection(self.schema,dsn=self.dsn,row_factory=row_factory) as pg:
-            yield JobTransaction(pg,self.lock_key)
+            yield JobTransaction(pg,self.lock_key,self.table_map)
 
     @contextmanager
     def worker_lock(self):

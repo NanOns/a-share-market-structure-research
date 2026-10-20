@@ -307,7 +307,19 @@ class DailyJobs:
                                      'FULL_PERIOD_NUMERIC_ORACLE_FAILED'}
                     waiting_tdx=safe=='FALLBACK_LOCAL_ACTUAL_TARGET_ABSENT'
                     transient=isinstance(exc,(OSError,TimeoutError,ConnectionError))
-                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked or not transient else 'FAILED_RETRYABLE',reason='SOURCE_EXECUTION_'+safe,
+                    diagnostic={}
+                    if isinstance(exc,FileNotFoundError) and exc.filename:
+                        from pathlib import Path
+                        missing=Path(str(exc.filename))
+                        try:
+                            rendered=missing.resolve().relative_to(self.root).as_posix() if missing.is_absolute() else missing.as_posix()
+                        except (OSError,ValueError):
+                            rendered=missing.name
+                        diagnostic['missing_resource']=rendered[:240]
+                    elif isinstance(exc,OSError):
+                        diagnostic['os_error_number']=exc.errno
+                    result=dict(status='WAIT_TDX' if waiting_tdx else 'QA_BLOCKED' if blocked or not transient else 'FAILED_RETRYABLE',
+                        reason='SOURCE_EXECUTION_'+safe,exception_type=type(exc).__name__,**diagnostic,
                         retry_class='TRANSIENT_INFRASTRUCTURE' if transient else 'DETERMINISTIC_SOURCE_OR_VALIDATION')
                 state=result['status']; retry=None
                 if self.publication_cancelled() and state!='PUBLISHED':state='CANCELLED'

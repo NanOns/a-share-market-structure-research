@@ -12,7 +12,7 @@ from v4.market_regime_ui import project
 from dataclasses import asdict
 
 
-def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=None):
+def materialize_market(root):
     root=Path(root).resolve();out=root/OUT;profiles=load(out/'PROFILE_STRUCTURE_REPLAY.json')
     sessions=official_sessions(root);c=DescendantContracts(root);dep=c.dependencies
     param,registry=resolve_package(dep['rotation_contract'],dep['parameter_set'],
@@ -23,16 +23,8 @@ def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=N
     from .r43_daily_price_limits import materialize_daily_limits
     limits_receipts=materialize_daily_limits(root)
     limit_sources={r['trade_date']:r['artifact'] for r in limits_receipts}
-    for item in predecessor_markets or ():
-        day=item['trade_date'];saved=load(checked(root,item['market']))
-        matches=[b for b in saved['input_bindings'] if Path(b['path']).name=='daily_price_limits_v1.jsonl.gz' and '/owners/'+day+'/' in b['path']]
-        if len(matches)!=1:raise ValueError('MARKET_ACCEPTED_PRIOR_LIMIT_BINDING_REQUIRED:'+day)
-        limit_sources[day]=matches[0]
     limits={d:{r['security_id']:r['limit_state'] for r in gzrows(checked(root,binding)) if r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT')} for d,binding in limit_sources.items()}
     receipts=[];regime_rows=[]
-    for item in predecessor_markets or ():
-        saved=load(checked(root,item['market']));regime_rows.append(dict(trade_date=item['trade_date'],trend_axis=saved['trend']['trend_axis'],
-            **{k:saved['axes'][k] for k in ('breadth_axis','participation_axis','stress_level','stress_change')}))
     for item in profiles['owners']:
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         factors={r['security_id']:r for r in gzrows(checked(root,owner['core']))}
@@ -54,7 +46,7 @@ def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=N
         members=defaultdict(set)
         for r in gzrows(checked(root,membership)):
             if r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):members[r['trade_date']].add(r['security_id'])
-        for old in list(predecessor_profiles or ())+profiles['owners']:
+        for old in profiles['owners']:
             if old['owner']['trade_date']<=day:
                 members[old['owner']['trade_date']]={r['security_id'] for r in gzrows(checked(root,old['owner']['core']))}
         universe=members.get(prior3,set())

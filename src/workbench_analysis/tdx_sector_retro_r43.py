@@ -11,18 +11,17 @@ from .corrected_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
 from .market_source_acquisition import write, official_sessions
 from .tdx_member_retro_r43 import EVIDENCE, capture, metadata, validate_snapshot, digest
 from .rotation_reconstructed_r43 import advance as advance_reconstructed
-from .r43_owner_replay import progress_items
 from v4.base_seed import _normalize_facts,evaluate_facts,_known,_unknown
 
 
-def run(root, *, predecessor_history=None, progress_counter=None):
+def run(root):
     root=Path(root).resolve();out=root/EVIDENCE;target=out/'sector_v3';s=capture(root)
     members=validate_snapshot(s,root);meta=lambda d:metadata(s,d)
     replay=load(out/'owner_v3/PROFILE_STRUCTURE_REPLAY.json');old=load(root/OUT/'SECTOR_REPLAY.json')
     params=load(root/'config/v4_08_algorithm_parameter_set_r5.json');p={x['parameter_id']:x['value'] for x in params['parameters']}
     c=DescendantContracts(root);dep=c.dependencies
     rotation_params,_=resolve_package(dep['rotation_contract'],dep['parameter_set'],checked(root,c.config['loo_context']['accepted_sector_dependencies']['parameter_set']).read_bytes(),dep['field_registry'])
-    sessions=official_sessions(root);receipts=[];history=deepcopy(predecessor_history or {});oracles=[]
+    sessions=official_sessions(root);receipts=[];history={};oracles=[]
     write(out/'W4_STAGE_CONTRACT.json',dict(contract_id='TDX_LATEST_MEMBER_RETRO_SECTOR_V1',upgrade='R4.3 W4',
         contract=ref(root,root/'config/v4_tdx_latest_member_retro_sector_r43_v1.json'),
         source=ref(root,out/'MEMBER_SNAPSHOT_S.json'),kernel=ref(root,root/'src/sector/native_r5.py'),
@@ -40,7 +39,7 @@ def run(root, *, predecessor_history=None, progress_counter=None):
         stockhist={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(root,owner['history']))}
         board_counts=dict(Counter(r['board_scope'] for r in factors.values()));prior_day=sessions[sessions.index(day)-1]
         seedparams=load(root/'config/v4_07_parameter_set_v1.json');seedmatched=0;newseedrows=[];seedchanges=[];oldseedbinding=seedbinding
-        for sid,f in progress_items(list(factors.items()),progress_counter,coordinate_endpoint=day,phase='SECTOR_SEED'):
+        for sid,f in factors.items():
             profile=dict(profiles[sid],historical_as_recorded_claim=False)
             facts=_normalize_facts(profile,f,dict(trade_date=day,expected_board_counts=board_counts,profile_row_publication_id=profile['publication_id']))
             pc=priorcore.get(sid,{}).get('fields',{}).get('ma20',{});pb=stockhist[sid].get(prior_day)
@@ -141,7 +140,7 @@ def run(root, *, predecessor_history=None, progress_counter=None):
         bystock=defaultdict(list)
         for m in eligible:bystock[m['security_id']].append(m['sector_id'])
         loo=[];oracle_sectors=set();oracle_types=Counter()
-        for sid in progress_items(sorted(factors),progress_counter,coordinate_endpoint=day,phase='SECTOR_LOO'):
+        for sid in sorted(factors):
             f=factors[sid]['fields'];profile=profiles[sid];stock={k:f.get(k,{}).get('value') for k in ('rps5','rps20','rps20_delta3')}
             stock.update(stock_ret1=f['ret1']['value'],stock_ret5=f['ret5']['value'],compression_state=profile['states']['compression_state']['value'],ma_structure_state=profile['states']['ma_structure_state']['value'])
             contexts=[]

@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
-from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT, progress_items
+from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT
 from .market_source_acquisition import official_sessions, write
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
@@ -109,7 +109,7 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
         self.engineering_empty_seed=False
 
 
-def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None):
+def materialize_profiles_structure(root):
     root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
     write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.3',
@@ -121,15 +121,13 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
     from .v4_13_descendant_contracts import DescendantContracts
     from .v4_13_profile_runtime import copy_structure
     c13=DescendantContracts(root)
-    c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=prior_snapshot
-    previous_ids=set(prior_security_ids or ())
+    c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=None
     verified_status={}
     historical_status=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
     for r in gzrows(checked(root,historical_status)):
         verified_status[r['security_id'],r['trade_date']]=r['status']
     identity=load(checked(root,replay['owners'][0]['sources']['identity']))['rows']
     code_to_id={r['source_security_key'].lower():r['security_id'] for r in identity}
-    identity_by_id={r['security_id']:r for r in identity}
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     for query in acquisition['queries']:
         if query.get('path') and query['method']=='query_daily_history_k_AStock':
@@ -145,24 +143,21 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
-        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='PROFILE'):
-            sid=factor['security_id'];bs=histories.get(sid,[])
-            first_session=bs[0]['trade_date'] if bs else str(identity_by_id.get(sid,{}).get('list_date') or day)
-            actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if first_session<=d<=day]
+        for factor in factors:
+            sid=factor['security_id'];bs=histories[sid]
+            actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if bs[0]['trade_date']<=d<=day]
             bars=[dict(trade_date=b['trade_date'],qfq_close=b['qfq_ohlc'][3] if b['qfq_ohlc'] else None,
                 qfq_high=b['qfq_ohlc'][1] if b['qfq_ohlc'] else None,qfq_low=b['qfq_ohlc'][2] if b['qfq_ohlc'] else None,
                 amount=b['amount'],adjusted_quality='READY' if b['qfq_ohlc'] else 'UNKNOWN') for b in bs]
             r=build_row(factor,bars,periods(bs,'WEEKLY',day),periods(bs,'MONTHLY',day),status,
                         {'source_security_key':factor['source_security_key']},owner['source_digest'],cd,sessions,regime)
-            r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
-            if not bs:r.update(profile_quality='INSUFFICIENT_HISTORY',quality_codes=['UNKNOWN','INSUFFICIENT_HISTORY'])
-            profiles.append(r)
+            r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else verified_status.get((sid,day),'UNKNOWN'),status_conflict=False))
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))
         engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
         results=[]
-        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='STRUCTURE'):
+        for factor in factors:
             sid=factor['security_id']
             # Newly listed identities have no predecessor row: absence stays UNKNOWN.
             use_prior=prior if prior and sid in previous_ids else None

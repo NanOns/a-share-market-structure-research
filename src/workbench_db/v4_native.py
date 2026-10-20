@@ -10,7 +10,10 @@ from psycopg import sql
 CONTRACT = 'V4_NATIVE_POSTGRESQL_CONNECTION_R1'
 
 def configured_dsn():
-    value=os.environ.get('V4_NATIVE_PG_DSN')
+    # Workbench and native V4 entrypoints share the same configured PostgreSQL
+    # endpoint. Both names remain process-environment-only; there is no file,
+    # SQLite, or alternate-database fallback here.
+    value=os.environ.get('V4_NATIVE_PG_DSN') or os.environ.get('WORKBENCH_PG_DSN')
     if not value: raise RuntimeError('V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK')
     return value
 
@@ -24,7 +27,7 @@ def workspace_schema(root, purpose):
 
 @contextmanager
 def connection(schema, *, read_only=False, dsn=None, row_factory=None):
-    if not re.fullmatch(r'v4_[a-z0-9_]{1,56}',schema): raise ValueError('INVALID_V4_PG_SCHEMA')
+    if not re.fullmatch(r'(?:v4|v4_[a-z0-9_]{1,56})',schema): raise ValueError('INVALID_V4_PG_SCHEMA')
     with psycopg.connect(dsn or (configured_reader_dsn() if read_only else configured_dsn()),connect_timeout=5,row_factory=row_factory) as pg:
         pg.execute("SET LOCAL statement_timeout='30s'")
         pg.execute("SET LOCAL lock_timeout='5s'")

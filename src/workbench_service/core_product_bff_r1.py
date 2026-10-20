@@ -594,6 +594,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 items=None,total=None,write_authorized=False)
 
     def get(self,path,query):
+        if path=='/api/v4/rotation-review':
+            from workbench_analysis.rotation_review_r1 import read_review
+            if query.get('context_token')!=self.api.token:
+                raise ValueError('CONTEXT_TOKEN_MISMATCH')
+            return 200,read_review(self.api.root,self)
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},

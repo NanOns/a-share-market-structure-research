@@ -3,6 +3,7 @@ from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 from http.server import ThreadingHTTPServer
 import hashlib,json,threading,time,logging
+import os
 from copy import copy
 import psycopg
 from .operational_daily_server_v1 import make_daily_handler, PREFIX
@@ -153,7 +154,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
             parsed=urlparse(self.path);path=parsed.path
             if path.startswith('/v4/assets/'):
                 name=path.rsplit('/',1)[-1]
-                if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js'):
+                if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js','rotation-review.js'):
                     asset=static/'core-product-r1'/name
                     return self.send(200,asset.read_bytes(),'application/javascript; charset=utf-8')
             if path.startswith('/api/v4/') and not path.startswith((PREFIX,'/api/v4/original-0930/','/api/v4/shadow/')):
@@ -200,6 +201,8 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                         code,data=bff.get(path,{k:v[0] for k,v in params.items()})
                         if current_joint is not None and code==200:
                             data['current_native_joint']=dict(contract_id=current_joint['contract_id'],T0=current_joint['T0'],business_token=current_joint['business_token'],snapshot=current_joint['snapshot'],full_product_release=current_joint['full_product_release'])
+                        if path=='/api/v4/rotation-review' and code==200:
+                            data['review_write_enabled']=os.environ.get('V4_ENABLE_ROTATION_REVIEW_WRITE')=='1'
                         if path=='/api/v4/home' and code==200:
                             # The 512 KiB contract belongs to the R2 summary
                             # projection. During migration, a dated R1 index
@@ -238,6 +241,31 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                 except (ValueError,KeyError,OSError) as exc:
                     return self.send(409 if str(exc)=='CONTEXT_TOKEN_MISMATCH' else 503 if 'SHA' in str(exc) or 'HASH' in str(exc) else 400,dict(code='PRODUCT_READ_FAILED',reason=str(exc)))
             return super().do_GET()
+        def do_POST(self):
+            if urlparse(self.path).path!='/api/v4/rotation-review':
+                return super().do_POST()
+            if os.environ.get('V4_ENABLE_ROTATION_REVIEW_WRITE')!='1':
+                return self.send(404,dict(code='ROTATION_REVIEW_WRITE_DISABLED'))
+            origin=self.headers.get('Origin')
+            allowed={f'http://127.0.0.1:{self.server.server_port}',f'http://localhost:{self.server.server_port}'}
+            if (self.client_address[0] not in {'127.0.0.1','::1'} or
+                self.headers.get('X-V4-Operation')!='rotation-review' or origin not in allowed):
+                return self.send(403,dict(code='LOCAL_ORIGIN_CAPABILITY_REQUIRED'))
+            try:
+                count=int(self.headers.get('Content-Length','0'))
+                if not 0<count<=4096:return self.send(413,dict(code='BODY_SIZE_LIMIT'))
+                body=json.loads(self.rfile.read(count))
+                cache=bind()
+                bff=copy(cache['bff']);api=copy(bff.api);api.cache=dict(getattr(api,'cache',{}));bff.api=api
+                from workbench_analysis.rotation_review_r1 import record_review
+                record=record_review(root,bff,body)
+                return self.send(201,record)
+            except ValueError as exc:
+                reason=str(exc)
+                status=409 if reason in ('CONTEXT_TOKEN_MISMATCH','ROTATION_REVIEW_QUALITY_GATE_BLOCKED') else 400
+                return self.send(status,dict(code='ROTATION_REVIEW_REJECTED',reason=reason))
+            except (psycopg.Error,RuntimeError):
+                return self.send(503,dict(code='V4_PG_UNAVAILABLE',reason='PG_REQUIRED_NO_FALLBACK'))
     return Handler
 
 def serve_v4(root,host='127.0.0.1',port=28765):

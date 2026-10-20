@@ -71,6 +71,15 @@ def test_missing_suspension_and_future_corporate_action(tmp_path, monkeypatch):
     assert p.path('A','2026-09-28','2026-09-30')['quality']=='DATA_UNAVAILABLE'
 
 
+def test_accepted_path_normalizes_legacy_stable_id_in_memory():
+    from focus_tracker.v4_path_adapter import _resolve_series_identity
+    bars={'2026-09-28':dict(symbol='SEC-A'),'2026-09-30':dict(symbol='SH.600000')}
+    assert _resolve_series_identity(bars,'SEC-A','SH.600000')=='SH.600000'
+    assert [row['symbol'] for row in bars.values()]==['SH.600000','SH.600000']
+    with pytest.raises(SourceInvalid,match='IDENTITY_MISMATCH'):
+        _resolve_series_identity({'2026-09-28':dict(symbol='SZ.000001')},'SEC-A','SH.600000')
+
+
 def test_dated_owner_updates_preserve_history_and_reject_kernel_change(tmp_path,monkeypatch):
     class Dated(Paths):
         def __init__(self,root,inputs):self.inputs=inputs

@@ -112,11 +112,33 @@ def detect(root,parent,gbbq_sha,member_hashes,*,execution_bindings=None,candidat
         name=binding.get('module_path',binding['path'])
         if name.startswith(KERNEL_PREFIXES) or name in PARAMETERS or corrected_market and name in MARKET_DRIVERS:
             if execution_bindings is not None:
-                if name not in executed:raise ValueError('RANGE_REPAIR_REQUIRED:EXECUTED_NUMERIC_BINDING_MISSING:'+name)
-                actual=sha256_file(checked(root,executed[name]))
-            else:actual=sha256_file(root/name)
-            kernels.append(dict(module_path=name,accepted_sha256=binding['sha256'],actual_sha256=actual,executed_binding=executed.get(name),unchanged=actual==binding['sha256']))
-            if actual!=binding['sha256']:
+                # Exact successor policies need not repeat every numerical
+                # source already bound by their accepted predecessor. When a
+                # source is absent from the successor execution set, verify
+                # the predecessor's immutable binding directly instead of
+                # treating the omission as missing or inferring a replacement.
+                executed_binding=executed.get(name,binding)
+                if name in executed:
+                    actual_path=checked(root,executed_binding)
+                    actual=sha256_file(actual_path)
+                    actual_bytes=actual_path.stat().st_size
+                else:
+                    predecessor_path=(root/executed_binding['path']).resolve()
+                    predecessor_path.relative_to(root.resolve())
+                    actual=sha256_file(predecessor_path)
+                    actual_bytes=predecessor_path.stat().st_size
+            else:
+                executed_binding=binding
+                actual_path=(root/binding['path']).resolve()
+                actual_path.relative_to(root.resolve())
+                actual=sha256_file(actual_path)
+                actual_bytes=actual_path.stat().st_size
+            unchanged=actual==binding['sha256'] and (actual_bytes is None or actual_bytes==binding.get('bytes'))
+            kernels.append(dict(module_path=name,accepted_sha256=binding['sha256'],actual_sha256=actual,
+                accepted_bytes=binding.get('bytes'),actual_bytes=actual_bytes,
+                executed_binding=executed_binding,execution_binding_source='SUCCESSOR_POLICY' if name in executed else 'PREDECESSOR_HEAD',
+                unchanged=unchanged))
+            if not unchanged:
                 admitted=(candidate_only and name=='src/workbench_analysis/operational_owner_adapter_v1.py'
                     and name in executed and lifecycle_adapter_only(checked(root,binding).read_text(encoding='utf8'),checked(root,executed[name]).read_text(encoding='utf8')))
                 if admitted:

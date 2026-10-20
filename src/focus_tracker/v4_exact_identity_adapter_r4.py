@@ -9,7 +9,7 @@ from workbench_db.v4_series_pg_r1 import range_rows
 from workbench_service.current_v4_context import SourceInvalid, canonical, digest
 from .price_path import Bar, path_metrics
 from .v4_native_core_adapter import AcceptedPaths as NativePaths
-from .v4_path_adapter import checked
+from .v4_path_adapter import checked, _resolve_series_identity
 
 CONTRACT = 'V4_FOCUS_EXACT_SOURCE_IDENTITY_CANDIDATE_R4'
 ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
@@ -56,8 +56,7 @@ class AcceptedPaths(NativePaths):
         if not sessions or sessions[0] != start or sessions[-1] != end:
             raise SourceInvalid('FOCUS_PATH_CALENDAR_BOUNDS')
         bars = dict(range_rows(self.series, sid, start, end))
-        if any(row.get('symbol') != symbol for row in bars.values()):
-            raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
+        symbol=_resolve_series_identity(bars,sid,symbol)
         suspended, missing = [], []
         for day in sessions:
             status = self.status.get(day, {}).get(sid, {})

@@ -62,16 +62,30 @@ def market_facts(root,candidate,day,owner):
         limits=dict(counts=dict(Counter(row['limit_state'] for row in limits)),rows=limits),ladders=ladders,sources=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False)
     return facts,bindings
 
-def prepare(root,candidate,owner,*,historical_indices=None):
+def previous_date_bindings(root,candidate,predecessor,*,historical_indices=None,previous_dates=None):
+    """Resolve dated product predecessors, allowing only explicit R1 bootstrap evidence."""
+    if KEY in predecessor:
+        previous=load_catalog(root,predecessor)['dates']
+    else:
+        old=json.loads((Path(root)/'config/core_product_read_authority_r1.json').read_bytes())
+        if old.get('contract_id')=='CORE_PRODUCT_READ_AUTHORITY_R2':
+            previous=old['dates']
+        else:
+            if historical_indices is None:
+                raise ValueError('INITIAL_HISTORICAL_EXACT_CORRECTION_ADMISSION_REQUIRED')
+            if old.get('contract_id')!='CORE_PRODUCT_READ_AUTHORITY_R1' or previous_dates is None:
+                raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
+            previous=previous_dates
+    expected=set(candidate['published_sessions'][:-1])
+    if set(previous)!=expected:raise ValueError('PRODUCT_PACK_PREDECESSOR_DATE_DENOMINATOR')
+    if historical_indices is not None and set(historical_indices)!=expected:
+        raise ValueError('ALL_HISTORICAL_CORRECTION_INDICES_REQUIRED')
+    return previous
+
+def prepare(root,candidate,owner,*,historical_indices=None,previous_dates=None):
     root=Path(root).resolve();predecessor=json.loads(checked(root,candidate['predecessor']).read_bytes());day=candidate['accepted_trade_date']
     if owner['trade_date']!=day:raise ValueError('PRODUCT_PACK_DATED_OWNER_REQUIRED')
-    if KEY in predecessor:previous=load_catalog(root,predecessor)['dates']
-    else:
-        if historical_indices is None:raise ValueError('INITIAL_HISTORICAL_EXACT_CORRECTION_ADMISSION_REQUIRED')
-        old=json.loads((root/'config/core_product_read_authority_r1.json').read_bytes())
-        if old['contract_id']!='CORE_PRODUCT_READ_AUTHORITY_R2':raise ValueError('LEGACY_DATED_PRODUCT_CATALOG_REQUIRED')
-        previous=old['dates']
-    if set(previous)!=set(candidate['published_sessions'][:-1]):raise ValueError('PRODUCT_PACK_PREDECESSOR_DATE_DENOMINATOR')
+    previous=previous_date_bindings(root,candidate,predecessor,historical_indices=historical_indices,previous_dates=previous_dates)
     folder=root/'data/v4/native_product_catalog_v3'/digest(canonical(dict(owners=candidate['owners'],history=owner['history'])))
     dates={}
     for prior_day,binding in previous.items():
@@ -80,6 +94,9 @@ def prepare(root,candidate,owner,*,historical_indices=None):
         if manifest['head']['path']=='data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json':manifest['head']=candidate['predecessor']
         if historical_indices:
             if prior_day not in historical_indices:raise ValueError('ALL_HISTORICAL_CORRECTION_INDICES_REQUIRED')
+            correction=historical_indices[prior_day]
+            if correction.get('T0')!=prior_day or correction.get('engine')!='postgresql' or correction.get('head_token')!=manifest['fact_token']:
+                raise ValueError('HISTORICAL_CORRECTION_INDEX_SCOPE_MISMATCH')
             manifest['history_index']=historical_indices[prior_day]
         path=folder/prior_day/'MANIFEST.json';atomic_json(root,path,manifest);dates[prior_day]=ref(root,path)
     facts,bindings=market_facts(root,candidate,day,owner)

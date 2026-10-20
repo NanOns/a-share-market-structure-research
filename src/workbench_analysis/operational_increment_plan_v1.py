@@ -140,12 +140,31 @@ def focus_predecessor(root, accepted_days):
         projection=json.load(stream)
     bindings=projection['source_bindings']
     # Stream the prior immutable PG series once, preserving every saved bar byte.
-    from workbench_db.v4_series_pg_r1 import verified_series_read
-    descriptor=load(checked(root,bindings['series']));allbars={}
-    with verified_series_read(descriptor) as db:
-        for sid,day,payload in db.execute('SELECT security,day::text,payload FROM bars ORDER BY security,day').fetchall():
-            if day>last:raise ValueError('INCREMENT_FOCUS_FUTURE_BAR')
-            allbars[(sid,day)]=json.loads(payload)
+    series_path=checked(root,bindings['series']);allbars={}
+    if series_path.suffix.lower()=='.sqlite':
+        # Accepted V1 predecessor Heads bind the actual focus bar series as a
+        # SQLite file. Later R1.1 successors may bind a PG-series descriptor.
+        # Read either exact binding directly; never reinterpret one as the other.
+        import sqlite3
+        lifecycle=load(checked(root,accepted_days[last]['lifecycle']))
+        identity=load(checked(root,lifecycle['identity']))
+        symbols={r['security_id']:r['source_security_key'] for r in identity['rows']}
+        uri='file:'+series_path.resolve().as_posix()+'?mode=ro'
+        with sqlite3.connect(uri,uri=True) as db:
+            for sid,day,payload in db.execute('SELECT security,day,payload FROM bars ORDER BY rowid'):
+                if day>last:raise ValueError('INCREMENT_FOCUS_FUTURE_BAR')
+                bar=json.loads(payload);expected=symbols.get(sid)
+                if expected is None:raise ValueError('INCREMENT_FOCUS_SECURITY_IDENTITY_MISSING')
+                if bar.get('symbol') not in (None,sid,expected):
+                    raise ValueError('INCREMENT_FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
+                allbars[(sid,day)]=bar
+    else:
+        from workbench_db.v4_series_pg_r1 import verified_series_read
+        descriptor=load(series_path)
+        with verified_series_read(descriptor) as db:
+            for sid,day,payload in db.execute('SELECT security,day::text,payload FROM bars ORDER BY security,day').fetchall():
+                if day>last:raise ValueError('INCREMENT_FOCUS_FUTURE_BAR')
+                allbars[(sid,day)]=json.loads(payload)
     return dict(days=days,receipts=receipts,mainline_context=mainline,allbars=allbars,
         pathstatus=deepcopy(bindings['status']),native=deepcopy(bindings['native_core']),
         prior={r['entity_id']:r for r in days[last]},prior_pid=receipts[-1]['publication_id'])

@@ -1,0 +1,232 @@
+{
+  "contract_id": "V4_20261012_CANDIDATE_RECOVERY_EVIDENCE_R1",
+  "status": "CANDIDATE_VALIDATED_AND_INDEPENDENT_READBACK_READY",
+  "target_date": "2026-10-12",
+  "late_collection": {
+    "observed_at": "2026-10-20T10:19:45.760110+08:00",
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false
+  },
+  "source_freeze": {
+    "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-12/956033429587ba518da87d1831cc2394d4e3a9fe511e7ace8321efb856868ef9.json",
+    "bytes": 1792233,
+    "sha256": "425b1418ba8e646e755e38b6555ef1c1aef8bcc6d660a270547567b3b01c558b"
+  },
+  "source_readiness": {
+    "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-12/1d97a36d36e0f01441cb27d6679a2692831074e1eeac777509239578626b454b.json",
+    "bytes": 928870,
+    "sha256": "7a189c9b2aee88980a59886ee617e53c2b6389e0cb0da7c09835391e6f3d6ef4"
+  },
+  "owner_replay": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/a4c61992b79b09653ceba7273a8970f83b4571977cbaf19e9c959208ed2c3427/owner_v3/CORE_REPLAY.json",
+    "bytes": 678477,
+    "sha256": "2783f0e5c1d2e187f31ce6b3ef6763c73ba303db5e2963375d1b62ac4f7d8f50"
+  },
+  "owner_rows": 5224,
+  "period_numeric_oracle": {
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/a4c61992b79b09653ceba7273a8970f83b4571977cbaf19e9c959208ed2c3427/PERIOD_NUMERIC_ORACLE.json",
+    "bytes": 1361,
+    "sha256": "43ee64cb33526e3cd3844b11219af26043e83151e3343211b3a9b9b8713e5a9d",
+    "acceptance": "PASS",
+    "checks": 219408,
+    "errors": 0
+  },
+  "historical_bootstrap": {
+    "correction_report": {
+      "path": "docs/audits/v4_full_closeout_20261012/continuation_20261013/HISTORY_HEAD_CONTINUITY_R1/HISTORY_CORRECTIONS_R6.json.gz",
+      "bytes": 2183,
+      "sha256": "f3d2c1230a20fec7df820d078ba8fd62ea99c51b85d614ea08761fb31ad615a9",
+      "acceptance": "PASS_PREPARATION_ONLY"
+    },
+    "archived_owner_bindings_exact_for_previous_dates": true,
+    "exact_previous_manifests_restored": 5,
+    "previous_dates": [
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-08",
+      "2026-10-09"
+    ],
+    "archive_catalog": {
+      "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/CATALOG.json",
+      "bytes": 26490,
+      "sha256": "b0f4a8f78116039335181d021e40c9a57ba669df11ee92d71a940328f4dc5b17"
+    },
+    "restored_manifest_bindings": [
+      {
+        "binding": {
+          "bytes": 3894,
+          "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/2026-09-28/MANIFEST.json",
+          "sha256": "1b28dcb5e3946501210bf4aa86fe9648c98a7b1dc587263ad962347a4dbe87b4"
+        },
+        "date": "2026-09-28"
+      },
+      {
+        "binding": {
+          "bytes": 4115,
+          "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/2026-09-29/MANIFEST.json",
+          "sha256": "d657c3a8c1ceb22ca51869f6225250335a17ec28bb8bb01b5568751cf7cadd23"
+        },
+        "date": "2026-09-29"
+      },
+      {
+        "binding": {
+          "bytes": 4115,
+          "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/2026-09-30/MANIFEST.json",
+          "sha256": "ac322dc2a51640feacf179bfd7542e50fcc50d5a472f99339655ff7d62bef823"
+        },
+        "date": "2026-09-30"
+      },
+      {
+        "binding": {
+          "bytes": 4115,
+          "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/2026-10-08/MANIFEST.json",
+          "sha256": "6fae6dc3d8f6d637f82b211465e1db20b58eb15fd9faa20499d9cc195f83ac70"
+        },
+        "date": "2026-10-08"
+      },
+      {
+        "binding": {
+          "bytes": 4390,
+          "path": "data/v4/native_product_catalog_v3/79afa7fbce81df09648be8219d668ebce3baff7d874f96e1c396392b9a8f9972/2026-10-09/MANIFEST.json",
+          "sha256": "297129d76b7c07b7f5ebd4056c7f38f0fc281206acfe3401556c97e03e2b3a4d"
+        },
+        "date": "2026-10-09"
+      }
+    ]
+  },
+  "product_pack": {
+    "contract_id": "V4_HEAD_EMBEDDED_PRODUCT_READ_CATALOG_V3",
+    "dates": 6,
+    "history_payload_digest": "55bcda93ec12e2eb5682c0ea4389ac0d9af0bad32a23028b927b618bbdf4de07",
+    "new_history_bars": 2163109,
+    "new_history_symbols": 5224,
+    "publication": false
+  },
+  "candidate": {
+    "bytes": 54895,
+    "path": "data/v4/dynamic_daily_owners/2026-10-12/a4c61992b79b09653ceba7273a8970f83b4571977cbaf19e9c959208ed2c3427/SUCCESSOR_CANDIDATE_WITH_PRODUCT_CATALOG_R1.json",
+    "sha256": "554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5"
+  },
+  "successor_validation": true,
+  "candidate_readback": {
+    "R1": {
+      "binding": {
+        "T0": "2026-10-12",
+        "contract_id": "V4_READ_INDEX_R1",
+        "counts": {
+          "focus": 3025,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "0c439773eb62b936b506ca5a24c1cbbe9fa8235a4025b7c27b863a09f91e285e",
+        "engine": "postgresql",
+        "head_token": "554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5",
+        "schema": "v4_read_index_dbe184da961f97b8"
+      },
+      "context_token": "554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5",
+      "counts": {
+        "focus": 3025,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "statuses": {
+        "focus": "READY",
+        "sectors": "READY",
+        "stocks": "READY"
+      }
+    },
+    "R2": {
+      "binding": {
+        "T0": "2026-10-12",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3025,
+          "radar": 311,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "06463c6c6fba8eb3d86f2a124ad2b526dc09cf522afbe26543902c872bf47d61",
+        "engine": "postgresql",
+        "head_token": "554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5",
+        "producer_sha256": "661df67c3b01d685574301970f2be682063269d38e835517e12d92fc7d2887c7",
+        "schema": "v4_942e8c890f4db80df0d75c46898eedbde60382279662b78634b117a5"
+      },
+      "context_token": "554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5",
+      "counts": {
+        "focus": 3025,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "statuses": {
+        "focus": "READY",
+        "sectors": "READY",
+        "stocks": "READY"
+      }
+    }
+  },
+  "database_identity": {
+    "database": "market_research",
+    "database_oid": 646711,
+    "host": "127.0.0.1/32",
+    "port": 5432
+  },
+  "heads": {
+    "operational_research": {
+      "path": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+      "bytes": 29799,
+      "sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e"
+    },
+    "data_accepted": {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "bytes": 16890,
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "unchanged_during_candidate_preparation": true
+  },
+  "head_reference_audit": {
+    "path_reference_occurrences": 137,
+    "unique_paths": 122,
+    "mismatches_after_development_edits": [
+      {
+        "path": "src/workbench_analysis/r43_daily_price_limits.py",
+        "reason": "BYTES_OR_SHA_MISMATCH",
+        "actual_bytes": 6369,
+        "actual_sha256": "7c08106c9354cfe7bb5e7977dde9171c598d265a347c58b5c0c7234f4472fed1",
+        "expected_bytes": 6122,
+        "expected_sha256": "0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6"
+      }
+    ],
+    "development_source_original_from_git_head": {
+      "path": "src/workbench_analysis/r43_daily_price_limits.py",
+      "bytes": 6122,
+      "sha256": "0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6"
+    }
+  },
+  "next_trading_day": {
+    "target_date": "2026-10-13",
+    "capture_status": "WAIT_TDX",
+    "reason": "LATEST_OFFICIAL_PACKAGE_NOT_FROZEN",
+    "source_freeze": null,
+    "source_readiness": null,
+    "owner_run": "NOT_RUN"
+  },
+  "publication": false,
+  "formal_head_switch": false,
+  "web_services_started": false,
+  "verification": {
+    "targeted_pytest": "32 passed"
+  }
+}

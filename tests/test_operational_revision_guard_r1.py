@@ -60,6 +60,20 @@ def test_actual_execution_archive_not_stale_workspace_module(tmp_path):
         detect(tmp_path,parent,'accepted-factor',{'member':'accepted-member'},execution_bindings=[execution])
 
 
+def test_successor_execution_set_may_fall_back_to_exact_predecessor_binding(tmp_path):
+    parent,kernel,_=fixture(tmp_path)
+    result=detect(tmp_path,parent,'accepted-factor',{'member':'accepted-member'},execution_bindings=[])
+    binding=result['numeric_bindings'][0]
+    assert result['status']=='APPEND_DAY'
+    assert binding['execution_binding_source']=='PREDECESSOR_HEAD'
+    assert binding['executed_binding']['path']=='src/v4/factors/core.py'
+    assert binding['actual_sha256']==binding['accepted_sha256']
+    kernel.write_text('changed numerical kernel')
+    changed=detect(tmp_path,parent,'accepted-factor',{'member':'accepted-member'},execution_bindings=[])
+    assert changed['status']=='RANGE_REPAIR_REQUIRED'
+    assert changed['numeric_bindings'][0]['unchanged'] is False
+
+
 def test_first_seen_unlinked_code_never_invents_ipo_price_limits():
     from workbench_analysis.r43_daily_price_limits import observed_listing_phase
     sessions=['2026-10-12','2026-10-13']

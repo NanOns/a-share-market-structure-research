@@ -62,3 +62,12 @@ python -B scripts/run_fp02_research_snapshot.py --rollback $expectedResearchAuth
 - 2026-10-12 冻结来源复核为 `SOURCE_READY`。冻结 SHA=`425b1418ba8e646e755e38b6555ef1c1aef8bcc6d660a270547567b3b01c558b`，观察时间仍为 `2026-10-20T10:19:45.760110+08:00`，`AS_RECORDED=false`、`PIT_ELIGIBLE=false`。
 - 候选链在 Owner 开始前因恢复的 10-09 Owner `prepare` 与当前 ready-owner adapter 接口不兼容（不支持 `candidate_only_exact`）停止；未生成 10-12 Owner、独立读回或候选，未切换 Head。下一步需先按当前合同解决并绑定该运行时代码版本，再重跑 Owner→计算→独立读回→候选验证。
 - PG DSN 别名、9 张 `v4.jobs_*_r1` 表接线已通过只读构造检查；真实路径错误诊断代码存在。针对执行器、日历和后端合同的定向回归为 16 passed。以上结果不构成 10-12 发布验收。
+
+## 2026-10-20 10-12候选恢复补充
+
+- 修复Owner恢复运行时与当前ready-owner接口的兼容、SQLite绑定历史序列读取、稳定ID到来源证券键的只读身份解析，并为产品读包提供显式的R1历史目录引导参数。引导仅在R1旧Authority、完整历史日期清单和逐日期PG更正索引均存在时接受；不完整日期、错日期或错HEAD token继续失败关闭。定向回归为32 passed。
+- 历史输入使用交付归档的10-12封存候选材料。候选前五个历史日（09-28、09-29、09-30、10-08、10-09）的Owner引用与归档逐项相同；原 `HISTORY_CORRECTIONS_R6.json.gz` 为 `PASS_PREPARATION_ONLY`，五个历史日期索引及五份旧Manifest均逐项校验路径、字节数和SHA。只恢复这五份精确旧Manifest；10-12产品读包使用本次10-12 Owner重新生成，没有复用归档中的10-12产品数据。
+- 10-12来源为 `SOURCE_READY`，冻结SHA=`425b1418ba8e646e755e38b6555ef1c1aef8bcc6d660a270547567b3b01c558b`，`observed_at=2026-10-20T10:19:45.760110+08:00`，`AS_RECORDED=false`、`PIT_ELIGIBLE=false`。Owner覆盖5224只证券；独立周期数值Oracle `PASS`（219408项检查、0错误）。
+- 候选产品目录、10-12历史读包及独立PG读索引准备通过：产品目录覆盖6个会话、5224只证券和2163109根历史K线，逻辑摘要=`55bcda93ec12e2eb5682c0ea4389ac0d9af0bad32a23028b927b618bbdf4de07`。候选token=`554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5`；Successor验证为true。R1/R2独立读取的context token相同，stocks=5224、sectors=400、focus=3025，状态均为`READY`；R2另含radar=311。读侧身份为`market_research`，OID 646711，5432。完整证据见 `docs/evidence/dynamic_daily_20261012/CANDIDATE_RECOVERY_R1.json`。
+- `V4_OPERATIONAL_RESEARCH_HEAD.json`仍是原10-09字节（SHA=`55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e`），`V4_DATA_ACCEPTED_HEAD.json`也保持原SHA；没有发布、正式Head切换或服务启动。开发修改使工作树中HEAD绑定的`src/workbench_analysis/r43_daily_price_limits.py`出现1项源码SHA差异（工作树新值=`7c08106c9354cfe7bb5e7977dde9171c598d265a347c58b5c0c7234f4472fed1`）；原绑定字节仍可从当前Git HEAD按原路径取回（6122字节、SHA=`0861cc7d8f11037ad6c4369975a11537ee11faabab8b27631734daebc46a32d6`）。未改写历史SHA。其余HEAD引用按路径、字节数和SHA核对通过；候选验证仍是开发候选，不是正式接受。
+- 按交易日顺序尝试10-13来源捕获，实际结果为`WAIT_TDX / LATEST_OFFICIAL_PACKAGE_NOT_FROZEN`，没有生成来源冻结或就绪回执，因此10-13 Owner尚未运行，后续交易日不会越过该缺口。需先取得并冻结合同要求的官方TDX包，再继续10-13→后续日期。

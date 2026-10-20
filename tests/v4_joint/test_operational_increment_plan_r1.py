@@ -65,3 +65,55 @@ def test_absent_code_keeps_old_owner_without_requiring_today_package_entry():
     _,saved=sample()
     verify_history_overlap({},saved,active_security_ids=set())
 
+
+def test_focus_predecessor_reads_hash_bound_sqlite_series_read_only(tmp_path):
+    import gzip
+    import json
+    import sqlite3
+    from workbench_analysis.r43_owner_replay import ref
+    from workbench_analysis.operational_increment_plan_v1 import focus_predecessor
+
+    focus=tmp_path/'focus.json.gz'
+    focus.write_bytes(gzip.compress(json.dumps(dict(publication_id='focus-1',rows=[
+        dict(entity_id='S',trade_date='2026-10-12',state_freshness='KNOWN')])).encode(),mtime=0))
+    prewatch=tmp_path/'prewatch.jsonl.gz'
+    prewatch.write_bytes(gzip.compress((json.dumps(dict(security_id='S',research_mainline_context={'state':'KNOWN'},
+        confirmation={'confirmation_status':'UNKNOWN'},prewatch={'raw_qualification':'UNKNOWN'}))+'\n').encode(),mtime=0))
+    series=tmp_path/'focus_actual_bars.sqlite'
+    with sqlite3.connect(series) as db:
+        db.execute('CREATE TABLE bars(security TEXT,day TEXT,payload TEXT,PRIMARY KEY(security,day))')
+        db.execute('INSERT INTO bars VALUES(?,?,?)',('S','2026-10-12',json.dumps(dict(trade_date='2026-10-12',symbol='S',close=10))))
+    forward=tmp_path/'forward.json.gz'
+    forward.write_bytes(gzip.compress(json.dumps(dict(source_bindings=dict(
+        series=ref(tmp_path,series),status={},native_core={}))).encode(),mtime=0))
+    identity=tmp_path/'identity.json';identity.write_text(json.dumps({'rows':[{
+        'security_id':'S','source_security_key':'SH.600001'}]}))
+    lifecycle=tmp_path/'lifecycle.json';lifecycle.write_text(json.dumps(dict(identity=ref(tmp_path,identity))))
+    result=focus_predecessor(tmp_path,{'2026-10-12':dict(
+        focus=ref(tmp_path,focus),prewatch=ref(tmp_path,prewatch),forward=ref(tmp_path,forward),
+        lifecycle=ref(tmp_path,lifecycle))})
+    assert result['allbars'][('S','2026-10-12')]['close']==10
+    assert result['allbars'][('S','2026-10-12')]['symbol']=='S'
+    assert result['prior']['S']['trade_date']=='2026-10-12'
+
+
+def test_focus_predecessor_rejects_future_sqlite_series_bar(tmp_path):
+    import gzip
+    import json
+    import sqlite3
+    from workbench_analysis.r43_owner_replay import ref
+    from workbench_analysis.operational_increment_plan_v1 import focus_predecessor
+
+    focus=tmp_path/'focus.json.gz';focus.write_bytes(gzip.compress(json.dumps(dict(publication_id='focus-1',rows=[dict(entity_id='S',trade_date='2026-10-12',state_freshness='KNOWN')])).encode(),mtime=0))
+    prewatch=tmp_path/'prewatch.jsonl.gz';prewatch.write_bytes(gzip.compress((json.dumps(dict(security_id='S',confirmation={'confirmation_status':'UNKNOWN'},prewatch={'raw_qualification':'UNKNOWN'}))+'\n').encode(),mtime=0))
+    series=tmp_path/'focus_actual_bars.sqlite'
+    with sqlite3.connect(series) as db:
+        db.execute('CREATE TABLE bars(security TEXT,day TEXT,payload TEXT,PRIMARY KEY(security,day))')
+        db.execute('INSERT INTO bars VALUES(?,?,?)',('S','2026-10-13',json.dumps(dict(trade_date='2026-10-13'))))
+    forward=tmp_path/'forward.json.gz';forward.write_bytes(gzip.compress(json.dumps(dict(source_bindings=dict(series=ref(tmp_path,series),status={},native_core={}))).encode(),mtime=0))
+    identity=tmp_path/'identity.json';identity.write_text(json.dumps({'rows':[{
+        'security_id':'S','source_security_key':'SH.600001'}]}))
+    lifecycle=tmp_path/'lifecycle.json';lifecycle.write_text(json.dumps(dict(identity=ref(tmp_path,identity))))
+    with pytest.raises(ValueError,match='INCREMENT_FOCUS_FUTURE_BAR'):
+        focus_predecessor(tmp_path,{'2026-10-12':dict(focus=ref(tmp_path,focus),prewatch=ref(tmp_path,prewatch),forward=ref(tmp_path,forward),lifecycle=ref(tmp_path,lifecycle))})
+

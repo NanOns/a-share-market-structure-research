@@ -18,6 +18,20 @@ from .v4_successor import project
 CONTRACT = 'R2_V4_FOCUS_PATH_OUTCOME_V2'
 ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
 
+def _resolve_series_identity(bars, security_id, expected_symbol):
+    """Validate and normalize only the parsed read copy of dated bars."""
+    symbol=expected_symbol or next((bar.get('symbol') for bar in bars.values()),None)
+    import re
+    if not isinstance(symbol,str) or not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}',symbol):
+        raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
+    for bar in bars.values():
+        saved=bar.get('symbol')
+        if expected_symbol and saved==security_id:
+            bar['symbol']=expected_symbol
+        elif saved!=symbol:
+            raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
+    return symbol
+
 
 def checked(root, binding):
     root = Path(root).resolve()
@@ -30,6 +44,18 @@ def checked(root, binding):
 class AcceptedPaths:
     def __init__(self, root, bindings):
         self.root, self.bindings = Path(root), bindings
+        self.security_symbols = {}
+        identity_binding=bindings.get('security_identity')
+        if identity_binding:
+            identity=json.loads(checked(root,identity_binding).read_bytes())
+            reverse={}
+            for row in identity['rows']:
+                sid,symbol=row['security_id'],row['source_security_key']
+                if (not isinstance(symbol,str) or
+                        not __import__('re').fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}',symbol) or
+                        sid in self.security_symbols or symbol in reverse):
+                    raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_INVALID')
+                self.security_symbols[sid]=symbol;reverse[symbol]=sid
         for binding in bindings.get('implementation',{}).values():
             checked(root,binding)
         self.series = checked(root, bindings['series'])
@@ -70,10 +96,8 @@ class AcceptedPaths:
                       anchor_actual_bar=start in bars, input_digest=digest(canonical(dict(
                           contract=CONTRACT, action_contract=ACTION_CONTRACT, bindings=self.bindings, sid=sid, start=start, end=end))))
         if not missing and start in bars and end in bars:
-            symbol = bars[end]['symbol']
-            import re
-            if not re.fullmatch(r'(SH|SZ|BJ)\.[0-9]{6}', symbol) or any(bar.get('symbol') != symbol for bar in bars.values()):
-                raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISMATCH')
+            expected=getattr(self,'security_symbols',{}).get(sid)
+            symbol = _resolve_series_identity(bars,sid,expected)
             events = [e for e in self.events[symbol] if int(start.replace('-', '')) < e.event_date <= int(end.replace('-', ''))]
             blocked = any(self.dispositions.get(str(e.category), {}).get('formal_disposition') not in
                           (('PRICE_AFFECTING_SUPPORTED', 'SUPPORTED_PRICE_AFFECTING') if e.category == 1 else ('NON_PRICE_AFFECTING',)) for e in events)

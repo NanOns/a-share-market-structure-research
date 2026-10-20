@@ -8,6 +8,13 @@ from .special_price_phases import SpecialPhaseEventStore,PhasePolicyRegistry,res
 from .r43_owner_replay import OUT,load,checked,gzrows,gzwrite,ref
 from .market_source_acquisition import official_sessions,write
 
+def observed_listing_phase(identity,day,sessions,resolved_phase):
+    listing=identity.get('confirmed_ipo_date') if identity.get('first_seen_date') else identity.get('list_date')
+    listed_sessions=[d for d in sessions if listing and listing<=d<=day]
+    if listing and 0<len(listed_sessions)<=5:return 'IPO_FIRST_5_TRADING_DAYS'
+    if identity.get('first_seen_date') and not listing:return 'UNKNOWN'
+    return resolved_phase
+
 def materialize_daily_limits(root):
     root=Path(root).resolve();out=root/OUT;core=load(out/'CORE_REPLAY.json');sessions=official_sessions(root)
     trace=load(out.parent/'04_TDX_BAOSTOCK_GBBQ_LIFECYCLE_AND_DELTA_SOURCE_TRACE.json')
@@ -30,9 +37,7 @@ def materialize_daily_limits(root):
         source_rows={r['code'].lower():r for r in bao['rows']};raw={r['security_id']:r for r in gzrows(checked(root,owner['raw']))};histories={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(root,owner['history']))};records=[]
         for sid,bars in histories.items():
             identity=identities[sid];code=identity['source_security_key'].lower();provider=source_rows.get(code,{});bar=raw.get(sid);board=policy.standard_rule_key(day,identity['board_scope']);phase,event=resolve_event_phase(store,sid,day,sessions,policy,identity['board_scope'])
-            listing=identity.get('list_date');listed_sessions=[d for d in sessions if listing and listing<=d<=day]
-            if listing and len(listed_sessions)<=5 and listed_sessions:phase_name='IPO_FIRST_5_TRADING_DAYS'
-            else:phase_name=phase.value
+            phase_name=observed_listing_phase(identity,day,sessions,phase.value)
             previous_bar=bars.get(previous);reference_ok=False
             try:reference_ok=bool(previous_bar and Decimal(provider.get('preclose','0'))==Decimal(str(previous_bar['raw_ohlc'][3])))
             except Exception:pass

@@ -269,9 +269,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         current=Counter(str(r.get('output_state') or 'UNKNOWN') for r in values)
         prior=Counter(str(r.get('prior_rotation_state') or 'UNKNOWN') for r in values)
         reasons=Counter(code for r in values for code in (r.get('reason_codes') or []))
-        return dict(owner_bound=bool(self.api.candidate['owners'][day].get('rotation')),
+        owner=self.api.candidate['owners'][day].get('rotation')
+        identifiers=[r.get('sector_id') or r.get('entity_id') for r in rows]
+        complete=bool(owner) and len(rows)==400 and len(identifiers)==400 and all(identifiers) and len(set(identifiers))==400
+        return dict(owner_bound=bool(owner),owner_bytes=owner.get('bytes') if owner else None,
+            owner_sha256=owner.get('sha256') if owner else None,
             total=len(values),current_states=dict(current),prior_states=dict(prior),
-            unknown_reasons=dict(reasons),validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
+            unknown_reasons=dict(reasons),
+            automatic_acceptance_contract='V4_ROTATION_PIPELINE_AUTO_ACCEPTANCE_R1',
+            automatic_acceptance_state='AUTO_ACCEPTED_WITH_LIMITATIONS' if complete else 'BLOCKED_INCOMPLETE_OWNER_OUTPUT',
+            validation='OWNER_PIPELINE_READABLE; CANDIDATE_AUTO_ACCEPTED' if complete else 'OWNER_PIPELINE_INCOMPLETE')
 
     @staticmethod
     def _base_query(query):
@@ -594,11 +601,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 items=None,total=None,write_authorized=False)
 
     def get(self,path,query):
-        if path=='/api/v4/rotation-review':
-            from workbench_analysis.rotation_review_r1 import read_review
-            if query.get('context_token')!=self.api.token:
-                raise ValueError('CONTEXT_TOKEN_MISMATCH')
-            return 200,read_review(self.api.root,self)
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
@@ -1290,7 +1292,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 rotation_total=len(rotations),
                 rotation_owner_summary=rotation_owner_summary,
                 source_bindings=dict(stock_changes=self.api.candidate['owners'][day]['forward'],sector_changes=self.api.candidate['owners'][day]['rotation']),
-                rotation_validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
+                rotation_validation=rotation_owner_summary['automatic_acceptance_state'])
             if isinstance(data.get('market'),dict):
                 data['market']['regime_publication_status']='NOT_PUBLISHED_V4_03'
                 data['market']['formal_risk_status']='SOURCE_INCOMPLETE'

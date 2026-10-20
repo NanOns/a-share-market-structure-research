@@ -1191,12 +1191,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def _candidate_daily_owner_chart(self,day,sid,period,basis,q):
         """Read a bounded candidate chart from its exact dated RAW Owners."""
-        if basis!='RAW':
-            return 200,self.envelope(day,status='EMPTY_VALID',items=[],total=0,offset=0,
-                limit=int(q.get('limit',120)),has_next=False,period=period,price_basis=basis,
-                as_of=day,chart_availability='SOURCE_INCOMPLETE',
-                reason='CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND',candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
-                PIT_ELIGIBLE=False,source_bindings=[])
         sessions=[d for d in self.api.candidate.get('published_sessions',[]) if d<=day]
         if day not in sessions or not sessions:
             return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
@@ -1217,6 +1211,64 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 amount=row.get('amount'),quality='KNOWN',reason=None))
         if not any(binding['trade_date']==day for binding in bindings):
             return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
+        adjustment_source=None;transport_count=0;transport_digest=None
+        if basis=='QFQ':
+            # The dated daily Owners already bind exact RAW rows and a frozen
+            # TDX GBBQ source. Build the chart's T0 coordinate from those two
+            # authorities instead of requiring a separate PG chart index.
+            from workbench_analysis.r43_owner_replay import checked
+            from tdx.gbbq_reader import read_gbbq
+            from adjustment.tdx_adjustment_v0_3 import build_affine_factors,xrxd_from_gbbq
+            from adjustment.exact_factor_transport_r1 import ExactFactorTransport
+            from adjustment.exact_ohlc_consumer_r1 import consume_exact_ohlc
+            import hashlib
+            registry=self.api.candidate.get('source_registry',{}).get(day,{})
+            adjustment_source=registry.get('gbbq')
+            if not adjustment_source:
+                return 200,self.envelope(day,status='EMPTY_VALID',items=[],total=0,offset=0,
+                    limit=int(q.get('limit',120)),has_next=False,period=period,price_basis=basis,
+                    as_of=day,chart_availability='SOURCE_INCOMPLETE',
+                    reason='CANDIDATE_T0_GBBQ_OWNER_NOT_BOUND',candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
+                    PIT_ELIGIBLE=False,source_bindings=bindings)
+            source_path=checked(self.api.root,adjustment_source);source_bytes=source_path.read_bytes()
+            identity=self.resolve_dated_object('stocks',day,sid)
+            symbol=(identity or {}).get('symbol')
+            if not symbol:
+                return 200,self.envelope(day,status='EMPTY_VALID',items=[],total=0,offset=0,
+                    limit=int(q.get('limit',120)),has_next=False,period=period,price_basis=basis,
+                    as_of=day,chart_availability='SOURCE_INCOMPLETE',reason='CANDIDATE_T0_SYMBOL_NOT_BOUND',
+                    candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',PIT_ELIGIBLE=False,
+                    source_bindings=bindings+[dict(trade_date=day,owner=adjustment_source)])
+            basis_date=int(day.replace('-',''))
+            events=[event for event in read_gbbq(source_path)
+                if event.security_id.upper()==symbol.upper() and event.event_date<=basis_date]
+            classification_path=self.api.root/'config/v4_02_gbbq_price_impact_classification_v1.json'
+            dispositions=json.loads(classification_path.read_bytes())['dispositions']
+            blocked=[event for event in events if dispositions.get(str(event.category),{}).get(
+                'formal_disposition','UNKNOWN_PRICE_IMPACT') in ('PRICE_AFFECTING_UNSUPPORTED','UNKNOWN_PRICE_IMPACT')]
+            factors=build_affine_factors([int(bar['trade_date'].replace('-','')) for bar in bars]+[basis_date],
+                [xrxd_from_gbbq(event) for event in events if event.category==1])
+            receipts=[]
+            for bar in bars:
+                bar_date=int(bar['trade_date'].replace('-',''))
+                if any(bar_date<event.event_date for event in blocked):
+                    bar.update(open=None,high=None,low=None,close=None,quality='UNKNOWN',reason='BLOCKED_ADJUSTMENT_EVENT')
+                    continue
+                raw_row=dict(security_id=symbol.upper(),trade_date=bar_date,
+                    **{name:str(bar[name]) for name in ('open','high','low','close')})
+                wire=ExactFactorTransport(symbol.upper(),basis_date,
+                    hashlib.sha256(source_bytes).hexdigest(),factors[bar_date]).to_dict()
+                receipt=consume_exact_ohlc(raw_row,wire,source_bytes=source_bytes,
+                    security_id=symbol.upper(),basis_date=basis_date)
+                receipts.append(receipt)
+                if receipt['quality']=='READY':
+                    bar.update({name:float(receipt['prices'][name]) for name in ('open','high','low','close')})
+                    bar['quality']='KNOWN';bar['reason']=None
+                else:
+                    bar.update(open=None,high=None,low=None,close=None,quality='UNKNOWN',reason=receipt['quality'])
+            transport_count=len(receipts)
+            transport_digest=hashlib.sha256(json.dumps(receipts,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+            bindings.append(dict(trade_date=day,owner=adjustment_source,role='T0_GBBQ_ADJUSTMENT_SOURCE'))
         data=aggregate(bars,period)
         for i,bar in enumerate(data):
             for n in (5,20,60):
@@ -1227,12 +1279,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         end=max(0,len(data)-offset);start=max(0,end-limit)
         response=self.envelope(day,status='READY' if data[start:end] else 'EMPTY_VALID',
             items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,
-            period=period,price_basis='RAW',as_of=day,volume_unit='SHARES',amount_unit='CNY',
-            adjustment='NONE',candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
-            chart_availability='READY' if data else 'EMPTY_VALID',PIT_ELIGIBLE=False,
+            period=period,price_basis=basis,as_of=day,volume_unit='SHARES',amount_unit='CNY',
+            adjustment='NONE' if basis=='RAW' else 'TDX_NATIVE_AFFINE_T0_COORDINATE',
+            candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
+            chart_availability=('EMPTY_VALID' if not data else 'SOURCE_INCOMPLETE' if any(b['quality']!='KNOWN' for b in data) else 'READY'),PIT_ELIGIBLE=False,
             historical_membership='NOT_CLAIMED',earliest_valid_date=bars[0]['trade_date'] if bars else None,
             source_bindings=bindings,
-            disclaimer='候选预览仅串接各交易日已绑定的 RAW Owner；不代表正式发布、严格 PIT 或连续 QFQ 坐标。')
+            adjustment_source=adjustment_source if basis=='QFQ' else None,
+            exact_transport_count=transport_count if basis=='QFQ' else None,
+            exact_transport_digest=transport_digest if basis=='QFQ' else None,
+            disclaimer=('候选预览仅串接各交易日已绑定的 RAW 行情 Owner；不代表正式发布或严格 PIT。'
+                if basis=='RAW' else
+                '候选 QFQ 由逐日 RAW Owner、T0 冻结的 TDX GBBQ 和精确有理数坐标计算；不代表正式发布或严格 PIT。'))
         response['production_accepted']=False
         response['context'].update(production_accepted=False,read_scope='DEVELOPMENT_CANDIDATE_PREVIEW')
         return 200,response

@@ -179,9 +179,31 @@
       "scope": "CANDIDATE_DAILY_OWNER_WINDOW_ONLY",
       "pit_eligible": false,
       "qfq_http": 200,
-      "qfq_status": "EMPTY_VALID",
-      "qfq_availability": "SOURCE_INCOMPLETE",
-      "qfq_reason": "CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND"
+      "qfq_status": "READY",
+      "qfq_availability": "READY",
+      "qfq_reason": null,
+      "qfq_rows_by_date": {
+        "2026-10-12": {
+          "rows": 6,
+          "last_close": 13.7,
+          "exact_transport_count": 6,
+          "transport_digest": "421704422a0c452e50b5e7b296d4cf22c4586d04e339adff2adb5a43aa79509b"
+        },
+        "2026-10-13": {
+          "rows": 7,
+          "last_close": 13.54,
+          "exact_transport_count": 7,
+          "transport_digest": "21a03d65564d8242e3ad072f7a666c6ae91974e571a8b636f10f326e6a6d0a0e"
+        },
+        "2026-10-14": {
+          "rows": 8,
+          "last_close": 12.55,
+          "exact_transport_count": 8,
+          "transport_digest": "e76c16507e7f4441196edbfc4ac8edf8d8c0a61dd24a0dc41e7f4b0c166c6078"
+        }
+      },
+      "qfq_adjustment_source_sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+      "qfq_pit_eligible": false
     },
     "ui_refresh": {
       "candidate_build_attempted": "10c60318496f91008699381105720e3088a27666a97f62ecd1c5efc6a9508257",
@@ -200,7 +222,9 @@
       "focus_2026_10_12": 3025,
       "focus_new_observation_filter": 220,
       "focus_new_filter_actual_changes": 30,
-      "focus_new_filter_source_incomplete_observations": 0
+      "focus_new_filter_source_incomplete_observations": 0,
+      "stock_chart_qfq_ready": true,
+      "qfq_bars_2026_10_14": 8
     },
     "tests": {
       "command_scope": [
@@ -242,12 +266,15 @@
     },
     "remaining_source_contracts": {
       "qfq": {
+        "state": "RESOLVED_FOR_CANDIDATE_PREVIEW",
         "http": 200,
-        "status": "EMPTY_VALID",
-        "availability": "SOURCE_INCOMPLETE",
-        "reason": "CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND",
+        "status": "READY",
+        "availability": "READY",
+        "reason": null,
         "candidate_raw_chart_preserved": true,
-        "external_adjustment_used": false
+        "external_adjustment_used": false,
+        "adjustment_source_sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+        "pit_eligible": false
       },
       "forward_first_capture": {
         "dates": [
@@ -267,15 +294,105 @@
       "chart_raw_status": "READY",
       "chart_raw_rows": 8,
       "chart_qfq_http": 200,
-      "chart_qfq_status": "EMPTY_VALID",
+      "chart_qfq_status": "READY",
       "service_port": 28766,
-      "service_pid": 13868,
+      "service_pid": 4744,
       "database_port": 5432,
       "database_pid": 8640,
       "port_28765_listening": false,
       "formal_head_modified": false,
       "production_scheduler_started": false,
-      "new_postgresql_schemas": []
+      "new_postgresql_schemas": [],
+      "chart_qfq_rows": 8
+    }
+  },
+  "latest_retry_closeout": {
+    "recorded_at": "2026-10-20",
+    "qfq": {
+      "state": "CANDIDATE_READY",
+      "route": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/chart",
+      "dates": {
+        "2026-10-12": {
+          "rows": 6,
+          "last_close": 13.7,
+          "exact_transport_count": 6,
+          "transport_digest": "421704422a0c452e50b5e7b296d4cf22c4586d04e339adff2adb5a43aa79509b"
+        },
+        "2026-10-13": {
+          "rows": 7,
+          "last_close": 13.54,
+          "exact_transport_count": 7,
+          "transport_digest": "21a03d65564d8242e3ad072f7a666c6ae91974e571a8b636f10f326e6a6d0a0e"
+        },
+        "2026-10-14": {
+          "rows": 8,
+          "last_close": 12.55,
+          "exact_transport_count": 8,
+          "transport_digest": "e76c16507e7f4441196edbfc4ac8edf8d8c0a61dd24a0dc41e7f4b0c166c6078"
+        }
+      },
+      "source_sha256": "c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739",
+      "pit_eligible": false
+    },
+    "candidate_snapshot_activation": {
+      "state": "SCOPED_OPERATIONAL_RELEASE_PASS",
+      "candidate_build_id": "10c60318496f91008699381105720e3088a27666a97f62ecd1c5efc6a9508257",
+      "full_product_release": false,
+      "production_changed": false,
+      "manifest_sha256": "4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936"
+    },
+    "forward_formal_historical_capture": {
+      "dates": {
+        "2026-10-12": {
+          "http": 200,
+          "status": "SOURCE_INCOMPLETE",
+          "reason": "NO_AUTHORIZED_COHORT_OWNER",
+          "items": 0,
+          "pit_eligible": false
+        },
+        "2026-10-13": {
+          "http": 200,
+          "status": "SOURCE_INCOMPLETE",
+          "reason": "NO_AUTHORIZED_COHORT_OWNER",
+          "items": 0,
+          "pit_eligible": false
+        },
+        "2026-10-14": {
+          "http": 200,
+          "status": "SOURCE_INCOMPLETE",
+          "reason": "NO_AUTHORIZED_COHORT_OWNER",
+          "items": 0,
+          "pit_eligible": false
+        }
+      },
+      "historical_backfill_allowed": false,
+      "grant_issuance_allowed": false,
+      "formal_capture_fabricated": false,
+      "disposition": "HISTORICAL_FORMAL_CAPTURE_CANNOT_BE_REPAIRED_AFTER_DEADLINE_UNDER_CURRENT_CONTRACT"
+    },
+    "tests": {
+      "command_scope": [
+        "tests/test_v4_candidate_daily_chart.py",
+        "tests/test_v4_exact_candidate_gate_r3.py",
+        "tests/test_tdx_adjustment.py",
+        "tests/test_tdx_adjustment_reference_cases.py"
+      ],
+      "passed": 12,
+      "failed": 0,
+      "basetemp": "G:\\codex_tmp\\test_temp\\v4_qfq_candidate_retry_20261020",
+      "node_check": "PASS",
+      "diff_check": "PASS"
+    },
+    "runtime_boundary": {
+      "service": "127.0.0.1:28766",
+      "service_pid": 4744,
+      "database": "127.0.0.1:5432/market_research",
+      "database_pid": 8640,
+      "production_28765_listening": false,
+      "formal_head_modified": false,
+      "production_scheduler_started": false,
+      "new_postgresql_schemas": [],
+      "destructive_database_operations": false
     }
   }
 }

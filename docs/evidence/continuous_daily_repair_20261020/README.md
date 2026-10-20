@@ -129,3 +129,25 @@
 - QFQ 连续坐标和逾期首捕分别缺规范化调整 Owner、真实 T0 全量 producer/Owner/grant；它们不是服务重启或 HTTP 错误。当前合同没有足够真实证据生成这两个正式能力，不通过造数/回填“关单”。候选 RAW 图表和已有日更/Focus/Radar/Forward 读域继续可用。
 - 本次只更新本证据文档和结构化回执；没有新增代码、配置文件或 PG schema；测试代码不变，沿用本证据上文最新源码定向测试 13 passed（4 项 PG 写测试按只读边界 deselected）及图表测试 4 passed。
 - 下一步如需连续 QFQ，按版本化合同从已接受 TDX GBBQ + 逐日 Raw Owner 产出候选 adjusted series，并进行独立数值/坐标核验；如需正式 Forward OOS，只能从下一个实时交易日开始具备真实 producer、AS_RECORDED Owner、独立准入和有效写 grant 后首捕。历史 10-12 至 10-14 不事后补录。
+
+## 2026-10-20 注释要求复核：QFQ 与候选联合发布重试
+
+本节是前文 QFQ 和 snapshot activation 状态的最新覆盖记录；前面“QFQ 索引未绑定”“snapshot manifest 缺失”是修复前/中间态，不再代表当前候选状态。
+
+### 已完成的修复
+
+- **候选 QFQ**：根因是 `CoreProductBFFR1._candidate_daily_owner_chart()` 把所有非 RAW 请求直接短路为空，即使 10-12 至 10-14 候选已逐日绑定 RAW Owner，T0 也已冻结并绑定 TDX GBBQ。现在以逐日 RAW Owner 和经 `checked()` 校验的 T0 GBBQ 为输入，使用 `tdx_adjustment_v0_3` 构造精确有理数仿射因子，再通过 `ExactFactorTransport` / `consume_exact_ohlc` 产出 QFQ；未知或未支持的价格影响事件将对应 bars 降为 UNKNOWN。接口不依赖新的 PG 图表索引，不读取其他 Head，显式标记 `PIT_ELIGIBLE=false`。
+- **真实端点读回**（28766，token 为该候选运行时 token）：个股 `SEC-00096141BD5420F5CB3120E687CDA5B9` / SH.688349，10-12 为 HTTP 200/READY、6/6 bars、末收 13.70；10-13 为 200/READY、7/7、末收 13.54；10-14 为 200/READY、8/8、末收 12.55。每个返回项均含 exact transport receipt；T0 GBBQ SHA-256 为 `c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739`。该证券窗口无价格影响公司行动，故 QFQ 与 RAW 数值相同；单元测试另用已分类股息事件验证非平凡变换。
+- **图表页面**：28766 页面实际加载当前 checkout 资产；AX 读回显示“原生前复权”、8/8 蜡烛图、截至 10-14 末收 12.55，并展示候选/非严格 PIT 免责声明。`stock.js` 对缺来源 empty state 和有效的部分来源图表分开呈现；loading 文案不再误称“当前生产快照”。
+- **snapshot / joint candidate activation**：上一节已记录将旧 authority 缺失的原 snapshot DB 替换为候选根现存且真实可校验的 2026-09-30 snapshot，恢复 4 项哈希匹配依赖后，通过 joint validation 和现役 refresh 的 `SCOPED_OPERATIONAL_RELEASE_PASS`。该候选发布 `full_product_release=false`、`production_changed=false`。原正式 authority/Head 未变；不是伪造旧 manifest，也不表示正式发布。此处 QFQ 重试未再改动 snapshot authority。
+
+### 仍受历史首捕合同限制的 Forward 日期
+
+- 对 10-12、10-13、10-14 的 `/api/v4/forward/plans` 用当前候选 token 实际读回均是 HTTP 200、`SOURCE_INCOMPLETE`、`NO_AUTHORIZED_COHORT_OWNER`、0 条计划、`PIT_ELIGIBLE=false`。这不是服务不可用：现行 `config/v4_cohort_first_capture_r6_r1.json` 明确 `historical_backfill=false`、`grant_issuance=false`；三日首捕窗口已过，候选也没有完整 AS_RECORDED producer、独立 cohort Owner、首捕写 grant 及截止前冻结回执。故不存在合同允许的方式把 Focus/Radar 或事后重算结果补写成正式首捕。本次不创建伪 Owner、不补造首捕，也不把研究回算标成正式 Forward OOS。
+- 这三日的**正式历史首捕**已无法追溯修复；若要提供新的正式 Forward 计划，需从新的有效实时 T0 开始先有完整 producer、独立 Owner 和明确授权，再在截止前捕获。现阶段 API 保持 200 且可解释，不再作为服务错误重试。候选 historical/research lane 不可升级为 formal validation cohort。
+
+### 本次验收与运行边界
+
+- 测试命令：`python -m pytest tests/test_v4_candidate_daily_chart.py tests/test_v4_exact_candidate_gate_r3.py tests/test_tdx_adjustment.py tests/test_tdx_adjustment_reference_cases.py -q --basetemp=G:\\codex_tmp\\test_temp\\v4_qfq_candidate_retry_20261020`，**12 passed**；Node `--check` 两个变更 JS 文件通过，`git diff --check` 通过。
+- 最新 28766 服务 PID `4744`，状态 READY/CANDIDATE_ONLY；PG 5432 PID `8640`。28765 无监听；正式 Head 仍为 10-09；没有新增 PG schema、没有生产调度、没有 destructive DB 操作。
+- 当前实现与证据文件随此次提交推送；旧的未跟踪 `.githooks/`、`config_back/`、`script_back/` 不纳入提交。

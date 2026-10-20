@@ -263,6 +263,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if day not in versions[self.api.token]:return 'R2_DATE_NOT_PREPARED'
         return 'R2_AUTHORITY_BOUND'
 
+    def _rotation_owner_summary(self,day):
+        rows=self.source('rotation',day)
+        values=[r.get('rotation',{}) for r in rows]
+        current=Counter(str(r.get('output_state') or 'UNKNOWN') for r in values)
+        prior=Counter(str(r.get('prior_rotation_state') or 'UNKNOWN') for r in values)
+        reasons=Counter(code for r in values for code in (r.get('reason_codes') or []))
+        return dict(owner_bound=bool(self.api.candidate['owners'][day].get('rotation')),
+            total=len(values),current_states=dict(current),prior_states=dict(prior),
+            unknown_reasons=dict(reasons),validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
+
     @staticmethod
     def _base_query(query):
         # These filters are validated and consumed by their product routes. The
@@ -631,9 +641,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if path in ('/api/v4/context','/api/v4/home'):
                 response=index.response(path)
                 if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+                for gap in response.get('gaps',[]):
+                    domain=gap.get('domain')
+                    owner_name={'rotation':'rotation','forward':'forward','sectors':'sector','stocks':'core','focus':'forward'}.get(domain)
+                    owner=self.api.candidate['owners'][day].get(owner_name) if owner_name else None
+                    if owner:
+                        gap['producer_binding_status']='BOUND'
+                        gap['ui_presentation']='来源已接入；当前域仍在独立验证，未作为已接受结果发布'
+                        gap['next_task']='Complete source QA and independent validation before publishing this domain'
+                        gap.pop('missing_owner',None)
                 if index_r2 is None:response=dict(response,read_index_status=self._read_index_r2_state(day),
                     read_index_capability=LEGACY_R1_READ_CAPABILITY)
                 if path=='/api/v4/home':
+                    response['rotation_owner_summary']=self._rotation_owner_summary(day)
                     cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
                     response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
                     try:
@@ -1237,6 +1257,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             for e in selected_events.values():
                 row=dict(stocks[e['entity_id']]);row['fields']=dict(row['fields']);row['fields'].update(effective_event=owner_cell(e['event'],self.api.candidate['owners'][day]['forward'],'events.event',day),trade_date=owner_cell(day,self.api.candidate['owners'][day]['forward'],'events.trade_date',day));changes.append(row)
             sectors=self.project('sectors',day);native={r['sector_id']:r for r in self.source('sector',day)}
+            # Keep accepted transitions distinct from a bound owner's observed
+            # candidate state. Unknown required inputs must not be displayed as
+            # an accepted event or as a missing source.
+            rotation_owner_summary=self._rotation_owner_summary(day)
             rotations=[r for r in sectors if r['fields']['output_state']['value'] in ROTATIONS and r['fields']['output_state']['value']!=r['fields']['prior_rotation_state']['value']]
             rotations.sort(key=lambda r:(0 if r['fields']['output_state']['value'] in ('ROTATION_OUT','ROTATION_FAILED') else 1,-(r['fields'].get('sector_rs5',{}).get('value') or 0),r['entity_id']))
             covered=set();cards=[]
@@ -1259,6 +1283,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 sector_change_total=len(rotations),
                 rotations=[home_summary(r,HOME_SECTOR_SUMMARY_FIELDS) for r in rotations[:10]],
                 rotation_total=len(rotations),
+                rotation_owner_summary=rotation_owner_summary,
                 source_bindings=dict(stock_changes=self.api.candidate['owners'][day]['forward'],sector_changes=self.api.candidate['owners'][day]['rotation']),
                 rotation_validation='VALIDATION_ONGOING; NOT_INDEPENDENTLY_ACCEPTED')
             if isinstance(data.get('market'),dict):

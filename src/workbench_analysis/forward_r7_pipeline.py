@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import json
 import logging
+import os
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -172,14 +173,21 @@ def build_schedules(rows: list[dict], trade_date: str, sessions: list[str],
 def _daily_job_snapshot(root: Path):
     """Read the native daily scheduler state without initializing or mutating it."""
     try:
+        from psycopg import sql
+        from workbench_analysis.operational_daily_jobs_pg_r1 import V4_TABLE_MAP
         from workbench_db.v4_native import connection, workspace_schema
-        schema = workspace_schema(root, "jobs")
+        isolated = os.environ.get("R4_NATIVE_ISOLATION") == "1"
+        schema = workspace_schema(root, "jobs") if isolated else "v4"
+        table = (lambda name: name) if isolated else (lambda name: V4_TABLE_MAP[name])
         with connection(schema, read_only=True) as pg:
-            policy = pg.execute("SELECT enabled,revision,updated_at FROM scheduler_policy WHERE id=1").fetchone()
-            job = pg.execute("SELECT job_id,trigger,mode,through_date,status,created_at,finished_at,error "
-                             "FROM update_jobs ORDER BY created_at DESC LIMIT 1").fetchone()
-            days = (pg.execute("SELECT trade_date,state,attempt_count,next_retry_at,source_checks "
-                               "FROM update_job_days WHERE job_id=%s ORDER BY trade_date",
+            policy = pg.execute(sql.SQL("SELECT enabled,revision,updated_at FROM {} WHERE id=1").format(
+                sql.Identifier(table("scheduler_policy")))).fetchone()
+            job = pg.execute(sql.SQL("SELECT job_id,trigger,mode,through_date,status,created_at,finished_at,error "
+                                     "FROM {} ORDER BY created_at DESC LIMIT 1").format(
+                sql.Identifier(table("update_jobs")))).fetchone()
+            days = (pg.execute(sql.SQL("SELECT trade_date,state,attempt_count,next_retry_at,source_checks "
+                                       "FROM {} WHERE job_id=%s ORDER BY trade_date").format(
+                               sql.Identifier(table("update_job_days"))),
                                (job[0],)).fetchall() if job else [])
         normalized_days = []
         for trade_date, state, attempts, retry_at, checks in days:

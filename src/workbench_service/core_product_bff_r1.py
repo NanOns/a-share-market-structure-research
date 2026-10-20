@@ -395,6 +395,88 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             'hypothesis_scope':'情景解释不证明洗盘、吸筹、出货或账户资金行为',
             'competitive_hypotheses':competing_explanations(deepcopy(fields))}
 
+    def _forward_candidate_late_preview(self):
+        """Read-only R7 calculation over the exact, late-captured 2026-10-12 candidate Owners."""
+        cached=getattr(self,"_forward_candidate_late_preview_cache",None)
+        if cached is not None:return cached
+        from collections import Counter
+        import hashlib
+        from workbench_analysis.r43_owner_replay import checked
+        from workbench_analysis.market_source_acquisition import official_sessions
+        from workbench_analysis.forward_r7 import build_daily_universe,make_observation_id
+        from workbench_analysis.forward_r7_pipeline import (accepted_prices_with_status,
+            build_schedules, summarize_universe)
+        root=self.api.root
+        evidence_path=root/'docs/evidence/dynamic_daily_20261012/CANDIDATE_RECOVERY_R1.json'
+        evidence=json.loads(evidence_path.read_bytes())
+        binding=evidence.get('candidate') or {}
+        candidate_path=checked(root,binding)
+        candidate_raw=candidate_path.read_bytes()
+        if (len(candidate_raw)!=binding.get('bytes')
+                or hashlib.sha256(candidate_raw).hexdigest()!=binding.get('sha256')
+                or evidence.get('status')!='CANDIDATE_VALIDATED_AND_INDEPENDENT_READBACK_READY'
+                or evidence.get('target_date')!='2026-10-12'
+                or self.api.candidate.get('accepted_trade_date')!='2026-10-12'
+                or self.api.token!=binding.get('sha256')):
+            raise ValueError('FORWARD_LATE_CANDIDATE_BINDING_MISMATCH')
+        captured_at=evidence.get('late_collection',{}).get('observed_at')
+        if not captured_at or evidence.get('late_collection',{}).get('PIT_ELIGIBLE') is not False:
+            raise ValueError('FORWARD_LATE_CAPTURE_CLOCK_REQUIRED')
+        day='2026-10-12'
+        sessions=official_sessions(root)
+        previous=sessions[sessions.index(day)-1]
+        read=lambda domain,target:self.api.read(domain,target,self.api.token)
+        current={name:read(name,day)['rows'] for name in ('raw','core','sector','lifecycle')}
+        prior={name:read(name,previous)['rows'] for name in ('raw','core','sector','lifecycle')}
+        rows=build_daily_universe(trade_date=day,stock_rows=current['core'],raw_rows=current['raw'],
+            sector_rows=current['sector'],prior_stock_rows=prior['core'],prior_raw_rows=prior['raw'],
+            prior_sector_rows=prior['sector'],bindings=self.api.candidate['owners'][day],
+            captured_at=captured_at,lane='LATE_OBSERVED_NOT_PIT',membership_basis='MEMBERSHIP_RETRO')
+        for row in rows:
+            row['evidence_class']='LATE_OBSERVED_NOT_PIT'
+            row['evidence_lane']='LATE_OBSERVED_NOT_PIT'
+            row['PIT_ELIGIBLE']=False
+        formal=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
+        formal_dates=formal.get('published_sessions',[])
+        prices={previous:accepted_prices_with_status(prior['raw'],prior.get('lifecycle')),
+                day:accepted_prices_with_status(current['raw'],current.get('lifecycle'))}
+        schedules=build_schedules(rows,day,sessions,prices,captured_at,accepted_source_dates=formal_dates)
+        schedule_counts=dict(Counter(item['schedule_status'] for item in schedules))
+        observations={make_observation_id(row):row for row in rows}
+        settlement_items=[]
+        for schedule in schedules[:30]:
+            row=observations[schedule['observation_id']]
+            settlement_items.append(dict(schedule,T0=day,entity_id=row['entity_id'],
+                display_name=row.get('display_name') or row.get('symbol') or row.get('sector_id'),
+                event_code=row['event_code'],evidence_class='LATE_OBSERVED_NOT_PIT'))
+        ranked=sorted(rows,key=lambda item:(item['status']!='MATCH',item['status']=='UNKNOWN',
+            item['entity_type']!='STOCK',item['entity_id']))
+        preview=ranked[:30]
+        identities={}
+        index=self._read_index_r2(day)
+        if index is not None:
+            identities.update(index.display_identities('stocks',[row['entity_id'] for row in preview
+                if row['entity_type']=='STOCK']))
+            identities.update(index.display_identities('sectors',[row['entity_id'] for row in preview
+                if row['entity_type']=='SECTOR']))
+        for row in preview:
+            row['display_name']=identities.get(row['entity_id'],{}).get('display_name') or row.get('symbol') or row.get('sector_id')
+        names={row['entity_id']:row['display_name'] for row in preview}
+        for row in settlement_items:
+            row['display_name']=names.get(row['entity_id'],row['display_name'])
+        result=dict(status='CANDIDATE_ONLY_LATE_OBSERVED',trade_date=day,captured_at=captured_at,
+            lane='LATE_OBSERVED_NOT_PIT',PIT_ELIGIBLE=False,AS_RECORDED=False,
+            source_contract='V4_FORWARD_PIPELINE_R7_R1',source_hashes={k:v['sha256'] for k,v in self.api.candidate['owners'][day].items()
+                if isinstance(v,dict) and v.get('sha256')},total=len(rows),
+            summary=summarize_universe(rows),status_counts=dict(Counter(row['status'] for row in rows)),
+            event_counts=dict(Counter(row['event_code'] for row in rows)),
+            settlement_schedule_counts=schedule_counts,
+            settlement_total=len(schedules),settlement_items=settlement_items,
+            settlement_source_state='DUE_SESSIONS_NOT_ACCEPTED_BY_FORMAL_HEAD',
+            items=preview,limit=30,offset=0,has_next=len(rows)>30)
+        self._forward_candidate_late_preview_cache=result
+        return result
+
     def _forward_r7_read(self,path,q,day):
         if path not in ('/api/v4/forward/statistics','/api/v4/forward/observations',
                         '/api/v4/forward/settlement','/api/v4/forward/fep'):
@@ -442,6 +524,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     published_generation=counts.get('published_generation'),
                     published_t0=counts.get('published_t0'),matured_settlement_count=matured_count,
                     source=counts.get('source_run_id'))
+                try:
+                    data['candidate_late_observation']=self._forward_candidate_late_preview()
+                except Exception as exc:
+                    data['candidate_late_observation']=dict(status='UNAVAILABLE',
+                        error_code=type(exc).__name__,PIT_ELIGIBLE=False)
                 return 200,self.envelope(day,status='READY',data=data,
                     contract_id='V4_FORWARD_STATISTICS_R7_R1',source='PG_PUBLISHED_READ_INDEX',
                     write_authorized=False,PIT_ELIGIBLE=False)

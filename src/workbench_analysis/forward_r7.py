@@ -62,11 +62,11 @@ def build_daily_universe(*, trade_date: str, stock_rows: list[dict], raw_rows: l
                          membership_basis: str,
                          membership_provenance: dict | None = None) -> list[dict]:
     """Evaluate every stock and sector identity, retaining UNKNOWN and NO_MATCH."""
-    if lane not in ("LIVE_OOS", "RETROSPECTIVE_RESEARCH"):
+    if lane not in ("LIVE_OOS", "RETROSPECTIVE_RESEARCH", "LATE_OBSERVED_NOT_PIT"):
         raise ValueError("FORWARD_EVIDENCE_LANE_REQUIRED")
     if membership_basis not in ("AS_RECORDED", "MEMBERSHIP_RETRO", "RECONSTRUCTED", "UNKNOWN_MEMBERSHIP_BASIS"):
         raise ValueError("FORWARD_MEMBERSHIP_BASIS_REQUIRED")
-    evidence = "LIVE_OOS" if lane == "LIVE_OOS" else "RETROSPECTIVE_RESEARCH"
+    evidence = lane if lane in ("LIVE_OOS", "LATE_OBSERVED_NOT_PIT") else "RETROSPECTIVE_RESEARCH"
     hashes = _source_hashes(bindings)
     raw_by_id = {r.get("security_id"): r for r in raw_rows if r.get("security_id")}
     prior_raw_by_id = {r.get("security_id"): r for r in (prior_raw_rows or []) if r.get("security_id")}

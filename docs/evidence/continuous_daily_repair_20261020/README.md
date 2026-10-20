@@ -174,3 +174,20 @@
 - 测试命令：`python -m pytest tests/test_v4_candidate_daily_chart.py tests/test_v4_exact_candidate_gate_r3.py tests/test_tdx_adjustment.py tests/test_tdx_adjustment_reference_cases.py -q --basetemp=G:\\codex_tmp\\test_temp\\v4_qfq_candidate_retry_20261020`，**12 passed**；Node `--check` 两个变更 JS 文件通过，`git diff --check` 通过。
 - 最新 28766 服务 PID `4744`，状态 READY/CANDIDATE_ONLY；PG 5432 PID `8640`。28765 无监听；正式 Head 仍为 10-09；没有新增 PG schema、没有生产调度、没有 destructive DB 操作。
 - 当前实现与证据文件随此次提交推送；旧的未跟踪 `.githooks/`、`config_back/`、`script_back/` 不纳入提交。
+
+## 2026-10-20 前端事项与模块级修复台账
+
+本台账把散落在前述时间线中的 UI 变更、数据模块问题和验收范围合并索引。`有接口/页面读回` 不等于每一个页面控件都做过独立人工交互测试；没有改前端代码的模块明确标注为数据/API 修复或只读回。
+
+| 前端入口/模块 | 当时问题或新增事项 | 根因与处置 | 验收证据 / 范围 |
+|---|---|---|---|
+| 全局入口与静态资产 | 新增/开放轮动自动验收提示；页面曾混用新旧 JS，rotation 模块不加载 | `rotation-auto-acceptance.js` 不在静态资产 allowlist；joint build 被服务端随后覆盖三个 JS 为 R43 compatibility 文件。修改 `v4_server.py` 资产优先级/allowlist，并让候选 UI refresh 把该模块纳入内容寻址 bundle | candidate release `SCOPED_OPERATIONAL_RELEASE_PASS`；绑定的 8 个资产 HTTP 200 且 SHA/字节数匹配。仅候选范围，`full_product_release=false` |
+| Stocks / 个股详情 | 新增候选 QFQ 图表及行情来源说明；此前图表请求 400，RAW 可读但 QFQ 空图 | 400 根因为候选未绑定 `native_product_read_authority`；先从逐日 RAW Owner 提供候选窗口，再将 QFQ 接到已绑定 T0 TDX GBBQ 与 exact rational transport。`stock.js` 增加可用图表、缺失输入说明、部分不完整状态、来源抽屉和非 PIT 免责声明 | 10-12/13/14 QFQ API 分别 6/7/8 根 READY，与 RAW 逐根相同；28766 DOM 实际见 QFQ 选项、8/8 蜡烛图和免责声明。测试 12 passed。该证券日期窗口无价格影响事件；另有股息事件单测验证非平凡变换 |
+| Sectors / 板块 | 本轮没有发现单独的前端功能故障，也没有独立 UI 代码改动 | 属于候选日更、R2 索引读回，不把它记成前端修复 | 三日 API 读回各 400 条/READY；没有逐个板块详情控件人工冒烟 |
+| Focus / 关注跟踪 | 解决的是候选数据/Owner 绑定问题，不是页面控件代码错误 | 对应日 Focus Owner 和索引绑定已生成/读取；未改 Focus 前端模块 | 三日 API READY；10-12 为 3,025 条。浏览器过滤 `NEW` 为 220 条，其中实际变化 30 条、来源不足 0 条；结构锚点/事件区读回。未逐项点击所有 Focus drawer 控件 |
+| Radar / 研究雷达 | Radar priority 缺候选 Owner 曾报 `RESEARCH_PRIORITY_BINDING_MISSING`；补候选 Owner 是数据域修复 | 用现役 `build_priority` 和当日绑定 Owner 为三日分别生成 priority Owner 并读回；没有把该 PG Owner 修复描述成 UI 改码 | 三日 Radar API READY（311/163/177），priority 可读；浏览器 10-12 全量 311、升级筛选 69、重新进入 0。轮动 auto-acceptance 由全局 bundle 修复暴露 |
+| Forward / 远期验证 | 新增候选隔离 Forward namespace 读路径；正式 plans 界面仍显示来源不足 | 原统计发现两个既有 `forward_facts` namespace 冲突，按 R8 将 160 条源事实只读复制到候选 schema 并用 receipt 锁定；统计/结算 UI 不再报 PG namespace 错误。plans 的 `NO_AUTHORIZED_COHORT_OWNER` 是历史首捕合同无授权，不是前端请求失败，不用假计划填充 | statistics READY；历史 observation/settlement 为 EMPTY_VALID；candidate late observation 明确候选态。10-12/13/14 plans 均 HTTP 200 + `SOURCE_INCOMPLETE`、0 条、PIT false；界面保留限制说明 |
+| Market / Diagnostics | 本轮没有记录独立的页面交互修复 | 没有独立前端改动；不要从其它模块的 API 读回推断这两个页面已完整人工验收 | 仅由全局入口/assets 共用修复覆盖其 bundle；本轮没有逐控件 DOM/页面冒烟结论 |
+| 通用 loading 与候选说明 | loading 文案曾称“当前生产快照”，与 28766 候选预览不符 | 修改 `components.js` 为“正在读取研究数据…”；个股图表使用 API 返回的候选范围说明，不再把候选图表称为正式/严格 PIT | 28766 个股 DOM 读回提示、测试与静态资源检查通过 |
+
+**前端相关改动文件**：`src/workbench_service/v4_server.py`、`scripts/v4_closeout_refresh_candidate_ui.py`、`src/workbench_service/core_product_bff_r1.py`、`src/workbench_service/static/core-product-r1/stock.js`、`src/workbench_service/static/core-product-r1/components.js`，及 `tests/test_v4_candidate_daily_chart.py` 和 UI authority/asset regressions。具体提交见分支历史；功能代码已推送，未跟踪目录不包含在提交内。

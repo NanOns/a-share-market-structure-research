@@ -623,5 +623,92 @@
       }
     ],
     "destructive_operations": false
+  },
+  "frontend_module_repair_ledger": {
+    "new_or_changed_frontend_items": [
+      {
+        "item": "candidate QFQ chart from dated RAW owners + frozen TDX GBBQ",
+        "files": [
+          "src/workbench_service/static/core-product-r1/stock.js",
+          "src/workbench_service/core_product_bff_r1.py",
+          "tests/test_v4_candidate_daily_chart.py"
+        ],
+        "validation": "API READY for 10-12/13/14 with 6/7/8 bars; 10-14 browser DOM displays 8/8 bars; PIT_ELIGIBLE=false"
+      },
+      {
+        "item": "rotation auto-acceptance asset exposed in candidate UI bundle",
+        "files": [
+          "src/workbench_service/v4_server.py",
+          "scripts/v4_closeout_refresh_candidate_ui.py"
+        ],
+        "validation": "candidate scoped release pass; all eight bound UI assets HTTP 200 and byte/SHA matched"
+      },
+      {
+        "item": "neutral research-data loading text and source-specific chart explanation",
+        "files": [
+          "src/workbench_service/static/core-product-r1/components.js",
+          "src/workbench_service/static/core-product-r1/stock.js"
+        ],
+        "validation": "28766 DOM readback"
+      }
+    ],
+    "module_readback": {
+      "stocks": {
+        "candidate_chart": "READY",
+        "dates": {
+          "2026-10-12": 6,
+          "2026-10-13": 7,
+          "2026-10-14": 8
+        },
+        "manual_browser_dom": "10-14 QFQ chart visible"
+      },
+      "sectors": {
+        "api": "READY",
+        "rows_by_date": {
+          "2026-10-12": 400,
+          "2026-10-13": 400,
+          "2026-10-14": 400
+        },
+        "frontend_code_changed": false,
+        "individual_detail_dom_smoke": false
+      },
+      "focus": {
+        "api": "READY",
+        "2026-10-12_rows": 3025,
+        "browser_filter_new_rows": 220,
+        "actual_changes": 30,
+        "source_incomplete_observations": 0,
+        "frontend_code_changed": false,
+        "all_drawers_manually_clicked": false
+      },
+      "radar": {
+        "api": "READY",
+        "rows_by_date": {
+          "2026-10-12": 311,
+          "2026-10-13": 163,
+          "2026-10-14": 177
+        },
+        "priority_binding_repaired_as_data_owner": true,
+        "browser_2026_10_12_upgraded_filter": 69,
+        "reentered_filter": 0
+      },
+      "forward": {
+        "statistics": "READY",
+        "historical_observations_and_settlement": "EMPTY_VALID",
+        "candidate_late_observation": "CANDIDATE_ONLY_LATE_OBSERVED",
+        "formal_plans": "HTTP_200_SOURCE_INCOMPLETE_NO_AUTHORIZED_COHORT_OWNER",
+        "plans_by_date": {
+          "2026-10-12": 0,
+          "2026-10-13": 0,
+          "2026-10-14": 0
+        },
+        "PIT_ELIGIBLE": false
+      },
+      "market_and_diagnostics": {
+        "separate_page_interaction_smoke": false,
+        "individual_frontend_fix_recorded": false
+      }
+    },
+    "scope_note": "API checks and selected browser DOM checks are recorded separately; no claim that every component in every module was manually clicked."
   }
 }

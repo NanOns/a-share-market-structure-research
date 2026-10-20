@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from sector.lifecycle_reconstructed_v1 import CONTRACT,evaluate_sector
+from scripts.audit_sector_lifecycle_reconstructed_r1 import oracle_health
 
 
 PARAMS=json.loads((Path(__file__).resolve().parents[1]/'config/sector_lifecycle_reconstructed_v1.json').read_bytes())
@@ -52,6 +53,16 @@ class SectorLifecycleReconstructedTests(unittest.TestCase):
         self.assertIn('seed_retention',result['maturity']['unknown_predicates'])
         rows=[sector_row(day,ready=(i!=4)) for i,day in enumerate(DAYS)]
         self.assertEqual(self.run_rows(rows)['health']['current'],'UNKNOWN')
+
+    def test_independent_health_oracle_uses_threshold_when_one_earlier_input_is_missing(self):
+        rows=[sector_row(day) for day in DAYS]
+        rows[-3]=sector_row(DAYS[-3],rs5=.05,breadth1=.5,retention=None)
+        rows[-2]=sector_row(DAYS[-2],rs5=.04,breadth1=.5,retention=.5)
+        rows[-1]=sector_row(DAYS[-1],rs5=.02,breadth1=.4,retention=.4)
+        result=self.run_rows(rows)
+        self.assertEqual(result['health']['current'],'WEAKENING')
+        self.assertIn('SEED_RETENTION_WORSENED',result['health']['unknown_predicates'])
+        self.assertEqual(oracle_health(rows[-1],rows[-2],rows[-3],PARAMS),'WEAKENING')
 
     def test_noncomparable_membership_and_future_rows_fail_closed(self):
         rows=[sector_row(day) for day in DAYS]

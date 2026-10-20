@@ -56,3 +56,11 @@
 
 - `scripts/accept_dynamic_daily_baostock_v2.py` 原 smoke failure receipt 仅留下通用 `BAOSTOCK_LOGIN_FAILED`，抛弃 SDK 已净化的 provider error code/message。本轮新增 `provider_failure` 安全诊断字段和返回值，保留受限字符 provider code、最多 240 字符净化消息；无 provider metadata 时仍使用原通用错误。新增回归覆盖 provider metadata 和 generic failure。
 - 最小重试仍返回 `10002007`、消息“网络接收错误”，耗时 31.15 秒（SDK 30 秒 timeout）。此证据表示 BaoStock 网络接收失败；没有切换端点/认证模式或绕过来源门。诊断字段改善定位，不将失败标记改成成功。
+
+## 遗留问题重新尝试与交互收尾（2026-10-20 17:10 +08）
+
+- **10-14 BaoStock 重试仍受上游网络阻断**：再次按官方入口执行 `scripts/accept_dynamic_daily_baostock_v2.py --target-date 2026-10-14`，新回执 `reports/v4_baostock/runtime_acceptance/20261014/20261020T165148184320_live_smoke_receipt.json` SHA-256 `6511b46977598123daa07ac713e78f74b1a77d7b2889c54fe9be259d6b1ca9c1`；状态 FAIL，`BAOSTOCK_LOGIN_FAILED`，provider code `10002007`，消息“网络接收错误”。官方主机 DNS 解析成功，但 TCP 10030 连接超时；本次没有拿到 daily/factor 响应。Ledger 总请求 45、登录 21，未触及配置上限。未切换端点、认证或来源，也没有伪造行；连续日更仍准确停在 10-14。
+- **10-12 Radar 优先级读取已恢复**：独立生命周期审计 oracle 已按合同的最少匹配数处理已知谓词；补充缺失较早单字段、但两项有效 weakening 比较满足门槛的回归。定向单元测试 9/9 通过；400 板块独立样本复核 20/20 通过。只为候选 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5` 追加内容寻址、不可变 lifecycle/priority Owner：400 生命周期行读回逐项相等；Priority 读回股票 5,224（可排序 1,752、不可排序 3,472）、板块 400（可排序 143、不可排序 257）。市场权限仍为 `FACT_ONLY_NO_FORMAL_PERMISSION`；候选仍非 PIT、非正式发布，Head 未更新。
+- **现役页面逐项补验**：Radar 股票/板块范围和可排序/不可排序筛选读回分别为 1,752/3,472、143/257；股票页搜索及研究状态筛选有返回结果。板块列表加载 400 行，板块详情、来源证据与成员区域可打开。Focus 的真实关注锚点、价格路径证据、到期观察抽屉均可打开且保留待到期语义。股票图表成功读回截至 10-12 的日线、周线以及前复权/不复权口径。发现 stocks/sectors 列表入口之前没有路由、股票表引用了未接入字段；已增加列表路由并换用已接入字段，页面不再落到“没有找到该入口”或“字段未接入”。
+- **定向验收**：Python 生命周期/优先级测试 9 passed，UX/route/轮动完整性测试 46 passed；Node UI 测试 6 passed；app.js、labels.js `node --check` 通过。板块列表/详情、Focus、Radar、股票筛选与图表在 28766 浏览器实际读回。28766 当前仅由 PID 48492 的只读候选预览入口监听；28765 无监听；PG 5432 仍为既有 PID 8640。候选 API 生产接受标记仍为 false。
+- **状态**：已关闭 10-12 Radar Owner 缺失及页面冒烟缺口；仍未关闭项只有 10-14 外部 BaoStock TCP 接收不可达，故 10-15、10-16、10-19、10-20 仍遵守连续日顺序阻断。没有切换正式 Head、28765 或生产调度。\n

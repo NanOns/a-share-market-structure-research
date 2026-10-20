@@ -42,12 +42,17 @@ def oracle_health(current,prior,earlier,params):
     if prior is None or earlier is None or (current.get('fields',{}).get('membership_ready') or {}).get('value') is not True:return 'UNKNOWN'
     values={key:numeric(current,key) for key in required}
     old={key:numeric(prior,key) for key in ('sector_rs5','breadth_ret1','seed_retention')}
-    older={key:numeric(earlier,key) for key in old}
-    if any(value is None for value in values.values()) or any(value is None for value in old.values()) or any(value is None for value in older.values()):return 'UNKNOWN'
+    if any(value is None for value in values.values()) or any(value is None for value in old.values()):return 'UNKNOWN'
     if values['sector_quote_coverage']<params['health']['minimum_quote_coverage']:return 'UNKNOWN'
     if current.get('membership_snapshot_id') and prior.get('membership_snapshot_id') and current['membership_snapshot_id']!=prior['membership_snapshot_id']:return 'UNKNOWN'
-    weakening=sum(values[key]-old[key] < old[key]-older[key] for key in ('sector_rs5','breadth_ret1','seed_retention'))
-    return 'DAMAGED' if values['sector_rs5']<0 and values['breadth_ret5']<.25 else 'WEAKENING' if weakening>=2 else 'WATCH' if weakening else 'NONE'
+    older={key:numeric(earlier,key) for key in old}
+    weakening=sum(older[key] is not None and values[key]-old[key] < old[key]-older[key]
+                  for key in ('sector_rs5','breadth_ret1','seed_retention'))
+    unknown=sum(older[key] is None for key in old)
+    if values['sector_rs5']<0 and values['breadth_ret5']<.25:return 'DAMAGED'
+    if weakening>=params['health']['weakening_minimum_matches']:return 'WEAKENING'
+    if unknown:return 'UNKNOWN'
+    return 'WATCH' if weakening else 'NONE'
 
 
 def atomic_json(path,value):

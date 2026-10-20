@@ -280,6 +280,32 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             automatic_acceptance_state='AUTO_ACCEPTED_WITH_LIMITATIONS' if complete else 'BLOCKED_INCOMPLETE_OWNER_OUTPUT',
             validation='OWNER_PIPELINE_READABLE; CANDIDATE_AUTO_ACCEPTED' if complete else 'OWNER_PIPELINE_INCOMPLETE')
 
+    def _apply_rotation_auto_acceptance(self,response,day):
+        """Replace only the old human-review mask with bound Owner values."""
+        if getattr(self.api,'automatic_domain_disposition',{}).get('rotation')!='AUTO_ACCEPTED_WITH_LIMITATIONS':
+            return response
+        result=deepcopy(response)
+        owner=self.api.candidate['owners'][day]['rotation']
+        rotation_rows={row['sector_id']:row.get('rotation',{}) for row in self.source('rotation',day)}
+        page_rows=result.get('items')
+        rows=list(page_rows or [])
+        item=result.get('item')
+        if isinstance(item,dict) and not any(row is item for row in rows):rows.append(item)
+        for row in rows:
+            fields=row.get('fields') or {}
+            rotation=rotation_rows.get(row.get('entity_id'))
+            if not rotation:continue
+            reason_codes=rotation.get('reason_codes') or []
+            for name in ('output_state','prior_rotation_state'):
+                cell=fields.get(name) or {}
+                if cell.get('reason')!='FULL_ROTATION_NOT_INDEPENDENTLY_ACCEPTED':continue
+                value=rotation.get(name,'UNKNOWN')
+                unknown=value in (None,'UNKNOWN')
+                fields[name]=owner_cell(dict(value=value,quality='UNKNOWN' if unknown else 'KNOWN',
+                    reason=(reason_codes[0] if reason_codes else 'REQUIRED_QUALITY_UNAVAILABLE') if unknown else None,
+                    unit='state'),owner,'rotation.'+name,day)
+        return result
+
     @staticmethod
     def _base_query(query):
         # These filters are validated and consumed by their product routes. The
@@ -716,7 +742,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
                 response.update(extra)
-            if path=='/api/v4/sectors':response=mark_evaluated_sector_lifecycle(response)
+            if path=='/api/v4/sectors':
+                response=self._apply_rotation_auto_acceptance(response,day)
+                response=mark_evaluated_sector_lifecycle(response)
             return 200,response
         code,data=self._get_product(path,query)
         if path=='/api/v4/candidates/cohort' and code==200:
@@ -1029,20 +1057,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
                     if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
                     response={**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
-                    return normalize_indexed_code_status(response,day) if domain=='stocks' else response
+                    response=normalize_indexed_code_status(response,day) if domain=='stocks' else response
+                    return self._apply_rotation_auto_acceptance(response,day) if domain=='sectors' else response
                 context=index.response('/api/v4/context')
                 if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
                 response={**base,**index.page(domain,q,entity=entity,sector=sector)}
-                return normalize_indexed_code_status(response,day) if domain=='stocks' else response
+                response=normalize_indexed_code_status(response,day) if domain=='stocks' else response
+                return self._apply_rotation_auto_acceptance(response,day) if domain=='sectors' else response
             from workbench_db.v4_read_index_r1 import load as load_index
             index=load_index(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
             if index is not None:
                 context=index.response('/api/v4/context')
-                return {**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
+                response={**{k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')},
                         **index.page(domain,q,entity=entity,sector=sector),
                         'read_index_status':self._read_index_r2_state(day),
                         'read_index_capability':'R1 legacy summary; D2 detail fields may be unavailable'}
+                return self._apply_rotation_auto_acceptance(response,day) if domain=='sectors' else response
         data=self.project(domain,day)
         if entity:data=[r for r in data if entity in (r['entity_id'],r['symbol']) or entity in r.get('search_aliases',[])]
         if sector:

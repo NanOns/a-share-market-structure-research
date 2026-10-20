@@ -96,7 +96,10 @@ class OperationalResearchBFF:
             elif domain=='sectors':
                 rot=rotation.get(identity,{}).get('rotation',{})
                 fs.update(sector_type=r.get('sector_type'),member_count=r.get('current_member_count'),output_state=rot.get('output_state','UNKNOWN'),prior_rotation_state=rot.get('prior_rotation_state','UNKNOWN'))
-                if self.api.candidate.get('external_review_contract') and getattr(self.api,'domain_disposition',{}).get('rotation')!='ACCEPTED':
+                external_state=getattr(self.api,'domain_disposition',{}).get('rotation')
+                automatic_state=getattr(self.api,'automatic_domain_disposition',{}).get('rotation')
+                if (self.api.candidate.get('external_review_contract') and external_state!='ACCEPTED' and
+                    automatic_state!='AUTO_ACCEPTED_WITH_LIMITATIONS'):
                     for k in ('output_state','prior_rotation_state'):fs[k]=dict(value=fs[k] if getattr(self.api,'user_authorized_cutover',False) else None,quality='VALIDATION_ONGOING',reason='FULL_ROTATION_NOT_INDEPENDENTLY_ACCEPTED')
                 field_refs.update({k:self.api.candidate['owners'][day]['rotation'] for k in ('output_state','prior_rotation_state')})
                 field_paths.update(output_state='rotation.output_state',prior_rotation_state='rotation.prior_rotation_state',member_count='current_member_count',sector_type='sector_type')

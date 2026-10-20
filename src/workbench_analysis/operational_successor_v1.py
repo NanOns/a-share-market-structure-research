@@ -91,6 +91,14 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         else:
             from workbench_db.v4_operational_owner_pg_closeout import load_authority
             self.pg_owner_authority=load_authority(root,candidate,self.token)
+        self.automatic_domain_disposition={'rotation':'BLOCKED_PIPELINE_READBACK','forward':'VALIDATION_ONGOING'}
+        if candidate.get('external_review_contract') and candidate['owners'][candidate['accepted_trade_date']].get('rotation'):
+            rotation=self.read('rotation',candidate['accepted_trade_date'],self.token)
+            rows=rotation.get('rows') or []
+            identifiers=[row.get('sector_id') or row.get('entity_id') for row in rows]
+            complete=(rotation.get('status')=='READY' and len(rows)==400 and len(identifiers)==400 and
+                      all(identifiers) and len(set(identifiers))==400)
+            if complete:self.automatic_domain_disposition['rotation']='AUTO_ACCEPTED_WITH_LIMITATIONS'
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
@@ -101,7 +109,8 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,
                     read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY',production_accepted=True,
                     independent_external_acceptance=False,external_domain_disposition=self.domain_disposition,
-                    rotation_validation_state='VALIDATION_ONGOING')
+                    automatic_domain_disposition=self.automatic_domain_disposition,
+                    rotation_validation_state=self.automatic_domain_disposition['rotation'])
 
     def read(self,domain,day,token):
         # Reuse frozen field/forward slicing in a private per-instance date scope.

@@ -232,10 +232,11 @@ def normalize_indexed_code_status(payload,day):
 
 class CoreProductBFFR1(OperationalSuccessorBFFV1):
     isolated_history=None
-    def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,market_fact_index_root=None):
+    def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,chart_history_extension_binding=None,market_fact_index_root=None):
         super().__init__(api,legacy)
         self.isolated_history=None
         self.chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
+        self.chart_history_extension_binding=chart_history_extension_binding
         self.market_fact_index_root=Path(market_fact_index_root).resolve() if market_fact_index_root is not None else None
         if isolated_history_authority is not None:
             from .isolated_history_read_r4 import load
@@ -432,20 +433,76 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         for key_name in ('invalid_if','hypothesis'):
             owner_explanations[key_name]=dict(value=None,source=dict(quality='UNKNOWN',
                 reason='DATED_D2_OWNER_FIELD_NOT_PRESENT',source=self.api.candidate['owners'][day]['focus']),basis='MISSING_OWNER')
-        missing_relations=[]
-        if fields.get('primary_industry',{}).get('value') is None:missing_relations.append('primary_industry')
-        missing_relations.append('supporting_concepts')
         return 200,{**base,'status':'READY','item':item,
             'F':{k:v for k,v in fields.items() if k in {'open','high','low','close','amount','volume'}},
             'R':{k:v for k,v in fields.items() if k not in {'open','high','low','close','amount','volume'}},
             'selection_explanation':selection,
-            'membership_relations':dict(items=[],owner_gap=missing_relations,source=None,
-                membership_mode='NOT_RELOADED_FROM_OPERATIONAL_OWNER',PIT_ELIGIBLE=False),
+            'membership_relations':self._r2_membership_relations(item,day),
             'owner_explanations':owner_explanations,
             'owner_specific_debt':[dict(field=k,reason='DATED_D2_OWNER_FIELD_NOT_PRESENT') for k in ('invalid_if','hypothesis')],
             'key_prices':{k:fields[k] for k in ('ma20','prior_high20','prior_low20','atr20') if k in fields},
             'hypothesis_scope':'情景解释不证明洗盘、吸筹、出货或账户资金行为',
             'competitive_hypotheses':competing_explanations(deepcopy(fields))}
+
+    def _r2_membership_relations(self,item,day):
+        """Resolve dated stock taxonomy fields against the bound sector member set."""
+        fields=item.get('fields',{})
+        cells={name:fields.get(name) for name in ('primary_industry','supporting_concepts')}
+        requested=[];owner_gap=[]
+        industry=cells['primary_industry']
+        if industry and industry.get('quality')=='KNOWN' and isinstance(industry.get('value'),str) and industry['value']:
+            requested.append(('primary_industry',industry['value'],industry))
+        elif not industry or industry.get('quality')!='KNOWN' or industry.get('value') is None:
+            owner_gap.append('primary_industry')
+        concepts=cells['supporting_concepts']
+        if concepts and concepts.get('quality')=='KNOWN' and isinstance(concepts.get('value'),list):
+            if len(concepts['value'])>378 or any(not isinstance(value,str) or not value for value in concepts['value']):
+                raise ValueError('STOCK_MEMBERSHIP_RELATION_SHAPE')
+            requested.extend(('supporting_concepts',value,concepts) for value in concepts['value'])
+        else:
+            concepts=None
+
+        owner=(self.api.candidate.get('owners',{}).get(day) or {}).get('sector')
+        if not owner:
+            owner_gap.extend(name for name in ('primary_industry','supporting_concepts') if name not in owner_gap)
+            requested=[]
+        native_rows=self.source('sector',day) if owner else []
+        native_by_id={row.get('sector_id'):row for row in native_rows or []}
+        security_id=item.get('entity_id')
+        requested_ids={sector_id for _,sector_id,_ in requested}
+        for native in native_rows or []:
+            if native.get('sector_type')!='THEME' or security_id not in (native.get('member_ids') or []):continue
+            sector_id=native.get('sector_id')
+            if sector_id in requested_ids:continue
+            cell=dict(value=sector_id,quality='KNOWN',unit='sector_id',
+                source_field='sector_owner.member_ids',source_digest=owner.get('sha256'))
+            requested.append(('supporting_concepts',sector_id,cell));requested_ids.add(sector_id)
+        if len(requested)>379:raise ValueError('STOCK_MEMBERSHIP_RELATION_SHAPE')
+        display_by_id={row.get('entity_id'):row for row in self.project('sectors',day)} if requested else {}
+        relations=[]
+        for role,sector_id,cell in requested:
+            native=native_by_id.get(sector_id)
+            display=display_by_id.get(sector_id)
+            member_ids=native.get('member_ids',[]) if native else []
+            verified=security_id in member_ids
+            relation_status='READY' if verified else 'SOURCE_INCOMPLETE'
+            relations.append(dict(role=role,sector_id=sector_id,
+                display_name=(display or {}).get('display_name'),
+                sector_type=native.get('sector_type') if native else None,
+                trade_date=day,membership_verified=verified,status=relation_status,
+                href='/v4/research/sectors/'+sector_id if verified else None,
+                source_cell=cell,source=owner,
+                reason=None if verified else 'SECTOR_OWNER_MISSING_OR_SECURITY_NOT_IN_MEMBER_SET'))
+        context_reader=getattr(self.api,'context',None)
+        context=context_reader() if callable(context_reader) else {}
+        context_data=context.get('context',context)
+        return dict(contract_id='R2_CURRENT_MEMBERSHIP_NAMED_RELATIONS_V1',trade_date=day,
+            knowledge_lineage='CURRENT_MEMBERSHIP_RECONSTRUCTED',AS_RECORDED=False,
+            membership_mode=context_data.get('membership_mode','CURRENT_MEMBERSHIP'),
+            membership_observed_at=context_data.get('membership_observed_at'),
+            member_set_asof=context_data.get('member_set_asof'),
+            items=relations,source_cells=cells,source=owner,owner_gap=owner_gap,
+            scope='CURRENT_SECTOR_OWNER_MEMBER_IDS_ONLY_NO_STRICT_PIT',PIT_ELIGIBLE=False)
 
     def _bind_live_head_scope(self,response):
         """Bind immutable indexed rows to the current formal-head decision."""
@@ -1189,13 +1246,82 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             response['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
         return 200,response
 
+    def _candidate_history_extension(self,day):
+        """Resolve a read-only dated product history pack for a candidate chart."""
+        root=getattr(self,'chart_history_index_root',None) or getattr(self.api,'root',None)
+        if root is None:return None
+        extension_binding=getattr(self,'chart_history_extension_binding',None)
+        if extension_binding is not None:
+            manifest=json.loads(checked(root,extension_binding).read_bytes())
+            history_day=manifest.get('T0')
+        else:
+            authority_path=root/'config/core_product_read_authority_r1.json'
+            if not authority_path.exists():return None
+            authority=json.loads(authority_path.read_bytes())
+            if authority.get('contract_id') not in ('CORE_PRODUCT_READ_AUTHORITY_R1','CORE_PRODUCT_READ_AUTHORITY_R2'):
+                raise ValueError('CANDIDATE_CHART_HISTORY_AUTHORITY_UNSUPPORTED')
+            if authority['contract_id']=='CORE_PRODUCT_READ_AUTHORITY_R2':
+                eligible=[candidate_day for candidate_day in authority.get('dates',{}) if candidate_day<=day]
+                if not eligible:return None
+                history_day=max(eligible)
+                manifest=dated_product_manifest(root,authority,history_day)
+            else:
+                binding=authority.get('manifest')
+                if not binding or not (root/binding.get('path','')).is_file():return None
+                manifest=json.loads(checked(root,binding).read_bytes())
+                history_day=manifest.get('T0')
+        if manifest is None or manifest.get('T0')>day:return None
+        if manifest.get('read_only') is not True or manifest.get('PIT_ELIGIBLE') is not False or manifest.get('AS_RECORDED') is not False:
+            raise ValueError('CANDIDATE_CHART_HISTORY_NOT_READ_ONLY_RECONSTRUCTED')
+        head=manifest.get('head') or {}
+        if (root/head.get('path','')).read_bytes()!=checked(root,head).read_bytes():
+            raise ValueError('CANDIDATE_CHART_HISTORY_HEAD_BINDING_MISMATCH')
+        history=manifest.get('history_index') or {}
+        fact_token=manifest.get('fact_token')
+        if history.get('engine')!='postgresql' or (history.get('T0'),history.get('head_token'))!=(history_day,fact_token):
+            raise ValueError('CANDIDATE_CHART_HISTORY_INDEX_BINDING_MISMATCH')
+        source=manifest.get('source_bindings',{}).get('history')
+        if not source or history.get('source_digest')!=source.get('sha256'):
+            raise ValueError('CANDIDATE_CHART_HISTORY_SOURCE_BINDING_MISMATCH')
+        checked(root,source)
+        from workbench_db.v4_native import workspace_schema
+        index_root=self.chart_history_index_root or self.api.root
+        if history.get('schema')!=workspace_schema(index_root,'history'):
+            raise ValueError('CANDIDATE_CHART_HISTORY_PG_CONTEXT_MISMATCH')
+        manifest=dict(manifest)
+        manifest['read_only_history_authority']=extension_binding or authority.get('manifest') or authority.get('dates',{}).get(history_day)
+        return manifest
+
     def _candidate_daily_owner_chart(self,day,sid,period,basis,q):
-        """Read a bounded candidate chart from its exact dated RAW Owners."""
+        """Extend a read-only accepted history index through exact candidate RAW Owners."""
         sessions=[d for d in self.api.candidate.get('published_sessions',[]) if d<=day]
         if day not in sessions or not sessions:
             return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
         bars=[];bindings=[]
+        if not isinstance(getattr(self.api,'cache',None),dict):self.api.cache={}
+        history_key=('candidate-chart-history-extension',self.api.token,day)
+        if history_key not in self.api.cache:
+            self.api.cache[history_key]=self._candidate_history_extension(day)
+        history_manifest=self.api.cache[history_key]
+        history_cutoff=history_manifest.get('T0') if history_manifest else None
+        if history_manifest is not None and history_cutoff<=day:
+            from workbench_db.v4_history_pg_r1 import read
+            index_root=self.chart_history_index_root or self.api.root
+            history_rows=read(index_root,history_manifest['history_index'],history_cutoff,sid) or []
+            for row in history_rows:
+                if row['trade_date']>history_cutoff or row['trade_date']>day:
+                    raise ValueError('CANDIDATE_CHART_HISTORY_FUTURE_BAR')
+                prices=row.get('raw_ohlc')
+                bars.append(dict(trade_date=row['trade_date'],
+                    **dict(zip(('open','high','low','close'),prices or [None]*4)),
+                    volume=row.get('volume'),amount=row.get('amount'),
+                    quality='KNOWN' if prices else 'UNKNOWN',
+                    reason=None if prices else 'HISTORY_RAW_OHLC_UNAVAILABLE'))
+            bindings.append(dict(trade_date=history_cutoff,owner=history_manifest['source_bindings']['history'],
+                role='READ_ONLY_HISTORICAL_HISTORY_INDEX',history_token=history_manifest['fact_token']))
         for trade_date in sessions:
+            if history_cutoff and trade_date<=history_cutoff:
+                continue
             owner=(self.api.candidate.get('owners',{}).get(trade_date) or {}).get('raw')
             if not owner:
                 continue
@@ -1211,8 +1337,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 amount=row.get('amount'),quality='KNOWN',reason=None))
         if not any(binding['trade_date']==day for binding in bindings):
             return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
-        adjustment_source=None;transport_count=0;transport_digest=None
-        if basis=='QFQ':
+        history_version=(history_manifest or {}).get('history_index',{}).get('version')
+        chart_cache_key=('candidate-chart-bars',self.api.token,day,sid,basis,history_version)
+        cached_chart=self.api.cache.get(chart_cache_key)
+        chart_cache_hit=cached_chart is not None
+        if chart_cache_hit:
+            bars=deepcopy(cached_chart['bars']);bindings=deepcopy(cached_chart['bindings'])
+            adjustment_source=cached_chart['adjustment_source']
+            transport_count=cached_chart['transport_count'];transport_digest=cached_chart['transport_digest']
+        else:
+            adjustment_source=None;transport_count=0;transport_digest=None
+        if basis=='QFQ' and not chart_cache_hit:
             # The dated daily Owners already bind exact RAW rows and a frozen
             # TDX GBBQ source. Build the chart's T0 coordinate from those two
             # authorities instead of requiring a separate PG chart index.
@@ -1269,6 +1404,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             transport_count=len(receipts)
             transport_digest=hashlib.sha256(json.dumps(receipts,sort_keys=True,separators=(',',':')).encode()).hexdigest()
             bindings.append(dict(trade_date=day,owner=adjustment_source,role='T0_GBBQ_ADJUSTMENT_SOURCE'))
+        if not chart_cache_hit:
+            self.api.cache[chart_cache_key]=dict(bars=deepcopy(bars),bindings=deepcopy(bindings),
+                adjustment_source=adjustment_source,transport_count=transport_count,transport_digest=transport_digest)
         data=aggregate(bars,period)
         for i,bar in enumerate(data):
             for n in (5,20,60):
@@ -1281,14 +1419,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,
             period=period,price_basis=basis,as_of=day,volume_unit='SHARES',amount_unit='CNY',
             adjustment='NONE' if basis=='RAW' else 'TDX_NATIVE_AFFINE_T0_COORDINATE',
-            candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
+            candidate_chart_scope='CANDIDATE_EXTENDED_FROM_READ_ONLY_ACCEPTED_HISTORY' if history_manifest else 'CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
             chart_availability=('EMPTY_VALID' if not data else 'SOURCE_INCOMPLETE' if any(b['quality']!='KNOWN' for b in data) else 'READY'),PIT_ELIGIBLE=False,
             historical_membership='NOT_CLAIMED',earliest_valid_date=bars[0]['trade_date'] if bars else None,
             source_bindings=bindings,
             adjustment_source=adjustment_source if basis=='QFQ' else None,
             exact_transport_count=transport_count if basis=='QFQ' else None,
             exact_transport_digest=transport_digest if basis=='QFQ' else None,
-            disclaimer=('候选预览仅串接各交易日已绑定的 RAW 行情 Owner；不代表正式发布或严格 PIT。'
+            history_source=(history_manifest.get('source_bindings',{}).get('history') if history_manifest else None),
+            history_cutoff=history_cutoff,
+            history_fact_token=history_manifest.get('fact_token') if history_manifest else None,
+            chart_cache_hit=chart_cache_hit,
+            disclaimer=('只读合法历史索引延伸本候选已绑定的 RAW 行情；复权按当前T0重算，仍不代表严格 PIT或正式发布。'
+                if basis=='RAW' and history_manifest else
+                '候选预览仅串接各交易日已绑定的 RAW 行情 Owner；不代表正式发布或严格 PIT。'
                 if basis=='RAW' else
                 '候选 QFQ 由逐日 RAW Owner、T0 冻结的 TDX GBBQ 和精确有理数坐标计算；不代表正式发布或严格 PIT。'))
         response['production_accepted']=False

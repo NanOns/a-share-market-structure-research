@@ -266,6 +266,42 @@ class UXR3RouteTests(unittest.TestCase):
         self.assertIn('首次捕获就绪', components_js)
         self.assertIn('下一候选交易日', components_js)
 
+    def test_r2_membership_relations_follow_bound_sector_membership(self):
+        bff=self.bff
+        bff.api.candidate['owners'][DAY]['sector']={'path':'sector.jsonl.gz','sha256':'d'*64}
+        bff.api.context=lambda:{'context':{'membership_mode':'TDX_LATEST_MEMBER_RETRO_V1',
+            'membership_observed_at':'2026-10-09T09:44:01+08:00','member_set_asof':'2026-10-09'}}
+        bff.source=lambda domain,day:[
+            {'sector_id':'INDUSTRY:T0706','sector_type':'INDUSTRY','member_ids':['SEC-1']},
+            {'sector_id':'THEME:T9001','sector_type':'THEME','member_ids':['SEC-1']}]
+        bff.project=lambda domain,day:[
+            {'entity_id':'INDUSTRY:T0706','display_name':'电子制造'},
+            {'entity_id':'THEME:T9001','display_name':'先进封装'}]
+        item={'entity_id':'SEC-1','fields':{
+            'primary_industry':{'value':'INDUSTRY:T0706','quality':'KNOWN'},
+            'supporting_concepts':{'value':['THEME:T9001'],'quality':'KNOWN'}}}
+        result=bff._r2_membership_relations(item,DAY)
+        self.assertEqual([row['display_name'] for row in result['items']],['电子制造','先进封装'])
+        self.assertTrue(all(row['membership_verified'] for row in result['items']))
+        self.assertTrue(all(row['href'].startswith('/v4/research/sectors/') for row in result['items']))
+        self.assertEqual(result['owner_gap'],[])
+        self.assertFalse(result['PIT_ELIGIBLE'])
+        self.assertEqual(result['membership_mode'],'TDX_LATEST_MEMBER_RETRO_V1')
+
+        bff.source=lambda domain,day:[
+            {'sector_id':'INDUSTRY:T0706','sector_type':'INDUSTRY','member_ids':['OTHER-SEC']},
+            {'sector_id':'THEME:T9002','sector_type':'THEME','member_ids':['SEC-1']}]
+        bff.project=lambda domain,day:[{'entity_id':'INDUSTRY:T0706','display_name':'电子制造'}]
+        incomplete=bff._r2_membership_relations({'entity_id':'SEC-1','fields':{
+            'primary_industry':{'value':'INDUSTRY:T0706','quality':'KNOWN'},
+            'supporting_concepts':{'value':None,'quality':'UNKNOWN'}}},DAY)
+        self.assertEqual(incomplete['items'][0]['status'],'SOURCE_INCOMPLETE')
+        self.assertIsNone(incomplete['items'][0]['href'])
+        self.assertEqual(incomplete['items'][1]['role'],'supporting_concepts')
+        self.assertEqual(incomplete['items'][1]['sector_id'],'THEME:T9002')
+        self.assertTrue(incomplete['items'][1]['membership_verified'])
+        self.assertEqual(incomplete['owner_gap'],[])
+
     def test_sector_detail_does_not_load_unrelated_focus_projection(self):
         self.bff._read_index_r2 = lambda day: None
         self.bff._get_product = lambda path, query: (200, {'context': {}, 'item': {'entity_id': 'INDUSTRY:T0101'}})

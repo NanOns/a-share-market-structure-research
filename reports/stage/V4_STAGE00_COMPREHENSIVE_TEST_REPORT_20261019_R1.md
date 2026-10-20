@@ -1,14 +1,14 @@
 ---
 stage_id: V4-00
-code_sha: 7babddcfe4c91375d229de85f59f4c40567f85c5
-test_scope: V4-00A-H、R3 PG-only合同纠偏、R4可运行性与定向测试/真实只读诊断
-conclusion: STAGE00_REPAIR_PARTIAL
+code_sha: c960be012f191f2cbf96e958a88501e657c2f047
+test_scope: V4-00A-H、R11本地TDX+BaoStock开发候选PG闭环、定向修复与真实PG Reader/Gate
+conclusion: STAGE00_ENGINEERING_COMPLETE_PRODUCTION_ACCEPTANCE_PENDING
 approval_status: USER_AUTHORIZED_STAGE00_ONLY
 ---
 
 # V4 阶段00｜清理后基础能力恢复与八子阶段验收
 
-日期：2026-10-19。本文是阶段00唯一当前报告；不表示阶段01开始、V4业务验收通过或生产切换。
+日期：2026-10-20。本文仍是阶段00唯一当前报告；当前工程结论以文末原R11阻断处置段为准。工程完成不代表正式接受、生产验收或28765切换。
 
 > R2 独立审计纠偏于 2026-10-19 追加在文末。该 R2 结论是 A–H 与阶段00准入的当前权威状态；文中原 R1 状态仅保留为审计历史，遇到冲突以 R2 为准。R2 代码提交：`da5b72f0e`。
 
@@ -608,8 +608,12 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 
 #### R11阻断处置：2026-09-10 BaoStock同日核价与PG存储边界
 
-- 先只读检查开发PG：没有`2026-09-10`的BaoStock日线事实；既有BaoStock日线候选仍为`2026-10-16`。随后按现役`BaoStockClient.query_rows`逐证券调用历史K线接口，仅查询4只股票、目标日单行，频率`d`、`adjustflag=3`、每请求最多2行/1页；会话为`PUBLIC_ANONYMOUS`，固定SDK`0.9.3`，请求计数共6（登录、4次查询、登出），没有读写正式接收清单。4个请求均返回成功、各1行。BaoStock文档明确`adjustflag=3`为不复权；本项目当前补充合同的单位映射为价格`CNY/share`、成交量`shares`、成交额`CNY`。查询时间`2026-10-20T00:08:26Z`，返回行规范化摘要SHA-256=`e0f7e044e0d2769c4ba1d4983e776204dac77f73268e48980b0c715cc8fde23a`（616字节）。
-- 通过现有`ForwardFactStore`的独立只读Reader再次读取同一PG TDX候选，没有重复写入或重新提取TDX。PG身份仍为`market_research@127.0.0.1:5432`/OID `646711`，payload SHA-256=`2043cfb3fa01f4a4971635c26b9a4a55cd2fa4c11f52b62d0bbe37c1a44b0aa1`，T0四行摘要=`bd0bfcb886d1162f1025aa20c3d1e014011d1f014a83a7300d80c78159d4d40a`。复用现有`crosscheck_tdx_with_baostock`精确诊断比较器，结果`CONFLICTS_FOUND`，比较摘要SHA-256=`d414bf11cdf25ba3604efe93b66dbc8552b738443e98c8ff10d662dd089e9aeb`：四只的OHLC均逐字段一致；`sh.600000`成交量TDX/BaoStock=`59,774,256/59,774,258`、成交额=`555,882,176/555,882,180.54`元；`sh.600036`成交量=`66,000,292/66,000,292`、成交额=`2,733,649,664/2,733,649,678.20`元；`sz.000001`成交量=`86,763,224/86,763,222`、成交额=`1,022,543,936/1,022,543,914.24`元；`sz.000002`成交量=`101,044,120/101,044,122`、成交额=`319,828,000/319,828,012.91`元。BaoStock成交量相对TDX分别为`+2、0、-2、+2`股。现有合同的精确诊断无未批准容差；因此价格和OHLC可报告完全一致，但成交量/额核价不通过，不把这种小差异四舍五入成通过，也不据此更改权威TDX数据或合同。
-- PG读回确认保存的是诊断候选JSON文本（数据库`payload`类型`text`，本候选3,930字节）、T0四行OHLCVA及其摘要，加上4个原始`.day`文件各自SHA-256和元数据；`source_sha256`为空，PG不含933,600字节的四个完整`.day`原始文件字节。原始文件仍位于只读源`D:/new_tdx/vipdoc`。本轮BaoStock API行只在内存中用于比较，未写入PG；它的616字节规范化行摘要仅用于报告核对来源，不是BaoStock原始传输包/线协议字节摘要。
-- 本次不修改业务代码、合同、容差或PG业务事实；未重跑已完成的223项回归。分状态记录：阶段00开发代码修复和223项定向回归=`COMPLETED`（沿用已验证结果）；本地TDX候选写入/独立Reader/T0/SHA=`PASS`（前轮已完成，本轮Reader复核）；BaoStock四只同日接口读取=`PASS`，同日精确数值核价=`CONFLICTS_FOUND`/未通过；完整`DEV E2E`=`BLOCKED`（缺完整目标T0来源/Universe、规范身份、接受的Owner及完整Source链）；正式`PHASE0_ACCEPTANCE`=`BLOCKED`（无官方ZIP有效字节、独立正式签发与接受回执、Owner和合同批准事件，现有批准合同仍0/5）。官方挑战/签发不可得分别保留为外部阻断，不重试挑战、不恢复旧R3、不创建正式Source/Owner/批准/PIT事实。
-- 仅更新本唯一阶段00报告；阶段01–21未开展，未切换生产Head或28765，未打包。BaoStock官方接口复权参数说明：[BaoStock Python API文档](https://github.com/zxygithub/baostock/blob/master/docs/pythonAPI.md)。
+本段更新本唯一报告的当前执行状态，覆盖上方R11执行当时关于缺少同日BaoStock输入、完整DEV E2E尚未完成的历史判断；其他R1–R11内容保留为各自执行时点记录。
+
+- **代码与业务路径纠偏。** 现役`crosscheck_tdx_with_baostock`原先用PG规范`security_id`与BaoStock供应商证券代码连接，规范ID与供应商代码不相同时会产生虚假身份集合缺口。修复为优先用原始`source_security_key`/`source_symbol`对齐，并拒绝空/重复供应商键；比较字段扩为开高低收、成交量、成交额。保留精确比较和`DIAGNOSTIC_ONLY`语义，不增加未批准容差、不以BaoStock替换TDX。为阶段00开发链新增本地原生`.day`候选构建器及现役`phase0_gate acceptance --trade-date`的只读PG候选核验输出；正式包验收检查未放宽，正式每日执行仍不会将本地开发候选冒充官方接受包。
+- **PG合同/Owner引用。** 将`V4_TDX_LOCAL_NATIVE_SOURCE_V1@1.0.0`原始合同字节存入`v4.contract_versions`的`V4_STAGE00_DEV_CANDIDATE` namespace，SHA-256=`ead20ecd5d1e7257a26dffaae24411948c336c7b967c94b985da976251b45732`；用现有只读合同Reader按精确字节/SHA独立读回。未写合同批准事件。TDX Owner仅记录为PG候选事实中的`V4-00D / DEV_CANDIDATE_UNSIGNED`，没有写正式Owner、签发人、PIT或合同批准。
+- **真实同日来源与覆盖。** 对只读本地TDX`D:/new_tdx/vipdoc`读取T0=`2026-09-10`，从PG生命周期历史形成5,217只身份候选Universe；其中5,205条T0日线、12只缺线股票均有BaoStock同日`tradestatus=0`停牌记录。板块行数：沪主板1,697、深主板1,490、创业板1,404、科创板614；PG候选Universe分别为1,701、1,494、1,406、616。使用现役BaoStock 0.9.3匿名批量接口`query_daily_history_k_AStock(date=2026-09-10)`实际返回5,218行，覆盖其中5,217只PG候选；目标行响应SHA-256=`f8ea21f25409dc8f15a9624f16d3a5d919f67183dc923fc029e8414ef87a9173`。BaoStock行的`adjustflag`均为`3`，单位是价格CNY/share、成交量share、成交额CNY；TDX按原生日线不复权解释，价格除数100。全部5,205只的开、高、低、收四字段精确一致；成交量894只、成交额4,806只存在精确数值差异（最大25股、479.32元；成交额最大相对差约0.0000077%）。这些只作为成交诊断：不改变TDX权威值、不宣称精确成交通过、不阻断开发候选。集合差异为0。
+- **真实开发PG写入、独立Reader与T0/SHA。** 复用`v4.forward_facts`与`ForwardFactStore`写入命名空间`v4w_799b175957211459a670773167f8fcc7:forward`，kind=`tdx_local_native_dev_candidate`，T0候选键后缀SHA=`d3c615d1d920add53551d58bb251c0fbd1343544d57a1dc573ed35e1809ec04e`。另开现有只读Reader按绑定读回并校验候选、合同、身份映射、Universe及行摘要。PG身份为`market_research@127.0.0.1:5432`/OID `646711`；payload SHA-256=`aed6553614cdf15fb8e6725a6393b7f2e71b68a020ef16045daf8bc33f92245f`；T0行数5,205、行摘要=`e4a6a6d65fb561b9f2f60581b2e03b82259c875ccf42ed5d75f01b5dcc5cb82e`；Universe摘要=`37d083710adf0da4b891197575d56dee709dc4057a23e361c577343155221e96`。独立Reader与现役Stage00 Gate均返回`DEV_VALIDATED_READ_ONLY_PG_READER`。Gate明确`formal_source_acceptance=false`、`official_tdx_zip=false`、`production_head_eligible=false`。
+- **PG字节边界。** 当前PG行`payload`类型为`text`、大小11,129,299字节，保存结构化T0数据、来源文件清单/全文件SHA及BaoStock目标行/响应摘要；`source_sha256`为空，PG没有保存这5,217个完整`.day`原始文件字节，也没有保存BaoStock SDK的线协议/原始响应字节。TDX源文件仍留在只读源目录。故本次结论是“T0解析结果+源字节摘要已PG化并读回”，不是“全量原始字节已留存”。同一目标日保留3条内容寻址的append-only开发候选版本，均无正式接受效力；Gate按TDX本地观察时钟读取最新版本。
+- **验证。** 阶段00定向相关测试`77 passed`，包含将既有TDX路径测试的mock参数对齐现役双参数`resolve_tdx_root(root, explicit)`签名；修改模块`py_compile`与`git diff --check`通过。另执行真实`phase0_gate acceptance --trade-date 2026-09-10 --json`：运行`OK`，能独立读出DEV候选；正式`phase0_status=BLOCKED`及`v4_01_entry_permission=BLOCKED`保持。没有重跑既有223项回归。
+- **状态与下一阶段。** 阶段00工程代码/候选路径/实际开发PG写入读回/定向回归=`STAGE00_ENGINEERING_COMPLETE`；正式`PHASE0_ACCEPTANCE`=`BLOCKED`，正式来源签发Authority缺失、官方TDX ZIP挑战来源不可用、Stage00所需5份合同仍0/5批准，正式Owner/Source接收和生产验收未发生。工程顺序上具备进入阶段01代码修复的条件；这不解除正式`v4_01_entry_permission=BLOCKED`，也不代表阶段01运行或业务接受。只保留上述正式缺项，不新增治理体系、不重试挑战下载、不恢复旧R3下载器。阶段01–21本轮均未修改；未切换28765/正式Head，未最终打包。BaoStock复权标志及字段单位依据其[Python API文档](https://github.com/zxygithub/baostock/blob/master/docs/pythonAPI.md)核对。

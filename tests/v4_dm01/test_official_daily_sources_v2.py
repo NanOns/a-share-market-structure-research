@@ -340,9 +340,9 @@ def test_tdx_root_uses_configured_resolver_when_omitted(monkeypatch,tmp_path):
     from common import paths
     resolved=tmp_path/'configured-tdx-root'
     observed=[]
-    monkeypatch.setattr(paths,'resolve_tdx_root',lambda root:(observed.append(root) or resolved))
+    monkeypatch.setattr(paths,'resolve_tdx_root',lambda root, explicit=None:(observed.append((root,explicit)) or resolved))
     assert tdx_source._tdx_root_or_configured(None)==resolved
-    assert observed==[Path(tdx_source.__file__).resolve().parents[2]]
+    assert observed==[(Path(tdx_source.__file__).resolve().parents[2], None)]
 
 
 def test_existing_downloader_uses_structured_stdout_receipt_without_report_pointer(monkeypatch,tmp_path):
@@ -686,6 +686,18 @@ def test_tdx_baostock_price_conflict_keeps_tdx_authority():
     assert result["data_head_blocking"] is False
     assert result["tdx_remains_canonical_authority"] is True
     assert result["baostock_rows_promoted_to_raw"] is False
+
+
+def test_tdx_baostock_crosscheck_uses_provider_symbol_when_pg_id_is_canonical():
+    tdx_rows = [{"security_id": "SEC-001", "source_security_key": "sh.600000",
+                 "open": 10.0, "high": 10.5, "low": 9.5, "close": 10.0,
+                 "volume": 1000, "amount": 10000}]
+    bao_rows = [{"code": "sh.600000", "open": "10", "high": "10.5", "low": "9.5",
+                 "close": "10", "volume": "1000", "amount": "10000", "tradestatus": "1"}]
+    result = crosscheck_tdx_with_baostock(trade_date=TARGET, tdx_rows=tdx_rows, baostock_rows=bao_rows)
+    assert result["status"] == "NO_EXACT_VALUE_CONFLICTS"
+    assert result["set_gaps"] == []
+    assert result["comparisons"][0]["code"] == "sh.600000"
 
 
 def test_suspended_stock_without_tdx_bar_is_valid_with_status_evidence():

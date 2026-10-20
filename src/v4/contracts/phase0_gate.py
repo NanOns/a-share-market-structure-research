@@ -800,6 +800,80 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
                     except ContractRegistryError:
                         pass
             contracts[contract_id] = entry
+        development_local_native_source = {
+            "status": "NOT_CHECKED", "formal_source_acceptance": False,
+            "official_tdx_zip": False, "production_head_eligible": False,
+        }
+        if target_trade_date:
+            try:
+                from workbench_db.v4_native import workspace_logical_id
+                from workbench_analysis.tdx_local_snapshot import (
+                    LOCAL_NATIVE_DEV_CONTRACT_ID, LOCAL_NATIVE_DEV_CONTRACT_VERSION,
+                    _canonical_json, validate_local_native_dev_record,
+                )
+                forward_table = cursor.execute("SELECT to_regclass('v4.forward_facts')").fetchone()
+                if forward_table and forward_table[0]:
+                    candidate_contract = load_unapproved_dev_contract_candidate(
+                        cursor, LOCAL_NATIVE_DEV_CONTRACT_ID, LOCAL_NATIVE_DEV_CONTRACT_VERSION,
+                        expected_database_identity=identity,
+                    )
+                    fact_key_prefix = "tdx-local-native:" + target_trade_date.replace("-", "") + ":"
+                    fact = cursor.execute(
+                        """SELECT payload,payload_sha256,fact_key FROM v4.forward_facts
+                            WHERE workspace_namespace=%s AND kind=%s AND fact_key LIKE %s
+                            ORDER BY payload::jsonb #>> '{manifest,source_observed_at_utc}' DESC,
+                                     fact_key COLLATE "C" DESC LIMIT 1""",
+                        (workspace_logical_id(_repo_root() / "data/v4/historical_source_ingress_pg_r1") + ":forward",
+                         "tdx_local_native_dev_candidate", fact_key_prefix + "%"),
+                    ).fetchone()
+                    if fact:
+                        raw = str(fact[0]).encode("utf-8")
+                        record = json.loads(raw)
+                        payload_sha = hashlib.sha256(raw).hexdigest()
+                        expected_candidate_sha = hashlib.sha256(_canonical_json(
+                            {key: value for key, value in record.items() if key != "candidate_sha256"}
+                        )).hexdigest()
+                        errors = validate_local_native_dev_record(
+                            record, contract_sha256=candidate_contract.raw_sha256,
+                        )
+                        if payload_sha != str(fact[1]).strip():
+                            errors.append("LOCAL_NATIVE_DEV_PG_PAYLOAD_SHA_MISMATCH")
+                        if expected_candidate_sha != record.get("candidate_sha256"):
+                            errors.append("LOCAL_NATIVE_DEV_CANDIDATE_SHA_MISMATCH")
+                        if fact[2] != fact_key_prefix + str(record.get("candidate_sha256")):
+                            errors.append("LOCAL_NATIVE_DEV_FACT_KEY_MISMATCH")
+                        if record.get("manifest", {}).get("trade_date") != target_trade_date:
+                            errors.append("LOCAL_NATIVE_DEV_T0_MISMATCH")
+                        if not errors:
+                            development_local_native_source = {
+                                "status": "DEV_VALIDATED_READ_ONLY_PG_READER",
+                                "trade_date": target_trade_date,
+                                "candidate_sha256": record["candidate_sha256"],
+                                "pg_payload_sha256": payload_sha,
+                                "target_rows_sha256": record["manifest"]["target_rows_sha256"],
+                                "target_bar_count": record["manifest"]["target_bar_count"],
+                                "universe_candidate_count": record["manifest"]["universe_count"],
+                                "contract_id": candidate_contract.contract_id,
+                                "contract_raw_sha256": candidate_contract.raw_sha256,
+                                "contract_status": "DEV_CANDIDATE_NO_APPROVAL_EVENT",
+                                "owner_candidate_status": record.get("owner_candidate", {}).get("status"),
+                                "baostock_diagnostic_status": record["manifest"]["baostock_diagnostics"]["result"]["status"],
+                                "baostock_diagnostic_only": True,
+                                "formal_source_acceptance": False, "official_tdx_zip": False,
+                                "production_head_eligible": False,
+                            }
+                        else:
+                            development_local_native_source.update(
+                                status="BLOCKED_INVALID_DEV_CANDIDATE", fact_key=fact[2], reason_codes=errors,
+                            )
+                    else:
+                        development_local_native_source.update(
+                            status="NOT_FOUND_FOR_TARGET_T0", trade_date=target_trade_date,
+                        )
+            except Exception as exc:
+                development_local_native_source.update(
+                    status="READER_ERROR", reason_code=str(exc).split(":", 1)[0],
+                )
         try:
             acceptance_authority = load_unique_current_approved_contract(
                 cursor, "V4_DAILY_SOURCE_ACCEPTANCE_AUTHORITY_REGISTRY_R1", "1.0.0",
@@ -932,6 +1006,7 @@ def _pg_snapshot(*, target_trade_date: str | None = None) -> dict[str, Any]:
         return {
             "database_identity": identity, "read_role": role, "catalog": catalog,
             "catalog_missing": catalog_missing, "contracts": contracts,
+            "development_local_native_source": development_local_native_source,
             "source_acceptance_authority": source_acceptance_authority,
             "baostock_supplemental_contract": baostock_supplemental_contract,
             "missing_contract_versions": [key for key, value in contracts.items() if value["status"] != "APPROVED_READ"],
@@ -1006,6 +1081,10 @@ def run_stage00_diagnostic(*, mode: str = "doctor", tdx_root: str | None = None,
         report["pg_catalog_missing"] = pg["catalog_missing"]
         report["contract_registry"] = pg["contracts"]
         report["source_acceptance_authority"] = pg.get("source_acceptance_authority", {"status": "UNKNOWN"})
+        report["development_local_native_source"] = pg.get("development_local_native_source", {
+            "status": "NOT_CHECKED", "formal_source_acceptance": False,
+            "official_tdx_zip": False, "production_head_eligible": False,
+        })
         report["contract_versions_read"] = [
             {"contract_id": key, **{name: value[name] for name in ("version", "raw_sha256", "namespace", "source_revision", "status", "reason") if name in value}}
             for key, value in pg["contracts"].items() if value.get("raw_sha256")

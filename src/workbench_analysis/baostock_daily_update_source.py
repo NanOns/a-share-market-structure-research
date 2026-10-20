@@ -134,8 +134,23 @@ def crosscheck_tdx_with_baostock(
     baostock_rows: list[Mapping[str, Any]],
 ) -> dict[str, Any]:
     """Emit exact-match diagnostics; TDX remains authoritative for every field."""
-    tdx_by_code = {str(row.get("security_id") or "").lower(): row for row in tdx_rows}
-    bao_by_code = {str(row.get("code") or "").lower(): row for row in baostock_rows}
+    def indexed(rows, key_fields, label):
+        output = {}
+        for row in rows:
+            code = next((str(row.get(field) or "").strip().lower()
+                         for field in key_fields if str(row.get(field) or "").strip()), "")
+            if not code:
+                raise BaoStockDailyUpdateError(label + "_SOURCE_SYMBOL_REQUIRED")
+            if code in output:
+                raise BaoStockDailyUpdateError(label + "_SOURCE_SYMBOL_DUPLICATE")
+            output[code] = row
+        return output
+
+    # TDX rows carry canonical PG security_id values as well as their original
+    # provider symbol. BaoStock is keyed by the provider symbol; comparing it
+    # to the unrelated canonical ID creates false identity gaps.
+    tdx_by_code = indexed(tdx_rows, ("source_security_key", "source_symbol", "code", "security_id"), "TDX")
+    bao_by_code = indexed(baostock_rows, ("code", "source_security_key", "source_symbol"), "BAOSTOCK")
     comparisons, conflicts, set_gaps = [], [], []
     for code in sorted(set(tdx_by_code) | set(bao_by_code)):
         local, source = tdx_by_code.get(code), bao_by_code.get(code)
@@ -146,7 +161,9 @@ def crosscheck_tdx_with_baostock(
             set_gaps.append(gap)
             continue
         mismatch = {}
-        for field in ("close", "volume", "amount"):
+        for field in ("open", "high", "low", "close", "volume", "amount"):
+            if field not in local and field not in source:
+                continue
             try:
                 left, right = float(local[field]), float(source[field])
             except (KeyError, TypeError, ValueError):

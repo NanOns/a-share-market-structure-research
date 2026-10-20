@@ -2,6 +2,7 @@ import { after, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { FilterPanel, Kline, StatCard } from '../src/workbench_service/static/core-product-r1/components.js';
 import { rotationAutoAcceptanceComplete, rotationAutoAcceptance } from '../src/workbench_service/static/core-product-r1/rotation-auto-acceptance.js';
+import { ResearchHeader } from '../src/workbench_service/static/research/components.js';
 
 class Node {
   constructor(tag) { this.tagName = tag; this.children = []; this.attributes = {}; this.value = ''; this.disabled = false; }
@@ -14,6 +15,10 @@ globalThis.document = {
   createElementNS: (_namespace, tag) => new Node(tag),
 };
 after(() => { delete globalThis.document; });
+
+test('research UI components module parses and exports its snapshot header', () => {
+  assert.equal(typeof ResearchHeader, 'function');
+});
 
 test('unverified index volume is absent from chart bars and hover text', () => {
   const bars = [{ trade_date: '2026-10-13', open: 10, high: 12, low: 9, close: 11, volume: 987654 }];

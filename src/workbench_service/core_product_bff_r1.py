@@ -412,6 +412,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         item=self.resolve_dated_object('stocks',day,str(key).strip().upper())
         if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
         base={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}
+        base=self._bind_live_head_scope(base)
         if item is None:
             return 404,{**base,'status':'NOT_FOUND','code':'ENTITY_NOT_FOUND','item':None}
         # The profile route bypasses page(), so normalize the embedded item here
@@ -445,6 +446,24 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             'key_prices':{k:fields[k] for k in ('ma20','prior_high20','prior_low20','atr20') if k in fields},
             'hypothesis_scope':'情景解释不证明洗盘、吸筹、出货或账户资金行为',
             'competitive_hypotheses':competing_explanations(deepcopy(fields))}
+
+    def _bind_live_head_scope(self,response):
+        """Bind immutable indexed rows to the current formal-head decision."""
+        result=deepcopy(response)
+        context_reader=getattr(self.api,'context',None)
+        if not callable(context_reader):return result
+        live=context_reader()
+        result['production_accepted']=bool(live.get('production_accepted'))
+        current=result.get('context')
+        if isinstance(current,dict):
+            current=deepcopy(current)
+            for key in ('read_scope','formal_head_match','formal_head_date',
+                        'production_accepted','independent_external_acceptance',
+                        'rotation_validation_state'):
+                if key in live:
+                    current[key]=live[key]
+            result['context']=current
+        return result
 
     def _forward_candidate_late_preview(self):
         """Read-only R7 preview over the current candidate's late-captured Owners."""
@@ -668,12 +687,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             offset=int(query.get('offset',0));limit=int(query.get('limit',30))
             if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
             items=rows[offset:offset+limit]
-            return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|{
+            response={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|{
                 'status':'READY' if items or not rows else 'EMPTY_VALID','contract_id':priority['contract_id'],
                 'priority_owner':binding,'rule':priority['rule'],'market_permission':priority['market_permission'],
                 'scope':scope,'rankability':rankability,'total':len(rows),'rankable_total':subset['rankable'],
                 'not_rankable_total':subset['not_rankable'],'offset':offset,'limit':limit,
                 'has_next':offset+len(items)<len(rows),'items':items,'T0':day,'context_token':self.api.token}
+            return 200,self._bind_live_head_scope(response)
         if (index_r2 is not None and path.startswith('/api/v4/stocks/') and
                 path.endswith(('/profile','/evidence','/why-not','/why-not-prewatch'))):
             parts=[unquote(part) for part in path.split('/') if part]
@@ -683,9 +703,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             context=index_r2.response('/api/v4/context')
             if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             page=index_r2.page('radar',query)
-            return 200,{k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|page|{
+            response={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|page|{
                 'contract_id':'V4_ACCEPTED_FOCUS_RADAR_PAGE_R1','source':self.api.candidate['owners'][day].get('forward'),
                 'scope':'ACCEPTED_FOCUS_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE','producer_status':'FORMAL_RADAR_PRIORITY_NOT_PUBLISHED'}
+            return 200,self._bind_live_head_scope(response)
         index=index_r2 if index_r2 is not None else None if getattr(self,'building_read_index',False) or not index_route or path=='/api/v4/radar' else load_index_r1(self.api.root,self.api.token,day,allow_missing=day!=self.api.candidate['accepted_trade_date'])
         if index is not None and path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus'):
             if path in ('/api/v4/context','/api/v4/home'):
@@ -747,7 +768,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                             historical_research_count=None,live_frozen_count=None,
                             matured_settlement_count=None,reason=type(exc).__name__,
                             updated_at=response.get('updated_at'),href='/v4/research/forward')
-                return 200,response
+                return 200,self._bind_live_head_scope(response)
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
             response={k:v for k,v in response.items() if k in ('context','context_token','production_accepted','source_quality')}
@@ -762,7 +783,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if path=='/api/v4/sectors':
                 response=self._apply_rotation_auto_acceptance(response,day)
                 response=mark_evaluated_sector_lifecycle(response)
-            return 200,response
+            return 200,self._bind_live_head_scope(response)
         code,data=self._get_product(path,query)
         if path=='/api/v4/candidates/cohort' and code==200:
             try:

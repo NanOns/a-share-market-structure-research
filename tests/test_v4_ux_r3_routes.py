@@ -519,6 +519,7 @@ class UXR3RouteTests(unittest.TestCase):
                 patch('workbench_db.v4_native.configured_reader_dsn', return_value='dbname=test'),
                 patch('workbench_service.core_product_server_r1.psycopg.connect', return_value=FakePG()),
                 patch('workbench_db.v4_forward_pg_r1.ForwardFactStore._database_identity', return_value={'system_identifier': 'TEST'}),
+                patch.object(CoreProductBFFR1, '_rotation_owner_summary', return_value={}),
             ]
             if authority_state == 'missing':
                 patches.append(patch('workbench_db.v4_read_index_r1.load', return_value=LegacyIndex(legacy)))

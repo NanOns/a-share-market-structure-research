@@ -238,6 +238,7 @@ class UXR2RouteContractTests(unittest.TestCase):
             candidate={'published_sessions':[day],'accepted_trade_date':day,'owners':{day:{'validation_cohort':None}}})
         bff=CoreProductBFFR1(api,None)
         bff._read_index_r2=lambda _:Index()
+        bff._rotation_owner_summary=lambda _day:{}
         code,result=bff.get('/api/v4/home',{'trade_date':day,'context_token':token})
         self.assertEqual(code,200)
         self.assertEqual(result['market']['regime_publication_status'],'ACCEPTED')
@@ -245,6 +246,23 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertEqual(len(result['focus_risk_events']),1)
         self.assertIsNone(result['counts']['forward']['value'])
         self.assertGreater(validate_home_response(result),0)
+
+    def test_indexed_response_binds_current_formal_head_scope_without_mutating_source(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        bff=object.__new__(CoreProductBFFR1)
+        bff.api=SimpleNamespace(context=lambda:dict(production_accepted=False,
+            read_scope='DEVELOPMENT_CANDIDATE_PREVIEW',formal_head_match=False,
+            formal_head_date='2026-10-09',independent_external_acceptance=False))
+        indexed={'context':{'read_scope':'USER_AUTHORIZED_OPERATIONAL_DAILY',
+                            'formal_head_match':True,'production_accepted':True},
+                 'production_accepted':True,'context_token':'candidate-token'}
+        response=bff._bind_live_head_scope(indexed)
+        self.assertFalse(response['production_accepted'])
+        self.assertFalse(response['context']['formal_head_match'])
+        self.assertEqual(response['context']['formal_head_date'],'2026-10-09')
+        self.assertEqual(response['context']['read_scope'],'DEVELOPMENT_CANDIDATE_PREVIEW')
+        self.assertTrue(indexed['production_accepted'])
+        self.assertTrue(indexed['context']['formal_head_match'])
 
     def test_legacy_r1_home_is_explicitly_marked_for_compatibility(self):
         legacy = {

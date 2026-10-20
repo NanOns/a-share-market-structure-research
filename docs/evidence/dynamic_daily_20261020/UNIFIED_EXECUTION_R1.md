@@ -9,7 +9,7 @@
 
 | 交易日 | Source | Core | Profile | Sector/Rotation | Focus | Forward | ReadIndex/API | UI | 正式发布 | 耗时 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2026-10-12 | DEGRADED：10月20日晚采；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 5,224 行（候选证据） | 未独立重算 | 板块 400；轮动完整性/数值仍未独立验收 | 3,025（候选证据） | 5,624 晚采候选；不是 LIVE_OOS / 正式样本 | 当前 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5`；28766 context/home/个股/板块 HTTP 读回 200；token一致 | 本轮重载页面后停在“正在读取当前快照…”，导航与正文未渲染，未验收 | 否；运营 Head 仍为 10-09，数据 Head 为 09-30 | 本轮未重算 |
+| 2026-10-12 | DEGRADED：10月20日晚采；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 5,224 行（候选证据） | 未独立重算 | 板块 400；Owner 覆盖完整可展示，轮动数值仍未独立验收 | 3,025（候选证据） | 5,624 晚采候选；不是 LIVE_OOS / 正式样本 | 当前 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5`；28766 context/home/个股/板块/Focus/Radar/Forward HTTP 读回 200；token一致；候选 `production_accepted=false` | 浏览器首页渲染通过；轮动域 400/400 唯一板块候选可展示；Forward 页面展示 5,624 条 10-12 晚采候选，明确非 PIT/非正式 | 否；运营 Head 仍为 10-09，数据 Head 为 09-30 | 本轮未重算 |
 | 2026-10-13 | DEGRADED/BLOCKED：TDX 目标日行已提取；来源准入文件输出 `SOURCE_READY`，但下层交叉核验仍有 `SOURCE_RECONCILIATION_FAILED` / `UNADMITTED_NATIVE_IDENTITY:SZ.301660` | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无候选索引/独立读回 | 无日期候选页面 | 否 | 未运行 |
 | 2026-10-14 | BLOCKED：缺目标日冻结来源 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
 | 2026-10-15 | BLOCKED：缺目标日冻结来源 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
@@ -37,6 +37,15 @@
 ## 未关闭项与恢复位置
 
 - **P0-A BLOCKED**：10-13 虽有真实晚采源字节，仍有证券身份差异且未生成完整增量 Owner；10-14 首个未完成交易日无冻结来源。不得进入 10-15 之后计算。
-- **P0-B DEGRADED**：10-12 候选 API 读取可用，但旧 28766 Python 进程还在运行本轮修改前加载的模块；计划热重载未能执行。直接 HTTP 可读不证明最新后端已上线，浏览器重载停在加载态，因此当前版本的页面、候选/现役标记修复尚未完成运行态验收。
-- **P1 PARTIAL**：轮动与 Forward 逻辑及 UI 文案已修，未在最新 Python 服务重启后进行端到端 DOM 验证；搜索/筛选、详情、图表、Focus、Radar 等完整页面冒烟仍待服务恢复。
-- 下一最小动作：先为 `SZ.301660` 按当前带版本身份合同解决准入/异常范围并关闭 10-13 来源差异；再取得 10-14 真实输入，基于已验证的 10-12 候选建立受限连续候选链；最后经授权的 28766 后端重启执行独立读回与桌面/窄屏 UI smoke。未切 28765、Head、正式调度；未执行破坏性数据库操作。
+- **P0-B 已关闭（运行态修复）**：已按进程命令行与端口归属核对并停止旧 28766 进程，再以同一只读预览入口重启最新源码；未触碰 28765。发现并修复 `research/components.js` 的 `ResearchHeader` 括号缺失（浏览器模块解析错误导致整个页面停在加载态），并增加模块导入回归测试。重启后 `/api/v4/context` 与索引页面统一返回 `production_accepted=false`、`formal_head_match=false`、正式 Head 日期 10-09；首页、轮动、Forward 页已完成浏览器 DOM 验收。
+- **P1 PARTIAL**：已验收首页、轮动展示及 Forward 候选页面；个股、板块、Focus、Radar API 读回可用。完整搜索/筛选、详情、图表、Focus/Radar 多交互路径仍未逐项冒烟。
+- **现存读取缺口**：`/api/v4/radar/priority` 当前返回 400，原因是当前 10-12 候选没有 `data/v4/research_priority_authority_r1.json` 的优先级 Owner 绑定。没有创建或伪造该 Owner；此日期的正式优先级读取仍不可用。
+- 下一最小动作：先为 `SZ.301660` 按当前带版本身份合同解决准入/异常范围并关闭 10-13 来源差异；再取得 10-14 真实输入，基于已验证的 10-12 候选建立受限连续候选链。未切 28765、Head、正式调度；未执行破坏性数据库操作。
+
+## 运行态修复追加证据（2026-10-20 16:13 +08）
+
+- 核验旧 28766 PID `45608` 命令行为 `E:\python\python.exe -B G:\codex_tmp\v4_20261012_readonly_preview.py`，端口归属为 127.0.0.1:28766；停止后确认端口释放，随后启动 PID `31092`，读回启动日志日期 2026-10-12、worker disabled。28765 未启动；PG 5432 仍为已有实例 PID `8640`。
+- 浏览器最初的加载态来自 `components.js` `ResearchHeader` 中少一个 `)`：模块未解析，导航和页面脚本均未运行。补齐后刷新，8 个导航入口和首页内容正常出现，控制台未新增解析错误。
+- 首页实显候选头部、股票 5,224、板块 400、Radar 311（部分）及 Forward 5,624（晚采候选）；轮动卡片显示 400/400 唯一身份且明确“不代表数值独立验收或正式域发布”。Forward 页面显示 `2026-10-12`、5,624 条、采集时点 `2026-10-20T10:19:45.760110+08:00` 和“非 PIT、非当时可知”。Forward settlement 为 `EMPTY_VALID`、0 条。
+- API 读回 200：context、home、stocks（5,224）、sectors（400）、focus（3,025）、radar（311）、forward/statistics；settlement 返回 200 / `EMPTY_VALID` / 0。以上候选接口 token 均一致；正式标记均为 false。
+- 最新定向 Python 测试：57 passed；Node UI 回归：6 passed（新增 research UI 模块可导入测试）；`node --check` 与 `git diff --check` 通过。

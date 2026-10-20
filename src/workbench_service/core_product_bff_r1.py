@@ -270,15 +270,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         prior=Counter(str(r.get('prior_rotation_state') or 'UNKNOWN') for r in values)
         reasons=Counter(code for r in values for code in (r.get('reason_codes') or []))
         owner=self.api.candidate['owners'][day].get('rotation')
-        identifiers=[r.get('sector_id') or r.get('entity_id') for r in rows]
-        complete=bool(owner) and len(rows)==400 and len(identifiers)==400 and all(identifiers) and len(set(identifiers))==400
+        sector_rows=self.source('sector',day)
+        from workbench_analysis.operational_successor_v1 import rotation_display_completeness
+        coverage=rotation_display_completeness(rows,sector_rows or [],rotation_owner_bound=bool(owner),
+            sector_owner_bound=bool(self.api.candidate['owners'][day].get('sector')))
+        complete=bool(coverage['complete'])
         return dict(owner_bound=bool(owner),owner_bytes=owner.get('bytes') if owner else None,
             owner_sha256=owner.get('sha256') if owner else None,
             total=len(values),current_states=dict(current),prior_states=dict(prior),
+            expected_total=coverage['expected_total'],covered_total=coverage['covered_total'],
+            missing_total=coverage['missing_total'],unexpected_total=coverage['unexpected_total'],
+            duplicate_total=coverage['duplicate_total'],
             unknown_reasons=dict(reasons),
             automatic_acceptance_contract='V4_ROTATION_PIPELINE_AUTO_ACCEPTANCE_R1',
             automatic_acceptance_state='AUTO_ACCEPTED_WITH_LIMITATIONS' if complete else 'BLOCKED_INCOMPLETE_OWNER_OUTPUT',
-            validation='OWNER_PIPELINE_READABLE; CANDIDATE_AUTO_ACCEPTED' if complete else 'OWNER_PIPELINE_INCOMPLETE')
+            automatic_acceptance_scope='OWNER_DATA_COMPLETE_FOR_DISPLAY_ONLY' if complete else 'INCOMPLETE_OR_UNBOUND',
+            numeric_acceptance='NOT_INDEPENDENTLY_VALIDATED',formal_publication=False,
+            validation='OWNER_DATA_COMPLETE_FOR_DISPLAY_ONLY' if complete else 'OWNER_PIPELINE_INCOMPLETE')
 
     def _apply_rotation_auto_acceptance(self,response,day):
         """Replace only the old human-review mask with bound Owner values."""
@@ -439,36 +447,42 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             'competitive_hypotheses':competing_explanations(deepcopy(fields))}
 
     def _forward_candidate_late_preview(self):
-        """Read-only R7 calculation over the exact, late-captured 2026-10-12 candidate Owners."""
+        """Read-only R7 preview over the current candidate's late-captured Owners."""
         cached=getattr(self,"_forward_candidate_late_preview_cache",None)
-        if cached is not None:return cached
+        candidate=self.api.candidate
+        day=candidate.get('accepted_trade_date')
+        token=self.api.token
+        cache_key=(token,day)
+        if isinstance(cached,dict) and cache_key in cached:return cached[cache_key]
         from collections import Counter
-        import hashlib
-        from workbench_analysis.r43_owner_replay import checked
+        from workbench_analysis.r43_owner_replay import checked,load
+        from workbench_analysis.r43_operational_publication import digest
         from workbench_analysis.market_source_acquisition import official_sessions
         from workbench_analysis.forward_r7 import build_daily_universe,make_observation_id
         from workbench_analysis.forward_r7_pipeline import (accepted_prices_with_status,
             build_schedules, summarize_universe)
         root=self.api.root
-        evidence_path=root/'docs/evidence/dynamic_daily_20261012/CANDIDATE_RECOVERY_R1.json'
-        evidence=json.loads(evidence_path.read_bytes())
-        binding=evidence.get('candidate') or {}
-        candidate_path=checked(root,binding)
-        candidate_raw=candidate_path.read_bytes()
-        if (len(candidate_raw)!=binding.get('bytes')
-                or hashlib.sha256(candidate_raw).hexdigest()!=binding.get('sha256')
-                or evidence.get('status')!='CANDIDATE_VALIDATED_AND_INDEPENDENT_READBACK_READY'
-                or evidence.get('target_date')!='2026-10-12'
-                or self.api.candidate.get('accepted_trade_date')!='2026-10-12'
-                or self.api.token!=binding.get('sha256')):
+        if not day or not candidate.get('source_registry',{}).get(day):
+            raise ValueError('FORWARD_CANDIDATE_SOURCE_REGISTRY_REQUIRED')
+        if digest(candidate)!=token:
             raise ValueError('FORWARD_LATE_CANDIDATE_BINDING_MISMATCH')
-        captured_at=evidence.get('late_collection',{}).get('observed_at')
-        if not captured_at or evidence.get('late_collection',{}).get('PIT_ELIGIBLE') is not False:
+        freeze_binding=candidate['source_registry'][day].get('freeze')
+        if not freeze_binding:
+            raise ValueError('FORWARD_CANDIDATE_FREEZE_BINDING_REQUIRED')
+        freeze=load(checked(root,freeze_binding))
+        captured_at=freeze.get('observed_at')
+        if (freeze.get('target_session')!=day or not captured_at
+                or freeze.get('AS_RECORDED') is not False or freeze.get('PIT_ELIGIBLE') is not False):
             raise ValueError('FORWARD_LATE_CAPTURE_CLOCK_REQUIRED')
-        day='2026-10-12'
         sessions=official_sessions(root)
-        previous=sessions[sessions.index(day)-1]
-        read=lambda domain,target:self.api.read(domain,target,self.api.token)
+        candidate_dates=candidate.get('published_sessions',[])
+        if day not in sessions or day not in candidate_dates:
+            raise ValueError('FORWARD_CANDIDATE_DATE_NOT_IN_SESSION_CHAIN')
+        candidate_index=candidate_dates.index(day)
+        if candidate_index<1:
+            raise ValueError('FORWARD_CANDIDATE_PREDECESSOR_REQUIRED')
+        previous=candidate_dates[candidate_index-1]
+        read=lambda domain,target:self.api.read(domain,target,token)
         current={name:read(name,day)['rows'] for name in ('raw','core','sector','lifecycle')}
         prior={name:read(name,previous)['rows'] for name in ('raw','core','sector','lifecycle')}
         rows=build_daily_universe(trade_date=day,stock_rows=current['core'],raw_rows=current['raw'],
@@ -516,8 +530,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             settlement_schedule_counts=schedule_counts,
             settlement_total=len(schedules),settlement_items=settlement_items,
             settlement_source_state='DUE_SESSIONS_NOT_ACCEPTED_BY_FORMAL_HEAD',
-            items=preview,limit=30,offset=0,has_next=len(rows)>30)
-        self._forward_candidate_late_preview_cache=result
+            items=preview,limit=30,offset=0,has_next=len(rows)>30,
+            status_scope='CANDIDATE_OBSERVATION_ONLY; NOT_FORMALLY_PUBLISHED; NOT_PIT')
+        if not isinstance(cached,dict):cached={}
+        cached[cache_key]=result
+        self._forward_candidate_late_preview_cache=cached
         return result
 
     def _forward_r7_read(self,path,q,day):

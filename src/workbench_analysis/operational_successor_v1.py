@@ -12,6 +12,30 @@ REQUIRED = frozenset(('raw','adjusted','core','profile','sector','relative_secto
                       'rotation','lifecycle','special_phase','period_raw','period_adjusted','diagnostic'))
 
 
+def rotation_display_completeness(rotation_rows, sector_rows, *, rotation_owner_bound, sector_owner_bound):
+    """Check display coverage against this candidate's own sector Owner rows.
+
+    This is a completeness check only. It deliberately says nothing about the
+    numeric correctness of the rotation reducer or publication authority.
+    """
+    sector_ids=[row.get('sector_id') or row.get('entity_id') for row in sector_rows]
+    rotation_ids=[row.get('sector_id') or row.get('entity_id') for row in rotation_rows]
+    expected={value for value in sector_ids if value}
+    actual={value for value in rotation_ids if value}
+    complete=(bool(rotation_owner_bound) and bool(sector_owner_bound) and bool(expected)
+        and len(sector_ids)==len(expected) and len(rotation_ids)==len(expected)
+        and all(rotation_ids) and actual==expected)
+    return dict(complete=bool(complete),expected_total=len(expected),actual_total=len(rotation_rows),
+        covered_total=len(actual & expected),missing_total=len(expected-actual),
+        unexpected_total=len(actual-expected),duplicate_total=len(rotation_ids)-len(actual))
+
+
+def formal_head_matches_candidate(formal_head, candidate, token):
+    """True only when both the date and the exact candidate identity match."""
+    return (formal_head.get('accepted_trade_date')==candidate.get('accepted_trade_date')
+        and digest(formal_head)==token)
+
+
 def validate(root, candidate):
     root=Path(root)
     if candidate.get('contract_id')!=CONTRACT:
@@ -95,19 +119,26 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         if candidate.get('external_review_contract') and candidate['owners'][candidate['accepted_trade_date']].get('rotation'):
             rotation=self.read('rotation',candidate['accepted_trade_date'],self.token)
             rows=rotation.get('rows') or []
-            identifiers=[row.get('sector_id') or row.get('entity_id') for row in rows]
-            complete=(rotation.get('status')=='READY' and len(rows)==400 and len(identifiers)==400 and
-                      all(identifiers) and len(set(identifiers))==400)
-            if complete:self.automatic_domain_disposition['rotation']='AUTO_ACCEPTED_WITH_LIMITATIONS'
+            sector=self.read('sector',candidate['accepted_trade_date'],self.token)
+            coverage=rotation_display_completeness(rows,sector.get('rows') or [],
+                rotation_owner_bound=True,
+                sector_owner_bound=bool(candidate['owners'][candidate['accepted_trade_date']].get('sector')))
+            if rotation.get('status')=='READY' and coverage['complete']:
+                self.automatic_domain_disposition['rotation']='AUTO_ACCEPTED_WITH_LIMITATIONS'
 
     def context(self):
         from .tdx_member_retro_r43 import metadata
         day=self.candidate['accepted_trade_date']
         current=json.loads(checked(self.root,self.candidate['membership_snapshot']).read_bytes())
+        head_path=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        formal_head=json.loads(head_path.read_bytes()) if head_path.exists() else {}
+        formal_head_match=formal_head_matches_candidate(formal_head,self.candidate,self.token)
         return dict(metadata(current,day),contract_id=CONTRACT,context_token=self.token,publication_id=self.token,
                     accepted_trade_date=day,data_cutoff_date=day,available_trade_dates=self.candidate['published_sessions'],
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,
-                    read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY',production_accepted=True,
+                    read_scope='USER_AUTHORIZED_OPERATIONAL_DAILY' if formal_head_match else 'DEVELOPMENT_CANDIDATE_PREVIEW',
+                    production_accepted=formal_head_match,formal_head_match=formal_head_match,
+                    formal_head_date=formal_head.get('accepted_trade_date'),
                     independent_external_acceptance=False,external_domain_disposition=self.domain_disposition,
                     automatic_domain_disposition=self.automatic_domain_disposition,
                     rotation_validation_state=self.automatic_domain_disposition['rotation'])

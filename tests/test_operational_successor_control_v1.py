@@ -24,3 +24,12 @@ def test_new_date_never_relabels_old_pit_permissions():
     assert result['control_date_source']=='USER_AUTHORIZED_OPERATIONAL_HEAD'
     assert result['data_updated_at']=='2026-10-09T19:00:00+08:00'
     assert old['context']=={'accepted_trade_date':'2026-09-30'}
+
+def test_candidate_is_formal_only_when_exact_candidate_matches_current_head():
+    from workbench_analysis.r43_operational_publication import digest
+    from workbench_analysis.operational_successor_v1 import formal_head_matches_candidate
+    candidate={'accepted_trade_date':'2026-10-12','contract_id':'candidate','owners':{}}
+    assert formal_head_matches_candidate(candidate,candidate,digest(candidate))
+    assert not formal_head_matches_candidate(candidate,candidate,'other-token')
+    assert not formal_head_matches_candidate(
+        {'accepted_trade_date':'2026-10-09','contract_id':'old'},candidate,digest(candidate))

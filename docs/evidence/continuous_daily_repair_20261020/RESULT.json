@@ -35,7 +35,11 @@
     "auth_mode": "PUBLIC_ANONYMOUS_DEFAULT_SESSION",
     "user_supplied_credentials": false,
     "unauthenticated_query_error": "10001001",
-    "retry_flow": ["bs.login()", "query", "bs.logout()"],
+    "retry_flow": [
+      "bs.login()",
+      "query",
+      "bs.logout()"
+    ],
     "query_all_stock_rows": {
       "2026-10-13": 7427,
       "2026-10-14": 7430
@@ -222,5 +226,56 @@
     "production_scheduler_started": false
   },
   "credentials_logged": false,
-  "destructive_database_operations": false
+  "destructive_database_operations": false,
+  "annotation_retry_closeout": {
+    "candidate_snapshot_recovery": {
+      "old_exact_manifest_sha256": "d9d052fdf912c0975f5bfca0cd1067fe4a47fde99d804ce356c266da960e72f3",
+      "old_exact_database_missing": true,
+      "candidate_snapshot_path": "data/v4/research_snapshots/666645c83dfa4fe984c336f024f26f22/manifest.json",
+      "candidate_manifest_sha256": "4b1c722e14753e84e00a5b4a03779393348dbec5ab1fc1bf40e105af0f1a3936",
+      "candidate_full_product_release": false,
+      "candidate_joint_validate": "PASS",
+      "candidate_ui_build_id": "10c60318496f91008699381105720e3088a27666a97f62ecd1c5efc6a9508257",
+      "candidate_ui_activation": "SCOPED_OPERATIONAL_RELEASE_PASS",
+      "production_changed": false,
+      "restored_exact_dependency_count": 4
+    },
+    "remaining_source_contracts": {
+      "qfq": {
+        "http": 200,
+        "status": "EMPTY_VALID",
+        "availability": "SOURCE_INCOMPLETE",
+        "reason": "CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND",
+        "candidate_raw_chart_preserved": true,
+        "external_adjustment_used": false
+      },
+      "forward_first_capture": {
+        "dates": [
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "capture_deadlines_passed": true,
+        "full_as_recorded_signal_producer_bound": false,
+        "independent_cohort_owner_bound": false,
+        "separate_write_grant_bound": false,
+        "retroactive_capture_created": false
+      }
+    },
+    "browser_and_runtime_readback": {
+      "chart_raw_http": 200,
+      "chart_raw_status": "READY",
+      "chart_raw_rows": 8,
+      "chart_qfq_http": 200,
+      "chart_qfq_status": "EMPTY_VALID",
+      "service_port": 28766,
+      "service_pid": 13868,
+      "database_port": 5432,
+      "database_pid": 8640,
+      "port_28765_listening": false,
+      "formal_head_modified": false,
+      "production_scheduler_started": false,
+      "new_postgresql_schemas": []
+    }
+  }
 }

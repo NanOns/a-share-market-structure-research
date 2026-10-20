@@ -102,3 +102,30 @@
 - 连续 QFQ 历史尚无候选历史 chart catalog/index，本次只提供候选 RAW 日线，QFQ 明确 unavailable。
 - joint release activation 仍缺失绑定 research snapshot manifest；Forward 正式 plans/结算仍缺获授权 cohort Owner、首捕生产者和冻结回执。这些未被 UI 兜底或临时配置掩盖。
 - 当前分支工作区测试/浏览器验证通过，不代表正式发布验收。推送本续作代码及证据之后，正式 Head、28765、生产调度与 PG 全面迁移仍保持未触碰。
+
+
+## 2026-10-20 注释续修：候选 joint authority 恢复与剩余合同边界
+
+用户指出上次把快照、QFQ、Forward 首捕缺口作为“未关闭项”是不够的。本次按真实证据继续修复，不用空文件、伪造 Owner 或回填 T0 回执消除提示。
+
+### 候选 snapshot / UI activation：已恢复并通过候选合同
+
+- 旧 authority 指向的原始 manifest 在 `G:\codex_tmp\r7_active_baseline_20261015\data\v4\research_snapshots\3a3f5d9074b646189ccfd830c15e7161\manifest.json` 找到，SHA-256 与旧绑定一致（`d9d052...e72f3`）。但它绑定的 `daily_research.sqlite`（466,341,888 bytes，SHA `37119a...d7a9e2`）在仓库、旧基线和候选根均不存在；因此没有把不同数据库冒充原快照，也没有改写仓库/正式 authority。
+- 候选根已存在完整且可校验的 2026-09-30 snapshot `666645c83dfa4fe984c336f024f26f22`（manifest SHA `4b1c722e...f1a3936`，data-head digest 与旧快照相同）。为恢复候选预览，仅在 `G:\codex_tmp\v4_daily_candidate_chain_20261020` 把 `full_product_release=false` 的候选 joint authority 绑定到这份真实 snapshot，并将 Sector/Stock Owner refs 对齐该 manifest 的精确 source bindings。
+- 为使候选合同完整，按 SHA 校验后在候选根恢复了 4 项原始依赖：Profile Advanced 37,627,535 bytes、Radar publication 104,701 bytes、Replay manifest 3,622,812 bytes、Replay authority 13,990 bytes。来源分别是仓库中同 SHA 的受绑定文件、候选根内同 SHA 的 Replay authority；全部逐字节校验。没有重建或修改数据内容。
+- `joint_release.validate(candidate_root, authority)` 通过；随后执行现役 `scripts/v4_closeout_refresh_candidate_ui.py`，官方 joint CAS 回执为 `SCOPED_OPERATIONAL_RELEASE_PASS`，`full_product_release=false`，`production_changed=false`。UI build `10c60318496f91008699381105720e3088a27666a97f62ecd1c5efc6a9508257` 已绑定并读回。候选服务仍 READY，候选日 10-14，formal Head 10-09。
+- 此恢复只更改 G 盘候选根，不改仓库 `config/v4_joint_release_authority_v1.json`、正式 Head、PG、28765 或调度器。没有创建新 PostgreSQL schema。
+
+### 页面/API 再验
+
+- 28766 股票页重载后读取候选 UI build，默认 RAW 显示 8/8 根（2026-09-28 至 2026-10-14），末收 12.55；界面无 HTTP 错误。
+- 同一股票 QFQ API 为 HTTP 200、`EMPTY_VALID`、`SOURCE_INCOMPLETE`、`CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND`。候选日期 Owner 只有逐日 RAW；来源冻结把 BaoStock adjustment factor 标记为 `AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY`，当前没有候选连续 QFQ index。没有使用外部复权或未来价格造序列，RAW 路径继续可用。
+- Forward 的 10-12、10-13、10-14 首捕截止分别已过去；现有候选没有 `COHORT_COMPLETE_SIGNAL_PRODUCER_R1`、完整 AS_RECORDED 全量信号、独立 validation cohort Owner 与单独 first-capture write grant。`V4_R7_FORWARD_SIGNAL_SPEC_R1` 与首捕合同禁止过期后补记；因此不把 Focus/Radar 或事后回算数据写成 T0 样本。页面维持“首捕截止已过且未取得 T0 首获”的可解释状态，避免将候选误称正式样本。
+- 对应的实时图表读回：RAW 200/READY/8 rows；QFQ 200/EMPTY_VALID/0 rows，原因为未绑定连续 QFQ 索引。端口：28766 PID 13868，PG 5432 PID 8640，28765 无监听。
+
+### 本阶段处置
+
+- 旧 snapshot 缺失造成的候选 UI activation 错误已通过候选根有效 snapshot 绑定修复，正式 authority 完全未触碰。
+- QFQ 连续坐标和逾期首捕分别缺规范化调整 Owner、真实 T0 全量 producer/Owner/grant；它们不是服务重启或 HTTP 错误。当前合同没有足够真实证据生成这两个正式能力，不通过造数/回填“关单”。候选 RAW 图表和已有日更/Focus/Radar/Forward 读域继续可用。
+- 本次只更新本证据文档和结构化回执；没有新增代码、配置文件或 PG schema；测试代码不变，沿用本证据上文最新源码定向测试 13 passed（4 项 PG 写测试按只读边界 deselected）及图表测试 4 passed。
+- 下一步如需连续 QFQ，按版本化合同从已接受 TDX GBBQ + 逐日 Raw Owner 产出候选 adjusted series，并进行独立数值/坐标核验；如需正式 Forward OOS，只能从下一个实时交易日开始具备真实 producer、AS_RECORDED Owner、独立准入和有效写 grant 后首捕。历史 10-12 至 10-14 不事后补录。

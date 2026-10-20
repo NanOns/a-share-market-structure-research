@@ -42,6 +42,20 @@
 - 候选根 `config/v4_read_index_authority_r2.json`：包含该 token 的三日绑定，文件 SHA-256 `f0ec5db17d060efbda430a55520ef25dcf80341fe58e63d907694312d5e1e2b4`。
 - 候选根 `config/v4_joint_release_authority_v1.json` 的 UI asset map 已更新为候选 build；SHA-256 `e3fee2907424c78a9d68acc9f69ea521baa618e1763f80a4cf7777ac72f31490`。缺少其 15 MB research snapshot manifest，所以未执行 joint activation；正式 authority/head 未变。
 
+上面的首轮清单没有列尽执行合同。按 10-12/13/14 各自冻结的 `GENERATION_SCOPE.json` 及本次 Forward/QFQ 核查，现补齐**已明确绑定/读取的配置输入**；哈希对应本轮使用的字节：
+
+| 文件 | 使用范围 | SHA-256 / 状态 |
+|---|---|---|
+| `config/v4_dynamic_profile_lifecycle_conservation_r1.json` | 三日日更 profile/lifecycle 守恒合同 | `0a572c168c83d3a0755a0676abc86f091963489b38d7c5ac77315caec643c822` |
+| 候选 `data/v4/exact_daily_policies_v2/80207ac81674e69bd26957780269c1f140c3c86d9402a18dded0217052052df7/POLICY.json` | 三日日更 exact affine 调整策略，候选根绑定输入，非本次新建 | `80207ac81674e69bd26957780269c1f140c3c86d9402a18dded0217052052df7` |
+| `config/v4_02_formal_period_contract_v1.json` | 三日日更数值/周期契约冻结输入 | `f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727` |
+| `config/v4_03_parameter_registry_v1.json`、`config/v4_03_parameter_set_v1.json` | 10-13/14 revision guard 明确绑定的参数输入；10-12 generation scope 未列这两项 | `c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3`、`2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18` |
+| `config/v4_continuous_daily_admission_v10.json` | 候选 joint/snapshot authority 的 admission 依赖；不是生产调度配置，本次未更改 | `3cc472a29b053e27208e069675efee6d78ee9254d3b77f7205ee961b59201107` |
+| `config/v4_cohort_first_capture_r6_r1.json` | Forward 历史首捕资格核查，限制 `historical_backfill=false`、`grant_issuance=false`；本次未更改 | `c63a64a1cc9cbb0d83434d4a68845d8d4af19fb95484e825079b7309def0e88f` |
+| `config/v4_02_gbbq_price_impact_classification_v1.json` | 本次 QFQ 候选图表解释 GBBQ 价格影响事件；现有配置，未更改 | `c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c` |
+
+**创建/更新的配置产物（仅 G 盘候选根）**：新增 `config/r8_forward_candidate_namespace_r1.json`；新增/更新 `data/v4/research_priority_authority_r1.json` 和 `config/v4_read_index_authority_r2.json`；候选 joint refresh 更新 `config/v4_joint_release_authority_v1.json` 的 UI asset binding。没有在仓库中创建新运行配置、凭据文件或生产配置；`config/.env` 沿用既有安全配置且未记录 DSN/密码。以上类别区分了：已有输入合同、候选根策略副本、任务新增/更新 authority，以及只用于 UI/Forward/QFQ 核查的配置。
+
 ### PostgreSQL schemas
 
 全部 schemas 均在既有 `market_research` 数据库内；除基线来源外，为当前候选的新增、隔离、不可变数据。schema 不建新数据库实例。

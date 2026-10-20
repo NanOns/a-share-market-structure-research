@@ -447,5 +447,181 @@
         }
       ]
     }
+  },
+  "daily_generation_config_inventory": {
+    "used_existing_or_bound": [
+      {
+        "path": "config/v4_dynamic_profile_lifecycle_conservation_r1.json",
+        "sha256": "0a572c168c83d3a0755a0676abc86f091963489b38d7c5ac77315caec643c822",
+        "scope": "all three daily generations"
+      },
+      {
+        "path": "data/v4/exact_daily_policies_v2/80207ac81674e69bd26957780269c1f140c3c86d9402a18dded0217052052df7/POLICY.json",
+        "sha256": "80207ac81674e69bd26957780269c1f140c3c86d9402a18dded0217052052df7",
+        "scope": "candidate exact-affine adjustment policy; bound input, not created this run"
+      },
+      {
+        "path": "config/v4_02_formal_period_contract_v1.json",
+        "sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727",
+        "scope": "daily generation period/numeric contract"
+      },
+      {
+        "path": "config/v4_03_parameter_registry_v1.json",
+        "sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+        "scope": "10-13/10-14 revision guard bound input; not listed by 10-12 generation scope"
+      },
+      {
+        "path": "config/v4_03_parameter_set_v1.json",
+        "sha256": "2f3cc8ae2fdf4bffc098dc1a0dc90bf05bbb12557b45ea8ddc50048410314e18",
+        "scope": "10-13/10-14 revision guard bound input; not listed by 10-12 generation scope"
+      },
+      {
+        "path": "config/v4_daily_research_priority_r1.json",
+        "sha256": "2333a66f7fa3fd285a4ddf8aef9f7726ba3d04aeb3a3a623182dd2ec3d2f1985",
+        "scope": "daily candidate priority owner build"
+      },
+      {
+        "path": "config/v4_continuous_daily_admission_v10.json",
+        "sha256": "3cc472a29b053e27208e069675efee6d78ee9254d3b77f7205ee961b59201107",
+        "scope": "candidate joint/snapshot admission dependency; unchanged"
+      },
+      {
+        "path": "config/v4_cohort_first_capture_r6_r1.json",
+        "sha256": "c63a64a1cc9cbb0d83434d4a68845d8d4af19fb95484e825079b7309def0e88f",
+        "scope": "Forward historical-capture contract read; unchanged"
+      },
+      {
+        "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+        "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c",
+        "scope": "candidate QFQ chart event classification; unchanged"
+      },
+      {
+        "path": "config/.env",
+        "scope": "existing PG connection settings read in process memory; secret values not recorded"
+      }
+    ],
+    "created_or_updated_candidate_only": [
+      {
+        "path": "config/r8_forward_candidate_namespace_r1.json",
+        "action": "created"
+      },
+      {
+        "path": "data/v4/research_priority_authority_r1.json",
+        "action": "created_or_updated"
+      },
+      {
+        "path": "config/v4_read_index_authority_r2.json",
+        "action": "created_or_updated"
+      },
+      {
+        "path": "config/v4_joint_release_authority_v1.json",
+        "action": "candidate_ui_asset_binding_updated"
+      }
+    ],
+    "repository_or_production_configuration_created": false,
+    "credentials_written_to_evidence": false
+  },
+  "postgres_schema_inventory": {
+    "database": "127.0.0.1:5432/market_research",
+    "new_database_instance": false,
+    "roles_created_or_changed": false,
+    "created_candidate_schemas": [
+      {
+        "date": "2026-10-12",
+        "schema": "v4_research_fd2ef70117d1e9f87a8a92f1",
+        "purpose": "daily RAW series",
+        "rows": 31265
+      },
+      {
+        "date": "2026-10-13",
+        "schema": "v4_research_40a35fa59494bfb8bb970d58",
+        "purpose": "daily RAW series",
+        "rows": 36477
+      },
+      {
+        "date": "2026-10-14",
+        "schema": "v4_research_13dd9d4fc1ca96e720d2a00e",
+        "purpose": "daily RAW series",
+        "rows": 41691
+      },
+      {
+        "date": "2026-10-12",
+        "schema": "v4_909aa7f00f88fc2b894facebfec8bc0ec1507c016bc11e3401542a56",
+        "purpose": "R2 read index",
+        "counts": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 3025,
+          "radar": 311
+        }
+      },
+      {
+        "date": "2026-10-13",
+        "schema": "v4_2aba60621019002fc7f5b2cd13509fdf4a841de7554ca24103f069bd",
+        "purpose": "R2 read index",
+        "counts": {
+          "stocks": 5225,
+          "sectors": 400,
+          "focus": 3151,
+          "radar": 163
+        }
+      },
+      {
+        "date": "2026-10-14",
+        "schema": "v4_2c5a277ce8f846e3de7d0d396b678d897c89a30b2ab40d14381d76bd",
+        "purpose": "R2 read index",
+        "counts": {
+          "stocks": 5225,
+          "sectors": 400,
+          "focus": 3247,
+          "radar": 177
+        }
+      },
+      {
+        "date": "2026-10-12",
+        "schema": "v4_e9d16a7c4e621a6fe5946f3d1f849a1a0ab54b7fb0c0738c42255375",
+        "purpose": "priority owner",
+        "counts": {
+          "stocks_rankable": 1752,
+          "sectors_rankable": 0
+        }
+      },
+      {
+        "date": "2026-10-13",
+        "schema": "v4_5869198625dbebd780c6bb9004a293c1b2dd2a70269218f07c58d635",
+        "purpose": "priority owner",
+        "counts": {
+          "stocks_rankable": 1410,
+          "sectors_rankable": 0
+        }
+      },
+      {
+        "date": "2026-10-14",
+        "schema": "v4_f6212ca8b75a552619f071364ede69115dee7035fee25b5c213759c5",
+        "purpose": "priority owner",
+        "counts": {
+          "stocks_rankable": 967,
+          "sectors_rankable": 0
+        }
+      },
+      {
+        "schema": "v4_r8_forward_0c2b84fb3e1a0c42",
+        "purpose": "isolated candidate Forward baseline copy",
+        "rows": 160
+      }
+    ],
+    "existing_unmodified_schemas": [
+      {
+        "schema": "v4_forward_1eab1e832f0f04d0",
+        "purpose": "R8 read-only baseline source",
+        "rows": 160
+      },
+      {
+        "schema": "v4_forward_812843566da3f180",
+        "purpose": "pre-existing conflicting Forward namespace",
+        "modified": false
+      }
+    ],
+    "destructive_operations": false
   }
 }

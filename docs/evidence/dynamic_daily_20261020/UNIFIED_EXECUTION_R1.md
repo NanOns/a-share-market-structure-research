@@ -78,3 +78,11 @@
 - 定向 R8 lifecycle admission、isolated day baseline、Owner adapter 接口、BaoStock smoke/client、日更执行器测试共 `18 passed`；`git diff --check` 通过。
 - 旧 10-12 candidate 的只读 successor 校验返回 `CORRECTED_INPUT_DIGEST_MISMATCH:src/workbench_service/v4_server.py`，证明该历史 token 的源摘要已过期；没有改写该不可变候选或用它作 10-13 父节点。当前需要以 10-12 冻结输入按现源码重算，之后才能通过 R8 数值门并继续 10-13。
 - 28765、28766、formal/data Heads 和 PostgreSQL 数据均未变更；未执行 PG 写入、正式调度或破坏性操作。
+
+## R8 现役 Owner 接口恢复与 10-12 候选重算（2026-10-20 18:40 +08）
+
+- 从当前 exact-policy 指定的不可变 runtime source archive 恢复四个配套实现文件：`r43_structure_replay.py`、`tdx_sector_retro_r43.py`、`r43_market_replay.py`、`r43_focus_replay.py`。其 API 与 R8 Owner adapter 实际传参一致（结构 prior/progress、扇区 predecessor/progress、市场 predecessor、Focus predecessor/progress）；此前当前工作树混用了较旧函数签名，依次触发 `unexpected keyword argument`。新增接口合同回归；R8 candidate、isolated day、ready Owner、BaoStock smoke/client、daily executor 定向测试 `18 passed`，`git diff --check` 通过。
+- 10-12 gate 与 exact policy 均通过。候选快照内 6 个冻结 TDX 文件路径做了临时根目录本地化；原冻结/来源门未改，逐文件 payload SHA 与字节数不变，TDX package snapshot identity 和目标 bars SHA 保持不变；本地化映射证据只在 G 盘 candidate-only 快照。
+- 10-12 当前源码候选本地阶段读回：CORE `5,224` 行、原始行 `5,212`、独立 core oracle `0` 错误；PROFILE `5,224` 行、结构锚点 `2,630`；SECTOR 与 rotation 各 `400` 行，sector oracle `FOUR_DAY_RETRO_SECTOR_PASS`；Focus D0/D2 `5,224` 行。读回摘要在 G 盘临时快照，formal Head SHA 仍为 `55d78be5…`。
+- 尚未得到可封存 successor：Focus 收尾调用 `v4_series_pg_r1.build()`，它会在共享 `127.0.0.1:5432/market_research` 新建确定性 `v4_research_*` candidate schema、创建 immutable-series tables/index/triggers 并插入本候选的 dated bars。当前没有执行该数据库写入；运行在缺少 producer DSN 时按合同失败关闭（`V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK`）。这是下一步所需的唯一数据操作，不能写成只读验收或候选已封存。
+- PostgreSQL 写入前仍需用户确认该单个 candidate-only schema 的创建和数据范围；获准后可从 G 盘已完成的 CORE/PROFILE/SECTOR 缓存续跑，随后再执行 10-12 数值读回门、10-13 身份延续和 10-14 source gate。未写入 PG、未封存 candidate、未动正式/数据 Head、28765 或生产调度。

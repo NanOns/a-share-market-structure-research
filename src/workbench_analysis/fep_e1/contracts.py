@@ -19,11 +19,8 @@ def instant(value):
 
 
 def exact(root, binding):
-    root = Path(root).resolve()
-    path = (root / binding['path']).resolve()
-    if not path.is_relative_to(root):
-        raise ValueError('FEP_BINDING_PATH_ESCAPE')
-    raw = path.read_bytes()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    raw = read_bound(root, binding['path'], binding['sha256'])['raw']
     if len(raw) != binding['bytes'] or hashlib.sha256(raw).hexdigest() != binding['sha256']:
         raise ValueError('FEP_EXACT_BINDING_MISMATCH')
     return json.loads(raw)

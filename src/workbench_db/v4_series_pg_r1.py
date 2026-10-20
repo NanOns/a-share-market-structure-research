@@ -82,9 +82,13 @@ def build(root,path,rows,*,t0,source_digest):
     finally: db.close()
 
 def range_rows(path,sid,start,end):
-    path=Path(path)
-    if path.suffix!='.json': raise ValueError('PG_SERIES_BINDING_REQUIRED_NO_FALLBACK')
-    descriptor=json.loads(path.read_bytes())
+    if hasattr(path,'read_bytes'):
+        if getattr(path,'suffix',None)!='.json':raise ValueError('PG_SERIES_BINDING_REQUIRED_NO_FALLBACK')
+        descriptor=json.loads(path.read_bytes())
+    else:
+        path=Path(path)
+        if path.suffix!='.json': raise ValueError('PG_SERIES_BINDING_REQUIRED_NO_FALLBACK')
+        descriptor=json.loads(path.read_bytes())
     if descriptor.get('series_contract_id') not in (CONTRACT,LEGACY_CONTRACT) or end>descriptor['T0']: raise ValueError('PG_SERIES_CONTEXT_MISMATCH')
     with verified_series_read(descriptor) as db:
         rows=db.execute('SELECT day::text,payload FROM bars WHERE security=? AND day>=? AND day<=? ORDER BY day',(sid,start,end)).fetchall()

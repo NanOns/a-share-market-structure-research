@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')
 from scripts.fp01_evidence import write,ref
 from workbench_service.current_v4_context import canonical,digest,SourceInvalid
 from workbench_service.production_v4 import POINTER,ProductionV4ResearchReader
-from workbench_service.joint_release import AUTHORITY,activate,validate,checked_path
+from workbench_service.joint_release import AUTHORITY,activate,validate,checked_path,snapshot_metadata,context_token_for_snapshot
 OUT=ROOT/'docs/evidence/r2_repair_20261008'
 SCOPES=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','forward_read','diagnostics','compare_corrected']
 
@@ -31,23 +31,23 @@ def gate(candidate):
     for key in ('iab_browser_pass','service_disconnect_recovery_pass','field_scope_coverage_pass'):
         if qa.get(key) is not True:raise SourceInvalid('QA_GATE_FAILED:'+key)
     if qa.get('ui_build_id')!=candidate['ui_build_id']:raise SourceInvalid('QA_UI_BUILD_MISMATCH')
-    if qa.get('context_token')!='research-v4-'+candidate['snapshot']['manifest']['sha256']:raise SourceInvalid('QA_SNAPSHOT_MISMATCH')
+    if qa.get('context_token')!=context_token_for_snapshot(candidate['snapshot']):raise SourceInvalid('QA_SNAPSHOT_MISMATCH')
     if qa.get('operational_release_scope')!=candidate['operational_release_scope']:raise SourceInvalid('QA_SCOPE_MISMATCH')
     for b in qa['evidence']:checked_path(ROOT,b)
     checked_path(ROOT,candidate['owner_admission']);checked_path(ROOT,candidate['field_debt']);checked_path(ROOT,candidate['qa_contract'])
     matrix=json.loads(checked_path(ROOT,candidate['owner_admission']).read_bytes())
     if matrix['trade_date']!=candidate['trade_date']:raise SourceInvalid('OWNER_ADMISSION_DATE_MISMATCH')
-    manifest=json.loads(checked_path(ROOT,candidate['snapshot']['manifest']).read_bytes())
+    manifest=snapshot_metadata(ROOT,candidate['snapshot'])
     if ref('data/v4/V4_DATA_ACCEPTED_HEAD.json')['sha256']!=manifest['context']['data_head_digest']:raise SourceInvalid('LATEST_ACCEPTED_INPUT_MISMATCH')
     if candidate.get('full_product_release') and qa.get('product_complete') is not True:raise SourceInvalid('FULL_PRODUCT_NOT_ACCEPTED')
 
-def health(candidate):
-    results={};base='http://127.0.0.1:28765'
+def health(candidate,*,base='http://127.0.0.1:28765'):
+    results={}
     for route in ['/','/v4']+['/v4/research/'+x for x in ('home','sectors','stocks','focus','market','diagnostics')]:
         with urllib.request.urlopen(base+route,timeout=20) as response:raw=response.read();results[route]=dict(http=response.status,sha256=digest(raw))
         if digest(raw)!=candidate['ui_assets']['index.html']['sha256']:raise SourceInvalid('LIVE_UI_READBACK_MISMATCH')
     with urllib.request.urlopen(base+'/api/v4/context',timeout=20) as response:context=json.load(response)
-    if context['context_token']!='research-v4-'+candidate['snapshot']['manifest']['sha256']:raise SourceInvalid('LIVE_READER_READBACK_MISMATCH')
+    if context['context_token']!=context_token_for_snapshot(candidate['snapshot']):raise SourceInvalid('LIVE_READER_READBACK_MISMATCH')
     if context['context']['operational_release_scope']!=candidate['operational_release_scope']:raise SourceInvalid('LIVE_SCOPE_READBACK_MISMATCH')
     for route in ('home','stocks?limit=1','sectors?limit=1','focus?limit=1','market','diagnostics'):
         with urllib.request.urlopen(base+'/api/v4/'+route,timeout=20) as response:data=json.load(response)

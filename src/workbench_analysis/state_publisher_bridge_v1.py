@@ -7,7 +7,7 @@ import gzip
 import json
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 from .v4_14_replay_io import publish, digest
 from .validation_cohort_read_contract_r3 import instant
 from .full_state_first_observed_v1 import quarantine_publisher, freeze_first_observed

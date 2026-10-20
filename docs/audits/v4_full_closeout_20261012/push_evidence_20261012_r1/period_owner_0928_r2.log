@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "G:\codex work\v4-full-closeout-20261012\scripts\v4_closeout_period_owners.py", line 87, in <module>
-    if __name__=='__main__':main()
-                            ~~~~^^
-  File "G:\codex work\v4-full-closeout-20261012\scripts\v4_closeout_period_owners.py", line 39, in main
-    members={row['security_id']:row for row in normalized_frozen_rows(TARGET,api.snapshot['memberships'])}
-                                               ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: normalized_frozen_rows() takes 1 positional argument but 2 were given

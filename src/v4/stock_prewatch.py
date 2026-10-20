@@ -12,12 +12,22 @@ import os
 import tempfile
 from pathlib import Path
 
-from .base_seed import (_load_accepted_source_context, _verify_file_binding, _logical_digest,
+from .base_seed import (_load_accepted_source_context, _verify_file_binding, _repo_path, _logical_digest,
                         canonical_json, sha256_file)
 
 MODEL = 'STOCK_PREWATCH_V1'
 PARAMETER_SET = 'V4_09_STOCK_PREWATCH_PARAMETER_SET_V1'
 CONSUMER_CONTRACT = 'V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1'
+
+def _pg_json(root, relative_path):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return json.loads(read_path_bytes(root, relative_path).read_text(encoding='utf8'))
+
+def _pg_source_json(root, source_id):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    value=read_source(root,source_id)['value']
+    if not isinstance(value,dict):raise ValueError('V4_09_REGISTERED_JSON_SOURCE_REQUIRED')
+    return value
 
 def digest(value):
     return hashlib.sha256(canonical_json(value)).hexdigest()
@@ -27,7 +37,8 @@ def _validate_repair_freeze(root, freeze, repair):
     if repair.get('contract_id') != 'V4_09_R1_1_REPAIR_CONTRACT_FREEZE' or repair.get('status') != 'PASS_REPAIR_SCOPE_FREEZE':
         raise ValueError('REPAIR_FREEZE_IDENTITY_OR_STATUS_INVALID')
     authority = repair.get('authority', {})
-    if authority.get('path') != 'docs/evidence/V4_08_PROMOTION_LINEAGE_REPAIR_AND_V4_09_R1_1_PROVENANCE_IMMUTABILITY_TASK_20260930.md' or authority.get('sha256') != '4486530930527e7956bfbb1b133cc1d7ab96b744de519be621de064d7549b48a':
+    from workbench_db.v4_historical_source_ingress_pg_r1 import source_id_for_path
+    if source_id_for_path(authority.get('path','')) != 'b42a6bdd444c237097a22b4b21fa5374329b57b099d0d5b80c73d30f642cc550' or authority.get('sha256') != '4486530930527e7956bfbb1b133cc1d7ab96b744de519be621de064d7549b48a':
         raise ValueError('REPAIR_AUTHORITY_INVALID')
     _verify_file_binding(root, authority, 'accepted repair authority')
     if repair.get('immutable_writer_contract', {}).get('consumer_contract_id') != CONSUMER_CONTRACT:
@@ -42,9 +53,14 @@ def _validate_repair_freeze(root, freeze, repair):
         _verify_file_binding(root, b, 'accepted repair binding')
     for field in ['migration_semantics_preserved', 'protected_original_artifact']:
         _verify_file_binding(root, repair[field], field)
-    global_head = json.loads((root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_text(encoding='utf8'))
+    global_head = _pg_json(root, 'data/v4/V4_STAGE_ACCEPTED_HEAD.json')
     head_path, _ = _verify_file_binding(root, global_head['v4_09_binding'], 'accepted V4-09 head')
-    if head_path != (root/'data/v4/V4_09_ACCEPTED_HEAD.json').resolve():
+    # PGSourceBytes are request-scoped wrappers and compare by object identity;
+    # compare their exact bound logical paths instead of wrapper instances.
+    head_source_path = getattr(head_path, 'source_path', head_path)
+    expected_head = _repo_path(root, 'data/v4/V4_09_ACCEPTED_HEAD.json')
+    expected_source_path = getattr(expected_head, 'source_path', expected_head)
+    if head_source_path != expected_source_path:
         raise ValueError('REPAIR_ACCEPTED_HEAD_PATH_INVALID')
     head = json.loads(head_path.read_text(encoding='utf8'))
     if head.get('stage') != 'V4-09' or head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':
@@ -58,13 +74,13 @@ def _validate_repair_freeze(root, freeze, repair):
     if parent_head.get('stage') != 'V4-08' or parent_head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':
         raise ValueError('REPAIR_AMENDED_PARENT_NOT_ACCEPTED')
     repair_binding = evidence['V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json']
-    if repair_binding.get('path') != 'reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json':
+    if source_id_for_path(repair_binding.get('path','')) != '967dd6ab7ac13492565fb2a37cc1be3e4c6424f6a09d9682b18a646c901b760b':
         raise ValueError('REPAIR_ACCEPTED_RECEIPT_PATH_INVALID')
     _verify_file_binding(root, repair_binding, 'accepted repair freeze receipt')
 
 def load_package(root):
     root = Path(root).resolve()
-    freeze = json.loads((root/'reports/v4_09/V4_09_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    freeze = _pg_source_json(root, '285e2d49d22b6e90febed2ecbe0766ddf0d832edf4673c5e8e31691a03452475')
     if freeze['status'] != 'PASS_CONTRACT_FREEZE_CANDIDATE': raise ValueError('CONTRACT_NOT_FROZEN')
     package = {}
     for binding in freeze['frozen_bindings']:
@@ -72,7 +88,7 @@ def load_package(root):
         package[path.name.removeprefix('v4_09_').removesuffix('_v1.json')] = json.loads(path.read_text(encoding='utf8'))
     for binding in freeze['authority'].values():
         if isinstance(binding, dict) and 'path' in binding: _verify_file_binding(root, binding, 'V4-09 authority')
-    repair = json.loads((root/'reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    repair = _pg_source_json(root, '967dd6ab7ac13492565fb2a37cc1be3e4c6424f6a09d9682b18a646c901b760b')
     _validate_repair_freeze(root, freeze, repair)
     for binding in repair['new_bindings']:
         path, _ = _verify_file_binding(root, binding, 'V4-09 R1.1 frozen repair contract')
@@ -247,7 +263,7 @@ def load_accepted(root):
     """Resolve authoritative target from accepted heads, not from a source-code date."""
     package = load_package(root)
     old_context, core_rows, factor_rows = _load_accepted_source_context(root)
-    global_head = json.loads((root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_text(encoding='utf8'))
+    global_head = _pg_json(root, 'data/v4/V4_STAGE_ACCEPTED_HEAD.json')
     if global_head.get('v4_09_entry')!='AUTHORIZED_AFTER_V4_08_PROMOTION_VALIDATION': raise ValueError('V4_09_ENTRY_NOT_AUTHORIZED')
     seed_path,_ = _verify_file_binding(root,global_head['v4_07_binding'],'accepted V4-07 head')
     seed_head=json.loads(seed_path.read_text(encoding='utf8'))
@@ -269,7 +285,7 @@ def load_accepted(root):
     valid_ids={r['security_id'] for r in identity['records'] if r.get('security_type')=='A_STOCK' and r.get('list_date') and r['list_date']<=target and (not r.get('delist_date') or r['delist_date']>target)}
     ids={r['security_id'] for r in core_rows}
     if not ids<=valid_ids: raise ValueError('ACCEPTED_IDENTITY_DATE_MEMBERSHIP_MISMATCH')
-    accepted_core_head=json.loads((root/'data/v4/V4_05_ACCEPTED_HEAD.json').read_text(encoding='utf8'))
+    accepted_core_head=_pg_json(root, 'data/v4/V4_05_ACCEPTED_HEAD.json')
     source_bindings=dict(core_profile=accepted_core_head['accepted_artifact'],factors=accepted_core_head['accepted_artifacts']['full_scope_factors'],
         seed_artifact=artifact,identity_map=global_head['bindings']['v4_01_identity_map'],
         core_logical_digest=old_context['core_logical_digest'],seed_logical_digest=artifact['logical_digest'])

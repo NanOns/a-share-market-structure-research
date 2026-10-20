@@ -7,7 +7,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from adjustment.tdx_adjustment_v0_3 import build_affine_factors, xrxd_from_gbbq
-from tdx.gbbq_reader import read_gbbq
+from tdx.gbbq_reader import decode_gbbq_bytes
 from workbench_service.current_v4_context import SourceInvalid, canonical, digest
 from .outcomes import classify_outcome
 from .path_state_v2 import STOCK_PRIORITY, classify_stock_v2
@@ -20,11 +20,12 @@ ACTION_CONTRACT = 'V4_FOCUS_EXACT_ACTION_ALLOWLIST_S1B_V1'
 
 
 def checked(root, binding):
-    root = Path(root).resolve()
-    path = (root / binding['path']).resolve()
-    if not path.is_relative_to(root) or digest(path.read_bytes()) != binding['sha256']:
-        raise SourceInvalid('FOCUS_INPUT_DIGEST_OR_PATH_INVALID')
-    return path
+    """Read a bound source into memory after exact PG ingress verification."""
+    try:
+        from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+        return bound_bytes(Path(root).resolve(),binding)
+    except (OSError,KeyError,ValueError) as error:
+        raise SourceInvalid('FOCUS_PG_INPUT_UNAVAILABLE:'+str(binding.get('path',''))) from error
 
 
 class AcceptedPaths:
@@ -35,7 +36,8 @@ class AcceptedPaths:
         self.series = checked(root, bindings['series'])
         self.calendar = json.loads(checked(root, bindings['calendar']).read_bytes())['session_dates']
         self.events = defaultdict(list)
-        for event in read_gbbq(checked(root, bindings['gbbq'])):
+        for event in decode_gbbq_bytes(checked(root, bindings['gbbq']).read_bytes(),
+                                       source=bindings['gbbq']['path']):
             self.events[event.security_id].append(event)
         self.dispositions = json.loads(checked(root, bindings['classification']).read_bytes())['dispositions']
         self.status = {}

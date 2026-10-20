@@ -4,8 +4,12 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 import struct
+import subprocess
 import time
+from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,6 +19,7 @@ from .tdx_official_daily_source import _atomic_write, capture_tdx_official_daily
 
 CONTRACT = 'V4_MARKET_SOURCE_FALLBACK_POLICY_V1'
 FIELDS = 'date,code,open,high,low,close,volume,amount,tradestatus,isST,adjustflag'
+_DIAGNOSTIC_SESSION_AUTHORITY = ContextVar('v4_diagnostic_session_authority', default=None)
 
 
 def is_stock_code(code):
@@ -30,22 +35,222 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def write(path, value):
+def write(path, value, *, tdx_root=None, project_root=None):
     raw=(json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode()
+    if tdx_root is None:
+        from common.paths import resolve_tdx_root
+        tdx_root=resolve_tdx_root(project_root or Path(__file__).resolve().parents[2])
     for attempt in range(4):
         try:
-            _atomic_write(Path(path), raw, tdx_root=Path('D:/new_tdx'))
+            _atomic_write(Path(path), raw, tdx_root=Path(tdx_root))
             return
         except PermissionError:
             if attempt==3:raise
             time.sleep(0.1)
 
 
-def official_sessions(root):
-    from .dm01_runtime_r4 import calendar
-    head = json.loads((root / 'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
-    historical = json.loads((root / head['calendar']['path']).read_bytes())
-    return sorted(set(historical['session_dates']) | set(calendar(root)['session_dates']))
+def official_sessions(root, *, pg_reader=None, source_mode=None):
+    import os
+    selected_mode=source_mode or os.environ.get('V4_MARKET_CALENDAR_SOURCE','PG')
+    if selected_mode!='PG':raise ValueError('MARKET_CALENDAR_PG_ONLY')
+    bound=_DIAGNOSTIC_SESSION_AUTHORITY.get()
+    if bound is not None:
+        if Path(root).resolve()!=bound['root']:
+            raise ValueError('DIAGNOSTIC_CALENDAR_WORKSPACE_MISMATCH')
+        return list(bound['sessions'])
+    if pg_reader is None:
+        from workbench_db.v4_market_calendar_reader_r1 import from_environment
+        pg_reader=from_environment()
+    return pg_reader.sessions()
+
+
+@contextmanager
+def bind_dm01_calendar_for_diagnostic_candidate(root, calendar_snapshot):
+    """Use a verified accepted-base plus R4 extension only in a corrected-only candidate.
+
+    This does not create a market-calendar publication or alter the default
+    publication-backed reader. The caller must supply exact PG bindings for the
+    current accepted Data Head calendar and the validated R4 calendar extension.
+    The context is confined to the current workspace and call stack.
+    """
+    project=Path(root).resolve()
+    sources=calendar_snapshot.get('source_bindings') if isinstance(calendar_snapshot,dict) else None
+    sessions=calendar_snapshot.get('session_dates') if isinstance(calendar_snapshot,dict) else None
+    if (project.drive.upper()!='G:'
+            or not isinstance(calendar_snapshot,dict)
+            or calendar_snapshot.get('status')!='DM01_ACCEPTED_BASE_PLUS_R4_CALENDAR_DIAGNOSTIC_CANDIDATE'
+            or not isinstance(sources,list) or len(sources)<2
+            or any(not isinstance(source,dict)
+                   or not isinstance(source.get('path'),str)
+                   or not re.fullmatch(r'[0-9a-f]{64}',str(source.get('sha256') or ''))
+                   or type(source.get('bytes')) is not int or source['bytes']<1
+                   for source in sources)
+            or not isinstance(sessions,list) or not sessions
+            or sessions!=sorted(set(sessions))
+            or any(not isinstance(day,str) or len(day)!=10 for day in sessions)
+            or not re.fullmatch(r'[0-9a-f]{64}',str(calendar_snapshot.get('payload_digest') or ''))
+            or calendar_snapshot.get('production_admission') is not False):
+        raise ValueError('DM01_DIAGNOSTIC_CALENDAR_AUTHORITY_INVALID')
+    authority={
+        'contract_id':'V4_DM01_CALENDAR_COMPOSITE_DIAGNOSTIC_CANDIDATE_R1',
+        'status':calendar_snapshot['status'],
+        'source_bindings':[dict(source) for source in sources],
+        'calendar_payload_digest':calendar_snapshot.get('payload_digest'),
+        'session_count':len(sessions),
+        'production_admission':False,
+    }
+    token=_DIAGNOSTIC_SESSION_AUTHORITY.set({'root':project,'sessions':tuple(sessions),'authority':authority})
+    try:
+        yield authority
+    finally:
+        _DIAGNOSTIC_SESSION_AUTHORITY.reset(token)
+
+
+def diagnostic_session_authority():
+    """Return the explicit candidate calendar source active in this context."""
+    bound=_DIAGNOSTIC_SESSION_AUTHORITY.get()
+    return dict(bound['authority']) if bound is not None else None
+
+
+def load_source_acquisition_pg(root):
+    """Admit the historical BaoStock capture manifest once, then read its PG bytes."""
+    from common.paths import resolve_market_source_capture_root
+    capture_root = resolve_market_source_capture_root(root)
+    return _load_captured_source_pg(root, capture_root / 'acquisition.json',
+        source_revision='V4_R4_BAOSTOCK_ACQUISITION_MANIFEST_R1',
+        source_origin='BAOSTOCK_API_CAPTURE_MANIFEST')
+
+
+def load_json_source_pg(root, relative_path, *, source_origin='V4_FORMAL_SOURCE_CAPTURE'):
+    """Capture one configured formal source file, then consume its exact PG bytes."""
+    source = (Path(root).resolve() / relative_path).resolve()
+    source.relative_to(Path(root).resolve())
+    raw = source.read_bytes()
+    sha = digest(raw)
+    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    ingest_captured_bytes(root, source_path, raw, source_revision=sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw or exact['record'].get('source_origin') != source_origin:
+        raise ValueError('V4_FORMAL_SOURCE_PG_READBACK_MISMATCH')
+    return json.loads(exact['raw'])
+
+
+def load_json_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_CAPTURE'):
+    """Capture a hash-bound JSON input and return only the exact PG readback."""
+    return json.loads(load_bytes_binding_pg(root, binding, source_origin=source_origin))
+
+
+def load_bytes_binding_pg(root, binding, *, source_origin='V4_HASH_BOUND_SOURCE_CAPTURE'):
+    """Capture exact bound bytes and return only the PG readback bytes."""
+    relative_path = str(binding['path'])
+    from workbench_db.v4_historical_source_ingress_pg_r1 import (
+        MAX_INLINE_SOURCE_BYTES,ingest_captured_bytes,ingest_package_bytes,
+        read_bound,read_package_bytes,
+    )
+    expected_sha=binding.get('sha256')
+    if isinstance(expected_sha,str):
+        for path in (relative_path,f'external/v4_source_capture/{source_origin.lower()}/{expected_sha}.json'):
+            try:exact=read_bound(root,path,expected_sha)
+            except ValueError as exc:
+                if str(exc)=='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':continue
+                raise
+            raw=exact['raw']
+            if len(raw)!=binding.get('bytes',len(raw)) or digest(raw)!=expected_sha:
+                raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
+            if path!=relative_path:
+                ingest_captured_bytes(root,relative_path,raw,source_revision=expected_sha,source_origin=source_origin)
+                exact=read_bound(root,relative_path,expected_sha)
+                if exact['raw']!=raw:raise ValueError('V4_HASH_BOUND_PATH_ALIAS_READBACK_MISMATCH')
+            return raw
+        try:exact_package=read_package_bytes(root,relative_path,expected_sha)
+        except ValueError as exc:
+            if str(exc)!='HISTORICAL_SOURCE_PACKAGE_NOT_FOUND':raise
+        else:
+            raw=exact_package['raw']
+            if len(raw)!=binding.get('bytes',len(raw)):
+                raise ValueError('V4_HASH_BOUND_PACKAGE_LENGTH_MISMATCH')
+            return raw
+    source = (Path(root).resolve() / relative_path).resolve()
+    source.relative_to(Path(root).resolve())
+    raw = source.read_bytes()
+    sha = digest(raw)
+    pointer=parse_git_lfs_pointer(raw)
+    if pointer is not None:
+        pointer_sha,pointer_bytes=pointer
+        if (expected_sha is not None and expected_sha!=pointer_sha
+                or binding.get('bytes') is not None and binding['bytes']!=pointer_bytes):
+            raise ValueError('V4_GIT_LFS_POINTER_BINDING_MISMATCH')
+        lfs_root=Path(subprocess.check_output(
+            ['git','-C',str(Path(root).resolve()),'rev-parse','--git-path','lfs/objects'],
+            cwd=Path(root).resolve(),text=True,encoding='utf-8').strip())
+        if not lfs_root.is_absolute():lfs_root=Path(root).resolve()/lfs_root
+        object_path=lfs_root/pointer_sha[:2]/pointer_sha[2:4]/pointer_sha
+        if not object_path.is_file():raise ValueError('V4_GIT_LFS_OBJECT_MISSING')
+        raw=object_path.read_bytes()
+        if len(raw)!=pointer_bytes or digest(raw)!=pointer_sha:
+            raise ValueError('V4_GIT_LFS_OBJECT_INVALID')
+        sha=pointer_sha
+    if binding.get('sha256') and sha != binding['sha256']:
+        raise ValueError('V4_HASH_BOUND_SOURCE_CAPTURE_MISMATCH')
+    if binding.get('bytes') is not None and binding['bytes']!=len(raw):
+        raise ValueError('V4_HASH_BOUND_SOURCE_LENGTH_MISMATCH')
+    source_path = relative_path
+    if len(raw)>MAX_INLINE_SOURCE_BYTES:
+        ingested=ingest_package_bytes(root,relative_path,raw,expected_sha256=sha,
+            source_revision=sha,source_origin=source_origin)
+        if ingested['source_bytes']!=len(raw) or ingested['source_sha256']!=sha:
+            raise ValueError('V4_HASH_BOUND_PACKAGE_INGRESS_MISMATCH')
+        del raw
+        exact=read_package_bytes(root,relative_path,sha)['raw']
+        if len(exact)!=binding.get('bytes',len(exact)) or digest(exact)!=sha:
+            raise ValueError('V4_HASH_BOUND_PACKAGE_PG_READBACK_MISMATCH')
+        return exact
+    ingest_captured_bytes(root, source_path, raw, source_revision=sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw:
+        raise ValueError('V4_HASH_BOUND_SOURCE_PG_READBACK_MISMATCH')
+    return exact['raw']
+
+
+def parse_git_lfs_pointer(raw):
+    """Parse the strict canonical Git LFS pointer form without smudging a file."""
+    match=re.fullmatch(
+        rb'version https://git-lfs\.github\.com/spec/v1\n'
+        rb'oid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n?',raw)
+    return (match.group(1).decode('ascii'),int(match.group(2))) if match else None
+
+
+def load_source_query_pg(root, query):
+    """Read one exact query response through PG SourceIngress after source capture."""
+    from common.paths import resolve_market_source_capture_root
+    filename = Path(str(query.get('path') or '')).name
+    if not re.fullmatch(r'[0-9a-f]{64}(?:-[0-9a-f]{64})?\.json', filename):
+        raise ValueError('BAOSTOCK_QUERY_CAPTURE_NAME_INVALID')
+    capture_path = resolve_market_source_capture_root(root) / 'queries' / filename
+    payload = _load_captured_source_pg(root, capture_path,
+        source_revision=str(query.get('source_revision') or query.get('query_identity') or query.get('hash') or ''),
+        source_origin='BAOSTOCK_API_RAW_QUERY_RESPONSE')
+    if (payload.get('method') != query.get('method') or payload.get('params') != query.get('params')
+            or payload.get('status') != query.get('status')
+            or payload.get('hash') != query.get('hash')
+            or payload.get('row_count') != query.get('row_count')):
+        raise ValueError('BAOSTOCK_QUERY_CAPTURE_BINDING_MISMATCH')
+    return payload
+
+
+def _load_captured_source_pg(root, path, *, source_revision, source_origin):
+    path = Path(path)
+    raw = path.read_bytes()
+    sha = digest(raw)
+    source_path = f'external/v4_source_capture/{source_origin.lower()}/{sha}.json'
+    from workbench_db.v4_historical_source_ingress_pg_r1 import ingest_captured_bytes, read_bound
+    ingest_captured_bytes(root, source_path, raw,
+        source_revision=source_revision or sha, source_origin=source_origin)
+    exact = read_bound(root, source_path, sha)
+    if exact['raw'] != raw or exact['record'].get('source_origin') != source_origin:
+        raise ValueError('V4_SOURCE_CAPTURE_PG_READBACK_MISMATCH')
+    return json.loads(exact['raw'])
 
 
 def read_day_bytes(data, dates):
@@ -131,7 +336,9 @@ def acquire(root, dates, folder, gap_codes=()):
     root, folder = Path(root), Path(folder)
     if not dates or any(d not in official_sessions(root) for d in dates):
         raise ValueError('OFFICIAL_SESSION_REQUIRED')
-    ensure_outside_tdx(folder, Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root, resolve_baostock_request_ledger
+    tdx_root=resolve_tdx_root(root)
+    ensure_outside_tdx(folder, tdx_root)
     policy = json.loads((root / 'config/v4_market_source_fallback_policy_v1.json').read_bytes())
     if policy['contract_id'] != CONTRACT or policy['production_admission']:
         raise ValueError('ACQUISITION_STAGING_POLICY_REQUIRED')
@@ -146,7 +353,7 @@ def acquire(root, dates, folder, gap_codes=()):
         write(folder / 'acquisition.json', receipt)
     checkpoint()
     # Every configured TDX root is a read-only input.
-    roots = json.loads((root / 'config/dm01_go_forward_runtime_contract_r4.json').read_bytes())['read_only_tdx_roots']
+    roots = [str(tdx_root)]
     receipt['membership'] = freeze_membership_observation(root, folder, dates, roots)
     for source_root in roots:
         for market in ('sh', 'sz', 'bj'):
@@ -167,7 +374,7 @@ def acquire(root, dates, folder, gap_codes=()):
         for attempt in range(2):
             started = now()
             try:
-                result = capture_tdx_official_daily_package(target_date=day, snapshot_root=folder / 'official', timeout=30)
+                result = capture_tdx_official_daily_package(target_date=day, snapshot_root=folder / 'official', tdx_root=tdx_root, timeout=30)
                 receipt['official'].setdefault(day, []).append(dict(requested_at=started, received_at=now(), attempt=attempt, result=result))
                 break
             except Exception as exc:
@@ -175,7 +382,7 @@ def acquire(root, dates, folder, gap_codes=()):
                     status='PROVIDER_CALL_ERROR', error=BaoStockClient._safe_message(f'{type(exc).__name__}:{exc}')))
             checkpoint()
         checkpoint()
-    budget = RequestBudget(root / 'reports/v4_baostock/request_ledger.json')
+    budget = RequestBudget(resolve_baostock_request_ledger(root))
     def budget_total():
         if not budget.path.exists():return 0
         return sum(row['count'] for row in json.loads(budget.path.read_bytes())['by_shanghai_date'].values())

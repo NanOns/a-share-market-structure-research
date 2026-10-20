@@ -33,7 +33,10 @@ from workbench_analysis.special_price_phases import SpecialPhaseEventStore, Phas
 
 ROOT=Path(__file__).resolve().parents[2]
 CONTRACT_PATH='config/dm01_incremental_builders_contract_r1.json'
-TDX_ROOT=Path('D:/new_tdx')
+from common.paths import resolve_tdx_root
+
+def _tdx_root():
+    return resolve_tdx_root(ROOT)
 
 class ComponentBuildError(ValueError):
     pass
@@ -64,12 +67,36 @@ def bound_path(ref):
 def load(ref):
     return json.loads(bound_path(ref).read_text(encoding='utf8'))
 
+def pg_bound_bytes(ref):
+    """Admit a contract-bound authority source once, then consume PG readback."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import admit_bound
+    try:
+        return admit_bound(ROOT,ref)['raw']
+    except (KeyError,TypeError) as exc:
+        raise ComponentBuildError('PG_AUTHORITY_BINDING_REQUIRED') from exc
+
+def pg_bound_json(ref):
+    try:return json.loads(pg_bound_bytes(ref))
+    except (ValueError,UnicodeDecodeError) as exc:
+        raise ComponentBuildError('PG_AUTHORITY_JSON_INVALID:'+str(ref.get('path'))) from exc
+
+def _require_current_pg_data_parent(root,parent):
+    """Bind real-source incremental work to the canonical PG Data Head."""
+    from workbench_db.dm01_data_accepted_head_pg_r1 import read_current
+    current=read_current(root)
+    binding=parent.get('binding',{})
+    if (parent.get('head')!=current['candidate']
+            or binding.get('sha256')!=current['head_sha256']
+            or binding.get('path')!='data/v4/V4_DATA_ACCEPTED_HEAD.json'):
+        raise ComponentBuildError('REAL_PARENT_MUST_BE_CURRENT_ACCEPTED_HEAD')
+    return current
+
 def _write_immutable(path,value,tdx_roots=()):
-    for root in (TDX_ROOT,*tdx_roots):ensure_outside_tdx(path,Path(root))
+    for root in (_tdx_root(),*tdx_roots):ensure_outside_tdx(path,Path(root))
     data=canonical(value)+b'\n'
     if path.exists():
         if path.read_bytes()!=data:raise ComponentBuildError('IMMUTABLE_CANDIDATE_COLLISION')
-    else:_atomic_bytes(path,data,tdx_root=TDX_ROOT)
+    else:_atomic_bytes(path,data,tdx_root=_tdx_root())
     return hashlib.sha256(data).hexdigest()
 
 def resolve_target_session(parent_date,calendar_binding,observed_at,requested_target=None):
@@ -89,14 +116,14 @@ def resolve_target_session(parent_date,calendar_binding,observed_at,requested_ta
 
 def _context(cap,target,parent,freeze,calendar,identity,staging):
     date.fromisoformat(target)
-    if load(parent['binding'])!=parent['head'] or parent['head'].get('contract_id')!='V4_DATA_ACCEPTED_HEAD_V1':
+    if pg_bound_json(parent['binding'])!=parent['head'] or parent['head'].get('contract_id')!='V4_DATA_ACCEPTED_HEAD_V1':
         raise ComponentBuildError('PARENT_DATA_HEAD_IDENTITY_MISMATCH')
     pdate=parent['head']['accepted_trade_date']
     if any(parent['head'].get('component_permissions',{}).get(c,{}).get('status') not in ('FULL_PASS','DEGRADED_PASS')
            for c in CAPABILITIES):raise ComponentBuildError('PARENT_CAPABILITY_NOT_ACCEPTED')
     if calendar.get('status')!='ACCEPTED' or not calendar.get('publication_id'):
         raise ComponentBuildError('CALENDAR_NOT_ACCEPTED')
-    cal=load(calendar['binding'])
+    cal=pg_bound_json(calendar['binding'])
     if digest(cal)!=calendar.get('payload_digest'):raise ComponentBuildError('CALENDAR_BINDING_MISMATCH')
     if cal.get('session_dates')!=calendar['session_dates']:raise ComponentBuildError('CALENDAR_SESSION_BINDING_MISMATCH')
     if target!=resolve_target_session(pdate,calendar,freeze.get('observed_at',''),target):
@@ -119,30 +146,32 @@ def _context(cap,target,parent,freeze,calendar,identity,staging):
         raise ComponentBuildError('OFFICIAL_PAGE_PACKAGE_BINDING_MISMATCH')
     if identity.get('status')!='ACCEPTED' or not identity.get('publication_id'):
         raise ComponentBuildError('DATED_IDENTITY_NOT_ACCEPTED')
-    records=load(identity['binding'])
+    records=pg_bound_json(identity['binding'])
     if records.get('records')!=identity.get('records'):raise ComponentBuildError('IDENTITY_BINDING_MISMATCH')
     if identity['publication_id']!=freeze.get('identity_publication_id') or calendar['publication_id']!=freeze.get('calendar_publication_id'):
         raise ComponentBuildError('PUBLICATION_MISMATCH')
     stage=Path(staging).resolve()
-    for root in (TDX_ROOT,*freeze.get('tdx_roots',[])):ensure_outside_tdx(stage,Path(root))
+    for root in (_tdx_root(),*freeze.get('tdx_roots',[])):ensure_outside_tdx(stage,Path(root))
     try:stage.relative_to((ROOT/'data/v4/artifact_store').resolve())
     except ValueError:pass
     else:raise ComponentBuildError('CANDIDATE_IN_ACCEPTED_NAMESPACE')
-    contract=json.loads((ROOT/CONTRACT_PATH).read_text(encoding='utf8'))
-    for ref in contract['runtime_bindings']:bound_path(ref)
+    # Runtime authority is the PG-ingested registry binding. Materialize its
+    # exact bytes into the bounded temp cache; the workspace copy is never an
+    # acceptance source.
+    from .dm01_accepted_builder_registry import _pg_path
+    contract=json.loads(_pg_path(ROOT,CONTRACT_PATH).read_text(encoding='utf8'))
+    for ref in contract['runtime_bindings']:pg_bound_bytes(ref)
     if not freeze.get('fixture_scope'):
         # Real-source callers cannot mint accepted calendar/identity/parent authority by labeling a file.
-        current=json.loads((ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_text(encoding='utf8'))
-        if parent['head']!=current or parent['binding']['sha256']!=sha(ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json'):
-            raise ComponentBuildError('REAL_PARENT_MUST_BE_CURRENT_ACCEPTED_HEAD')
+        _require_current_pg_data_parent(ROOT,parent)
         if cal.get('accepted_head_binding')!=contract['accepted_calendar_head']:
             raise ComponentBuildError('REAL_CALENDAR_ACCEPTED_AUTHORITY_REQUIRED')
-        owner=load(contract['accepted_calendar_head']);extension=load(owner['accepted_extension'])
+        owner=pg_bound_json(contract['accepted_calendar_head']);extension=pg_bound_json(owner['accepted_extension'])
         extension_dates=sorted({r['trade_date'] for r in extension['sessions']})
         if any(d>pdate and d not in extension_dates for d in calendar['session_dates']):
             raise ComponentBuildError('REAL_CALENDAR_UNACCEPTED_SESSION')
         allowed=contract['accepted_identity_bindings']
-        if not any(identity['binding']['sha256']==r['sha256'] and sha(bound_path(r))==r['sha256'] for r in allowed):
+        if not any(identity['binding']['sha256']==r['sha256'] for r in allowed):
             raise ComponentBuildError('REAL_IDENTITY_ACCEPTED_AUTHORITY_REQUIRED')
     return dict(cap=cap,target=target,parent=parent,freeze=freeze,calendar=calendar,identity=identity,
                 staging=stage,contract=contract)

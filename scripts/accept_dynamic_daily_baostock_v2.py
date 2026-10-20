@@ -10,21 +10,39 @@ from workbench_analysis.operational_baostock_client_v1 import BaoStockClient
 from workbench_analysis.baostock_daily_update_source import DAILY_METHOD, FACTOR_METHOD, _validate_daily_rows, _validate_factor_rows
 from workbench_analysis.baostock_runtime_acceptance import build_runtime_acceptance_manifest
 from workbench_analysis.daily_data_head import write_json_atomic
-from workbench_analysis.dm01_runtime_r4 import calendar
 from workbench_analysis.source_readiness_v2 import source_readiness
 from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
+from workbench_analysis.market_source_acquisition import official_sessions
+from workbench_analysis.operational_daily_executor_v1 import _daily_runtime_contract
+from common.paths import (resolve_baostock_cache_root, resolve_baostock_download_root,
+                          resolve_baostock_request_ledger, resolve_tdx_root)
+
+
+def runtime_acceptance_cache_dir(root, target):
+    """Use the configured project cache for bounded ingress evidence."""
+    return resolve_baostock_cache_root(root)/'baostock'/target.replace('-','')/'runtime_acceptance'
 
 
 def accept_runtime(target, root=ROOT):
     root=Path(root);now=datetime.now(SHANGHAI)
-    if target not in calendar(root)['session_dates']:
+    try:
+        sessions=official_sessions(root)
+    except (OSError,RuntimeError,ValueError) as exc:
+        return dict(status='BLOCKED',reason='OFFICIAL_SESSION_NOT_VERIFIED',detail=str(exc)[:120])
+    if target not in sessions:
         return dict(status='BLOCKED',reason='OFFICIAL_SESSION_NOT_VERIFIED')
     if not source_readiness(target,now)['time_eligible']:
         return dict(status='WAIT_BAOSTOCK_FACTOR',reason='TIME_GATE_NOT_REACHED')
+    tdx_root=resolve_tdx_root(root)
     runtime=package_metadata()
-    schema_contract=json.loads((root/'config/baostock_dm01_sdk_schema_adapter_v2.json').read_bytes())
-    folder=root/'reports/v4_baostock/runtime_acceptance'/target.replace('-','')
+    schema_contract=_daily_runtime_contract('BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2','2.0.0',version_field='version')
+    folder=runtime_acceptance_cache_dir(root,target)
+    download_root=resolve_baostock_download_root(root)
+    try:
+        download_root.relative_to(root.resolve())
+    except ValueError as exc:
+        raise ValueError('BAOSTOCK_DOWNLOAD_ROOT_MUST_BE_WITHIN_PROJECT_FOR_PG_INGRESS') from exc
     stamp=now.strftime('%Y%m%dT%H%M%S%f')
     smoke_path=folder/(stamp+'_live_smoke_receipt.json')
     receipt=dict(contract_id='BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1',version='1.0.0',
@@ -32,7 +50,7 @@ def accept_runtime(target, root=ROOT):
         runtime={k:runtime[k] for k in ['package','version','installed_python_sources_sha256']},
         status='FAIL',live_smoke=None,tdx_root_write_count=0)
     try:
-        with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),
+        with BaoStockClient(RequestBudget(resolve_baostock_request_ledger(root)),
                 auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True) as client:
             daily_requested=datetime.now(SHANGHAI).isoformat()
             daily,dm=client.query_rows('dynamic_daily_smoke_daily',DAILY_METHOD,date=target,max_rows=20000,max_pages=1)
@@ -46,10 +64,10 @@ def accept_runtime(target, root=ROOT):
             receipt['source_transport_v2']=transport
             receipt['response_metadata']=dict(daily=dm,adjustment_factor=fm)
             receipt['response_row_counts']=dict(daily=len(daily),adjustment_factor=len(factor))
-            raw_path=folder/(stamp+'_raw_responses.json')
+            raw_path=download_root/target.replace('-','')/(stamp+'_raw_responses.json')
             raw_sha=write_json_atomic(raw_path,
                 dict(target_date=target,observed_at=factor_received,requested_at=daily_requested,source_transport_v2=transport,daily_rows=daily,daily_metadata=dm,
-                     adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=Path('D:/new_tdx'))
+                     adjustment_factor_rows=factor,adjustment_factor_metadata=fm),tdx_root=tdx_root)
             receipt['native_response']=dict(path=raw_path.relative_to(root).as_posix(),sha256=raw_sha)
             daily,dm=normalize_response(daily,dm,target=target,sdk=runtime,contract=schema_contract,method=DAILY_METHOD)
             factor,fm=normalize_response(factor,fm,target=target,sdk=runtime,contract=schema_contract,method=FACTOR_METHOD)
@@ -71,7 +89,7 @@ def accept_runtime(target, root=ROOT):
             receipt.update(status='PASS',live_smoke=smoke)
     except (ValueError,OSError,RuntimeError) as exc:
         receipt['reason']=str(exc)[:160]
-    digest=write_json_atomic(smoke_path,receipt,tdx_root=Path('D:/new_tdx'))
+    digest=write_json_atomic(smoke_path,receipt,tdx_root=tdx_root)
     if receipt['status']!='PASS':
         return dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=receipt.get('reason'),
                     smoke_receipt=smoke_path.relative_to(root).as_posix(),source_sha256=digest)
@@ -83,12 +101,20 @@ def accept_runtime(target, root=ROOT):
     else:
         manifest=build_runtime_acceptance_manifest(sdk=runtime,auth_mode=receipt['auth_mode'],live_smoke=receipt['live_smoke'],
             smoke_receipt_path=smoke_path.relative_to(root).as_posix(),smoke_receipt_sha256=digest)
-    write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=Path('D:/new_tdx'))
-    write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=Path('D:/new_tdx'))
-    return dict(status='ACCEPTED',target_date=target,manifest= (folder/'accepted_runtime_manifest.json').relative_to(root).as_posix())
+    write_json_atomic(folder/(stamp+'_accepted_runtime_manifest.json'),manifest,tdx_root=tdx_root)
+    write_json_atomic(folder/'accepted_runtime_manifest.json',manifest,tdx_root=tdx_root)
+    from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import append_from_files
+    pg_acceptance = append_from_files(root, target, folder/'accepted_runtime_manifest.json')
+    return dict(status='ACCEPTED',target_date=target,
+                manifest=(folder/'accepted_runtime_manifest.json').relative_to(root).as_posix(),
+                pg_acceptance=pg_acceptance)
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--target-date',required=True);a=p.parse_args()
-    result=accept_runtime(a.target_date);print(json.dumps(result,ensure_ascii=False))
+    try:
+        result=accept_runtime(a.target_date)
+    except (OSError,ValueError,RuntimeError) as exc:
+        result=dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=str(exc)[:180])
+    print(json.dumps(result,ensure_ascii=False))
     raise SystemExit(0 if result['status']=='ACCEPTED' else 2)

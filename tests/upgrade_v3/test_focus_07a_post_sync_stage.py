@@ -50,6 +50,33 @@ def test_focus_runs_only_after_exact_accepted_sync():
     assert result["core_status"] == "NOT_RUN"
 
 
+def test_automatic_apply_gate_reads_exact_pg_bound_bytes_without_local_file():
+    raw = (Path(__file__).resolve().parents[2] / "config/focus_daily_pipeline_gate_v1.json").read_bytes()
+    calls = []
+
+    def source_loader(root, source_path, *, expected_sha256):
+        calls.append((root, source_path, expected_sha256))
+        return SimpleNamespace(read_bytes=lambda: raw)
+
+    enabled, reason = focus_daily_stage._automatic_apply_gate(
+        Path("G:/not-used-as-a-file-authority"), source_loader=source_loader)
+
+    assert calls == [(Path("G:/not-used-as-a-file-authority"),
+                      focus_daily_stage.GATE_SOURCE_PATH,
+                      focus_daily_stage.GATE_SOURCE_SHA256)]
+    assert enabled is False
+    assert reason == "REAL_NEXT_DAY_ACCEPTED; MULTI_DAY_FORWARD_AND_DUE_OUTCOME_ACCEPTANCE_PENDING"
+
+
+def test_automatic_apply_gate_fails_closed_when_pg_source_unavailable():
+    def unavailable(*_args, **_kwargs):
+        raise RuntimeError("PG_UNAVAILABLE")
+
+    assert focus_daily_stage._automatic_apply_gate(
+        Path("G:/not-used-as-a-file-authority"), source_loader=unavailable) == (
+            False, "FOCUS_PIPELINE_GATE_UNAVAILABLE")
+
+
 def test_preflight_then_apply_and_report_ready(monkeypatch):
     calls = []
     def runner(command, **_kwargs):

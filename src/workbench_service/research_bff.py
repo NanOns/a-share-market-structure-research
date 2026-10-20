@@ -1,11 +1,12 @@
 """FP03 BFF routing: one immutable snapshot per reader and request."""
 import json
+import os
 import threading
 import time
 import psycopg
 from collections import defaultdict, deque
 from urllib.parse import unquote
-from .production_v4 import ProductionV4ResearchReader, POINTER
+from .production_v4 import ProductionV4ResearchReader
 from .current_v4_context import SourceInvalid, digest
 from .v4_daily_refresh import refresh_status
 from .domain_views import home,sector_view
@@ -22,12 +23,11 @@ class ResearchBFF:
 
     def current(self):
         with self.lock:
-            from .joint_release import AUTHORITY
-            pointer=self.root/AUTHORITY
-            signature=digest((pointer if pointer.exists() else self.root/POINTER).read_bytes())
-            if self.reader is None or signature!=self.pointer_digest:
-                candidate=ProductionV4ResearchReader(self.root)
-                self.reader=candidate;self.pointer_digest=signature
+            release_id=os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID')
+            if not release_id:raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_REQUIRED')
+            if self.reader is None or release_id!=self.pointer_digest:
+                self.reader=ProductionV4ResearchReader(self.root,candidate_release_id=release_id)
+                self.pointer_digest=release_id
             return self.reader
 
     def allowed(self,host):
@@ -42,9 +42,15 @@ class ResearchBFF:
         with snapshot_request_scope():
             return self._get(path,query)
 
-    def _get(self,path,query):
+    def get_with_reader(self,path,query,reader):
+        """Serve one route through an explicitly injected candidate reader."""
+        from .production_v4 import snapshot_request_scope
+        with snapshot_request_scope():
+            return self._get(path,query,reader=reader)
+
+    def _get(self,path,query,reader=None):
         try:
-            r=self.current()
+            r=reader or self.current()
             # Validate context and parameter contracts even for singleton/diagnostic routes.
             parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p]
             chart_route=len(parts)==3 and parts[0]=='stocks' and parts[2]=='chart'
@@ -59,14 +65,55 @@ class ResearchBFF:
             if not parts:return 404,r.envelope(status='NOT_FOUND',code='ROUTE_NOT_FOUND')
             name=parts[0]
             if name=='context':
-                progress=refresh_status(self.root)
-                control={k:progress[k] for k in ('status','next_completed_session','source_requests','data_preserved')}
-                control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
+                if getattr(r,'is_pg_candidate',False):
+                    control=dict(status='SNAPSHOT_ONLY',next_completed_session=None,source_requests=0,
+                        data_preserved=True,scope='PG_SNAPSHOT_ONLY_NO_DAILY_WORKER_STATUS',
+                        accepted_input_date=r.context['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
+                else:
+                    progress=refresh_status(self.root)
+                    control={k:progress[k] for k in ('status','next_completed_session','source_requests','data_preserved')}
+                    control.update(scope='INPUT_PROGRESS_NOT_RESEARCH_CONTEXT',accepted_input_date=progress['context']['context']['accepted_trade_date'],indexed_trade_date=r.context['accepted_trade_date'])
                 return 200,r.envelope(status='READY',counts=r.manifest['counts'],gaps=r.manifest['gaps'],daily_refresh=control)
             if name=='home':return 200,home(r)
+            if name=='candidates' and len(parts)==2 and parts[1]=='cohort':
+                # Keep the candidate endpoint on the same snapshot reader and
+                # PG transaction as the rest of the V4 research API. It is a
+                # read projection only; it does not enroll a formal cohort or
+                # claim PIT/production authority.
+                if not getattr(r,'is_pg_candidate',False):
+                    return 409,r.envelope(status='BLOCKED',code='PG_CANDIDATE_SNAPSHOT_REQUIRED',items=[])
+                payload=r.query('forward',query)
+                try:
+                    from workbench_db.forward_r7_store import ForwardR7Store
+                    audit=ForwardR7Store.read_candidate_source_audit(self.root,
+                        trade_date=r.context['accepted_trade_date'],
+                        limit=int(query.get('limit',100)),offset=int(query.get('offset',0)))
+                except Exception as exc:
+                    audit=dict(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        reason='R7_CANDIDATE_AUDIT_READ_FAILED',detail=type(exc).__name__,
+                        binding='CANDIDATE_TRADE_DATE_ONLY',evidence_class='RETROSPECTIVE_RESEARCH')
+                candidate_research=payload.get('candidate_research')
+                if not isinstance(candidate_research,dict):candidate_research={}
+                candidate_research['r7_source_audit']=audit
+                payload['candidate_research']=candidate_research
+                payload['r7_source_audit']=audit
+                payload['r7_source_status']=audit['status']
+                payload.update(contract_id='V4_PG_CANDIDATE_COHORT_READ_R1',
+                    source_mode=r.context.get('source_mode'),production_accepted=False,
+                    cohort_enrollment_enabled=False,PIT_ELIGIBLE=False)
+                return 200,payload
             if name=='forward' and len(parts)>1 and parts[1] in ('statistics','plans','fep','risk'):
                 publication=r.manifest.get('domain_features',{}).get('forward')
-                if not publication:return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[])
+                if not publication:
+                    if parts[1]=='statistics':
+                        return 200,r.envelope(status='SOURCE_INCOMPLETE',data=dict(
+                            enrollment_denominator=None,planned_horizon_denominator=None,
+                            published_outcomes=None,published_enrollment_count=None,
+                            mature_eligible_count=None,
+                            reason='FORWARD_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE'))
+                    return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        offset=int(query.get('offset',0)),limit=int(query.get('limit',30)),
+                        has_next=False,reason='FORWARD_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE')
                 if parts[1]=='fep':return 200,r.envelope(status='SOURCE_INCOMPLETE',data=dict(publication['fep'],production_binding='NOT_BOUND_TO_CURRENT_PRODUCTION'),reason='NO_CURRENT_DAY_MODEL_INFERENCE_OWNER')
                 if parts[1]=='statistics':return 200,r.envelope(status='READY',data=publication['statistics'])
                 if parts[1]=='risk':return 200,r.query('stocks',query,summary=False)
@@ -90,6 +137,10 @@ class ResearchBFF:
                     if len(parts)==3 and parts[2] in ('episodes','timeline','anchors','observations','outcomes'):
                         rows=[x for x in publication['episodes'] if x['entity_id']==parts[1]]
                         return 200,r.envelope(status='READY' if rows else 'EMPTY_VALID',items=rows,total=len(rows),has_next=False,permissions=publication['permissions'],write_block_reason=publication['write_block_reason'],legacy_history=publication['legacy_history'])
+                elif parts[1]=='events':
+                    return 200,r.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+                        offset=int(query.get('offset',0)),limit=int(query.get('limit',30)),
+                        has_next=False,reason='FOCUS_OWNER_PUBLICATION_NOT_BOUND_TO_CANDIDATE')
             if name=='market' and len(parts)==1:return 200,r.envelope(status='READY' if r.manifest.get('domain_features',{}).get('market') else 'SOURCE_INCOMPLETE',market=r.manifest.get('domain_features',{}).get('market'))
             if name=='diagnostics':
                 if len(parts)>1:

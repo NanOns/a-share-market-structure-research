@@ -111,33 +111,21 @@ def sector_history(root, profiles, sectors, dates):
 def focus_predecessor(root, accepted_days):
     days={};receipts=[];mainline={}
     for day,bindings in sorted(accepted_days.items()):
-        with gzip.open(checked(root,bindings['focus']),'rt',encoding='utf8') as stream:
-            publication=json.load(stream)
+        publication=json.loads(gzip.decompress(checked(root,bindings['focus']).read_bytes()))
         rows=publication['rows']
         if any(r['trade_date']!=day for r in rows):raise ValueError('INCREMENT_D2_DATE_MISMATCH')
         days[day]=rows
         calculations=gzrows(checked(root,bindings['prewatch']))
         mainline[day]={r['security_id']:r.get('research_mainline_context') for r in calculations}
-        receipt_path=checked(root,bindings['forward']).parent/'FOCUS_FORWARD_REPLAY.json'
-        if receipt_path.is_file():
-            original=load(receipt_path)
-            matches=[r for r in original['owners'] if r['trade_date']==day]
-            if len(matches)!=1 or matches[0]['D2']!=bindings['focus'] or matches[0]['calculations']!=bindings['prewatch']:
-                raise ValueError('INCREMENT_FOCUS_RECEIPT_BINDING_MISMATCH')
-            receipt=matches[0]
-        else:
-            # Portable accepted Heads need not retain a redundant replay index.
-            # All counts below come from the independently hash-bound payloads;
-            # an absent historical facts artifact is never invented.
-            receipt=dict(trade_date=day,rows=len(rows),D2=bindings['focus'],calculations=bindings['prewatch'],
-                D0=dict(Counter(r['confirmation']['confirmation_status'] for r in calculations)),
-                PREWATCH=dict(Counter(r['prewatch']['raw_qualification'] for r in calculations)),
-                D2_freshness=dict(Counter(r['state_freshness'] for r in rows)),
-                contract_id='V4_ACCEPTED_FOCUS_REFERENCE_RECEIPT_R1')
+        # Derive the compact receipt only from the exact, independently bound PG facts.
+        receipt=dict(trade_date=day,rows=len(rows),D2=bindings['focus'],calculations=bindings['prewatch'],
+            D0=dict(Counter(r['confirmation']['confirmation_status'] for r in calculations)),
+            PREWATCH=dict(Counter(r['prewatch']['raw_qualification'] for r in calculations)),
+            D2_freshness=dict(Counter(r['state_freshness'] for r in rows)),
+            contract_id='V4_ACCEPTED_FOCUS_REFERENCE_RECEIPT_R1')
         receipts.append(dict(receipt,reused=True,publication_id=publication['publication_id']))
     last=max(accepted_days)
-    with gzip.open(checked(root,accepted_days[last]['forward']),'rt',encoding='utf8') as stream:
-        projection=json.load(stream)
+    projection=json.loads(gzip.decompress(checked(root,accepted_days[last]['forward']).read_bytes()))
     bindings=projection['source_bindings']
     # Stream the prior immutable PG series once, preserving every saved bar byte.
     from workbench_db.v4_series_pg_r1 import verified_series_read

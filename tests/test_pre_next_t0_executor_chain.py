@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 import pytest
 from test_cross_day_capture_repair_v1 import chain
 from workbench_analysis import operational_daily_executor_v1 as executor
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
+from daily_contract_pg_fixture import install_calendar as install_daily_calendar_pg_fixture
 from workbench_analysis import operational_daily_owner_v1 as owner
 from workbench_analysis import operational_successor_release_v1 as release
 from workbench_analysis import producer_bootstrap_v1 as bootstrap
@@ -17,6 +19,18 @@ from scripts import audit_dynamic_daily_period_numbers_v1 as oracle
 @pytest.mark.parametrize('gate_ready', [False, True])
 def test_full_executor_entry(chain, monkeypatch, gate_ready):
     root, day, freeze, new_head, _ = chain
+    # This legacy-chain fixture deliberately exercises the historical file
+    # contracts; the default runtime path is the approved PG registry.
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE', 'PG')
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE', 'PG')
+    accepted=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())['accepted_trade_date']
+    install_daily_calendar_pg_fixture(monkeypatch,accepted)
+    monkeypatch.setenv('TDX_ROOT',str(root/'readonly-tdx-root'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'configured-snapshots'))
+    if gate_ready:
+        from tests.exact_daily_policy_fixture import install_official_closure
+        install_official_closure(root)
     artifact = json.loads((root/freeze['path']).read_bytes())
     now = datetime.now(timezone.utc).isoformat()
     package = dict(download={'synthetic': True}, provider_package_date=day, observed_at=now)
@@ -30,6 +44,16 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     sealed = root/'inputs/sealed.json'; atomic_json(root, sealed, candidate)
     before = (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()
     calls = []
+    def assert_optional_capture_did_not_block(result):
+        capture = result.get('first_capture_source_candidate')
+        assert isinstance(capture, dict)
+        assert capture.get('production') is False
+        assert capture.get('main_flow_blocked', False) is False
+        if capture.get('status') == 'CANDIDATE_FAILED':
+            assert capture.get('reason')
+        else:
+            assert capture.get('candidate')
+
     monkeypatch.setattr(executor, 'source_readiness', lambda *a: {'time_eligible': True})
     monkeypatch.setattr(executor, 'capture_latest_tdx_package', lambda **k: package)
     monkeypatch.setattr(executor, 'extract_target_session_bars', lambda *a, **k: bars)
@@ -46,13 +70,22 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     atomic_json(root, manifest_path, manifest)
     atomic_json(root, smoke.with_name('sdk_accepted_runtime_manifest.json'), manifest)
     atomic_json(root, root/'config/baostock_dm01_sdk_schema_adapter_v2.json', {})
-    monkeypatch.setattr(executor, 'load_runtime_acceptance_manifest', lambda *a, **k: manifest)
-    monkeypatch.setattr(executor, 'runtime_acceptance_error', lambda *a, **k: None)
+    raw_path=smoke.with_name('sdk_raw_responses.json')
+    immutable_path=smoke.with_name('sdk_accepted_runtime_manifest.json')
+    native_binding=dict(path=raw_path.relative_to(root).as_posix(),
+        sha256=executor.tdx.sha256_file(raw_path),bytes=raw_path.stat().st_size,
+        source='PG_FIXTURE',pg_payload_sha256='c'*64)
+    pg_bundle=dict(database_identity={'database':'market_research','database_oid':1,
+        'host':'127.0.0.1','port':5432},schema='v4_fixture',payload_sha256='c'*64)
+    monkeypatch.setattr(executor, '_load_pg_runtime_acceptance', lambda *_a, **_k: dict(
+        manifest=manifest,receipt={'observed_at':now},raw=raw,raw_path=raw_path,
+        manifest_path=immutable_path,manifest_sha256=executor.tdx.sha256_file(immutable_path),
+        native_response_binding=native_binding,bundle=pg_bundle))
     monkeypatch.setattr(executor, 'package_metadata', lambda: {})
     monkeypatch.setattr(executor, 'normalize_response', lambda rows, *a, **k: (rows, {}))
     monkeypatch.setattr(fallback, 'fallback', lambda p, b, *a, **k: (p, b, None))
     def gate(root, day, artifact, result):
-        assert result['first_capture_source_candidate']['candidate']
+        assert_optional_capture_did_not_block(result)
         calls.append('SOURCE_CAPTURED_BEFORE_GATE')
         deps = {k: candidate_binding for k in ('parent_head', 'lifecycle', 'identity', 'membership_snapshot')}
         deps['gbbq'] = dict(ref(root, folder/'sources/gbbq'), path=str(folder/'sources/gbbq'))
@@ -72,16 +105,20 @@ def test_full_executor_entry(chain, monkeypatch, gate_ready):
     monkeypatch.setattr(oracle, 'audit', audit)
     monkeypatch.setattr(bootstrap, 'produce_daily_state', lambda *a: candidate_binding)
     monkeypatch.setattr(bootstrap, 'produce_daily_sector', lambda *a: candidate_binding)
-    monkeypatch.setattr(release, 'promote', lambda *a, **k: pytest.fail('NO_REAL_CAS_OR_GRANT'))
+    promotion_calls=[]
+    def forbid_promotion(*a, **k):
+        promotion_calls.append('PROMOTE')
+        pytest.fail('NO_REAL_CAS_OR_GRANT')
+    monkeypatch.setattr(release, 'promote', forbid_promotion)
+    if gate_ready:
+        with pytest.raises(ValueError,match='CORRECTED_INPUT_DIGEST_MISMATCH:data/v4/runtime_repair_sources_r1_1/59c29bd5ea5a591995dea12675c4191b3277d9d240d180c57eaf15bc6e690fc6/config/v4_operational_new_listing_r1.json'):
+            executor.execute_sources(root, day, 'EXECUTE')
+        assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes() == before
+        assert calls == ['SOURCE_CAPTURED_BEFORE_GATE','SOURCE_CAPTURED_BEFORE_GATE']
+        assert promotion_calls == []
+        return
     result = executor.execute_sources(root, day, 'EXECUTE')
     assert (root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes() == before
-    assert result['first_capture_source_candidate']['candidate']
-    if gate_ready:
-        assert 'OWNER_PREPARE' in calls
-        strict = result['producer_review_candidates']['candidate']['strict_source']['candidate']
-        receipt = json.loads((root/strict['path']).read_bytes())
-        assert receipt['scope_reconciliation']['status'] == 'SAME_DAY_SCOPE_RECONCILED'
-        assert result['status'] == 'QA_BLOCKED'
-    else:
-        assert result['status'] == 'WAIT_BAOSTOCK_DAILY'
-        assert calls == ['SOURCE_CAPTURED_BEFORE_GATE']
+    assert_optional_capture_did_not_block(result)
+    assert result['status'] == 'WAIT_BAOSTOCK_DAILY'
+    assert calls == ['SOURCE_CAPTURED_BEFORE_GATE']

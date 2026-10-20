@@ -1,0 +1,319 @@
+from __future__ import annotations
+
+import json
+from contextlib import contextmanager
+
+import pytest
+
+
+class MemoryFactStore:
+    database_identity = {"database": "market_research", "database_oid": 42, "host": "127.0.0.1", "port": 5432}
+    records = {}
+
+    def __init__(self, root, folder):
+        self.root = root
+        self.folder = folder
+
+    def append(self, kind, key, value, *, migration_timeout_seconds):
+        assert kind == "stage_state"
+        assert migration_timeout_seconds == 120
+        old = self.records.get(key)
+        if old is not None and old != value:
+            raise ValueError("identity conflict")
+        self.records[key] = value
+        return {"fact_key": key}
+
+    def read(self, binding):
+        return self.records[binding["fact_key"]]
+
+    @staticmethod
+    def _database_identity(pg):
+        return MemoryFactStore.database_identity
+
+
+@pytest.fixture(autouse=True)
+def isolated_memory_store(monkeypatch, request):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    MemoryFactStore.records = {}
+    if not request.node.name.startswith("test_stage_writer_"):
+        monkeypatch.setattr(state, "_store", lambda root: MemoryFactStore(root, state.FOLDER))
+    real_read_fact = state._read_fact
+
+    def read_fact(root, binding):
+        if "fact_key" in binding:
+            return MemoryFactStore.records[binding["fact_key"]]
+        return real_read_fact(root, binding)
+
+    monkeypatch.setattr(state, "_read_fact", read_fact)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(MemoryFactStore.database_identity))
+
+
+def test_stage_fact_round_trips_exact_date_stage_and_payload(tmp_path):
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage, read_stage
+
+    payload = {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "trade_date": "2026-10-16",
+               "status": "REUSE_ACCEPTED_GBBQ_SNAPSHOT", "accepted_snapshot_id": "sha256-example"}
+    binding = append_stage(tmp_path, "2026-10-16", "gbbq_revision_probe", payload)
+
+    assert read_stage(tmp_path, binding["binding"], trade_date="2026-10-16",
+                      stage="gbbq_revision_probe") == payload
+
+
+@pytest.mark.parametrize("trade_date,stage", [("2026-10-17", "gbbq_revision_probe"),
+                                                ("2026-10-16", "lifecycle_snapshot")])
+def test_stage_fact_read_rejects_wrong_date_or_stage(tmp_path, trade_date, stage):
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage, read_stage
+
+    payload = {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "trade_date": "2026-10-16",
+               "status": "REUSE_ACCEPTED_GBBQ_SNAPSHOT"}
+    binding = append_stage(tmp_path, "2026-10-16", "gbbq_revision_probe", payload)
+
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_BINDING_MISMATCH"):
+        read_stage(tmp_path, binding["binding"], trade_date=trade_date, stage=stage)
+
+
+def test_stage_fact_append_rejects_database_identity_drift(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(
+        {**MemoryFactStore.database_identity, "database": "other"}))
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_DATABASE_IDENTITY_MISMATCH"):
+        state.append_stage(tmp_path, "2026-10-16", "gbbq_revision_probe",
+                           {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "trade_date": "2026-10-16"})
+
+
+def test_stage_writer_requires_preprovisioned_schema_without_auto_ddl_or_import(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+    from workbench_db.v4_native import workspace_schema
+
+    identity = MemoryFactStore.database_identity
+    schema = workspace_schema(tmp_path / state.FOLDER, "forward")
+    calls = []
+
+    class Result:
+        def __init__(self, row): self.row = row
+        def fetchone(self): return self.row
+
+    class PG:
+        def execute(self, statement, params=()):
+            calls.append((statement, params))
+            if "to_regclass" in statement: return Result(("forward_facts",))
+            if "current_database()" in statement:
+                return Result((identity["database"], identity["database_oid"], identity["host"], identity["port"]))
+            raise AssertionError(statement)
+
+    @contextmanager
+    def connection(received_schema, *, dsn=None):
+        assert received_schema == schema
+        assert dsn == "explicit-writer-dsn"
+        yield PG()
+
+    monkeypatch.setattr(ForwardFactStore, "__init__", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("AUTO_MIGRATION_FORBIDDEN")))
+    monkeypatch.setattr(state.v4_native, "configured_dsn", lambda: "explicit-writer-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    store = state._store(tmp_path)
+
+    assert store.database_identity == identity
+    assert [statement for statement, _ in calls] == [
+        "SELECT to_regclass('forward_facts')",
+        "SELECT current_database(),(SELECT oid FROM pg_database WHERE datname=current_database()),inet_server_addr()::text,inet_server_port()",
+    ]
+
+
+def test_stage_writer_fails_when_schema_is_not_preprovisioned(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    identity = MemoryFactStore.database_identity
+
+    class Result:
+        def fetchone(self): return (None,)
+
+    class PG:
+        def execute(self, statement, params=()): return Result()
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield PG()
+
+    monkeypatch.setattr(state.v4_native, "configured_dsn", lambda: "explicit-writer-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_SCHEMA_NOT_PROVISIONED"):
+        state._store(tmp_path)
+
+
+def test_stage_fact_reader_uses_readonly_dsn_and_verifies_pg_payload(tmp_path, monkeypatch):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+    from workbench_db.v4_native import workspace_schema
+
+    identity = MemoryFactStore.database_identity
+    payload = {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "trade_date": "2026-10-16",
+               "status": "WAIT_MARKET_CLOSE"}
+    record = {"contract_id": state.CONTRACT, "contract_version": state.VERSION,
+              "trade_date": "2026-10-16", "stage": "gbbq_revision_probe",
+              "payload_sha256": digest(canonical(payload)), "payload": payload}
+    key = digest(canonical(record))
+    schema = workspace_schema(tmp_path / state.FOLDER, "forward")
+    descriptor = {"contract_id": "V4_FORWARD_PG_FACT_STORE_R1", "engine": "postgresql",
+                  "database_identity": identity, "schema": schema, "kind": state.KIND,
+                  "fact_key": key, "payload_sha256": digest(canonical(record))}
+    descriptor_raw = canonical(descriptor)
+    descriptor_path = tmp_path / state.FOLDER / state.KIND / (digest(key.encode()) + ".pg.json")
+    descriptor_path.parent.mkdir(parents=True)
+    descriptor_path.write_bytes(descriptor_raw)
+    binding = {"path": descriptor_path.relative_to(tmp_path).as_posix(),
+               "sha256": digest(descriptor_raw), "bytes": len(descriptor_raw)}
+    calls = []
+
+    class Result:
+        def __init__(self, row):
+            self.row = row
+
+        def fetchone(self):
+            return self.row
+
+    class PG:
+        def execute(self, statement, params=()):
+            calls.append((statement, params))
+            if "current_database()" in statement:
+                return Result((identity["database"], identity["database_oid"], identity["host"], identity["port"]))
+            return Result((canonical(record).decode(), digest(canonical(record))))
+
+    @contextmanager
+    def connection(received_schema, *, read_only=False, dsn=None):
+        assert received_schema == schema
+        assert read_only is True
+        assert dsn == "reader-dsn"
+        yield PG()
+
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+    monkeypatch.setattr(state.v4_native, "configured_reader_dsn", lambda: "reader-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+
+    assert state.read_stage(tmp_path, binding, trade_date="2026-10-16",
+                            stage="gbbq_revision_probe") == payload
+    assert calls[-1][1] == (state.KIND, key)
+
+
+def test_latest_data_head_is_selected_from_pg_and_rejects_same_day_duplicates(monkeypatch, tmp_path):
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+
+    identity = MemoryFactStore.database_identity
+
+    def fact(day):
+        payload = {"contract_id": "V4_DATA_ACCEPTED_HEAD_V1", "accepted_trade_date": day,
+                   "manifest_sha256": digest(day.encode())}
+        record = {"contract_id": state.CONTRACT, "contract_version": state.VERSION,
+                  "trade_date": day, "stage": "data_head",
+                  "payload_sha256": digest(canonical(payload)), "payload": payload}
+        raw = canonical(record).decode("utf-8")
+        return raw, digest(raw.encode("utf-8"))
+
+    class Result:
+        def __init__(self, row=None, rows=None): self.row, self.rows = row, rows or []
+        def fetchone(self): return self.row
+        def fetchall(self): return self.rows
+
+    rows = [fact("2026-10-16"), fact("2026-10-15")]
+
+    class PG:
+        def execute(self, statement, params=()):
+            if "current_database()" in statement:
+                return Result((identity["database"], identity["database_oid"], identity["host"], identity["port"]))
+            assert params == (state.KIND, "data_head")
+            return Result(rows=rows)
+
+    @contextmanager
+    def connection(*_args, **_kwargs): yield PG()
+
+    monkeypatch.setattr(state.v4_native, "configured_reader_dsn", lambda: "reader-dsn")
+    monkeypatch.setattr(state.v4_native, "connection", connection)
+    monkeypatch.setenv("V4_PG_EXPECTED_DATABASE_IDENTITY_JSON", json.dumps(identity))
+
+    assert state.read_latest_stage(tmp_path, stage="data_head")["accepted_trade_date"] == "2026-10-16"
+
+    rows.insert(1, fact("2026-10-16"))
+    with pytest.raises(ValueError, match="DM01_STAGE_STATE_NOT_UNIQUE"):
+        state.read_latest_stage(tmp_path, stage="data_head")
+
+
+def test_v2_data_head_import_preserves_exact_source_bytes_and_fails_closed(monkeypatch, tmp_path):
+    import hashlib
+    import json
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    root = tmp_path
+    path = root / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    path.parent.mkdir(parents=True)
+    raw = b'{\n  "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",\n  "version": "2.0.0",\n  "accepted_trade_date": "2026-09-30",\n  "AS_RECORDED": false,\n  "PIT_ELIGIBLE": false\n}\n'
+    path.write_bytes(raw)
+    binding = {"path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+               "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+    authority_bindings = {
+        "data": binding,
+        "stage": {"path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json", "sha256": "a" * 64, "bytes": 10},
+        "current_stage_head": {"path": "data/v4/V4_15_ACCEPTED_HEAD.json", "sha256": "b" * 64, "bytes": 10},
+        "current_authority_contract": {"path": "config/v4_current_stage_authority_v2.json", "sha256": "c" * 64, "bytes": 10},
+    }
+    class Authority:
+        def __init__(self, _root): self.data_ref, self.data = binding, json.loads(raw)
+        def bindings(self): return authority_bindings
+    monkeypatch.setattr("workbench_analysis.v4_current_stage_authority.CurrentStageAuthority", Authority)
+
+    payload = state.build_data_head_import_payload(root, binding)
+    recovered, recovered_binding = state.decode_data_head_import_payload(payload)
+    assert recovered == json.loads(raw)
+    assert recovered_binding == binding
+    assert payload["source_raw_utf8"].encode("utf-8") == raw
+    assert payload["source_raw_sha256"] == binding["sha256"]
+    assert payload["accepted_authority_bindings"] == authority_bindings
+
+    tampered = dict(payload, source_raw_utf8=payload["source_raw_utf8"].replace("2026-09-30", "2026-10-01"))
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_SOURCE_DIGEST_MISMATCH"):
+        state.decode_data_head_import_payload(tampered)
+    non_object_raw = b"[]"
+    non_object_binding = {**binding, "sha256": hashlib.sha256(non_object_raw).hexdigest(),
+                          "bytes": len(non_object_raw)}
+    non_object_authority = dict(authority_bindings, data=non_object_binding)
+    non_object = dict(payload, source_raw_utf8="[]", source_raw_sha256=hashlib.sha256(non_object_raw).hexdigest(),
+                      source_raw_bytes=len(non_object_raw),
+                      source_binding=non_object_binding,
+                      accepted_authority_bindings=non_object_authority)
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_PAYLOAD_MISMATCH"):
+        state.decode_data_head_import_payload(non_object)
+    with pytest.raises(ValueError, match="DM01_DATA_HEAD_IMPORT_SOURCE_PATH_INVALID"):
+        state.build_data_head_import_payload(root, dict(binding, path="data/v4/V4_DEV_BASELINE_HEAD.json"))
+
+
+def test_gbbq_probe_entrypoint_appends_exact_result_to_pg_stage(monkeypatch, tmp_path, capsys):
+    import sys
+    from scripts import probe_v4_dm01_gbbq_revision as probe
+    from workbench_analysis import dm01_runtime_r4
+    from workbench_db import v4_dm01_stage_state_pg_r1 as state
+
+    monkeypatch.setattr(probe, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["probe_v4_dm01_gbbq_revision", "--target-date", "2026-10-16"])
+    monkeypatch.setattr(probe, "resolve_tdx_root", lambda root: tmp_path / "tdx")
+    monkeypatch.setattr(dm01_runtime_r4, "session_gate", lambda *a, **k: {"status": "WAIT_MARKET_CLOSE"})
+    calls = []
+
+    binding = {"contract_id": state.CONTRACT, "trade_date": "2026-10-16",
+               "stage": "gbbq_revision_probe",
+               "binding": {"path": "data/v4/fact.pg.json", "sha256": "a" * 64, "bytes": 1}}
+
+    def append(root, day, stage, payload):
+        calls.append((root, day, stage, payload))
+        return {**binding, "trade_date": day}
+
+    monkeypatch.setattr(state, "append_stage", append)
+
+    assert probe.main() == 0
+    output = json.loads(capsys.readouterr().out)
+    assert calls[0][1:3] == (output["target_date"], "gbbq_revision_probe")
+    assert calls[0][3]["status"] == "WAIT_MARKET_CLOSE"
+    assert output["pg_stage_state"] == {**binding, "trade_date": output["target_date"]}

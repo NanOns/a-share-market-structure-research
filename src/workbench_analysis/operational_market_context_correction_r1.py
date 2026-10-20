@@ -1,6 +1,6 @@
 """Strict target Market context correction; never generic numeric source admission."""
 import ast,json,copy,hashlib
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 KEY='market_context_correction_preparation_r1'
 CONTRACT='V4_MARKET_CONTEXT_CORRECTION_R1'
 DRIVERS={'src/workbench_analysis/r43_market_replay.py':'materialize_market','src/workbench_analysis/operational_owner_adapter_v1.py':'replay'}
@@ -56,7 +56,8 @@ def verify(root,candidate,policy=None):
         payload=dict(market[name]);claimed=payload.pop('output_digest')
         if hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':'),default=str).encode()).hexdigest()!=claimed:raise ValueError('MARKET_OUTPUT_DIGEST_RECOMPUTATION_FAILED')
     for binding in market['input_bindings']:checked(root,binding)
-    prior=json.loads(checked(root,original['predecessor']).read_bytes())
+    from workbench_db.v4_operational_predecessor_pg_v1 import read_predecessor
+    prior=read_predecessor(root,original)
     if result['predecessor_market_bindings']!={d:o['market'] for d,o in prior['owners'].items()}:raise ValueError('MARKET_ACCEPTED_PREDECESSOR_CHANGED')
     for binding in g3['parameter_bindings'].values():checked(root,binding)
     for key in ('producer','current_limit','accepted_prior_limit'):checked(root,g3[key])

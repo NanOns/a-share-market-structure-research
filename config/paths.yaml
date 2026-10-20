@@ -1,7 +1,26 @@
+# 部署路径配置：保留现有消费者键名与路径值。
+# 正式 V4 业务留存以 PostgreSQL 的 v4 为准；下列历史接线尚未迁移，不得据此新增业务文件仓。
 tdx:
-  # Corrected from the initially supplied D:/new/_tdx after read-only discovery.
-  root: "D:/new_tdx"
+  # 通达信外部只读源；禁止在源根目录写入任何文件。
+  source_root: "D:/new_tdx"
+  # 可选采集路径由实际部署声明；本次不启用或迁移。
+  # daily_download_root: "G:/market_data/tdx/daily"
+  snapshot_root: "data/v4/dynamic_daily_sources"
+
+baostock:
+  # 现有宝胜采集及入库兼容路径；不是现役 V4 正式业务权威。
+  download_root: "data/v4/source_snapshots/baostock_downloads"
+  cache_root: "data/v4/source_snapshots"
+  # 保留当前共享请求预算账本；本次不移动或改写已有内容。
+  request_ledger: "reports/v4_baostock/request_ledger.json"
+
+ingest:
+  # 临时传输仅限 G 盘，不得进入任何只读源根目录。
+  temp_root: "G:/codex_tmp"
 
 project:
   phase0_output: "reports/phase0/TDX_DATA_AUDIT.json"
+
+v4:
+  market_source_capture_root: "docs/evidence/source_acquisition_r4_20261009/capture"
 

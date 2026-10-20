@@ -24,15 +24,18 @@ def _hash(path: Path) -> str:
 
 
 def _verified(root: Path, ref: dict) -> Path:
-    path = (root / ref["path"]).resolve()
-    if not path.is_relative_to(root) or not path.is_file() or _hash(path) != ref["sha256"]:
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    path = bound_bytes(root, ref)
+    if _hash(path) != ref["sha256"]:
         raise ValueError(f"accepted replay input identity mismatch: {ref['path']}")
     return path
 
 
 def resolve(root: Path) -> tuple[dict[str, ReplayInput], dict]:
     root = root.resolve()
-    stage = json.loads((root / "data/v4/V4_STAGE_ACCEPTED_HEAD.json").read_text(encoding="utf-8"))
+    from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
+    authority=CurrentStageAuthority(root)
+    stage=authority.stage
     if (stage.get("v4_04_status") != "FULL_PASS_REQUIRED_SCOPE" or
             stage.get("v4_04_external_acceptance") != "EXTERNALLY_ACCEPTED" or
             stage.get("v4_05_entry") != "AUTHORIZED_REPLAY_GATE_A"):
@@ -51,7 +54,7 @@ def resolve(root: Path) -> tuple[dict[str, ReplayInput], dict]:
     archive_ref = stage["bindings"]["tdx_archive"]
     inputs["tdx_archive"] = ReplayInput(_verified(root, archive_ref), archive_ref["sha256"], "V4_00_ACCEPTED_TDX_ARCHIVE")
     inputs["profile"] = ReplayInput(profile_path, head["accepted_artifact"]["sha256"], "V4_04_ACCEPTED_FULL_MARKET_CORE_PROFILE")
-    return inputs, {"global_head_sha256": _hash(root / "data/v4/V4_STAGE_ACCEPTED_HEAD.json"),
+    return inputs, {"global_head_sha256": authority.stage_ref["sha256"],
                     "v4_04_accepted_head_sha256": stage["v4_04_binding"]["sha256"],
                     "v4_04_implementation_commit": head["implementation_commit"],
                     "r4_manifest_sha256": head["accepted_manifest"]["sha256"],

@@ -14,7 +14,7 @@ def calendar(authority):
 
 def state_input(authority,envelope,prior,values,source_outputs):
     from src.v4.state_identity import digest as owner_digest
-    x=deepcopy(state_book(str(authority.root))['STOCK_PREWATCH']['input'])
+    x=deepcopy(state_book(str(authority.root),authority)['STOCK_PREWATCH']['input'])
     cal=calendar(authority);dates=[s['trade_date'] for s in cal['sessions']];date=envelope['target_trade_date'];index=dates.index(date)
     x.update(trade_date=date,session_index=index,cutoff=envelope['cutoff'],synthetic_calendar_manifest=cal,calendar_publication_id='SYNTHETIC_CALENDAR:'+owner_digest(cal),prior_state=prior,prior_state_binding=None)
     x['calendar_binding']=dict(publication_id=x['calendar_publication_id'],manifest_digest=owner_digest(cal),lineage_id=cal['lineage_id'])
@@ -48,10 +48,10 @@ def replay(authority,envelope,previous,_edge_prepared=None):
     from .v4_13_accepted_contract_package import AcceptedContracts
     from .v4_13_profile_runtime import sector_snapshot,copy_structure,dual_enrichment,envelope as field
     root=authority.root;choice=envelope['owner_inputs'];target=envelope['target_trade_date'];prior=previous['output']['d2']['rows'][0] if previous else None
-    book=json.loads((root/'config/v4_07_machine_vectors_v1.json').read_bytes());facts={k:dict(value=True if v=='TRUE' else False if v=='FALSE' else v,reason=None) for k,v in book['base_input'].items()}
+    book=json.loads(authority.read_by_path('config/v4_07_machine_vectors_v1.json'));facts={k:dict(value=True if v=='TRUE' else False if v=='FALSE' else v,reason=None) for k,v in book['base_input'].items()}
     facts['severe_extension']['value']=choice.get('severe_extension',False)
-    seed=evaluate_facts(facts,json.loads((root/'config/v4_07_parameter_set_v1.json').read_bytes()))
-    rotation=rotation_acceptance(root)
+    seed=evaluate_facts(facts,json.loads(authority.read_by_path('config/v4_07_parameter_set_v1.json')))
+    rotation=rotation_acceptance(root,authority=authority)
     prewatch=evaluate(dict(base_seed_state=seed['base_seed_state'],mandatory_core_quality_ready='TRUE',delta3=3,compression_state='COMPRESSING',ma_structure_state='BEAR_ALIGNED',core_extension_risk='LOW'),load_package(root))
     cp=projection(positive_values(),cutoff=envelope['cutoff']);cp['trade_date']=target
     for row in cp['rows']:

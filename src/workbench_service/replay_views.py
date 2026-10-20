@@ -34,15 +34,52 @@ def selected(reader,query):
     day=query.get('as_of',reader.context['trade_date']);date.fromisoformat(day)
     if day>reader.context['trade_date']:raise ValueError('FUTURE_AS_OF_FORBIDDEN')
     if not authority:return None,None,day
+    if getattr(reader,'is_pg_candidate',False):
+        # Candidate replay can select only the exact PG snapshot currently read.
+        # Older local replay JSON paths are never consulted by this branch.
+        sources={key:{'contract_id':'PG_SNAPSHOT_BOUND_SOURCE_R1','sha256':value.get('sha256')}
+            for key,value in authority.get('sources',{}).items() if isinstance(value,dict)}
+        candidate=dict(authority,sources=sources,catalog=[])
+        if day!=reader.context['trade_date']:
+            return candidate,None,day
+        binding={'as_of':day,'snapshot':{'sha256':reader.pg_descriptor['logical_digest'],'contract_id':'V4_PG_RESEARCH_SNAPSHOT_R2'},
+            'first_available_proven':False,'pit_status':'PIT_NOT_AVAILABLE','corrected_status':'READY'}
+        candidate['catalog']=[dict(as_of=day,first_available_proven=False,pit_status='PIT_NOT_AVAILABLE',corrected_status='READY',
+            model_namespace='V4_PG_RESEARCH_SNAPSHOT_R2',snapshot=binding['snapshot'])]
+        return candidate,binding,day
     binding=next((x for x in authority['catalog'] if x['as_of']==day),None)
     if not binding:return authority,None,day
-    token='fp12-'+binding['snapshot']['sha256']
-    if query.get('snapshot_token') not in (None,token):raise SourceInvalid('CONTEXT_CONFLICT:SNAPSHOT_DATE_OR_VERSION')
+    snapshot_context_key='fp12-'+binding['snapshot']['sha256']
+    if query.get('snapshot_token') not in (None,snapshot_context_key):raise SourceInvalid('CONTEXT_CONFLICT:SNAPSHOT_DATE_OR_VERSION')
     return authority,binding,day
 
 def read_snapshot(reader,binding):
+    if getattr(reader,'is_pg_candidate',False):
+        items=[];offset=0
+        while True:
+            page=reader.query('stocks',{'limit':'200','offset':str(offset)})
+            items.extend(page['items']);offset+=len(page['items'])
+            if offset>=page['total'] or not page['items']:break
+        return dict(items=items,AS_RECORDED=False,first_available_proven=False,model_known_at=None,
+            knowledge_lineage=reader.context.get('knowledge_lineage','RECONSTRUCTED_CORRECTED'),sources={},
+            reason='PG_CANDIDATE_SNAPSHOT_HAS_NO_FIRST_AVAILABLE_AT_T0_PROOF')
     from .current_v4_context import CurrentAcceptedV4Reader
     return CurrentAcceptedV4Reader(reader.root)._read(binding['snapshot'])
+
+def matches_entity(item, query):
+    """Resolve UI selectors against identity fields in the selected snapshot."""
+    if not query:
+        return True
+    symbol=str(item.get('symbol') or '')
+    return query in {item.get('entity_id'),symbol,symbol.split('.')[-1],item.get('display_name')}
+
+def selected_stock(reader, selector, snapshot=None):
+    """Resolve one stock without materializing the full universe on PG reads."""
+    if getattr(reader,'is_pg_candidate',False):
+        candidates=reader.query('stocks',{'q':selector,'limit':200})['items']
+    else:
+        candidates=(snapshot or read_snapshot(reader,selected(reader,{'as_of':reader.context['trade_date']})[1]))['items']
+    return next((row for row in candidates if matches_entity(row,selector)),None)
 def envelope(reader,binding,day,**payload):
     context=dict(reader.context,trade_date=day,accepted_trade_date=day,model_namespace=NAMESPACE,source_mode='FROZEN_DATE_VIEW',publication_id=binding['snapshot']['sha256'] if binding else None,release_id=binding['snapshot']['sha256'] if binding else None)
     return dict(operational_context=reader.context,context=context,context_token='fp12-'+binding['snapshot']['sha256'] if binding else None,**payload)
@@ -53,17 +90,19 @@ def replay(reader,query):
     if not binding:return envelope(reader,binding,day,status='PIT_NOT_AVAILABLE',items=[],total=0,catalog=catalog,reason='NO_BOUND_DATE_SNAPSHOT',result_hash=digest(canonical([day,'NO_BOUND_DATE_SNAPSHOT'])))
     snapshot=read_snapshot(reader,binding);items=temporal_projection(snapshot,day) if view=='frozen' else snapshot['items']
     if view=='frozen' and not items:return envelope(reader,binding,day,status='PIT_NOT_AVAILABLE',items=[],total=0,catalog=catalog,reason=snapshot['reason'],result_hash=digest(canonical([day,[],snapshot['reason']])),AS_RECORDED=False)
-    needle=query.get('q','').casefold();entity=query.get('left');items=[x for x in items if (not entity or entity in (x['entity_id'],x['symbol'],x['symbol'].split('.')[-1])) and (not needle or needle in (x['symbol'].casefold(),x['entity_id'].casefold()) or x['symbol'].casefold().startswith(needle))]
+    needle=query.get('q','').casefold();entity=query.get('left');items=[x for x in items if matches_entity(x,entity) and (not needle or needle in str(x.get('symbol') or '').casefold() or needle in str(x.get('entity_id') or '').casefold() or needle in str(x.get('display_name') or '').casefold() or str(x.get('symbol') or '').casefold().startswith(needle))]
     offset=int(query.get('offset',0));limit=int(query.get('limit',30));total=len(items)
     followup=None;history=None
     if view=='corrected' and entity and items:
-        bars=chart(reader,dict(entity_id=items[0]['entity_id']),{'price_basis':'RAW','limit':200})['items']
-        history=dict(items=[b for b in bars if b['trade_date']<=day][-120:],price_basis='RAW',as_of=day,source=authority['sources']['series'],AS_RECORDED=False)
+        chart_data=chart(reader,dict(entity_id=items[0]['entity_id']),{'price_basis':'RAW','limit':200})
+        bars=chart_data.get('items',[])
+        history=dict(items=[b for b in bars if b['trade_date']<=day][-120:],price_basis='RAW',as_of=day,
+            source=chart_data.get('source'),AS_RECORDED=False,reason=chart_data.get('reason'))
     if query.get('followup'):
         if query['followup']!='1' or not entity:raise ValueError('FOLLOWUP_REQUIRES_EXPLICIT_ENTITY')
         if view!='corrected':raise ValueError('UNADMITTED_FROZEN_FOLLOWUP_SOURCE')
         sid=items[0]['entity_id'] if items else None
-        bars=chart(reader,dict(entity_id=sid),{'limit':200})['items'] if sid else [];by={x['trade_date']:x for x in bars};sessions=authority['session_dates'];i=sessions.index(day);targets=[]
+        chart_data=chart(reader,dict(entity_id=sid),{'limit':200}) if sid else {'items':[]};bars=chart_data.get('items',[]);by={x['trade_date']:x for x in bars};sessions=authority['session_dates'];i=sessions.index(day);targets=[]
         for n in (1,3,5):
             target=sessions[i+n] if i+n<len(sessions) else None;bar=by.get(target);targets.append(dict(horizon=n,target_trade_date=target,status='OBSERVED_AFTER_T0' if bar else 'PENDING_NO_ACCEPTED_LATER_SESSION',bar=bar))
         followup=dict(scope='POST_T0_OBSERVATIONS_EXCLUDED_FROM_T0_HASH',AS_RECORDED=False,items=targets,coordinate_date=reader.context['trade_date'])
@@ -83,20 +122,21 @@ def compare(reader,query):
     if not binding:return envelope(reader,binding,day,status='PIT_NOT_AVAILABLE',items=[],reason='NO_BOUND_DATE_SNAPSHOT')
     mode=query.get('mode','stock-stock');allowed=('stock-stock','stock-previous','stock-market','stock-sector','sector-market','sector-three','sector-lifecycle')
     if mode not in allowed:raise ValueError('INVALID_COMPARE_MODE')
-    left=query.get('left','');right=query.get('right','');snapshot=read_snapshot(reader,binding)
+    left=query.get('left','');right=query.get('right','')
+    snapshot=None if getattr(reader,'is_pg_candidate',False) else read_snapshot(reader,binding)
     if mode.startswith('sector'):
         if day!=reader.context['trade_date'] or mode in ('sector-three','sector-lifecycle'):return envelope(reader,binding,day,status='PIT_NOT_AVAILABLE',items=[],reason='DATED_PRIOR_MEMBERSHIP_OR_STAGE_OUTPUT_NOT_BOUND_CURRENT_MEMBERS_NOT_BACKFILLED')
         a=reader.query('sectors',{},entity=left)['items']
         if not a:return envelope(reader,binding,day,status='EMPTY_VALID',items=[],reason='SECTOR_NOT_FOUND')
         sector=value(a[0],'sector_rs1');market=market_reference(reader)
         return envelope(reader,binding,day,status='SOURCE_INCOMPLETE' if market is None else 'READY',items=[dict(name='板块当前成员收益中位数',cell=cell(sector,day,authority['sources']['sector'])),dict(name='市场参考收益',cell=cell(market,day,authority['sources']['market_reference_factors'],reason='MARKET_RETURN_NOT_BOUND' if market is None else None))],comparison_policy='CURRENT_MEMBERSHIP_DIAGNOSTIC_NOT_FROZEN_T0_BENCHMARK',AS_RECORDED=False,window='PREVIOUS_ACCEPTED_SESSION_TO_SELECTED_DATE',coordinate_date=reader.context['trade_date'])
-    candidates=[x for x in snapshot['items'] if left in (x['entity_id'],x['symbol'],x['symbol'].split('.')[-1])]
-    if not candidates:raise ValueError('LEFT_STOCK_NOT_IN_SELECTED_SNAPSHOT')
-    item=candidates[0];sid=item['entity_id'];bars=chart(reader,dict(entity_id=sid),{'price_basis':'QFQ','limit':200})['items'];bars=[x for x in bars if x['trade_date']<=day];calendar_days=authority['session_dates'];start=calendar_days[calendar_days.index(day)-1] if calendar_days.index(day)>0 else None
+    item=selected_stock(reader,left,snapshot)
+    if not item:raise ValueError('LEFT_STOCK_NOT_IN_SELECTED_SNAPSHOT')
+    sid=item['entity_id'];bars=chart(reader,dict(entity_id=sid),{'price_basis':'QFQ','limit':200})['items'];bars=[x for x in bars if x['trade_date']<=day];calendar_days=authority['session_dates'];start=calendar_days[calendar_days.index(day)-1] if calendar_days.index(day)>0 else None
     by={x['trade_date']:x for x in bars};end=by.get(day);prev=by.get(start);ret=(end['close']/prev['close']-1) if end and prev and end['close'] and prev['close'] else None
     rows=[dict(name=item['symbol']+' · 同一复权坐标区间收益',cell=cell(ret,day,authority['sources']['series'],reason='PREVIOUS_ACCEPTED_SESSION_OR_ADJUSTMENT_MISSING' if ret is None else None))]
     if mode=='stock-stock':
-        other=next((x for x in snapshot['items'] if right in (x['entity_id'],x['symbol'],x['symbol'].split('.')[-1])),None)
+        other=selected_stock(reader,right,snapshot)
         if not other:raise ValueError('RIGHT_STOCK_NOT_IN_SELECTED_SNAPSHOT')
         bs=chart(reader,dict(entity_id=other['entity_id']),{'price_basis':'QFQ','limit':200})['items'];ob={x['trade_date']:x for x in bs if x['trade_date']<=day};a=ob.get(start);b=ob.get(day);r=b['close']/a['close']-1 if a and b and a['close'] and b['close'] else None;rows.append(dict(name=other['symbol']+' · 同窗收益',cell=cell(r,day,authority['sources']['series'])))
     elif mode=='stock-previous':

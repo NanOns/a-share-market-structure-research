@@ -5,10 +5,11 @@ Scalar values retain existing contracts; evidence stays in per-object details.
 """
 import hashlib
 import json
+import re
 from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
-from .v4_native import connection, create_schema, workspace_schema
+from .v4_native import connection, workspace_schema
 from .v4_forward_pg_r1 import ForwardFactStore
 
 CONTRACT = 'V4_READ_INDEX_R1'
@@ -49,13 +50,13 @@ def summary(row, domain=None):
     return result
 
 
-def validate_query(query, token, dates, default_day, path):
+def validate_query(query, context_id, dates, default_day, path):
     if set(query)-ALLOWED: raise ValueError('UNKNOWN_PARAMETER')
     day=query.get('trade_date', default_day)
     if day not in dates: raise ValueError('TARGET_DATE_NOT_GRANTED')
-    if path!='/api/v4/context' and query.get('context_token')!=token:
+    if path!='/api/v4/context' and query.get('context_token')!=context_id:
         raise ValueError('CONTEXT_TOKEN_MISMATCH')
-    if query.get('release_id',token)!=token or query.get('model_namespace','TDX_INDUSTRY_CONCEPT')!='TDX_INDUSTRY_CONCEPT':
+    if query.get('release_id',context_id)!=context_id or query.get('model_namespace','TDX_INDUSTRY_CONCEPT')!='TDX_INDUSTRY_CONCEPT':
         raise ValueError('CONTEXT_TOKEN_MISMATCH')
     offset=int(query.get('offset',0));limit=int(query.get('limit',30))
     if not 0<=offset<=1000000 or not 1<=limit<=200: raise ValueError('INVALID_QUERY_BOUND')
@@ -93,6 +94,20 @@ def query_parts(domain, query, *, entity=None, sector=None):
     return where,args,sql.SQL(',').join(order),offset,limit
 
 
+def _require_fixed_read_index_storage(pg):
+    for table in ('read_versions_r1','read_items_r1','read_responses_r1'):
+        relation=pg.execute('SELECT to_regclass(%s)',('.'.join(('v4',table)),)).fetchone()
+        count=pg.execute('''SELECT count(*) FROM pg_trigger t
+            JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+            JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace pn ON pn.oid=p.pronamespace
+            WHERE n.nspname='v4' AND c.relname=%s AND t.tgenabled IN ('O','A') AND NOT t.tgisinternal
+              AND ((t.tgname='read_index_r1_immutable_guard' AND pn.nspname='v4' AND p.proname='read_index_r1_immutable')
+                OR (t.tgname='read_index_r1_truncate_guard' AND pn.nspname='v4' AND p.proname='read_index_r1_no_truncate'))''',
+            (table,)).fetchone()[0]
+        if not relation or relation[0] is None or count!=2:
+            raise ValueError('V4_FIXED_READ_INDEX_R1_STORAGE_NOT_MIGRATED:'+table)
+
+
 def prepare(root, token, day, collections, responses, memberships):
     """One producer transaction; existing version content can only be verified."""
     root=Path(root);schema=workspace_schema(root,'read_index')
@@ -101,48 +116,13 @@ def prepare(root, token, day, collections, responses, memberships):
                   responses=responses,memberships=memberships)
     digest=hashlib.sha256(canonical(material)).hexdigest()
     with connection(schema) as pg:
-        create_schema(pg,schema)
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_versions(
-            token text NOT NULL, day text NOT NULL, digest text NOT NULL,
-            contract text NOT NULL, sealed boolean NOT NULL DEFAULT false, PRIMARY KEY(token,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_items(
-            token text NOT NULL, day text NOT NULL, domain text NOT NULL,
-            entity_id text NOT NULL, symbol text, display_name text,
-            aliases text[] NOT NULL, search_parts text[] NOT NULL,
-            sector_ids text[] NOT NULL, values_json jsonb NOT NULL,
-            summary jsonb NOT NULL, detail jsonb NOT NULL, detail_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,domain,entity_id),
-            FOREIGN KEY(token,day) REFERENCES read_versions(token,day))''')
-        pg.execute('''CREATE TABLE IF NOT EXISTS read_responses(
-            token text NOT NULL, day text NOT NULL, path text NOT NULL,
-            payload jsonb NOT NULL, payload_sha256 text NOT NULL,
-            PRIMARY KEY(token,day,path), FOREIGN KEY(token,day) REFERENCES read_versions(token,day))''')
-        pg.execute('CREATE INDEX IF NOT EXISTS read_items_order ON read_items(token,day,domain,entity_id)')
-        pg.execute('''CREATE OR REPLACE FUNCTION read_index_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
-          BEGIN
-            IF TG_TABLE_NAME='read_versions' THEN
-              IF TG_OP='UPDATE' AND NOT OLD.sealed AND NEW.sealed AND
-                 (OLD.token,OLD.day,OLD.digest,OLD.contract)=(NEW.token,NEW.day,NEW.digest,NEW.contract) THEN RETURN NEW; END IF;
-              IF TG_OP='INSERT' THEN RETURN NEW; END IF;
-              RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
-            END IF;
-            IF TG_OP<>'INSERT' OR EXISTS(SELECT 1 FROM read_versions WHERE token=NEW.token AND day=NEW.day AND sealed) THEN
-              RAISE EXCEPTION 'READ_INDEX_IMMUTABLE';
-            END IF;
-            RETURN NEW;
-          END $$''')
-        for table in ('read_versions','read_items','read_responses'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_immutable_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_immutable_guard BEFORE INSERT OR UPDATE OR DELETE ON {} FOR EACH ROW EXECUTE FUNCTION read_index_immutable()').format(sql.Identifier(table)))
-        pg.execute("CREATE OR REPLACE FUNCTION read_index_no_truncate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'READ_INDEX_IMMUTABLE'; END $$")
-        for table in ('read_versions','read_items','read_responses'):
-            pg.execute(sql.SQL('DROP TRIGGER IF EXISTS read_index_truncate_guard ON {}').format(sql.Identifier(table)))
-            pg.execute(sql.SQL('CREATE TRIGGER read_index_truncate_guard BEFORE TRUNCATE ON {} EXECUTE FUNCTION read_index_no_truncate()').format(sql.Identifier(table)))
-        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(schema+token+day,))
-        old=pg.execute('SELECT digest FROM read_versions WHERE token=%s AND day=%s',(token,day)).fetchone()
+        _require_fixed_read_index_storage(pg)
+        lock_key=hashlib.sha256(canonical([schema,token,day])).hexdigest()
+        pg.execute('SELECT pg_advisory_xact_lock(hashtext(%s))',(lock_key,))
+        old=pg.execute('SELECT digest FROM read_versions_r1 WHERE token=%s AND day=%s',(token,day)).fetchone()
         if old and old[0]!=digest: raise ValueError('READ_INDEX_IMMUTABLE_VERSION_CONFLICT')
         if old is None:
-            pg.execute('INSERT INTO read_versions(token,day,digest,contract) VALUES(%s,%s,%s,%s)',(token,day,digest,CONTRACT))
+            pg.execute('INSERT INTO read_versions_r1(token,day,digest,contract) VALUES(%s,%s,%s,%s)',(token,day,digest,CONTRACT))
             with pg.cursor() as cur:
                 for domain,rows in collections.items():
                     values=[]
@@ -153,15 +133,15 @@ def prepare(root, token, day, collections, responses, memberships):
                         values.append((token,day,domain,sid,row['symbol'],row['display_name'],aliases,search,
                             memberships.get(sid,[]),Jsonb({k:c.get('value') for k,c in row['fields'].items()}),
                             Jsonb(summary(row,domain)),Jsonb(row),hashlib.sha256(canonical(row)).hexdigest()))
-                    cur.executemany('INSERT INTO read_items VALUES('+','.join(['%s']*13)+')',values)
-                cur.executemany('INSERT INTO read_responses VALUES(%s,%s,%s,%s,%s)',
+                    cur.executemany('INSERT INTO read_items_r1 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',values)
+                cur.executemany('INSERT INTO read_responses_r1 VALUES(%s,%s,%s,%s,%s)',
                     [(token,day,path,Jsonb(payload),hashlib.sha256(canonical(payload)).hexdigest()) for path,payload in responses.items()])
-            pg.execute('UPDATE read_versions SET sealed=true WHERE token=%s AND day=%s',(token,day))
-        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items WHERE token=%s AND day=%s GROUP BY domain',(token,day)).fetchall())
+            pg.execute('UPDATE read_versions_r1 SET sealed=true WHERE token=%s AND day=%s',(token,day))
+        counts=dict(pg.execute('SELECT domain,count(*) FROM read_items_r1 WHERE token=%s AND day=%s GROUP BY domain',(token,day)).fetchall())
         if counts!={k:len(v) for k,v in collections.items() if v}: raise ValueError('READ_INDEX_COUNT_MISMATCH')
         # Read back every row once before handing the index to HTTP.
         for domain,rows in collections.items():
-            actual=pg.execute('SELECT detail FROM read_items WHERE token=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(token,day,domain)).fetchall()
+            actual=pg.execute('SELECT detail FROM read_items_r1 WHERE token=%s AND day=%s AND domain=%s ORDER BY entity_id COLLATE "C"',(token,day,domain)).fetchall()
             if [r[0] for r in actual]!=sorted(rows,key=lambda r:r['entity_id']): raise ValueError('READ_INDEX_ROW_PARITY_FAILED')
         identity=ForwardFactStore._database_identity(pg)
     return dict(contract_id=CONTRACT,engine='postgresql',schema=schema,head_token=token,T0=day,
@@ -171,18 +151,28 @@ def prepare(root, token, day, collections, responses, memberships):
 class ReadIndex:
     def __init__(self, root, binding, token, day):
         self.root=Path(root);self.binding=binding;self.token=token;self.day=day
-        if (binding.get('contract_id'),binding.get('engine'),binding.get('schema'),binding.get('head_token'),binding.get('T0'))!=(CONTRACT,'postgresql',workspace_schema(root,'read_index'),token,day):
+        source_schema=binding.get('schema')
+        valid_schema=(source_schema=='v4' or (isinstance(source_schema,str) and re.fullmatch(r'v4_read_index_[a-f0-9]{16}',source_schema)))
+        if (binding.get('contract_id'),binding.get('engine'),binding.get('head_token'),binding.get('T0'))!=(CONTRACT,'postgresql',token,day) or not valid_schema:
             raise ValueError('READ_INDEX_CONTEXT_MISMATCH')
+        self.schema='v4'
 
     def attest(self, pg):
         if ForwardFactStore._database_identity(pg)!=self.binding['database_identity']: raise ValueError('READ_INDEX_DATABASE_MISMATCH')
-        row=pg.execute('SELECT digest,contract,sealed FROM read_versions WHERE token=%s AND day=%s',(self.token,self.day)).fetchone()
+        if self.binding.get('schema')!='v4':
+            mapped=pg.execute("""SELECT digest,contract,domain_counts,verification FROM read_index_migration_map_r1
+                WHERE generation='R1' AND source_schema=%s AND context_id=%s AND day=%s""",
+                (self.binding['schema'],self.token,self.day)).fetchone()
+            if (not mapped or mapped[0]!=self.binding['digest'] or mapped[1]!=CONTRACT
+                    or mapped[2]!=self.binding['counts'] or mapped[3].get('status')!='VERIFIED'):
+                raise ValueError('READ_INDEX_LEGACY_VERSION_NOT_MIGRATED')
+        row=pg.execute('SELECT digest,contract,sealed FROM read_versions_r1 WHERE token=%s AND day=%s',(self.token,self.day)).fetchone()
         if row!=(self.binding['digest'],CONTRACT,True): raise ValueError('READ_INDEX_VERSION_UNAVAILABLE')
 
     def response(self, path):
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses WHERE token=%s AND day=%s AND path=%s',(self.token,self.day,path)).fetchone()
+            row=pg.execute('SELECT payload,payload_sha256 FROM read_responses_r1 WHERE token=%s AND day=%s AND path=%s',(self.token,self.day,path)).fetchone()
         if row is None: return None
         if hashlib.sha256(canonical(row[0])).hexdigest()!=row[1]: raise ValueError('READ_INDEX_RESPONSE_DIGEST_MISMATCH')
         return row[0]
@@ -191,17 +181,20 @@ class ReadIndex:
         where,args,order,offset,limit=query_parts(domain,query,entity=entity,sector=sector)
         base=(self.token,self.day,domain)
         predicate=sql.SQL('token=%s AND day=%s AND domain=%s AND {}').format(where)
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            total=pg.execute(sql.SQL('SELECT count(*) FROM read_items WHERE {}').format(predicate),base+tuple(args)).fetchone()[0]
-            rows=pg.execute(sql.SQL('SELECT summary FROM read_items WHERE {} ORDER BY {} LIMIT %s OFFSET %s').format(predicate,order),base+tuple(args)+(limit,offset)).fetchall()
+            count_query=sql.Composed([sql.SQL('SELECT count(*) FROM read_items_r1 WHERE '),predicate])
+            items_query=sql.Composed([sql.SQL('SELECT summary FROM read_items_r1 WHERE '),predicate,
+                sql.SQL(' ORDER BY '),order,sql.SQL(' LIMIT %s OFFSET %s')])
+            total=pg.execute(count_query,base+tuple(args)).fetchone()[0]
+            rows=pg.execute(items_query,base+tuple(args)+(limit,offset)).fetchall()
         return dict(status='READY' if total else 'EMPTY_VALID',items=[r[0] for r in rows],total=total,
                     offset=offset,limit=limit,has_next=offset+limit<total,domain=domain,gap=None)
 
     def detail(self, domain, key):
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
-            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items
+            rows=pg.execute('''SELECT detail,detail_sha256 FROM read_items_r1
                 WHERE token=%s AND day=%s AND domain=%s AND
                 (entity_id=%s OR upper(symbol)=upper(%s) OR %s=ANY(aliases)) LIMIT 2''',
                 (self.token,self.day,domain,key,key,key)).fetchall()
@@ -214,10 +207,10 @@ class ReadIndex:
         """Bounded batch identity/name lookup for rows already selected by an endpoint."""
         keys=sorted({str(v) for v in entity_ids if v})
         if not keys:return {}
-        with connection(self.binding['schema'],read_only=True) as pg:
+        with connection(self.schema,read_only=True) as pg:
             self.attest(pg)
             rows=pg.execute('''SELECT entity_id,symbol,display_name,detail,detail_sha256
-                FROM read_items WHERE token=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
+                FROM read_items_r1 WHERE token=%s AND day=%s AND domain=%s AND entity_id=ANY(%s)''',
                 (self.token,self.day,domain,keys)).fetchall()
         result={}
         for entity_id,symbol,name,detail,digest in rows:

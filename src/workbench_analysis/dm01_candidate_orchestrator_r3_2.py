@@ -10,11 +10,13 @@ from .dm01_chain_contract_r3_2 import validate_parent
 def ref(path):
     return dict(path=artifact_reference_path(path),sha256=sha(path),bytes=Path(path).stat().st_size)
 
-def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_binding,staging_root,head_paths):
-    before={artifact_reference_path(p):sha(p) for p in head_paths};stage=None;receipts={}
+def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_binding,staging_root,authority_snapshot):
+    if not callable(authority_snapshot):raise ValueError('PG_ACCEPTED_AUTHORITY_SNAPSHOT_REQUIRED')
+    before=authority_snapshot();stage=None;receipts={}
     try:
         from .daily_source_freeze import ensure_outside_tdx
-        for root in (Path('D:/new_tdx'),*[Path(p) for p in source_freeze.get('tdx_roots',[])]):ensure_outside_tdx(Path(staging_root),root)
+        from common.paths import resolve_tdx_root
+        for root in (resolve_tdx_root(ROOT),*[Path(p) for p in source_freeze.get('tdx_roots',[])]):ensure_outside_tdx(Path(staging_root),root)
         contract=load(ref(ROOT/CONTRACT_PATH));validate_parent(parent_data_head,contract)
         target=resolve_target_session(parent_data_head['head']['accepted_trade_date'],calendar_binding,source_freeze['observed_at'],source_freeze['trade_date'])
         contract_sha=sha(ROOT/CONTRACT_PATH)
@@ -25,7 +27,7 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
             post=check_cross_components(receipts,source_freeze,parent_data_head,calendar_binding,identity_binding)
             if post['status']!='PASS' or digest(post)!=manifest['postcheck_digest'] or manifest['candidate_id']!=run_id:
                 raise ComponentBuildError('CANDIDATE_DIGEST_MISMATCH')
-            if any(sha(ROOT/p)!=s for p,s in before.items()):raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
+            if authority_snapshot()!=before:raise ComponentBuildError('PG_ACCEPTED_AUTHORITY_CHANGED')
             return dict(status='NOOP_IDENTICAL_CANDIDATE',candidate=ref(marker),candidate_revision=run_id,
                 logical_digest=manifest['logical_digest'],components=receipts,postcheck=post,data_head_moved=False)
         parentpath=stage/'parent_context.json';_write_immutable(parentpath,parent_data_head,source_freeze.get('tdx_roots',[]))
@@ -34,7 +36,7 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
         post=check_cross_components(receipts,source_freeze,parent_data_head,calendar_binding,identity_binding)
         postpath=stage/'independent_cross_postcheck.json';_write_immutable(postpath,post,source_freeze.get('tdx_roots',[]))
         if post['status']!='PASS':raise ComponentBuildError('CROSS_COMPONENT_POSTCHECK_FAILED:'+str(post['errors']))
-        if any(sha(ROOT/p)!=s for p,s in before.items()):raise ComponentBuildError('PROTECTED_HEAD_CHANGED')
+        if authority_snapshot()!=before:raise ComponentBuildError('PG_ACCEPTED_AUTHORITY_CHANGED')
         logical=digest(dict(target=target,parent=parent_data_head['binding']['sha256'],source=source_freeze['manifest_sha256'],
             components={k:r['logical_digest'] for k,r in receipts.items()},contract=contract_sha))
         state=dict(contract_id='DM01_CANDIDATE_KERNEL_STATE_VIEW_R3',accepted_trade_date=target,
@@ -48,7 +50,7 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
             components=receipts,cross_postcheck_binding=ref(postpath),postcheck_digest=digest(post),logical_digest=logical,
             created_at=datetime.now(timezone.utc).isoformat(),accepted_namespace_visible=False,
             external_acceptance='PENDING',data_head_promotion_permitted=False,production_permission=False,
-            shadow_production_permission=False,focus_cutover_permission=False,protected_heads=before,
+            shadow_production_permission=False,focus_cutover_permission=False,accepted_authority_snapshot=before,
             knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,first_available_at_target_proven=False)
         _write_immutable(marker,manifest,source_freeze.get('tdx_roots',[]))
         return dict(status='READY_FOR_EXTERNAL_REAUDIT',candidate=ref(marker),candidate_revision=run_id,
@@ -56,10 +58,11 @@ def build_candidate(*,parent_data_head,source_freeze,calendar_binding,identity_b
     except (ValueError,KeyError,OSError,TypeError) as exc:
         result=dict(status='BLOCKED',reason=str(exc),completed_components=list(receipts),
             accepted_namespace_visible=False,data_head_moved=False,
-            protected_heads_unchanged=all(sha(ROOT/p)==s for p,s in before.items()))
+            accepted_authority_unchanged=authority_snapshot()==before)
         if stage is not None:
             from .daily_increment_builder import _atomic_json
-            _atomic_json(stage/'failure.json',result,tdx_root=Path('D:/new_tdx'))
+            from common.paths import resolve_tdx_root
+            _atomic_json(stage/'failure.json',result,tdx_root=resolve_tdx_root(ROOT))
         return result
 
 def candidate_parent(result, staging_root):

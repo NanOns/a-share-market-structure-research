@@ -13,15 +13,21 @@ CONTRACT = 'RESEARCH_STATE_V1'
 PARAMETERS = 'V4_10_STATE_REDUCER_PARAMETER_SET_V1'
 TRI = {'TRUE', 'FALSE', 'UNKNOWN'}
 
+def _pg_path(relative_path, *, sha256=None):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return read_path_bytes(ROOT, relative_path, expected_sha256=sha256)
+
 def load_package():
-    freeze=json.loads((ROOT/'reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    freeze=read_source(ROOT,'39b975c38b361e25c395a5812da9768a6b42f48e8b803e30c508fc234b8bb822')['value']
+    if not isinstance(freeze,dict):raise ValueError('STATE_FREEZE_NOT_REGISTERED_IN_PG')
     if freeze['status']!='PASS_R1_2_AUTHORITY_FREEZE' or freeze['contract_id']!='V4_10_R1_2_CONTRACT_FREEZE':
         raise ValueError('STATE_FREEZE_IDENTITY_MISMATCH')
     for binding in freeze['bindings'].values():
-        if hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()!=binding['sha256']:
+        if hashlib.sha256(_pg_path(binding['path'],sha256=binding['sha256']).read_bytes()).hexdigest()!=binding['sha256']:
             raise ValueError('STATE_FREEZE_BINDING_MISMATCH')
     def read(name):
-        return json.loads((ROOT/('config/v4_10_'+name+'_r1_2.json')).read_text(encoding='utf8'))
+        return json.loads(_pg_path('config/v4_10_'+name+'_r1_2.json').read_text(encoding='utf8'))
     c, a, p = read('research_state_contract'), read('machine_ast'), read('parameter_set')
     if c['contract_id']!=CONTRACT or p['parameter_set_id']!=PARAMETERS or a['rule_order']!=c['rule_order']:
         raise ValueError('STATE_CONTRACT_IDENTITY_MISMATCH')
@@ -189,9 +195,9 @@ def reduce_state(inputs, *, ledger=None):
             reasons.append('SAME_SESSION_REENTRY_FORBIDDEN')
         elif not episode or exited:
             parent=episode if exited else None
-            result.update(episode_id='EP:'+digest([x['entity_id'],x['entity_type'],x['session_index'],CONTRACT,PARAMETERS,x['input_publication_ids']]),
-                parent_episode_id=parent,tracking='ACTIVE',exit_session_index=None,market_age=0,
-                invalidation_contract_id=x['episode_invalidation_contract_id'])
+            result={**result,'episode_id':'EP:'+digest([x['entity_id'],x['entity_type'],x['session_index'],CONTRACT,PARAMETERS,x['input_publication_ids']]),
+                'parent_episode_id':parent,'tracking':'ACTIVE','exit_session_index':None,'market_age':0,
+                'invalidation_contract_id':x['episode_invalidation_contract_id']}
             reasons.append('REENTERED' if parent else 'ENROLLED')
             if parent: result['preserved_followup_episode_ids'].append(parent)
         else: result['tracking']='ACTIVE'

@@ -1,48 +1,59 @@
-"""FEP_E1_MIGRATION_V1: checksum ledger and explicit, transactional installation.
+"""Fixed v4 FEP storage inventory; migration is owned by the central runner."""
 
-The legacy migration service is frozen. This successor applies only allocated
-FEP migrations to an existing V4 schema; empty isolated fixtures can explicitly
-request upstream bootstrap. There is no default DSN or production credential.
-"""
-import hashlib
-from pathlib import Path
+STORAGE_NOT_READY = 'V4_FEP_FIXED_SCHEMA_MIGRATION_REQUIRED'
+MIGRATION_VERSION = 'V4_FEP_FIXED_SCHEMA_STORAGE_R1'
+
+TABLES = (
+    'acceptance_receipts', 'activations', 'contracts', 'dataset_eligibility_ledger',
+    'dataset_fold_cutoffs', 'dataset_fold_label_selection', 'dataset_rows', 'datasets',
+    'deployment_change_receipts', 'deployment_heads', 'feature_values', 'field_registry',
+    'field_scope', 'label_revisions', 'label_source_bindings', 'model_set_members',
+    'model_sets', 'models', 'observation_revisions', 'observations', 'permission_keys',
+    'prediction_runs', 'prediction_slots', 'predictions', 'priority_projection',
+    'priority_projection_grants', 'reconstruction_authorities', 'reports', 'scopes',
+    'signal_contract_registry', 'slot_model_bindings', 'slot_receipts', 'snapshots',
+    'targets', 'training_runs',
+)
 
 
 def apply(pg, root, *, bootstrap=False):
-    paths = sorted((Path(root) / 'src/workbench_db/migrations/v4_postgres').glob('[0-9][0-9][0-9]_*.sql'))
-    result = []
-    for path in paths:
-        number = int(path.name[:3])
-        if number > 31:
-            raise ValueError('FEP_E1_UNALLOCATED_MIGRATION:' + path.name)
-        if number < 28 and not bootstrap:
-            continue
-        sql = path.read_text(encoding='utf8')
-        checksum = hashlib.sha256(sql.encode()).hexdigest()
-        if number >= 28:
-            version = 'FEP_E1_' + path.stem.upper()
-        else:
-            from scripts.apply_v4_phase0_schema import VERSIONS
-            version = VERSIONS.get(path.name, 'FEP_E1_FIXTURE_UPSTREAM_' + path.stem.upper())
-        with pg.transaction():
-            pg.execute("select pg_advisory_xact_lock(hashtextextended('v4.fep.migration',0))")
-            if pg.execute("select to_regclass('v4_meta.schema_migrations')").fetchone()[0]:
-                row = pg.execute('select checksum_sha256 from v4_meta.schema_migrations where version=%s', (version,)).fetchone()
-                if row:
-                    if row[0].strip() != checksum:
-                        raise ValueError('FEP_MIGRATION_CHECKSUM_CONFLICT:' + version)
-                    result.append(dict(version=version, sha256=checksum, status='ALREADY_APPLIED'))
-                    continue
-            pg.execute(sql)
-            pg.execute('insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s)',
-                       (version, checksum, 'FEP_E1_ENGINEERING_V1' if number >= 28 else 'ISOLATED_UPSTREAM_FIXTURE'))
-            result.append(dict(version=version, sha256=checksum, status='APPLIED'))
-    return result
+    """Verify installation only; never execute legacy migrations or create a schema."""
+    row = pg.execute(
+        'SELECT checksum_sha256 FROM v4.schema_migrations WHERE version=%s',
+        (MIGRATION_VERSION,),
+    ).fetchone()
+    if not row:
+        raise RuntimeError(STORAGE_NOT_READY)
+    return [dict(version=MIGRATION_VERSION, sha256=row[0].strip(), status='ALREADY_APPLIED')]
 
 
 def validate_inventory(pg):
-    tables = {r[0] for r in pg.execute("select tablename from pg_tables where schemaname='fep'")}
-    guards = {r[0] for r in pg.execute("select c.relname from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where n.nspname='fep' and t.tgname='immutable' and t.tgenabled='O'")}
-    if len(tables) != 33 or len(guards) != 32 or tables - {'deployment_heads'} != guards:
-        raise ValueError('FEP_UNGUARDED_TABLE_INVENTORY')
-    return dict(tables=sorted(tables),guarded=sorted(guards),mutable=['deployment_heads'])
+    present = {r[0] for r in pg.execute(
+        "SELECT tablename FROM pg_tables WHERE schemaname='v4' AND tablename=ANY(%s)",
+        (list(TABLES),),
+    ).fetchall()}
+    missing = set(TABLES) - present
+    if missing:
+        raise ValueError('FEP_FIXED_V4_TABLES_MISSING:' + ','.join(sorted(missing)))
+
+    immutable = set(TABLES) - {'deployment_heads'}
+    guards = {table for table, has_guard in pg.execute(
+        """SELECT c.relname, bool_or((t.tgtype & 24)=24 AND t.tgenabled='O')
+           FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid
+           JOIN pg_namespace n ON n.oid=c.relnamespace
+           WHERE n.nspname='v4' AND c.relname=ANY(%s) AND c.relname<>'deployment_heads' AND NOT t.tgisinternal
+           GROUP BY c.relname""",
+        (list(TABLES),),
+    ).fetchall() if has_guard}
+    if guards != immutable:
+        raise ValueError('FEP_FIXED_V4_APPEND_ONLY_GUARD_INVENTORY')
+    controlled_head = pg.execute(
+        """SELECT EXISTS(
+             SELECT 1 FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid
+             JOIN pg_namespace n ON n.oid=c.relnamespace
+             WHERE n.nspname='v4' AND c.relname='deployment_heads'
+               AND t.tgname='controlled_head' AND t.tgenabled='O' AND NOT t.tgisinternal)"""
+    ).fetchone()[0]
+    if not controlled_head:
+        raise ValueError('FEP_FIXED_V4_HEAD_CAS_GUARD_MISSING')
+    return dict(schema='v4', tables=sorted(present), guarded=sorted(guards), mutable=['deployment_heads'])

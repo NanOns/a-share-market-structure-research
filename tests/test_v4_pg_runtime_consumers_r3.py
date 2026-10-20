@@ -31,7 +31,7 @@ def test_historical_subclass_cannot_reopen_sqlite(tmp_path):
     jobs=CustomJobs(tmp_path)
     assert jobs.settings(False)['auto_enabled'] is False
     with jobs.worker_lock():
-        assert jobs.schema.startswith('v4_jobs_')
+        assert jobs.schema == 'v4'
     assert not list(tmp_path.rglob('*.sqlite*'))
 
 @pytest.mark.parametrize('desktop', [False, True])

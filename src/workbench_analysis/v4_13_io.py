@@ -1,6 +1,7 @@
 """Exact immutable contract/source IO for scoped V4-13 engineering."""
 import gzip
 import hashlib
+import io
 import json
 import os
 import tempfile
@@ -18,14 +19,14 @@ def digest(value):
 
 
 def file_ref(root, path):
-    payload=(Path(root)/path).read_bytes()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    payload=read_path(Path(root).resolve(),path)['raw']
     return dict(path=path, sha256=hashlib.sha256(payload).hexdigest(), bytes=len(payload))
 
 
 def exact(root, binding):
-    root=Path(root).resolve();path=(root/binding['path']).resolve()
-    if not path.is_relative_to(root):raise ValueError('ACCEPTED_PATH_OUTSIDE_WORKSPACE')
-    b=path.read_bytes()
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    b=read_bound(Path(root).resolve(),binding['path'],binding['sha256'])['raw']
     if hashlib.sha256(b).hexdigest()!=binding['sha256']:raise ValueError('ACCEPTED_SOURCE_DIGEST_MISMATCH')
     size=binding.get('bytes',binding.get('byte_count',binding.get('actual_byte_count')))
     if size is not None and len(b)!=size:raise ValueError('ACCEPTED_SOURCE_BYTES_MISMATCH')
@@ -37,10 +38,10 @@ def available(value, cutoff):
 
 
 def rows(root, binding):
-    exact(root,binding)
-    path=Path(root)/binding['path']
-    opener=gzip.open if path.suffix=='.gz' else open
-    with opener(path,'rt',encoding='utf8') as stream:
+    payload=exact(root,binding)
+    source=io.BytesIO(payload)
+    binary=gzip.GzipFile(fileobj=source,mode='rb') if binding['path'].endswith('.gz') else source
+    with io.TextIOWrapper(binary,encoding='utf8') as stream:
         for line in stream:
             if line.strip():yield json.loads(line)
 
@@ -67,14 +68,22 @@ def atomic(root,path,payload,append_only=False):
 
 class FrozenContracts:
     def __init__(self, root):
-        self.root=Path(root);self.refs=json.loads((self.root/'reports/v4_13_r1_1/V4_13_CONTRACT_AMENDMENT_R1_1.json').read_bytes())['contracts']
+        self.root=Path(root)
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+        package=read_source(self.root,'a3f1c1082580e1a2cdda395ef10089f5bc93c4b1bd8c9259de1ec30232b9bfb3')['value']
+        if not isinstance(package,dict):raise ValueError('V4_13_CONTRACT_PACKAGE_NOT_REGISTERED_IN_PG')
+        self.refs=package['contracts']
         self.config={}
         for r in self.refs:
             name=Path(r['path']).stem.removeprefix('v4_13_').removesuffix('_v1_1')
             self.config[name]=json.loads(exact(self.root,r))
-        decision=self.root/'reports/v4_13_runtime_r16r1/contract_amendment_decision.json'
-        if decision.exists():
-            amendment=json.loads(decision.read_bytes())['amendment']
+        try:
+            decision=read_source(self.root,'68655f6ef966294ab81f470cd39ca56d909d6cde67fced202e72734e929b8b13')['value']
+        except ValueError as error:
+            if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+            decision=None
+        if decision is not None:
+            amendment=decision['amendment']
             projection=json.loads(exact(self.root,amendment))
             previous=next(r for r in self.refs if r['path']=='config/v4_13_projection_v1_1.json')
             if projection['contract_id']!=self.config['projection']['contract_id'] or projection['version']!='1.2.0' or projection['supersedes']!=previous:raise ValueError('PROJECTION_SAME_FAMILY_LINEAGE_REQUIRED')

@@ -68,4 +68,4 @@ def test_desktop_uses_pg_store(tmp_path,plan):
     jobs=ManagedDailyJobs(tmp_path,clock=lambda:datetime.fromisoformat('2026-10-09T22:10+08:00'))
     jobs.settings(False);job=jobs.enqueue();jobs.cancel(job)
     assert jobs.job(job)['status']=='CANCELLED'
-    assert jobs.schema.startswith('v4_jobs_')
+    assert jobs.schema == 'v4'

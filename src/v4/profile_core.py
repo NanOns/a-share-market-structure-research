@@ -14,7 +14,9 @@ from typing import Mapping
 
 
 CONTRACT_VERSION = "V4_04_CORE_PROFILE_RULES_V1"
-_parameter_file = Path(__file__).resolve().parents[2] / "config/v4_04_parameter_set_v1.json"
+_project_root = Path(__file__).resolve().parents[2]
+from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+_parameter_file = read_path_bytes(_project_root, "config/v4_04_parameter_set_v1.json")
 _parameter_data = json.loads(_parameter_file.read_text(encoding="utf-8"))
 if _parameter_data["parameter_set_id"] != "V4_04_CORE_PROFILE_PARAMETER_SET_V1":
     raise ValueError("V4-04 parameter set identity mismatch")

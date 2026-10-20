@@ -1,8 +1,58 @@
 import copy
+from contextlib import contextmanager
 import pytest
 from workbench_service.current_v4_context import SourceInvalid
 from workbench_service.forward_daily import calendar_extension,verify_due_settlement,CONTRACT,ForwardStore,OperationalForwardAuthority,LocalForwardPriceSource
 from workbench_analysis.v4_15_settlement_successor import price_path
+
+
+@pytest.fixture
+def forward_store_factory(monkeypatch, tmp_path):
+    from workbench_db import v4_forward_pg_r1 as pg_store
+
+    identity = {"database": "unit_test", "database_oid": 1, "host": "127.0.0.1", "port": 5432}
+    facts = {}
+
+    class Result:
+        def __init__(self, rows=()): self.rows = list(rows)
+        def fetchone(self): return self.rows[0] if self.rows else None
+        def fetchall(self): return self.rows
+
+    class FakePg:
+        def execute(self, statement, params=()):
+            if "current_database()" in statement:
+                return Result([(identity["database"], identity["database_oid"], identity["host"], identity["port"])])
+            if "set_config('statement_timeout'" in statement:
+                return Result()
+            if statement.startswith("INSERT INTO forward_facts"):
+                kind, key, payload, payload_sha = params
+                facts.setdefault((kind, key), (payload, payload_sha))
+                return Result()
+            if "SELECT payload,payload_sha256 FROM forward_facts" in statement:
+                return Result([facts[params]]) if params in facts else Result()
+            if "SELECT fact_key,payload_sha256 FROM forward_facts" in statement:
+                kind = params[0]
+                return Result(sorted((key, value[1]) for (fact_kind, key), value in facts.items()
+                                     if fact_kind == kind))
+            raise AssertionError(statement)
+
+    @contextmanager
+    def connection(*_args, **_kwargs):
+        yield FakePg()
+
+    monkeypatch.setattr(pg_store, "connection", connection)
+    monkeypatch.setattr(pg_store, "configured_reader_dsn", lambda: "controlled-unit-test-reader-dsn")
+
+    def make(folder="journal"):
+        store = ForwardStore.__new__(ForwardStore)
+        store.root = tmp_path.resolve()
+        store.folder = store.root / folder
+        store.dsn = "controlled-unit-test-dsn"
+        store.schema = "unit_test_forward"
+        store.database_identity = identity
+        return store
+
+    return make
 
 def test_calendar_only_appends_accepted_sessions():
     old=['2026-09-28','2026-09-29'];new=old+['2026-09-30']
@@ -24,29 +74,29 @@ def test_due_missing_price_is_not_pending():
 def test_no_due_requires_no_maturity():
     assert verify_due_settlement(dict(plans=[dict(due_date=None)],outcomes=[]),'2026-09-30')==0
 
-def test_frozen_t0_is_append_only(tmp_path):
-    store=ForwardStore(tmp_path,'journal')
+def test_frozen_t0_is_append_only(forward_store_factory):
+    store=forward_store_factory()
     frozen=dict(T0='2026-09-29',members=['a','b'],reference=10)
     binding=store.append('t0_freezes','e',frozen)
     assert store.append('t0_freezes','e',copy.deepcopy(frozen))==binding
     with pytest.raises(SourceInvalid,match='IDENTITY_CONFLICT'):store.append('t0_freezes','e',dict(frozen,reference=11))
     assert store.read(binding)==frozen
 
-def test_same_raw_source_pending_advances_with_calendar_and_cutoff(tmp_path):
+def test_same_raw_source_pending_advances_with_calendar_and_cutoff(forward_store_factory):
     from types import SimpleNamespace
     from workbench_analysis.v4_15_settlement import VectorPriceSource,freeze_basket
     from workbench_analysis.v4_15_settlement_successor import SettlementRuntime
-    store=ForwardStore(tmp_path,'journal')
+    store=forward_store_factory()
     snap=store.append('snapshots','s',dict(universe=[dict(security_id='S',close=10)]))
     frozen=store.append('t0_freezes','e',dict(T0='2026-09-29',enrollment_id='e',signal_id='S',comparison_reference=10,snapshot=snap,
         market=freeze_basket([],'2026-09-29'),sector=freeze_basket([],'2026-09-29','SECTOR'),
         controls=dict(assignment_digest='frozen',**{k:dict(control_entity_ids=[],control_assignment_id=k) for k in ('A','B','C')})))
-    old=LocalForwardPriceSource(tmp_path,{},'2026-09-29','2026-09-29',accepted_paths=SimpleNamespace(bindings={},calendar=['2026-09-29']))
-    new=LocalForwardPriceSource(tmp_path,{},'2026-09-29','2026-09-30',accepted_paths=SimpleNamespace(bindings={},calendar=['2026-09-29','2026-09-30']))
+    old=LocalForwardPriceSource(store.root,{},'2026-09-29','2026-09-29',accepted_paths=SimpleNamespace(bindings={},calendar=['2026-09-29']))
+    new=LocalForwardPriceSource(store.root,{},'2026-09-29','2026-09-30',accepted_paths=SimpleNamespace(bindings={},calendar=['2026-09-29','2026-09-30']))
     assert old.binding['sha256']!=new.binding['sha256']
     row=dict(close=11,high=12,low=9,verified_identity=True,verified_adjustment=True,T0_basis_verified=True,
         adjustment_identity='test',evaluation_basis_date='2026-09-30',transform_coefficients=dict(alpha=1,beta=0))
-    a=OperationalForwardAuthority(tmp_path,['2026-09-29'],{})
+    a=OperationalForwardAuthority(store.root,['2026-09-29'],{})
     pending=SettlementRuntime(a,store).settle(frozen,VectorPriceSource({},old.binding),'2026-09-29',horizons=(1,))
     assert store.read(pending[0])['outcome_status']=='PENDING'
     a.sessions.append('2026-09-30');source=VectorPriceSource({'S':{'2026-09-30':row}},new.binding)

@@ -11,14 +11,52 @@ from .operational_owner_adapter_v1 import replay
 from .operational_daily_periods_v1 import derive_periods
 from .operational_successor_v1 import CONTRACT
 from .tdx_official_daily_source import _atomic_write,sha256_file
+from common.paths import resolve_tdx_root,resolve_baostock_request_ledger
 
-BASE='docs/evidence/r4_3_four_session_closeout_20261009'
-ACQUISITION='docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'
+_HISTORICAL_IDS={
+    'core_replay':'7943e8d30b8c3ef4494ab69653d99da03f5541e75d17260c0be2fcdf0be1966e',
+    'acquisition':'0ea5b6c8b6edc554398ebcfb36fda732958e1b9b40260f08efd125c28d0595f8',
+    'phase0':'ea2fc560dcb8f00148572b2f7c5632ce6c54186b790664811675c545d822f27b',
+    'acceptance':'56c7b651981895ae533dc1d50924a0b915c55a1543180a0d34460546b72c0adb',
+    'source_trace':'1bdc8f26f9c0bedf0b8ae179a5ea269b34c23e6a97cb4d592cfae7981e98aa53',
+    'sector_replay':'af72497a27fededa39602164a898376deef3baa3b253053efe4e0729dda0539a',
+    'member_snapshot':'7eef000c2eaa7aef5aece5177516181bf293ae26575e102a433e8c30070bb0a7',
+    'task_contract':'afa32719e60b3cdca6e26d51fae808169fe58199c24aad314398c37292d5ff49',
+    'capture_audit':'462c84b4c0f38c0bf8004b79d15adfb4f6be90a6dee2e234d17549b154d73c79',
+}
+
+def historical_source(root, key):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+    return read_source(root,_HISTORICAL_IDS[key])
+
+def historical_json(root, key):
+    value=historical_source(root,key)['value']
+    if not isinstance(value,dict):raise ValueError('HISTORICAL_PG_JSON_REQUIRED:'+key)
+    return value
+
+def historical_special_inputs(root, components):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    event=components['R6_EVENTS'];policy=components['R6_POLICY']
+    event_fact=read_bound(root,event['path'],event['sha256'])
+    policy_fact=read_bound(root,policy['path'],policy['sha256'])
+    records=[json.loads(line) for line in (event_fact['text'] or '').splitlines() if line.strip()]
+    contract=policy_fact['value']
+    if not isinstance(contract,dict):raise ValueError('SPECIAL_PHASE_POLICY_PG_JSON_REQUIRED')
+    return records,contract,event,policy
 
 
 def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,candidate_only_exact=False):
     root=Path(root).resolve();freeze=load(checked(root,freeze_binding));day=freeze['target_session']
-    parent=load(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json')
+    tdx_root=resolve_tdx_root(root)
+    request_ledger=resolve_baostock_request_ledger(root)
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    parent_head=read_current(root)
+    parent=parent_head['candidate'];parent_sha=parent_head['head_sha256']
+    from workbench_db.v4_operational_owner_authority_v2 import load as load_owner_authority,read as read_owner
+    owner_authority=load_owner_authority(root,parent)
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,identity_source,read as read_memberships,read_identity
+    snapshot=context_snapshot(root,parent)
+    membership_rows=read_memberships(root,parent)
     sessions=official_sessions(root);previous=parent['accepted_trade_date']
     if not replay_current and sessions.index(day)!=sessions.index(previous)+1:
         raise ValueError('OWNER_NEXT_OFFICIAL_SESSION_REQUIRED')
@@ -31,8 +69,10 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
     increment=increment_plan(parent,day,sessions,replay_current=replay_current)
     compute_dates=increment['compute_sessions']
     required=sorted(set(compute_dates)|{sessions[sessions.index(d)-k] for d in compute_dates for k in (1,3,4,5)})
-    identity_binding=load(checked(root,parent['owners'][previous]['lifecycle']))['identity']
-    identities=load(checked(root,identity_binding))['rows'];bycode={r['source_security_key'].upper():r for r in identities}
+    lifecycle_binding=parent['owners'][previous]['lifecycle']
+    lifecycle=read_owner(root,owner_authority,previous,'lifecycle',lifecycle_binding)
+    identity_binding=identity_source(root,parent)
+    identities=read_identity(root,parent);bycode={r['source_security_key'].upper():r for r in identities}
     bao=freeze['normalized']['daily']['rows'];barsdoc=load(Path(freeze['tdx']['path']));amount_differences=[]
     if sha256_file(Path(freeze['tdx']['path']))!=freeze['tdx']['sha256']:raise ValueError('NATIVE_TARGET_DIGEST_MISMATCH')
     bars={r['source_security_key']:r for r in barsdoc['target_bars']};observations=[];errors=[]
@@ -50,8 +90,7 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         observations.append(dict(security_id=ident['security_id'],source_security_key=code,trade_date=day,status=state))
     if errors:raise ValueError('DATED_SOURCE_RECONCILIATION_FAILED:'+json.dumps(errors[:10]))
     if not observations:raise ValueError('DATED_SOURCE_EMPTY')
-    snapshot=load(checked(root,parent['membership_snapshot']))
-    current_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
+    current_gbbq=tdx_root/'T0002/hq_cache/gbbq'
     before=current_gbbq.stat();blob=current_gbbq.read_bytes();after=current_gbbq.stat()
     if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_CAPTURE')
     member_source_hashes={source['address']:sha256_file(Path(source['address'])) for source in snapshot['sources']}
@@ -68,7 +107,7 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
             or profile_contract.get('version')!='1.0.0'):
         raise ValueError('PROFILE_LIFECYCLE_CONSERVATION_CONTRACT_REQUIRED')
     generation=dict(contract_id='DYNAMIC_DAILY_OWNER_GENERATION_SCOPE_V1',profile_lifecycle_conservation_contract=ref(root,profile_contract_path),source_freeze=freeze_binding['sha256'],
-        parent_head=sha256_file(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),identity=identity_binding['sha256'],
+        parent_head=parent_sha,identity=identity_binding['sha256'],
         gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
         revision_guard=revision_guard,
         increment_scope={k:increment[k] for k in ('contract_id','mode','compute_sessions','history_dependencies','revisions')},
@@ -83,19 +122,23 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     folder=root/'data/v4/dynamic_daily_owners'/day/generation_key
     folder.mkdir(parents=True,exist_ok=True)
+    # Use Head-bound PG membership as the source and materialize only a
+    # candidate replay input, keeping the original PG descriptor attached.
+    snapshot=dict(snapshot,pg_membership_descriptor=snapshot['memberships'],
+                  memberships=gzwrite(root,folder/'sources/membership_rows.jsonl.gz',membership_rows))
     scope_path=folder/'GENERATION_SCOPE.json'
     if scope_path.is_file() and load(scope_path)!=generation:raise ValueError('OWNER_GENERATION_SCOPE_COLLISION')
     if not scope_path.is_file():atomic_json(root,scope_path,generation)
     atomic_json(root,folder/'INCREMENT_PLAN.json',increment)
     if increment['mode']=='RANGE_REPAIR':
         raise ValueError('RANGE_REPAIR_REQUIRED:'+','.join(revisions))
-    phase_path=root/'reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json'
-    phase=load(phase_path)
+    phase_source=historical_source(root,'phase0')
+    phase=historical_json(root,'phase0')
     if phase['phase0_status'] not in ('FULL_PASS','DEGRADED_PASS'):raise ValueError('PHASE0_GATE_REQUIRED')
     atomic_json(root,folder/'STAGE_ENTRY.json',dict(contract_id='DYNAMIC_DAILY_OWNER_ENTRY_V1',
-        phase0_status=phase['phase0_status'],phase0_evidence=ref(root,phase_path),
+        phase0_status=phase['phase0_status'],phase0_evidence=dict(path=phase_source['record']['source_path'],sha256=phase_source['record']['source_sha256'],bytes=phase_source['record']['source_bytes']),
         upgrade_document=ref(root,root/'docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md'),
-        task_contract=ref(root,root/'docs/evidence/dynamic_daily_20261009/TASK_CONTRACT_V1_1.md'),
+        task_contract=dict(path=historical_source(root,'task_contract')['record']['source_path'],sha256=historical_source(root,'task_contract')['record']['source_sha256'],bytes=historical_source(root,'task_contract')['record']['source_bytes']),
         acceptance='IN_PROGRESS',target_session=day,source_freeze=freeze_binding,
         next_stage='UNCHANGED_KERNEL_REPLAY_AND_FULL_NUMERIC_DAY_QA'))
     atomic_json(root,folder/'AMOUNT_CROSS_SOURCE_AUDIT.json',dict(contract_id='DD_A05_DATED_AMOUNT_AUDIT_V1',
@@ -103,9 +146,10 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         differences=amount_differences,acceptance='INDEPENDENT_NOT_GRANTED',native_primary_replaced=False,
         next_stage='SEPARATE_CROSS_CUTTING_AMOUNT_AUDIT'))
     # A prior accepted GBBQ cannot substitute for a changed current local action source.
-    oldcore=load(root/BASE/'owner_v3/CORE_REPLAY.json')['owners'][0]
+    oldcore_source=historical_source(root,'core_replay')
+    oldcore=oldcore_source['value']['owners'][0]
     oldgbbq=oldcore['sources']['gbbq']
-    gb=folder/'sources/gbbq';_atomic_write(gb,blob,tdx_root=Path('D:/new_tdx'))
+    gb=folder/'sources/gbbq';_atomic_write(gb,blob,tdx_root=tdx_root)
     from tdx.gbbq_reader import read_gbbq
     events=read_gbbq(gb)
     if hashlib.sha256(blob).hexdigest()!=oldgbbq['sha256']:
@@ -128,8 +172,8 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
             if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('MEMBER_SOURCE_CHANGED_DURING_CAPTURE')
             if hashlib.sha256(data).hexdigest()!=member_source_hashes[source['address']]:raise ValueError('MEMBER_GENERATION_SCOPE_MOVED')
             frozen=folder/'latest_member_raw'/hashlib.sha256(data).hexdigest()/address.name
-            _atomic_write(frozen,data,tdx_root=Path('D:/new_tdx'))
-            _atomic_write(parse/'T0002/hq_cache'/address.name,data,tdx_root=Path('D:/new_tdx'))
+            _atomic_write(frozen,data,tdx_root=tdx_root)
+            _atomic_write(parse/'T0002/hq_cache'/address.name,data,tdx_root=tdx_root)
             sources.append(dict(address=str(address),observed_at=observed,**ref(root,frozen)))
         frame,_=build_snapshot(parse,observed)
         rows=normalize_member_rows(frame.to_dict('records'),bycode)
@@ -140,7 +184,8 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
             relation_count=len(rows),mapped_count=sum(r['security_id'] is not None for r in rows),
             unmapped_count=sum(r['security_id'] is None for r in rows))
     atomic_json(root,folder/'MEMBER_SNAPSHOT_S.json',snapshot)
-    acquisition=load(root/ACQUISITION);queries=list(acquisition['queries'])
+    acquisition_source=historical_source(root,'acquisition')
+    acquisition=acquisition_source['value'];queries=list(acquisition['queries'])
     daily_path=folder/'sources/daily.json';atomic_json(root,daily_path,dict(rows=bao,observed_at=freeze['observed_at']))
     queries=[q for q in queries if not (q.get('method')=='query_daily_history_k_AStock' and q['params'].get('date',q['params'].get('day'))==day)]
     queries.append(dict(method='query_daily_history_k_AStock',params={'date':day},path=str(daily_path),
@@ -170,8 +215,8 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         from .baostock_supplemental import RequestBudget
         from .operational_baostock_client_v1 import BaoStockClient
         from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest
-        manifest=load_runtime_acceptance_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
-        with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
+        manifest=load_runtime_acceptance_manifest(project_root=root,target_date=day)
+        with BaoStockClient(RequestBudget(request_ledger),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
             for target in missing:
                 cache=root/'data/v4/dynamic_daily_sources/dated_universe'/target/'query_all_stock.json'
                 if cache.is_file():payload=load(cache)
@@ -194,35 +239,55 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
     pp=folder/'sources/package_pointer.json';atomic_json(root,pp,dict(capture_receipt=ref(root,cp)))
     atomic_json(root,folder/'sources/frozen_previous.json',dict(owners=[dict(oldcore,sources=dict(oldcore['sources'],gbbq=ref(root,gb)))]))
     lifecycle=folder/'sources'/day/'lifecycle.json'
-    atomic_json(root,lifecycle,dict(contract_id='DYNAMIC_DATED_LIFECYCLE_V1',trade_date=day,identity=identity_binding,
+    lifecycle_value=dict(contract_id='DYNAMIC_DATED_LIFECYCLE_V1',trade_date=day,identity=identity_binding,
                  source_rows=observations,rows=observations,active_security_ids=[r['security_id'] for r in observations],
-                 status='READY',observed_at=freeze['observed_at'],AS_RECORDED=False,PIT_ELIGIBLE=False))
+                 status='READY',observed_at=freeze['observed_at'],AS_RECORDED=False,PIT_ELIGIBLE=False)
+    atomic_json(root,lifecycle,lifecycle_value)
+    from workbench_db.v4_dm01_stage_state_pg_r1 import append_stage
+    lifecycle_pg_binding=append_stage(root,day,'lifecycle_snapshot',lifecycle_value)
     # Exact accepted event/policy bindings, with new target-dated lifecycle.
     from .daily_source_manifests import build_special_phase_source_manifest
-    acceptance=root/'reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json'
-    stage=root/load(acceptance)['evidence']['manifest']['path'];components=load(stage)['components']
+    acceptance_source_record=historical_source(root,'acceptance')['record']
+    acceptance=root/acceptance_source_record['source_path']
+    acceptance_value=historical_source(root,'acceptance')['value']
+    stage=root/acceptance_value['evidence']['manifest']['path']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    stage_fact=read_path(root,stage.relative_to(root).as_posix())
+    stage_value=stage_fact['value'];components=stage_value['components']
+    event_records,policy_contract,event_binding,policy_binding=historical_special_inputs(root,components)
+    acceptance_source=historical_source(root,'acceptance')['record']
+    stage_source=stage_fact['record']
     special=build_special_phase_source_manifest(trade_date=day,project_root=root,v402_external_acceptance_path=acceptance,
         v402_stage_manifest_path=stage,event_store_path=root/components['R6_EVENTS']['path'],policy_path=root/components['R6_POLICY']['path'],
         lifecycle_snapshot=dict(contract_id='CURRENT_LIFECYCLE_SNAPSHOT_V1',status='READY',trade_date=day,
             artifact_path=lifecycle.relative_to(root).as_posix(),artifact_sha256=sha256_file(lifecycle),source_revision=freeze_binding['sha256'],
-            active_security_ids=[r['security_id'] for r in observations]),observed_at=freeze['observed_at'],tdx_root=Path('D:/new_tdx'))
+            active_security_ids=[r['security_id'] for r in observations]),observed_at=freeze['observed_at'],tdx_root=tdx_root,
+        event_records=event_records,policy_contract=policy_contract,event_source_binding=event_binding,
+        policy_source_binding=policy_binding,v402_external_acceptance=acceptance_value,
+        v402_stage_manifest=stage_value,v402_source_bindings=dict(contract_id='V4_HISTORICAL_SOURCE_INGRESS_PG_R1',
+            acceptance=dict(path=acceptance_source['source_path'],sha256=acceptance_source['source_sha256']),
+            stage_manifest=dict(path=stage_source['source_path'],sha256=stage_source['source_sha256'])),
+        lifecycle_pg_binding=lifecycle_pg_binding)
     specialpath=folder/'sources'/day/'special_phase.json';atomic_json(root,specialpath,special)
-    trace=load(root/BASE/'04_TDX_BAOSTOCK_GBBQ_LIFECYCLE_AND_DELTA_SOURCE_TRACE.json')
+    trace_source=historical_source(root,'source_trace')
+    trace=trace_source['value']
     trace['dates']=[r for r in trace['dates'] if r['trade_date']!=day]+[dict(trade_date=day,baostock=ref(root,daily_path))]
     trace['dates'].sort(key=lambda r:r['trade_date'])
     atomic_json(root,folder/'04_TDX_BAOSTOCK_GBBQ_LIFECYCLE_AND_DELTA_SOURCE_TRACE.json',trace)
-    mappings={str((root/ACQUISITION).resolve()):str(ap),
-              str((root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json').resolve()):str(pp),
-              str((root/'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json').resolve()):str(folder/'sources/frozen_previous.json'),
-              str((root/BASE/'MEMBER_SNAPSHOT_S.json').resolve()):str(folder/'MEMBER_SNAPSHOT_S.json'),
-              str((root/BASE/'sector_v3/SECTOR_REPLAY.json').resolve()):str(folder/'sector_v3/SECTOR_REPLAY.json')}
-    seed_registry=load(root/'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/SECTOR_REPLAY.json')
+    capture_audit_source=historical_source(root,'capture_audit')
+    mappings={str((root/acquisition_source['record']['source_path']).resolve()):str(ap),
+              str((root/capture_audit_source['record']['source_path']).resolve()):str(pp),
+              str((root/oldcore_source['record']['source_path']).resolve()):str(folder/'sources/frozen_previous.json'),
+              str((root/historical_source(root,'member_snapshot')['record']['source_path']).resolve()):str(folder/'MEMBER_SNAPSHOT_S.json'),
+              str((root/historical_source(root,'sector_replay')['record']['source_path']).resolve()):str(folder/'sector_v3/SECTOR_REPLAY.json')}
+    seed_registry=historical_json(root,'sector_replay')
     if day not in {r['trade_date'] for r in seed_registry['owners']}:
         seed=gzwrite(root,folder/'sources/UNKNOWN_SEED_COMPARATOR.jsonl.gz',[dict(security_id=r['security_id'],base_seed_state='UNKNOWN',
                 contract_id='EXPLICIT_NO_PRIOR_TARGET_SEED_COMPARATOR_V1') for r in observations])
         seed_registry=dict(seed_registry,owners=seed_registry['owners']+[dict(trade_date=day,seed=seed)])
     return dict(folder=folder,dates=dates,compute_dates=compute_dates,increment_plan=increment,mappings=mappings,snapshot=snapshot,seed_registry=seed_registry,
                 lifecycle=ref(root,lifecycle),special_phase=ref(root,specialpath),parent=parent,freeze=freeze_binding,
+                parent_sha256=parent_sha,parent_head_bytes=parent_head['head_bytes'],
                 source_quality=coverage,source_counts=dict(Counter(r['status'] for r in observations)))
 
 
@@ -237,6 +302,7 @@ def build(root,freeze_binding,*,replay_current=False):
 
 def seal(root,context):
     root=Path(root);folder=context['folder'];day=context['dates'][-1];out=folder/'owner_v3'
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
     core_replay=load(out/'CORE_REPLAY.json')
     owner=next(r for r in core_replay['owners'] if r['trade_date']==day)
     profile_replay=load(out/'PROFILE_STRUCTURE_REPLAY.json')
@@ -275,15 +341,15 @@ def seal(root,context):
     # Original earlier periods remain in immutable predecessor publications.
     first_month=min(d for d in sessions if d[:7]==day[:7])
     import gzip
-    with gzip.open(checked(root,owner['history']),'rt',encoding='utf8') as stream:
-        for line in stream:
-            row=json.loads(line);sid=row['security_id'];identity=next(i for i in identities if i['security_id']==sid)
-            start=max(first_month,identity['list_date'])
-            start=next(d for d in sessions if start<=d<=day)
-            window=[b for b in row['bars'] if b['trade_date']>=start]
-            periods=derive_periods(dict(security_id=sid,source_security_key=identity['source_security_key']),window,
-                                   verified.get(sid,{}),sessions,day,sessions[-1],start_session=start)
-            for cap,rows in periods.items():period_rows[cap].extend(rows)
+    history_source=checked(root,owner['history'])
+    for line in gzip.decompress(history_source.read_bytes()).decode('utf8').splitlines():
+        row=json.loads(line);sid=row['security_id'];identity=next(i for i in identities if i['security_id']==sid)
+        start=max(first_month,identity['list_date'])
+        start=next(d for d in sessions if start<=d<=day)
+        window=[b for b in row['bars'] if b['trade_date']>=start]
+        periods=derive_periods(dict(security_id=sid,source_security_key=identity['source_security_key']),window,
+                               verified.get(sid,{}),sessions,day,sessions[-1],start_session=start)
+        for cap,rows in periods.items():period_rows[cap].extend(rows)
     periods={cap:gzwrite(root,out/'owners'/day/(cap+'.jsonl.gz'),rows) for cap,rows in period_rows.items()}
     owners=dict(raw=owner['raw'],adjusted=owner['adjusted'],core=owner['core'],profile=sector['enriched_profiles'],
                 base_profile=profile['owner']['profiles'],sector=sector['native'],relative_sector=sector['relative_sector'],
@@ -303,13 +369,16 @@ def seal(root,context):
         computation_mode=context['increment_plan']['mode'],compute_sessions=context['compute_dates'],
         affected_history='Target-coordinate dependency windows only; published predecessor Owners are immutable' if context['increment_plan']['mode']=='APPEND_DAY' else 'Explicit revision/current replay range; predecessor publications retained',
         rotation_validation='VALIDATION_ONGOING',next_stage='AUTHORIZED_CAS_HTTP_READBACK'))
-    parent=context['parent'];parentpath=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    if load(parentpath)!=parent:raise ValueError('OPERATIONAL_PARENT_MOVED_DURING_BUILD')
-    predecessor=root/'data/v4/predecessors'/(sha256_file(parentpath)+'.json')
-    _atomic_write(predecessor,parentpath.read_bytes(),tdx_root=Path('D:/new_tdx'))
+    parent=context['parent']
+    parent_sha=context['parent_sha256']
+    current_parent=read_current(root)
+    if current_parent['head_sha256']!=parent_sha or current_parent['candidate']!=parent:
+        raise ValueError('OPERATIONAL_PARENT_MOVED_DURING_BUILD')
+    predecessor=dict(path='pg://v4/operational_research_heads/current',
+                     sha256=parent_sha,bytes=context['parent_head_bytes'])
     candidate=dict(parent,contract_id=CONTRACT,authority_mode='USER_AUTHORIZED_READ_ONLY_DAILY_V1',
         accepted_trade_date=day,data_cutoff_date=day,published_sessions=context['dates'],dates=context['dates'],
-        predecessor=ref(root,predecessor),day_receipt=ref(root,receipt),observed_at=datetime.now(timezone.utc).isoformat(),
+        predecessor=predecessor,day_receipt=ref(root,receipt),observed_at=datetime.now(timezone.utc).isoformat(),
         AS_RECORDED=False,PIT_ELIGIBLE=False,historical_PIT_permission=False,
         release_policy=context.get('exact_daily_policy') or ref(root,root/'config/read_only_operational_daily_release_policy_v1_1.json'))
     candidate.update(membership_snapshot=ref(root,folder/'MEMBER_SNAPSHOT_S.json'),

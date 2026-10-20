@@ -19,17 +19,20 @@ VERSION = "FOCUS_PG_SCHEMA_V1"
 
 
 def _dsn() -> str:
-    value = os.environ.get("WORKBENCH_PG_DSN")
+    value = os.environ.get("V4_NATIVE_PG_DSN")
     local = ROOT / "config/.env"
     if not value and local.is_file():
         for line in local.read_text("utf-8").splitlines():
             key, sep, val = line.partition("=")
-            if sep and key.strip() == "WORKBENCH_PG_DSN":
+            if sep and key.strip() == "V4_NATIVE_PG_DSN":
                 value = val.strip().strip('"').strip("'")
                 break
-    if not value:
-        raise RuntimeError("WORKBENCH_PG_DSN_REQUIRED")
-    return value
+    if value:
+        return value
+    import sys
+    sys.path.insert(0, str(ROOT / "src"))
+    from workbench_db.v4_native import configured_dsn
+    return configured_dsn()
 
 
 def install(*, apply: bool) -> dict[str, object]:

@@ -10,4 +10,4 @@ ALTER TABLE v4.stock_prewatch_results DROP CONSTRAINT fk_stock_prewatch_result_c
     DROP COLUMN consumer_contract_id;
 ALTER TABLE v4.stock_prewatch_publications DROP CONSTRAINT uq_stock_prewatch_publication_consumer,
     DROP CONSTRAINT ck_stock_prewatch_consumer_id, DROP COLUMN consumer_contract_id;
-DELETE FROM v4_meta.schema_migrations WHERE version='V4_STAGE_025_V4_09_CONSUMER_IDENTITY_HARDENING';
+DELETE FROM v4.schema_migrations WHERE version='V4_STAGE_025_V4_09_CONSUMER_IDENTITY_HARDENING';

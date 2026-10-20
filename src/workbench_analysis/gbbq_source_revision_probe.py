@@ -54,7 +54,7 @@ def probe_gbbq_source_revision(
     output_snapshot_root: Path,
     observed_at: str,
     official_sessions_after_target: list[str],
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path,
 ) -> dict[str, Any]:
     """Read local TDX GBBQ files without writing there; freeze changed revisions separately."""
     try:

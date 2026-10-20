@@ -1,8 +1,10 @@
 """Real PG storage invariants; legacy bytes remain read-only evidence."""
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 import hashlib
 import json
 import pytest
+import workbench_db.v4_forward_pg_r1 as forward_pg
 from workbench_db.v4_forward_pg_r1 import ForwardFactStore
 from workbench_db.v4_native import connection
 
@@ -49,3 +51,68 @@ def test_descriptor_identity_rejects_wrong_database(tmp_path):
     raw=json.dumps(document).encode();path.write_bytes(raw)
     forged=dict(ref,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
     with pytest.raises(ValueError,match='IDENTITY_MISMATCH'):store.read(forged)
+
+
+def test_forward_pg_owner_read_uses_reader_dsn(monkeypatch, tmp_path):
+    identity = dict(database='market_research', database_oid=16384, host='127.0.0.1', port=5432)
+    payload = {'value': 1}
+    payload_raw = forward_pg.canonical(payload)
+    payload_sha = hashlib.sha256(payload_raw).hexdigest()
+    fact_key = 'owner-1'
+    namespace = ForwardFactStore.namespace_for(tmp_path/'forward')
+    descriptor = dict(contract_id=forward_pg.CONTRACT, engine='postgresql', database_identity=identity,
+                      schema='v4', workspace_namespace=namespace,
+                      kind='outcomes', fact_key=fact_key, payload_sha256=payload_sha)
+    descriptor_raw = forward_pg.canonical(descriptor)
+    descriptor_path = tmp_path/'forward/outcomes'/(hashlib.sha256(fact_key.encode()).hexdigest()+'.pg.json')
+    descriptor_path.parent.mkdir(parents=True)
+    descriptor_path.write_bytes(descriptor_raw)
+    binding = dict(path=descriptor_path.relative_to(tmp_path).as_posix(),
+                   sha256=hashlib.sha256(descriptor_raw).hexdigest(), bytes=len(descriptor_raw))
+
+    class FakePg:
+        def execute(self, query, params=()):
+            if 'SELECT current_database()' in query:
+                return Result((identity['database'], identity['database_oid'], identity['host'], identity['port']))
+            if 'SELECT payload,payload_sha256 FROM forward_facts' in query:
+                return Result((payload_raw.decode(), payload_sha))
+            raise AssertionError('unexpected SQL')
+
+    class Result:
+        def __init__(self, row): self.row = row
+        def fetchone(self): return self.row
+
+    @contextmanager
+    def reader_connection(schema, *, dsn, read_only):
+        assert schema == 'v4'
+        assert dsn == 'configured-reader'
+        assert read_only is True
+        yield FakePg()
+
+    monkeypatch.setattr(forward_pg, 'connection', reader_connection)
+    monkeypatch.setattr(forward_pg, 'configured_reader_dsn', lambda: 'configured-reader')
+    store = object.__new__(ForwardFactStore)
+    store.root = tmp_path.resolve()
+    store.folder = (tmp_path/'forward').resolve()
+    store.schema = 'v4'
+    store.workspace_namespace = namespace
+    store.database_identity = identity
+    store.dsn = 'writer-must-not-be-used-for-read'
+
+    assert store.read(binding) == payload
+
+
+def test_forward_pg_owner_read_has_no_writer_dsn_fallback(monkeypatch, tmp_path):
+    store = object.__new__(ForwardFactStore)
+    store.root = tmp_path.resolve()
+    store.folder = (tmp_path/'forward').resolve()
+    store.schema = 'v4'
+    store.workspace_namespace = ForwardFactStore.namespace_for(store.folder)
+    store.database_identity = {}
+    store.dsn = 'writer-only'
+    monkeypatch.setattr(forward_pg, 'configured_reader_dsn',
+                        lambda: (_ for _ in ()).throw(RuntimeError('V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK')))
+    monkeypatch.setattr(forward_pg, 'connection', lambda *a, **k: pytest.fail('connection must not open'))
+
+    with pytest.raises(RuntimeError, match='V4_NATIVE_PG_READER_DSN_REQUIRED_NO_WRITER_FALLBACK'):
+        store.refs('outcomes')

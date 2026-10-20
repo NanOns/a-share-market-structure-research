@@ -4,74 +4,110 @@ from pathlib import Path
 import pytest
 
 from workbench_db.forward_r7_store import ForwardR7Store
-from workbench_db.v4_native import workspace_schema
-from workbench_analysis.r43_owner_replay import ref
 
 
-def candidate(tmp_path,monkeypatch,present=True):
-    namespace=workspace_schema(tmp_path,'r8_forward')
-    snapshot=dict(count=217,sha256='baseline')
-    receipt=tmp_path/'baseline.json'
-    receipt.write_text(json.dumps(dict(contract_id='R8_FORWARD_ISOLATED_BASELINE_COPY_R1',
-        candidate_schema=namespace,candidate_root=str(tmp_path),source_unchanged=True,
-        source_before=snapshot,source_after=snapshot,candidate_baseline=snapshot)))
-    binding=dict(contract_id='R8_ISOLATED_FORWARD_NAMESPACE_R1',scope='CANDIDATE_ONLY',
-        candidate_root=str(tmp_path),schema=namespace,baseline_receipt=ref(tmp_path,receipt))
-    path=tmp_path/'config/r8_forward_candidate_namespace_r1.json'
-    path.parent.mkdir();path.write_text(json.dumps(binding))
-    class Connection:
-        def __enter__(self):return self
-        def __exit__(self,*args):pass
-        def execute(self,query,params):
-            assert params==(namespace,'forward_facts')
-            return self
-        def fetchone(self):return (1,) if present else None
-    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect',lambda *a,**kw:Connection())
-    store=ForwardR7Store.__new__(ForwardR7Store);store.root=tmp_path.resolve();store.dsn='unused'
-    return store,path,binding,receipt
+def candidate(root: Path, schema: str = 'v4'):
+    binding = dict(
+        contract_id='R8_ISOLATED_FORWARD_NAMESPACE_R1',
+        scope='CANDIDATE_ONLY',
+        candidate_root=str(root.resolve()),
+        schema=schema,
+        origin_namespace='R8_TEST_CANDIDATE',
+    )
+    path = root / 'config/r8_forward_candidate_namespace_r1.json'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(binding), encoding='utf-8')
+    return path, binding
 
 
-def test_candidate_uses_verified_non_discoverable_namespace(tmp_path,monkeypatch):
-    store,path,binding,receipt=candidate(tmp_path,monkeypatch)
-    result=store._resolve_existing_schema()
-    assert result==workspace_schema(tmp_path,'r8_forward')
-    assert not result.startswith('v4_forward_')
+class ExistingV4FactsTable:
+    def __init__(self, *, present=True):
+        self.present = present
+        self.query = None
+        self.params = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+    def execute(self, query, params=()):
+        self.query = str(query)
+        self.params = params
+        return self
+
+    def fetchone(self):
+        return (1,) if self.present else None
 
 
-@pytest.mark.parametrize('field,value',[
-    ('schema','v4_forward_production'),('candidate_root','G:/codex_tmp/another-root'),('scope','PRODUCTION'),
-])
-def test_bad_candidate_pointer_never_falls_back_to_production(tmp_path,monkeypatch,field,value):
-    store,path,binding,receipt=candidate(tmp_path,monkeypatch)
-    binding[field]=value;path.write_text(json.dumps(binding))
-    with pytest.raises(RuntimeError,match='NAMESPACE_BINDING_INVALID'):store._resolve_existing_schema()
+def store(root: Path):
+    instance = ForwardR7Store.__new__(ForwardR7Store)
+    instance.root = root.resolve()
+    instance.dsn = 'injected-test-connection'
+    return instance
 
 
-def test_missing_candidate_table_never_falls_back(tmp_path,monkeypatch):
-    store,*_=candidate(tmp_path,monkeypatch,present=False)
-    with pytest.raises(RuntimeError,match='FACTS_TABLE_MISSING'):store._resolve_existing_schema()
+def test_candidate_uses_fixed_v4_forward_r7_relation(tmp_path, monkeypatch):
+    project_root = tmp_path / 'candidate'
+    project_root.mkdir()
+    candidate(project_root)
+    monkeypatch.setattr('common.paths.resolve_ingest_temp_root', lambda _root: tmp_path.resolve())
+    pg = ExistingV4FactsTable()
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect', lambda *_a, **_k: pg)
+
+    assert store(project_root)._resolve_existing_schema() == 'v4'
+    assert "table_schema='v4'" in pg.query
+    assert "table_name='forward_r7_facts_r1'" in pg.query
+    assert pg.params == ()
 
 
-def test_changed_baseline_receipt_fails_hash_check(tmp_path,monkeypatch):
-    store,path,binding,receipt=candidate(tmp_path,monkeypatch)
-    receipt.write_text('{}')
-    with pytest.raises(ValueError,match='DIGEST_MISMATCH'):store._resolve_existing_schema()
+def test_non_v4_candidate_locator_fails_before_connect(tmp_path, monkeypatch):
+    project_root = tmp_path / 'candidate'
+    project_root.mkdir()
+    candidate(project_root, schema='v4_forward_0123456789abcdef')
+    monkeypatch.setattr('common.paths.resolve_ingest_temp_root', lambda _root: tmp_path.resolve())
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError('invalid legacy locator must fail before PostgreSQL access')
+
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect', forbidden)
+    with pytest.raises(RuntimeError, match='ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID'):
+        store(project_root)._resolve_existing_schema()
 
 
-@pytest.mark.parametrize('owned_present',[True,False])
-def test_head_bound_workspace_never_selects_a_foreign_matching_date(tmp_path,monkeypatch,owned_present):
-    head=tmp_path/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head.parent.mkdir(parents=True)
-    head.write_text(json.dumps(dict(accepted_trade_date='2026-10-13',native_pg_owner_authority={'path':'bound-authority.json'})))
-    owned=workspace_schema(tmp_path/'data/v4/operational_owner_pg_closeout_r1','forward')
-    candidates=[('v4_forward_foreign_matching_date',)]+([(owned,)] if owned_present else [])
-    class Connection:
-        def __enter__(self):return self
-        def __exit__(self,*args):pass
-        def execute(self,*args):return self
-        def fetchall(self):return candidates
-        def fetchone(self):return (1,)
-    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect',lambda *a,**kw:Connection())
-    store=ForwardR7Store.__new__(ForwardR7Store);store.root=tmp_path.resolve();store.dsn='unused'
-    if owned_present:assert store._resolve_existing_schema()==owned
-    else:
-        with pytest.raises(RuntimeError,match='ACCEPTED_WORKSPACE_NAMESPACE_REQUIRED'):store._resolve_existing_schema()
+def test_candidate_binding_must_match_its_root(tmp_path, monkeypatch):
+    project_root = tmp_path / 'candidate'
+    project_root.mkdir()
+    path, binding = candidate(project_root)
+    binding['candidate_root'] = str(tmp_path / 'other-root')
+    path.write_text(json.dumps(binding), encoding='utf-8')
+    monkeypatch.setattr('common.paths.resolve_ingest_temp_root', lambda _root: tmp_path.resolve())
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError('mismatched candidate root must fail before PostgreSQL access')
+
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect', forbidden)
+    with pytest.raises(RuntimeError, match='ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID'):
+        store(project_root)._resolve_existing_schema()
+
+
+def test_missing_fixed_v4_relation_fails_closed(tmp_path, monkeypatch):
+    project_root = tmp_path / 'candidate'
+    project_root.mkdir()
+    candidate(project_root)
+    monkeypatch.setattr('common.paths.resolve_ingest_temp_root', lambda _root: tmp_path.resolve())
+    pg = ExistingV4FactsTable(present=False)
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect', lambda *_a, **_k: pg)
+
+    with pytest.raises(RuntimeError, match='V4_FORWARD_R7_SINGLE_SCHEMA_MIGRATION_REQUIRED'):
+        store(project_root)._resolve_existing_schema()
+
+
+def test_unbound_workspace_uses_only_the_preprovisioned_v4_relation(tmp_path, monkeypatch):
+    pg = ExistingV4FactsTable()
+    monkeypatch.setattr('workbench_db.forward_r7_store.psycopg.connect', lambda *_a, **_k: pg)
+
+    assert store(tmp_path)._resolve_existing_schema() == 'v4'
+    assert "table_schema='v4'" in pg.query
+    assert "table_name='forward_r7_facts_r1'" in pg.query

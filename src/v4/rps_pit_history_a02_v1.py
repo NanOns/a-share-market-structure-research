@@ -19,8 +19,8 @@ def binding(root, path):
     return dict(path=path.relative_to(root).as_posix(), sha256=sha256(payload).hexdigest(), bytes=len(payload))
 
 def read_bound(root, ref):
-    path = (root / ref['path']).resolve()
-    if not path.is_relative_to(root.resolve()): raise ValueError('RPS_BINDING_ESCAPE')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    path = bound_bytes(root, ref)
     data = path.read_bytes()
     if sha256(data).hexdigest() != ref['sha256'] or len(data) != ref.get('bytes', ref.get('byte_count',len(data))):
         raise ValueError('RPS_BINDING_MISMATCH')

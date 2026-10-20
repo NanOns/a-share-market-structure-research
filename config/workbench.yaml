@@ -1,3 +1,6 @@
+# 遗留工作台连接配置，保留原程序字段及工作台 Schema 语义。
+# 此处 workbench 不是 V4 业务 Schema；现役 V4 仅使用 v4。
+# 本次不执行数据库迁移，不修改运行连接，不在文件中保存凭据。
 workbench:
   config_version: "workbench-config-v1.0"
   database:

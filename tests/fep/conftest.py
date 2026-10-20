@@ -16,19 +16,7 @@ T = datetime(2030, 1, 1, tzinfo=timezone.utc)
 
 @pytest.fixture
 def pg():
-    dsn = os.environ.get('FEP_E1_TEST_DSN')
-    if not dsn:
-        pytest.skip('FEP_E1_TEST_DSN required for real isolated PostgreSQL')
-    p = psycopg.connect(dsn)
-    name = p.execute('select current_database()').fetchone()[0]
-    if name not in ('fep_e1_fresh', 'fep_e1_upgrade'):
-        p.close()
-        raise ValueError('FEP_ISOLATED_TEST_DATABASE_REQUIRED')
-    try:
-        yield p
-    finally:
-        p.rollback()
-        p.close()
+    pytest.skip('FEP standalone PostgreSQL fixtures disabled by single-database policy')
 
 
 def contract(p, name, body=None):

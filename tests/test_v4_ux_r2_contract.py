@@ -265,7 +265,8 @@ class UXR2RouteContractTests(unittest.TestCase):
         digest_b = 'b' * 64
         schema_a = schema_for_revision(root, digest_a)
         schema_b = schema_for_revision(root, digest_b)
-        self.assertNotEqual(schema_a, schema_b)
+        self.assertEqual(schema_a, 'v4')
+        self.assertEqual(schema_b, 'v4')
         self.assertTrue(schema_binding_matches(root, {
             'schema': schema_a, 'digest': digest_a,
         }))

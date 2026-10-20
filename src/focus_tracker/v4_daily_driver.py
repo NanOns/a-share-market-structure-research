@@ -6,17 +6,23 @@ import uuid
 from pathlib import Path
 
 from workbench_service.current_v4_context import SourceInvalid,canonical,digest
-from workbench_service.production_v4 import reference
 from workbench_service.v4_daily_refresh import atomic_bytes
 from .v4_journal import append
 from .v4_path_adapter import checked,CONTRACT as PATH_CONTRACT
 
 CONTRACT='R2_V4_CONTINUOUS_FOCUS_DAILY_V1'
 
+def reference(root,path):
+    root=Path(root).resolve();path=Path(path).resolve();path.relative_to(root)
+    raw=path.read_bytes()
+    return dict(path=path.relative_to(root).as_posix(),sha256=digest(raw),bytes=len(raw))
+
 
 def path_inputs(root,manifest):
     root=Path(root).resolve()
-    market=json.loads(checked(root,manifest['sources']['market_operational']).read_bytes())
+    from workbench_analysis.market_source_acquisition import load_bytes_binding_pg
+    market=json.loads(load_bytes_binding_pg(root,manifest['sources']['market_operational'],
+        source_origin='V4_FORWARD_MARKET_AUTHORITY'))
     sources=market['sources']
     inputs=dict(series=manifest['sources']['stock_series'],calendar=sources['calendar'],
                 gbbq=sources['gbbq'],classification=sources['adjustment_classification'],
@@ -27,19 +33,24 @@ def path_inputs(root,manifest):
         target=root/'data/v4/r2_focus_journal/implementations'/digest(raw)/path.name
         if target.exists() and target.read_bytes()!=raw:raise SourceInvalid('DAILY_IMMUTABLE_KERNEL_CONFLICT')
         if not target.exists():atomic_bytes(target,raw)
-        inputs['implementation'][name]=reference(root,target)
+        binding=reference(root,target)
+        load_bytes_binding_pg(root,binding,source_origin='V4_FORWARD_IMPLEMENTATION')
+        inputs['implementation'][name]=binding
+    required=[inputs['series'],inputs['calendar'],inputs['gbbq'],inputs['classification'],*inputs['status'].values()]
+    for binding in required:load_bytes_binding_pg(root,binding,source_origin='V4_FORWARD_PRICE_INPUT')
     return inputs
 
 
 def advance(root,manifest,*,previous_journal=None,previous_publication=None,expected_head=None,
-            work_root='G:/codex_tmp/r4_continuous_focus',fail_after_append=False):
+            work_root=None,fail_after_append=False):
     """Stage a closed immutable journal; production is changed only by joint CAS.
 
     Every old observation reads its frozen owner binding. New price/market
     artifacts may advance, but algorithm changes require a new namespace.
     """
-    root=Path(root).resolve();work_root=Path(work_root).resolve()
-    if not work_root.is_relative_to(Path('G:/codex_tmp').resolve()):raise SourceInvalid('DAILY_TEMP_REQUIRES_G_CODEX_TMP')
+    root=Path(root).resolve();temp_root=Path(root.anchor)/'codex_tmp'
+    work_root=(temp_root/'r4_continuous_focus') if work_root is None else Path(work_root).resolve()
+    if not work_root.is_relative_to(temp_root):raise SourceInvalid('DAILY_TEMP_REQUIRES_G_CODEX_TMP')
     day=manifest['context']['accepted_trade_date'];states=manifest['sources']['states']
     inputs=path_inputs(root,manifest)
     if previous_journal:

@@ -10,9 +10,10 @@ MARKER = '.disposable-runtime.json'
 def protected_roots():
     import re
     # This project file has one explicitly quoted TDX root. Unsupported shapes fail closed.
-    text = (REPOSITORY / 'config/paths.yaml').read_text(encoding='utf8')
-    configured = re.findall(r'^  root: ("[^"\n]+")\s*$', text, re.MULTILINE)
-    if len(configured) != 1 or not text.startswith('tdx:'):
+    # paths.yaml is UTF-8 with BOM; strip it before validating the top-level key.
+    text = (REPOSITORY / 'config/paths.yaml').read_text(encoding='utf-8-sig')
+    configured = re.findall(r'^  (?:root|source_root): ("[^"\n]+")\s*$', text, re.MULTILINE)
+    if len(configured) != 1 or not re.search(r'^tdx:\s*$', text, re.MULTILINE):
         raise ValueError('CONFIGURED_TDX_ROOT_UNREADABLE')
     roots = [REPOSITORY, Path('D:/new_tdx'), Path(json.loads(configured[0]))]
     for name in ('dm01_go_forward_runtime_contract_r4.json', 'dm01_go_forward_runtime_contract_r4r1.json'):

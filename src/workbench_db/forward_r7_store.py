@@ -4,7 +4,6 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 import hashlib
 import json
-import os
 from pathlib import Path
 import statistics
 
@@ -14,7 +13,7 @@ from psycopg.types.json import Jsonb
 
 from workbench_analysis.forward_r7 import (canonical_bytes, legacy_observation_id,
     make_observation_id, sha256, compute_nominal_settlement)
-from .v4_native import workspace_schema
+from .v4_native import connection
 
 
 SETTLEMENT_STATUS_STATES = (
@@ -40,95 +39,54 @@ def summarize_settlement_schedule(trade_date, lane, horizon, scheduled):
 
 
 def _configured_forward_dsn(root: Path):
-    """Use the project's existing PostgreSQL setting without duplicating it."""
-    for key in ("V4_NATIVE_PG_DSN", "WORKBENCH_PG_DSN"):
-        if os.environ.get(key):
-            return os.environ[key]
-    project_root = Path(__file__).resolve().parents[2]
-    for env_path in (root / "config/.env", project_root / "config/.env"):
-        if not env_path.is_file():
-            continue
-        for raw in env_path.read_text(encoding="utf-8-sig").splitlines():
-            key, sep, value = raw.partition("=")
-            if sep and key.strip() in ("V4_NATIVE_PG_DSN", "WORKBENCH_PG_DSN"):
-                value = value.strip().strip('"').strip("'")
-                if value:
-                    return value
-    raise RuntimeError("EXISTING_WORKBENCH_POSTGRES_DSN_REQUIRED")
+    """Use the repository's configured shared PostgreSQL connection."""
+    from .v4_native import configured_dsn
+    return configured_dsn()
 
 
 class ForwardR7Store:
     contract_id = "V4_FORWARD_PG_READ_WRITE_R7_R1"
+    candidate_source_audit_contract_id = "V4_FORWARD_CANDIDATE_SOURCE_AUDIT_READ_R1"
 
     def __init__(self, root: str | Path, *, dsn: str | None = None):
         self.root = Path(root).resolve()
         self.dsn = dsn or _configured_forward_dsn(self.root)
+        self.origin_namespace = self._resolve_origin_namespace()
         self.schema = self._resolve_existing_schema()
         self._generic_facts = True
 
-    def _resolve_existing_schema(self):
-        """Bind to the existing Forward facts namespace for this accepted Head.
-
-        R7 deliberately reuses the current ``forward_facts`` table. It must not
-        create a schema or infer an empty target when the expected namespace is
-        absent. The accepted core fact date uniquely binds the live workspace.
-        """
+    def _resolve_origin_namespace(self):
         candidate_binding=self.root/'config/r8_forward_candidate_namespace_r1.json'
         if candidate_binding.is_file():
             binding=json.loads(candidate_binding.read_bytes())
-            expected=workspace_schema(self.root,'r8_forward')
-            if (not self.root.is_relative_to(Path('G:/codex_tmp').resolve())
+            namespace=binding.get('origin_namespace')
+            if (binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
+                    or binding.get('scope')!='CANDIDATE_ONLY'
+                    or not isinstance(namespace,str)
+                    or not namespace.startswith('R8_')
+                    or not namespace.isascii()
+                    or not all(c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in namespace)):
+                raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
+            return namespace
+        return 'R7_ACTIVE'
+
+    def _resolve_existing_schema(self):
+        """Use the fixed R7 relation in v4; legacy schemas are migration sources only."""
+        candidate_binding=self.root/'config/r8_forward_candidate_namespace_r1.json'
+        if candidate_binding.is_file():
+            binding=json.loads(candidate_binding.read_bytes())
+            from common.paths import resolve_ingest_temp_root
+            if (not self.root.is_relative_to(resolve_ingest_temp_root(Path(__file__).resolve().parents[2]))
                     or binding.get('contract_id')!='R8_ISOLATED_FORWARD_NAMESPACE_R1'
                     or binding.get('scope')!='CANDIDATE_ONLY'
                     or Path(binding.get('candidate_root','')).resolve()!=self.root
-                    or binding.get('schema')!=expected):
+                    or binding.get('schema')!='v4'):
                 raise RuntimeError('ISOLATED_FORWARD_NAMESPACE_BINDING_INVALID')
-            from workbench_analysis.r43_owner_replay import checked
-            receipt=json.loads(checked(self.root,binding['baseline_receipt']).read_bytes())
-            if (receipt.get('contract_id')!='R8_FORWARD_ISOLATED_BASELINE_COPY_R1'
-                    or receipt.get('candidate_schema')!=expected or receipt.get('source_unchanged') is not True
-                    or Path(receipt.get('candidate_root','')).resolve()!=self.root
-                    or receipt.get('source_after')!=receipt.get('source_before')
-                    or receipt.get('candidate_baseline')!=receipt.get('source_before')):
-                raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_INVALID')
-            with psycopg.connect(self.dsn,connect_timeout=5) as pg:
-                present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
-            if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
-            return expected
-        target_date = None;head_document={}
-        head_path = self.root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
-        if head_path.is_file():
-            try:
-                head_document=json.loads(head_path.read_bytes())
-                target_date = head_document.get("accepted_trade_date")
-            except (OSError, ValueError, TypeError):
-                target_date = None
-        with psycopg.connect(self.dsn, connect_timeout=5) as pg:
-            candidates = pg.execute("""SELECT s.schema_name
-                FROM information_schema.schemata s
-                JOIN information_schema.tables t ON t.table_schema=s.schema_name
-                WHERE s.schema_name LIKE 'v4_forward_%' AND t.table_name='forward_facts'
-                ORDER BY s.schema_name""").fetchall()
-            matches = []
-            for (schema,) in candidates:
-                if target_date:
-                    exists = pg.execute(sql.SQL("""SELECT 1 FROM {}.forward_facts
-                        WHERE kind='core' AND fact_key LIKE %s LIMIT 1""").format(
-                            sql.Identifier(schema)), (f"%_{target_date}_core",)).fetchone()
-                    if exists:
-                        matches.append(schema)
-            if head_document.get('native_pg_owner_authority'):
-                owned=workspace_schema(self.root/'data/v4/operational_owner_pg_closeout_r1','forward')
-                if owned in matches:return owned
-                raise RuntimeError('FORWARD_ACCEPTED_WORKSPACE_NAMESPACE_REQUIRED')
-            if len(matches) == 1:
-                return matches[0]
-            expected = workspace_schema(self.root, "forward")
-            if any(row[0] == expected for row in candidates):
-                return expected
-            if not target_date and len(candidates) == 1:
-                return candidates[0][0]
-        raise RuntimeError("EXISTING_FORWARD_FACTS_NAMESPACE_NOT_UNIQUELY_BOUND")
+        with connection("v4",dsn=self.dsn,read_only=True) as pg:
+            present=pg.execute("SELECT 1 FROM information_schema.tables WHERE table_schema='v4' AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'").fetchone()
+        if not present:
+            raise RuntimeError('V4_FORWARD_R7_SINGLE_SCHEMA_MIGRATION_REQUIRED')
+        return 'v4'
 
     def _connect(self):
         return psycopg.connect(self.dsn, connect_timeout=5)
@@ -157,28 +115,34 @@ class ForwardR7Store:
 
 
     def verify_existing_storage(self):
-        with self._connect() as pg:
+        with connection("v4",dsn=self.dsn,read_only=True) as pg:
             present = pg.execute("""SELECT 1 FROM information_schema.tables
-                WHERE table_schema=%s AND table_name='forward_facts' AND table_type='BASE TABLE'""",
+                WHERE table_schema=%s AND table_name='forward_r7_facts_r1' AND table_type='BASE TABLE'""",
                 (self.schema,)).fetchone()
             if not present:
                 raise RuntimeError("EXISTING_FORWARD_FACTS_TABLE_REQUIRED_NO_MIGRATION")
-        return dict(status="REUSED_EXISTING_PG_FACTS", schema=self.schema, table="forward_facts")
+        return dict(status="REUSED_EXISTING_PG_FACTS", schema=self.schema, table="forward_r7_facts_r1")
 
     def _append_fact(self, pg, kind: str, fact_key: str, payload: dict,
                      source_sha256: str | None = None):
         """Append one immutable R7 fact using the existing table's contract."""
         raw = canonical_bytes(payload).decode("utf-8")
         digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+        owner_id=payload.get('owner_id')
+        run_id=payload.get('run_id') or payload.get('source_run_id')
+        t0=payload.get('trade_date') or payload.get('T0')
+        if isinstance(t0,str):
+            try:t0=date.fromisoformat(t0) if len(t0)==10 else None
+            except ValueError:t0=None
         pg.execute("SELECT pg_advisory_xact_lock(hashtext(%s))",
-                   ("v4-forward-facts:" + self.schema,))
-        pg.execute(sql.SQL("""INSERT INTO {}.forward_facts
-            (kind,fact_key,payload,payload_sha256,source_sha256)
-            VALUES (%s,%s,%s,%s,%s) ON CONFLICT(kind,fact_key) DO NOTHING""").format(
-                sql.Identifier(self.schema)), (kind, fact_key, raw, digest, source_sha256))
-        saved = pg.execute(sql.SQL("""SELECT payload_sha256 FROM {}.forward_facts
-            WHERE kind=%s AND fact_key=%s""").format(sql.Identifier(self.schema)),
-            (kind, fact_key)).fetchone()
+                   ("v4-forward-r7-facts:" + self.origin_namespace,))
+        pg.execute(sql.SQL("""INSERT INTO {}.forward_r7_facts_r1
+            (origin_namespace,owner_id,run_id,t0,kind,fact_key,payload,payload_sha256,source_sha256)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(origin_namespace,kind,fact_key) DO NOTHING""").format(
+                sql.Identifier(self.schema)), (self.origin_namespace,owner_id,run_id,t0,kind,fact_key,raw,digest,source_sha256))
+        saved = pg.execute(sql.SQL("""SELECT payload_sha256 FROM {}.forward_r7_facts_r1
+            WHERE origin_namespace=%s AND kind=%s AND fact_key=%s""").format(sql.Identifier(self.schema)),
+            (self.origin_namespace,kind, fact_key)).fetchone()
         if not saved or saved[0].strip() != digest:
             raise ValueError("FORWARD_R7_IMMUTABLE_FACT_CONFLICT")
         return digest
@@ -186,8 +150,8 @@ class ForwardR7Store:
     def _read_facts(self, kind: str):
         with self._connect() as pg:
             pg.execute("SET TRANSACTION READ ONLY")
-            rows = pg.execute(sql.SQL("""SELECT fact_key,payload FROM {}.forward_facts
-                WHERE kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (kind,)).fetchall()
+            rows = pg.execute(sql.SQL("""SELECT fact_key,payload FROM {}.forward_r7_facts_r1
+                WHERE origin_namespace=%s AND kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (self.origin_namespace,kind)).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
 
     def _read_day_facts(self, kind: str, trade_date: str, lane: str | None = None):
@@ -208,9 +172,9 @@ class ForwardR7Store:
                     clause, params = prefix_clause(f"v2:{trade_date}:")
                     clauses = ["fact_key=%s", clause]
                     params = [trade_date, *params]
-                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND ({}) ORDER BY ordinal").format(
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_r7_facts_r1 WHERE origin_namespace=%s AND kind=%s AND ({}) ORDER BY ordinal").format(
                     sql.Identifier(self.schema), sql.SQL(" OR ").join(sql.SQL(x) for x in clauses))
-                rows = pg.execute(query, [kind, *params]).fetchall()
+                rows = pg.execute(query, [self.origin_namespace, kind, *params]).fetchall()
             else:
                 clause, prefix_params = prefix_clause(f"v2:{trade_date}:{lane}:" if lane else f"v2:{trade_date}:")
                 legacy_clause, legacy_params = prefix_clause(f"{trade_date}:")
@@ -220,9 +184,9 @@ class ForwardR7Store:
                 if lane:
                     clauses.append("(payload::jsonb->>'lane'=%s OR (payload::jsonb->>'identity_contract' IS NULL AND %s='RETROSPECTIVE_RESEARCH'))")
                     params.extend([lane, lane])
-                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_facts WHERE kind=%s AND {} ORDER BY ordinal").format(
+                query = sql.SQL("SELECT fact_key,payload FROM {}.forward_r7_facts_r1 WHERE origin_namespace=%s AND kind=%s AND {} ORDER BY ordinal").format(
                     sql.Identifier(self.schema), sql.SQL(" AND ").join(sql.SQL(x) for x in clauses))
-                rows = pg.execute(query, [kind, *params]).fetchall()
+                rows = pg.execute(query, [self.origin_namespace, kind, *params]).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
 
     def _daily_facts(self, trade_date: str | None = None, lane: str | None = None):
@@ -455,9 +419,11 @@ class ForwardR7Store:
         own = pg is None
         conn = pg or self._connect()
         try:
-            rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_facts
-                WHERE kind='r7_publish_index' ORDER BY ordinal DESC""").format(
-                    sql.Identifier(self.schema))).fetchall()
+            if own:
+                conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+            rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_r7_facts_r1
+                WHERE origin_namespace=%s AND kind='r7_publish_index' ORDER BY ordinal DESC""").format(
+                    sql.Identifier(self.schema)), (self.origin_namespace,)).fetchall()
             decoded = [json.loads(payload) for (payload,) in rows]
             for value in decoded:
                 value_lane = value.get("lane") or "RETROSPECTIVE_RESEARCH"
@@ -575,6 +541,150 @@ class ForwardR7Store:
         return dict(status="READY" if dates else "EMPTY_VALID",
             items=[dict(trade_date=day, groups=sorted(by_date[day].values(), key=lambda x:x["rule_id"])) for day in page],
             total=len(dates), limit=limit, offset=offset, has_next=offset + len(page) < len(dates))
+
+    @classmethod
+    def read_candidate_source_audit(cls, root: str | Path, *, trade_date: str,
+                                    limit: int = 100, offset: int = 0):
+        """Read one R7 audit only when a unique, published PG fact matches a candidate T0.
+
+        A research candidate has no operational Head by design, so this path does not
+        call ``read_current`` or bind a production namespace. It uses the candidate's
+        validated date as a narrow selector and returns independently published,
+        retrospective R7 evidence with its complete PG fact-chain digests.
+        """
+        if not 1 <= limit <= 200 or not 0 <= offset <= 1_000_000:
+            raise ValueError("INVALID_QUERY_BOUND")
+        try:
+            day = date.fromisoformat(trade_date).isoformat()
+        except (TypeError, ValueError) as exc:
+            raise ValueError("INVALID_CANDIDATE_TRADE_DATE") from exc
+        if day != trade_date:
+            raise ValueError("INVALID_CANDIDATE_TRADE_DATE")
+
+        def incomplete(reason):
+            return dict(contract_id=cls.candidate_source_audit_contract_id,
+                contract_version='1.0.0',status='SOURCE_INCOMPLETE',items=[],total=0,
+                limit=limit,offset=offset,has_next=False,reason=reason,
+                binding='CANDIDATE_TRADE_DATE_ONLY',evidence_class='RETROSPECTIVE_RESEARCH')
+
+        def decode_fact(row, *, expected_source_sha=None):
+            fact_key, raw_payload, stored_sha, source_sha = row
+            raw = raw_payload.encode("utf-8") if isinstance(raw_payload, str) else bytes(raw_payload)
+            actual_sha = hashlib.sha256(raw).hexdigest()
+            if actual_sha != stored_sha.strip():
+                raise ValueError("FORWARD_R7_FACT_DIGEST_MISMATCH")
+            if expected_source_sha is not None and source_sha != expected_source_sha:
+                raise ValueError("FORWARD_R7_FACT_SOURCE_DIGEST_MISMATCH")
+            value = json.loads(raw)
+            if not isinstance(value, dict):
+                raise ValueError("FORWARD_R7_FACT_PAYLOAD_INVALID")
+            return fact_key, value, actual_sha, source_sha
+
+        with psycopg.connect(_configured_forward_dsn(Path(root)), connect_timeout=5) as pg:
+            pg.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+            pg.execute("SET LOCAL statement_timeout='10s'")
+            schemas = ['v4']
+            eligible = []
+            invalid_matching_records = 0
+            for schema in schemas:
+                query = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
+                    FROM {}.forward_r7_facts_r1 WHERE origin_namespace='R7_ACTIVE' AND kind='r7_publish_index'
+                      AND payload::jsonb->>'trade_date'=%s
+                      AND payload::jsonb->>'index_name'='daily_universe'
+                    ORDER BY (payload::jsonb->>'generation')::bigint DESC""").format(sql.Identifier(schema))
+                index_rows = pg.execute(query, (day,)).fetchall()
+                if not index_rows:
+                    continue
+                try:
+                    decoded_indexes = [decode_fact(row) for row in index_rows]
+                    highest_generation = max(int(item[1].get('generation', 0)) for item in decoded_indexes)
+                    latest = [item for item in decoded_indexes if int(item[1].get('generation', 0)) == highest_generation]
+                    if len(latest) != 1:
+                        raise ValueError("FORWARD_R7_PUBLISH_INDEX_GENERATION_AMBIGUOUS")
+                    index_key, index, index_fact_sha, index_source_sha = latest[0]
+                    expected_payload_sha = index.get('payload_sha256')
+                    run_id = index.get('source_run_id')
+                    index_contract=index.get('identity_contract') or 'V4_FORWARD_PUBLISH_INDEX_R1_LEGACY'
+                    index_lane=index.get('lane') or 'RETROSPECTIVE_RESEARCH'
+                    if (index.get('trade_date') != day or not expected_payload_sha
+                            or index_lane!='RETROSPECTIVE_RESEARCH'
+                            or index.get('index_name')!='daily_universe'
+                            or index_contract not in ('V4_FORWARD_PUBLISH_INDEX_R2','V4_FORWARD_PUBLISH_INDEX_R1_LEGACY')
+                            or not run_id or int(index.get('generation', 0)) < 1):
+                        raise ValueError("FORWARD_R7_PUBLISH_INDEX_INVALID")
+
+                    def facts(kind, where_sql, params):
+                        statement = sql.SQL("""SELECT fact_key,payload,payload_sha256,source_sha256
+                            FROM {}.forward_r7_facts_r1 WHERE origin_namespace='R7_ACTIVE' AND kind=%s AND """ + where_sql).format(sql.Identifier(schema))
+                        return [decode_fact(row) for row in pg.execute(statement, (kind, *params)).fetchall()]
+
+                    daily = facts('r7_daily_universe', "payload::jsonb->>'trade_date'=%s AND payload::jsonb->>'lane'='RETROSPECTIVE_RESEARCH' AND payload::jsonb->>'stable_sha256'=%s", (day, expected_payload_sha))
+                    aggregates = facts('r7_aggregate_stats', "payload::jsonb->>'trade_date'=%s AND payload::jsonb->>'lane'='RETROSPECTIVE_RESEARCH' AND payload::jsonb->>'stable_sha256'=%s", (day, expected_payload_sha))
+                    runs = facts('r7_pipeline_run', "fact_key=%s", (run_id,))
+                    if len(daily) != 1 or len(aggregates) != 1 or len(runs) != 1:
+                        raise ValueError("FORWARD_R7_PUBLISHED_FACT_CHAIN_INCOMPLETE")
+                    daily_key, bundle, daily_fact_sha, daily_source_sha = daily[0]
+                    aggregate_key, aggregate, aggregate_fact_sha, aggregate_source_sha = aggregates[0]
+                    run_key, run, run_fact_sha, run_source_sha = runs[0]
+                    stable_body=dict(trade_date=bundle.get('trade_date'),lane=bundle.get('lane'),
+                        revision=bundle.get('revision'),source_digest=bundle.get('source_digest'),
+                        rows=bundle.get('rows'))
+                    stable_body_valid=(cls._stable_hash(stable_body)==expected_payload_sha
+                        if bundle.get('identity_contract')=='V4_FORWARD_OBSERVATION_ID_R2'
+                        else bundle.get('identity_contract') is None and bundle.get('stable_sha256')==expected_payload_sha)
+                    source_hashes=bundle.get('source_run',{}).get('source_hashes',{})
+                    if (bundle.get('trade_date') != day or bundle.get('lane') != 'RETROSPECTIVE_RESEARCH'
+                            or not stable_body_valid
+                            or aggregate.get('groups') != bundle.get('groups')
+                            or aggregate.get('stable_sha256') != expected_payload_sha
+                            or aggregate_source_sha != expected_payload_sha
+                            or index_source_sha != expected_payload_sha
+                            or sha256(source_hashes) != daily_source_sha
+                            or run.get('status') != 'PASS' or run.get('trade_date') != day
+                            or run.get('run_id') != run_id or run.get('source_run') != bundle.get('source_run')
+                            or run_source_sha != expected_payload_sha):
+                        raise ValueError("FORWARD_R7_PUBLISHED_FACT_CHAIN_MISMATCH")
+                    eligible.append((schema, index, index_key, index_fact_sha, index_source_sha,
+                        daily_key, daily_fact_sha, daily_source_sha, aggregate_key, aggregate_fact_sha,
+                        aggregate_source_sha, run_key, run_fact_sha, run_source_sha,
+                        bundle, expected_payload_sha))
+                except (TypeError, ValueError, KeyError, json.JSONDecodeError):
+                    invalid_matching_records += 1
+
+        if invalid_matching_records:
+            return incomplete('R7_PUBLISHED_FACT_CHAIN_INVALID')
+        if not eligible:
+            return incomplete('NO_PUBLISHED_R7_AUDIT_FOR_CANDIDATE_T0')
+        if len(eligible) != 1:
+            return incomplete('R7_AUDIT_NAMESPACE_AMBIGUOUS_FOR_CANDIDATE_T0')
+
+        (schema, index, index_key, index_fact_sha, index_source_sha, daily_key, daily_fact_sha,
+         daily_source_sha, aggregate_key, aggregate_fact_sha, aggregate_source_sha,
+         run_key, run_fact_sha, run_source_sha, bundle, payload_sha) = eligible[0]
+        groups = []
+        for key_text, counts in bundle.get('groups', {}).items():
+            parts = key_text.split('/')
+            if len(parts) != 3:
+                return incomplete('R7_AUDIT_GROUP_KEY_INVALID')
+            groups.append(dict(rule_id=parts[0], rule_version=parts[1], entity_type=parts[2],
+                **{name: int(counts.get(name, 0)) for name in
+                   ('universe_count','match_count','no_match_count','unknown_count')}))
+        items=[dict(trade_date=day, groups=sorted(groups,key=lambda x:(x['rule_id'],x['rule_version'],x['entity_type'])))] if offset==0 else []
+        return dict(contract_id=cls.candidate_source_audit_contract_id,contract_version='1.0.0',
+            status='READY', items=items,
+            total=1, limit=limit, offset=offset, has_next=offset+len(items)<1,
+            evidence_class='RETROSPECTIVE_RESEARCH', strict_t0_pit=False,
+            binding='CANDIDATE_TRADE_DATE_ONLY_INDEPENDENT_R7_PUBLISHED_FACT',
+            source=dict(schema=schema, namespace_scope='R7_RESEARCH_ONLY',
+                index_contract=index.get('identity_contract') or 'V4_FORWARD_PUBLISH_INDEX_R1_LEGACY', generation=index.get('generation'),
+                source_run_id=index.get('source_run_id'), published_at=index.get('published_at'),
+                published_payload_sha256=payload_sha,
+                facts={
+                    'publish_index':dict(key=index_key,sha256=index_fact_sha,source_sha256=index_source_sha),
+                    'daily_universe':dict(key=daily_key,sha256=daily_fact_sha,source_sha256=daily_source_sha),
+                    'aggregate_stats':dict(key=aggregate_key,sha256=aggregate_fact_sha,source_sha256=aggregate_source_sha),
+                    'pipeline_run':dict(key=run_key,sha256=run_fact_sha,source_sha256=run_source_sha),
+                }))
 
 
     def read_settlement(self, *, lane: str | None = None, trade_date: str | None = None,

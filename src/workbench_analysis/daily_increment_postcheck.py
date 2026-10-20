@@ -11,6 +11,9 @@ from typing import Any, Mapping
 
 from workbench_analysis.daily_data_head import CAPABILITIES, write_json_atomic
 from workbench_analysis.daily_source_freeze import ensure_outside_tdx, source_freeze_complete_v2
+from common.paths import resolve_tdx_root
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _sha(path: Path) -> str:
@@ -77,9 +80,10 @@ def independent_daily_increment_postcheck(
     expected_data_head_sha256: str,
     expected_stage_head_sha256: str,
     expected_dev_baseline_sha256: str,
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ) -> dict[str, Any]:
     """Read component bytes independently and verify cross-artifact session invariants."""
+    tdx_root = resolve_tdx_root(PROJECT_ROOT, tdx_root)
     checks: dict[str, str] = {}
     problems: list[str] = []
 
@@ -273,9 +277,10 @@ def make_independent_postcheck_callback(
     stage_head_path: Path,
     dev_baseline_path: Path,
     source_freeze: Mapping[str, Any],
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ):
     """Return the callback expected by run_incremental_components; re-read staged files."""
+    tdx_root = resolve_tdx_root(PROJECT_ROOT, tdx_root)
     def postcheck(candidate: Mapping[str, Any]) -> str:
         manifest = candidate.get("manifest")
         head = candidate.get("head")

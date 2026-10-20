@@ -1,6 +1,7 @@
 """Bounded Focus history payloads; complete source timeline remains authoritative."""
 import gzip
 import json
+from io import TextIOWrapper
 
 CONTRACT='V4_FOCUS_REPLAY_BOUNDED_HISTORY_FULL_TIMELINE_R1'
 
@@ -12,7 +13,12 @@ def read_history(path, window):
     """
     dates=frozenset(window)
     histories={};timelines={}
-    with gzip.open(path,'rt',encoding='utf8') as stream:
+    if hasattr(path,'read_bytes'):
+        path.seek(0)
+        stream_context=TextIOWrapper(gzip.GzipFile(fileobj=path,mode='rb'),encoding='utf8')
+    else:
+        stream_context=gzip.open(path,'rt',encoding='utf8')
+    with stream_context as stream:
         for line in stream:
             if not line.strip():continue
             row=json.loads(line);sid=row['security_id']

@@ -50,10 +50,10 @@ def readback_population(pg, rows, exact_authorities):
                 p.accepted_at,r.feature_cutoff,o.slot_deadline,s.namespace_id,o.entity_id,
                 o.trade_date::text,r.dependency_manifest,r.evidence_origin,r.execution_mode,
                 x.feature_contract_id,x.feature_digest,x.quality_digest
-                from fep.observations o join fep.scopes s using(scope_id)
-                join fep.observation_revisions r using(observation_id)
+                from v4.observations o join v4.scopes s using(scope_id)
+                join v4.observation_revisions r using(observation_id)
                 join v4.publications p using(publication_id)
-                join fep.snapshots x on x.observation_id=o.observation_id and x.observation_revision=r.revision
+                join v4.snapshots x on x.observation_id=o.observation_id and x.observation_revision=r.revision
                 where o.observation_id=%s and r.revision=%s and x.snapshot_id=%s and p.publication_id=%s""",
                 (mapping.get('observation_id'), mapping.get('observation_revision'),
                  mapping.get('snapshot_id'), mapping.get('publication_id'))).fetchone()
@@ -78,6 +78,7 @@ def readback_population(pg, rows, exact_authorities):
 
 
 def inventory(pg):
-    tables = pg.execute("select tablename from pg_tables where schemaname='fep' order by tablename").fetchall()
-    return {name: pg.execute(sql.SQL('select count(*) from fep.{}').format(sql.Identifier(name))).fetchone()[0]
-            for name, in tables}
+    from workbench_analysis.fep_e1.db import TABLES, validate_inventory
+    validate_inventory(pg)
+    return {name: pg.execute(sql.SQL('select count(*) from v4.{}').format(sql.Identifier(name))).fetchone()[0]
+            for name in TABLES}

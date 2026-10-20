@@ -34,6 +34,15 @@ from workbench_analysis.canonical_source_selection import (  # noqa: E402
 from workbench_analysis.tdx_local_snapshot import verify_local_snapshot  # noqa: E402
 from workbench_analysis.tdx_snapshot import verify_zip_snapshot  # noqa: E402
 
+def load_project_json(path):
+    path=Path(path)
+    relative=path.resolve().relative_to(ROOT).as_posix()
+    if relative.startswith(('reports/','docs/evidence/')):
+        from workbench_db.v4_historical_source_ingress_pg_r1 import ingress_path
+        admitted=ingress_path(ROOT,relative)
+        return admitted['value'] if admitted['value'] is not None else json.loads(admitted['raw'])
+    return json.loads(path.read_text(encoding='utf-8'))
+
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
 LOCAL_SNAPSHOT_ID = "1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70"
@@ -203,11 +212,11 @@ def main() -> int:
     asof = int(args.asof)
 
     contract_path = ROOT / "config/v4_02_canonical_daily_pit_contract_v1.json"
-    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    contract = load_project_json(contract_path)
     if contract.get("contract_id") != "V4_CANONICAL_DAILY_PIT_PERIODS_V2" or contract.get("version") != "2.0.0":
         raise ValueError("V4_02_V2_CONTRACT_REQUIRED")
     gate_path = ROOT / contract["outputs"]["entry_gate_receipt"]
-    gate = json.loads(gate_path.read_text(encoding="utf-8"))
+    gate = load_project_json(gate_path)
     if gate.get("entry_status") != "ENTRY_AUTHORIZED" or gate.get("stage_completion_authorized") is not False:
         raise ValueError("V4_02_ENTRY_GATE_NOT_AUTHORIZED")
     if gate.get("evidence", {}).get("contract_sha256") != sha256_file(contract_path):
@@ -227,26 +236,26 @@ def main() -> int:
         raise ValueError("ASOF_AFTER_SOURCE_CUTOFF")
 
     manifest_path = ROOT / contract["inputs"]["canonical_source_selection"]
-    selection_receipt = json.loads(selection_receipt_path.read_text(encoding="utf-8"))
+    selection_receipt = load_project_json(selection_receipt_path)
     if sha256_file(manifest_path) != selection_receipt.get("source_selection_manifest_sha256"):
         raise ValueError("CANONICAL_SOURCE_SELECTION_MANIFEST_HASH_MISMATCH")
-    selection = json.loads(manifest_path.read_text(encoding="utf-8"))
+    selection = load_project_json(manifest_path)
     if selection.get("contract_id") != "CANONICAL_SOURCE_SELECTION_V1":
         raise ValueError("CANONICAL_SOURCE_SELECTION_CONTRACT_MISMATCH")
 
     package_path = ROOT / contract["inputs"]["raw_archive"].format(source_package_sha256=PACKAGE_SHA)
     bundle_path = ROOT / "data/source_bundles" / BUNDLE_ID / "source_bundle.json"
-    bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+    bundle = load_project_json(bundle_path)
     extracted_root = ROOT / bundle["extraction"]["root"]
     local_root = ROOT / "data/v4/local_tdx_snapshots" / LOCAL_SNAPSHOT_ID
     source_manifest_path = ROOT / contract["inputs"]["v4_01_source_manifest"]
-    source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
+    source_manifest = load_project_json(source_manifest_path)
     inventory_path = ROOT / contract["inputs"]["v4_01_source_inventory"]
     package_inventory = load_csv_inventory(inventory_path)
     package_hashes = {path: row["sha256"] for path, row in package_inventory.items()}
     local_snapshot_check = verify_local_snapshot(ROOT / "data/v4/local_tdx_snapshots", LOCAL_SNAPSHOT_ID)
     local_manifest_path = local_root / "snapshot_manifest.json"
-    local_manifest = json.loads(local_manifest_path.read_text(encoding="utf-8"))
+    local_manifest = load_project_json(local_manifest_path)
     if sha256_file(local_manifest_path) != selection["execution_identity"]["local_snapshot_manifest_sha256"]:
         raise ValueError("LOCAL_SNAPSHOT_MANIFEST_HASH_MISMATCH")
     local_hashes = {row["relative_path"]: row["sha256"] for row in local_manifest["files"]}
@@ -256,20 +265,20 @@ def main() -> int:
         package_inventory,
         int(bundle["extraction"]["entry_count"]),
         source_manifest["source"]["extracted_content_digest"],
+        project_root=ROOT,target_date=bundle["target_trade_date"],source_role="CURRENT"
     )
     if snapshot_check.get("status") != "PASS" or local_snapshot_check.get("status") != "PASS":
         raise ValueError("SOURCE_SNAPSHOT_VERIFICATION_FAILED")
 
-    r6_materialization = json.loads(
-        (ROOT / "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json").read_text(encoding="utf-8")
-    )
-    v4_01_receipt = json.loads(v4_01_receipt_path.read_text(encoding="utf-8"))
+    r6_materialization = load_project_json(
+        ROOT / "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json")
+    v4_01_receipt = load_project_json(v4_01_receipt_path)
     materialization_path = ROOT / "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json"
     if v4_01_receipt.get("evidence", {}).get("R6_2_append_only_lifecycle_materialization", {}).get("sha256") != sha256_file(materialization_path):
         raise ValueError("R6_2_MATERIALIZATION_RECEIPT_HASH_MISMATCH")
     identity_path = ROOT / r6_materialization["intervals"]["current_interval_artifact_path"]
     identity_map = load_membership_identity(identity_path, r6_materialization["intervals"]["current_interval_artifact_sha256"])
-    universe_receipt = json.loads(universe_receipt_path.read_text(encoding="utf-8"))
+    universe_receipt = load_project_json(universe_receipt_path)
     universe_artifact = ROOT / universe_receipt["required_scope"]["output"]["path"]
     if sha256_file(universe_artifact) != universe_receipt["required_scope"]["output"]["sha256"]:
         raise ValueError("R6_2_REQUIRED_UNIVERSE_ARTIFACT_HASH_MISMATCH")

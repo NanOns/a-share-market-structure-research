@@ -134,8 +134,23 @@ def crosscheck_tdx_with_baostock(
     baostock_rows: list[Mapping[str, Any]],
 ) -> dict[str, Any]:
     """Emit exact-match diagnostics; TDX remains authoritative for every field."""
-    tdx_by_code = {str(row.get("security_id") or "").lower(): row for row in tdx_rows}
-    bao_by_code = {str(row.get("code") or "").lower(): row for row in baostock_rows}
+    def indexed(rows, key_fields, label):
+        output = {}
+        for row in rows:
+            code = next((str(row.get(field) or "").strip().lower()
+                         for field in key_fields if str(row.get(field) or "").strip()), "")
+            if not code:
+                raise BaoStockDailyUpdateError(label + "_SOURCE_SYMBOL_REQUIRED")
+            if code in output:
+                raise BaoStockDailyUpdateError(label + "_SOURCE_SYMBOL_DUPLICATE")
+            output[code] = row
+        return output
+
+    # TDX rows carry canonical PG security_id values as well as their original
+    # provider symbol. BaoStock is keyed by the provider symbol; comparing it
+    # to the unrelated canonical ID creates false identity gaps.
+    tdx_by_code = indexed(tdx_rows, ("source_security_key", "source_symbol", "code", "security_id"), "TDX")
+    bao_by_code = indexed(baostock_rows, ("code", "source_security_key", "source_symbol"), "BAOSTOCK")
     comparisons, conflicts, set_gaps = [], [], []
     for code in sorted(set(tdx_by_code) | set(bao_by_code)):
         local, source = tdx_by_code.get(code), bao_by_code.get(code)
@@ -146,7 +161,9 @@ def crosscheck_tdx_with_baostock(
             set_gaps.append(gap)
             continue
         mismatch = {}
-        for field in ("close", "volume", "amount"):
+        for field in ("open", "high", "low", "close", "volume", "amount"):
+            if field not in local and field not in source:
+                continue
             try:
                 left, right = float(local[field]), float(source[field])
             except (KeyError, TypeError, ValueError):
@@ -187,8 +204,8 @@ def capture_baostock_daily_update(
     *,
     trade_date: str,
     client: BaoStockClient,
-    snapshot_root: Path,
-    tdx_root: Path = Path("D:/new_tdx"),
+    snapshot_root: Path | None = None,
+    tdx_root: Path | None = None,
     observed_at: str | None = None,
     runtime_acceptance_manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -197,6 +214,12 @@ def capture_baostock_daily_update(
         date.fromisoformat(trade_date)
     except ValueError as exc:
         raise BaoStockDailyUpdateError("TARGET_DATE_INVALID") from exc
+    project_root = Path(__file__).resolve().parents[2]
+    from common.paths import resolve_baostock_cache_root, resolve_tdx_root, configured_path_source
+    cache_path_source = configured_path_source(project_root, "baostock.cache_root", explicit=snapshot_root)
+    tdx_path_source = configured_path_source(project_root, "tdx.source_root", explicit=tdx_root)
+    snapshot_root = resolve_baostock_cache_root(project_root, snapshot_root)
+    tdx_root = resolve_tdx_root(project_root, tdx_root)
     ensure_outside_tdx(snapshot_root, tdx_root)
     if not client.logged_in or client.sdk is None:
         raise BaoStockDailyUpdateError("BAOSTOCK_SESSION_NOT_READY")
@@ -297,6 +320,7 @@ def capture_baostock_daily_update(
         "request_count": 2,
         "date_level_query_count": 2,
         "tdx_root_write_count": 0,
+        "path_configuration": {"cache_root": cache_path_source, "tdx_source_root": tdx_path_source},
     }
     if not existing.is_file():
         _atomic_json(existing, payload, tdx_root=tdx_root)

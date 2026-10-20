@@ -4,7 +4,7 @@ Numerical producers and parameters retain exact generation source bytes. Only
 explicit read/publication/PG metadata modules may acquire later versions.
 """
 import json
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 
 KEY='runtime_acceptance_preparation_r1_1'
 CONTRACT='V4_RUNTIME_ACCEPTANCE_METADATA_CONSERVATION_R1_1'

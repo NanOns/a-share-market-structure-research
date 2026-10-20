@@ -16,5 +16,5 @@ function dailyEntryControls(){
 }
 if(dailyMain)new MutationObserver(dailyEntryControls).observe(dailyMain,{childList:true});
 dailyEntryControls();
-async function dailyEntryStatus(){try{const response=await fetch('/api/v4/operations/daily-update/status');if(response.ok){const value=await response.json();dailyLink.textContent=`数据更新 · 截至 ${value.last_good_trade_date} · ${value.missing_sessions.length?'待补 '+value.missing_sessions[0]:'已同步'}`}}catch{}}
+async function dailyEntryStatus(){try{const response=await fetch('/api/v4/operations/daily-update/status');if(response.ok){const value=await response.json();const research=value.research_snapshot_trade_date||value.last_good_trade_date;const daily=value.latest_successful_daily_date;dailyLink.textContent=`数据更新 · 研究 ${research||'未知'} · 日更 ${daily||'未知'}`}}catch{}}
 dailyEntryStatus();setInterval(dailyEntryStatus,15000);

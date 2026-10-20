@@ -1,10 +1,9 @@
 """Dated zero-change factor acceptance; never invent a provider response date."""
 from pathlib import Path
 import json
-from .baostock_runtime_acceptance import canonical_sha256,load_runtime_acceptance_manifest,runtime_acceptance_error
-from .r43_owner_replay import checked,ref
+from .baostock_runtime_acceptance import canonical_sha256,runtime_acceptance_error
+from .r43_owner_replay import ref
 from .operational_daily_storage_v1 import atomic_json
-from .tdx_official_daily_source import sha256_file
 
 CONTRACT='OPERATIONAL_BAOSTOCK_RUNTIME_ZERO_CHANGE_V2'
 
@@ -26,20 +25,36 @@ def error(manifest,*,sdk,auth_mode):
     return None
 
 
-def load(path,*,project_root):
-    path=Path(path);manifest=json.loads(path.read_bytes())
-    if manifest.get('contract_id')!=CONTRACT:return load_runtime_acceptance_manifest(path,project_root=project_root)
-    receipt=json.loads(checked(project_root,manifest['smoke_receipt']).read_bytes())
+def load(path=None,*,project_root,target_date=None,sdk=None):
+    """Load the dated accepted runtime contract from its PG fact.
+
+    ``path`` remains an ignored migration-era call argument for API
+    compatibility; it is never opened or used to select a runtime contract.
+    The accepted date row is selected directly from the PG runtime registry.
+    """
+    if not target_date:
+        raise ValueError('PG_RUNTIME_ACCEPTED_TRADE_DATE_REQUIRED')
+    if sdk is None:
+        from .baostock_supplemental import package_metadata
+        sdk=package_metadata()
+    from workbench_db.v4_baostock_runtime_acceptance_pg_r1 import load as load_pg
+    bundle=load_pg(Path(project_root),target_date,sdk=sdk)
+    manifest=bundle['manifest']
+    if manifest.get('contract_id')!=CONTRACT:
+        return manifest
+    receipt=bundle['smoke_receipt']
     if receipt.get('status')!='PASS' or receipt.get('live_smoke')!=manifest['live_smoke'] or receipt.get('runtime')!=manifest['runtime']:
         raise ValueError('V2_REAL_SMOKE_RECEIPT_MISMATCH')
-    proof=json.loads(checked(project_root,manifest['live_smoke']['adjustment_factor']['no_change_proof']).read_bytes())
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    proof_ref=manifest['live_smoke']['adjustment_factor']['no_change_proof']
+    proof=json.loads(read_bound(project_root,proof_ref['path'],proof_ref['sha256'])['raw'])
     target=manifest['live_smoke']['target_date']
     if proof.get('acceptance')!='VERIFIED_ALL_TARGET_UNIVERSE_NO_CHANGE' or proof['target_session']!=target:
         raise ValueError('V2_NO_CHANGE_PROOF_NOT_VERIFIED')
     if set(proof['queried_codes'])!=set(proof['target_universe_codes']):raise ValueError('V2_NO_CHANGE_UNIVERSE_COVERAGE')
     response_codes=[]
     for record in proof['responses']:
-        payload=json.loads(checked(project_root,record).read_bytes())
+        payload=json.loads(read_bound(project_root,record['path'],record['sha256'])['raw'])
         response_codes.append(payload['code'])
         if payload['rows'] or payload['params']!={'code':payload['code'],'start_date':target,'end_date':target} or payload['metadata']['error_code']!='0':
             raise ValueError('V2_ZERO_CHANGE_RESPONSE_NOT_EXACT')

@@ -117,7 +117,7 @@ def pytest_configure(config):
             identity(witness)
             if witness.execute('select contract,admission from r4_evidence.phase0_clean_fixture').fetchall()!=[(CONTRACT,'ENGINEERING_ONLY_NO_PRODUCTION_AUTHORITY')]:
                 raise V4DatabaseGuardViolation('PHASE0_ENGINEERING_MARKER_REQUIRED')
-            actual=dict(witness.execute('select version,checksum_sha256 from v4_meta.schema_migrations').fetchall())
+            actual=dict(witness.execute('select version,checksum_sha256 from v4.schema_migrations').fetchall())
             for row in receipt['migrations']:
                 raw=(root/row['path']).read_bytes()
                 if hashlib.sha256(raw).hexdigest()!=row['source_sha256'] or actual.get(row['version'],'').strip()!=row['sql_checksum_sha256']:

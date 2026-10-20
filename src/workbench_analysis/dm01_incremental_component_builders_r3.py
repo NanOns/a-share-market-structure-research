@@ -33,7 +33,8 @@ from workbench_analysis.special_price_phases import SpecialPhaseEventStore, Phas
 
 ROOT=Path(__file__).resolve().parents[2]
 CONTRACT_PATH='config/dm01_incremental_builders_contract_r3.json'
-TDX_ROOT=Path('D:/new_tdx')
+from common.paths import resolve_tdx_root
+TDX_ROOT=resolve_tdx_root(ROOT)
 
 class ComponentBuildError(ValueError):
     pass

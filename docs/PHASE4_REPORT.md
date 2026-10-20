@@ -1,5 +1,0 @@
-# Phase 4 Report
-
-PASS at 20260924. All 5464 NORMAL_UNIVERSE stocks are published. Counts: {'steady_trend': 98, 'strong_pullback': 483, 'breakout_prep': 122, 'sector_leader': 126, 'early_mover': 150}. Primary patterns: {'NONE': 4802, 'STRONG_PULLBACK': 434, 'SECTOR_LEADER': 126, 'BREAKOUT_PREP': 92, 'STEADY_TREND': 10}. Overlaps: {'steady_trend+strong_pullback': 63, 'steady_trend+breakout_prep': 30, 'steady_trend+sector_leader': 28, 'strong_pullback+breakout_prep': 12, 'strong_pullback+sector_leader': 37, 'breakout_prep+sector_leader': 30}. Upstream dates, generations and SHA256 values were bound before consumption. Only 6188 latest normalized rows and four necessary fields were selected. Current valid sector contexts were used; invalid/excluded sectors were not eligible. Market and sector-member percentiles remain distinct. Tests: 20 passed, 0 failed. No external data, index OHLC, score, dynamic threshold, rating, signal, backtest or historical membership backfill.
-
-NEXT_ALLOWED_PHASE=PHASE_5_CANDIDATE_POOL_AND_RESEARCH_PRIORITY.

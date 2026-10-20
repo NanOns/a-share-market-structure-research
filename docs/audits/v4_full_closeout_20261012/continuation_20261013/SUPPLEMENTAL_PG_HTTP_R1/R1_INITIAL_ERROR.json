@@ -1,9 +1,0 @@
-{
-  "contract_id": "V4_SUPPLEMENTAL_HTTP_VERIFIER_INITIAL_ERROR_R1",
-  "status": "VERIFIER_INITIALIZATION_ERROR",
-  "error": "AttributeError: OperationalSuccessorReaderV1 has no rows method",
-  "checks_executed": 0,
-  "server_started": false,
-  "production_cutover": false,
-  "correction": "Select actual source objects through CoreProductBFFR1.source and run new R2 receipt, preserving R1."
-}

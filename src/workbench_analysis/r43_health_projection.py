@@ -1,7 +1,7 @@
 """R4 producer metadata repair; frozen state-machine values remain unchanged."""
 from copy import deepcopy
 from pathlib import Path
-from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, pg_json_source, write_candidate_json
 from .market_source_acquisition import write
 from .v4_12_structure_io import FrozenContracts
 
@@ -15,10 +15,10 @@ def health_cell(state, mapping):
 
 
 def materialize_health(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'PROFILE_STRUCTURE_REPLAY.json')
+    root=Path(root).resolve();out=root/OUT;replay=pg_json_source(root,OUT+'/PROFILE_STRUCTURE_REPLAY.json')
     c=FrozenContracts(root);mapping=c.config['output_schema']['structure_health_mapping'];receipts=[]
     contract=out/'HEALTH_PROJECTION_CONTRACT_V1.json'
-    write(contract,dict(contract_id='V4_R4_STRUCTURE_HEALTH_METADATA_REPAIR_V1',mapping=mapping,
+    write_candidate_json(root,contract,dict(contract_id='V4_R4_STRUCTURE_HEALTH_METADATA_REPAIR_V1',mapping=mapping,
         source='Published active anchor support machine only',unknown_support='UNKNOWN',
         anchor_selection='COPY_PUBLISHED_ACTIVE_ID',business_threshold_changes=False,
         original_projection_preserved=True,production_admission=False))
@@ -35,9 +35,9 @@ def materialize_health(root):
                  source_refs=[binding,ref(root,contract)],selected_anchor_id=aid)
             cell['membership_context']={k:p[k] for k in ('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof','knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN','production_eligible_scope','survivorship_bias_risk')}
             p['fields']['structure_health']=cell
-        result=dict(trade_date=day,projection=gzwrite(root,out/'owners'/day/'advanced_structure_projection_v2.jsonl.gz',projected),
+        result=dict(trade_date=day,projection=gzwrite(root,out/'owners'/day/'advanced_structure_projection_v2.jsonl.gz',projected,pg_ingress=True),
              known=sum(p['fields']['structure_health']['quality']=='KNOWN' for p in projected),total=len(projected),
              contract=ref(root,contract),original_projection=owner['advanced_projection'])
         receipts.append(result)
-    write(out/'HEALTH_PROJECTION_REPLAY.json',dict(owners=receipts,acceptance='METADATA_REPAIRED_PENDING_QA'))
+    write_candidate_json(root,out/'HEALTH_PROJECTION_REPLAY.json',dict(owners=receipts,acceptance='METADATA_REPAIRED_PENDING_QA'))
     return receipts

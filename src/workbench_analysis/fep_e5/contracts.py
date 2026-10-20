@@ -125,4 +125,4 @@ def verify_shadow(pool,shadow,risk_events):
         exact(row['risk'],source.get('risk_events',[]),'RISK_EVENT')
     exact(shadow['risk_events'],list(risk_events),'RISK_EVENT')
     require(shadow['v2_active'] is False,'REAL_DAILY_API_ACTIVE')
-def write_target(namespace):require(namespace=='fep_e5_engineering','CORE_PROFILE_STATE_COHORT_WRITE_FORBIDDEN')
+def write_target(namespace):require(namespace=='v4','CORE_PROFILE_STATE_COHORT_WRITE_FORBIDDEN')

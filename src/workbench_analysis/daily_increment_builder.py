@@ -12,6 +12,9 @@ from typing import Any, Callable, Mapping
 
 from workbench_analysis.daily_data_head import CAPABILITIES, build_data_head, promote_data_head
 from workbench_analysis.daily_source_freeze import ensure_outside_tdx, source_freeze_complete_v2
+from common.paths import resolve_tdx_root
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 class DailyIncrementError(ValueError):
@@ -61,9 +64,10 @@ def build_raw_increment_staging(
     source_snapshot_id: str,
     delta: Mapping[str, Any],
     output_path: Path,
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ) -> dict[str, Any]:
     """Write only TDX rows for one date; keep source codes unmapped and explicit."""
+    tdx_root = resolve_tdx_root(PROJECT_ROOT, tdx_root)
     if delta.get("status") != "READY" or delta.get("target_date") != trade_date:
         raise DailyIncrementError("TDX_TARGET_DATE_DELTA_NOT_READY")
     if not source_snapshot_id or delta.get("current_snapshot_id") != source_snapshot_id:
@@ -146,9 +150,10 @@ def run_incremental_components(
     stage_head_path: Path,
     dev_baseline_path: Path,
     independent_postcheck: Callable[[Mapping[str, Any]], str] | None,
-    tdx_root: Path = Path("D:/new_tdx"),
+    tdx_root: Path | None = None,
 ) -> dict[str, Any]:
     """Run versioned component builders; publish only after independent PASS."""
+    tdx_root = resolve_tdx_root(PROJECT_ROOT, tdx_root)
     if not source_freeze_complete_v2(source_freeze):
         return {"status": "BLOCKED_SOURCE_FREEZE_INCOMPLETE", "head_moved": False}
     if (source_freeze.get("trade_date") != trade_date or tdx_delta.get("target_date") != trade_date

@@ -22,11 +22,33 @@ def exact_json(root,ref):
     if len(raw)!=ref['bytes'] or hashlib.sha256(raw).hexdigest()!=ref['sha256']:raise ValueError('EXACT_DIGEST_MISMATCH:'+ref['path'])
     return json.loads(raw)
 
+
+_ENTRY_SOURCE_ID = 'bb11e91596e29f94c21f72accaad26cd916f51b7d696f8cacdc68b1d9a022665'
+
+
+def pg_exact_json(root, ref):
+    """Resolve a frozen contract by its exact path, digest and size in PG."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    source=read_bound(root,ref['path'],ref['sha256'])
+    raw=source['raw']
+    if len(raw)!=ref['bytes'] or hashlib.sha256(raw).hexdigest()!=ref['sha256']:
+        raise ValueError('EXACT_PG_CONTRACT_DIGEST_MISMATCH:'+ref['path'])
+    return json.loads(raw)
+
+
 class FrozenContracts:
-    def __init__(self,root,entry_path='reports/v4_12/V4_12_RUNTIME_ENGINEERING_ENTRY_R1.json'):
-        self.root=Path(root).resolve();self.entry=json.loads((self.root/entry_path).read_bytes());self.entry_ref=file_ref(self.root,entry_path)
+    def __init__(self,root):
+        self.root=Path(root).resolve()
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_source
+        entry_source=read_source(self.root,_ENTRY_SOURCE_ID)
+        raw=entry_source['raw'];record=entry_source['record']
+        if (hashlib.sha256(raw).hexdigest()!=record['source_sha256']
+                or len(raw)!=record['source_bytes']):
+            raise ValueError('EXACT_PG_CONTRACT_DIGEST_MISMATCH:'+record['source_path'])
+        self.entry=json.loads(raw)
+        self.entry_ref=dict(path=record['source_path'],sha256=record['source_sha256'],bytes=record['source_bytes'])
         if self.entry['scope']!='V4_12_D1_ENGINEERING_RUNTIME_R1' or not self.entry['scoped_engineering_implementation_permission']:raise ValueError('RUNTIME_ENTRY_NOT_AUTHORIZED')
-        acceptance=exact_json(self.root,self.entry['contract_freeze_acceptance'])
+        acceptance=pg_exact_json(self.root,self.entry['contract_freeze_acceptance'])
         if acceptance['external_audit_status']!='PASS_V4_12_CONTRACT_FREEZE' or acceptance['frozen_contracts']!=self.entry['frozen_contracts']:raise ValueError('CONTRACT_FREEZE_AUTHORITY_MISMATCH')
         for key in ['production_permission','shadow_production_permission','focus_cutover_permission','global_mandatory_adoption','D2_integration_permission','DB_migration_permission']:
             if self.entry[key] is not False:raise ValueError('FORBIDDEN_PERMISSION')
@@ -35,13 +57,14 @@ class FrozenContracts:
             name=Path(ref['path']).stem.removeprefix('v4_12_')
             if name.endswith('_v1'):name=name[:-3]
             elif name.endswith('_v2'):name=name[:-3]
-            self.config[name]=exact_json(self.root,ref);self.refs[name]=ref
+            self.config[name]=pg_exact_json(self.root,ref);self.refs[name]=ref
         if self.config['time_counter_contract']['contract_id']!='V4_12_SESSION_COUNTER_V2':raise ValueError('STOP_WITH_CONTRACT_GAP:COUNTER_VERSION')
         self.digest=digest(self.entry['frozen_contracts'])
 
 class CandidateStore:
     def __init__(self,root,directory='reports/v4_12_runtime_r1'):
         self.root=Path(root).resolve();self.directory=self.root/directory
+        self.pg_ingress=False
         if not self.directory.resolve().is_relative_to(self.root):raise ValueError('CANDIDATE_PATH_ESCAPE')
         self.directory.mkdir(parents=True,exist_ok=True)
     def write_bytes(self,name,raw):
@@ -56,6 +79,9 @@ class CandidateStore:
                 os.replace(tmp,path)
             finally:
                 if os.path.exists(tmp):os.unlink(tmp)
+        if self.pg_ingress:
+            from .r43_owner_replay import _ingress_candidate_bytes
+            _ingress_candidate_bytes(self.root,path,raw)
         return file_ref(self.root,path.relative_to(self.root).as_posix())
     def json(self,name,value):return self.write_bytes(name,canonical(value))
     def jsonl(self,name,rows,compress=False):

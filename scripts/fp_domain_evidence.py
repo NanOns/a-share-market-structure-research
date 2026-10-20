@@ -6,7 +6,8 @@ from scripts.fp01_evidence import ROOT, write, ref
 
 def operational_path(name,*,for_write=False):
     allowed={'v4_market_operational_authority_v1.json','v4_sector_operational_authority_v1.json',
-        'v4_stock_operational_authority_v1.json','v4_market_center_authority_v1.json','v4_forward_operational_authority_v1.json'}
+        'v4_stock_operational_authority_v1.json','v4_market_center_authority_v1.json','v4_forward_operational_authority_v1.json',
+        'v4_focus_operational_authority_v1.json','v4_replay_compare_authority_v1.json'}
     if name not in allowed:raise ValueError('UNAPPROVED_DAILY_OPERATIONAL_AUTHORITY')
     directory=os.environ.get('R2_DAILY_AUTHORITY_DIR')
     if directory:
@@ -24,16 +25,24 @@ def enter(stage):
         out=base/f'fp{stage:02d}'
     else:out=ROOT/f'docs/evidence/fp{stage:02d}_20261008'
     if (out/'ENTRY.json').exists():raise ValueError('FROZEN_STAGE_RECEIPT_REQUIRES_NEW_NAMESPACE')
-    cards=ROOT/'docs/evidence/fp01_20261008/tasks'
-    phase=json.loads((ROOT/'reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json').read_bytes())
-    assert phase['phase0_status']=='FULL_PASS'
-    protected=json.loads((ROOT/'docs/evidence/fp02_20261008/ENTRY.json').read_bytes())['protected']
+    tracked=subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode('utf-8').split('\0')
+    protected_paths=[]
+    for path in tracked:
+        if not path or not (ROOT/path).is_file():continue
+        candidate=Path(path)
+        code_or_contract=path.startswith(('src/','scripts/','tools/','config/'))
+        accepted_head=path.startswith('data/v4/') and 'HEAD' in candidate.name and candidate.suffix=='.json'
+        if code_or_contract and not path.startswith('config/v4_static_byte_archive_r19/') or accepted_head:
+            protected_paths.append(path)
+    protected=[ref(path) for path in protected_paths]
     write(out/'ENTRY.json',dict(stage=f'FP{stage:02d}',contract=f'FP{stage:02d}_DOMAIN_DELIVERY_V1',
         baseline=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        task=ref(next(cards.glob(f'{stage:02d}_*'))),master=ref(next(cards.glob('00_*'))),
-        phase0='FULL_PASS',driver_sync='No driver-named chat or repository file in current inventory; latest supplied task cards govern.',
+        task=dict(source='USER_SUPPLIED_CURRENT_R2_DRIVE_TASK_CARD'),
+        master=dict(contract_id='V4_R21_R6_DEVELOPMENT_MASTER'),
+        phase0=dict(status='FULL_PASS',provenance='Previously recorded stage-zero result'),
+        driver_sync='Latest supplied task cards govern; no local task artifact is required by the materializer.',
         protected=protected,acceptance='IN_PROGRESS',next_stage='REAL_SOURCE_BINDING_AND_IMPLEMENTATION',
-        successor_upgrade=ref('docs/upgrade/R2_FORWARD_DUE_CONTINUATION_20261008.md') if successor else None))
+        successor_upgrade='R2_FORWARD_DUE_CONTINUATION_V1' if successor else None))
     return out
 
 def check_protected(out):

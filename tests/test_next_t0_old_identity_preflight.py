@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 from test_cross_day_capture_repair_v1 import chain
 from workbench_analysis import operational_daily_executor_v1 as executor
+from daily_contract_pg_fixture import install as install_daily_contract_pg_fixture
+from daily_contract_pg_fixture import install_calendar as install_daily_calendar_pg_fixture
 from workbench_analysis.operational_daily_storage_v1 import atomic_json
 from workbench_analysis.r43_owner_replay import ref
 from workbench_analysis.v4_14_replay_io import publish
@@ -12,6 +14,9 @@ from workbench_analysis.v4_14_replay_io import publish
 
 @pytest.mark.parametrize('added', [False, True])
 def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, added):
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
     root, day, freeze, new_head, _ = chain
     head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
     old=json.loads(head_path.read_bytes())
@@ -32,8 +37,8 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
         effective_package=dict(provider_package_date=day,observed_at=now),tdx=bars,observed_at=now)
     binding=publish(root,'inputs/freeze_gate.json',artifact)
     original=(root/native['path']).read_bytes()
-    gbbq=root/'inputs/gbbq';gbbq.write_bytes(b'SYNTHETIC_ONLY')
-    monkeypatch.setattr(executor,'Path',lambda p: gbbq if str(p)=='D:/new_tdx/T0002/hq_cache/gbbq' else Path(p))
+    gbbq=root/'inputs/T0002/hq_cache/gbbq';gbbq.parent.mkdir(parents=True);gbbq.write_bytes(b'SYNTHETIC_ONLY')
+    monkeypatch.setenv('TDX_ROOT',str(root/'inputs'))
     # Only the isolated readiness clock advances past the date gate, never system time.
     clock=datetime.fromisoformat(day+'T23:59:00+08:00')
     result, ready=executor.verify_source_gate(root,day,artifact,dict(source_freeze=binding),now=clock)
@@ -57,6 +62,13 @@ def test_real_gate_preserves_bytes_and_explains_old_scope(chain, monkeypatch, ad
 def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     from scripts import accept_dynamic_daily_baostock_v2 as runtime
     root,day,_,_,_=chain
+    monkeypatch.setenv('V4_BAOSTOCK_RUNTIME_ACCEPTANCE_SOURCE','PG')
+    accepted=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())['accepted_trade_date']
+    install_daily_calendar_pg_fixture(monkeypatch,accepted)
+    install_daily_contract_pg_fixture(monkeypatch,executor)
+    monkeypatch.setenv('V4_DAILY_CONTRACT_SOURCE','PG')
+    monkeypatch.setenv('TDX_ROOT',str(root/'read-only-tdx-fixture'))
+    monkeypatch.setenv('TDX_SNAPSHOT_ROOT',str(root/'tdx-snapshots'))
     before=(root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes()
     package_path=root/'inputs/partial_package.zip'
     package_path.write_bytes(b'SYNTHETIC_TDX_PACKAGE_ALREADY_FROZEN')
@@ -67,8 +79,8 @@ def test_partial_tdx_bytes_survive_baostock_not_ready(chain, monkeypatch):
     monkeypatch.setattr(executor,'source_readiness',lambda *a:dict(time_eligible=True))
     monkeypatch.setattr(executor,'capture_latest_tdx_package',lambda **k:package)
     monkeypatch.setattr(executor,'extract_target_session_bars',lambda *a,**k:bars)
-    def unavailable(*a,**k):raise OSError('SYNTHETIC_RUNTIME_UNAVAILABLE')
-    monkeypatch.setattr(executor,'load_runtime_acceptance_manifest',unavailable)
+    monkeypatch.setattr(executor,'_load_pg_runtime_acceptance',
+        lambda *_a,**_k:(_ for _ in ()).throw(ValueError('BAOSTOCK_PG_RUNTIME_ACCEPTANCE_NOT_FOUND')))
     monkeypatch.setattr(runtime,'accept_runtime',lambda *a:dict(status='WAIT_BAOSTOCK_DAILY'))
     result=executor.execute_sources(root,day,'EXECUTE')
     assert result['status']=='WAIT_BAOSTOCK_DAILY'

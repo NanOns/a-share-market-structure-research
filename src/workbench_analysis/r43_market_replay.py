@@ -3,7 +3,7 @@ from collections import defaultdict, Counter
 import hashlib,json
 from pathlib import Path
 from statistics import fmean, median
-from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT
+from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, pg_json_source, write_candidate_json
 from .market_source_acquisition import official_sessions, write
 from .v4_13_descendant_contracts import DescendantContracts
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package
@@ -13,11 +13,11 @@ from dataclasses import asdict
 
 
 def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=None):
-    root=Path(root).resolve();out=root/OUT;profiles=load(out/'PROFILE_STRUCTURE_REPLAY.json')
+    root=Path(root).resolve();out=root/OUT;profiles=pg_json_source(root,OUT+'/PROFILE_STRUCTURE_REPLAY.json')
     sessions=official_sessions(root);c=DescendantContracts(root);dep=c.dependencies
     param,registry=resolve_package(dep['rotation_contract'],dep['parameter_set'],
          checked(root,c.config['loo_context']['accepted_sector_dependencies']['parameter_set']).read_bytes(),dep['field_registry'])
-    write(out/'MARKET_STAGE_ENTRY.json',dict(task='R4.3',contract='R4_CORRECTED_MARKET_ROTATION_V1',
+    write_candidate_json(root,out/'MARKET_STAGE_ENTRY.json',dict(task='R4.3',contract='R4_CORRECTED_MARKET_ROTATION_V1',
         accepted=False,prior_rotation='No accepted corrected episode; execute original UNKNOWN-preserving gate',
         price_limit_owner='R43_RECONSTRUCTED_DAILY_PRICE_LIMIT_V1 actual frozen isST/rules/raw; intraday remains unobservable',next_stage='INDEPENDENT_QA'))
     from .r43_daily_price_limits import materialize_daily_limits
@@ -49,8 +49,11 @@ def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=N
             ar=f['fields']['amount_ratio20']['value']
             if ar is not None:amounts.append(ar)
         # Endpoint membership is explicitly intersected with the saved historic owner.
-        historical=load(root/'config/v4_market_operational_authority_v1.json')['market']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+        historical=read_path(root,'config/v4_market_operational_authority_v1.json')['value']['market']
         market=load(checked(root,historical));membership=market['sources']['historical_universe']
+        from workbench_db.v4_historical_source_ingress_pg_r1 import admit_source_binding_bytes
+        admit_source_binding_bytes(root,membership,source_origin='V4_R43_MARKET_HISTORICAL_UNIVERSE')
         members=defaultdict(set)
         for r in gzrows(checked(root,membership)):
             if r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):members[r['trade_date']].add(r['security_id'])
@@ -83,10 +86,11 @@ def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=N
         axes=market_axis_primitives(breadth=breadth,participation=median(amounts) if amounts else None,
               limit_coverage=limit_coverage,stress_ratio=stress_ratio,prior_stress_ratio=prior_stress,stress_change_current_ratio=same_current_stress,
               stress_change_current_provided=True,**identity)
-        prefixpath=root/'reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz'
+        prefix_binding=market['sources']['prior_market_path']
+        prefixpath=checked(root,prefix_binding)
         prefix=[r for r in gzrows(prefixpath) if r['trade_date']<=day]
         levels=[r['level'] for r in prefix];level=levels[-1];bridge=[]
-        policy=load(root/'config/v4_market_path_successor_contract_v1.json')
+        policy=load(checked(root,market['sources']['path_contract']))
         for d in sessions[sessions.index(prefix[-1]['trade_date'])+1:sessions.index(day)+1]:
             prev=sessions[sessions.index(d)-1];start=members.get(prev,set());returns=[]
             for sid in sorted(start):
@@ -102,10 +106,10 @@ def materialize_market(root, *, predecessor_profiles=None, predecessor_markets=N
         row=dict(trade_date=day,trend_axis=trend['trend_axis'],**{k:axes[k] for k in ('breadth_axis','participation_axis','stress_level','stress_change')})
         regime_rows.append(row)
         regime=asdict(project(regime_rows)[day])
-        write(folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
+        write_candidate_json(root,folder/'market_owner_candidate_v2.json',dict(trade_date=day,axes=axes,trend=trend,regime=regime,
               breadth_common_count=len(common),breadth_evaluable=len(comparisons),comparison_trade_date=prior3,
-              input_bindings=[owner['core'],owner['history'],membership,ref(root,prefixpath),limit_sources[day]]+([limit_sources[previous]] if previous in limit_sources else []),AS_RECORDED=False,accepted=False,
+              input_bindings=[owner['core'],owner['history'],membership,prefix_binding,limit_sources[day]]+([limit_sources[previous]] if previous in limit_sources else []),AS_RECORDED=False,accepted=False,
               index_successor_bridge=bridge,trend_blocker=None if level is not None else 'INCOMPLETE_DATED_INDEX_BRIDGE',stress_blocker=None if stress_ratio is not None else 'NO_ACCEPTED_DATED_DAILY_LIMIT_OBSERVATIONS',stress_change_blocker=None if limit_common else 'NO_SAME_MEMBER_PRIOR_DAILY_LIMIT_OWNER',daily_limit_coverage=limit_coverage,daily_limit_known=len(current_limits),stress_same_member_count=len(limit_common),intraday_touch='NOT_OBSERVABLE_FROM_DAILY'))
         receipts.append(dict(trade_date=day,market=ref(root,folder/'market_owner_candidate_v2.json'),knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,PIT_ELIGIBLE=False))
-    write(out/'MARKET_REPLAY.json',dict(owners=receipts,acceptance='EXECUTED_FIELD_LOCAL_OBSERVABILITY_GAPS',production_admission=False))
+    write_candidate_json(root,out/'MARKET_REPLAY.json',dict(owners=receipts,acceptance='EXECUTED_FIELD_LOCAL_OBSERVABILITY_GAPS',production_admission=False))
     return receipts

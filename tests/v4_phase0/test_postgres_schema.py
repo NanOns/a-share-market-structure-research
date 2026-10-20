@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
-from datetime import date
+from datetime import date, datetime, timezone, timedelta
+import hashlib
 import json
 from pathlib import Path
 import uuid
@@ -10,6 +11,7 @@ import pytest
 
 psycopg = pytest.importorskip("psycopg")
 from scripts.apply_v4_phase0_schema import dsn
+from v4.contracts.phase0_gate import _count_lifecycle_t0_board_facts, _count_valid_t0_publication_heads
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -44,15 +46,41 @@ def add_calendar_session(pg, calendar_id, trade_date, session_no=None):
 def add_publication(pg, *, publication_id, namespace_id, trade_date, lineage_id, calendar_id=None, revision_no=1, core_revision=1, parent_id=None, prior_id=None, prior_state_head=None, prior_logical_digest=None, gap="INITIAL_BOUNDARY", status="ACCEPTED"):
     calendar_id = calendar_id or f"CAL-{namespace_id}"
     add_calendar_session(pg, calendar_id, trade_date)
+    # 测试事务内构造最小、精确的合同绑定；调用方最终ROLLBACK，不形成真实批准事实。
+    namespace = pg.execute(
+        "select namespace from v4.model_namespaces where namespace_id=%s", (namespace_id,)
+    ).fetchone()[0]
+    contract_id = f"TEST_SCHEMA_{publication_id}"
+    contract_version = "1.0.0"
+    raw_content = b'{"test_fixture":true}'
+    raw_sha256 = hashlib.sha256(raw_content).hexdigest()
+    source_revision = f"test-fixture:{publication_id}"
+    pg.execute(
+        """insert into v4.contract_versions
+             (contract_id,version,raw_content,raw_sha256,content_format,schema_version,namespace,source_revision)
+           values (%s,%s,%s,%s,'JSON','1.0',%s,%s)""",
+        (contract_id, contract_version, raw_content, raw_sha256, namespace, source_revision),
+    )
+    pg.execute(
+        """insert into v4.contract_approval_events
+             (contract_id,version,raw_sha256,action,authorized_by,authorization_ref,occurred_at,source_revision,source_sha256)
+           values (%s,%s,%s,'APPROVED','test-fixture-only','rollback-only-test-fixture',clock_timestamp(),%s,%s)""",
+        (contract_id, contract_version, raw_sha256, source_revision, raw_sha256),
+    )
+    contract_bindings = json.dumps(
+        {contract_id: {"version": contract_version, "raw_sha256": raw_sha256}}
+    )
     pg.execute(
         """insert into v4.publications(
              publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
              core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
-             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
-           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,case when %s='ACCEPTED' then now() else null end)""",
+             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,
+             source_manifest_contract_id,contract_bindings,accepted_at)
+           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'V4_PG_CONSUMED_SOURCE_MANIFEST_R3',%s::jsonb,
+                   case when %s='ACCEPTED' then clock_timestamp() else null end)""",
         (publication_id, lineage_id, trade_date, calendar_id, revision_no, status, namespace_id, core_revision,
          "a" * 64, (publication_id.encode().hex() * 64)[:64], parent_id, prior_id, prior_logical_digest,
-         prior_state_head, None if prior_id else gap, status),
+         prior_state_head, None if prior_id else gap, contract_bindings, status),
     )
 
 
@@ -68,12 +96,55 @@ def add_publication_state_head(pg, *, publication_id, namespace_id, trade_date, 
     )
 
 
-def add_source_revision(pg, *, revision_id, logical_id, revision_no, now, parent_id=None, provider_available_at=None):
+def add_source_revision(
+    pg, *, revision_id, logical_id, revision_no, now, parent_id=None,
+    provider_available_at=None, digest="b" * 64, effective_from=None, effective_to=None,
+    target_trade_date=date(2026, 9, 24),
+):
+    # 为触发器提供完整的测试包→fact→revision绑定，所有记录均由外层测试事务回滚。
+    package_id = f"TEST-PACKAGE-{revision_id}"
+    source_key = "test_source"
+    fact_digest = digest
+    source_fact_sha256 = hashlib.sha256(f"source-fact:{revision_id}".encode()).hexdigest()
+    receipt_id = f"TEST-RECEIPT-{revision_id}"
+    logical_locator = {"revision_id": revision_id}
+    binding = {
+        "source_key": source_key,
+        "logical_fact_id": logical_id,
+        "fact_digest": fact_digest,
+        "source_fact_sha256": source_fact_sha256,
+        "acceptance_receipt_id": receipt_id,
+        "record_locator": logical_locator,
+        "record_count": 1,
+    }
+    pg.execute(
+        """insert into v4.source_packages
+             (package_id,contract_version,package_sha256,source_page_url,page_observed_at,
+              declared_update_date,target_trade_date,parser_version,manifest,accepted_scope)
+           values (%s,'TEST_SOURCE_PACKAGE_V1',%s,'test://fixture',%s,%s,%s,'test-parser-v1',%s::jsonb,'ACCEPTED_SOURCE_PACKAGE')""",
+        (package_id, hashlib.sha256(package_id.encode()).hexdigest(), now, target_trade_date,
+         target_trade_date, json.dumps({"source_fact_bindings": [binding]})),
+    )
+    pg.execute(
+        """insert into v4.source_package_facts
+             (package_id,source_key,logical_fact_id,fact_digest,source_fact_sha256,record_locator,
+              record_count,byte_count,acceptance_receipt_id)
+           values (%s,%s,%s,%s,%s,%s::jsonb,1,1,%s)""",
+        (package_id, source_key, logical_id, fact_digest, source_fact_sha256,
+         json.dumps(logical_locator), receipt_id),
+    )
+    payload = json.dumps({
+        "source_fact_sha256": source_fact_sha256,
+        "source_key": source_key,
+        "producer_receipt_id": receipt_id,
+    })
     pg.execute(
         """insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
-             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id)
-           values (%s,%s,%s,'{}',%s,%s,%s,%s,%s,%s)""",
-        (revision_id, logical_id, revision_no, "b" * 64, provider_available_at, now, now, now, parent_id),
+             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id,
+             source_package_id,source_package_source_key,source_fact_digest,effective_from,effective_to)
+           values (%s,%s,%s,%s::jsonb,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+        (revision_id, logical_id, revision_no, payload, fact_digest, provider_available_at, now, now, now,
+         parent_id, package_id, source_key, fact_digest, effective_from, effective_to),
     )
 
 
@@ -87,7 +158,7 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
     with connect() as pg:
         tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
         assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
-        versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
+        versions = pg.execute("select version from v4.schema_migrations order by version").fetchall()
         assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1", "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1", "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"} <= {x[0] for x in versions}
         indexes = {r[0] for r in pg.execute("select indexname from pg_indexes where schemaname='v4'").fetchall()}
         assert {"uq_source_revision_single_successor", "ix_source_revisions_cutoff", "ix_publication_consumed_source_revision", "uq_publication_same_day_parent_single_successor", "ix_membership_effective"} <= indexes
@@ -313,7 +384,7 @@ def _prior_state_digest(pg, namespace_id, publication_id):
 
 
 def test_lifecycle_machine_contract_matches_schema():
-    contract = json.loads((ROOT / "config/v4_security_lifecycle_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_lifecycle_fact_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_facts'").fetchall()}
     assert set(contract["required_fields"]) <= columns
@@ -321,13 +392,13 @@ def test_lifecycle_machine_contract_matches_schema():
 
 
 def test_r5_security_lifecycle_history_contract_matches_formal_schema():
-    contract = json.loads((ROOT / "config/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute(
             "select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_history'"
         ).fetchall()}
         migration = pg.execute(
-            "select checksum_sha256 from v4_meta.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
+            "select checksum_sha256 from v4.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
         ).fetchone()
         triggers = {r[0] for r in pg.execute(
             "select tgname from pg_trigger where tgrelid='v4.security_lifecycle_history'::regclass and not tgisinternal"
@@ -338,8 +409,8 @@ def test_r5_security_lifecycle_history_contract_matches_formal_schema():
 
 
 def test_r6_2_provider_facts_and_normalized_intervals_are_separate_append_only_contracts():
-    provider_contract = json.loads((ROOT / "config/v4_provider_lifecycle_fact_v1.json").read_text("utf-8"))
-    interval_contract = json.loads((ROOT / "config/v4_security_membership_interval_v1.json").read_text("utf-8"))
+    provider_contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_provider_lifecycle_fact_v1.json").read_text("utf-8"))
+    interval_contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_security_membership_interval_v1.json").read_text("utf-8"))
     with connect() as pg:
         provider_columns = {r[0] for r in pg.execute(
             "select column_name from information_schema.columns where table_schema='v4' and table_name='provider_lifecycle_fact_history'"
@@ -376,12 +447,9 @@ def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable(
             (first_id, 1, now, None, "1" * 64),
             (later_id, 2, later, first_id, "2" * 64),
         ):
-            pg.execute(
-                """insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
-                     provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id,
-                     effective_from,effective_to)
-                   values (%s,%s,%s,'{}',%s,null,%s,%s,%s,%s,%s,null)""",
-                (source_id, fact_key, rev, digest, observed, observed, observed, parent, effective_from),
+            add_source_revision(
+                pg, revision_id=source_id, logical_id=fact_key, revision_no=rev,
+                now=observed, parent_id=parent, digest=digest, effective_from=effective_from,
             )
             pg.execute(
                 """insert into v4.security_lifecycle_history(lifecycle_fact_key,security_id,symbol,security_type,
@@ -411,7 +479,7 @@ def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable(
 
 
 def test_membership_machine_contract_matches_schema():
-    contract = json.loads((ROOT / "config/v4_pit_membership_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_pit_membership_fact_v1.json").read_text("utf-8"))
     with connect() as pg:
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='security_membership_facts'").fetchall()}
     assert set(contract["required_fields"]) <= columns
@@ -437,6 +505,137 @@ def test_lifecycle_fact_revision_and_knowledge_timestamps_match_source_revision(
                             ingested_at,system_available_at,source_revision_id,provider_available_at,supersedes_revision_id,
                             source_identity,quality) values (%s,'A_STOCK',%s,%s,%s,%s,%s,%s,null,'bad','OBSERVED')""",
                            (security_id, date(2020, 1, 1), now, now, now, source_id, now))
+
+
+def test_stage00_lifecycle_scope_query_requires_exact_t0_package_and_four_board_facts():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 11)
+    # Legitimate late EOD/reconstruction availability stays at its true timestamp.
+    available = datetime(2026, 10, 19, 9, 0, tzinfo=timezone(timedelta(hours=8)))
+    board_rows = (
+        ("SEC-" + "A" * 32, "SH.600001", "A_STOCK", "MAIN", "SH_MAIN"),
+        ("SEC-" + "B" * 32, "SZ.000001", "A_STOCK", "MAIN", "SZ_MAIN"),
+        ("SEC-" + "C" * 32, "SZ.300001", "A_STOCK", "CHINEXT", "CHINEXT"),
+        ("SEC-" + "D" * 32, "SH.688001", "A_STOCK", "STAR", "STAR"),
+        ("SEC-" + "E" * 32, "BJ.430001", "A_STOCK", "BEIJING", "BSE"),
+        ("SEC-" + "F" * 32, "SH.510300", "ETF", "MAIN", "ETF"),
+    )
+    with connect() as pg, rollback_only(pg):
+        for index, (security_id, symbol, security_type, board, _) in enumerate(board_rows):
+            revision_id = f"STAGE00-LIFE-{suffix}-{index}"
+            add_source_revision(
+                pg, revision_id=revision_id, logical_id=f"STAGE00-FACT-{suffix}-{index}",
+                revision_no=1, now=available, effective_from=date(2020, 1, 1), target_trade_date=t0,
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_facts(
+                       security_id,security_type,board,effective_from,effective_to,observed_at,
+                       ingested_at,system_available_at,source_revision_id,source_identity,quality)
+                   values (%s,%s,%s,%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
+                (security_id, security_type, board, date(2020, 1, 1), available, available, available, revision_id),
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_history(
+                       lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,
+                       status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                       source_revision_id,source_identity)
+                   values (%s,%s,%s,%s,%s,%s,%s,'LISTED','OBSERVED','TEST_LIFECYCLE_V1',%s,%s,%s,%s,
+                           'fixture-accepted-identity')""",
+                (f"STAGE00-FACT-{suffix}-{index}", security_id, symbol, security_type, board,
+                 date(2020, 1, 1), date(2020, 1, 1), available, available, available, revision_id),
+            )
+        # A prior code for the same entity is valid only in its old effective interval.
+        old_revision = f"STAGE00-OLD-ALIAS-{suffix}"
+        add_source_revision(
+            pg, revision_id=old_revision, logical_id=f"STAGE00-OLD-ALIAS-FACT-{suffix}",
+            revision_no=1, now=available, effective_from=date(2010, 1, 1),
+            effective_to=date(2019, 12, 31), target_trade_date=t0,
+        )
+        pg.execute(
+            """insert into v4.security_lifecycle_history(
+                   lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,effective_to,
+                   status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                   source_revision_id,source_identity)
+               values (%s,%s,'SH.600000','A_STOCK','MAIN',%s,%s,%s,'LISTED','OBSERVED',
+                       'TEST_LIFECYCLE_V1',%s,%s,%s,%s,'fixture-accepted-identity')""",
+            (f"STAGE00-OLD-ALIAS-FACT-{suffix}", "SEC-" + "A" * 32,
+             date(2010, 1, 1), date(2010, 1, 1), date(2019, 12, 31),
+             available, available, available, old_revision),
+        )
+        assert _count_lifecycle_t0_board_facts(pg, t0.isoformat()) == {
+            "SH_MAIN": 1, "SZ_MAIN": 1, "CHINEXT": 1, "STAR": 1,
+        }
+        # PIT mode at the actual T0 cutoff excludes late availability.
+        pit_cutoff = datetime(2026, 9, 11, 23, 59, tzinfo=timezone(timedelta(hours=8)))
+        assert _count_lifecycle_t0_board_facts(
+            pg, t0.isoformat(), knowledge_cutoff=pit_cutoff,
+        ) == {}
+        with pytest.raises(ValueError, match="TIMEZONE_AWARE"):
+            _count_lifecycle_t0_board_facts(
+                pg, t0.isoformat(), knowledge_cutoff=datetime(2026, 9, 11, 23, 59),
+            )
+        assert _count_lifecycle_t0_board_facts(pg, date(2026, 9, 25).isoformat()) == {}
+
+
+def test_stage00_lifecycle_scope_rejects_one_source_symbol_bound_to_two_entities():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 24)
+    available = datetime(2026, 9, 24, 9, 0, tzinfo=timezone(timedelta(hours=8)))
+    with connect() as pg, rollback_only(pg):
+        for index, security_id in enumerate(("SEC-" + "1" * 32, "SEC-" + "2" * 32)):
+            revision_id = f"STAGE00-DUPLICATE-SYMBOL-{suffix}-{index}"
+            logical_id = f"STAGE00-DUPLICATE-FACT-{suffix}-{index}"
+            add_source_revision(
+                pg, revision_id=revision_id, logical_id=logical_id, revision_no=1,
+                now=available, effective_from=date(2020, 1, 1), target_trade_date=t0,
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_facts(
+                       security_id,security_type,board,effective_from,effective_to,observed_at,
+                       ingested_at,system_available_at,source_revision_id,source_identity,quality)
+                   values (%s,'A_STOCK','MAIN',%s,null,%s,%s,%s,%s,'fixture-owner-source','OBSERVED')""",
+                (security_id, date(2020, 1, 1), available, available, available, revision_id),
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_history(
+                       lifecycle_fact_key,security_id,symbol,security_type,board,list_date,effective_from,
+                       status,quality,source_contract_id,observed_at,ingested_at,system_available_at,
+                       source_revision_id,source_identity)
+                   values (%s,%s,'SH.600001','A_STOCK','MAIN',%s,%s,'LISTED','OBSERVED',
+                           'TEST_LIFECYCLE_V1',%s,%s,%s,%s,'fixture-accepted-identity')""",
+                (logical_id, security_id, date(2020, 1, 1), date(2020, 1, 1),
+                 available, available, available, revision_id),
+            )
+        # Ambiguous symbol identity is excluded instead of being counted twice.
+        assert _count_lifecycle_t0_board_facts(pg, t0.isoformat()) == {}
+
+
+def test_stage00_publication_scope_query_requires_t0_and_closed_state_head_binding():
+    suffix = uuid.uuid4().hex
+    t0 = date(2026, 9, 24)
+    namespace_id = f"STAGE00-NS-{suffix}"
+    publication_id = f"STAGE00-PUB-{suffix}"
+    state_head_id = f"STAGE00-STATE-{suffix}"
+    logical_digest = "d" * 64
+    with connect() as pg, rollback_only(pg):
+        add_namespace(pg, namespace_id)
+        add_publication(
+            pg, publication_id=publication_id, namespace_id=namespace_id,
+            trade_date=t0, lineage_id=f"STAGE00-LINE-{suffix}",
+        )
+        add_publication_state_head(
+            pg, publication_id=publication_id, namespace_id=namespace_id,
+            trade_date=t0, state_head_id=state_head_id, logical_digest=logical_digest,
+        )
+        assert _count_valid_t0_publication_heads(pg, t0.isoformat()) == 1
+        assert _count_valid_t0_publication_heads(pg, date(2026, 9, 25).isoformat()) == 0
+        pg.execute("SAVEPOINT stage00_bad_head_digest")
+        with pytest.raises(psycopg.Error):
+            pg.execute(
+                "update v4.publication_heads set state_logical_digest=%s where trade_date=%s and model_namespace_id=%s",
+                ("e" * 64, t0, namespace_id),
+            )
+        pg.execute("ROLLBACK TO SAVEPOINT stage00_bad_head_digest")
 
 
 def test_pit_fact_revision_chain_and_late_correction_are_append_only():
@@ -467,7 +666,7 @@ def test_pit_fact_revision_chain_and_late_correction_are_append_only():
 
 
 def test_current_universe_member_is_not_historical_membership_proof():
-    contract = json.loads((ROOT / "config/v4_pit_membership_fact_v1.json").read_text("utf-8"))
+    contract = json.loads((Path(__file__).resolve().parent / "fixtures/v4_pit_membership_fact_v1.json").read_text("utf-8"))
     assert contract["current_membership_replay"] == "DIAGNOSTIC_ONLY"
     assert contract["selection_rule"].find("system_available_at") >= 0
     with connect() as pg, rollback_only(pg):
@@ -477,6 +676,82 @@ def test_current_universe_member_is_not_historical_membership_proof():
         pg.execute("insert into v4.universe_snapshots(universe_snapshot_id,contract_id,contract_version,trade_date,observed_at,ingested_at,system_available_at,universe_basis,logical_digest,member_count) values (%s,'U','1.0.0',%s,%s,%s,%s,'DIAGNOSTIC_NON_PIT',%s,1)", (snapshot, date(2026, 9, 24), now, now, now, "d" * 64))
         pg.execute("insert into v4.universe_members(universe_snapshot_id,security_id,security_type,quality) values (%s,'SH.600000','A_STOCK','CURRENT_ONLY')", (snapshot,))
         assert pg.execute("select count(*) from v4.security_membership_facts where security_id='SH.600000'").fetchone()[0] == 0
+
+
+def test_source_first_candidate_uses_real_postgres_and_rolls_back_without_publication(monkeypatch):
+    """Exercise source-first inserts and rollback against v4 in an isolated fixture transaction."""
+    import workbench_db.v4_daily_source_ingest_r6 as ingest
+
+    suffix = uuid.uuid4().hex
+    day = date(2026, 10, 16)
+    package_id = f"STAGE00-SOURCE-FIRST-{suffix}"
+    fact = {
+        "source_key": "tdx", "logical_fact_id": f"daily-source:{day}:tdx:{suffix}",
+        "fact_digest": hashlib.sha256(("fact:" + suffix).encode()).hexdigest(),
+        "source_fact_sha256": hashlib.sha256(("bytes:" + suffix).encode()).hexdigest(),
+        "record_locator": {"fixture": "real-postgres-rollback-only"},
+        "record_count": 1, "byte_count": 16,
+    }
+    manifest = {
+        "accepted_scope": "ACCEPTED_SOURCE_PACKAGE", "AS_RECORDED": True,
+        "PIT_ELIGIBLE": False,
+        "source_observed_at": "2026-10-16T08:00:00+00:00",
+        "source_readiness_observed_at": "2026-10-16T10:00:00+00:00",
+        "acceptance_receipt_id": f"TEST-ONLY-{suffix}",
+        "source_freeze_sha256": "a" * 64,
+        "source_fact_bindings": [{
+            "source_key": fact["source_key"], "logical_fact_id": fact["logical_fact_id"],
+            "fact_digest": fact["fact_digest"], "source_fact_sha256": fact["source_fact_sha256"],
+            "record_locator": fact["record_locator"], "record_count": fact["record_count"],
+            "acceptance_receipt_id": f"TEST-ONLY-{suffix}",
+        }],
+    }
+    plan = {
+        "contract_id": ingest.CONTRACT_ID, "contract_version": ingest.CONTRACT_VERSION,
+        "status": "ACCEPTED", "trade_date": day.isoformat(), "package_id": package_id,
+        "package_sha256": hashlib.sha256(("package:" + suffix).encode()).hexdigest(),
+        "package_manifest": manifest, "source_facts": [fact],
+    }
+    plan_sha = hashlib.sha256(ingest._canonical(plan)).hexdigest()
+    monkeypatch.setattr(
+        ingest, "_verify_independent_acceptance_authority",
+        lambda _plan, **_kwargs: ingest._IndependentAcceptanceProof(
+            plan_sha, f"TEST_ONLY_ROLLBACK_FIXTURE_{suffix}"),
+    )
+
+    with connect() as pg, rollback_only(pg):
+        source_only = ingest.persist_source_ingest_plan(
+            pg, plan, ingested_at="2026-10-16T10:05:00+00:00",
+            system_available_at="2026-10-16T10:06:00+00:00",
+        )
+        assert source_only["persisted"] is True and source_only["publication_id"] is None
+        assert pg.execute("select count(*) from v4.publications where publication_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_package_facts where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.publication_consumed_sources where source_key=%s", (fact["source_key"],)).fetchone()[0] == 0
+
+        replay = ingest.persist_source_ingest_plan(
+            pg, plan, ingested_at="2026-10-16T10:05:00+00:00",
+            system_available_at="2026-10-16T10:06:00+00:00",
+        )
+        assert replay["status"] == "ALREADY_PRESENT_IDENTICAL"
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+
+        with pytest.raises(ingest.SourceIngestConflict, match="PUBLICATION_IDENTITY_CONFLICT"):
+            ingest.persist_source_ingest_plan(
+                pg, plan, publication_id=f"MISSING-PUBLICATION-{suffix}", publication_revision=1,
+                ingested_at="2026-10-16T10:05:00+00:00",
+                system_available_at="2026-10-16T10:06:00+00:00",
+            )
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 1
+        assert pg.execute("select count(*) from v4.publication_consumed_sources where source_key=%s", (fact["source_key"],)).fetchone()[0] == 0
+
+    with connect() as pg:
+        assert pg.execute("select count(*) from v4.source_packages where package_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_package_facts where package_id=%s", (package_id,)).fetchone()[0] == 0
+        assert pg.execute("select count(*) from v4.source_revisions where source_package_id=%s", (package_id,)).fetchone()[0] == 0
 
 
 def test_source_revision_fork_is_rejected():
@@ -494,6 +769,6 @@ def test_failed_schema_migration_rolls_back_all_ddl():
     with connect() as pg:
         with pytest.raises(psycopg.Error):
             with pg.transaction():
-                pg.execute("create table v4_meta.\"" + probe + "\" (id integer primary key)")
-                pg.execute("CREATE TABLE v4_meta.__intentionally_invalid_ddl ( id this_is_not_a_type )")
-        assert pg.execute("select to_regclass(%s)", (f"v4_meta.{probe}",)).fetchone()[0] is None
+                pg.execute("create table v4.\"" + probe + "\" (id integer primary key)")
+                pg.execute("CREATE TABLE v4.__intentionally_invalid_ddl ( id this_is_not_a_type )")
+        assert pg.execute("select to_regclass(%s)", (f"v4.{probe}",)).fetchone()[0] is None

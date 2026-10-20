@@ -1,8 +1,8 @@
 """FP02 immutable indexed research snapshots. No source discovery or TDX writes."""
 import gzip
-import hashlib
 import json
 import os
+import re
 import time
 import uuid
 from contextlib import ExitStack,contextmanager,nullcontext
@@ -11,7 +11,6 @@ from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from .current_v4_context import CurrentAcceptedV4Reader, SourceInvalid, canonical, digest
-from .v4_daily_refresh import atomic_bytes, refresh_status
 
 POINTER = 'config/v4_research_snapshot_authority_v1.json'
 DOMAINS = ('stocks', 'sectors', 'events', 'radar', 'forward', 'settlement', 'sources', 'market', 'focus')
@@ -25,9 +24,9 @@ def snapshot_request_scope():
         yield
         return
     with ExitStack() as stack:
-        token=_request_reads.set((stack,{}))
+        context_token_handle=_request_reads.set((stack,{}))
         try:yield
-        finally:_request_reads.reset(token)
+        finally:_request_reads.reset(context_token_handle)
 
 def numeric_sort_expressions(field,descending):
     # Preserve the accepted SQLite JSON value ordering: NULL, numeric, text.
@@ -56,25 +55,14 @@ def value_projection(value):
     return value
 
 
-def reference(root, path):
-    p = Path(path)
-    if not p.is_absolute(): p = root / p
-    h = hashlib.sha256()
-    with p.open('rb') as f:
-        while chunk := f.read(8 * 1024 * 1024): h.update(chunk)
-    return dict(path=p.relative_to(root).as_posix(), sha256=h.hexdigest(), bytes=p.stat().st_size)
-
-
 def frozen_current_reader(root):
     root=Path(root).resolve()
-    runtime=json.loads((root/'config/v4_production_runtime_authority_v1.json').read_bytes())
-    if runtime.get('contract_id')!='V4_PRODUCTION_RUNTIME_AUTHORITY_V1' or not runtime.get('ui_read_only') or runtime.get('tdx_write_authorized') or runtime.get('trading_action_authorized'):
-        raise SourceInvalid('RUNTIME_AUTHORITY_INVALID')
-    verifier=CurrentAcceptedV4Reader(root,require_runtime=True);verifier._read(runtime['read_authority'])
-    reader=CurrentAcceptedV4Reader(root,contract_path=runtime['read_authority']['path'],follow_runtime=False)
-    _,sha=reader._contract()
-    if sha!=runtime['read_authority']['sha256']:raise SourceInvalid('FROZEN_READ_AUTHORITY_MISMATCH')
-    return reader,runtime['read_authority']
+    reader=CurrentAcceptedV4Reader(root,require_runtime=True)
+    contract,sha=reader._contract()
+    # The contract bytes are selected and digest-verified in the PG Registry;
+    # they are a version identity, not a workspace artifact reference.
+    return reader,dict(contract_id=contract['contract_id'],version=contract.get('version'),
+        namespace=contract.get('namespace'),sha256=sha,bytes=len(canonical(contract)))
 
 
 def compact_cell(cell, ref, field, date):
@@ -98,40 +86,50 @@ def compact_cell(cell, ref, field, date):
         computation_domain=cell.get('producer') or cell.get('producer_contract_id') or 'OWNER_PROJECTION')
 
 
-def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=True, focus_override=None, authority_overrides=None):
+def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=False, focus_override=None, authority_overrides=None):
     root = Path(root).resolve(); started = time.perf_counter()
-    from .joint_release import AUTHORITY as JOINT_AUTHORITY
-    if publish and (root/JOINT_AUTHORITY).exists():raise SourceInvalid('ACTIVE_JOINT_REQUIRES_STAGED_BUILD_AND_JOINT_CAS')
+    if publish:raise SourceInvalid('PG_CANDIDATE_ONLY_ACCEPTED_HEAD_CAS_NOT_IMPLEMENTED')
+    if expected_pointer is not None:raise SourceInvalid('WORKSPACE_POINTER_CAS_REMOVED_USE_PG_PUBLICATION_HEAD')
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path, admit_bound
     def operational(key,path):
         if authority_overrides is not None and key in authority_overrides:return authority_overrides[key]
-        return json.loads(path.read_bytes()) if path.exists() else None
-    pointer = root / POINTER
-    before = pointer.read_bytes() if pointer.exists() else None
-    if expected_pointer is not None and (digest(before) if before else None) != expected_pointer:
-        raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
-    legacy,read_authority = frozen_current_reader(root)
+        try:return json.loads(read_path(root,path.relative_to(root).as_posix())['raw'])
+        except (OSError,ValueError):return None
+    legacy,_ = frozen_current_reader(root)
     context = legacy.load_context(); date = context['context']['accepted_trade_date']
     if date>datetime.now(ZoneInfo('Asia/Shanghai')).date().isoformat():raise SourceInvalid('FUTURE_TRADE_DATE_FORBIDDEN')
-    if before:
-        previous=legacy._read(json.loads(before)['manifest'])
-        if date<previous['context']['accepted_trade_date']:raise SourceInvalid('OLDER_SNAPSHOT_REQUIRES_EXPLICIT_ROLLBACK')
     contract, contract_digest = legacy._contract()
+    # Candidate creation is the explicit one-time SourceIngress boundary for
+    # exact bytes already named by accepted owner bindings. Consumers still
+    # deserialize only the PostgreSQL readback and never keep a file fallback.
+    exact_read=legacy._read;exact_verify=legacy._verify
+    def admitted_read(ref):
+        try:return exact_read(ref)
+        except SourceInvalid as error:
+            if not str(error).startswith('BOUND_ARTIFACT_MISSING:'):raise
+            admit_bound(root,ref)
+            return exact_read(ref)
+    def admitted_verify(ref):
+        try:return exact_verify(ref)
+        except SourceInvalid as error:
+            if not str(error).startswith('BOUND_ARTIFACT_MISSING:'):raise
+            admit_bound(root,ref)
+            return exact_verify(ref)
+    legacy._read=admitted_read;legacy._verify=admitted_verify
     sources = dict(contract['sources']); owners = dict(contract['owner_heads'])
-    name_authority=json.loads((root/'config/v4_display_names_authority_v1.json').read_bytes())
-    decoration=legacy._read(name_authority['source']);sources['display_names']=name_authority['source']
-    sources.update({'read_contract':read_authority})
+    decoration={'stocks':{},'sectors':{},'observed_at':context['context']['data_updated_at']}
     advanced_head = legacy._read(owners['v4_13'])
     units={}
     for ref in advanced_head['contract_refs']:
         if 'field_registry' in ref['path']:
             units.update({v['field']:v.get('unit') for v in legacy._read(ref)['fields']})
     advanced = next(r for r in advanced_head['artifact_refs'] if r['path'].endswith('profile_advanced.jsonl.gz'))
-    legacy._verify(advanced); sources['advanced'] = advanced
+    admit_bound(root,advanced); sources['advanced'] = advanced
     sector_head = legacy._read(owners['v4_08'])
     units.update({v['field_id']:v.get('unit') for v in legacy._read(sector_head['field_registry'])['fields']})
     manifest = legacy._read(sector_head['r5_2_candidate_manifest'])
     for k in ('SECTOR_NATIVE', 'ROTATION'):
-        sources[k] = manifest['artifacts'][k]; legacy._verify(sources[k])
+        sources[k] = manifest['artifacts'][k]; admit_bound(root,sources[k])
     identity = legacy._source(contract, 'identity_names')['records']
     names = {}; aliases = {}
     for row in identity:
@@ -139,10 +137,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         aliases.setdefault(sid, set()).update((symbol, symbol.split('.')[-1]))
         if row.get('symbol_effective_from', '') <= date and (not row.get('symbol_effective_to') or row['symbol_effective_to'] >= date):
             names[sid] = row
-    directory = root / 'data/v4/research_snapshots' / uuid.uuid4().hex
-    directory.mkdir(parents=True); dbpath = directory / 'research.pg.json'
+    release_id=uuid.uuid4().hex
     from workbench_db.v4_snapshot_pg_r2 import Builder
-    db = Builder(root,directory.name)
+    db = Builder(root,release_id)
     db.executescript('''CREATE TABLE objects(domain TEXT,id TEXT,name TEXT,symbol TEXT,state TEXT,payload TEXT,PRIMARY KEY(domain,id));
         CREATE INDEX object_name ON objects(domain,name,id);
         CREATE INDEX object_symbol ON objects(domain,symbol,id);
@@ -153,6 +150,12 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         CREATE INDEX member_security ON members(security,sector);
         CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT);''')
     counts = {}; field_registry = {}
+    def jsonl_rows(ref):
+        source=admit_bound(root,ref);raw=source['raw']
+        if len(raw)!=ref.get('bytes',ref.get('byte_count')) or digest(raw)!=ref['sha256']:
+            raise SourceInvalid('BOUND_ARTIFACT_DIGEST_MISMATCH:'+ref['path'])
+        payload=gzip.decompress(raw) if ref['path'].endswith('.gz') else raw
+        return (json.loads(line) for line in payload.splitlines() if line)
     def put(domain, row):
         sid = row['entity_id']; ident = names.get(sid, {})
         object_id = sid if domain in ('stocks','sectors','sources') else str(sid)+':'+digest(canonical(row))[:20]
@@ -162,7 +165,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         observed_name=decoration['stocks'].get(symbol) if domain!='sectors' else decoration['sectors'].get(sid)
         if observed_name:name=observed_name
         row.update(display_name=name, security_id=sid if domain=='stocks' else None, symbol=symbol, trade_date=date)
-        row['display_name_source']=dict(source_digest=sources['display_names']['sha256'],observed_at=decoration['observed_at'],pit_safe=False,scope='DISPLAY_ONLY') if observed_name else dict(scope='ACCEPTED_IDENTITY_OR_CODE_FALLBACK')
+        row['display_name_source']=dict(source_digest=sources['display_names']['sha256'],observed_at=decoration['observed_at'],pit_safe=False,scope='DISPLAY_ONLY') if observed_name and sources.get('display_names') else dict(scope='ACCEPTED_IDENTITY_OR_CODE_FALLBACK')
         fields = row.get('fields', {})
         if domain=='sectors':fields.pop('algorithm_state',None)  # Retired seven-summary placeholder; use real output_state.
         for key, cell in list(fields.items()):
@@ -208,9 +211,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 result['fields'][key]=compact_cell(cell,sources['states'],key,date)
             db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['entity_id'],));put('stocks',result)
         unmatched=0;advanced_cutoff=date
-        with gzip.open(root/advanced['path'],'rt',encoding='utf8') as f:
-            for line in f:
-                row=json.loads(line)
+        for row in jsonl_rows(advanced):
                 advanced_cutoff=row.get('cutoff',date)
                 if row['trade_date'] != date: raise SourceInvalid('PROFILE_DATE_MIX')
                 old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],)).fetchone()
@@ -219,9 +220,7 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),advanced,k,date) for k,v in row['fields'].items()})
                 db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         for kind in ('SECTOR_NATIVE','ROTATION'):
-            with gzip.open(root/sources[kind]['path'],'rt',encoding='utf8') as f:
-                for line in f:
-                    row=json.loads(line)
+            for row in jsonl_rows(sources[kind]):
                     if row['target_trade_date'] != date: raise SourceInvalid('SECTOR_DATE_MIX')
                     old=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],)).fetchone()
                     if not old: continue
@@ -230,8 +229,8 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                     result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),sources[kind],k,date) for k,v in cells.items()})
                     db.execute("DELETE FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],));put('sectors',result)
         domain_features={}
-        domain_contract=root/'config/v4_research_domain_bff_contract_v2.json'
-        if domain_contract.exists():sources['domain_bff_contract']=reference(root,domain_contract)
+        # Optional domain contracts are not runtime authorities. They remain
+        # unavailable here until their exact approved Registry binding exists.
         market_authority=root/'config/v4_market_operational_authority_v1.json'
         authority=operational('market',market_authority)
         if authority is not None:
@@ -244,10 +243,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         authority=operational('sector',sector_authority)
         if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('SECTOR_SOURCE_CONTEXT_MISMATCH')
-            legacy._verify(authority['native']);sources['sector_operational']=authority['native'];domain_features['sector']=authority
-            with gzip.open(root/authority['native']['path'],'rt',encoding='utf8') as f:
-                for line in f:
-                    row=json.loads(line);old=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],)).fetchone()
+            admit_bound(root,authority['native']);sources['sector_operational']=authority['native'];domain_features['sector']=authority
+            for row in jsonl_rows(authority['native']):
+                    old=db.execute("SELECT payload FROM objects WHERE domain='sectors' AND id=?",(row['sector_id'],)).fetchone()
                     if not old:raise SourceInvalid('SECTOR_IDENTITY_NOT_BOUND')
                     result=json.loads(old[0]);result['fields'].update({k:compact_cell(dict(v,unit=units.get(k)),authority['native'],k,date) for k,v in row['fields'].items()})
                     result['fields']['sector_type']=compact_cell(dict(value=row['sector_type'],quality='KNOWN'),authority['native'],'sector_type',date)
@@ -256,21 +254,20 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         authority=operational('stocks',stock_authority)
         if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('STOCK_SOURCE_CONTEXT_MISMATCH')
-            for kind in ('factors','profiles','series'):legacy._verify(authority[kind]);sources['stock_'+kind]=authority[kind]
+            for kind in ('factors','profiles','series'):admit_bound(root,authority[kind]);sources['stock_'+kind]=authority[kind]
             from .stock_unit_projection import project as project_stock_unit
-            unit_binding=reference(root,root/'config/v4_stock_unit_projection_v1.json');unit_contract=legacy._read(unit_binding)
+            unit_path='config/v4_stock_unit_projection_v1.json';unit_raw=read_path(root,unit_path)['raw']
+            unit_binding=dict(path=unit_path,sha256=digest(unit_raw),bytes=len(unit_raw));unit_contract=json.loads(unit_raw)
             if unit_contract['contract_id']!='R2_BOUND_OWNER_UNIT_PROJECTION_V1':raise SourceInvalid('STOCK_UNIT_PROJECTION_CONTRACT_MISMATCH')
             sources['stock_unit_projection_contract']=unit_binding
             registries=[]
             for index,binding in enumerate(unit_contract['registries']):
-                registry=legacy._read(binding)
+                registry=json.loads(admit_bound(root,binding)['raw'])
                 if registry['contract_id'] not in ('V4_03_FIELD_REGISTRY_V1','V4_04_FIELD_REGISTRY_V2'):raise SourceInvalid('UNADMITTED_STOCK_UNIT_REGISTRY')
                 sources['stock_unit_registry_'+str(index)]=binding;registries.append(registry)
             domain_features['stocks']=authority
             for kind in ('factors','profiles'):
-                with gzip.open(root/authority[kind]['path'],'rt',encoding='utf8') as f:
-                    for line in f:
-                        row=json.loads(line)
+                for row in jsonl_rows(authority[kind]):
                         if row['trade_date']!=date:raise SourceInvalid('STOCK_DATE_MIX')
                         old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],)).fetchone()
                         if not old:continue
@@ -282,13 +279,13 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                         db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
         if authority is not None:
             from .raw_turnover import cells as raw_turnover_cells
-            raw_turnover_contract=reference(root,root/'config/v4_raw_amount_volume_projection_v1.json')
-            raw_units=legacy._read(raw_turnover_contract)
+            raw_path='config/v4_raw_amount_volume_projection_v1.json';raw_raw=read_path(root,raw_path)['raw']
+            raw_turnover_contract=dict(path=raw_path,sha256=digest(raw_raw),bytes=len(raw_raw));raw_units=json.loads(raw_raw)
             if raw_units['unit_contract']!=authority['sources']['unit_contract'] or raw_units['contract_id']!='R2_RAW_AMOUNT_VOLUME_PROJECTION_V1':
                 raise SourceInvalid('RAW_TURNOVER_UNIT_SOURCE_CONTRACT_MISMATCH')
             sources['raw_turnover_projection_contract']=raw_turnover_contract
             sources['raw_turnover_unit_contract']=authority['sources']['unit_contract']
-            legacy._verify(sources['raw_turnover_unit_contract'])
+            admit_bound(root,sources['raw_turnover_unit_contract'])
             for row in legacy._source(contract,'RAW_DAILY')['rows']:
                 old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],)).fetchone()
                 if not old:raise SourceInvalid('RAW_TURNOVER_STOCK_IDENTITY_NOT_BOUND')
@@ -296,15 +293,87 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
                 for field,cell in raw_turnover_cells(row,date,authority['volume_unit'],authority['amount_unit']).items():
                     result['fields'][field]=compact_cell(cell,sources['RAW_DAILY'],field,date)
                 db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(row['security_id'],));put('stocks',result)
+        structure_authority=(authority_overrides or {}).get('stock_structure_timeline')
+        if structure_authority is not None:
+            if (structure_authority.get('contract_id')!='V4_STOCK_STRUCTURE_TIMELINE_CANDIDATE_R1'
+                    or structure_authority.get('trade_date')!=date
+                    or structure_authority.get('input_data_head',{}).get('sha256')!=context['context']['data_head_digest']
+                    or structure_authority.get('AS_RECORDED') is not False
+                    or structure_authority.get('PIT_ELIGIBLE') is not False
+                    or structure_authority.get('knowledge_lineage')!='RECONSTRUCTED_CORRECTED'):
+                raise SourceInvalid('STOCK_STRUCTURE_CANDIDATE_IDENTITY_INVALID')
+            manifest_binding=structure_authority.get('runtime_manifest')
+            if not isinstance(manifest_binding,dict):raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_MANIFEST_REQUIRED')
+            manifest_source=admit_bound(root,manifest_binding)
+            if len(manifest_source['raw'])!=manifest_binding.get('bytes') or digest(manifest_source['raw'])!=manifest_binding['sha256']:
+                raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_MANIFEST_BINDING_MISMATCH')
+            structure_manifest=json.loads(manifest_source['raw'])
+            owner_inputs=structure_manifest.get('owner_inputs',{})
+            if (structure_manifest.get('contract_id')!='V4_12_R13_RUNTIME_CANDIDATE_MANIFEST'
+                    or structure_manifest.get('formal_accepted') is not False
+                    or structure_manifest.get('status')!='ENGINEERING_CANDIDATE_NOT_ACCEPTED'
+                    or structure_manifest.get('knowledge_lineage')!='RECONSTRUCTED_CORRECTED'
+                    or owner_inputs.get('trade_date')!=date
+                    or owner_inputs.get('AS_RECORDED') is not False):
+                raise SourceInvalid('STOCK_STRUCTURE_OWNER_CANDIDATE_NOT_EXACT')
+            artifacts={Path(ref['path']).name:ref for ref in structure_manifest.get('artifacts',[])}
+            runtime_ref=artifacts.get('runtime_security.jsonl.gz')
+            if not runtime_ref:raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_SECURITY_MISSING')
+            admit_bound(root,runtime_ref);sources['stock_structure_runtime_manifest']=manifest_binding
+            sources['stock_structure_runtime_security']=runtime_ref
+            domain_features['stock_structure_timeline']=dict(structure_authority,
+                runtime_security=runtime_ref,owner_contract=structure_manifest.get('contract_id'),
+                owner_status=structure_manifest.get('status'))
+            rows_seen=indexed=unmatched=0
+            for row in jsonl_rows(runtime_ref):
+                rows_seen+=1
+                identity=row.get('identity',{});sid=identity.get('security_id')
+                if identity.get('trade_date')!=date or not isinstance(sid,str):
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_IDENTITY_INVALID')
+                if row.get('AS_RECORDED') is not False or row.get('PIT_ELIGIBLE') is not False:
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_LINEAGE_INVALID')
+                events=row.get('events')
+                projection=row.get('active_projection')
+                if not isinstance(events,list) or not isinstance(projection,dict):
+                    raise SourceInvalid('STOCK_STRUCTURE_RUNTIME_ROW_SHAPE_INVALID')
+                for event in events:
+                    if event.get('created_trade_date','')>date or event.get('candidate_only') is not True:
+                        raise SourceInvalid('STOCK_STRUCTURE_EVENT_CUTOFF_OR_CANDIDATE_INVALID')
+                active_quality=projection.get('active_anchor_selection_quality')
+                anchor_value=projection.get('anchor_view_asof_t')
+                anchor_quality='KNOWN' if active_quality=='KNOWN' else 'UNKNOWN'
+                anchor_reason=projection.get('active_anchor_selection_reason') or projection.get('reason')
+                old=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(sid,)).fetchone()
+                if not old:
+                    unmatched+=1
+                    continue
+                result=json.loads(old[0])
+                result['fields']['structure_events']=compact_cell(dict(value=events,quality='KNOWN',
+                    contract_id=structure_manifest['contract_id']),runtime_ref,'structure_events',date)
+                result['fields']['anchor_view_asof_t']=compact_cell(dict(value=anchor_value,quality=anchor_quality,
+                    reason=None if anchor_quality=='KNOWN' else anchor_reason,
+                    contract_id=structure_manifest['contract_id']),runtime_ref,'anchor_view_asof_t',date)
+                db.execute("DELETE FROM objects WHERE domain='stocks' AND id=?",(sid,));put('stocks',result)
+                indexed+=1
+            if rows_seen!=int(owner_inputs.get('rows',rows_seen)) or indexed==0:
+                raise SourceInvalid('STOCK_STRUCTURE_OWNER_ROW_COUNT_MISMATCH')
+            domain_features['stock_structure_timeline'].update(rows_read=rows_seen,
+                securities_matched=indexed,securities_outside_current_universe=unmatched)
+            owners['stock_structure_timeline']=dict(contract_id=structure_authority['contract_id'],
+                trade_date=date,input_data_head=structure_authority['input_data_head'],
+                runtime_manifest=manifest_binding,runtime_security=runtime_ref,
+                rows_read=rows_seen,securities_matched=indexed,securities_outside_current_universe=unmatched,
+                knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,PIT_ELIGIBLE=False)
         focus_authority=root/'config/v4_focus_operational_authority_v1.json'
-        if focus_override is not None or focus_authority.exists():
-            authority=focus_override if focus_override is not None else json.loads(focus_authority.read_bytes())
+        focus_ingress=operational('focus',focus_authority)
+        if focus_override is not None or focus_ingress is not None:
+            authority=focus_override if focus_override is not None else focus_ingress
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('FOCUS_SOURCE_CONTEXT_MISMATCH')
             publication=legacy._read(authority['publication']);domain_features['focus']=publication;sources['focus_operational']=authority['publication']
             if authority.get('journal'):
-                legacy._verify(authority['journal']);sources['focus_journal']=authority['journal']
+                admit_bound(root,authority['journal']);sources['focus_journal']=authority['journal']
             for name,binding in publication.get('sources',{}).get('implementation',{}).items():
-                legacy._verify(binding);sources['focus_kernel_'+name]=binding
+                admit_bound(root,binding);sources['focus_kernel_'+name]=binding
             for episode in {e['entity_id']:e for e in sorted(publication['episodes'],key=lambda e:e['T0'])}.values():
                 last=episode['observations'][-1];stock=db.execute("SELECT payload FROM objects WHERE domain='stocks' AND id=?",(episode['entity_id'],)).fetchone();stock=json.loads(stock[0]) if stock else {}
                 fields={k:compact_cell(dict(value=v,quality='UNKNOWN' if v is None else 'KNOWN',contract_id=publication['contract_id']),authority['publication'],k,date) for k,v in {**last,**{k:episode[k] for k in ('episode_id','T0','end_date','parent_episode_id')}}.items()}
@@ -343,9 +412,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         authority=operational('replay',replay_authority)
         if authority is not None:
             if authority['trade_date']!=date or authority['input_data_head']['sha256']!=context['context']['data_head_digest']:raise SourceInvalid('REPLAY_SOURCE_CONTEXT_MISMATCH')
-            for entry in authority['catalog']:legacy._verify(entry['snapshot'])
-            legacy._verify(authority['contract']);domain_features['replay']=authority
-            frozen_replay=directory/'replay_authority.json';atomic_bytes(frozen_replay,canonical(authority));sources['replay_operational']=reference(root,frozen_replay)
+            for entry in authority['catalog']:admit_bound(root,entry['snapshot'])
+            admit_bound(root,authority['contract']);domain_features['replay']=authority
+            sources['replay_operational']=authority
         counts={d:db.execute('SELECT count(*) FROM objects WHERE domain=?',(d,)).fetchone()[0] for d in DOMAINS}
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
@@ -364,143 +433,116 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
             source_contract_digest=contract_digest, sources=sources, owners=owners, counts=counts, gaps=gaps,
             field_registry=field_registry, operational_state='OPERATIONAL_PRODUCTION_ACTIVE' if publish else 'STAGED_ENGINEERING_CANDIDATE',
             evidence_state='VALIDATION_ONGOING', quality='QUALITY_DEGRADED', publication_scope='FP02_INDEXED_EXISTING_REAL_OUTPUTS',
-            release_id=directory.name, built_at=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
+            release_id=release_id, built_at=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
         def instant(value):
             parsed=datetime.fromisoformat(value)
             return parsed.replace(tzinfo=timezone.utc) if parsed.tzinfo is None else parsed
         source_as_of=max(map(instant,[context['context']['data_updated_at'],decoration['observed_at'],advanced_cutoff]))
         published_at=datetime.now(timezone.utc)
         if source_as_of>published_at:raise SourceInvalid('FUTURE_SOURCE_AS_OF_FORBIDDEN')
-        meta['metadata']=dict(owner='FP02_RESEARCH_PROJECTION',release_id=directory.name,
+        meta['metadata']=dict(owner='FP02_RESEARCH_PROJECTION',release_id=release_id,
             source_snapshot=context['context']['data_head_digest'],contract_version='1.0.0',source_as_of=source_as_of.isoformat(),
             trading_date=date,input_digest=digest(canonical(dict(sources=sources,owners=owners))),published_at=published_at.isoformat(),
             evidence_origin='REAL_ACCEPTED_SOURCE',evidence_state='VALIDATION_ONGOING',data_quality_state='QUALITY_DEGRADED',
             knowledge_lineage=context['context']['knowledge_lineage'])
         db.execute('INSERT INTO metadata VALUES(?,?)',('snapshot',canonical(meta).decode()))
         descriptor=db.seal(meta);db.commit();db.close()
-        atomic_bytes(dbpath,canonical(descriptor)+b'\n')
-        ref=reference(root,dbpath); manifest_path=directory/'manifest.json'
-        atomic_bytes(manifest_path,canonical(dict(**meta,database=ref))+b'\n')
-        new=dict(contract_id='V4_RESEARCH_SNAPSHOT_AUTHORITY_V1',manifest=reference(root,manifest_path),previous=json.loads(before) if before else None)
-        if not publish:
-            check=ProductionV4ResearchReader(root,snapshot_authority=new)
-            if fail_readback:raise SourceInvalid('INJECTED_READBACK_FAILURE')
-            if check.manifest['counts']!=counts:raise SourceInvalid('READBACK_COUNT_MISMATCH')
-            return dict(status='STAGED_NOT_PUBLISHED',pointer=new,counts=counts,gaps=gaps,
-                        build_seconds=round(time.perf_counter()-started,3),production_changed=False)
-        lock=pointer.with_suffix('.lock');fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
-        try:
-            os.close(fd)
-            if (pointer.read_bytes() if pointer.exists() else None) != before: raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
-            atomic_bytes(pointer,canonical(new)+b'\n')
-            try:
-                check=ProductionV4ResearchReader(root)
-                if fail_readback: raise SourceInvalid('INJECTED_READBACK_FAILURE')
-                if check.manifest['counts'] != counts: raise SourceInvalid('READBACK_COUNT_MISMATCH')
-            except Exception:
-                if before is not None: atomic_bytes(pointer,before)
-                else: pointer.unlink()
-                raise
-        finally:lock.unlink()
-        return dict(status='PUBLISHED',pointer=new,counts=counts,gaps=gaps,build_seconds=round(time.perf_counter()-started,3))
+        check=ProductionV4ResearchReader(root,candidate_release_id=descriptor['release_id'])
+        if fail_readback:raise SourceInvalid('INJECTED_READBACK_FAILURE')
+        if check.manifest['counts']!=counts:raise SourceInvalid('READBACK_COUNT_MISMATCH')
+        return dict(status='STAGED_NOT_PUBLISHED',pointer=descriptor,descriptor=descriptor,
+                    candidate_release_id=descriptor['release_id'],counts=counts,gaps=gaps,
+                    build_seconds=round(time.perf_counter()-started,3),production_changed=False)
     except Exception:
         db.close();raise
 
 
 def rollback_snapshot(root,expected_pointer):
-    root=Path(root).resolve()
-    from .joint_release import AUTHORITY as JOINT_AUTHORITY
-    if (root/JOINT_AUTHORITY).exists():raise SourceInvalid('ACTIVE_JOINT_REQUIRES_JOINT_ROLLBACK')
-    path=root/POINTER;before=path.read_bytes()
-    if digest(before)!=expected_pointer:raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
-    previous=json.loads(before).get('previous')
-    if not previous:raise SourceInvalid('NO_PREVIOUS_SNAPSHOT')
-    verifier=CurrentAcceptedV4Reader(root);manifest=verifier._read(previous['manifest']);verifier._verify(manifest['database'])
-    validate_release_metadata(manifest)
-    lock=path.with_suffix('.lock');fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
-    try:
-        os.close(fd)
-        if digest(path.read_bytes())!=expected_pointer:raise SourceInvalid('SNAPSHOT_CAS_CONFLICT')
-        atomic_bytes(path,canonical(previous)+b'\n')
-        try:ProductionV4ResearchReader(root)
-        except Exception:atomic_bytes(path,before);raise
-    finally:lock.unlink()
-    return dict(status='ROLLED_BACK',context_token=ProductionV4ResearchReader(root).token)
+    raise SourceInvalid('PG_SNAPSHOT_ROLLBACK_REQUIRES_CANONICAL_PUBLICATION_HEAD_CAS')
 
 
 class ProductionV4ResearchReader:
-    def __init__(self, root, *, snapshot_authority=None):
-        self.root=Path(root).resolve();verifier=CurrentAcceptedV4Reader(root)
-        from .joint_release import load
-        joint=load(self.root) if snapshot_authority is None else None
-        self.authority=snapshot_authority if snapshot_authority is not None else joint['snapshot'] if joint else json.loads((self.root/POINTER).read_bytes())
-        self.manifest=verifier._read(self.authority['manifest']);verifier._verify(self.manifest['database'])
-        metadata=validate_release_metadata(self.manifest)
-        self.path=verifier._path(self.manifest['database']['path'])
-        self.pg_descriptor=json.loads(self.path.read_bytes()) if self.path.suffix=='.json' else {}
-        if self.pg_descriptor.get('engine')!='postgresql':raise SourceInvalid('PG_SNAPSHOT_BINDING_REQUIRED_NO_FALLBACK')
-        if self.pg_descriptor.get('T0')!=self.manifest['context']['accepted_trade_date'] or self.pg_descriptor.get('release_id')!=self.manifest['release_id']:raise SourceInvalid('PG_SNAPSHOT_CONTEXT_MISMATCH')
-        stat=self.path.stat();self.file_signature=(stat.st_size,stat.st_mtime_ns)
-        stocks=self.manifest.get('domain_features',{}).get('stocks')
-        self.series_signature=None
-        if stocks:
-            verifier._verify(stocks['series']);stat=verifier._path(stocks['series']['path']).stat();self.series_signature=(stat.st_size,stat.st_mtime_ns)
-        self.token='research-v4-'+self.authority['manifest']['sha256']
-        self.context=dict(release_id=self.manifest['release_id'],model_namespace='V4_RESEARCH_SNAPSHOT_V1',
-            source_mode='SCOPED_OPERATIONAL_RELEASE' if joint else 'EXISTING_REAL_SNAPSHOT_PENDING_RELEASE',publication_id=self.manifest['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
-            core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest['sources'].get('advanced',{}).get('sha256'),
+    def __init__(self, root, *, snapshot_authority=None, candidate_release_id=None):
+        requested=(candidate_release_id or os.environ.get('V4_PG_RESEARCH_CANDIDATE_RELEASE_ID')
+                   or (snapshot_authority.get('release_id') if isinstance(snapshot_authority,dict) else None))
+        if not requested:raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_REQUIRED')
+        self._init_pg_candidate(root,requested)
+
+    def _init_pg_candidate(self, root, release_id):
+        """Bind the development UI to one verified, release-keyed v4 snapshot."""
+        from workbench_db.v4_native import connection
+        from workbench_db.v4_research_release_pg_r1 import load_snapshot_release
+        self.root=Path(root).resolve()
+        if not isinstance(release_id,str) or not re.fullmatch(r'[a-f0-9]{24,64}',release_id):
+            raise SourceInvalid('PG_CANDIDATE_RELEASE_ID_INVALID')
+        try:
+            with connection('v4',read_only=True) as pg:
+                descriptor,self.manifest=load_snapshot_release(pg,release_id)
+                cluster=descriptor['database_identity']
+            metadata=validate_release_metadata(self.manifest)
+            if (descriptor.get('schema')!='v4' or descriptor.get('T0')!=self.manifest.get('context',{}).get('accepted_trade_date')
+                    or descriptor.get('release_id')!=self.manifest.get('release_id')
+                    or metadata.get('trading_date')!=descriptor.get('T0')):
+                raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_CONTEXT_MISMATCH')
+        except SourceInvalid:
+            raise
+        except Exception as error:
+            raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_READ_FAILED:'+type(error).__name__) from error
+        self.candidate_release_id=release_id
+        self.is_pg_candidate=True
+        self.pg_descriptor=descriptor
+        self.path=None
+        self.authority={'manifest':{'sha256':descriptor['logical_digest']}}
+        self.context_key='research-v4-pg-candidate-'+descriptor['logical_digest']
+        self.context=dict(self.manifest['context'],release_id=descriptor['release_id'],
+            model_namespace='V4_RESEARCH_SNAPSHOT_V1',source_mode='PG_CANDIDATE_SNAPSHOT',
+            publication_id=descriptor['release_id'],data_as_of=self.manifest['context']['data_updated_at'],
+            core_revision=self.manifest['source_contract_digest'],optional_enrichment_revision=self.manifest.get('sources',{}).get('advanced',{}).get('sha256'),
             turnover_as_of=None,quality=self.manifest['quality'],source_contract_id='V4_RESEARCH_SNAPSHOT_V1',
-            factor_contract_id=None,state_contract_id='ACCEPTED_OWNER_SCOPED',parameter_set_id=None)
-        self.context={**self.manifest['context'],**self.context}
-        self.context['trade_date']=self.context['accepted_trade_date']
-        self.context['release_metadata']=metadata
-        self.context.update(scoped_release=bool(joint),operational_release_scope=joint['operational_release_scope'] if joint else [],full_product_release=joint.get('full_product_release',False) if joint else False,joint_release_digest=digest(canonical(joint)) if joint else None)
-        self.context['domain_readiness']={
-            'stocks':dict(released='stocks_daily' in self.context['operational_release_scope'],scope='DATED_FACTORS_CHARTS_OWNER_STATE',debt=['HYPOTHESIS','INVALID_IF_OWNER','FULL_STRUCTURE_PATH']),
-            'sectors':dict(released='sectors_current_facts' in self.context['operational_release_scope'],scope='CURRENT_MEMBERS_FACTORS_OVERLAP',debt=['HISTORICAL_MEMBERSHIP','LIFECYCLE','ROTATION_HISTORY']),
-            'market':dict(released='market_current' in self.context['operational_release_scope'],scope='DATED_FOUR_AXES_INDICES_CLOSE_LIMITS',debt=['INTRADAY_TOUCH_BROKEN_LIMIT','OFFICIAL_FACT_NEWS']),
-            'focus':dict(released='focus_read_corrected' in self.context['operational_release_scope'],scope='CORRECTED_EPISODE_READ_ONLY',debt=['AUTOMATIC_PATH_OUTCOME_WRITE','LEGACY_PG_RECONCILIATION']),
-            'forward':dict(released='forward_read' in self.context['operational_release_scope'],scope='REAL_COHORT_PLAN_READ_ONLY',debt=['CURRENT_FEP_INFERENCE','DUE_SETTLEMENT_OWNER_RECONCILIATION']),
-            'strict_pit':dict(released=False,scope='NONE',debt=['FIRST_AVAILABLE_MODEL_MEMBER_EVIDENCE']),
-            'fep':dict(released=False,scope='NOT_BOUND_TO_CURRENT_PRODUCTION',debt=['CURRENT_FEATURE_MODEL_INFERENCE']),
-        }
-        focus=self.manifest.get('domain_features',{}).get('focus') or {}
-        forward=self.manifest.get('domain_features',{}).get('forward') or {}
-        if forward.get('adapter_contract_id')=='R2_FORWARD_DUE_LOCAL_CORRECTED_V1':
-            self.context['domain_readiness']['forward'].update(scope='CORRECTED_FROZEN_T0_DUE_SETTLEMENT_READ',
-                debt=['CURRENT_FEP_INFERENCE','STRICT_T0_ELIGIBILITY_NOT_GRANTED','REAL_COHORT_MATURITY_NOT_YET_OBSERVED'])
-        if focus.get('contract_id') in ('R2_V4_FOCUS_PATH_OUTCOME_V2','R2_V4_FOCUS_NATIVE_CORE_PATH_V1'):
-            self.context['domain_readiness']['focus'].update(
-                scope='CORRECTED_PRICE_PATH_AND_DUE_OUTCOME_READ',
-                earliest_valid_date=focus.get('earliest_valid_date'),
-                debt=['UNRESOLVED_PATH_PREDICATE_OWNERS','LEGACY_PG_RECONCILIATION'])
+            factor_contract_id=None,state_contract_id='PG_SNAPSHOT_IDENTITY',parameter_set_id=None,
+            trade_date=descriptor['T0'],release_metadata=metadata,database_identity=cluster,
+            scoped_release=False,operational_release_scope=[],full_product_release=False,
+            joint_release_digest=None,candidate_status=metadata.get('evidence_state','VALIDATION_ONGOING'))
+        self.context['available_trade_dates']=[descriptor['T0']]
+        self.context['domain_readiness']={key:dict(released=False,scope='PG_CANDIDATE_SNAPSHOT',debt=[])
+            for key in ('stocks','sectors','market','focus','forward','strict_pit','fep')}
 
     def envelope(self, **payload):
-        return dict(context=self.context,context_token=self.token,**payload)
+        return dict(context=self.context,context_token=self.context_key,**payload)
 
     def known_identity(self,entity):
         with self.connect() as db:
             return db.execute('SELECT 1 FROM aliases WHERE id=? OR alias=? LIMIT 1',(entity,entity.casefold())).fetchone() is not None
 
     def connect(self):
-        if (self.path.stat().st_size,self.path.stat().st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
-        from workbench_db.v4_snapshot_pg_r1 import read
+        from workbench_db.v4_native import connection
+        from workbench_db.v4_research_release_pg_r1 import ReleaseReadTransaction,load_snapshot_release
         scope=_request_reads.get()
         if scope is not None:
             stack,transactions=scope
-            key=(self.pg_descriptor['schema'],self.pg_descriptor['logical_digest'])
+            key=(self.candidate_release_id,self.pg_descriptor['logical_digest'])
             if key not in transactions:
-                transactions[key]=stack.enter_context(read(self.pg_descriptor))
+                @contextmanager
+                def candidate_read():
+                    with connection('v4',read_only=True) as pg:
+                        descriptor,_=load_snapshot_release(pg,self.candidate_release_id,verify_content=False)
+                        if descriptor!=self.pg_descriptor:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                        yield ReleaseReadTransaction(pg,self.candidate_release_id)
+                transactions[key]=stack.enter_context(candidate_read())
             return nullcontext(transactions[key])
-        return read(self.pg_descriptor)
+        @contextmanager
+        def candidate_read():
+            with connection('v4',read_only=True) as pg:
+                descriptor,_=load_snapshot_release(pg,self.candidate_release_id,verify_content=False)
+                if descriptor!=self.pg_descriptor:raise SourceInvalid('PG_CANDIDATE_SNAPSHOT_IDENTITY_CHANGED')
+                yield ReleaseReadTransaction(pg,self.candidate_release_id)
+        return candidate_read()
 
     def query(self, domain, query=None, *, entity=None, sector=None, summary=False):
-        stat=self.path.stat()
-        if (stat.st_size,stat.st_mtime_ns)!=self.file_signature:raise SourceInvalid('IMMUTABLE_DATABASE_CHANGED')
         q=query or {}
         allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace','type','maturity','health','rotation','quality','eligibility'}
         if set(q)-allowed:raise ValueError('UNKNOWN_PARAMETER')
-        for key, expected in [('context_token',self.token),('trade_date',self.context['accepted_trade_date']),('release_id',self.context['release_id']),('model_namespace',self.context['model_namespace'])]:
+        for key, expected in [('context_token',self.context_key),('trade_date',self.context['accepted_trade_date']),('release_id',self.context['release_id']),('model_namespace',self.context['model_namespace'])]:
             if key in q and q[key]!=expected:raise SourceInvalid('CONTEXT_CONFLICT:'+key)
         if domain not in DOMAINS:raise ValueError('UNKNOWN_DOMAIN')
         limit=int(q.get('limit',30));offset=int(q.get('offset',0));needle=q.get('q','').strip().casefold()
@@ -515,9 +557,13 @@ class ProductionV4ResearchReader:
         if len(q.get('sort','id').split(','))>4:raise ValueError('SORT_BOUND')
         sort.append('id ASC');where=['domain=?'];args=[domain]
         if needle:
-            # Prefix range uses the name/symbol indexes; exact historic alias uses alias_lookup.
-            where.append("id IN (SELECT id FROM objects WHERE domain=? AND id=? UNION SELECT id FROM objects WHERE domain=? AND symbol>=? AND symbol<? UNION SELECT id FROM objects WHERE domain=? AND name>=? AND name<? UNION SELECT id FROM aliases WHERE alias>=? AND alias<? UNION SELECT o.id FROM aliases a JOIN objects o ON o.domain=? AND o.id>=a.id||':' AND o.id<a.id||';' WHERE a.alias>=? AND a.alias<?)")
-            args.extend((domain,needle.upper(),domain,needle.upper(),needle.upper()+'\uffff',domain,needle,needle+'\uffff',needle,needle+'\uffff',domain,needle,needle+'\uffff'))
+            # Prefix ranges keep indexed ID/symbol/alias lookup bounded. Some
+            # imported PG snapshots have a lossy legacy `name` projection while
+            # canonical Unicode display_name remains intact in the JSON payload.
+            indexed_match="id IN (SELECT id FROM objects WHERE domain=? AND id=? UNION SELECT id FROM objects WHERE domain=? AND symbol>=? AND symbol<? UNION SELECT id FROM objects WHERE domain=? AND name>=? AND name<? UNION SELECT id FROM aliases WHERE alias>=? AND alias<? UNION SELECT o.id FROM aliases a JOIN objects o ON o.domain=? AND o.id>=a.id||':' AND o.id<a.id||';' WHERE a.alias>=? AND a.alias<?)"
+            indexed_args=(domain,needle.upper(),domain,needle.upper(),needle.upper()+'\uffff',domain,needle,needle+'\uffff',needle,needle+'\uffff',domain,needle,needle+'\uffff')
+            where.append('('+indexed_match+" OR COALESCE((payload::jsonb)->>'display_name','') ILIKE ?)")
+            args.extend(indexed_args+('%'+needle+'%',))
         if q.get('state'):where.append('state=?');args.append(q['state'])
         if domain in ('stocks','sectors','focus'):
             for key,field in [('type','sector_type'),('maturity','maturity'),('health','health'),('rotation','output_state'),('quality','quality'),('eligibility','final_eligibility')]:
@@ -529,8 +575,8 @@ class ProductionV4ResearchReader:
         if sector:where.append('id IN (SELECT security FROM members WHERE sector=?)');args.append(sector)
         clause=' AND '.join(where)
         with self.connect() as db:
-            total=db.execute('SELECT count(*) FROM objects WHERE '+clause,args).fetchone()[0]
-            rows=db.execute('SELECT payload FROM objects WHERE '+clause+' ORDER BY '+','.join(sort)+' LIMIT ? OFFSET ?',args+[limit,offset]).fetchall()
+            total=db.execute(''.join(('SELECT count(*) FROM objects WHERE ',clause)),args).fetchone()[0]
+            rows=db.execute(''.join(('SELECT payload FROM objects WHERE ',clause,' ORDER BY ',','.join(sort),' LIMIT ? OFFSET ?')),args+[limit,offset]).fetchall()
         gap=next((g for g in self.manifest['gaps'] if g['domain']==domain),None)
         items=[json.loads(r[0]) for r in rows]
         if summary and domain in ('stocks','sectors'):

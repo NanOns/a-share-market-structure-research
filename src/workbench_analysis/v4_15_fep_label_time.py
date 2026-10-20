@@ -4,7 +4,6 @@ No price evaluation, calendar maturity inference, or accepted-head mutation.
 The registry is an explicit owner allocation, never a latest-file search.
 """
 import json
-from pathlib import Path
 
 from .fep_e1.contracts import digest, exact, instant
 
@@ -21,18 +20,23 @@ def identity(row):
 
 def resolve(root, row, cutoff):
     """Read only exact allocated receipts; missing proof stays denominator-pending."""
-    root = Path(root)
-    contract = json.loads((root / 'config/v4_15_fep_label_time_authority_v1.json').read_bytes())
-    if contract['contract_id'] != CONTRACT:
-        raise ValueError('FEP_LABEL_TIME_CONTRACT_MISMATCH')
     instant(cutoff)
     key = identity(row)
-    allocations = [e for e in contract['allocations'] if e['identity'] == key]
-    if len(allocations) > 1:
-        raise ValueError('FEP_LABEL_TIME_AMBIGUOUS_ALLOCATION')
     pending = dict(contract_id=CONTRACT, identity=key, training_allowed=False,
                    quality='PENDING', binding=None,
                    times={t: 'NOT_PROVEN' for t in TIMES})
+    from .v4_current_stage_authority import CurrentStageAuthority
+    try:
+        authority = CurrentStageAuthority(root)
+        contract = json.loads(authority.read_by_path('config/v4_15_fep_label_time_authority_v1.json'))
+    except (ValueError, RuntimeError) as error:
+        return pending | {'reason': 'PG_APPROVED_LABEL_TIME_CONTRACT_UNAVAILABLE',
+                          'authority_error': str(error)}
+    if contract['contract_id'] != CONTRACT:
+        raise ValueError('FEP_LABEL_TIME_CONTRACT_MISMATCH')
+    allocations = [e for e in contract['allocations'] if e['identity'] == key]
+    if len(allocations) > 1:
+        raise ValueError('FEP_LABEL_TIME_AMBIGUOUS_ALLOCATION')
     if not allocations:
         return pending | {'reason': 'NO_EXACT_OWNER_TIME_RECEIPTS'}
     allocation = allocations[0]

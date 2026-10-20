@@ -1,10 +1,8 @@
 """Read-only next-session gate. Never extends the frozen R43 four-session contract."""
-import json
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from .dm01_runtime_r4 import calendar
-from .scoped_successor_r421 import sha
 
 CONTRACT = 'V4_OPERATIONAL_NEXT_SESSION_PREFLIGHT_V1'
 
@@ -12,13 +10,14 @@ CONTRACT = 'V4_OPERATIONAL_NEXT_SESSION_PREFLIGHT_V1'
 def next_session_gate(root, now=None):
     root = Path(root)
     now = now or datetime.now(ZoneInfo('Asia/Shanghai'))
-    head_path = root / 'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    head = json.loads(head_path.read_bytes())
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    current=read_current(root)
+    head=current['candidate']
     last = head['accepted_trade_date']
     cal = calendar(root)
     next_day = next((d for d in cal['session_dates'] if d > last), None)
     result = dict(contract_id=CONTRACT, observed_at=now.isoformat(), last_good_trade_date=last,
-                  last_good_head_sha256=sha(head_path), next_session=next_day,
+                  last_good_head_sha256=current['head_sha256'], next_session=next_day,
                   calendar_binding=cal['binding'], calendar_sources=cal['sources'],
                   calendar_acceptance=cal['status'], head_mutated=False,
                   publication_permission=False, fixed_R43_dates_extended=False,

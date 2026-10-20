@@ -17,7 +17,7 @@ def _read_prediction_sources(pg,one,request,model,result,at):
     from workbench_analysis.fep_e1.contracts import digest
     required=('predictions','prediction_runs','acceptance_receipts','snapshots',
               'observation_revisions','training_runs','dataset_rows','label_revisions','label_source_bindings')
-    missing=[t for t in required if pg.execute('select to_regclass(%s)',('fep.'+t,)).fetchone()[0] is None]
+    missing=[t for t in required if pg.execute("select to_regclass(format('v4.%I', %s))",(t,)).fetchone()[0] is None]
     if missing:
         result['errors'].append('CANONICAL_PREDICTION_SOURCE_TABLES_MISSING:'+','.join(missing));return
     if not request.get('prediction_id'):
@@ -53,9 +53,9 @@ def _read_prediction_sources(pg,one,request,model,result,at):
         result['errors'].append('REAL_TRAINING_MATURITY_OWNER_MISSING');return
     training=one('training_runs',('training_run_id',),(model['training_run_id'],))
     result['sources']['training_run']=training
-    labels=pg.execute('''select to_jsonb(l),to_jsonb(b) from fep.dataset_rows d
-        join fep.label_revisions l on l.observation_id=d.observation_id and l.target_id=d.target_id and l.revision=d.label_revision
-        join fep.label_source_bindings b on b.binding_id=l.binding_id
+    labels=pg.execute('''select to_jsonb(l),to_jsonb(b) from v4.dataset_rows d
+        join v4.label_revisions l on l.observation_id=d.observation_id and l.target_id=d.target_id and l.revision=d.label_revision
+        join v4.label_source_bindings b on b.binding_id=l.binding_id
         where d.dataset_id=%s and d.scope_id=%s and d.feature_contract_id=%s and d.target_id=%s and d.fold_id=%s and d.partition_name='FIT' ''',
         (training['dataset_id'],request['scope_id'],request['feature_contract_id'],request['target_id'],training['fold_id'])).fetchall()
     if not labels or any(l['horizon']!=request['horizon'] or l['training_allowed'] is not True or contracts.utc(b['label_training_mature_at'])>contracts.utc(training['fit_started_at']) or contracts.utc(b['label_revision_available_at'])>contracts.utc(training['fit_started_at']) for l,b in labels):
@@ -99,16 +99,32 @@ def read_canonical_candidate(pg,request,*,at):
     scoring operation is written. Caller must provide a fresh idle connection;
     externally admitted production connection/approval remain separate boundaries.
     """
-    from psycopg import sql, Error
+    from psycopg import Error
     from psycopg.pq import TransactionStatus
     result=_empty();result['evidence_trust']='ACTUAL_DB_READ_ENGINEERING_CANDIDATE'
     if any(request.get(k) is None for k in IDENTITY) or type(request.get('model_revision')) is not int or request['model_revision']<=0:
         result['errors']=['EXACT_REQUEST_AND_MODEL_REVISION_REQUIRED'];return result
     if request['capability'] not in ('MODEL_DISPLAY','PRIORITY_USE'):
         result['errors']=['SHADOW_CAPABILITY_CANNOT_AUTHORIZE_PRODUCTION'];return result
+    member_keys=('model_set_id','scope_id','target_id','horizon','feature_contract_id')
+    queries = {
+        ('deployment_heads', HEAD_KEY): 'select to_jsonb(t) from v4.deployment_heads t where scope_id=%s and target_id=%s and horizon=%s and feature_contract_id=%s and capability=%s',
+        ('permission_keys', ('grant_id',)): 'select to_jsonb(t) from v4.permission_keys t where grant_id=%s',
+        ('activations', ('activation_id',)): 'select to_jsonb(t) from v4.activations t where activation_id=%s',
+        ('deployment_change_receipts', ('activation_id',)): 'select to_jsonb(t) from v4.deployment_change_receipts t where activation_id=%s',
+        ('model_set_members', member_keys + ('role',)): 'select to_jsonb(t) from v4.model_set_members t where model_set_id=%s and scope_id=%s and target_id=%s and horizon=%s and feature_contract_id=%s and role=%s',
+        ('models', ('model_id',)): 'select to_jsonb(t) from v4.models t where model_id=%s',
+        ('model_sets', ('model_set_id',)): 'select to_jsonb(t) from v4.model_sets t where model_set_id=%s',
+        ('predictions', ('prediction_id',)): 'select to_jsonb(t) from v4.predictions t where prediction_id=%s',
+        ('prediction_runs', ('run_id',)): 'select to_jsonb(t) from v4.prediction_runs t where run_id=%s',
+        ('acceptance_receipts', ('run_id', 'grant_id')): 'select to_jsonb(t) from v4.acceptance_receipts t where run_id=%s and grant_id=%s',
+        ('snapshots', ('snapshot_id',)): 'select to_jsonb(t) from v4.snapshots t where snapshot_id=%s',
+        ('observation_revisions', ('observation_id', 'revision')): 'select to_jsonb(t) from v4.observation_revisions t where observation_id=%s and revision=%s',
+        ('training_runs', ('training_run_id',)): 'select to_jsonb(t) from v4.training_runs t where training_run_id=%s',
+    }
     def one(table,keys,values):
-        query=sql.SQL('select to_jsonb(t) from fep.{} t where {}').format(sql.Identifier(table),
-            sql.SQL(' and ').join(sql.SQL('{}=%s').format(sql.Identifier(k)) for k in keys))
+        query=queries.get((table,keys))
+        if query is None:raise ValueError('CANONICAL_QUERY_NOT_ALLOWLISTED:'+table)
         rows=pg.execute(query,tuple(values)).fetchall()
         if len(rows)!=1:raise ValueError('CANONICAL_OWNER_NOT_UNIQUE:'+table)
         return rows[0][0]
@@ -123,7 +139,6 @@ def read_canonical_candidate(pg,request,*,at):
             grant=one('permission_keys',('grant_id',),(head['grant_id'],))
             activation=one('activations',('activation_id',),(head['activation_id'],))
             receipt=one('deployment_change_receipts',('activation_id',),(head['activation_id'],))
-            member_keys=('model_set_id','scope_id','target_id','horizon','feature_contract_id')
             member=one('model_set_members',member_keys+('role',),[request[k] for k in member_keys]+['CHAMPION'])
             model=one('models',('model_id',),(member['model_id'],))
             model_set=one('model_sets',('model_set_id',),(request['model_set_id'],))

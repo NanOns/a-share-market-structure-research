@@ -5,6 +5,51 @@ R3 engineering boundary for future legal Owners. Focus is never substituted.
 from datetime import datetime, date, timezone, timedelta
 from hashlib import sha256
 import json
+import os
+
+_COHORT_GRANT_CONTRACT_ID='VALIDATION_COHORT_READ_GRANT_R4_V1'
+
+
+def _read_accepted_grant(root, grant_ref, *, pg_only):
+    """Resolve an exact Head-bound grant from the approved PG contract registry."""
+    if not pg_only:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK')
+    if not isinstance(grant_ref,dict) or not isinstance(grant_ref.get('sha256'),str):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_BINDING_REQUIRED')
+    namespace=os.environ.get('V4_PG_MODEL_NAMESPACE_ID','').strip()
+    try:
+        identity=json.loads(os.environ.get('V4_PG_EXPECTED_DATABASE_IDENTITY_JSON','{}'))
+    except (TypeError,ValueError) as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_CONFIGURATION_REQUIRED') from exc
+    if (not namespace or not isinstance(identity,dict) or
+            set(identity)!={'database','database_oid','host','port'} or
+            not isinstance(identity.get('database'),str) or
+            isinstance(identity.get('database_oid'),bool) or
+            not isinstance(identity.get('database_oid'),int) or
+            not isinstance(identity.get('host'),str) or
+            isinstance(identity.get('port'),bool) or
+            not isinstance(identity.get('port'),int)):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_CONFIGURATION_REQUIRED')
+    from .contract_registry_pg_v1 import (
+        ContractRegistryError, load_current_approved_contract_by_digest,
+    )
+    from workbench_db.v4_publication_reader import readonly_connection
+    try:
+        with readonly_connection() as pg:
+            registered=load_current_approved_contract_by_digest(
+                pg,_COHORT_GRANT_CONTRACT_ID,grant_ref['sha256'],namespace,
+                expected_database_identity=identity)
+    except ContractRegistryError as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK') from exc
+    except Exception as exc:
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_REQUIRED_NO_FILE_FALLBACK') from exc
+    grant=registered.parsed_json
+    if (registered.contract_id!=_COHORT_GRANT_CONTRACT_ID or
+            registered.raw_sha256!=grant_ref['sha256'] or
+            registered.namespace!=namespace or registered.content_format!='JSON' or
+            not isinstance(grant,dict)):
+        raise ValueError('COHORT_PG_GRANT_REGISTRY_BINDING_MISMATCH')
+    return grant
 CONTRACT='VALIDATION_COHORT_READ_R3_V2'
 KEY=('model_contract_id','state_lineage_id','entity_type','entity_id','episode_id','event_type','T0')
 REQUIRED=KEY+('publication_id','frozen_signal_version','frozen_at_T0','eligible_at_T0','asof_first_available','benchmark','no_lookahead','evidence_class','cohort_namespace')
@@ -36,7 +81,8 @@ def validate_frozen(row,*,cutoff,trade_date):
     if row.get('cohort_enrollment_id') not in (None,identity):raise ValueError('ENROLLMENT_IDENTITY_MISMATCH')
     return identity
 
-def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date):
+def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date,
+                               accepted_head_data=None, owner_reader=None):
     """Read only an Owner and explicit read grant anchored in an accepted Head.
 
     The caller supplies the accepted Head binding from its verified API context,
@@ -44,16 +90,24 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
     R4 prepares this interface; it does not issue grants or enroll production.
     """
     from pathlib import Path
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     root=Path(root)
-    head=json.loads(checked(root,accepted_head).read_bytes())
+    if accepted_head_data is None:
+        raise ValueError('COHORT_PG_ACCEPTED_HEAD_REQUIRED_NO_FILE_FALLBACK')
+    head=accepted_head_data
+    if not isinstance(head,dict):raise ValueError('COHORT_ACCEPTED_HEAD_REQUIRED')
+    if accepted_head_data is not None:
+        from .r43_operational_publication import digest as candidate_digest
+        if not isinstance(accepted_head,dict) or accepted_head.get('sha256')!=candidate_digest(head):
+            raise ValueError('COHORT_ACCEPTED_HEAD_DIGEST_MISMATCH')
     if head.get('owners',{}).get(trade_date,{}).get('validation_cohort')!=owner_binding:
         raise ValueError('COHORT_ACCEPTED_OWNER_BINDING_REQUIRED')
     grant_ref=head.get('cohort_read_grants',{}).get(trade_date)
     if not grant_ref:raise ValueError('COHORT_READ_GRANT_MISSING')
-    grant=json.loads(checked(root,grant_ref).read_bytes())
+    grant=_read_accepted_grant(root,grant_ref,pg_only=True)
     from workbench_db.v4_cohort_pg_r1 import load_owner
-    owner=load_owner(root,owner_binding)
+    owner=owner_reader(owner_binding) if owner_reader is not None else load_owner(root,owner_binding)
+    if not isinstance(owner,dict):raise ValueError('COHORT_PG_OWNER_PAYLOAD_REQUIRED')
     if (grant.get('contract_id')!='VALIDATION_COHORT_READ_GRANT_R4_V1' or
         grant.get('capability')!='READ_STATISTICS' or grant.get('authorized') is not True or
         grant.get('owner')!=owner_binding or grant.get('trade_date')!=trade_date or
@@ -68,7 +122,7 @@ def read_authorized_statistics(root, *, accepted_head, owner_binding, trade_date
 
 def validate_source_receipt(root,head,grant,row):
     """Require exact issuance provenance, not an owner-local assertion of PIT."""
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     binding=grant.get('source_manifest')
     if not binding or head.get('cohort_source_manifests',{}).get(row['T0'])!=binding:
         raise ValueError('COHORT_ACCEPTED_SOURCE_MANIFEST_REQUIRED')
@@ -94,7 +148,7 @@ def validate_source_receipt(root,head,grant,row):
     if len(matches)!=1 or matches[0]!=row:raise ValueError('COHORT_FROZEN_SOURCE_EVENT_MISMATCH')
 
 def publish_isolated_candidate(root, *, accepted_head, owner_binding, trade_date,
-                               candidate_directory, sessions):
+                               candidate_directory, sessions, accepted_head_data=None):
     """Prepare a no-clobber candidate; never changes Heads or production stores.
 
     Existing RadarCohortRuntime remains the enrollment producer. This adapter
@@ -104,12 +158,15 @@ def publish_isolated_candidate(root, *, accepted_head, owner_binding, trade_date
     from pathlib import Path
     from .v4_14_replay_io import publish,digest
     from .v4_15_settlement import due_plan
-    from .r43_owner_replay import checked
+    from .r43_owner_replay import checked_pg as checked
     directory=Path(candidate_directory)
     if directory.is_absolute() or '..' in directory.parts or directory.parts[:2]!=('docs','evidence'):
         raise ValueError('ISOLATED_EVIDENCE_DIRECTORY_REQUIRED')
-    result=read_authorized_statistics(root,accepted_head=accepted_head,owner_binding=owner_binding,trade_date=trade_date)
-    head=json.loads(checked(root,accepted_head).read_bytes())
+    if accepted_head_data is None:
+        raise ValueError('COHORT_PG_ACCEPTED_HEAD_REQUIRED_NO_FILE_FALLBACK')
+    result=read_authorized_statistics(root,accepted_head=accepted_head,accepted_head_data=accepted_head_data,
+        owner_binding=owner_binding,trade_date=trade_date)
+    head=accepted_head_data
     calendar_ref=head.get('cohort_calendar')
     if not calendar_ref:raise ValueError('COHORT_ACCEPTED_CALENDAR_REQUIRED')
     calendar=json.loads(checked(root,calendar_ref).read_bytes())

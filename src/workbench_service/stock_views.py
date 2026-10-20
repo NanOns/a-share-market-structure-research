@@ -22,19 +22,66 @@ def chart(reader,item,query):
     if not authority:return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='HISTORICAL_INDEX_NOT_BOUND')
     period=query.get('period','D');basis=query.get('price_basis','QFQ');limit=int(query.get('limit',120));offset=int(query.get('offset',0))
     if period not in ('D','W','M') or basis not in ('RAW','QFQ') or not 1<=limit<=200 or offset<0:raise ValueError('CHART_QUERY_INVALID')
-    path=reader.root/authority['series']['path'];stat=path.stat()
-    if reader.series_signature!=(stat.st_size,stat.st_mtime_ns):raise SourceInvalid('IMMUTABLE_CHART_INDEX_CHANGED')
-    from workbench_db.v4_series_pg_r1 import range_rows
-    rows=[bar for _,bar in range_rows(path,item['entity_id'],'1900-01-01',reader.context['trade_date'])]
-    bars=[]
-    for r in rows:
-        prices=r['raw_ohlc'] if basis=='RAW' else r['qfq_ohlc'];values=list(map(float,prices)) if prices else [None]*4
-        bars.append(dict(trade_date=r['trade_date'],**dict(zip(('open','high','low','close'),values)),volume=r['volume'],amount=r['amount'],quality='KNOWN' if prices else 'UNKNOWN',reason=r.get('adjustment_reason')))
-    result=aggregate(bars,period);total=len(result);end=max(0,total-offset);start=max(0,end-limit);items=result[start:end]
-    for i,b in enumerate(result):
-        for n in (5,20,60):
-            window=result[max(0,i-n+1):i+1];b['ma'+str(n)]=sum(x['close'] for x in window)/n if len(window)==n and all(x['close'] is not None for x in window) else None
-    return reader.envelope(status='READY' if items else 'EMPTY_VALID',items=items,total=total,limit=limit,offset=offset,has_next=start>0,period=period,price_basis=basis,split_adjustment=authority['price_basis'] if basis=='QFQ' else 'NONE',as_of=reader.context['trade_date'],earliest_valid_date=rows[0]['trade_date'] if rows else None,volume_unit='SHARES',amount_unit='CNY',source=authority['sources']['history'],factor_registry_ref=reader.manifest['source_contract_digest'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+    if getattr(reader,'is_pg_candidate',False):
+        from workbench_db.v4_native import connection
+        from workbench_db.v4_history_pg_r1 import read as read_pg_history
+        source=authority.get('sources',{}).get('history',{})
+        head=reader.manifest.get('context',{}).get('data_head_digest')
+        source_digest=source.get('sha256') if isinstance(source,dict) else None
+        if not isinstance(head,str) or not isinstance(source_digest,str):
+            return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='PG_HISTORY_HEAD_OR_SOURCE_BINDING_MISSING')
+        # Resolve existing history by immutable PG lineage keys, never by a
+        # repository-root-derived schema name or a local pointer file.
+        matches=[]
+        declared=authority.get('history_index')
+        if isinstance(declared,dict):
+            # New stock authorities carry the immutable history version
+            # directly. Older accepted snapshots can still resolve the exact
+            # same PG lineage tuple without consulting any local index file.
+            if (declared.get('contract_id')=='V4_PG_DATED_HISTORY_INDEX_R1'
+                    and declared.get('engine')=='postgresql'
+                    and declared.get('T0')==reader.context['trade_date']
+                    and declared.get('head_token')==head
+                    and declared.get('source_digest')==source_digest):
+                matches=[(declared.get('schema'),declared.get('version'),declared.get('head_token'),
+                    declared.get('T0'),declared.get('source_digest'),declared.get('logical_digest'),
+                    declared.get('symbol_count'),declared.get('bar_count'))]
+        else:
+            with connection('v4',read_only=True) as pg:
+                rows=pg.execute(
+                    'SELECT version,head_token,t0::text,source_digest,logical_digest,symbol_count,bar_count '
+                    'FROM history_versions_r1 WHERE t0=%s AND head_token=%s AND source_digest=%s ORDER BY version',
+                    (reader.context['trade_date'],head,source_digest)).fetchall()
+                matches.extend(('v4',*row) for row in rows)
+        if len(matches)!=1:
+            return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,reason='NO_UNIQUE_PG_HISTORY_VERSION_MATCHING_SNAPSHOT_HEAD_AND_SOURCE',
+                history_versions_found=len(matches),as_of=reader.context['trade_date'],
+                price_basis=basis,period=period,source=dict(head_token=head,source_digest=source_digest))
+        history_schema,version,head_token,t0,actual_source,digest_value,symbol_count,bar_count=matches[0]
+        binding=dict(contract_id='V4_PG_DATED_HISTORY_INDEX_R1',engine='postgresql',schema=history_schema,
+            version=version,head_token=head_token,T0=t0,source_digest=actual_source,
+            logical_digest=digest_value,symbol_count=symbol_count,bar_count=bar_count)
+        rows=read_pg_history(reader.root,binding,t0,item['entity_id']) or []
+        bars=[]
+        for row in rows:
+            prices=row['raw_ohlc'] if basis=='RAW' else row['qfq_ohlc']
+            values=list(map(float,prices)) if prices else [None]*4
+            bars.append(dict(trade_date=row['trade_date'],**dict(zip(('open','high','low','close'),values)),
+                volume=row['volume'],amount=row['amount'],quality='KNOWN' if prices else 'UNKNOWN',reason=row.get('adjustment_reason')))
+        result=aggregate(bars,period);total=len(result);end=max(0,total-offset);start=max(0,end-limit);items=result[start:end]
+        for i,b in enumerate(result):
+            for n in (5,20,60):
+                window=result[max(0,i-n+1):i+1]
+                b['ma'+str(n)]=sum(x['close'] for x in window)/n if len(window)==n and all(x['close'] is not None for x in window) else None
+        return reader.envelope(status='READY' if items else 'EMPTY_VALID',items=items,total=total,limit=limit,offset=offset,
+            has_next=start>0,period=period,price_basis=basis,split_adjustment='ACCEPTED_QFQ' if basis=='QFQ' else 'NONE',
+            as_of=reader.context['trade_date'],earliest_valid_date=rows[0]['trade_date'] if rows else None,
+            volume_unit='SHARES',amount_unit='CNY',source=dict(history_version=version,head_token=head,source_digest=actual_source),
+            factor_registry_ref=reader.manifest['source_contract_digest'],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False)
+    return reader.envelope(status='SOURCE_INCOMPLETE',items=[],total=0,
+        reason='PG_HISTORY_BINDING_REQUIRED',as_of=reader.context['trade_date'],
+        price_basis=basis,period=period,
+        source=dict(required='V4_PG_DATED_HISTORY_INDEX_R1',available=False))
 
 def membership_relations(reader,item):
     """Resolve only actual published current relations to bound sector identities."""
@@ -84,6 +131,8 @@ def timeline(reader,item,query):
     rows=[];debts=[]
     for field,kind in [('structure_events','STRUCTURE_EVENT'),('anchor_view_asof_t','ANCHOR')]:
         cell=item['fields'].get(field)
+        if cell and cell.get('quality')=='KNOWN' and cell.get('value') is None:
+            continue
         if not cell or cell.get('quality')=='UNKNOWN' or cell.get('value') is None:
             debts.append(dict(field=field,owner='V4_12',reason=cell.get('reason') if cell else 'OWNER_FIELD_NOT_BOUND'))
             continue

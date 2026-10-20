@@ -105,4 +105,131 @@ def validate(root=ROOT):
         assert normalized==previous,'BUSINESS_SEMANTICS_CHANGED: '+name
     walk(h['contract_refs'],families,root)
     return dict(status='PASS',ACTIVE_CONTRACT_FAMILY_CLOSURE='PASS',R17R1A_V4_13_ACTIVE_BINDING_REPAIR='PASS',V4_13_ACCEPTED_HEAD_AMENDED_R1='CREATED',family_count=len(families))
+
+
+def _pg_exact(root, ref):
+    """Read an exact accepted binding from PG; resolve relocated history in PG too."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound, read_path
+    try:
+        result=read_bound(root,ref['path'],ref['sha256'])
+    except ValueError as error:
+        if str(error)!='HISTORICAL_SOURCE_INGRESS_NOT_FOUND':raise
+        from workbench_analysis.historical_stage_governance_r17 import REGISTRY
+        registry=read_path(root,REGISTRY)['value']
+        original=(ref['path'],ref['sha256'])
+        row=next((item for key in ('entries','source_archives','static_byte_archives')
+                  for item in registry.get(key,[])
+                  if (item.get('original_namespace',{}).get('path'),
+                      item.get('original_namespace',{}).get('sha256'))==original),None)
+        if row is None:raise ValueError('PG_ACCEPTED_BINDING_NOT_INGRESSED:'+ref['path']) from error
+        archive=row['archive']
+        result=read_bound(root,archive['path'],archive['sha256'])
+        if (archive['sha256']!=ref['sha256'] or archive['bytes']!=ref.get('bytes',archive['bytes'])
+                or result['record'].get('source_sha256')!=archive['sha256']):
+            raise ValueError('PG_HISTORICAL_ARCHIVE_BINDING_MISMATCH:'+ref['path'])
+    raw=result['raw']
+    if hashlib.sha256(raw).hexdigest()!=ref['sha256']:
+        raise ValueError('PG_ACCEPTED_BINDING_SHA_MISMATCH:'+ref['path'])
+    if 'bytes' in ref and len(raw)!=ref['bytes']:
+        raise ValueError('PG_ACCEPTED_BINDING_BYTES_MISMATCH:'+ref['path'])
+    return raw
+
+
+def _pg_walk(value, families, root, lineage=False, seen=None):
+    """Validate active contract closure from exact PG bindings without workspace reads."""
+    seen=set() if seen is None else seen
+    if isinstance(value,list):
+        for child in value:_pg_walk(child,families,root,lineage,seen)
+    elif isinstance(value,dict):
+        if {'path','sha256','bytes'}<=value.keys():
+            path=value['path']
+            if path.startswith('SYNTHETIC_ENGINEERING_ONLY/'):
+                if value['sha256']!='0'*64 or value['bytes']!=0:
+                    raise ValueError('SYNTHETIC_BINDING_IDENTITY_INVALID')
+                return
+            raw=_pg_exact(root,value)
+            if path.startswith(('config/v4_13_','config/v4_14_')):
+                obj=json.loads(raw);family=obj.get('contract_id')
+                if family in families and not lineage and value!=families[family]['active']:
+                    raise ValueError('SUPERSEDED_CURRENT_BINDING:'+path)
+                key=(path,lineage)
+                if key not in seen:
+                    seen.add(key)
+                    _pg_walk(obj,families,root,lineage,seen)
+            elif path=='data/v4/V4_13_ACCEPTED_HEAD.json' and not lineage:
+                raise ValueError('IMMUTABLE_PREDECESSOR_IS_NOT_CURRENT_AUTHORITY')
+            return
+        for key,child in value.items():
+            _pg_walk(child,families,root,lineage or key in LINEAGE,seen)
+
+
+def validate_pg(root=ROOT):
+    """Validate the active V4-13 contract family through shared PG exact bindings.
+
+    This entry point is for live V4 consumers. The offline validate() function
+    remains available for historical repository audits, but runtime authority
+    does not read checkout files, reports, or Git objects.
+    """
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    root=Path(root).resolve()
+    stage=read_path(root,'data/v4/V4_STAGE_ACCEPTED_HEAD.json')['value']
+    binding=stage.get('v4_13_binding')
+    if not isinstance(binding,dict) or binding.get('path')!=HEAD:
+        raise ValueError('FORMAL_V4_13_PG_HEAD_BINDING_REQUIRED')
+    h=json.loads(_pg_exact(root,binding))
+    old_binding=h.get('supersedes')
+    if not isinstance(old_binding,dict) or old_binding.get('path')!='data/v4/V4_13_ACCEPTED_HEAD.json':
+        raise ValueError('V4_13_PREDECESSOR_BINDING_REQUIRED')
+    old=json.loads(_pg_exact(root,old_binding))
+    if h.get('amendment_scope')!='FORMAL_ACTIVE_BINDING_CONSISTENCY_REPAIR':
+        raise ValueError('V4_13_AMENDMENT_SCOPE_INVALID')
+    for key,value in old.items():
+        if key not in {'version','contract_refs','contract_digest','formal_entry_contract'} and h.get(key)!=value:
+            raise ValueError('PRESERVED_HEAD_FIELD_CHANGED:'+key)
+    for key in ('candidate','artifact_refs','runtime_source_bindings','input_accepted_head_refs',
+                'capabilities','production','shadow','focus','global_mandatory_adoption',
+                'ALGORITHM_STATE_REPLAY_PASS','knowledge_lineage','AS_RECORDED','accepted_trade_date'):
+        if h.get(key)!=old.get(key):raise ValueError('V4_13_PREDECESSOR_FIELD_CHANGED:'+key)
+    if h.get('production') or h.get('shadow') or h.get('focus') or h.get('global_mandatory_adoption'):
+        raise ValueError('V4_13_ENGINEERING_SCOPE_REQUIRED')
+    # Runtime package admission depends on the accepted Head plus its
+    # publication-bound contracts. The candidate manifest, amendment task,
+    # audit report and parent-stage archive are historical evidence, not live
+    # authority inputs and are intentionally outside this consumer path.
+    for key in ('active_family_closure','formal_entry_contract'):
+        _pg_exact(root,h[key])
+    entry=json.loads(_pg_exact(root,h['formal_entry_contract']))
+    closure=json.loads(_pg_exact(root,h['active_family_closure']))
+    if (entry.get('contract_id')!='V4_13_ACCEPTED_CONTRACT_PACKAGE_ENTRY_V1'
+            or entry.get('authority_namespace')!=HEAD
+            or entry.get('contract_refs')!=h.get('contract_refs')
+            or entry.get('active_family_closure')!=h.get('active_family_closure')
+            or hashlib.sha256(canon(h['contract_refs'])).hexdigest()!=h.get('contract_digest')
+            or entry.get('contract_digest')!=h.get('contract_digest')):
+        raise ValueError('V4_13_PG_PACKAGE_BINDING_INVALID')
+    families=closure.get('families')
+    if not isinstance(families,dict) or len(families)!=len(h['contract_refs']):
+        raise ValueError('V4_13_PG_ACTIVE_FAMILY_CLOSURE_INVALID')
+    active_paths=set()
+    for family,row in families.items():
+        ref=row.get('active')
+        if not isinstance(ref,dict):raise ValueError('V4_13_PG_ACTIVE_BINDING_MISSING:'+family)
+        obj=json.loads(_pg_exact(root,ref))
+        if obj.get('contract_id')!=family or obj.get('version')!=row.get('version'):
+            raise ValueError('V4_13_PG_ACTIVE_CONTRACT_IDENTITY_MISMATCH:'+family)
+        active_paths.add(ref['path'])
+        previous=obj.get('supersedes')
+        if previous:
+            prior=json.loads(_pg_exact(root,previous))
+            if prior.get('contract_id')!=family:
+                raise ValueError('V4_13_PG_SUPERSEDES_FAMILY_MISMATCH:'+family)
+            if tuple(map(int,obj['version'].split('.')))<=tuple(map(int,prior['version'].split('.'))):
+                raise ValueError('V4_13_PG_SUPERSEDES_VERSION_MISMATCH:'+family)
+    if active_paths!={ref['path'] for ref in h['contract_refs']}:
+        raise ValueError('V4_13_PG_ACTIVE_REFERENCE_SET_MISMATCH')
+    _pg_walk(h['contract_refs'],families,root)
+    return dict(status='PASS',validation_source='POSTGRESQL_EXACT_BINDINGS',
+                contract_digest=h['contract_digest'],family_count=len(families),
+                reference_count=len(h['contract_refs']))
+
 if __name__=='__main__':print(json.dumps(validate()))

@@ -6,6 +6,18 @@ from workbench_service.current_v4_context import digest,SourceInvalid
 from workbench_service.csv_export import stock_csv
 from workbench_service.pit_observation import freeze
 
+def _local_observation_backend():
+    def read_source(root,binding):return (root/binding['path']).read_bytes()
+    def read_receipt(root,relative):
+        path=root/relative
+        return path.read_bytes() if path.exists() else None
+    def write_receipt(root,relative,raw,source_revision):
+        path=root/relative;path.parent.mkdir(parents=True,exist_ok=True)
+        if path.exists() and path.read_bytes()!=raw:raise ValueError('TEST_RECEIPT_CONFLICT')
+        path.write_bytes(raw)
+        return raw
+    return dict(source_reader=read_source,receipt_reader=read_receipt,receipt_writer=write_receipt)
+
 def test_csv_preserves_quotes_unicode_and_page_identity():
     rows=[dict(entity_id=str(i),display_name='中文,"名称"',symbol=str(i),trade_date='2026-09-30',fields={'close':{'value':1}}) for i in range(401)]
     def query(domain,q,summary):
@@ -19,16 +31,18 @@ def test_csv_preserves_quotes_unicode_and_page_identity():
 def test_first_observed_freeze_never_backdates_pit_and_rejects_future(tmp_path):
     source=tmp_path/'source.json';source.write_text('{}');binding=dict(path='source.json',sha256=digest(source.read_bytes()))
     r=SimpleNamespace(root=tmp_path,context={'trade_date':'2026-09-30'},manifest={'sources':{'membership':binding}})
-    first=freeze(r);assert first['strict_t0_pit_ready'] is False and first['AS_RECORDED'] is False
-    assert freeze(r)==first
-    with pytest.raises(SourceInvalid,match='FUTURE'):freeze(r,(datetime.now(timezone.utc)+timedelta(days=1)).isoformat())
-    with pytest.raises(SourceInvalid,match='BACKDATED'):freeze(r,(datetime.now(timezone.utc)-timedelta(days=30)).isoformat())
+    backend=_local_observation_backend()
+    first=freeze(r,**backend);assert first['strict_t0_pit_ready'] is False and first['AS_RECORDED'] is False
+    assert freeze(r,**backend)==first
+    with pytest.raises(SourceInvalid,match='FUTURE'):freeze(r,(datetime.now(timezone.utc)+timedelta(days=1)).isoformat(),**backend)
+    with pytest.raises(SourceInvalid,match='BACKDATED'):freeze(r,(datetime.now(timezone.utc)-timedelta(days=30)).isoformat(),**backend)
 
 
 def test_existing_first_observed_freeze_verifies_archived_bytes(tmp_path):
     source=tmp_path/'source.json';source.write_text('{}')
     binding=dict(path=source.name,sha256=digest(source.read_bytes()))
     r=SimpleNamespace(root=tmp_path,context={'trade_date':'2026-09-30'},manifest={'sources':{'membership':binding}})
-    first=freeze(r);archive=tmp_path/first['sources']['membership']['path']
+    backend=_local_observation_backend()
+    first=freeze(r,**backend);archive=tmp_path/first['sources']['membership']['path']
     archive.write_text('{"tampered":true}')
-    with pytest.raises(SourceInvalid,match='DIGEST_MISMATCH'):freeze(r)
+    with pytest.raises(SourceInvalid,match='DIGEST_MISMATCH'):freeze(r,**backend)

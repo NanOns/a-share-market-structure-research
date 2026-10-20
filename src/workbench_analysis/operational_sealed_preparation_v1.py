@@ -5,7 +5,7 @@ Only the two explicit post-generation IO additions may differ in producer AST.
 """
 import ast,json
 from pathlib import Path
-from .r43_owner_replay import checked
+from .r43_owner_replay import checked_pg as checked
 
 CONTRACT='V4_SEALED_NUMERIC_METADATA_PREPARATION_R1'
 KEY='sealed_numeric_preparation'

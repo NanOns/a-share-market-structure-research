@@ -3,7 +3,7 @@ from copy import deepcopy
 from datetime import datetime,date,timezone
 from functools import lru_cache
 from pathlib import Path
-import ast,hashlib,json,math
+import ast,json,math
 ROOT=Path(__file__).resolve().parents[2]
 MODEL='CONFIRMATION_DETECTOR_V1';PARAMETERS='V4_11_CONFIRMATION_PARAMETER_SET_V1'
 CONTRACT='config/v4_11_confirmation_detector_contract_r2.json'
@@ -14,14 +14,34 @@ def digest(value):
     from .state_identity import digest as canonical_digest
     return canonical_digest(value)
 def exact(ref):
-    p=(ROOT/ref['path']).resolve()
-    if not p.is_relative_to(ROOT) or not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=ref['sha256'] or p.stat().st_size!=ref.get('bytes',ref.get('byte_count',p.stat().st_size)):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    p=bound_bytes(ROOT,ref)
+    if p.stat().st_size!=ref.get('bytes',ref.get('byte_count',p.stat().st_size)):
         raise ConfirmationError('EXACT_INPUT_BINDING_INVALID:'+ref['path'])
     return p
-def bound(ref):return json.loads(exact(ref).read_bytes())
+def _bound_bytes(ref):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_bound
+    source=read_bound(ROOT,ref['path'],ref['sha256'])
+    if len(source['raw'])!=ref.get('bytes',ref.get('byte_count',len(source['raw']))):
+        raise ConfirmationError('EXACT_INPUT_BINDING_INVALID:'+ref['path'])
+    return source['raw']
+def bound(ref):return json.loads(_bound_bytes(ref))
+def read_active_producer_set(root,relative_path):
+    """Resolve a sealed producer set only through the current PG-bound V4-11 Head."""
+    from workbench_db.v4_historical_source_ingress_pg_r1 import source_id_for_path
+    from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
+    authority=CurrentStageAuthority(root)
+    v411=json.loads(authority.read(authority.owners['v4_11']))
+    matches=[binding for binding in v411.get('evidence_bindings',{}).values()
+             if isinstance(binding,dict) and source_id_for_path(binding.get('path',''))==relative_path]
+    if len(matches)!=1:
+        raise ConfirmationError('SEALED_PRODUCER_SET_NOT_BOUND_TO_CURRENT_PG_HEAD:'+relative_path)
+    binding=matches[0]
+    return json.loads(authority.read(binding))
 @lru_cache(maxsize=1)
 def package():
-    c=json.loads((ROOT/CONTRACT).read_bytes());entry=bound(c['entry_contract']);legacy=entry['legacy_inventory']['source']
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+    c=read_path(ROOT,CONTRACT)['value'];entry=bound(c['entry_contract']);legacy=entry['legacy_inventory']['source']
     source=exact(legacy).read_text(encoding='utf8');tree=ast.parse(source)
     manifest=bound(c['legacy_manifest']);parameters=bound(c['parameters']);machine=bound(c['machine_ast'])
     functions={n.name:ast.dump(n,include_attributes=False) for n in tree.body if isinstance(n,ast.FunctionDef)}

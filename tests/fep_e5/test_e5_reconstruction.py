@@ -12,10 +12,7 @@ from tests.v4_phase0.test_postgres_schema import add_namespace,add_publication
 
 @pytest.fixture(params=['fresh','upgrade'])
 def canonical(request):
-    if os.environ.get('FEP_E5_CANONICAL_TEST_ENABLE')!='1':pytest.skip('explicit canonical fixtures required')
-    pg=psycopg.connect(DSNS[request.param]);assert pg.info.dbname=='fep_e5b_'+request.param
-    try:yield pg
-    finally:pg.rollback();pg.close()
+    pytest.skip('FEP standalone PostgreSQL fixtures disabled by single-database policy')
 
 def row(pg,table,where='true'):
     return pg.execute(sql.SQL('select to_jsonb(t) from fep.{} t where '+where+' order by to_jsonb(t)::text limit 1').format(sql.Identifier(table))).fetchone()[0]

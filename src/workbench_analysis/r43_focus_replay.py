@@ -10,7 +10,9 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 import pandas as pd
-from .r43_owner_replay import load, checked, gzrows, gzwrite, ref, OUT, progress_items
+from .r43_owner_replay import (load, checked, gzrows, gzwrite, ref, OUT, progress_items,
+    pg_json_source, pg_text_source, pg_source_binding, historical_source,
+    write_candidate_json, _ingress_candidate_bytes)
 from .market_source_acquisition import write, official_sessions
 from .tdx_official_daily_source import _atomic_write
 from .research_features import build_stock_research_features, ResearchFeatureContext
@@ -46,36 +48,50 @@ def confirmation(values):
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
 
 
+def research_attention_config(root):
+    """Load the versioned JSON-compatible YAML contract from exact PG bytes."""
+    return json.loads(pg_text_source(root,'config/research_attention_v3.yaml'))
+
+
 def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None, predecessor_state=None, progress_counter=None):
     root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
     if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
         raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
     if output_namespace:
         out.mkdir(parents=True,exist_ok=False)
-    sector_inputs=root/(sector_namespace or 'docs/evidence/r4_3_four_session_closeout_20261009/sector_v3')
-    if not sector_inputs.resolve().is_relative_to(root):
-        raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
-    replay=load(inputs/'PROFILE_STRUCTURE_REPLAY.json');sectors=load(sector_inputs/'SECTOR_REPLAY.json')
+    replay=pg_json_source(root,(input_namespace or OUT)+'/PROFILE_STRUCTURE_REPLAY.json')
+    if sector_namespace:
+        sector_inputs=root/sector_namespace
+        if not sector_inputs.resolve().is_relative_to(root):
+            raise ValueError('FOCUS_REPLAY_NAMESPACE_OUTSIDE_ROOT')
+        sectors=pg_json_source(root,sector_namespace+'/SECTOR_REPLAY.json')
+    else:
+        # Default to the current R43 candidate namespace. Historical evidence
+        # must be selected explicitly by a caller and remains PG-bound.
+        sectors=pg_json_source(root,OUT+'/SECTOR_REPLAY.json')
     sessions=official_sessions(root);cutoff=datetime.now(timezone.utc).isoformat();prior=None;prior_pid=None;days={};receipts=[]
     if predecessor_state:
         prior=predecessor_state['prior'];prior_pid=predecessor_state['prior_pid']
         days=dict(predecessor_state['days']);receipts=list(predecessor_state['receipts'])
     contract=out/'FOCUS_STAGE_CONTRACT_V1.json'
-    write(contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.3',
+    write_candidate_json(root,contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.3',
         source_admission='Exact R4 sealed owner files; corrected candidate only',
         D0='Original scanner/parameters/priority and UNKNOWN-dominant wrapper',
         D2='Unchanged R5 candidate reducer and full field/temporal/publication validator',
         focus='Original membership/path/outcome kernels; independent corrected namespace',
         accepted=False,AS_RECORDED=False,production_admission=False,
         exact_business_AST=d2.adapter_ast_evidence()))
-    membership=load(checked(root,load(inputs/'SOURCE_BINDINGS.json')['sources']['latest_tdx_member_snapshot']))
+    source_manifest=pg_json_source(root,(input_namespace or OUT)+'/SOURCE_BINDINGS.json')
+    membership=load(checked(root,source_manifest['sources']['latest_tdx_member_snapshot']))
     metadata={k:membership[k] for k in ('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof','knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN','production_eligible_scope','survivorship_bias_risk')}
-    cfg=load(root/'config/research_attention_v3.yaml');package=load_package(root)
+    # This contract is explicitly JSON-compatible YAML; load the exact PG
+    # bytes with the standard JSON parser used by the other project consumer.
+    cfg=research_attention_config(root);package=load_package(root)
     cal=dict(session_dates=sessions,sessions=[dict(trade_date=d,session_index=i) for i,d in enumerate(sessions)],
           lineage_id='R4_OFFICIAL_MASTER_CALENDAR',producer_contract_id='MARKET_CALENDAR_V1')
-    cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
-    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
-    sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={};mainline_context={}
+    cal['publication_id']='R4_CALENDAR:'+digest(cal);write_candidate_json(root,out/'FOCUS_CALENDAR.json',cal)
+    acquisition=historical_source(root,'acquisition')['value']
+    sources=source_manifest['sources'];pathstatus={};allbars={};native={};mainline_context={}
     if predecessor_state:
         pathstatus=dict(predecessor_state['pathstatus']);allbars=dict(predecessor_state['allbars'])
         native=dict(predecessor_state['native']);mainline_context=dict(predecessor_state['mainline_context'])
@@ -163,12 +179,13 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         publication=dict(**metadata,contract_id='V4_R4_CORRECTED_D2_PUBLICATION_V1',rows=rows,accepted=False,
             source_contract=ref(root,contract),fact_manifest_digest=digest(manifest))
         prior_pid='R4_D2:'+digest(publication);publication['publication_id']=prior_pid;prior={r['entity_id']:r for r in rows};days[day]=rows
-        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+        from common.paths import resolve_tdx_root
+        path=folder/'corrected_d2.json.gz';d2_bytes=gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0);_atomic_write(path,d2_bytes,tdx_root=resolve_tdx_root(root));_ingress_candidate_bytes(root,path,d2_bytes)
         for r in calculations:r.update(metadata);r['research_mainline_context']=mainline_context[day].get(r['security_id'])
         for r in factrows:r.update(metadata)
-        calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations)
-        fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows)
-        write(folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=ref(root,folder/'focus_status.json')
+        calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations,pg_ingress=True)
+        fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows,pg_ingress=True)
+        write_candidate_json(root,folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=ref(root,folder/'focus_status.json')
         for sid,bars in history.items():
             for bar in bars:
                 if bar['trade_date']==day:
@@ -182,9 +199,13 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     from workbench_db.v4_series_pg_r1 import build
     from workbench_service.current_v4_context import canonical,digest as content_digest
     build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
+    # The immutable series builder stores bar rows in PG, while its compact
+    # descriptor is also consumed through the historical SourceIngress path.
+    # Register and verify those exact descriptor bytes before downstream reads.
+    _ingress_candidate_bytes(root,series,series.read_bytes())
     for owner in native.values():owner['series']=ref(root,series)
-    bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
-          classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
+    bindings=dict(series=ref(root,series),calendar=pg_source_binding(root,(output_namespace or OUT)+'/FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
+          classification=pg_source_binding(root,'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
     bindings.update(security_identity=sources['identity'], path_contract=CONTRACT)
     from focus_tracker.v4_native_core_adapter import enriched_project
     from workbench_db.v4_series_pg_r1 import verified_series_scope
@@ -204,8 +225,9 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     projection.update(**metadata,contract_id='V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1',source_bindings=bindings,
          production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'
-    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+    from common.paths import resolve_tdx_root
+    projection_bytes=gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0);_atomic_write(path,projection_bytes,tdx_root=resolve_tdx_root(root));_ingress_candidate_bytes(root,path,projection_bytes)
     result=dict(owners=receipts,focus=ref(root,path),episodes=len(projection['episodes']),events=len(projection['events']),
           outcomes=dict(Counter(o['outcome_status'] for e in projection['episodes'] for o in e['outcomes'])),
           production_admission=False,next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE')
-    write(out/'FOCUS_FORWARD_REPLAY.json',result);return result
+    write_candidate_json(root,out/'FOCUS_FORWARD_REPLAY.json',result);return result

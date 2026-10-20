@@ -1,8 +1,0 @@
-consumer,entry,producer_to_store,actual_call,status
-Historical DailyJobs import,operational_daily_jobs_v1.DailyJobs,Native PG constructor,TRUE,PUBLIC_IMPORT_FAIL_CLOSED_PASS
-Default worker,operational_daily_jobs_v1.start -> tick,execute_sources accepted-T0 no-op -> PG jobs,TRUE,SCOPED_RECOVERY_PASS
-Desktop worker,ManagedDailyJobs.start -> execute,execute_sources accepted-T0 no-op -> PG jobs,TRUE,SCOPED_RECOVERY_PASS
-Default HTTP settings,make_product_handler -> make_daily_handler,PG scheduler_policy,TRUE,PAUSED_READBACK_PASS
-Source acquisition and Joint Head,serve_v4 executor,Sources -> PG snapshot/series/journal/shadow,CONDITIONAL,OPEN_INTEGRATION
-Desktop full engine,EngineController.production_factory,Recovery -> HTTP -> managed worker,CONDITIONAL,OPEN_WINDOWS_ENGINE
-DuckDB API bridge,PostgresDuckDBApiConnectionProvider,Legacy app/research builder,UNRESOLVED,OPEN_DYNAMIC_SCOPE

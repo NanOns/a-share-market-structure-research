@@ -5,7 +5,8 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
-from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT, progress_items
+from .r43_owner_replay import (load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT,
+    progress_items, historical_source, pg_json_source, pg_source_binding, write_candidate_json)
 from .market_source_acquisition import official_sessions, write
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
@@ -15,7 +16,7 @@ from .v4_12_input_binder import InputBinder
 
 
 def membership_metadata(root):
-    snapshot=load(Path(root)/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json')
+    snapshot=historical_source(root,'member_snapshot')['value']
     return {k:snapshot[k] for k in ('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof','knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN','production_eligible_scope','survivorship_bias_risk')}
 
 def gzwrite(root,path,rows):
@@ -25,7 +26,7 @@ def gzwrite(root,path,rows):
         for family in ('fields','states'):
             for cell in r.get(family,{}).values():
                 if isinstance(cell,dict):cell['membership_context']=metadata
-    return base_gzwrite(root,path,rows)
+    return base_gzwrite(root,path,rows,pg_ingress=True)
 
 
 class CorrectedBinder(EpisodeBinder):
@@ -110,10 +111,10 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
 
 
 def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
+    root=Path(root).resolve();out=root/OUT;replay=pg_json_source(root,OUT+'/CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
-    write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.3',
-          prior_gate=ref(root,out/'CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
+    write_candidate_json(root,out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=pg_source_binding(root,CONTRACT),upgrade_document='R4.3',
+          prior_gate=pg_source_binding(root,OUT+'/CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     from scripts.run_v4_04_full_market_candidate_r4 import build_row, CONTRACT_FILES
     from scripts import run_v4_04_full_market_candidate_r4 as builder
     from scripts.build_fp06_sector import periods
@@ -124,22 +125,27 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
     c=FrozenContracts(root);sessions=official_sessions(root);receipts=[];prior=prior_snapshot
     previous_ids=set(prior_security_ids or ())
     verified_status={}
-    historical_status=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
+    historical_status=pg_json_source(root,'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
     for r in gzrows(checked(root,historical_status)):
         verified_status[r['security_id'],r['trade_date']]=r['status']
     identity=load(checked(root,replay['owners'][0]['sources']['identity']))['rows']
     code_to_id={r['source_security_key'].lower():r['security_id'] for r in identity}
     identity_by_id={r['security_id']:r for r in identity}
-    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    acquisition_source=historical_source(root,'acquisition')
+    acquisition=acquisition_source['value']
     for query in acquisition['queries']:
         if query.get('path') and query['method']=='query_daily_history_k_AStock':
             date=query['params'].get('date',query['params'].get('day'))
-            for row in load(query['path']).get('rows',[]):
+            from workbench_db.v4_historical_source_ingress_pg_r1 import read_path
+            query_path=Path(query['path']).resolve().relative_to(root).as_posix()
+            for row in read_path(root,query_path)['value'].get('rows',[]):
                 sid=code_to_id.get(row['code'].lower())
                 if sid:verified_status[sid,date]='SUSPENDED' if row.get('tradestatus')=='0' else 'ACTUAL_TRADED'
-    write(out/'VERIFIED_STATUS_SOURCE_BINDINGS.json',dict(historical_status=historical_status,acquisition=ref(root,root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'),rule='Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN'))
+    write_candidate_json(root,out/'VERIFIED_STATUS_SOURCE_BINDINGS.json',dict(historical_status=historical_status,
+        acquisition=dict(path=acquisition_source['record']['source_path'],sha256=acquisition_source['record']['source_sha256'],bytes=acquisition_source['record']['source_bytes']),
+        rule='Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN'))
     cutoff=datetime.now(timezone.utc).isoformat()
-    cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
+    cd=digest({p:pg_source_binding(root,p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
         day=owner['trade_date'];folder=out/'owners'/day;factors=gzrows(checked(root,owner['core']))
         histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
@@ -170,13 +176,14 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
             result.update(membership_metadata(root))
             results.append(result)
         store=CandidateStore(root,folder.relative_to(root).as_posix()+'/structure')
+        store.pg_ingress=True
         artifacts=[]
         for name,rs,compressed in [('runtime_security.jsonl.gz',results,True),('state_observations.jsonl.gz',[o for r in results for o in r['observations']],True),('anchors.jsonl',[a for r in results for a in r['anchors']],False),('events.jsonl',[a for r in results for a in r['events']],False),('transitions.jsonl',[a for r in results for a in r['transitions']],False)]:
             artifacts.append(store.jsonl(name,rs,compressed))
         manifest=store.json('runtime_manifest.json',dict(contract_id='V4_12_R13_RUNTIME_CANDIDATE_MANIFEST',
              status='ENGINEERING_CANDIDATE_NOT_ACCEPTED',trade_date=day,revision='r1',available_at=cutoff,
              entry=c.entry_ref,contract_digest=c.digest,snapshot_contract=engine.state_ref,episode_contract=engine.episode_ref,
-             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=ref(root,root/CONTRACT),
+             artifacts=artifacts,prior=prior,scope='R4_CORRECTED_SOURCE_CANDIDATE',source_admission_contract=pg_source_binding(root,CONTRACT),
              owner_inputs=owner,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,formal_accepted=False,
              raw_fallback_count=0,provider_replacement_count=0,V4_11_candidate_substitution_count=0))
         snapshot=EpisodeSnapshotMaterializer(c,store).seal(results,manifest,cutoff)
@@ -194,8 +201,8 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
              advanced_projection=gzwrite(root,folder/'advanced_structure_projection.jsonl.gz',projected),
              anchors=sum(len(r['anchor_states']) for r in results),events=sum(len(r['events']) for r in results),
              prior_unknown_absence_preserved=True,acceptance='MATERIALIZED_CORRECTED_CANDIDATE_NOT_PRODUCTION')
-        write(folder/'PROFILE_STRUCTURE_OWNER.json',result);receipts.append(result)
+        write_candidate_json(root,folder/'PROFILE_STRUCTURE_OWNER.json',result);receipts.append(result)
         print(__import__('json').dumps(dict(stage='PROFILE_STRUCTURE',day=day,anchors=result['anchors'],counts=counts)),flush=True)
-    write(out/'PROFILE_STRUCTURE_REPLAY.json',dict(contract='V4_R43_CORRECTED_OWNER_REPLAY_V3',owners=receipts,
+    write_candidate_json(root,out/'PROFILE_STRUCTURE_REPLAY.json',dict(contract='V4_R43_CORRECTED_OWNER_REPLAY_V3',owners=receipts,
           acceptance='REAL_MATERIALIZATION_COMPLETE_PENDING_INDEPENDENT_STRUCTURE_ORACLE',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     return receipts

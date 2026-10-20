@@ -3,33 +3,46 @@ from pathlib import Path
 from hashlib import sha256
 import json
 from .rps_pit_history_a02_v1 import read_bound,read_publication,delta,digest
+from workbench_db.v4_historical_source_ingress_pg_r1 import read_source,source_id_for_path
+
+def _pg_path(root, path):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import read_path_bytes
+    return read_path_bytes(root, path)
+
+def _pg_bound_path(root, ref):
+    from workbench_db.v4_historical_source_ingress_pg_r1 import bound_bytes
+    return bound_bytes(root, ref)
 
 BASELINE='66ef2e342dd339cc9795c2d1fd774b8edec4c345'
-AUDIT_PATH='docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md'
+AUDIT_SOURCE_ID='f96e640992182f3fb9b94c0c1c04be69d9e206bbfbf9bd5d0ef5063f97800875'
 AUDIT_SHA='7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3'
 RPS_HEAD='data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json'
-A05_RECORD='reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json'
+A05_RECORD_SOURCE_ID='a26a67062b98103072c940b0d7432dff4b8466baebaf5cced69da2f7332b9b16'
+RPS_EVIDENCE_SOURCE_ID='223b767d3e8adc861fd4a54e46495f05e8129eb3ae08ffe26224c10876508c22'
+A05_EVIDENCE_SOURCE_ID='8121d68adba8a3633b3eea0811cfb7193d6ee8e90799acb91c696742f3556c27'
 ACCEPTED_RPS_EVIDENCE_SHA='1a19deb785cd3dcede58a6ffae4f8f3558d8a1d5732f3cc6f95522e51c95e602'
 ACCEPTED_A05_EVIDENCE_SHA='a0e618960c4ecec9d24b42e47607f87172c699ee2f2144c7b68ef4099dc7ff16'
 
-def accepted_evidence(root,ref,path,expected_sha):
-    if ref.get('path')!=path or ref.get('sha256')!=expected_sha:raise ValueError('AUDITED_PRODUCER_EVIDENCE_PIN')
-    return read_bound(root,ref)
+def accepted_evidence(root,ref,expected_source_id,expected_sha):
+    if source_id_for_path(ref.get('path',''))!=expected_source_id or ref.get('sha256')!=expected_sha:raise ValueError('AUDITED_PRODUCER_EVIDENCE_PIN')
+    source=read_source(root,expected_source_id)
+    if source['record']['source_sha256']!=expected_sha:raise ValueError('AUDITED_PRODUCER_EVIDENCE_DIGEST')
+    return source['value']
 
 def validate_authority(root,ref,scope):
-    if ref.get('path')!=AUDIT_PATH or ref.get('sha256')!=AUDIT_SHA or ref.get('bytes')!=8244:
+    if source_id_for_path(ref.get('path',''))!=AUDIT_SOURCE_ID or ref.get('sha256')!=AUDIT_SHA or ref.get('bytes')!=8244:
         raise ValueError('EXTERNAL_AUTHORITY_PIN_MISMATCH')
-    path=(Path(root)/AUDIT_PATH).resolve();raw=path.read_bytes()
+    source=read_source(root,AUDIT_SOURCE_ID);raw=source['raw']
     if sha256(raw).hexdigest()!=AUDIT_SHA or len(raw)!=8244: raise ValueError('EXTERNAL_AUTHORITY_BYTES_MISMATCH')
     text=raw.decode('utf8')
     if BASELINE not in text or scope not in text: raise ValueError('EXTERNAL_SCOPE_NOT_ACCEPTED')
-    return path
+    return source
 
 def read_accepted_rps(root,day):
-    root=Path(root).resolve();head=json.loads((root/RPS_HEAD).read_bytes())
+    root=Path(root).resolve();head=json.loads(_pg_path(root,RPS_HEAD).read_bytes())
     validate_authority(root,head['external_authority'],'PASS_RECONSTRUCTED_INPUT_PRODUCER_SCOPE')
     record=read_bound(root,head['acceptance_record'])
-    audited=accepted_evidence(root,record['producer_evidence'],'reports/audits/A02_RPS_HISTORY_BOOTSTRAP_EVIDENCE_R3.json',ACCEPTED_RPS_EVIDENCE_SHA)
+    audited=accepted_evidence(root,record['producer_evidence'],RPS_EVIDENCE_SOURCE_ID,ACCEPTED_RPS_EVIDENCE_SHA)
     if record['publications']!=audited['publications'] or record['inputs']!=audited['inputs'] or record['deltas']!=audited['deltas']:raise ValueError('A02_UNAUDITED_PUBLICATION_SUBSTITUTION')
     if record['external_authority']!=head['external_authority'] or record['audited_head']!=BASELINE or record['status']!='PASS_RECONSTRUCTED_INPUT_PRODUCER_SCOPE': raise ValueError('A02_ACCEPTANCE_RECORD_INVALID')
     if head['AS_RECORDED'] is not False or head['historical_first_availability_proven'] is not False or head['knowledge_lineage']!='RECONSTRUCTED_CORRECTED': raise ValueError('A02_ACCEPTANCE_SCOPE_EXPANSION')
@@ -48,16 +61,16 @@ def read_accepted_rps(root,day):
     return dict(head=head,publication=publication,prior_publications=priors,sessions=sessions,deltas={o:delta(publication,p,o,sessions) for o,p in priors.items()})
 
 def validate_a05_record(root):
-    root=Path(root).resolve();record=json.loads((root/A05_RECORD).read_bytes())
+    root=Path(root).resolve();record=read_source(root,A05_RECORD_SOURCE_ID)['value']
     validate_authority(root,record['external_authority'],'PASS_EXACT_CURRENT_SNAPSHOT_PRODUCER_SCOPE')
-    audited=accepted_evidence(root,record['producer_evidence'],'reports/audits/A05_EXACT_RECOVERY_EVIDENCE_R2.json',ACCEPTED_A05_EVIDENCE_SHA)
+    audited=accepted_evidence(root,record['producer_evidence'],A05_EVIDENCE_SOURCE_ID,ACCEPTED_A05_EVIDENCE_SHA)
     if record['real_observations']!=audited['input_binding'] or record['source']!=audited['source_astro']['source']:raise ValueError('A05_UNAUDITED_OBSERVATION_SUBSTITUTION')
     if record['audited_head']!=BASELINE or record['status']!='PASS_EXACT_CURRENT_SNAPSHOT_PRODUCER_SCOPE' or record['historical_PIT_equivalent'] is not False or record['AS_RECORDED'] is not False:
         raise ValueError('A05_SCOPE_OR_ACCEPTANCE_INVALID')
     if any(record.get(k) is not False for k in ('production','shadow','focus','global_mandatory_adoption','historical_membership_acceptance','V4_08_business_head_amendment_accepted')):raise ValueError('A05_PERMISSION_EXPANSION')
     for key in ('source','producer','contract','real_observations'):
-        ref=record[key];p=(root/ref['path']).resolve()
-        if not p.is_relative_to(root) or sha256(p.read_bytes()).hexdigest()!=ref['sha256']: raise ValueError('A05_EXACT_ACCEPTANCE_BINDING')
+        ref=record[key];p=_pg_bound_path(root,ref)
+        if sha256(p.read_bytes()).hexdigest()!=ref['sha256']: raise ValueError('A05_EXACT_ACCEPTANCE_BINDING')
     data=read_bound(root,record['real_observations'])
     if data['trade_date']!=record['accepted_snapshot_trade_date'] or len(data['observations'])!=6188: raise ValueError('A05_SNAPSHOT_SCOPE_MISMATCH')
     return record,data
@@ -66,4 +79,4 @@ def accepted_legacy_observations(root,*,target):
     from sector.legacy_valid_member_a05_v1 import exact_value,LEGACY_VERSION
     record,data=validate_a05_record(root)
     if target!=record['accepted_snapshot_trade_date']: raise ValueError('A05_CURRENT_SNAPSHOT_TARGET_NOT_ACCEPTED')
-    return {r['source_security_id']:dict(value=exact_value(r['source_security_id'],r['missing_state']),quality='ACCEPTED',producer_contract=LEGACY_VERSION,accepted_source_scope='CURRENT_SNAPSHOT_ONLY',trade_date=target,max_source_date=target,acceptance_record=A05_RECORD,source_binding=record['real_observations']) for r in data['observations']}
+    return {r['source_security_id']:dict(value=exact_value(r['source_security_id'],r['missing_state']),quality='ACCEPTED',producer_contract=LEGACY_VERSION,accepted_source_scope='CURRENT_SNAPSHOT_ONLY',trade_date=target,max_source_date=target,acceptance_record=record['contract_id'],source_binding=record['real_observations']) for r in data['observations']}

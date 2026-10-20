@@ -1,11 +1,31 @@
-# Script execution storage policy
+# 脚本目录执行规范
 
-Inherited project guardrails in the root AGENTS.md remain applicable.
+本目录继承根 AGENTS.md。本文件只补充脚本职责，不另设工作区、数据库或发布权限。
 
-Use G: only for project temporary checkouts, regression workspaces, test temporary directories and large caches. Do not allocate project temporary space on C:.
+## 一、脚本职责
 
-The current explicit roots are G:/codex_tmp for clean regression checkouts and G:/codex_tmp/test_temp for test temporary directories. Consult config/project_workspace_storage_policy_v1.json. Do not invoke a legacy helper that hardcodes a C: checkout; use the G-only checkout helper or implement a successor without modifying frozen historical source.
+- 可维护脚本仅承担明确入口、运维、迁移或验证职责；业务算法归属 src，不在脚本中复制另一套实现。
+- 一次性探针、修复和测试脚本只在根规范指定临时区短期使用，执行完成即删除；不得以证据、历史阶段或以后可能复用为理由保留在本目录或Git。优先内存执行。
+- 本目录只留V4可复用入口；小修复修改原入口，不再追加一批带阶段号、日期或R版本的新脚本。业务实现归src，不将脚本堆成第二套业务层。
+- 脚本说明、注释及面向用户的提示使用中文；外部协议、接口标识和错误码保持兼容。
 
-The user plans a dedicated 3 TB mechanical disk for Codex projects, the PGS database and stock/TDX data. Its drive and paths are not configured yet. Existing TDX source roots remain read-only.
+## 二、运行边界
 
-User instruction dated 2026-10-09 supersedes the previous E/F rule: all newly created Codex temporary files and workspaces use G:. Set child-process TMP/TEMP/TMPDIR to G:/codex_tmp.
+- 唯一源码目录为根规范指定的唯一主仓库；禁止临时克隆、工作树和回归 checkout。旧脚本中的其他工作区不能成为现役入口。
+- 子进程 TMP、TEMP、TMPDIR 使用根规范指定的 G 盘临时目录，测试目录使用根规范指定的测试临时目录。禁止向通达信或其他只读源写入。
+- 路径从 config/paths.yaml 或明确部署参数读取，不将阶段报告、桌面文件和某次快照路径固定进代码。
+- PostgreSQL 唯一连接目标、v4 唯一业务 Schema、28765/28766 服务边界均按根规范执行。连接高权限不代表当前任务已授权写入。
+- 导入模块、构造存储对象或读取配置不得隐式扫描磁盘、导入来源、迁移、建表或修复数据；写操作使用明确入口。
+
+## 三、迁移、验证与交付
+
+- 本地单用户工具优先采用现有入口、简单幂等重试和明确失败日志；不为恢复引入分布式框架。普通研究不强制严格PIT；模块失败只阻断真实依赖，不默认卡住整日更新。
+
+- 当前阶段00任务允许在唯一PG上执行经精确核对的阶段00单项迁移与开发数据迁入/读回；不得调用包含跨阶段版本的历史总迁移runner。`scripts/apply_v4_phase0_schema.py` 只可暴露清楚命名且哈希固定的阶段00迁移入口，其他历史迁移仍拒绝执行。不得启动生产服务、切换正式Head或运行生产调度。
+- 后续迁移逐项说明输入、目标结构、现役消费者、幂等与失败恢复；不为“备份”复制整域业务表，不为每个发布建立新 Schema。
+- 验证优先限定输入和范围；不默认全历史重算、不默认启动服务。只读验证显式使用只读事务。
+- 仅运行本地适用检查，不启用 GitHub 自动持续集成。过程输出放 Git 外，只提交正式脚本及精简规范。
+- 不清理无关用户文件、源数据和唯一证据。脚本退休先核实消费者，不按文件名批量删除。
+
+- script_back为用户指定的清理前全量备份，包含未提交修改；不导入、不运行、不提交其中内容。后续仅按对应V4阶段需要取回最小内容，修复验证后清理备份。
+- 阶段报告执行根规范22阶段最多22个条目的上限；一次小任务不新建报告或证据包，更新所属阶段原记录。

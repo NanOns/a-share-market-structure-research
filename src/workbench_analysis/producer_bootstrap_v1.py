@@ -2,65 +2,97 @@
 from datetime import datetime, timezone
 from pathlib import Path
 import json
-from .r43_owner_replay import checked, gzrows, ref
-from .market_source_acquisition import official_sessions
+from .r43_owner_replay import source_ingress, ref
 from .source_capture_candidate_v1 import capture
-from .full_state_signal_candidate_v1 import produce, freeze
+from .full_state_signal_candidate_v1 import produce
 
 
-def capture_daily_sources(root, day, freeze_binding, *, research_replay=False):
+def _pg_owner_rows(root, head, day, domain):
+    from workbench_db.v4_operational_owner_authority_v2 import read_domain
+    return read_domain(root,head,day,domain,workspace_root=str(root))
+
+
+def _candidate_document(value, day):
+    """Accept an in-memory candidate envelope only; never reopen its workspace copy."""
+    if not isinstance(value, dict):
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_REQUIRED_NO_FILE_FALLBACK')
+    if value.get('contract_id') != 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_CONTRACT_REQUIRED')
+    if value.get('accepted_trade_date') != day:
+        raise ValueError('PG_OPERATIONAL_CANDIDATE_T0_MISMATCH')
+    return value
+
+
+def capture_daily_sources(root, day, freeze_binding, *, pg_head_candidate=None, research_replay=False):
     root = Path(root)
-    artifact = json.loads(checked(root, freeze_binding).read_bytes())
-    head = json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
-    snapshot = json.loads(checked(root, head['membership_snapshot']).read_bytes())
-    life = json.loads(checked(root, head['owners'][head['accepted_trade_date']]['lifecycle']).read_bytes())
+    artifact = json.loads(source_ingress(root, freeze_binding).read_bytes())
+    # Candidate transport can provide the binding envelope, while all Owner,
+    # membership and predecessor payloads are re-read from PG below. It does
+    # not confer accepted Head authority.
+    if not isinstance(pg_head_candidate, dict):
+        raise ValueError('PG_OPERATIONAL_HEAD_CANDIDATE_REQUIRED')
+    head = pg_head_candidate
+    if head.get('contract_id') != 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1':
+        raise ValueError('PG_ACCEPTED_OPERATIONAL_HEAD_CONTRACT_REQUIRED')
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot, read as read_membership
+    snapshot = context_snapshot(root, head)
+    membership_rows = read_membership(root, head, workspace_root=str(root))
+    from workbench_db.v4_market_calendar_reader_r1 import from_environment as market_calendar_reader
+    accepted_calendar=market_calendar_reader().calendar()
+    from workbench_db.v4_operational_owner_authority_v2 import load as load_owner, read as read_owner
+    owner_authority = load_owner(root, head)
+    lifecycle_binding = head['owners'][head['accepted_trade_date']]['lifecycle']
+    lifecycle_rows = read_owner(root, owner_authority, head['accepted_trade_date'], 'lifecycle',
+                                lifecycle_binding, workspace_root=str(root))
+    if not isinstance(lifecycle_rows,list) or any(not isinstance(row,dict) for row in lifecycle_rows):
+        raise ValueError('PG_LIFECYCLE_OWNER_PAYLOAD_SHAPE_INVALID')
+    active_security_ids=sorted({row['security_id'] for row in lifecycle_rows if row.get('security_id')})
+    if not active_security_ids:raise ValueError('PG_LIFECYCLE_ACTIVE_UNIVERSE_EMPTY')
     native = artifact['native_baostock']
-    native_doc = json.loads(checked(root, native).read_bytes())
+    native_doc = json.loads(source_ingress(root, native).read_bytes())
     native_time = native_doc['observed_at']
     transport=native_doc.get('source_transport_v2',{})
     native_requested = native_doc.get('requested_at') or transport.get('requested_at') or transport.get('daily',{}).get('requested_at')
-    target_doc=json.loads(Path(artifact['tdx']['path']).read_bytes())
+    target_doc=json.loads(source_ingress(root,artifact['tdx']).read_bytes())
     sources = [dict(name='daily_freeze', path=freeze_binding['path'], sha256=freeze_binding['sha256'],
                     trade_date=day, requested_at=native_requested, received_at=artifact['observed_at']),
                dict(name='native_baostock', path=native['path'], sha256=native['sha256'], trade_date=day,
                     requested_at=native_requested, received_at=native_time),
                dict(name='tdx_target',path=artifact['tdx']['path'],sha256=artifact['tdx']['sha256'],trade_date=day,
                     requested_at=target_doc.get('source_transport_v2',{}).get('requested_at'),received_at=target_doc['source_available_at'])]
-    # Local member bytes are observed again now, even if their SHA is unchanged.
-    # This proves observation today, never their historical effective date.
-    for i, source in enumerate(snapshot['sources']):
-        now = datetime.now(timezone.utc).isoformat()
-        sources.append(dict(name=f'local_members_{i}', path=source['address'], trade_date=day,
-                            requested_at=now, received_at=now,timestamp_basis='LOCAL_READ'))
-    calendar = root/'docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/FOCUS_CALENDAR.json'
-    members = gzrows(checked(root, snapshot['memberships']))
-    return capture(root, trade_date=day, sessions=official_sessions(root),
-        calendar_binding=ref(root, calendar), sources=sources,
-        security_ids=life['active_security_ids'], sector_ids=sorted({r['sector_id'] for r in members}),
+    # Membership and market calendar are already typed PG facts. Preserve their
+    # exact identities in the candidate without reopening archived source paths.
+    members = membership_rows
+    return capture(root, trade_date=day, sessions=accepted_calendar['session_dates'],
+        calendar_binding=accepted_calendar['binding'], sources=sources,
+        security_ids=active_security_ids, sector_ids=sorted({r['sector_id'] for r in members}),
         model_binding=ref(root, root/'src/workbench_analysis/r43_focus_replay.py'),
         config_binding=ref(root, root/'config/research_attention_v3.yaml'), research_replay=research_replay,
-        preliminary_scope=dict(head=ref(root,root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'),
+        preliminary_scope=dict(head=head.get('publication_binding'),calendar=accepted_calendar['binding'],
             accepted_trade_date=head['accepted_trade_date'], lifecycle=head['owners'][head['accepted_trade_date']]['lifecycle'],
-            membership_snapshot=head['membership_snapshot']))
+            membership_snapshot=head['membership_snapshot'],membership_pg_binding=snapshot['memberships']))
 
 
 def produce_daily_state(root, day, candidate_binding):
     root = Path(root)
-    head = json.loads(checked(root, candidate_binding).read_bytes())
+    head = _candidate_document(candidate_binding, day)
     owner = head['owners'][day]
-    life = json.loads(checked(root, owner['lifecycle']).read_bytes())
-    rows = gzrows(checked(root, owner['prewatch']))
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot
+    snapshot=context_snapshot(root,head)
+    life_rows=_pg_owner_rows(root,head,day,'lifecycle')
+    universe=sorted({r['security_id'] for r in life_rows if isinstance(r,dict) and r.get('security_id')})
+    rows = _pg_owner_rows(root,head,day,'prewatch')
     # Original operational State currently remains reconstructed. A contemporary
     # raw capture does not silently elevate its windows or historical members.
     from .v4_14_replay_io import digest,publish
     model=ref(root,root/'src/workbench_analysis/r43_focus_replay.py')
     config=ref(root,root/'config/research_attention_v3.yaml')
     implementation=ref(root,root/'src/workbench_analysis/full_state_signal_candidate_v1.py')
-    slot=digest([owner['prewatch'],owner['lifecycle'],head['membership_snapshot'],model,config,implementation,'freeze-clock-v2'])
+    slot=digest([owner['prewatch'],owner['lifecycle'],snapshot['memberships'],model,config,implementation,'freeze-clock-v2'])
     path=f'data/v4/state_signal_candidates_v2/{slot}/signals.json'
     if (root/path).exists():return ref(root,root/path)
-    document = produce(rows, universe=life['active_security_ids'], trade_date=day,
-        source_binding=owner['prewatch'], membership_binding=head['membership_snapshot'],
+    document = produce(rows, universe=universe, trade_date=day,
+        source_binding=owner['prewatch'], membership_binding=snapshot['memberships'],
         model_binding=model,config_binding=config,captured_at=datetime.now(timezone.utc).isoformat())
     from .producer_dependency_archive_v1 import freeze_dependencies
     freeze_dependencies(root,[model,config,implementation])
@@ -68,36 +100,11 @@ def produce_daily_state(root, day, candidate_binding):
         frozen_clock_basis='ACTUAL_CANDIDATE_FREEZE_TIME'))
 
 
-def build_review_and_display_candidates(root,day,candidate_binding,capture_result,*,research_replay=False):
-    """Finish the isolated chain, publish a display index without changing Head."""
-    from sector.operational_candidate_v3 import build as build_sector
-    from .strict_source_candidate_v2 import freeze_for_review
-    from .operational_daily_storage_v1 import atomic_json
-    root=Path(root)
-    sector=optional_step(build_sector,root,candidate_binding=candidate_binding,trade_date=day)
-    state=optional_step(produce_daily_state,root,day,candidate_binding)
-    from .full_market_state_publisher_v1 import build as publish_state
-    publisher=optional_step(publish_state,root,candidate_binding=candidate_binding,
-                           trade_date=day,revision='daily-r1')
-    from .full_state_first_observed_v1 import quarantine_publisher
-    quarantine=(optional_step(quarantine_publisher,root,publisher_binding=publisher['candidate'],
-                candidate_directory='docs/evidence/state_publisher_quarantine_v1')
-                if publisher.get('candidate') else dict(status='SOURCE_INCOMPLETE',production=False))
-    first_observed=optional_step(produce_first_observed_state,root,day,candidate_binding)
-    strict=(optional_step(freeze_for_review,root,capture_binding=capture_result['candidate'],candidate_binding=candidate_binding,
-                trade_date=day,research_replay=research_replay) if capture_result.get('candidate') else
-            dict(status='CANDIDATE_FAILED',reason='INITIAL_CAPTURE_FAILED',production=False))
-    sessions=official_sessions(root)
-    index_path=root/'data/v4/producer_candidate_index_v2.json'
-    index=json.loads(index_path.read_bytes()) if index_path.exists() else dict(contract_id='PRODUCER_CANDIDATE_INDEX_V2',sessions={})
-    entry=dict(head=candidate_binding,next_session=next((d for d in sessions if d>day),None),production=False)
-    for key,result in (('sector',sector),('full_state',state),('strict_source',strict),('source_capture',capture_result)):
-        if result.get('candidate'):entry[key]=result['candidate']
-        else:entry[key+'_failure']=result.get('reason')
-    index['sessions'][day]=entry
-    atomic_json(root,index_path,index)
-    return dict(sector=sector,full_state=state,state_publisher=publisher,state_publisher_quarantine=quarantine,
-                first_observed_state=first_observed,strict_source=strict,index=ref(root,index_path))
+def build_review_and_display_candidates(root,day,candidate,capture_result,*,candidate_binding,research_replay=False):
+    """Build the exact-daily candidate handoff in memory for the PG Owner writer."""
+    from .producer_candidate_index_pg_v1 import build_review_and_display_candidates as build_pg_index
+    return build_pg_index(root, day, candidate, capture_result, candidate_binding=candidate_binding,
+                          research_replay=research_replay)
 
 
 def produce_first_observed_state(root, day, candidate_binding):
@@ -107,9 +114,7 @@ def produce_first_observed_state(root, day, candidate_binding):
     The optional input must bind all three source versions for this exact day.
     """
     root=Path(root)
-    head=json.loads(checked(root,candidate_binding).read_bytes())
-    if head.get('accepted_trade_date')!=day:
-        raise ValueError('FIRST_OBSERVED_STATE_TARGET_DATE_REQUIRED')
+    head=_candidate_document(candidate_binding, day)
     inputs=head.get('first_observed_state_sources',{}).get(day)
     if not inputs:
         return dict(status='SOURCE_INCOMPLETE',formal_status='BLOCKED',
@@ -119,23 +124,29 @@ def produce_first_observed_state(root, day, candidate_binding):
         raise ValueError('FIRST_OBSERVED_STATE_VERSIONED_INPUTS_REQUIRED')
     from .full_state_first_observed_v1 import freeze_first_observed
     return freeze_first_observed(root,state_binding=inputs['state'],membership_binding=inputs['membership'],
-        model_binding=inputs['model'],candidate_directory='docs/evidence/full_state_first_observed_candidates_v1')
+            model_binding=inputs['model'],candidate_directory='data/v4/candidate_stores/full_state_first_observed_candidates_v1')
 
 
 def produce_daily_sector(root, day, candidate_binding):
     from sector.operational_candidate_v1 import compute
     from .v4_14_replay_io import publish
     root = Path(root)
-    head = json.loads(checked(root,candidate_binding).read_bytes())
+    head = _candidate_document(candidate_binding, day)
     owner = head['owners'][day]
-    snapshot = json.loads(checked(root, head['membership_snapshot']).read_bytes())
-    rows = compute(gzrows(checked(root,owner['sector'])),gzrows(checked(root,owner['core'])),
-        [r for r in gzrows(checked(root,snapshot['memberships'])) if r['security_id']], trade_date=day,root=root,
-        state_rows=gzrows(checked(root,owner['prewatch'])))
+    from workbench_db.v4_membership_reference_pg_v1 import context_snapshot,read as read_memberships
+    membership_context=context_snapshot(root,head)
+    memberships=read_memberships(root,head,workspace_root=str(root))
+    sector_rows=_pg_owner_rows(root,head,day,'sector')
+    core_rows=_pg_owner_rows(root,head,day,'core')
+    state_rows=_pg_owner_rows(root,head,day,'prewatch')
+    rows = compute(sector_rows,core_rows,
+        [r for r in memberships if r.get('security_id')], trade_date=day,root=root,
+        state_rows=state_rows)
     model=ref(root,root/'src/sector/operational_candidate_v1.py')
     return publish(root,f"data/v4/sector_operational_candidates/{day}/{owner['sector']['sha256']}/{model['sha256']}/candidate.json",
         dict(contract_id='SECTOR_D2_OPERATIONAL_CANDIDATE_V1', rows=rows, sources={k:owner[k] for k in ('core','sector')},
-             production=False, formal_consumer_enabled=False, membership=head['membership_snapshot'],model=model,state_source=owner['prewatch']))
+             production=False, formal_consumer_enabled=False, membership=membership_context['memberships'],
+             model=model,state_source=owner['prewatch']))
 
 
 def optional_step(function, *args, **kwargs):

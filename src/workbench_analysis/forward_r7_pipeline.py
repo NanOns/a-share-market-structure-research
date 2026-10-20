@@ -40,8 +40,8 @@ def _bindings(head: dict, day: str):
 
 
 def _head(root: Path):
-    path = root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
-    head = json.loads(path.read_bytes())
+    from workbench_db.v4_operational_live_head_pg_r1 import read_current
+    head = read_current(root)["candidate"]
     if head.get("contract_id") != "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1":
         raise ValueError("FORWARD_R7_ACCEPTED_HEAD_CONTRACT_REQUIRED")
     return head

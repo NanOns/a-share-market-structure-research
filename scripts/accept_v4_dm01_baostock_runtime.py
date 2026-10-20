@@ -27,9 +27,12 @@ from workbench_analysis.baostock_supplemental import (  # noqa: E402
     package_metadata,
 )
 from workbench_analysis.daily_data_head import write_json_atomic  # noqa: E402
+from workbench_analysis.market_source_acquisition import official_sessions  # noqa: E402
+from common.paths import resolve_baostock_cache_root, resolve_baostock_request_ledger, resolve_tdx_root  # noqa: E402
 
 
 SHANGHAI = ZoneInfo("Asia/Shanghai")
+BASE_CUTOFF = "2026-09-24"
 REQUIRED_DAILY_FIELDS = {"date", "code", "open", "high", "low", "close", "volume", "amount", "tradestatus", "isST"}
 REQUIRED_FACTOR_FIELDS = {"code", "dividOperateDate", "foreAdjustFactor", "backAdjustFactor", "adjustFactor"}
 
@@ -59,10 +62,23 @@ def _ledger_count(path: Path, target_date: str) -> int:
         return 0
 
 
+def _target_is_official_session(root: Path, target_date: str, *, sessions_reader=None) -> bool:
+    """Use the accepted PG calendar; do not treat an old receipt as current authority."""
+    if target_date <= BASE_CUTOFF:
+        return False
+    reader = sessions_reader or official_sessions
+    return target_date in reader(root)
+
+
+def runtime_acceptance_cache_dir(root: Path, target_date: str) -> Path:
+    """Place bounded runtime-ingress receipts under the configured BaoStock cache."""
+    return resolve_baostock_cache_root(root) / "baostock" / target_date.replace("-", "") / "runtime_acceptance"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Accept only the bounded, exact-date BaoStock DM-01 DailyUpdates runtime.")
     parser.add_argument("--target-date", required=True)
-    parser.add_argument("--ledger", type=Path, default=ROOT / "reports/v4_baostock/request_ledger.json")
+    parser.add_argument("--ledger", type=Path)
     args = parser.parse_args()
     try:
         datetime.strptime(args.target_date, "%Y-%m-%d")
@@ -78,19 +94,22 @@ def main() -> int:
                           "request_count": 0}, ensure_ascii=False))
         return 2
 
-    calendar_path = ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json"
-    if not calendar_path.is_file():
-        print(json.dumps({"status": "BLOCKED_OFFICIAL_SESSION_NOT_VERIFIED"}, ensure_ascii=False))
+    try:
+        official_session = _target_is_official_session(ROOT, args.target_date)
+    except (OSError, RuntimeError, ValueError) as exc:
+        print(json.dumps({"status": "BLOCKED_OFFICIAL_SESSION_NOT_VERIFIED",
+                          "reason": str(exc)[:160]}, ensure_ascii=False))
         return 2
-    calendar = json.loads(calendar_path.read_text(encoding="utf-8"))
-    if args.target_date not in calendar.get("official_sessions_after_base_cutoff", []):
+    if not official_session:
         print(json.dumps({"status": "BLOCKED_OFFICIAL_SESSION_NOT_VERIFIED", "target_date": args.target_date},
                          ensure_ascii=False))
         return 2
 
-    report_dir = ROOT / "reports/v4_baostock/runtime_acceptance" / args.target_date.replace("-", "")
-    smoke_path = report_dir / "live_smoke_receipt.json"
-    manifest_path = report_dir / "accepted_runtime_manifest.json"
+    args.ledger = resolve_baostock_request_ledger(ROOT, args.ledger)
+
+    receipt_dir = runtime_acceptance_cache_dir(ROOT, args.target_date)
+    smoke_path = receipt_dir / "live_smoke_receipt.json"
+    manifest_path = receipt_dir / "accepted_runtime_manifest.json"
     runtime = package_metadata()
     request_count_before = _ledger_count(args.ledger, args.target_date)
     receipt: dict = {
@@ -134,7 +153,8 @@ def main() -> int:
     receipt["request_count"] = max(0, _ledger_count(args.ledger, args.target_date) - request_count_before)
     receipt["request_ledger_path"] = args.ledger.relative_to(ROOT).as_posix() if args.ledger.is_relative_to(ROOT) else str(args.ledger)
 
-    receipt_digest = write_json_atomic(smoke_path, receipt, tdx_root=Path("D:/new_tdx"))
+    tdx_root = resolve_tdx_root(ROOT)
+    receipt_digest = write_json_atomic(smoke_path, receipt, tdx_root=tdx_root)
     if receipt["status"] != "PASS":
         print(json.dumps({"status": "WAIT_BAOSTOCK_DAILY_UPDATE", "reason": receipt.get("reason"),
                           "smoke_receipt": str(smoke_path), "smoke_receipt_sha256": receipt_digest},
@@ -147,7 +167,7 @@ def main() -> int:
         smoke_receipt_path=smoke_path.relative_to(ROOT).as_posix(),
         smoke_receipt_sha256=receipt_digest,
     )
-    manifest_digest = write_json_atomic(manifest_path, manifest, tdx_root=Path("D:/new_tdx"))
+    manifest_digest = write_json_atomic(manifest_path, manifest, tdx_root=tdx_root)
     print(json.dumps({"status": "ACCEPTED", "target_date": args.target_date,
                       "auth_mode": receipt["auth_mode"], "sdk_version": runtime["version"],
                       "installed_source_sha256": runtime["installed_python_sources_sha256"],

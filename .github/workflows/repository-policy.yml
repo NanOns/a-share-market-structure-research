@@ -1,0 +1,105 @@
+name: Repository content policy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check changed commit blobs
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            BASE="$BASE_SHA"
+          else
+            BASE="$BEFORE_SHA"
+          fi
+          if [[ -z "$BASE" || "$BASE" =~ ^0+$ ]]; then
+            BASE="$(git rev-parse "$HEAD_SHA^" 2>/dev/null || true)"
+          fi
+          if [[ -z "$BASE" ]]; then
+            echo "Cannot determine the commit range for repository policy." >&2
+            exit 2
+          fi
+          python tools/git_repository_policy.py --diff-base "$BASE" --diff-head "$HEAD_SHA"
+
+  v4-pg-publication-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch frozen current-reader LFS artifacts
+        run: >-
+          git lfs pull
+          --include="data/v4/confirmation_candidates_r5/D2_2026-09-30_CANDIDATE_R5.json.gz,data/v4/confirmation_candidates_r5/STATE_EVENT_2026-09-30_CANDIDATE_R5.json.gz"
+          --exclude=""
+      - name: Install focused test runner
+        run: python -m pip install pytest duckdb pyarrow "psycopg[binary]" pandas "cryptography>=44,<47" "pglast==8.6"
+      - name: Check V4 PG publication contract and candidate code
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+          TMPDIR: ${{ runner.temp }}
+        run: >-
+          python -m pytest --confcutdir=tests -q -p no:cacheprovider
+          tests/test_v4_pg_publication_candidate.py
+          tests/test_v4_pg_publication_owners.py
+          tests/test_v4_pg_publication_contract_static.py
+          tests/test_v4_pg_source_manifest.py
+          tests/test_v4_daily_ingest_r6.py
+          tests/test_v4_daily_core_result_r6.py
+          tests/test_v4_r7_sql_schema_compatibility.py
+          tests/test_v4_contract_registry_pg_v1.py
+          tests/test_baostock_daily_capture_pg_contract.py
+          tests/test_v4_baostock_runtime_acceptance_pg_r1.py
+          tests/test_v4_r21_contract_registry_sql_syntax.py
+          tests/test_v4_r21_pg_market_calendar.py
+          tests/test_v4_r21_candidate_calendar_contract_pg.py
+          tests/test_v4_r21_candidate_index_producer_pg.py
+          tests/test_v4_r21_dm01_pg_progress.py
+          tests/test_operational_daily_executor_v1.py
+          tests/test_pre_next_t0_executor_chain.py
+          tests/test_v4_exact_daily_policy_v2.py
+          tests/test_v4_r8_real_daily_executor_pg_bridge.py
+          tests/test_v4_r8_isolated_schema_runner.py
+          tests/test_v4_native_reader_dsn.py
+          tests/test_v4_current_accepted_reader.py
+          tests/test_v4_server_pg_candidate_mode.py
+          tests/test_v4_r14_governance_contracts.py
+          tests/test_v4_universe_pg_r1.py
+          tests/test_git_repository_policy.py
+          tests/test_r19_a_historical_static_bindings.py
+          tests/test_v4_business_code_file_access_r1.py
+          tests/test_v4_nonconfig_external_file_references_r1.py
+          tests/test_v4_native_research_reference.py
+          tests/test_v4_membership_reference_pg_only_r2.py
+
+      - name: Current V4 business-code file-access audit
+        env:
+          TMPDIR: ${{ runner.temp }}
+          TMP: ${{ runner.temp }}
+          TEMP: ${{ runner.temp }}
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          INVENTORY="${{ runner.temp }}/v4-r20-business-code-file-access.json"
+          python scripts/audit_v4_business_file_access_r1.py --output "$INVENTORY"
+          python scripts/validate_v4_business_file_access_r1.py --inventory "$INVENTORY"

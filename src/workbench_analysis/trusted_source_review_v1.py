@@ -106,7 +106,8 @@ class IsolatedReviewAuthority:
                     raise ValueError('ISOLATED_OWNER_READBACK_FAILED')
             except Exception:
                 if ref(root,path)!=published:raise ValueError('ISOLATED_ROLLBACK_HEAD_MOVED')
-                _atomic_write(head,before,tdx_root=Path('D:/new_tdx'))
+                from common.paths import resolve_tdx_root
+                _atomic_write(head,before,tdx_root=resolve_tdx_root(root))
                 raise
             return dict(status='ISOLATED_IDENTITY_OWNER_PUBLISHED',head=published,
                 candidate=candidate_binding,review=review_binding,production_write_authorized=False)

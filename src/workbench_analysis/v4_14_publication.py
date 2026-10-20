@@ -3,7 +3,7 @@ import re,json
 from datetime import datetime
 from .v4_14_replay_io import publish,digest,exact
 def validate_envelope(root,envelope,authority):
-    schema=json.loads((authority.root/'config/v4_14_replay_input_envelope_r18_v1.json').read_bytes())
+    schema=json.loads(authority.read_by_path('config/v4_14_replay_input_envelope_r18_v1.json'))
     if set(schema['required'])-set(envelope):raise ValueError('REPLAY_ENVELOPE_FIELDS_REQUIRED')
     if envelope['evidence_class'] not in schema['evidence_classes']:raise ValueError('REPLAY_EVIDENCE_CLASS_INVALID')
     if envelope['authority_bindings']!=authority.bindings() or envelope['contract_package_digest']!=authority.package_digest:raise ValueError('REPLAY_ENVELOPE_AUTHORITY_MISMATCH')

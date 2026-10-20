@@ -1,5 +1,5 @@
 """Corrected, accepted-input Forward adapter; immutable T0 and bounded evaluation."""
-import copy,json,math
+import copy,math
 from decimal import Decimal
 from pathlib import Path
 from adjustment.tdx_adjustment_v0_3 import build_affine_factors,xrxd_from_gbbq
@@ -7,8 +7,6 @@ from focus_tracker.v4_path_adapter import AcceptedPaths,checked
 from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
 from workbench_analysis.v4_15_settlement import VectorPriceSource,due_plan
 from .current_v4_context import SourceInvalid,canonical,digest
-from .v4_daily_refresh import atomic_bytes
-from .production_v4 import reference
 
 CONTRACT='R2_FORWARD_DUE_LOCAL_CORRECTED_V1'
 
@@ -32,33 +30,25 @@ class OperationalForwardAuthority(CurrentStageAuthority):
         self.root=Path(root).resolve();self.sessions=sessions;self.operational_bindings=bindings
     def bindings(self):return copy.deepcopy(self.operational_bindings)
 
-class HistoricalForwardStore:
-    def __init__(self,root,folder):
-        self.root=Path(root).resolve();self.folder=self.root/folder;self._reads={};self._refs={}
-    def read(self,binding):
-        key=(binding['path'],binding['sha256'])
-        if key not in self._reads:self._reads[key]=json.loads(checked(self.root,binding).read_bytes())
-        return copy.deepcopy(self._reads[key])
-    def append(self,kind,key,value):
-        path=self.folder/kind/(key+'.json');raw=canonical(value)
-        if path.exists() and path.read_bytes()!=raw:raise SourceInvalid('FORWARD_APPEND_IDENTITY_CONFLICT')
-        if not path.exists():atomic_bytes(path,raw)
-        binding=reference(self.root,path)
-        self._reads[(binding['path'],binding['sha256'])]=copy.deepcopy(value)
-        if kind in self._refs and binding not in self._refs[kind]:self._refs[kind].append(binding)
-        return binding
-    def refs(self,kind):
-        if kind not in self._refs:self._refs[kind]=[reference(self.root,p) for p in sorted((self.folder/kind).glob('*.json'))]
-        return copy.deepcopy(self._refs[kind])
-
 from workbench_db.v4_forward_pg_r1 import ForwardFactStore
 
 class ForwardStore(ForwardFactStore):
+    def __init__(self,root,folder):
+        self._read_cache={}
+        super().__init__(root,folder)
+
     def append(self,kind,key,value):
         try:return super().append(kind,key,value)
         except ValueError as error:
             if str(error)=='FORWARD_APPEND_IDENTITY_CONFLICT':raise SourceInvalid(str(error)) from error
             raise
+
+    def read(self,binding):
+        key=(binding.get('path'),binding.get('sha256'))
+        cache=getattr(self,'_read_cache',None)
+        if cache is None:self._read_cache=cache={}
+        if key not in cache:cache[key]=super().read(binding)
+        return copy.deepcopy(cache[key])
 
 class LocalForwardPriceSource(VectorPriceSource):
     evidence_class='REAL_ACCEPTED_LOCAL_CORRECTED_FORWARD'

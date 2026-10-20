@@ -1,9 +1,0 @@
-# Stage 2/6 — exact 56 disposition R2
-
-- Applicable contract: `docs/upgrade/V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013.md`, sections B2.1–B2.6; current-entry classification uses the four fixed entries named in the original 56 audit.
-- Result: `PASS_CLASSIFICATION_ONLY`; all 56 source identities matched the preserved source hashes and current trace. Disposition is 20 `ACTIVE_REACHABLE`, 1 `HISTORICAL_ONLY`, 35 `NOT_REACHABLE_WITH_PROOF`, 0 `RETIRED`, 0 unresolved. The one historical-only source remains imported for historical registry validation; the current exact daily business builder is the versioned r3_3 module.
-- Dynamic import review: 14 sites across the reachable source graph were reviewed. Each is a fixed standard-library import, fixed repository module/path, fixed import allowlist, or bounded in-memory contract/AST execution. No original-56 source is hidden behind an unresolved dynamic target.
-- Current candidate HTTP evidence: exact current-source six-entry candidate responses plus context returned the same 2026-10-12 date/token; write request was refused; SELECT-only formal role; server on 28873 stopped; publication and production cutover remain false. This confirms candidate route/source trace only.
-- Evidence: `continuation_20261013/ORIGINAL56_DISPOSITION_R2/{RESULT.json,MATRIX.csv,MATRIX.json,DYNAMIC_SITES.json}`; source closure `continuation_20261013/ORIGINAL56_DISPOSITION_R1/GRAPH_ORIGINAL_R4.json`; current HTTP `G:/codex_tmp/v4_full_closeout_20261012/CURRENT_SOURCE_CANDIDATE_HTTP_R6_R1/RESULT.json` and `EXACT56_TRACE.json`.
-- Change scope: audit script and stage evidence only; no producer arithmetic, PG facts, Head, or production service changed. Existing numeric receipts were not re-executed.
-- Next: stage 3 joins each of the 20 active items to accepted PG objects and independent field/numeric evidence and the corresponding current business HTTP/page output. Candidate HTTP 200 alone is not a consumer acceptance gate.

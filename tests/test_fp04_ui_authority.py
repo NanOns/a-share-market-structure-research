@@ -60,5 +60,8 @@ def test_joint_release_serves_its_bound_entrypoint_without_r43_overlay(tmp_path,
     try:
         with urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/v4/assets/app.js') as response:
             assert response.read()==asset.read_bytes()
+        with urllib.request.urlopen(f'http://127.0.0.1:{server.server_port}/favicon.ico') as response:
+            assert response.status==204
+            assert response.read()==b''
     finally:
         server.shutdown();server.server_close();thread.join(timeout=2)

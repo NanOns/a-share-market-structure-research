@@ -77,13 +77,21 @@ async function render(){controller?.abort();controller=new AbortController();con
   const stats=await read('forward/statistics',{trade_date:context.context.trade_date,limit:30},signal),d=stats.data||{};
   if(d.historical||d.live){
    const grid=C.el('div',undefined,'grid');
-   for(const [title,value] of [['历史研究全域记录',d.historical?.count],['实时首次冻结',d.live?.count],['已到期研究结算',d.matured_settlement_count]])grid.append(C.StatCard(title,value));
+   for(const [title,value] of [['历史研究全域记录',d.historical?.count??'未发布'],['实时首次冻结',d.live?.count??'未发布'],['已到期研究结算',d.matured_settlement_count??'未发布']])grid.append(C.StatCard(title,value));
    main.append(grid);
   }else main.append(C.EmptyState('Forward PG读索引不可用；总量、分母和明细保持未知，需检查日更作业与PG状态。'));
   if(view==='live'){
    const live=d.live||{};main.append(C.el('h2','在线前瞻观察'));
-   main.append(C.el('p',live.count===undefined?'实时观察计数未知：PG读索引不可用。':live.count===0?'真实前瞻观察从下一个满足采集条件的交易日开始；当前已有 '+(d.historical?.count??'不可得')+' 条历史研究样本。':'首次冻结 '+live.count+' 条；最近 T0 '+(live.latest_t0||'不可得')));
+   main.append(C.el('p',live.count==null?'暂无已发布的 Lane L 首次冻结计数；未知计数不记为零。':live.count===0?'真实前瞻观察从下一个满足采集条件的交易日开始；当前已有 '+(d.historical?.count??'不可得')+' 条历史研究样本。':'首次冻结 '+live.count+' 条；最近 T0 '+(live.latest_t0||'不可得')));
    if(live.next_capture){const p=live.next_capture;main.append(C.el('p','采集计划 '+(p.status||'未知')+' · 缺口 '+((p.missing_sessions||[]).join('、')||'无')+' · 本批 '+((p.collection_batch_dates||[]).join('、')||'等待来源就绪')));main.append(C.el('p','信号 T0 '+(p.signal_T0||'不可得')+' · 价格收盘 '+(p.market_close_at||'不可得')+' · 来源就绪 '+(p.source_ready_at||'待确认')+' · 首次可用 '+(p.first_available_at||'待确认')));main.append(C.el('p','Head 接受 '+(p.head_accepted_at||'待确认')+' · 冻结 '+(p.frozen_at||'待确认')+' · 冻结窗口结束 '+(p.capture_window_end||'不可得')+' · 最近成功 '+(p.last_successful_capture||d.published_t0||'无')+' · 下次尝试 '+(p.next_attempt_at||'未安排')+' · 最近失败 '+(p.last_failure?.error||p.last_failure?.error_code||p.last_failure?.status||'无')));}
+   const late=d.candidate_late_observation;
+   if(late?.status==='CANDIDATE_ONLY_LATE_OBSERVED'){
+    const counts=late.status_counts||{},events=late.event_counts||{},schedule=late.settlement_schedule_counts||{};
+    main.append(C.el('h3','候选晚观测（仅候选，非 PIT）'));
+    main.append(C.el('p','T0 '+(late.trade_date||'未知')+' · 候选全域 '+(late.total??'未知')+' · MATCH '+(counts.MATCH??0)+' · NO_MATCH '+(counts.NO_MATCH??0)+' · UNKNOWN '+(counts.UNKNOWN??0)));
+    main.append(C.el('p','观测事件 '+Object.entries(events).map(([name,count])=>name+' '+count).join(' · ')+' · 结算安排：来源未接受 '+(schedule.DUE_SOURCE_NOT_ACCEPTED??0)+' · 等待未来交易日 '+(schedule.PENDING_FUTURE_SESSION??0)));
+    main.append(C.el('p','该晚观测不构成正式发布、历史 PIT 或已结算结果。'));
+   }else if(late?.status==='UNAVAILABLE')main.append(C.EmptyState('候选晚观测不可用；不改变实时前瞻统计。'));
   }
   if(view==='historical'||view==='live'){
    const lane=view,ruleFilter=C.el('select'),statusFilter=C.el('select');

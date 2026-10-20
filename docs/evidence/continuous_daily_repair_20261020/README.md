@@ -77,3 +77,28 @@
 - 新增的 28766 入口版本回归测试和 descriptor regression test 随本记录提交。
 - 下一步：如果要把候选 UI 完成 joint release 激活，需要先补回与 authority 绑定的 `data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json` 及其绑定产物；如果要发布 Forward plans，需要按合同授权 capture signal producer 与 validation cohort Owner。此二项不影响本次候选读回与 UI API 的 READY。
 - 本记录不代表候选已正式发布；也不授权 PG 全面迁移、生产 Head 更新、28765、生产调度或任何 destructive cleanup。
+
+## 2026-10-20 续作：个股图表与页面交互重试
+
+续作开始时仓库 `HEAD` 为 `d1f02d856d44ad9813c91439f81b269117d58af8`，分支仍为 `codex/v4-unified-development`；任务审计基线仍是上文所记的 `bc931afe...`。续作没有新增数据库、schema、角色、Head 或正式配置。临时服务仍使用同一候选根、候选 token 和既有 PG 实例。
+
+### 问题与修复
+
+1. **个股图表 HTTP 400：** 浏览器发出的 `/api/v4/stocks/{security_id}/chart?period=D&price_basis=QFQ` 因候选未绑定 `native_product_read_authority`，触发 `EMBEDDED_PRODUCT_CATALOG_REQUIRED_NO_FALLBACK`，最终被包装为 400。这里确实没有历史 chart index/catalog；但各已发布日期都有候选自己的日线 RAW Owner。`CoreProductBFFR1.chart` 现在只在该精确缺失错误、且读域明确是 `DEVELOPMENT_CANDIDATE_PREVIEW` 时启用窄范围处理：RAW 仅按候选 `published_sessions <= T0`，逐日读对应 `owners[date].raw`，逐日记录原始 Owner binding，校验行内 `trade_date`，只对该候选窗口聚合和分页。返回标记 `CANDIDATE_DAILY_OWNER_WINDOW_ONLY`、`PIT_ELIGIBLE=false`，不读取其他 Head、不称为严格 PIT。不能证明跨日连续 QFQ 坐标，所以 QFQ 返回 HTTP 200 + `EMPTY_VALID` + `chart_availability=SOURCE_INCOMPLETE` + `CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND`，明确缺口而非假造行情。
+2. **页面仍显示旧空图：** 仓库 `stock.js` 修改后，运行中的 UI 仍从候选 joint authority 读取旧内容寻址 bundle `a9eeca...`。执行现役 `v4_closeout_refresh_candidate_ui.py` 时，脚本在真正激活前写出了 presentation-only 资产 build `10c60318496f91008699381105720e3088a27666a97f62ecd1c5efc6a9508257`，随后被完整 joint contract 正确拒绝：authority 绑定的 research snapshot manifest `data/v4/research_snapshots/3a3f5d9074b646189ccfd830c15e7161/manifest.json` 缺失。没有绕过该验证，候选 joint authority 仍指向旧 bundle、没有被改写，也未改正式 Head。为了在不伪造 joint activation 的前提下完成 28766 分支预览，本地临时入口 `G:\codex_tmp\v4_daily_candidate_chain_20261020\serve_preview_28766.py` 对 HTML/静态资产使用当前 checkout 的字节，所有 API 仍读同一个 10-14 候选。这个入口只存在于 G 盘候选临时根，不是正式资产 authority。
+3. **候选 UI 默认价基：** 页面只在 `DEVELOPMENT_CANDIDATE_PREVIEW` 默认选择 RAW。候选 QFQ 缺索引时显示可解释 EmptyState，并提供缺失证据按钮；历史 catalog 已正常绑定时的既有 RAW/QFQ 逻辑不变。
+
+### 回归与页面读回
+
+- 定向测试：`python -m pytest tests/test_v4_candidate_daily_chart.py tests/test_fp04_ui_authority.py -q --basetemp=G:\\codex_tmp\\test_temp\\v4_daily_chart_retry_20261020`，**4 passed**。两条新用例验证逐日 RAW owner binding、候选非 PIT 声明以及 QFQ 不造数。
+- 扩展回归：覆盖 chart、UI authority、candidate schema binding、R8 namespace 与 Forward closeout 相关用例，**13 passed, 4 deselected**；deselected 的 4 项是需写 PG 的用例，本轮没有运行它们，也没有新增 schema。`git diff --check` 通过。
+- 10-14 个股 `SEC-00096141BD5420F5CB3120E687CDA5B9` 图表 API：RAW HTTP 200/READY，8 根，日期 2026-09-28 至 2026-10-14，末收盘 12.55，8 个 Owner binding；QFQ HTTP 200/EMPTY_VALID，原因 `CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND`。
+- Chromium/28766 实际 DOM：个股图表默认 RAW，显示 8/8 根真实蜡烛图及候选范围免责声明；手动切回 QFQ 时显示连续历史索引未绑定，不出现错误页。Focus 10-12 读回 3,025 条，观察事件筛选 `NEW` 显示 220 条，其中真实变化 30 条、来源不足观察 0 条。Radar 10-12 全量 311 条，“升级”筛选 69 条；“重新进入”筛选显示合法空结果 0 条。过滤器均更新查询 URL 并完成页面重新渲染。
+- 服务重启前核对旧 PID `16628` 命令行为候选脚本后停止，只重启 `127.0.0.1:28766`；最新 PID `13868`。最终确认 28766 为候选服务、28765 无监听，唯一 PG 5432 仍由 PID `8640` 监听。正式 Head 10-09 与候选 Head/token 均未被该页面修复改变。
+- 本轮没有修改或创建 PG schema；`presentation_refresh_r4` 只在 G 临时目录保留原 authority 字节副本和未激活的 UI 输出记录。新 UI 的 `stock.js` 资产大小为 10,252 bytes；joint authority 仍绑定旧 bundle，预览通过临时入口直接读取源码，因此不把该 asset build 冒充为已激活 release。
+
+### 此后继续保持开启的合同缺口
+
+- 连续 QFQ 历史尚无候选历史 chart catalog/index，本次只提供候选 RAW 日线，QFQ 明确 unavailable。
+- joint release activation 仍缺失绑定 research snapshot manifest；Forward 正式 plans/结算仍缺获授权 cohort Owner、首捕生产者和冻结回执。这些未被 UI 兜底或临时配置掩盖。
+- 当前分支工作区测试/浏览器验证通过，不代表正式发布验收。推送本续作代码及证据之后，正式 Head、28765、生产调度与 PG 全面迁移仍保持未触碰。

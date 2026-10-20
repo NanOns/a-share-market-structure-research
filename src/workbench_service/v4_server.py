@@ -56,6 +56,8 @@ def make_v4_handler(root):
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path)
+            if parsed.path=='/favicon.ico':
+                return self.send(204,b'','image/x-icon')
             if parsed.path=='/v4/operational-preview':
                 return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
             if parsed.path.startswith('/api/v4/original-0930/'):

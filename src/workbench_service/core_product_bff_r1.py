@@ -1145,7 +1145,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def chart(self,day,sid,q):
         period=q.get('period','D');basis=q.get('price_basis','QFQ')
         if period not in ('D','W','M') or basis not in ('RAW','QFQ'):raise ValueError('INVALID_CHART_QUERY')
-        pack=self.chart_history_pack(day)
+        try:
+            pack=self.chart_history_pack(day)
+        except ValueError as error:
+            # A daily candidate has dated RAW owners but may not yet have the
+            # separate native chart-history catalogue. Keep this narrow: the
+            # candidate preview can read its own dated RAW owners; it cannot
+            # claim a continuous QFQ coordinate or fall back to another Head.
+            if (str(error)=='EMBEDDED_PRODUCT_CATALOG_REQUIRED_NO_FALLBACK'
+                    and self.api.context().get('read_scope')=='DEVELOPMENT_CANDIDATE_PREVIEW'):
+                return self._candidate_daily_owner_chart(day,sid,period,basis,q)
+            raise
         if not pack:return self.missing(day,'stocks/'+sid+'/chart','DATED_HISTORY_INDEX_NOT_BOUND')
         manifest,_=pack
         from workbench_db.v4_history_pg_r1 import read
@@ -1177,6 +1187,54 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if self.isolated_history is not None:
             response['production_accepted']=False
             response['context'].update(production_accepted=False,read_scope='ISOLATED_ENGINEERING_HISTORY',isolated_authority_sha256=self.isolated_history[2])
+        return 200,response
+
+    def _candidate_daily_owner_chart(self,day,sid,period,basis,q):
+        """Read a bounded candidate chart from its exact dated RAW Owners."""
+        if basis!='RAW':
+            return 200,self.envelope(day,status='EMPTY_VALID',items=[],total=0,offset=0,
+                limit=int(q.get('limit',120)),has_next=False,period=period,price_basis=basis,
+                as_of=day,chart_availability='SOURCE_INCOMPLETE',
+                reason='CANDIDATE_QFQ_HISTORY_INDEX_NOT_BOUND',candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
+                PIT_ELIGIBLE=False,source_bindings=[])
+        sessions=[d for d in self.api.candidate.get('published_sessions',[]) if d<=day]
+        if day not in sessions or not sessions:
+            return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
+        bars=[];bindings=[]
+        for trade_date in sessions:
+            owner=(self.api.candidate.get('owners',{}).get(trade_date) or {}).get('raw')
+            if not owner:
+                continue
+            rows=self.api.read('raw',trade_date,self.api.token).get('rows') or []
+            row=next((item for item in rows if item.get('security_id')==sid),None)
+            bindings.append(dict(trade_date=trade_date,owner=owner))
+            if row is None:
+                continue
+            if row.get('trade_date')!=trade_date:
+                raise ValueError('CANDIDATE_CHART_RAW_OWNER_DATE_MISMATCH')
+            bars.append(dict(trade_date=trade_date,open=row.get('open'),high=row.get('high'),
+                low=row.get('low'),close=row.get('close'),volume=row.get('volume'),
+                amount=row.get('amount'),quality='KNOWN',reason=None))
+        if not any(binding['trade_date']==day for binding in bindings):
+            return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
+        data=aggregate(bars,period)
+        for i,bar in enumerate(data):
+            for n in (5,20,60):
+                window=data[max(0,i-n+1):i+1]
+                bar['ma'+str(n)]=sum(x['close'] for x in window)/n if len(window)==n and all(x.get('close') is not None for x in window) else None
+        offset=int(q.get('offset',0));limit=int(q.get('limit',120))
+        if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
+        end=max(0,len(data)-offset);start=max(0,end-limit)
+        response=self.envelope(day,status='READY' if data[start:end] else 'EMPTY_VALID',
+            items=data[start:end],total=len(data),offset=offset,limit=limit,has_next=start>0,
+            period=period,price_basis='RAW',as_of=day,volume_unit='SHARES',amount_unit='CNY',
+            adjustment='NONE',candidate_chart_scope='CANDIDATE_DAILY_OWNER_WINDOW_ONLY',
+            chart_availability='READY' if data else 'EMPTY_VALID',PIT_ELIGIBLE=False,
+            historical_membership='NOT_CLAIMED',earliest_valid_date=bars[0]['trade_date'] if bars else None,
+            source_bindings=bindings,
+            disclaimer='候选预览仅串接各交易日已绑定的 RAW Owner；不代表正式发布、严格 PIT 或连续 QFQ 坐标。')
+        response['production_accepted']=False
+        response['context'].update(production_accepted=False,read_scope='DEVELOPMENT_CANDIDATE_PREVIEW')
         return 200,response
 
     def _get_product(self,path,query):

@@ -625,3 +625,20 @@ R7代码实际运行SHA：`5c92964ddf6f97ca6a934f9c214c65c4bebec83d`（doctor与
 - **00A–H现役引用闭环。** 对照本报告“逐调用点与业务引用核查”表及当前`phase0_gate.py`实际阶段装配：00A读取PG实例身份/只读事务；00B读T0生命周期事实并核source/package覆盖；00C闭合Publication、namespace及state-head身份；00D校验accepted source/Owner及来源计划；00E读取RAW Owner receipt；00F读取BaoStock supplemental合同与来源；00G通过PG合同Reader读取批准版本或显式开发候选；00H聚合A–G和required scopes并区分执行失败与业务阻断。表内引用仍与当前调用入口一致。现役只读Acceptance执行结果为`execution_status=OK`、退出码2、`phase0_status=BLOCKED`、`v4_01_entry_permission=BLOCKED`；开发候选状态`DEV_VALIDATED_READ_ONLY_PG_READER`、T0=`2026-09-10`、5,205行。阶段结果依次为00A–00D、00F=`DEGRADED_PASS`，00E、00G、00H=`BLOCKED`；没有以开发候选改变正式Gate。
 - **最新代码适用回归。** 使用G盘临时目录和仓库既有`V4_STAGE00_DEV_PG_TESTS=1`隔离机制运行`pytest -q tests/v4_phase0 tests/test_v4_daily_ingest_r6.py tests/test_v4_contract_registry_pg_v1.py tests/v4_dm01/test_official_daily_sources_v2.py`，结果`277 passed`（含阶段00授权的PG schema事务回滚集成测试）。测试临时依赖与basetemp均位于`G:/codex_tmp`。首次未启用Stage00 PG测试上下文的运行被隔离插件拒绝PG schema集成连接，未写共享库；启用项目既有隔离机制后全量运行通过。
 - **本轮结论。** 未发现namespace运行身份Bug或四板范围内的BaoStock/PG Universe缺口，因此没有源码修改；只更新本唯一阶段00报告。工程与现役引用/回归标准=`STAGE00_ENGINEERING_COMPLETE`。正式Source签发、Owner事实、合同批准和业务验收仍为`PRODUCTION_ACCEPTANCE_PENDING`；不新增门禁或报告，不进入阶段01，不切换28765/正式Head，不最终打包。
+
+#### 阶段00现役文件引用扫描与PG接线修复（基线 `da45d5915a858ded20012dbcdc1b478ab7a08feb`）
+
+本次边界为`phase0_gate`实际A–H调用链、其直接Source/RAW/合同Reader与BaoStock 00F合同调用者，以及对应测试；不扫描或修改阶段01–21业务实现。
+
+| 文件引用类别 | 当前使用点 | 分类与处理 |
+|---|---|---|
+| Owner、合同、来源接受、合同批准及运行签收事实 | `phase0_gate.py`、`contract_registry_pg_v1.py`、`v4_daily_source_ingest_r6.py`、`v4_baostock_runtime_acceptance_pg_r1.py` | 运行读取走`market_research.v4`只读Reader并校验数据库身份、审批/摘要和精确绑定。代码内Owner阶段名及合同ID/版本是查询键，不是文件回退。PG缺正式事实继续显式阻断。 |
+| 00F BaoStock supplemental合同 | `scripts/capture_baostock_daily_update.py::load_source_contract` | 发现并修复旧调用仍传入`config/baostock_supplemental_contract_v1.json`路径且参数个数不匹配现役PG helper的问题。现只用合同ID和版本调用`_daily_runtime_contract`；文件路径不再作为回退或运行参数。 |
+| 部署和只读来源路径 | `phase0_gate.py`读取`config/paths.yaml`；`tdx_local_snapshot.py`读取配置的TDX `.day` | 属机器来源路径及外部只读数据，不是业务合同、参数或Owner。保留只读输入和SHA/T0核验。 |
+| 来源冻结、BaoStock原始响应及收据 | `v4_daily_source_ingest_r6.py`、`v4_baostock_runtime_acceptance_pg_r1.py` | 属有界采集/传输输入；入口核路径、SHA/T0后写入既有PG事实/来源入口，运行消费者以PG记录为准。不是PG失效时的业务文件回退，本轮不移除必要入口。 |
+| schema迁移SQL及测试合同fixture | `scripts/apply_v4_phase0_schema.py`、`tests/v4_phase0/fixtures` | 仅显式迁移入口读取SQL；fixture仅用于测试，不是运行来源。Stage00消费者已有“不读取config合同JSON”回归保护。 |
+| 本地TDX snapshot manifest | `tdx_local_snapshot.py::verify_local_snapshot` | 实际生产调用者是`scripts/v4_02_build_raw_selected_v2.py`，归属阶段02旧快照流，不是本阶段00 Gate入口，本次不扩展修改。 |
+
+- **Bug修复和实读。** `capture_baostock_daily_update.py`原4参数调用对上现役2参数`_daily_runtime_contract`会抛`TypeError`。修为PG合同ID/版本查询，并把`test_baostock_daily_capture_uses_pg_registered_source_contract`改为验证实际调用形状。实际本机调用`load_source_contract()`成功从PG返回`BAOSTOCK_SUPPLEMENTAL_SOURCE_V1@1.1.0`；合同状态为`PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING`，没有修改或批准合同内容。
+- **回归。** 阶段00完整适用集合及上述单个Stage00脚本合同测试：`278 passed`。曾将同一测试文件内另一个`test_dm01_daily_orchestrator_calls_pg_appending_runtime_acceptor`也纳入整文件执行；该独立DM01测试因导入不存在的`run_v4_dm01_daily_increment`失败，故从阶段00验收范围排除，未据此修改阶段01/DM01。准确限定测试节点后，阶段00集合全部通过。
+- **结论。** 这次只改阶段00直接发现的PG接线Bug、对应测试和本唯一报告。其他文件读取均按业务权威/部署路径/传输材料/迁移fixture/其他阶段分类；没有新增治理门禁、正式Owner/Source/合同批准或PIT。正式验收仍为`PRODUCTION_ACCEPTANCE_PENDING`。

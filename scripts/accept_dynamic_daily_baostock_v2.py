@@ -15,6 +15,17 @@ from workbench_analysis.source_readiness_v2 import source_readiness
 from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
 
+LIVE_SMOKE_TIMEOUT_SECONDS=90
+
+
+def _live_smoke_client(root):
+    # Full-market daily responses can take over a minute even when the API is
+    # healthy. Keep this single-request receive bound above observed latency;
+    # request counts and row/page bounds remain unchanged.
+    return BaoStockClient(RequestBudget(Path(root)/'reports/v4_baostock/request_ledger.json'),
+        auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True,
+        timeout=LIVE_SMOKE_TIMEOUT_SECONDS)
+
 
 def _provider_failure(exc):
     """Keep sanitized provider diagnostics in a failed smoke receipt."""
@@ -46,8 +57,7 @@ def accept_runtime(target, root=ROOT):
         runtime={k:runtime[k] for k in ['package','version','installed_python_sources_sha256']},
         status='FAIL',live_smoke=None,tdx_root_write_count=0)
     try:
-        with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),
-                auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True) as client:
+        with _live_smoke_client(root) as client:
             daily_requested=datetime.now(SHANGHAI).isoformat()
             daily,dm=client.query_rows('dynamic_daily_smoke_daily',DAILY_METHOD,date=target,max_rows=20000,max_pages=1)
             daily_received=datetime.now(SHANGHAI).isoformat()

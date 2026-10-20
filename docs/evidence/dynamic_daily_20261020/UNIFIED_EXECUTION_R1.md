@@ -11,10 +11,10 @@
 |---|---|---|---|---|---|---|---|---|---|---|
 | 2026-10-12 | DEGRADED：10月20日晚采；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 5,224 行（候选证据） | 未独立重算 | 板块 400；Owner 覆盖完整可展示，轮动数值仍未独立验收 | 3,025（候选证据） | 5,624 晚采候选；不是 LIVE_OOS / 正式样本 | 当前 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5`；28766 context/home/个股/板块/Focus/Radar/Forward HTTP 读回 200；token一致；候选 `production_accepted=false` | 浏览器首页渲染通过；轮动域 400/400 唯一板块候选可展示；Forward 页面展示 5,624 条 10-12 晚采候选，明确非 PIT/非正式 | 否；运营 Head 仍为 10-09，数据 Head 为 09-30 | 本轮未重算 |
 | 2026-10-13 | **SOURCE_READY（晚采候选）**：原始目标行 5,225；native TDX/BaoStock 事实一致；按 `V4_CURRENT_OPERATIONAL_NEW_CODE_R2` 将 SZ.301660 绑定为当日新股身份；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 未运行（无 Owner） | 未运行 | 未运行 | 未运行 | 未运行 | 新来源门：`a5be96980c2e4cfd6c1862dcbc72128d1f7e12a2d2401c623d52ef1047cda1f5`；`derived_ready=false` | 未运行 | 否 | 未运行 |
-| 2026-10-14 | **BLOCKED（BaoStock 门）**：从已校验官方 ZIP 按日期提取 5,563 行；含真实目标日 TDX 行。BaoStock runtime smoke 两次登录失败，最新 provider code `10002007` / `网络接收错误`，未取得目标日 daily/factor 响应，未形成完整 source freeze/readiness | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 仅 TDX 目标行候选，无完整来源索引 | 无 | 否 | 提取于 2026-10-20 16:21 +08；BaoStock 有界重试 31.15 秒 |
-| 2026-10-15 | BLOCKED：已确认同一官方 ZIP 含 9,727 个 `.day` 成员目标日记录，但受 10-14 BaoStock/source gate 阻断，未提取/冻结/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-16 | BLOCKED：已确认同一官方 ZIP 含 9,722 个 `.day` 成员目标日记录，但受 10-14 BaoStock/source gate 阻断，未提取/冻结/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-19 | BLOCKED：已确认同一官方 ZIP 含 9,715 个 `.day` 成员目标日记录；包更新日期不能替代日期绑定冻结，本日受 10-14 gate 阻断，未提取/派生 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-14 | **SOURCE_CAPTURED；身份门阻断**：官方 ZIP 提取 5,563 行；BaoStock 匿名 smoke 取得日线 5,225 行、因子 22 行，原始响应已哈希并冻结。来源数值一致，但 formal 09-30/运营 10-09 身份集缺少 10-13 首见的 `SZ.301660`，须先完成 10-13 候选身份继承 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 来源门 `WAIT_DATED_IDENTITY_AUTHORITY`；候选冻结已保存 | 未运行 | 否 | smoke 17:51 +08；source freeze `089f070b…` |
+| 2026-10-15 | BLOCKED：已确认同一官方 ZIP 含 9,727 个 `.day` 成员目标日记录；10-13/10-14 Owner 与新股身份连续链尚未建立，未提取/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-16 | BLOCKED：已确认同一官方 ZIP 含 9,722 个 `.day` 成员目标日记录；前序候选链未通过，未提取/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-19 | BLOCKED：已确认同一官方 ZIP 含 9,715 个 `.day` 成员目标日记录；包更新日期不能替代日期绑定冻结，前序候选链未通过，未派生 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
 | 2026-10-20 | BLOCKED：本地最新版 ZIP 的 `.day` 内容最大日为 10-19，未发现 10-20 目标行 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无候选索引 | 无 | 否 | 本轮只读检查 |
 
 官方会话表确认目标序列为 10-12、10-13、10-14、10-15、10-16、10-19、10-20；不能跳过缺失日。`D:/new_tdx/vipdoc/{sh,sz}/lday` 保持只读，本机目录没有这段目标日原生日线覆盖。对已冻结 TDX ZIP 的只读扫描确认其中含 10-13、10-14、10-15、10-16、10-19 目标行；全包 `.day` 目标行分别为 9,717、9,726、9,727、9,722、9,715 个（含指数/非股票成员）。A 股提取器过滤后 10-13 为 5,561 行、10-14 为 5,563 行；10-20 无目标行。10-14 提取 artifact `d0cd1e3fc389c3099308b9067f6ceeae6dd4afa6b9066e232e5bfc996e990fc1/bars.json`，SHA-256 同 artifact id，绑定包 SHA `a56c962378a5d3dd86a90186cc830ee6c8fd968557ce6eddeb310d203c5ff3c0`，package 内容最大交易日为 10-19；晚采、非 PIT。独立字节读回抽样 `SH.600000` 与 ZIP 原成员一致，open/high/low/close/volume/amount 六字段逐项相同（9.60/9.71/9.57/9.65/59,539,771/573,962,880.0）。
@@ -37,11 +37,11 @@
 
 ## 未关闭项与恢复位置
 
-- **P0-A BLOCKED（10-14 来源门）**：10-13 真实晚采来源和 `SZ.301660` 当日首次观察身份门已通过，`derived_ready=false`、Owner 尚未生成。10-14 已取得晚采官方 TDX 目标行，但 BaoStock 两次 `10002007 / 网络接收错误`，因此缺日期绑定的 BaoStock daily/factor 原始响应，不能形成现役完整来源冻结或运行 Owner。连续链首个未完成日仍为 10-14；10-15、10-16、10-19、10-20 未执行/不越过此缺口。
+- **P0-A BLOCKED（候选重验及身份继承）**：10-13 真实晚采来源与 `SZ.301660` 当日首次观察身份门已通过，Owner 尚未生成。10-14 BaoStock 接收已修复并取得 5,225/22 行真实回执及冻结；来源门等待从 10-13 候选身份继承。旧 10-12 candidate 用当前分支 `operational_successor.validate()` 重验时，在 `src/workbench_service/v4_server.py` 摘要绑定处失败，因此不能作为 R8 数值验收父节点；必须先从冻结源重算当前源码的 10-12 candidate，再接 10-13。后续交易日按序等待，不越过该候选链门。
 - **P0-B 已关闭（运行态修复）**：已按进程命令行与端口归属核对并停止旧 28766 进程，再以同一只读预览入口重启最新源码；未触碰 28765。发现并修复 `research/components.js` 的 `ResearchHeader` 括号缺失（浏览器模块解析错误导致整个页面停在加载态），并增加模块导入回归测试。重启后 `/api/v4/context` 与索引页面统一返回 `production_accepted=false`、`formal_head_match=false`、正式 Head 日期 10-09；首页、轮动、Forward 页已完成浏览器 DOM 验收。
-- **P1 PARTIAL**：28766 Chrome 桌面与 390×844 窄屏验收首页和 Forward，8 个主路由均有单一主标题、8 个导航项，未见横向溢出或 JS/API 错误；Forward 显示 10-12 / 5,624 / late-observed / 非 PIT / 非正式。个股、板块、Focus、Radar API 读回可用。列表完整搜索/筛选、图表和 Focus/Radar 多交互路径仍未逐项冒烟。
-- **现存读取缺口**：`/api/v4/radar/priority` 当前返回 400，原因是当前 10-12 候选没有 `data/v4/research_priority_authority_r1.json` 的优先级 Owner 绑定。没有创建或伪造该 Owner；此日期的正式优先级读取仍不可用。
-- 下一最小动作：BaoStock 网络恢复后按现有日期绑定 smoke/2-call 上限重取 10-14 daily 与 factor，校验后重跑 source gate；其后才可连续派生 10-13/10-14 Owner 与读回。10-13 新股准入已关闭为 SOURCE_READY，但其 Owner 尚未运行。未切 28765、Head、正式调度；未执行 PG 写入或破坏性数据库操作。
+- **P1 页面定点验收已关闭**：28766 Chrome 桌面与 390×844 窄屏验收首页、轮动和 Forward；8 个主路由、个股/板块列表与详情、搜索/研究状态筛选、Focus 到期观察、Radar 范围/优先级筛选、日/周线与复权口径均已读回，未见横向溢出或 JS/API 错误。Forward 明确显示 10-12 晚采、非 PIT、非正式样本。
+- **10-12 Radar 优先级读取已恢复**：候选 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5` 的 400 生命周期行逐项读回；Priority 股票 5,224（可排序 1,752、不可排序 3,472）、板块 400（可排序 143、不可排序 257）。仍为候选只读，不构成正式接受。
+- 下一最小动作：基于当前源码重新构建/验证 10-12 candidate-only successor，再以其严格数值验收结果作为 10-13 的候选父节点，继承 `SZ.301660` 当日身份；之后重验 10-14 来源门。未切 28765、Head、正式调度；未执行 PG 写入或破坏性数据库操作。
 
 ## 运行态修复追加证据（2026-10-20 16:13 +08）
 
@@ -63,4 +63,18 @@
 - **10-12 Radar 优先级读取已恢复**：独立生命周期审计 oracle 已按合同的最少匹配数处理已知谓词；补充缺失较早单字段、但两项有效 weakening 比较满足门槛的回归。定向单元测试 9/9 通过；400 板块独立样本复核 20/20 通过。只为候选 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5` 追加内容寻址、不可变 lifecycle/priority Owner：400 生命周期行读回逐项相等；Priority 读回股票 5,224（可排序 1,752、不可排序 3,472）、板块 400（可排序 143、不可排序 257）。市场权限仍为 `FACT_ONLY_NO_FORMAL_PERMISSION`；候选仍非 PIT、非正式发布，Head 未更新。
 - **现役页面逐项补验**：Radar 股票/板块范围和可排序/不可排序筛选读回分别为 1,752/3,472、143/257；股票页搜索及研究状态筛选有返回结果。板块列表加载 400 行，板块详情、来源证据与成员区域可打开。Focus 的真实关注锚点、价格路径证据、到期观察抽屉均可打开且保留待到期语义。股票图表成功读回截至 10-12 的日线、周线以及前复权/不复权口径。发现 stocks/sectors 列表入口之前没有路由、股票表引用了未接入字段；已增加列表路由并换用已接入字段，页面不再落到“没有找到该入口”或“字段未接入”。
 - **定向验收**：Python 生命周期/优先级测试 9 passed，UX/route/轮动完整性测试 46 passed；Node UI 测试 6 passed；app.js、labels.js `node --check` 通过。板块列表/详情、Focus、Radar、股票筛选与图表在 28766 浏览器实际读回。28766 当前仅由 PID 48492 的只读候选预览入口监听；28765 无监听；PG 5432 仍为既有 PID 8640。候选 API 生产接受标记仍为 false。
-- **状态**：已关闭 10-12 Radar Owner 缺失及页面冒烟缺口；仍未关闭项只有 10-14 外部 BaoStock TCP 接收不可达，故 10-15、10-16、10-19、10-20 仍遵守连续日顺序阻断。没有切换正式 Head、28765 或生产调度。\n
+- **状态**：已关闭 10-12 Radar Owner 缺失及页面冒烟缺口、10-14 BaoStock 数据接收；未关闭项为 10-13 Owner 候选生成及其到 10-14 的身份连续绑定，故 10-15、10-16、10-19、10-20 仍按顺序阻断。没有切换正式 Head、28765 或生产调度。
+
+## BaoStock 10-14 接收超时修复与重新验收（2026-10-20 17:51 +08）
+
+- 直连成功样本的全市场日线查询耗时 66.352 秒（SDK 0.9.3、`bs.login()` 匿名模式）；既有日更 smoke 使用项目客户端默认 30 秒 socket 接收超时，旧失败回执约 31 秒出现 `10002007 / 网络接收错误`。这是批量响应的接收超时窗口过短，并非用户名/API key 缺失，也不是接口从未成功。
+- 仅将完整市场 smoke 的单次 socket 超时设为 90 秒；调用数仍为 2（daily + factor）、页上限 1、行上限 20,000，不增加重试。定向回归覆盖此配置及原失败诊断：`tests/test_dynamic_daily_runtime_smoke_receipt_v1.py` 与 BaoStock client 定向测试共 5 passed。
+- 修复后官方 runtime smoke 回执 `reports/v4_baostock/runtime_acceptance/20261014/20261020T175128444262_live_smoke_receipt.json` SHA-256 `b52b98247332f847237cc96b2d07b83d116b480426e84dceab756624f61ce0d6`，状态 `PASS`、`PUBLIC_ANONYMOUS`；日线 5,225、因子 22。原始响应 SHA-256 `4fe7236d67cb878eb4b1624c13dfcff2370d2c341774a0e7045addcc57f4e1be`。source freeze `data/v4/dynamic_daily_sources/daily_freezes/2026-10-14/30c5929855e09f6c1d15da94b0b8da3f72fc2c7f1923eb43b9a955a6d528fdcb.json` SHA-256 `089f070beb8fc8d6d1cc0dfa6a8bceb56dacfc2eb2b1fde7e30e9aec48a6c8ba`。
+- 重新读回 10-14 来源门为 `WAIT_DATED_IDENTITY_AUTHORITY`，不是 BaoStock 失败：`SZ.301660` 在 10-13 已认定为首次观察代码，但 formal 10-09 身份集不含该身份。未在 10-14 重新定日首见、未伪造 Owner、未更新 Head 或写正式业务数据。连续链下一步是以严格 candidate-only 机制完成 10-13 Owner 并将身份绑定传给 10-14。
+
+## R8 候选 Owner 接口恢复与父节点重验（2026-10-20 18:01 +08）
+
+- 当前分支的 `operational_daily_ready_owner_v2` 仍按 R8 候选链传递 `adjustment_contract`、`candidate_only_exact`、`lifecycle_binding` 和精确算子参数；后续“恢复基线”变更却把 Owner/IO adapter 的对应签名与身份流程回退，实际候选运行会在参数绑定处失败。仅恢复已有版本 `00dc0afb8` 的 Owner、Owner adapter 和 Core IO lifecycle plumbing；不改发布 Head、算术合同或生产读取路径。
+- 定向 R8 lifecycle admission、isolated day baseline、Owner adapter 接口、BaoStock smoke/client、日更执行器测试共 `18 passed`；`git diff --check` 通过。
+- 旧 10-12 candidate 的只读 successor 校验返回 `CORRECTED_INPUT_DIGEST_MISMATCH:src/workbench_service/v4_server.py`，证明该历史 token 的源摘要已过期；没有改写该不可变候选或用它作 10-13 父节点。当前需要以 10-12 冻结输入按现源码重算，之后才能通过 R8 数值门并继续 10-13。
+- 28765、28766、formal/data Heads 和 PostgreSQL 数据均未变更；未执行 PG 写入、正式调度或破坏性操作。

@@ -16,6 +16,20 @@ from workbench_analysis.operational_daily_calendar_v2 import SHANGHAI
 from workbench_analysis.baostock_dm01_sdk_schema_v2 import normalize_response
 
 
+def _provider_failure(exc):
+    """Keep sanitized provider diagnostics in a failed smoke receipt."""
+    code = getattr(exc, "provider_code", None)
+    message = getattr(exc, "provider_message", None)
+    if not code and not message:
+        return None
+    safe_code = "".join(ch for ch in str(code or "") if ch.isalnum() or ch in "-_")[:24]
+    return {
+        "code": safe_code or None,
+        "message": str(message or "")[:240] or None,
+        "source": "SANITIZED_BAOSTOCK_CLIENT_ERROR",
+    }
+
+
 def accept_runtime(target, root=ROOT):
     root=Path(root);now=datetime.now(SHANGHAI)
     if target not in calendar(root)['session_dates']:
@@ -71,9 +85,13 @@ def accept_runtime(target, root=ROOT):
             receipt.update(status='PASS',live_smoke=smoke)
     except (ValueError,OSError,RuntimeError) as exc:
         receipt['reason']=str(exc)[:160]
+        provider_failure=_provider_failure(exc)
+        if provider_failure:
+            receipt['provider_failure']=provider_failure
     digest=write_json_atomic(smoke_path,receipt,tdx_root=Path('D:/new_tdx'))
     if receipt['status']!='PASS':
         return dict(status='WAIT_BAOSTOCK_DAILY_UPDATE',reason=receipt.get('reason'),
+                    provider_failure=receipt.get('provider_failure'),
                     smoke_receipt=smoke_path.relative_to(root).as_posix(),source_sha256=digest)
     if receipt['live_smoke']['adjustment_factor']['row_count']==0:
         from workbench_analysis.operational_runtime_acceptance_v2 import CONTRACT,canonical_sha256

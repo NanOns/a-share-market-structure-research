@@ -11,19 +11,20 @@
 |---|---|---|---|---|---|---|---|---|---|---|
 | 2026-10-12 | DEGRADED：10月20日晚采；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 5,224 行（候选证据） | 未独立重算 | 板块 400；Owner 覆盖完整可展示，轮动数值仍未独立验收 | 3,025（候选证据） | 5,624 晚采候选；不是 LIVE_OOS / 正式样本 | 当前 token `554f702da47e132156965a2b19e56d82d7841088478aca0511f527aa4d8fa7a5`；28766 context/home/个股/板块/Focus/Radar/Forward HTTP 读回 200；token一致；候选 `production_accepted=false` | 浏览器首页渲染通过；轮动域 400/400 唯一板块候选可展示；Forward 页面展示 5,624 条 10-12 晚采候选，明确非 PIT/非正式 | 否；运营 Head 仍为 10-09，数据 Head 为 09-30 | 本轮未重算 |
 | 2026-10-13 | **SOURCE_READY（晚采候选）**：原始目标行 5,225；native TDX/BaoStock 事实一致；按 `V4_CURRENT_OPERATIONAL_NEW_CODE_R2` 将 SZ.301660 绑定为当日新股身份；`AS_RECORDED=false`、`PIT_ELIGIBLE=false` | 未运行（无 Owner） | 未运行 | 未运行 | 未运行 | 未运行 | 新来源门：`a5be96980c2e4cfd6c1862dcbc72128d1f7e12a2d2401c623d52ef1047cda1f5`；`derived_ready=false` | 未运行 | 否 | 未运行 |
-| 2026-10-14 | BLOCKED：缺目标日冻结来源 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-15 | BLOCKED：缺目标日冻结来源 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-16 | BLOCKED：缺目标日冻结来源 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-19 | BLOCKED：缺目标日冻结来源（包日期不能替代冻结行证据） | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
-| 2026-10-20 | BLOCKED：未发现目标日冻结/Owner；10-19 官方包提取只验证了 10-13 目标行 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无候选索引 | 无 | 否 | 未运行 |
+| 2026-10-14 | **BLOCKED（BaoStock 门）**：从已校验官方 ZIP 按日期提取 5,563 行；含真实目标日 TDX 行。BaoStock runtime smoke 两次登录失败，最新 provider code `10002007` / `网络接收错误`，未取得目标日 daily/factor 响应，未形成完整 source freeze/readiness | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 仅 TDX 目标行候选，无完整来源索引 | 无 | 否 | 提取于 2026-10-20 16:21 +08；BaoStock 有界重试 31.15 秒 |
+| 2026-10-15 | BLOCKED：已确认同一官方 ZIP 含 9,727 个 `.day` 成员目标日记录，但受 10-14 BaoStock/source gate 阻断，未提取/冻结/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-16 | BLOCKED：已确认同一官方 ZIP 含 9,722 个 `.day` 成员目标日记录，但受 10-14 BaoStock/source gate 阻断，未提取/冻结/派生本日 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-19 | BLOCKED：已确认同一官方 ZIP 含 9,715 个 `.day` 成员目标日记录；包更新日期不能替代日期绑定冻结，本日受 10-14 gate 阻断，未提取/派生 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无 | 无 | 否 | 未运行 |
+| 2026-10-20 | BLOCKED：本地最新版 ZIP 的 `.day` 内容最大日为 10-19，未发现 10-20 目标行 | 未运行 | 未运行 | 未运行 | 未运行 | 未运行 | 无候选索引 | 无 | 否 | 本轮只读检查 |
 
-官方会话表确认目标序列为 10-12、10-13、10-14、10-15、10-16、10-19、10-20；不能跳过缺失日。`D:/new_tdx/vipdoc/{sh,sz}/lday` 保持只读，本机目录没有这段目标日原生日线覆盖。
+官方会话表确认目标序列为 10-12、10-13、10-14、10-15、10-16、10-19、10-20；不能跳过缺失日。`D:/new_tdx/vipdoc/{sh,sz}/lday` 保持只读，本机目录没有这段目标日原生日线覆盖。对已冻结 TDX ZIP 的只读扫描确认其中含 10-13、10-14、10-15、10-16、10-19 目标行；全包 `.day` 目标行分别为 9,717、9,726、9,727、9,722、9,715 个（含指数/非股票成员）。A 股提取器过滤后 10-13 为 5,561 行、10-14 为 5,563 行；10-20 无目标行。10-14 提取 artifact `d0cd1e3fc389c3099308b9067f6ceeae6dd4afa6b9066e232e5bfc996e990fc1/bars.json`，SHA-256 同 artifact id，绑定包 SHA `a56c962378a5d3dd86a90186cc830ee6c8fd968557ce6eddeb310d203c5ff3c0`，package 内容最大交易日为 10-19；晚采、非 PIT。独立字节读回抽样 `SH.600000` 与 ZIP 原成员一致，open/high/low/close/volume/amount 六字段逐项相同（9.60/9.71/9.57/9.65/59,539,771/573,962,880.0）。
 
 ## 来源与读回证据
 
 - 10-13 本地晚采官方包：TDX 包 SHA-256 `a56c962378a5d3dd86a90186cc830ee6c8fd968557ce6eddeb310d203c5ff3c0`，549,367,720 bytes，包版本日 10-19；目标提取捕获于 10-20 13:04:33 +08，目标行文件 SHA-256 `17d87a711262b7710098b3ac29717a56d440cede0214c39b7d94a63d3124c0b8`，原生行 5,561，目标日行 5,225。BaoStock 10-13 原始响应于 10-20 13:05:26 +08 捕获，候选池 5,224。不得把这些晚采字节称为 PIT 或当时留存数据。
 - 10-13 来源冻结本地路径 `data/v4/dynamic_daily_sources/daily_freezes/2026-10-13/aebe3c5c3b83d9769017dd4f89249f39912b2c07d87dfa5d7de5c2ff3efe9cfb.json`，1,791,540 bytes，SHA-256 `4053ccb99f3f21994278d46766a540cdabfb38fdf8713a9ba6a8b3cd0bd70c87`。按现役新股合同重算后，当前来源门 `data/v4/dynamic_daily_sources/source_readiness/2026-10-13/a5be96980c2e4cfd6c1862dcbc72128d1f7e12a2d2401c623d52ef1047cda1f5.json` 为 `SOURCE_READY`，`derived_ready=false`；新身份绑定 SHA-256 `bdeb082d1789029fd57c0041d270e9d1941c503fb96d1186bd191fe1a7e09fee`，仅将 `SZ.301660` 作为 10-13 首次观察身份加入本日候选，前序身份 Owner 未修改。原始 BaoStock `query_stock_basic` 行记载代码名“粤芯半导体”、IPO 日期 2026-10-13，采集时间 10-20 15:48:29 +08；[深交所 2026-10-12 上市公告](https://www.szse.cn/www/disclosure/notice/company/t20261012_623256.html)独立确认证券代码和上市日期。该身份仍是晚采、非 PIT，alias 未验证，不得据此回填更早历史。来源门中的父身份范围差异被保留为审计记录；当前提供方事实重算结果为 `NATIVE_PROVIDERS_RECONCILED`。文件在本机忽略数据目录中，不包含于代码提交。
 - 10-12 独立数据库身份按仓库候选记录为 `market_research` / DB OID `646711` / PG 5432；28766 HTTP 返回 5,224 股票、400 板块，R1/R2 候选索引日期/token 可读。业务写入/Head 更新均未做。
+- 10-14 首次来源尝试复用同一已验证官方 ZIP 并完成 A 股目标行提取，未使用 `D:/new_tdx` 缺失目标行作补造。BaoStock runtime smoke 于 16:21 和 16:25 +08 登录失败；限一次有界重试后仍失败，provider error code `10002007`、消息“网络接收错误”，第二次回执 `reports/v4_baostock/runtime_acceptance/20261014/20261020T162537835721_live_smoke_receipt.json` SHA-256 `8a1c045cb1eddc34ac4a3d1ddaefcb0e3b1c94fdb3c6b198771c8315e7f7f10f`。定向诊断修复已使净化的 provider code/message 写入失败回执；request ledger 当日总计 44，低于既定 40,000 soft / 45,000 hard cap。未构造 10-14 BaoStock 行或 complete freeze。
 - 当前本地实际 Head：`V4_OPERATIONAL_RESEARCH_HEAD.json` 日期 10-09；`V4_DATA_ACCEPTED_HEAD.json` 日期 09-30。10-12 候选 token 与当前运营 Head 不同。旧服务曾误报 `production_accepted=true`；新进程已验证为 false，不能把 API 200 或索引 READY 当作正式接受。
 
 ## 定点修复与验收
@@ -32,15 +33,15 @@
 - 轮动两套前端校验要求动态总数、全部分页、同 token、身份唯一和候选仅展示范围；补齐 research 状态筛选枚举。
 - Forward 晚采读使用当前候选日期、完整候选 token 与 source-registry freeze 绑定，缓存按 `(token,date)` 隔离，并保留非 PIT/非正式样本标记。页面候选日期改为响应日期，不再固定写 10-12。修复两套文案中固定 9-30 来源日期；页面快照标签依据 `production_accepted` 显示候选/现役。
 - 后端 Head 状态现在要求候选日期与完整候选摘要都精确匹配现役 Head，才可标记 `production_accepted=true`；测试覆盖日期和摘要不匹配的候选状态。
-- 本地定向测试：`49 passed`（轮动、Operational Successor、新股准入、Forward）；Node UI：`5 passed`；目标 ES module `node --check` 与 `git diff --check` 通过。另一次较宽读测试因 `V4_NATIVE_PG_DSN` 未配置而无法运行数据库图表用例，不提供凭据或改用未知 DSN。
+- 最新定向测试：Python `96 passed`（V4 UX/routes、Operational Successor、轮动完整性、Forward、新股准入、日更执行器及 BaoStock 失败回执）；Node UI `6 passed`；目标 ES module `node --check` 与 `git diff --check` 通过。另一次较宽读测试因 `V4_NATIVE_PG_DSN` 未配置而无法运行数据库图表用例，不提供凭据或改用未知 DSN。
 
 ## 未关闭项与恢复位置
 
-- **P0-A BLOCKED（首缺日已前移）**：10-13 真实晚采来源和当日新股身份门已通过，但没有生成增量 Owner（`derived_ready=false`）；连续链首个未完成交易日现为 10-14，缺冻结来源。不得跳过 10-14 计算后续日期。
+- **P0-A BLOCKED（10-14 来源门）**：10-13 真实晚采来源和 `SZ.301660` 当日首次观察身份门已通过，`derived_ready=false`、Owner 尚未生成。10-14 已取得晚采官方 TDX 目标行，但 BaoStock 两次 `10002007 / 网络接收错误`，因此缺日期绑定的 BaoStock daily/factor 原始响应，不能形成现役完整来源冻结或运行 Owner。连续链首个未完成日仍为 10-14；10-15、10-16、10-19、10-20 未执行/不越过此缺口。
 - **P0-B 已关闭（运行态修复）**：已按进程命令行与端口归属核对并停止旧 28766 进程，再以同一只读预览入口重启最新源码；未触碰 28765。发现并修复 `research/components.js` 的 `ResearchHeader` 括号缺失（浏览器模块解析错误导致整个页面停在加载态），并增加模块导入回归测试。重启后 `/api/v4/context` 与索引页面统一返回 `production_accepted=false`、`formal_head_match=false`、正式 Head 日期 10-09；首页、轮动、Forward 页已完成浏览器 DOM 验收。
-- **P1 PARTIAL**：已验收首页、轮动展示及 Forward 候选页面；个股、板块、Focus、Radar API 读回可用。完整搜索/筛选、详情、图表、Focus/Radar 多交互路径仍未逐项冒烟。
+- **P1 PARTIAL**：28766 Chrome 桌面与 390×844 窄屏验收首页和 Forward，8 个主路由均有单一主标题、8 个导航项，未见横向溢出或 JS/API 错误；Forward 显示 10-12 / 5,624 / late-observed / 非 PIT / 非正式。个股、板块、Focus、Radar API 读回可用。列表完整搜索/筛选、图表和 Focus/Radar 多交互路径仍未逐项冒烟。
 - **现存读取缺口**：`/api/v4/radar/priority` 当前返回 400，原因是当前 10-12 候选没有 `data/v4/research_priority_authority_r1.json` 的优先级 Owner 绑定。没有创建或伪造该 Owner；此日期的正式优先级读取仍不可用。
-- 下一最小动作：先为 `SZ.301660` 按当前带版本身份合同解决准入/异常范围并关闭 10-13 来源差异；再取得 10-14 真实输入，基于已验证的 10-12 候选建立受限连续候选链。未切 28765、Head、正式调度；未执行破坏性数据库操作。
+- 下一最小动作：BaoStock 网络恢复后按现有日期绑定 smoke/2-call 上限重取 10-14 daily 与 factor，校验后重跑 source gate；其后才可连续派生 10-13/10-14 Owner 与读回。10-13 新股准入已关闭为 SOURCE_READY，但其 Owner 尚未运行。未切 28765、Head、正式调度；未执行 PG 写入或破坏性数据库操作。
 
 ## 运行态修复追加证据（2026-10-20 16:13 +08）
 
@@ -50,3 +51,8 @@
 - API 读回 200：context、home、stocks（5,224）、sectors（400）、focus（3,025）、radar（311）、forward/statistics；settlement 返回 200 / `EMPTY_VALID` / 0。以上候选接口 token 均一致；正式标记均为 false。
 - 最新定向 Python 测试：57 passed；Node UI 回归：6 passed（新增 research UI 模块可导入测试）；`node --check` 与 `git diff --check` 通过。
 - 10-13 新股身份候选追加：现役 new-listing 合同测试与 source-gate 重算测试 `37 passed`；只重算并原子追加本地候选身份/来源门文件，没有运行 Owner、PG 写入或正式调度。
+
+## 来源失败诊断修复（2026-10-20 16:26 +08）
+
+- `scripts/accept_dynamic_daily_baostock_v2.py` 原 smoke failure receipt 仅留下通用 `BAOSTOCK_LOGIN_FAILED`，抛弃 SDK 已净化的 provider error code/message。本轮新增 `provider_failure` 安全诊断字段和返回值，保留受限字符 provider code、最多 240 字符净化消息；无 provider metadata 时仍使用原通用错误。新增回归覆盖 provider metadata 和 generic failure。
+- 最小重试仍返回 `10002007`、消息“网络接收错误”，耗时 31.15 秒（SDK 30 秒 timeout）。此证据表示 BaoStock 网络接收失败；没有切换端点/认证模式或绕过来源门。诊断字段改善定位，不将失败标记改成成功。

@@ -37,9 +37,13 @@ def _dsn() -> str:
     return value
 
 
-def _load_days(artifact_root: Path) -> list[dict]:
+def _load_days(artifact_root: Path, days: tuple[str, ...] = DATES) -> list[dict]:
     rows = []
-    for day in DATES:
+    if not days or tuple(days) != tuple(sorted(set(days))):
+        raise ValueError("R8_BATCH04_DATES_MUST_BE_NONEMPTY_UNIQUE_AND_IN_ORDER")
+    if any(day not in DATES for day in days):
+        raise ValueError("R8_BATCH04_UNDECLARED_TARGET_SESSION")
+    for day in days:
         matches = list((artifact_root / "tdx_targets" / day).glob("*/*.json"))
         if len(matches) != 1:
             raise ValueError(f"R8_BATCH04_TARGET_ARTIFACT_COUNT:{day}:{len(matches)}")
@@ -64,8 +68,8 @@ def _load_days(artifact_root: Path) -> list[dict]:
     return rows
 
 
-def ingest(artifact_root: Path) -> dict:
-    days = _load_days(artifact_root)
+def ingest(artifact_root: Path, days: tuple[str, ...] = DATES) -> dict:
+    days = _load_days(artifact_root, days)
     before_heads = {str(path): _sha(path.read_bytes()) for path in HEADS}
     connection = psycopg.connect(_dsn(), connect_timeout=5)
     try:
@@ -188,12 +192,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--artifact-root", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
+    parser.add_argument("--days", nargs="+", choices=DATES, default=DATES)
     args = parser.parse_args()
     artifact_root = args.artifact_root.resolve()
     temp_root = Path("G:/codex_tmp").resolve()
     if artifact_root != temp_root and temp_root not in artifact_root.parents:
         raise ValueError("R8_BATCH04_ARTIFACT_ROOT_MUST_BE_G_CODEX_TMP")
-    receipt = ingest(artifact_root)
+    receipt = ingest(artifact_root, tuple(args.days))
     target = args.receipt.resolve()
     if target.drive.upper() != "G:" or target == ROOT or ROOT in target.parents:
         raise ValueError("R8_BATCH04_RECEIPT_MUST_BE_OUTSIDE_REPO_ON_G")

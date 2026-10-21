@@ -227,7 +227,7 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         unknown_reasons=[dict(reason=k,count=v) for k,v in unknown_reasons.most_common(20)],
         prewatch_qualification_counts=dict(sorted(prewatch_states.items())),
         prewatch_unknown_predicates=[dict(reason=k,count=v) for k,v in prewatch_unknowns.most_common(20)],
-        scenario_governance=dict(contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',version='2.0.0',
+        scenario_governance=dict(contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',version='2.1.0',
             source_binding=binding,scenarios=scenario_governance,
             diagnostic_unknown_absorbed_into_formal_candidate=False,
             D0_status_values_unchanged=True),

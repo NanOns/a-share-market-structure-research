@@ -30,7 +30,7 @@ def pg_receipt(*, available='2026-10-22T07:55:00+00:00', evidence_class='CAPTURE
         evidence_class=evidence_class,byte_readback=dict(status='PASS'))]),
         d0_owner_publication=dict(status='PG_BINDING_MISSING',permission_chain_proven=False,
             consumed_source_rows=[],batch07_publications=[dict(trade_date='2026-10-22',candidate_token=TOKEN,
-                producer_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',producer_version='2.0.0')],
+                producer_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',producer_version='2.1.0')],
             batch07_fact_digest_readback='PASS',batch07_consumed_sources=[]))
 
 

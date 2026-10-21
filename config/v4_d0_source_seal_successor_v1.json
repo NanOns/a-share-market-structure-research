@@ -1,6 +1,6 @@
 {
   "contract_id": "V4_D0_SOURCE_SEAL_SUCCESSOR_R2",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "status": "ACTIVE_DEVELOPMENT_CONTRACT",
   "compatible_legacy_contract": "R6_D0_REASON_ATTRIBUTION_R1",
   "formal_scenarios": {
@@ -40,6 +40,26 @@
     "predicate_states_mutable_by_seal": false,
     "production_admission": false
   },
-  "admission_values": ["DEV_DIAGNOSTIC", "DEV_SOURCE_VERIFIED", "NOT_ADMITTED"],
+  "dev_asof_policy": {
+    "status": "DEV_ASOF_SOURCE_VERIFIED",
+    "candidate_historical_pit_flags_remain_false": true,
+    "independent_of_historical_as_recorded_and_pit_eligible": true,
+    "requires_operational_successor_validation": true,
+    "requires_exact_candidate_source_freeze_and_unique_source_ingress": true,
+    "caller_claims_are_authority": false,
+    "d0_output_claimed_available_at_source_cutoff": false,
+    "production_admission": false
+  },
+  "source_ingress_identity": {
+    "source_freeze": "candidate.source_registry[trade_date].freeze, byte digest must equal exact R8 publication source_freeze_sha256",
+    "source_package": "effective_package.download.sha256 matched against source_receipts.source_sha256",
+    "receipt_cardinality": 1,
+    "zero_or_multiple_matches": "FAIL_CLOSED",
+    "artifact_bytes_and_sha256": "REHASHED_BEFORE_PUBLICATION_AND_READBACK"
+  },
+  "derived_output_clock_chain": ["source_snapshot_cutoff_at", "code_parameters_frozen_at", "d0_computed_at", "d0_published_at", "d0_usable_at"],
+  "derived_output_available_at_must_be_at_or_after": ["required_source_availability", "d0_computed_at", "d0_published_at"],
+  "idempotency": "candidate_token plus full input closure fingerprint; same closure reuses exact publication and full output clock chain",
+  "admission_values": ["DEV_DIAGNOSTIC", "DEV_ASOF_SOURCE_VERIFIED", "DEV_SOURCE_VERIFIED", "NOT_ADMITTED"],
   "unknown_cutoff_state": "UNKNOWN"
 }

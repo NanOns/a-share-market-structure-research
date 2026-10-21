@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timezone
 
 CONTRACT_ID = 'V4_D0_SOURCE_SEAL_SUCCESSOR_R2'
-CONTRACT_VERSION = '2.0.0'
+CONTRACT_VERSION = '2.1.0'
 FORMAL_SCENARIOS = ('LAUNCH_CONFIRM', 'RECOVERY_TURN')
 DIAGNOSTIC_SCENARIOS = ('STRONG_PULLBACK', 'TREND_CONTINUE')
 CHECK_INPUTS = {
@@ -324,7 +324,7 @@ def d0_publication_matches_contract(publication, trade_date, candidate_token):
     return bool(isinstance(publication,dict) and publication.get('trade_date')==trade_date and
         publication.get('candidate_token')==candidate_token and
         publication.get('producer_contract_id')=='V4_D0_SOURCE_SEAL_SUCCESSOR_R2' and
-        publication.get('producer_version')=='2.0.0')
+        publication.get('producer_version')=='2.1.0')
 
 
 def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_readback):
@@ -427,6 +427,11 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
             admission='NOT_ADMITTED',reason='D0_PG_CONSUMED_SOURCE_BYTES_NOT_VERIFIED')
     from .d0_source_seal_r2 import classify_source
     for pg_source in pg_sources:
+        if (exact.get('publication_status')=='DEV_ASOF_SOURCE_VERIFIED' and
+                pg_source.get('source_role') not in ('TDX_SOURCE_INGRESS_ARTIFACT','UNIVERSE_SESSION_MEMBERSHIP','MEMBERSHIP_AUTHORITY_REFERENCE')):
+            # Derived D0 Owners and the code/parameter bytes are verified by
+            # the output time chain below, not backdated to the source cutoff.
+            continue
         source_class=classify_source(pg_source,cutoff)
         if source_class=='RECONSTRUCTED_AFTER_CUTOFF':
             return dict(predicate_state=predicate_state,seal_state='POST_HOC_AFTER_CUTOFF',
@@ -453,6 +458,21 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
     if pg_readback.get('d0_owner_publication',{}).get('status')!='PG_BINDING_PRESENT' or not pg_readback.get('d0_owner_publication',{}).get('permission_chain_proven'):
         return dict(predicate_state=predicate_state,seal_state='PERMISSION_NOT_PROVEN',
             admission='NOT_ADMITTED',reason='PG_OWNER_PUBLICATION_PERMISSION_CLOSURE_MISSING')
+    if exact.get('publication_status')=='DEV_ASOF_SOURCE_VERIFIED' and exact.get('dev_asof_source_verified') is True:
+        chain=d0_binding.get('time_chain_readback') or {}
+        closure=d0_binding.get('closure_readback') or {}
+        if chain.get('valid') is not True or closure.get('valid') is not True:
+            return dict(predicate_state=predicate_state,seal_state='D0_TIME_OR_CLOSURE_UNVERIFIED',
+                dev_asof_source_verified=True,admission='NOT_ADMITTED',
+                reason='DEV_ASOF_SOURCE_VERIFIED_BUT_D0_DERIVED_CLOSURE_NOT_VERIFIED')
+        return dict(predicate_state=predicate_state,seal_state='D0_OUTPUT_POST_CUTOFF_DEV_ASOF',
+            source_class='DEV_ASOF_SOURCE_VERIFIED',dev_asof_source_verified=True,
+            historical_as_recorded=False,historical_pit_eligible=False,production_admission=False,
+            source_snapshot_cutoff_at=exact.get('source_snapshot_cutoff_at'),
+            code_parameters_frozen_at=exact.get('code_parameters_frozen_at'),
+            d0_computed_at=exact.get('d0_computed_at'),d0_published_at=exact.get('d0_published_at'),
+            d0_usable_at=exact.get('d0_usable_at'),admission='DEV_ASOF_SOURCE_VERIFIED',
+            reason='SOURCE_CLOCK_VERIFIED_SEPARATELY_FROM_LATER_D0_DERIVATION')
     return dict(predicate_state=predicate_state,seal_state='VERIFIED_BY_CUTOFF',
         admission='DEV_SOURCE_VERIFIED',reason='EXACT_PG_SOURCE_OWNER_PUBLICATION_AND_PERMISSION_CHAIN_VERIFIED',
         knowledge_cutoff=cutoff.isoformat(),production_admission=False)

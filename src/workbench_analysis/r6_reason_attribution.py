@@ -26,39 +26,6 @@ def _parse_day(value):
     except ValueError:return None
 
 
-def evaluate_d0_source_seal(evidence, *, knowledge_cutoff):
-    """Evaluate explicit source clocks, publication, role and permission facts."""
-    if not isinstance(evidence,dict):evidence={}
-    available=_parse_instant(evidence.get('source_available_at') or evidence.get('available_at'))
-    cutoff=_parse_instant(evidence.get('knowledge_cutoff'))
-    required_present=all(evidence.get(key) not in (None,'') for key in
-        ('source_available_at','knowledge_cutoff','input_publication_id','time_role','source_sha256'))
-    # An input object's boolean and a caller-supplied 64-hex digest cannot
-    # establish that a permission existed in the actual PG Owner/Publication.
-    # Until the caller supplies a verifiable PG authority binding, fail closed.
-    future_day=_parse_day(evidence.get('trade_date') or evidence.get('as_of'))
-    cutoff_fact=_parse_instant(knowledge_cutoff)
-    if available is None or cutoff is None or not required_present:
-        return dict(status='HISTORICAL_SEAL_NOT_PROVEN',availability_time_proven=False,
-            cutoff_proven=False,permission_chain_proven=False,
-            reason='SOURCE_CLOCK_PUBLICATION_ROLE_OR_PERMISSION_FACT_MISSING')
-    availability_proven=available<=cutoff
-    cutoff_proven=(cutoff_fact is not None and cutoff<=cutoff_fact and
-                   future_day is not None and future_day<=cutoff_fact.date())
-    permission_proven=False
-    if not availability_proven or not cutoff_proven:
-        status='SEAL_TIME_REJECTED'
-    elif not permission_proven:
-        status='SEAL_PERMISSION_UNPROVEN'
-    return dict(status=status,availability_time_proven=availability_proven,
-        cutoff_proven=cutoff_proven,permission_chain_proven=permission_proven,
-        available_at=evidence.get('source_available_at') or evidence.get('available_at'),
-        knowledge_cutoff=evidence.get('knowledge_cutoff'),
-        input_publication_id=evidence.get('input_publication_id'),time_role=evidence.get('time_role'),
-        source_sha256=evidence.get('source_sha256'),
-        permission_reason='ACTUAL_PG_OWNER_PUBLICATION_BINDING_NOT_VERIFIED')
-
-
 def _load_jsonl(root, binding):
     path = checked(root, binding)
     with gzip.open(path, 'rt', encoding='utf-8') as stream:
@@ -70,49 +37,49 @@ def _load_jsonl(root, binding):
         return [json.loads(line) for line in payload.splitlines() if line.strip()]
 
 
-def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=None):
+def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=None, candidate_token=None):
     """Summarize actual D0 scenario checks without changing eligibility states."""
-    if day > '2026-10-14':
-        raise ValueError('R6_DATA_CUTOFF_EXCEEDED')
     binding = candidate.get('owners', {}).get(day, {}).get('prewatch')
     if not binding:
         return dict(contract_id=CONTRACT_ID, status='SOURCE_INCOMPLETE', trade_date=day,
                     reason='CANDIDATE_D0_OWNER_NOT_BOUND', items=None)
     rows = _load_jsonl(root, binding)
-    # Audit source sealing separately from the source's row-level booleans.
-    # A 64-hex producer/source digest plus a valid Owner binding is not an
-    # availability-time seal; keep candidate predicates diagnostic until the
-    # full cutoff and permission chain is present.
+    # The predicate source remains immutable. Independent PG SourceIngress,
+    # D0 Owner and Publication facts are read once for this requested T0.
+    from .d0_source_seal_r1 import (DIAGNOSTIC_SCENARIOS, FORMAL_SCENARIOS,
+        build_candidate_lineage, evaluate_d0_source_seal, verify_pg_binding)
+    pg_readback=verify_pg_binding(day,candidate_token)
+    lineage=next(((row.get('confirmation') or {}).get('source_lineage') for row in rows
+        if (row.get('confirmation') or {}).get('source_lineage')),None)
+    if lineage is None:
+        lineage=build_candidate_lineage(root,candidate,day,
+            observed_at=datetime.now(timezone.utc).isoformat(),pg_readback=pg_readback)
     scenario_governance = {}
-    for scenario in ('LAUNCH_CONFIRM','RECOVERY_TURN','STRONG_PULLBACK','TREND_CONTINUE'):
+    for scenario in (*FORMAL_SCENARIOS,*DIAGNOSTIC_SCENARIOS):
         observed=[]
         for row in rows:
             confirmation=row.get('confirmation') or {}
             for evidence in confirmation.get('scenario_evidence') or []:
                 if evidence.get('scenario')==scenario:observed.append((row,evidence))
-        digests={((row.get('confirmation') or {}).get('source_sha256')) for row,_ in observed}
-        digest_proof=bool(digests) and all(isinstance(value,str) and len(value)==64 and
-            all(char in '0123456789abcdef' for char in value.lower()) for value in digests)
-        if scenario in ('LAUNCH_CONFIRM','RECOVERY_TURN'):
-            seals=[evaluate_d0_source_seal(evidence,knowledge_cutoff=day+'T23:59:59+08:00')
-                   for _,evidence in observed]
-            seal_states=Counter(item['status'] for item in seals)
-            seal_status=('CANDIDATE_SEAL_PROVEN' if seals and all(item['status']=='CANDIDATE_SEAL_PROVEN' for item in seals)
-                    else 'HISTORICAL_SEAL_NOT_PROVEN' if observed else 'SOURCE_INCOMPLETE')
-            status=('CANDIDATE_SOURCE_SEAL_PROVEN' if seal_status=='CANDIDATE_SEAL_PROVEN'
-                    else 'OPEN_SOURCE_SEAL_METADATA_MISSING' if observed else 'SOURCE_INCOMPLETE')
+        if scenario in FORMAL_SCENARIOS:
+            seal=evaluate_d0_source_seal(root=root,evidence=lineage,scenario=scenario,
+                predicate_state='OBSERVED_WITHOUT_MUTATION',pg_readback=pg_readback)
+            seal_status=seal['seal_state']
+            seal_states=Counter({seal_status:len(observed)}) if observed else Counter()
+            status='OPEN_'+seal_status if observed else 'SOURCE_INCOMPLETE'
             role='CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY'
         else:
-            seals=[];seal_states=Counter()
+            seal=dict(seal_state='DIAGNOSTIC_ONLY',admission='DEV_DIAGNOSTIC',
+                reason='SCENARIO_EXCLUDED_FROM_FORMAL_D0')
+            seal_states=Counter()
             seal_status='DIAGNOSTIC_ONLY'
             status='DIAGNOSTIC_ONLY'
             role='NOT_IN_FORMAL_D0_AGGREGATION'
         scenario_governance[scenario]=dict(status=status,role=role,observed_rows=len(observed),
-            source_owner_digest_verified=True,producer_output_digest_present=digest_proof,
+            source_owner_digest_verified=True,producer_output_digest_is_authority=False,
             historical_seal_status=seal_status,seal_state_counts=dict(sorted(seal_states.items())),
-            availability_time_proven=bool(seals) and all(x['availability_time_proven'] for x in seals),
-            cutoff_proven=bool(seals) and all(x['cutoff_proven'] for x in seals),
-            permission_chain_proven=bool(seals) and all(x['permission_chain_proven'] for x in seals),
+            seal=seal,pg_binding_status=pg_readback.get('d0_owner_publication',{}).get('status'),
+            cutoff_status=(lineage or {}).get('cutoff_status','SOURCE_LINEAGE_NOT_EMITTED'),
             d0_row_predicates_preserved=True)
     overall = Counter()
     scenario_states = Counter()
@@ -239,17 +206,36 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         primary_reason_counts=dict(sorted(focus_primary_reasons.items())),
         primary_reason_total=sum(focus_primary_reasons.values()),
         source=d2_binding)
-    return dict(contract_id=CONTRACT_ID, version='1.0.0', status='READY', trade_date=day,
+    seal_distribution=Counter()
+    for scenario in scenario_governance.values():
+        seal_distribution.update(scenario.get('seal_state_counts') or {})
+    first_break=(
+        'D0_SOURCE_LINEAGE_NOT_EMITTED' if lineage is None else
+        'CUTOFF_CONTRACT_UNRESOLVED' if lineage.get('cutoff_status')!='CUTOFF_CONTRACT_RESOLVED' else
+        'PG_BINDING_MISSING' if pg_readback.get('d0_owner_publication',{}).get('status')!='PG_BINDING_PRESENT' else
+        'SOURCE_CLOCK_OR_PERMISSION_EDGE_UNPROVEN')
+    return dict(contract_id=CONTRACT_ID, version='2.0.0', status='READY', trade_date=day,
         total=len(rows), confirmation_status_counts=dict(sorted(overall.items())),
         scenario_status_counts=dict(sorted(scenario_states.items())),
         most_common_failed_checks=[dict(reason=k,count=v) for k,v in failed_checks.most_common(20)],
         unknown_reasons=[dict(reason=k,count=v) for k,v in unknown_reasons.most_common(20)],
         prewatch_qualification_counts=dict(sorted(prewatch_states.items())),
         prewatch_unknown_predicates=[dict(reason=k,count=v) for k,v in prewatch_unknowns.most_common(20)],
-        scenario_governance=dict(contract_id='V4_D0_CANDIDATE_GOVERNANCE_AUDIT_R1',version='1.0.0',
+        scenario_governance=dict(contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R1',version='1.0.0',
             source_binding=binding,scenarios=scenario_governance,
             diagnostic_unknown_absorbed_into_formal_candidate=False,
             D0_status_values_unchanged=True),
+        source_verification=dict(source_lineage=lineage,pg_readback=pg_readback,
+            first_break=first_break,
+            source_class=('SOURCE_REPRODUCIBLE_POST_HOC' if any(
+                item.get('evidence_class')=='RECONSTRUCTED_NON_PIT'
+                for item in pg_readback.get('source_ingress',{}).get('receipts',[])) else 'UNCLASSIFIED'),
+            historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',
+            admission='NOT_ADMITTED',reason_code=first_break),
+        seal_distribution=dict(sorted(seal_distribution.items())),
+        seal_scenario_denominator=sum(x.get('observed_rows',0) for x in
+            scenario_governance.values() if x.get('role')=='CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY'),
+        reason_code=first_break,
         focus_trigger_count=focus_triggers,focus_intersection=focus_summary,source=binding,
         AS_RECORDED=False,PIT_ELIGIBLE=False,eligibility_mutated=False,
         scope='CANDIDATE_D0_CHECKS_AND_PREWATCH_OWNER_ONLY; NOT_FORMAL_ORACLE')

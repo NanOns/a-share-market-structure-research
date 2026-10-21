@@ -31,7 +31,7 @@ def clean(x):
     return x
 
 
-def confirmation(values):
+def confirmation(values, *, source_lineage=None):
     # R6_D0_REASON_ATTRIBUTION_R1 defines only LAUNCH_CONFIRM and
     # RECOVERY_TURN as formal D0 aggregation inputs. STRONG_PULLBACK and
     # TREND_CONTINUE are diagnostic-only; their expected missing evidence
@@ -50,10 +50,16 @@ def confirmation(values):
         evidence.append(dict(scenario=scenario,status=state,
              aggregation_role='FORMAL_D0' if is_formal else 'DIAGNOSTIC_ONLY',
              checks=checks,unknown_reasons=reasons))
-    return dict(confirmation_status='TRUE' if matches else 'UNKNOWN' if unknown else 'FALSE',
+    result = dict(confirmation_status='TRUE' if matches else 'UNKNOWN' if unknown else 'FALSE',
          formal_aggregation_scenarios=[s for s in machine['scenario_priority'] if s in formal_scenarios],
          primary_scenario=matches[0] if matches else None,matched_scenarios=matches,
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
+    if source_lineage is not None:
+        from .d0_source_seal_r1 import enrich_producer_confirmation
+        row_lineage=dict(source_lineage,price_coordinate=values.get('price_basis'),
+            input_trade_date=values.get('trade_date'))
+        result = enrich_producer_confirmation(result, row_lineage)
+    return result
 
 
 def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None):
@@ -79,12 +85,18 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     cal=dict(session_dates=sessions,sessions=[dict(trade_date=d,session_index=i) for i,d in enumerate(sessions)],
           lineage_id='R4_OFFICIAL_MASTER_CALENDAR',producer_contract_id='MARKET_CALENDAR_V1')
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
+    from .r43_owner_replay import ref as owner_ref
+    calendar_binding=owner_ref(root,out/'FOCUS_CALENDAR.json')
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, sources['identity'])
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
+        from .d0_source_seal_r1 import build_scenario_lineage
+        source_lineage=build_scenario_lineage(root,trade_date=day,owner=owner,
+            parameters_path='config/research_attention_v3.yaml',observed_at=cutoff,
+            calendar_binding=calendar_binding)
         factors=gzrows(checked(root,owner['core']));profiles={r['security_id']:r for r in gzrows(checked(root,owner['profiles']))}
         seeds={r['security_id']:r for r in gzrows(checked(root,sector['seed']))}
         window=sessions[max(0,sessions.index(day)-119):sessions.index(day)+1]
@@ -122,7 +134,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
             timeline=StockTimeline(sid,min(observed),max(observed),len(observed),observed,file_exists=True,structurally_valid=True,current_member=True)
             normal,normal_evidence=qualifies_normal_universe(timeline,[int(d.replace('-','')) for d in window])
             values,signals=produce(windows[sid][-27:],feature,normal_universe=normal,identity_compatible=True,parameters=cfg)
-            values.update(security_id=sid,trade_date=day);confirmed=confirmation(values)
+            values.update(security_id=sid,trade_date=day);confirmed=confirmation(values,source_lineage=source_lineage)
             damage=f['core_price_damage']['value'];seed=seeds[sid]['base_seed_state']
             pf=dict(base_seed_state=seed,mandatory_core_quality_ready='TRUE' if seed!='UNKNOWN' and isinstance(damage,bool) else 'UNKNOWN',
                 delta3=f['rps5_delta3']['value'],priority_lineage_failures=[],

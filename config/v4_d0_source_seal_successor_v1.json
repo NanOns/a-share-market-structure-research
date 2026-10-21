@@ -1,0 +1,37 @@
+{
+  "contract_id": "V4_D0_SOURCE_SEAL_SUCCESSOR_R1",
+  "version": "1.0.0",
+  "status": "ACTIVE_DEVELOPMENT_CONTRACT",
+  "compatible_legacy_contract": "R6_D0_REASON_ATTRIBUTION_R1",
+  "formal_scenarios": {
+    "LAUNCH_CONFIRM": ["ACTUAL_BAR", "AMR20_GTE_120", "BREAKOUT_V3", "CLOSE_ABOVE_PHC20", "CLV_GTE_060", "INPUT_IDENTITY_COMPATIBLE", "LIQ20", "NORMAL_UNIVERSE", "NOT_EXTENDED", "NOT_FIRST_DAY_DAMAGE", "NOT_SEVERE_DROP", "NOT_STRUCTURE_BREAK", "NO_INTRADAY_REJECT_HIGH20", "POSITIVE_RET1", "WINDOW_VALID"],
+    "RECOVERY_TURN": ["ACTUAL_BAR", "AMR20_GTE_105", "CLOSE_GTE_098_MA20", "CLV_GTE_055", "INPUT_IDENTITY_COMPATIBLE", "LIQ20", "NORMAL_UNIVERSE", "NOT_EXTENDED", "NOT_FIRST_DAY_DAMAGE", "NOT_SEVERE_DROP", "NOT_STRUCTURE_BREAK", "POSITIVE_RET1", "R5_OR_R20", "RPS5_DELTA3_POSITIVE", "WINDOW_VALID"]
+  },
+  "diagnostic_only_scenarios": ["STRONG_PULLBACK", "TREND_CONTINUE"],
+  "source_input_roles": {
+    "price_window_raw_and_tdx_native_qfq": "candidate.owners[trade_date].history",
+    "rps_and_core_quality": "candidate.owners[trade_date].core",
+    "universe_session_membership": "versioned official session calendar plus the bound history owner",
+    "scanner_contract_and_thresholds": "config/v4_11_confirmation_detector_contract_r2.json",
+    "target_fact_producer": "src/v4/target_fact_producers_r4.py",
+    "scenario_detector": "src/workbench_analysis/corrected_focus_replay.py"
+  },
+  "cutoff_policy": {
+    "status": "UNRESOLVED_REQUIRES_EXPLICIT_SCENARIO_TIME_CONTRACT",
+    "rule": "Do not infer cutoff from T0, producer execution time, file mtime, caller assertion, or a reconstructed source receipt.",
+    "timezone": "Asia/Shanghai",
+    "time_role_required": true
+  },
+  "seal_policy": {
+    "require_exact_source_bytes_and_sha256": true,
+    "require_actual_pg_source_ingress_receipt": true,
+    "require_pg_owner_and_publication_binding": true,
+    "require_actual_permission_edge_from_pg": true,
+    "require_predecessor_window_identity": true,
+    "post_hoc_is_not_pit": true,
+    "predicate_states_mutable_by_seal": false,
+    "production_admission": false
+  },
+  "admission_values": ["DEV_DIAGNOSTIC", "DEV_SOURCE_VERIFIED", "NOT_ADMITTED"],
+  "unknown_cutoff_state": "CUTOFF_CONTRACT_UNRESOLVED"
+}

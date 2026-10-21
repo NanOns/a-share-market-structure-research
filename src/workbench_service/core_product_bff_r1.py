@@ -417,7 +417,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             checked(self.api.root,binding)
         if key not in self.api.cache:
             self.api.cache[key]=candidate_d0_reason_attribution(
-                self.api.root,self.api.candidate,day,focus_security_ids=ids)
+                self.api.root,self.api.candidate,day,focus_security_ids=ids,
+                candidate_token=self.api.token)
         return self.api.cache[key]
 
     def _attach_candidate_lifecycle(self,rows,lifecycle):
@@ -1186,10 +1187,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     response['d0_reason_attribution']=self._candidate_focus_reason_attribution(
                         day,[e.get('entity_id') for e in episodes])
                 except Exception as exc:
+                    reason_code=(str(exc) if str(exc).startswith(('R6_FOCUS_REASON_SOURCE_NOT_BOUND',
+                        'CORRECTED_INPUT_DIGEST_MISMATCH','CANDIDATE_D0_OWNER_NOT_BOUND'))
+                        else 'D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__)
                     response['d0_reason_attribution']=dict(contract_id='R6_D0_REASON_ATTRIBUTION_R1',
+                        successor_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R1',
                         status='SOURCE_INCOMPLETE',trade_date=day,items=None,
-                        reason='D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__,
-                        AS_RECORDED=False,PIT_ELIGIBLE=False)
+                        reason=reason_code,reason_code=reason_code,
+                        failure_type=type(exc).__name__,failure_detail=str(exc) or repr(exc.args),
+                        predicate_state='NOT_READ',seal_state='SOURCE_MISSING',
+                        seal_distribution={'SOURCE_MISSING':1},admission='NOT_ADMITTED',
+                        AS_RECORDED=False,PIT_ELIGIBLE=False,production_accepted=False)
             if path=='/api/v4/sectors':
                 response=self._apply_rotation_auto_acceptance(response,day)
                 response=mark_evaluated_sector_lifecycle(response)
@@ -1221,10 +1229,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 data['d0_reason_attribution']=self._candidate_focus_reason_attribution(
                     day,[e.get('entity_id') for e in episodes])
             except Exception as exc:
+                reason_code=(str(exc) if str(exc).startswith(('R6_FOCUS_REASON_SOURCE_NOT_BOUND',
+                    'CORRECTED_INPUT_DIGEST_MISMATCH','CANDIDATE_D0_OWNER_NOT_BOUND'))
+                    else 'D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__)
                 data['d0_reason_attribution']=dict(contract_id='R6_D0_REASON_ATTRIBUTION_R1',
+                    successor_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R1',
                     status='SOURCE_INCOMPLETE',trade_date=day,items=None,
-                    reason='D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__,
-                    AS_RECORDED=False,PIT_ELIGIBLE=False)
+                    reason=reason_code,reason_code=reason_code,
+                    failure_type=type(exc).__name__,failure_detail=str(exc) or repr(exc.args),
+                    predicate_state='NOT_READ',seal_state='SOURCE_MISSING',
+                    seal_distribution={'SOURCE_MISSING':1},admission='NOT_ADMITTED',
+                    AS_RECORDED=False,PIT_ELIGIBLE=False,production_accepted=False)
             active={e['entity_id'] for e in episodes if e.get('end_date') is None}
             stocks={r['entity_id']:r for r in self.project('stocks',day)};sectors={r['entity_id']:r for r in self.project('sectors',day)};groups=Counter();unknown=0
             for sid in active:

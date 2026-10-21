@@ -114,7 +114,7 @@ def test_focus_reason_cache_key_changes_when_candidate_binding_changes(monkeypat
 
     calls = []
     monkeypatch.setattr(attribution, 'candidate_d0_reason_attribution',
-                        lambda root, candidate, day, *, focus_security_ids: calls.append(candidate['owners'][day]['focus']['sha256']) or {'status': 'READY'})
+                        lambda root, candidate, day, *, focus_security_ids, candidate_token=None: calls.append(candidate['owners'][day]['focus']['sha256']) or {'status': 'READY'})
     import hashlib
     refs={}
     for domain in ('focus','prewatch','forward'):
@@ -323,11 +323,27 @@ def test_s04_d0_candidate_predicate_digest_does_not_claim_source_seal(tmp_path):
         'owners':{'2026-10-14':{'prewatch':ref}}},'2026-10-14')
     governance=got['scenario_governance']['scenarios']
     assert got['status']=='READY'
-    assert governance['LAUNCH_CONFIRM']['status']=='OPEN_SOURCE_SEAL_METADATA_MISSING'
-    assert governance['RECOVERY_TURN']['availability_time_proven'] is False
+    assert governance['LAUNCH_CONFIRM']['status']=='OPEN_SOURCE_MISSING'
+    assert governance['RECOVERY_TURN']['seal']['seal_state']=='SOURCE_MISSING'
     assert governance['STRONG_PULLBACK']['role']=='NOT_IN_FORMAL_D0_AGGREGATION'
     assert governance['TREND_CONTINUE']['role']=='NOT_IN_FORMAL_D0_AGGREGATION'
     assert got['D0_status_values_unchanged'] if 'D0_status_values_unchanged' in got else got['scenario_governance']['D0_status_values_unchanged']
+
+
+def test_d0_successor_does_not_apply_the_retired_r6_date_ceiling(tmp_path):
+    import gzip,hashlib,json
+    from workbench_analysis.r6_reason_attribution import candidate_d0_reason_attribution
+    day='2026-10-21'
+    row={'trade_date':day,'security_id':'SEC-1','confirmation':{'confirmation_status':'FALSE',
+        'scenario_evidence':[{'scenario':'LAUNCH_CONFIRM','status':'FALSE','checks':{},'unknown_reasons':[]},
+            {'scenario':'RECOVERY_TURN','status':'FALSE','checks':{},'unknown_reasons':[]}]}}
+    raw=gzip.compress(json.dumps([row]).encode());p=tmp_path/'prewatch.gz';p.write_bytes(raw)
+    binding={'path':p.name,'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+    got=candidate_d0_reason_attribution(tmp_path,{'published_sessions':[day],
+        'owners':{day:{'prewatch':binding}}},day)
+    assert got['status']=='READY'
+    assert got['trade_date']==day
+    assert got['confirmation_status_counts']=={'FALSE':1}
 
 
 def test_s02_breadth_formula_comparison_preserves_zero_and_shared_denominator():

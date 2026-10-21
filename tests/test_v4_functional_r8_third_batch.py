@@ -4,7 +4,7 @@ import json
 from workbench_analysis.r6_candidate_market_stress import (
     adapt_candidate_trend_reference, candidate_breadth_formula_comparison,
 )
-from workbench_analysis.r6_reason_attribution import evaluate_d0_source_seal
+from workbench_analysis.d0_source_seal_r1 import evaluate_d0_source_seal
 from workbench_analysis.r8_candidate_append_comparator import compare_candidate_append
 from workbench_analysis.r8_candidate_derived_cache import cache_path, read_snapshot, write_snapshot
 
@@ -38,26 +38,12 @@ def test_s02_trend_adapter_requires_same_date_time_permission_and_series_identit
         knowledge_cutoff='2026-10-21T15:10:00+08:00')['value']=='UNKNOWN'
 
 
-def test_d0_seal_is_driven_by_explicit_clock_and_permission_facts():
-    cutoff='2026-10-21T15:05:00+08:00'
-    evidence=dict(source_available_at='2026-10-21T15:00:00+08:00',knowledge_cutoff=cutoff,
-        input_publication_id='PUB-1',time_role='AS_OF_T0',permission_chain_proven=True,
-        source_sha256='b'*64,trade_date='2026-10-21',permission_chain=dict(permission_id='PERM-1',
-            owner_id='OWNER-1',role='candidate_reader',permission='READ_CANDIDATE',
-            source_binding_sha256='b'*64,input_publication_id='PUB-1',chain_sha256='c'*64))
-    result=evaluate_d0_source_seal(evidence,knowledge_cutoff=cutoff)
-    assert result['status']=='SEAL_PERMISSION_UNPROVEN'
-    assert result['permission_chain_proven'] is False
-    assert result['permission_reason']=='ACTUAL_PG_OWNER_PUBLICATION_BINDING_NOT_VERIFIED'
-    assert evaluate_d0_source_seal({**evidence,'source_available_at':'2026-10-21T15:06:00+08:00'},
-        knowledge_cutoff=cutoff)['status']=='SEAL_TIME_REJECTED'
-    assert evaluate_d0_source_seal({**evidence,'permission_chain_proven':False},
-        knowledge_cutoff=cutoff)['status']=='SEAL_PERMISSION_UNPROVEN'
-    assert evaluate_d0_source_seal({**evidence,'trade_date':'2026-10-22'},
-        knowledge_cutoff=cutoff)['status']=='SEAL_TIME_REJECTED'
-    assert evaluate_d0_source_seal({'source_sha256':'b'*64},knowledge_cutoff=cutoff)['status']=='HISTORICAL_SEAL_NOT_PROVEN'
-    assert evaluate_d0_source_seal({**evidence,'source_available_at':'2026-10-21',
-        'knowledge_cutoff':'2026-10-21'},knowledge_cutoff=cutoff)['status']=='HISTORICAL_SEAL_NOT_PROVEN'
+def test_d0_caller_supplied_hash_permission_and_cutoff_are_not_authority():
+    result=evaluate_d0_source_seal(root='.',evidence={'source_sha256':'b'*64,
+        'permission_chain_proven':True,'knowledge_cutoff':'2026-10-21T23:59:59+08:00'},
+        scenario='LAUNCH_CONFIRM',predicate_state='FALSE',pg_readback={})
+    assert result['seal_state']=='SOURCE_MISSING'
+    assert result['admission']=='NOT_ADMITTED'
 
 
 def test_candidate_snapshot_cache_is_atomic_content_and_identity_bound(tmp_path):

@@ -1,0 +1,58 @@
+{
+  "API": "http://127.0.0.1:28766",
+  "T0": "2026-10-14",
+  "acceptance": {
+    "API_context": "PASS",
+    "numeric": "PASS"
+  },
+  "cache_cold_hot_sha": "PASS",
+  "candidate_class": "NON_PIT",
+  "checks": {
+    "sectors_excluded": {
+      "actual": 259,
+      "actual_semantic_sha256": "8ad10a2156b4ff5dae079f83ba6d41776b038129e37765bd64138a90b60299fc",
+      "expected": 259,
+      "expected_semantic_sha256": "8ad10a2156b4ff5dae079f83ba6d41776b038129e37765bd64138a90b60299fc"
+    },
+    "sectors_ranked": {
+      "actual": 141,
+      "actual_semantic_sha256": "827164dedf4f1e3d196b71970480999bb6fa1763cbf77c4467a76ecfa9309d80",
+      "expected": 141,
+      "expected_semantic_sha256": "827164dedf4f1e3d196b71970480999bb6fa1763cbf77c4467a76ecfa9309d80"
+    },
+    "stocks_excluded": {
+      "actual": 4258,
+      "actual_semantic_sha256": "32ccf0b75e07fea35af82c842c6c220388e15adf8150e9f22d4f25f606f755d3",
+      "expected": 4258,
+      "expected_semantic_sha256": "32ccf0b75e07fea35af82c842c6c220388e15adf8150e9f22d4f25f606f755d3"
+    },
+    "stocks_ranked": {
+      "actual": 967,
+      "actual_semantic_sha256": "3f767f0f61d4010d0e211ea9d84b5cae08dd1155e2d82b26855dab1d2831a022",
+      "expected": 967,
+      "expected_semantic_sha256": "3f767f0f61d4010d0e211ea9d84b5cae08dd1155e2d82b26855dab1d2831a022"
+    }
+  },
+  "context_token": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
+  "contract_id": "V4-FUNCTIONAL-R8-REPAIR-20261021/R2",
+  "denominators": {
+    "sectors": {
+      "expected": 400,
+      "health_unknown": 170,
+      "maturity_unknown": 158,
+      "not_rankable": 259,
+      "rankable": 141,
+      "total": 400
+    },
+    "stocks": {
+      "expected": 5225,
+      "not_rankable": 4258,
+      "rankable": 967,
+      "total": 5225
+    }
+  },
+  "mismatch_count": 0,
+  "mismatch_samples": [],
+  "production_accepted": false,
+  "source_census": "S03_PRIORITY_CENSUS_R5.json"
+}

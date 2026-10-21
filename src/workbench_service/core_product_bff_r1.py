@@ -3,6 +3,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
+import hashlib
 import json, gzip, re
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
@@ -14,6 +15,22 @@ from .research_hypotheses_r3 import competing_explanations
 from .operational_risk_v1 import build_stock_family,build_sector_family,build_market_family
 
 CONTRACT='CORE_PRODUCT_BFF_R1'
+
+
+def _candidate_revision_digest(candidate):
+    """Content identity for candidate metadata, including dated source bindings."""
+    return hashlib.sha256(json.dumps(candidate,ensure_ascii=False,sort_keys=True,
+        separators=(',',':'),allow_nan=False).encode('utf-8')).hexdigest()
+
+
+def _candidate_lifecycle_cache_key(token,candidate,producer_sha,parameter_sha):
+    return ('candidate-sector-lifecycle-v2',token,_candidate_revision_digest(candidate),producer_sha,parameter_sha)
+
+
+def _candidate_focus_reason_cache_key(token,candidate,day,focus_ids):
+    ids=sorted({str(value) for value in (focus_ids or []) if value})
+    return ('r6-focus-reason-attribution-v2',token,_candidate_revision_digest(candidate),day,
+            hashlib.sha256('\n'.join(ids).encode('utf-8')).hexdigest())
 
 HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
 
@@ -290,10 +307,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         source_root=Path(__file__).resolve().parents[2]
         producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()).hexdigest()
         parameter_sha=hashlib.sha256((source_root/'config/sector_lifecycle_reconstructed_v1.json').read_bytes()).hexdigest()
-        cache_key=('candidate-sector-lifecycle-v1',self.api.token,producer_sha,parameter_sha)
+        cache_key=_candidate_lifecycle_cache_key(self.api.token,self.api.candidate,producer_sha,parameter_sha)
         if cache_key not in self.api.cache:
             self.api.cache[cache_key]=build_candidate_lifecycle(self.api.root,self.api.candidate,source_root)
         return self.api.cache[cache_key]
+
+    def _verify_candidate_priority_bindings(self, day):
+        """Recheck the current T0 owner bytes before serving cached Priority pages."""
+        owners=self.api.candidate.get('owners',{}).get(day) or {}
+        for domain in ('core','adjusted','sector'):
+            binding=owners.get(domain)
+            if not binding:
+                raise ValueError('CANDIDATE_PRIORITY_OWNER_MISSING:'+domain)
+            checked(self.api.root,binding)
 
     def _candidate_market_stress(self):
         """Bounded post-hoc stress axes; composite market regime remains unknown."""
@@ -304,17 +330,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         cache_hit=cache_key in self.api.cache
         if cache_key not in self.api.cache:
             self.api.cache[cache_key]=build_candidate_market_stress(self.api.root,self.api.candidate)
-        result=dict(self.api.cache[cache_key])
-        result['cache']={'cache_hit':cache_hit,
-            'cache_identity':source_identity,'cache_key_contract':'R7_CANDIDATE_MARKET_STRESS_CACHE_V2'}
-        return result
+        # Cache diagnostics are returned separately so transient hit state can
+        # never enter a business payload or its stable digest.
+        return dict(self.api.cache[cache_key]),dict(cache_hit=cache_hit,
+            cache_identity=source_identity,cache_key_contract='R7_CANDIDATE_MARKET_STRESS_CACHE_V2')
 
     def _candidate_focus_reason_attribution(self,day,focus_ids):
         from workbench_analysis.r6_reason_attribution import candidate_d0_reason_attribution
         ids=sorted({str(value) for value in (focus_ids or []) if value})
-        import hashlib
-        key=('r6-focus-reason-attribution-v1',self.api.token,day,
-             hashlib.sha256('\n'.join(ids).encode('utf-8')).hexdigest())
+        key=_candidate_focus_reason_cache_key(self.api.token,self.api.candidate,day,ids)
         if key not in self.api.cache:
             self.api.cache[key]=candidate_d0_reason_attribution(
                 self.api.root,self.api.candidate,day,focus_security_ids=ids)
@@ -875,7 +899,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 lifecycle=self._candidate_lifecycle()
                 owners=self.api.candidate['owners'][day]
                 stock_source=owners.get('core');sector_source=owners.get('sector')
-                cache_key=('candidate-priority-preview-v1',self.api.token,day,
+                # Detect a same-binding source-byte tamper even when this process
+                # already holds a derived ranking. This hashes only the three
+                # current T0 owners used by Priority, without replaying history.
+                self._verify_candidate_priority_bindings(day)
+                cache_key=('candidate-priority-preview-v2',self.api.token,day,
                     json.dumps([stock_source,sector_source,parameter_digest,producer_sha256,
                         lifecycle['candidate_digest'],lifecycle['producer_sha256'],lifecycle['parameter_sha256']],
                         sort_keys=True,separators=(',',':')))
@@ -891,16 +919,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                         health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
                     self.api.cache[cache_key]=priority
+                # The ranked business object is cached without run-specific
+                # diagnostics; never mutate it while attaching live context.
+                priority=deepcopy(priority)
                 # Market risk has its own source-version identity. Never keep it
                 # inside the ranking cache: a legal limit replay can change while
                 # the Core/Sector ranking inputs remain byte-identical.
                 try:
-                    priority['candidate_market_risk']=self._candidate_market_stress()
+                    priority['candidate_market_risk'],market_cache_diagnostics=self._candidate_market_stress()
                 except (OSError,ValueError,KeyError,TypeError) as exc:
                     priority['candidate_market_risk']=dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',
                         status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
                         composite_regime_status='UNKNOWN_TREND_AXIS_NOT_RECALCULATED',
                         AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
+                    market_cache_diagnostics=dict(status='SOURCE_INCOMPLETE',reason=type(exc).__name__)
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
                 scope=query.get('scope','stocks')
                 if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')
@@ -922,6 +954,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     'candidate_source_bindings':priority['source_bindings'],
                     'sector_lifecycle':priority.get('sector_lifecycle'),
                     'candidate_market_risk':priority.get('candidate_market_risk'),
+                    'cache_diagnostics':{'market_risk':market_cache_diagnostics},
                     'candidate_payload_sha256':priority_sha256,
                     'producer_sha256':producer_sha256}
                 return 200,response
@@ -1226,12 +1259,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         authority=json.loads((self.api.root/'config/v4_display_names_authority_v1.json').read_bytes())
         name_source=authority['source'];names=json.loads(checked(self.api.root,name_source).read_bytes())
         cores={r['security_id']:r for r in self.source('core',day)} if domain=='stocks' else {}
+        adjusted={r['security_id']:r for r in self.source('adjusted',day)} if domain=='stocks' else {}
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
         sector_lifecycle={}
         if domain=='sectors':
-            lifecycle_key=('sector-lifecycle-pg-owner-r1',self.api.token,day)
+            lifecycle_key=('sector-lifecycle-pg-owner-r2',self.api.token,day,_candidate_revision_digest(self.api.candidate))
             if lifecycle_key not in self.api.cache:
                 try:
                     from workbench_db.v4_sector_lifecycle_pg_r1 import load as load_sector_lifecycle
@@ -1279,6 +1313,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 row['alias_source']=identity_ref
                 for k,v in cores.get(row['entity_id'],{}).get('fields',{}).items():
                     row['fields'].setdefault(k,owner_cell(v,self.api.candidate['owners'][day]['core'],'fields.'+k,day))
+                adjusted_row=adjusted.get(row['entity_id'])
+                if adjusted_row:
+                    row['fields']['close']=owner_cell(
+                        dict(value=adjusted_row.get('close'),
+                             quality='KNOWN' if adjusted_row.get('adjustment_readiness')=='READY' else 'UNKNOWN'),
+                        self.api.candidate['owners'][day]['adjusted'],'close',day)
+                    price_basis=adjusted_row.get('price_basis')
+                    row['fields']['close']['adjustment_basis']=(
+                        'TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'
+                        if adjusted_row.get('adjustment_readiness')=='READY'
+                        and isinstance(price_basis,str)
+                        and price_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE')
+                        else price_basis)
+                    row['fields']['close']['source_price_basis']=price_basis
                 state=d2.get(row['entity_id'],{})
                 for k in ('effective_event','scenario_status','raw_qualification','matched_predicates','unknown_predicates',
                           'transition_reasons','detector_statuses','prewatch_status','input_provenance'):

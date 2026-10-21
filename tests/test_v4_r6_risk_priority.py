@@ -35,14 +35,14 @@ def test_priority_separates_rankable_from_unknown_and_uses_stable_tiebreak():
         {'entity_id':'THEME:U','fields':{'maturity':cell('UNKNOWN','SOURCE_INCOMPLETE')}}]
     stocks=[{'entity_id':'stock-A','fields':{
         'core_price_damage':cell(False),'rps20':cell(10),'rps20_delta3':cell(0.1),'ret5':cell(0.02),
-        'pos60':cell(0.5),'prior_low20':cell(10),'close':cell(12)}},
+        'pos60':cell(0.5),'prior_low20':{**cell(10),'adjustment_basis':'TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'},'close':{**cell(12),'adjustment_basis':'TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'}}},
         {'entity_id':'stock-U','fields':{'core_price_damage':cell(None,'SOURCE_INCOMPLETE')}}]
     result=build_priority('2026-10-13','token',stocks,sectors,
         {'regime_publication_status':'FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED'},'core','sector','a'*64)
     assert [row['entity_id'] for row in result['sectors']['items']]==['THEME:A','THEME:B']
     assert result['sectors']['not_rankable_rows'][0]['unknown_inputs']==['maturity','health','sector_rs5','sector_rs20','rotation']
     assert result['stocks']['items'][0]['entity_id']=='stock-A'
-    assert result['stocks']['not_rankable_rows'][0]['exclusion_reason'].startswith('MISSING_')
+    assert result['stocks']['not_rankable_rows'][0]['exclusion_reason']=='MISSING_INPUT'
     assert result['market_permission']['status']=='FACT_ONLY_NO_FORMAL_PERMISSION'
 
 
@@ -88,13 +88,15 @@ def test_r7_market_stress_cache_is_source_versioned_and_separate(monkeypatch):
     bff=object.__new__(CoreProductBFFR1);bff.api=api
     monkeypatch.setattr(stress,'candidate_market_stress_identity',lambda root,candidate:candidate['owner_version'])
     monkeypatch.setattr(stress,'build_candidate_market_stress',lambda root,candidate:{'T0':'2026-10-14','market_stress':candidate['owner_version']})
-    first=bff._candidate_market_stress()
-    assert first['market_stress']=='A' and first['cache']['cache_hit'] is False
-    repeated=bff._candidate_market_stress()
-    assert repeated['market_stress']=='A' and repeated['cache']['cache_hit'] is True
+    first,first_diagnostics=bff._candidate_market_stress()
+    assert first['market_stress']=='A' and first_diagnostics['cache_hit'] is False
+    assert 'cache' not in first
+    repeated,repeated_diagnostics=bff._candidate_market_stress()
+    assert repeated['market_stress']=='A' and repeated_diagnostics['cache_hit'] is True
     api.candidate={'owner_version':'B'}
-    replaced=bff._candidate_market_stress()
-    assert replaced['market_stress']=='B' and replaced['cache']['cache_hit'] is False
+    replaced,replaced_diagnostics=bff._candidate_market_stress()
+    assert replaced['market_stress']=='B' and replaced_diagnostics['cache_hit'] is False
+    assert 'cache' not in replaced
     assert len(api.cache)==2
 
 

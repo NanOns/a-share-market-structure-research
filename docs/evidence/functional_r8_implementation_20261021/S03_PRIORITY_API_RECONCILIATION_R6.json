@@ -1,0 +1,58 @@
+{
+  "API": "http://127.0.0.1:28766",
+  "T0": "2026-10-14",
+  "acceptance": {
+    "API_context": "PASS",
+    "numeric": "PASS"
+  },
+  "cache_cold_hot_sha": "PASS",
+  "candidate_class": "NON_PIT",
+  "checks": {
+    "sectors_excluded": {
+      "actual": 259,
+      "actual_digest": "152618d4f88bd2ee99dd97487362e9ca565f161fd66262ba816a6cf0129e612e",
+      "expected": 259,
+      "expected_digest": "c3cfa9a5e569ed07209e3a3ed8edbf067f0d6bcb8ea40015f5209f8be6477bcd"
+    },
+    "sectors_ranked": {
+      "actual": 141,
+      "actual_digest": "a5f0bad24df35b4612e740991c067130d48e7865c9bcb845246075258fe9627a",
+      "expected": 141,
+      "expected_digest": "10b6227987ab257db2f2fc3d635ec997b13903e1d609e5f6fa8cc0ac1d939824"
+    },
+    "stocks_excluded": {
+      "actual": 4258,
+      "actual_digest": "dd56a970fc8c8c3ac2fcc5436704a2c398c17d71a4d90db154eb70d4ceaba847",
+      "expected": 4258,
+      "expected_digest": "87fcba22adb3b5d5db33f903cd9b59062b3c1b52c2ddbe56380e4d69378c692b"
+    },
+    "stocks_ranked": {
+      "actual": 967,
+      "actual_digest": "3de6c53c7fe61fd6864341a652d0ac2522504a077bb60acfc565e0d4b5566631",
+      "expected": 967,
+      "expected_digest": "d05684bff2461caddc054cb7f446efd378c8f0cb348031d3a4f7f4277a31510e"
+    }
+  },
+  "context_token": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
+  "contract_id": "V4-FUNCTIONAL-R8-REPAIR-20261021/R2",
+  "denominators": {
+    "sectors": {
+      "expected": 400,
+      "health_unknown": 170,
+      "maturity_unknown": 158,
+      "not_rankable": 259,
+      "rankable": 141,
+      "total": 400
+    },
+    "stocks": {
+      "expected": 5225,
+      "not_rankable": 4258,
+      "rankable": 967,
+      "total": 5225
+    }
+  },
+  "mismatch_count": 0,
+  "mismatch_samples": [],
+  "production_accepted": false,
+  "source_census": "S03_PRIORITY_CENSUS_R5.json"
+}

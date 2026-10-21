@@ -83,9 +83,44 @@
       "receipts": 5,
       "bars": 27832
     },
+    "exact_value_readback": {
+      "contract": "all 27,832 source-key/OHLC/amount/volume/source-digest/evidence-class tuples",
+      "status": "PASS",
+      "all_sessions": true,
+      "idempotent_replay": true,
+      "receipt": "PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json"
+    },
     "publication_created": false,
     "development_head_modified": false,
     "formal_head_modified": false
+  },
+  "existing_operational_candidate_path": {
+    "owner_builder": "operational_daily_executor_v1 -> operational_daily_ready_owner_v2 -> operational_daily_owner_v1",
+    "owner_pg_authority": "V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2",
+    "isolated_head_cas": "operational_successor_release_v1.engineering_shadow_promote",
+    "same_token_http_readback_supported": true,
+    "r8_publication_bridge_implemented": false,
+    "path_used_for_post_2026_10_14_append": false,
+    "formal_head_modified": false
+  },
+  "post_2026_10_14_source_blocker": {
+    "contract_id": "R8_BATCH04_DATED_SOURCE_COVERAGE_BLOCKER_R1",
+    "baostock_target_date": "2026-10-15",
+    "baostock_status": "FAIL",
+    "baostock_error_code": "10002007",
+    "baostock_error_message": "网络接收错误。",
+    "baostock_observed_at_shanghai": "2026-10-21T18:02:57.443203+08:00",
+    "immutable_receipt": "reports/v4_baostock/runtime_acceptance/20261015/20261021T180257443203_live_smoke_receipt.json",
+    "tdx_rows": 5565,
+    "mapped_to_2026_10_14_identity": 5214,
+    "unmapped_rows": 351,
+    "unmapped_breakdown": {
+      "BJ": 350,
+      "SZ": 1
+    },
+    "existing_identity_ids_without_target_bar": 11,
+    "absent_bar_status_inferred": false,
+    "complete_owner_day_created": false
   },
   "gates": {
     "G1": "memory-only claims do not provide source binding; real full append gate remains open",
@@ -157,4 +192,4 @@
     "G:/codex_tmp/r8_fourth_batch/PRIORITY_API_MEASURE_RUN.txt",
     "G:/codex_tmp/r8_fourth_batch/PRIORITY_CORRUPT_COLD_PROBE.txt"
   ]
-}\n
+}

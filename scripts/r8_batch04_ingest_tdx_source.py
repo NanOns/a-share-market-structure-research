@@ -148,8 +148,19 @@ def ingest(artifact_root: Path) -> dict:
                 FROM "{SCHEMA}".tdx_bars WHERE trade_date=%s''', (evidence, day)).fetchone()
             if actual != (len(bars), len(bars), doc["source_sha256"], doc["source_sha256"], len(bars)):
                 raise ValueError(f"R8_BATCH04_BAR_READBACK_MISMATCH:{day}")
+            stored_bars = connection.execute(f'''SELECT source_security_key,open,high,low,close,amount,
+                volume,source_sha256,evidence_class FROM "{SCHEMA}".tdx_bars
+                WHERE trade_date=%s ORDER BY source_security_key''', (day,)).fetchall()
+            expected_bars = sorted((
+                row["source_security_key"], float(row["open"]), float(row["high"]),
+                float(row["low"]), float(row["close"]), float(row["amount"]),
+                int(row["volume"]), doc["source_sha256"], evidence,
+            ) for row in bars)
+            if stored_bars != expected_bars:
+                raise ValueError(f"R8_BATCH04_BAR_VALUE_READBACK_MISMATCH:{day}")
             counts.append(dict(trade_date=day, row_count=actual[0], inserted_receipt=inserted is not None,
-                               evidence_class=evidence, source_sha256=doc["source_sha256"],
+                               value_readback="EXACT_ALL_FIELDS", evidence_class=evidence,
+                               source_sha256=doc["source_sha256"],
                                artifact_sha256=item["artifact_sha256"], available_at=available_at))
         after_counts = dict(
             receipts=connection.execute(f'SELECT count(*) FROM "{SCHEMA}".source_receipts').fetchone()[0],

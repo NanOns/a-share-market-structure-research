@@ -1305,6 +1305,22 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         history_manifest=self.api.cache[history_key]
         history_cutoff=history_manifest.get('T0') if history_manifest else None
         if history_manifest is not None and history_cutoff<=day:
+            history_version=(history_manifest or {}).get('history_index',{}).get('version')
+        else:
+            history_version=None
+        chart_cache_key=('candidate-chart-bars',self.api.token,day,sid,basis,history_version)
+        cached_chart=self.api.cache.get(chart_cache_key)
+        chart_cache_hit=cached_chart is not None
+        if chart_cache_hit:
+            # The cache identity is fully bound above by candidate token, T0,
+            # security, basis and validated history-index version. Do not read
+            # the PG index or any dated RAW Owner on a warm request.
+            bars=deepcopy(cached_chart['bars']);bindings=deepcopy(cached_chart['bindings'])
+            adjustment_source=cached_chart['adjustment_source']
+            transport_count=cached_chart['transport_count'];transport_digest=cached_chart['transport_digest']
+        else:
+            bars=[];bindings=[]
+        if not chart_cache_hit and history_manifest is not None and history_cutoff<=day:
             from workbench_db.v4_history_pg_r1 import read
             index_root=self.chart_history_index_root or self.api.root
             history_rows=read(index_root,history_manifest['history_index'],history_cutoff,sid) or []
@@ -1319,7 +1335,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     reason=None if prices else 'HISTORY_RAW_OHLC_UNAVAILABLE'))
             bindings.append(dict(trade_date=history_cutoff,owner=history_manifest['source_bindings']['history'],
                 role='READ_ONLY_HISTORICAL_HISTORY_INDEX',history_token=history_manifest['fact_token']))
-        for trade_date in sessions:
+        for trade_date in (() if chart_cache_hit else sessions):
             if history_cutoff and trade_date<=history_cutoff:
                 continue
             owner=(self.api.candidate.get('owners',{}).get(trade_date) or {}).get('raw')
@@ -1335,17 +1351,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             bars.append(dict(trade_date=trade_date,open=row.get('open'),high=row.get('high'),
                 low=row.get('low'),close=row.get('close'),volume=row.get('volume'),
                 amount=row.get('amount'),quality='KNOWN',reason=None))
-        if not any(binding['trade_date']==day for binding in bindings):
+        if not chart_cache_hit and not any(binding['trade_date']==day for binding in bindings):
             return self.missing(day,'stocks/'+sid+'/chart','CANDIDATE_DATED_RAW_OWNER_NOT_BOUND')
-        history_version=(history_manifest or {}).get('history_index',{}).get('version')
-        chart_cache_key=('candidate-chart-bars',self.api.token,day,sid,basis,history_version)
-        cached_chart=self.api.cache.get(chart_cache_key)
-        chart_cache_hit=cached_chart is not None
-        if chart_cache_hit:
-            bars=deepcopy(cached_chart['bars']);bindings=deepcopy(cached_chart['bindings'])
-            adjustment_source=cached_chart['adjustment_source']
-            transport_count=cached_chart['transport_count'];transport_digest=cached_chart['transport_digest']
-        else:
+        if not chart_cache_hit:
             adjustment_source=None;transport_count=0;transport_digest=None
         if basis=='QFQ' and not chart_cache_hit:
             # The dated daily Owners already bind exact RAW rows and a frozen

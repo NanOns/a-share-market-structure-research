@@ -21,13 +21,48 @@ test('research UI components module parses and exports its snapshot header', () 
 });
 
 test('unverified index volume is absent from chart bars and hover text', () => {
-  const bars = [{ trade_date: '2026-10-13', open: 10, high: 12, low: 9, close: 11, volume: 987654 }];
+  const bars = [{ trade_date: '2026-10-13', open: 10, high: 12, low: 9, close: 11, volume: 987654, quality: 'KNOWN' }];
   const svg = Kline(bars, null);
   const rects = svg.children.filter(node => node.tagName === 'rect');
   const title = rects[0].children.find(node => node.tagName === 'title');
   assert.equal(rects.length, 1, 'only the price candle should render');
   assert.match(svg.children.at(-1).textContent, /成交量隐藏/);
   assert.doesNotMatch(title.textContent, /987654|量/);
+});
+
+test('K-line preserves unknown trading-day slots and splits moving averages at gaps', () => {
+  const bars = Array.from({ length: 8 }, (_, i) => ({
+    trade_date: `2026-10-${String(10 + i).padStart(2, '0')}`,
+    open: 10 + i, high: 11 + i, low: 9 + i, close: 10.5 + i,
+    volume: 100, quality: 'KNOWN', reason: null, ma5: 10 + i, ma20: 10 + i, ma60: 10 + i,
+  }));
+  for (const i of [0, 3, 4, 5, 7]) Object.assign(bars[i], {
+    open: null, high: null, low: null, close: null, quality: 'UNKNOWN', reason: 'PRICE_ADJUSTMENT_UNSUPPORTED',
+  });
+  const svg = Kline(bars, null);
+  const candles = svg.children.filter(node => node.tagName === 'rect');
+  const gaps = svg.children.filter(node => node.tagName === 'line' && node.attributes['stroke-dasharray'] === '2 2');
+  const averages = svg.children.filter(node => node.tagName === 'polyline');
+  assert.equal(candles.length, 3);
+  assert.equal(gaps.length, 5, 'leading, internal, and trailing unknown rows remain visible');
+  assert.equal(averages.length, 6, 'each MA has separate segments before and after the three-row gap');
+  const slots = candles.map(node => Number(node.attributes.x) + Number(node.attributes.width) / 2);
+  assert.equal(slots[1] - slots[0], 105, 'two adjacent known trading days retain adjacent slots');
+  assert.equal(slots[2] - slots[1], 420, 'the three unknown trading-day slots are not compressed');
+  assert.ok(averages.every(node => node.attributes.points.trim().split(' ').length <= 2));
+  assert.ok(gaps.every(node => /PRICE_ADJUSTMENT_UNSUPPORTED/.test(node.children[0].textContent)));
+});
+
+test('missing MA values split lines even when the candle OHLC is known', () => {
+  const bars = Array.from({ length: 4 }, (_, i) => ({
+    trade_date: `2026-10-${10 + i}`, open: 10, high: 11, low: 9, close: 10.5,
+    volume: 10, quality: 'KNOWN', ma5: 10, ma20: 10, ma60: 10,
+  }));
+  bars[1].ma5 = null;
+  const svg = Kline(bars, null);
+  const ma5 = svg.children.filter(node => node.tagName === 'polyline' && node.attributes.stroke === '#ca9623');
+  assert.equal(ma5.length, 2);
+  assert.deepEqual(ma5.map(node => node.attributes.points.trim().split(' ').length), [1, 2]);
 });
 
 test('sector search does not offer maturity or health classification filters without admitted owners', () => {

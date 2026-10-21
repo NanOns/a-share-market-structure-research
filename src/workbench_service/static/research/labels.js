@@ -38,4 +38,3 @@ Object.assign(states,{EXPANDED:'放大',VERY_EXPANDED:'显著放大',CONTRACTED:
 Object.assign(states,{ROTATION_PULSE:'轮动脉冲',ROTATION_IN:'轮动进入',ROTATION_ACCEPTED:'轮动已接受',ROTATION_EXPANDING:'轮动扩张',ROTATION_REACCELERATING:'轮动再加速',ROTATION_OUT:'轮动退出',ROTATION_FAILED:'轮动失败',WAIT_SOURCE_READY:'等待来源就绪'});
 Object.assign(labels,{event_code:'研究事件',entity_type:'对象类型',status:'判定状态',evidence_class:'证据类型',horizon_sessions:'观察期限（交易日）',schedule_status:'结算状态',reason:'未结算原因'});
 Object.assign(states,{STOCK:'个股',SECTOR:'板块',MATCH:'符合',NO_MATCH:'未符合',BREAKOUT_OBSERVED:'突破观察',PULLBACK_CONFIRMATION_OBSERVED:'回踩确认观察',STRENGTHENING_OBSERVED:'板块走强观察',LATE_OBSERVED_NOT_PIT:'晚采且非 PIT',CANDIDATE_ONLY_LATE_OBSERVED:'仅限候选预览',DUE_SOURCE_NOT_ACCEPTED:'到期来源未接受',DUE_SESSION_NOT_IN_ACCEPTED_HEAD:'到期会话未进入正式 Head',FUTURE_OFFICIAL_SESSION:'未来官方交易会话',OFFICIAL_CALENDAR_HORIZON_NOT_YET_PUBLISHED:'官方日历尚未发布到期日'});
-\n

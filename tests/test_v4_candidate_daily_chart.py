@@ -16,11 +16,13 @@ class CandidateApi:
             'owners': {day: {'raw': {'path': f'owners/{day}/raw.jsonl.gz', 'sha256': day}} for day in rows_by_day},
         }
         self.rows_by_day = rows_by_day
+        self.read_calls = []
 
     def context(self):
         return {'read_scope': 'DEVELOPMENT_CANDIDATE_PREVIEW', 'production_accepted': False}
 
     def read(self, domain, day, token):
+        self.read_calls.append((domain, day, token))
         assert domain == 'raw'
         assert token == self.token
         return {'rows': self.rows_by_day[day]}
@@ -43,7 +45,8 @@ def test_candidate_chart_reads_exact_dated_raw_owners_only():
         '2026-10-13': [dict(security_id=sid, trade_date='2026-10-13', open=10, high=12, low=9, close=11, volume=100, amount=1100)],
         '2026-10-14': [dict(security_id=sid, trade_date='2026-10-14', open=11, high=13, low=10, close=12, volume=200, amount=2400)],
     }
-    code, payload = make_bff(rows).chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
+    bff = make_bff(rows)
+    code, payload = bff.chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
     assert code == 200
     assert payload['status'] == 'READY'
     assert payload['candidate_chart_scope'] == 'CANDIDATE_DAILY_OWNER_WINDOW_ONLY'
@@ -51,6 +54,11 @@ def test_candidate_chart_reads_exact_dated_raw_owners_only():
     assert [item['trade_date'] for item in payload['items']] == list(rows)
     assert payload['items'][-1]['close'] == 12
     assert [binding['trade_date'] for binding in payload['source_bindings']] == list(rows)
+    assert len(bff.api.read_calls) == 2
+    _, repeated = bff.chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
+    assert repeated['chart_cache_hit'] is True
+    assert repeated['items'] == payload['items']
+    assert len(bff.api.read_calls) == 2, 'warm chart cache must bypass all dated RAW Owner reads'
 
 
 def test_candidate_chart_builds_qfq_from_dated_raw_and_frozen_tdx_gbbq(tmp_path, monkeypatch):
@@ -99,3 +107,47 @@ def test_candidate_chart_builds_qfq_from_dated_raw_and_frozen_tdx_gbbq(tmp_path,
     assert repeated['chart_cache_hit'] is True
     assert repeated['items'] == payload['items']
     assert calls['read_gbbq'] == 1
+    assert len(bff.api.read_calls) == 2, 'warm QFQ cache must bypass all dated RAW Owner reads'
+
+
+def test_candidate_chart_warm_cache_skips_pg_and_raw_and_history_version_invalidates(monkeypatch):
+    import workbench_db.v4_history_pg_r1 as history_pg
+
+    sid = 'SEC-TEST'
+    rows = {
+        '2026-10-13': [dict(security_id=sid, trade_date='2026-10-13', open=10, high=12, low=9, close=11, volume=100, amount=1100)],
+        '2026-10-14': [dict(security_id=sid, trade_date='2026-10-14', open=11, high=13, low=10, close=12, volume=200, amount=2400)],
+    }
+    bff = make_bff(rows)
+    bff.api.root = Path('.')
+    bff.chart_history_index_root = None
+    history_manifest = {
+        'T0': '2026-10-13', 'fact_token': 'history-token',
+        'history_index': {'version': 'history-v1'},
+        'source_bindings': {'history': {'path': 'history.json', 'sha256': 'history-sha'}},
+    }
+    bff._candidate_history_extension = lambda _day: history_manifest
+    pg_calls = []
+
+    def fake_history_read(root, index, cutoff, requested_sid):
+        pg_calls.append((index['version'], cutoff, requested_sid))
+        return [dict(trade_date='2026-10-13', raw_ohlc=[10, 12, 9, 11], volume=100, amount=1100)]
+
+    monkeypatch.setattr(history_pg, 'read', fake_history_read)
+    _, cold = bff.chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
+    cold_elapsed = cold['items']  # retain the cold payload for equivalence below
+    assert len(pg_calls) == 1
+    assert len(bff.api.read_calls) == 1
+    _, warm = bff.chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
+    assert warm['chart_cache_hit'] is True
+    assert warm['items'] == cold_elapsed
+    assert len(pg_calls) == 1, 'warm cache must skip PG history-row read'
+    assert len(bff.api.read_calls) == 1, 'warm cache must skip dated RAW reads'
+
+    history_manifest['history_index']['version'] = 'history-v2'
+    bff.api.cache[('candidate-chart-history-extension', bff.api.token, '2026-10-14')] = history_manifest
+    _, refreshed = bff.chart('2026-10-14', sid, {'period': 'D', 'price_basis': 'RAW'})
+    assert refreshed['chart_cache_hit'] is False
+    assert pg_calls[-1][0] == 'history-v2'
+    assert len(pg_calls) == 2, 'a changed history-index version must invalidate chart data'
+    assert len(bff.api.read_calls) == 2

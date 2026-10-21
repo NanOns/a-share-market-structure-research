@@ -7,9 +7,11 @@ import json
 import math
 import re
 import statistics
+from datetime import datetime
 from pathlib import Path
 
 from v4.factors.native import market_axis_primitives, candidate_threshold
+from v4.factors.native import market_trend_axis
 
 
 def _canonical(value):
@@ -35,7 +37,9 @@ def candidate_breadth_formula_comparison(comparison, *, boundary):
         raise ValueError('R7_BREADTH_THRESHOLD_INVALID')
     rows=list(comparison)
     if not rows:
-        return dict(evaluable=0,threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
+        return dict(contract_id='S02_BREADTH_FORMULA_COMPARISON_R1',version='1.0.0',
+            compatibility_formula='POSITIVE_INDICATOR',adjudication_status='BUSINESS_SEMANTICS_PENDING',
+            evaluable=0,threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
             signed=dict(value=None,classification='UNKNOWN',formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
             positive_indicator=dict(value=None,classification='UNKNOWN',formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
             difference=None,zero_current=0,zero_comparison=0)
@@ -43,11 +47,77 @@ def candidate_breadth_formula_comparison(comparison, *, boundary):
                    (1 if old>0 else -1 if old<0 else 0) for now,old in rows)/len(rows)
     positive_value=sum((1 if now>0 else 0)-(1 if old>0 else 0) for now,old in rows)/len(rows)
     classify=lambda value:('IMPROVING' if value>boundary else 'DETERIORATING' if value< -boundary else 'STABLE')
-    return dict(evaluable=len(rows),threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
+    return dict(contract_id='S02_BREADTH_FORMULA_COMPARISON_R1',version='1.0.0',
+        compatibility_formula='POSITIVE_INDICATOR',adjudication_status='BUSINESS_SEMANTICS_PENDING',
+        evaluable=len(rows),threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
         signed=dict(value=sign_value,classification=classify(sign_value),formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
         positive_indicator=dict(value=positive_value,classification=classify(positive_value),formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
         difference=sign_value-positive_value,zero_current=sum(now==0 for now,_ in rows),
         zero_comparison=sum(old==0 for _,old in rows))
+
+
+def _valid_sha(value):
+    return isinstance(value,str) and re.fullmatch(r'[0-9a-fA-F]{64}',value) is not None
+
+
+def _permission_chain_proven(chain, source_sha256, publication_id):
+    return (isinstance(chain,dict) and _valid_sha(source_sha256) and
+        chain.get('permission_id') and chain.get('owner_id') and chain.get('role') and
+        chain.get('permission') in ('READ','READ_CANDIDATE','SOURCE_READ') and
+        chain.get('source_binding_sha256')==source_sha256 and
+        chain.get('input_publication_id')==publication_id and _valid_sha(chain.get('chain_sha256')))
+
+
+def adapt_candidate_trend_reference(reference, *, t0, knowledge_cutoff):
+    """Validate one explicitly bound same-series trend reference; fail closed."""
+    if not isinstance(reference, dict):
+        return dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_NOT_BOUND',
+                    contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1')
+    required=('trade_date','series_id','price_basis_id','source_sha256','market_calendar_id',
+              'index_close','index_ma20','index_ma20_t_minus_5','source_available_at',
+              'knowledge_cutoff','permission_chain','input_publication_id','time_role')
+    missing=[key for key in required if reference.get(key) is None]
+    if missing:
+        return dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_REQUIRED_FIELDS_MISSING',
+                    missing_fields=missing,contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1')
+    def instant(value):
+        if not isinstance(value,str):return None
+        try:
+            parsed=datetime.fromisoformat(value.replace('Z','+00:00'))
+            return parsed if parsed.tzinfo is not None else None
+        except ValueError:return None
+    available=instant(reference['source_available_at'])
+    cutoff_instant=instant(reference['knowledge_cutoff'])
+    expected_cutoff=instant(knowledge_cutoff) if 'T' in str(knowledge_cutoff) else None
+    if available is None or cutoff_instant is None or expected_cutoff is None:
+        reason='TREND_REFERENCE_TIME_NOT_AUDITABLE'
+    elif available>cutoff_instant or cutoff_instant>expected_cutoff:
+        reason='TREND_REFERENCE_AVAILABLE_AFTER_CUTOFF'
+    elif reference['trade_date'] != t0:
+        reason='TREND_REFERENCE_DATE_MISMATCH'
+    elif reference['trade_date'] > knowledge_cutoff:
+        reason='TREND_REFERENCE_FUTURE_INPUT'
+    elif reference['time_role'] not in ('AS_OF_T0','KNOWN_BY_CUTOFF'):
+        reason='TREND_REFERENCE_TIME_ROLE_NOT_ADMISSIBLE'
+    elif not _permission_chain_proven(reference.get('permission_chain'),reference.get('source_sha256'),
+                                      reference.get('input_publication_id')):
+        reason='TREND_REFERENCE_PERMISSION_NOT_PROVEN'
+    elif not isinstance(reference['source_sha256'],str) or not re.fullmatch(r'[0-9a-fA-F]{64}',reference['source_sha256']):
+        reason='TREND_REFERENCE_SOURCE_DIGEST_INVALID'
+    else:
+        reason=None
+    if reason:
+        return dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason=reason,
+                    contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1')
+    result=market_trend_axis(index_close=reference['index_close'],index_ma20=reference['index_ma20'],
+        index_ma20_t_minus_5=reference['index_ma20_t_minus_5'],trade_date=t0,
+        market_calendar_id=reference['market_calendar_id'],market_snapshot_id=reference['series_id'],
+        adjustment_basis_id=reference['price_basis_id'],input_source_digest=reference['source_sha256'])
+    return dict(value=result['trend_axis'],quality=result['quality_state'],reason=result['unknown_reason'],
+        contract_id=result['contract_id'],contract_version=result['contract_version'],identity=result['identity'],
+        input_digest=result['input_digest'],output_digest=result['output_digest'],
+        available_at=reference['source_available_at'],knowledge_cutoff=knowledge_cutoff,
+        time_role=reference['time_role'],permission_chain_proven=True)
 
 
 def _limit_owner(root,candidate,day):
@@ -178,6 +248,10 @@ def build_candidate_market_stress(root,candidate):
     if t0>'2026-10-14':raise ValueError('R7_MARKET_STRESS_CUTOFF_EXCEEDED')
     dates=[d for d in ('2026-10-12','2026-10-13','2026-10-14') if d in candidate.get('owners',{}) and d<=t0]
     outputs={};owners={}
+    references=candidate.get('market_trend_references') or {}
+    if not isinstance(references,dict):references={}
+    if isinstance(candidate.get('market_trend_reference'),dict):
+        references.setdefault(candidate['market_trend_reference'].get('trade_date'),candidate['market_trend_reference'])
     for day in dates:
         limit_binding,receipt_owner,receipt_path,receipt_sha=_limit_owner(root,candidate,day)
         states_rows=_read_rows(_checked(root,limit_binding));states={r['security_id']:r['limit_state'] for r in states_rows}
@@ -209,10 +283,12 @@ def build_candidate_market_stress(root,candidate):
         if (axis_inputs['recorded_breadth_axis']!=axes['breadth_axis'] or
                 axis_inputs['recorded_participation_axis']!=axes['participation_axis']):
             raise ValueError('R7_MARKET_AXIS_RECALCULATION_MISMATCH:'+day)
+        trend_reference=references.get(day)
+        trend=adapt_candidate_trend_reference(trend_reference,t0=day,
+            knowledge_cutoff=(trend_reference or {}).get('knowledge_cutoff',candidate.get('knowledge_cutoff',day)))
         outputs[day]=dict(T0=day,stress_level=axes['stress_level'],stress_change=axes['stress_change'],
             breadth_axis=axes['breadth_axis'],participation_axis=axes['participation_axis'],
-            trend_axis=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='BOUND_MARKET_RELATIVE_REFERENCE_PATH_NOT_PROVEN',
-                contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1'),
+            trend_axis=trend,
             composite_regime_status='NOT_PUBLISHED_V4_03',status='CANDIDATE_POST_HOC',
             AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False,known_count=len(common),universe_count=len(universe),
             limit_coverage=coverage,limit_state_counts={name:sum(states.get(sid)==name for sid in common)
@@ -225,7 +301,9 @@ def build_candidate_market_stress(root,candidate):
             output_digest=axes['output_digest'],source_digest=source_digest,contract_id=axes['contract_id'],
             parameter_set_id=axes['parameter_set_id'])
         owners[day]=dict(receipt_path=str(receipt_path),limit=limit_binding,raw=receipt_owner['baostock_source'],core=core_binding)
+    trend=outputs.get(t0,{}).get('trend_axis') or dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',
+        reason='BOUND_MARKET_RELATIVE_REFERENCE_PATH_NOT_PROVEN',contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1')
     return dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',T0=t0,status='READY' if outputs else 'SOURCE_INCOMPLETE',
         input_authority='EXPLICIT_SUCCESSOR_CANDIDATE_PLUS_POST_HOC_DATED_BAOSTOCK',market_stress=outputs,source_owners=owners,
-        trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
+        trend_reference=trend,trend_axis_status=trend['value'] if trend['quality']=='OBSERVED' else 'UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
         composite_regime_status='NOT_PUBLISHED_V4_03',AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)

@@ -342,7 +342,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if not binding:raise ValueError('SECTOR_LIFECYCLE_CANDIDATE_OWNER_MISSING:'+session+':'+domain)
                 checked(self.api.root,binding)
         if cache_key not in self.api.cache:
-            self.api.cache[cache_key]=build_candidate_lifecycle(self.api.root,self.api.candidate,source_root)
+            from workbench_analysis.r8_candidate_derived_cache import cache_allowed,cache_path,read_snapshot,write_snapshot
+            identity=dict(contract='SECTOR_LIFECYCLE_RECONSTRUCTED_AUDIT_R1',token=self.api.token,
+                candidate_digest=hashlib.sha256(json.dumps(self.api.candidate,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+                producer_sha256=producer_sha,parameter_sha256=parameter_sha)
+            path=cache_path(self.api.root,'sector_lifecycle',identity) if cache_allowed(self.api.root) and self.api.candidate.get('owners') else None
+            derived=read_snapshot(path,identity) if path else None
+            if derived is None:
+                derived=build_candidate_lifecycle(self.api.root,self.api.candidate,source_root)
+                if path:write_snapshot(path,identity,derived)
+            self.api.cache[cache_key]=derived
         return self.api.cache[cache_key]
 
     def _verify_candidate_priority_bindings(self, day):
@@ -372,7 +381,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         cache_key=('r7-candidate-market-stress-v2',self.api.token,source_identity)
         cache_hit=cache_key in self.api.cache
         if cache_key not in self.api.cache:
-            self.api.cache[cache_key]=build_candidate_market_stress(self.api.root,self.api.candidate)
+            from workbench_analysis.r8_candidate_derived_cache import cache_allowed,cache_path,read_snapshot,write_snapshot
+            identity=dict(contract='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',token=self.api.token,
+                source_identity=source_identity)
+            # Bind implementation and threshold bytes so a code/config change
+            # can never reuse a prior market derivation.
+            from pathlib import Path
+            producer=Path(__file__).resolve().parents[1]/'workbench_analysis'/'r6_candidate_market_stress.py'
+            parameters=Path(__file__).resolve().parents[2]/'config'/'v4_03_parameter_set_v1.json'
+            identity['producer_sha256']=hashlib.sha256(producer.read_bytes()).hexdigest()
+            identity['parameter_sha256']=hashlib.sha256(parameters.read_bytes()).hexdigest()
+            path=cache_path(self.api.root,'market_stress',identity) if cache_allowed(self.api.root) and self.api.candidate.get('owners') else None
+            derived=read_snapshot(path,identity) if path else None
+            cache_hit=derived is not None
+            if derived is None:
+                derived=build_candidate_market_stress(self.api.root,self.api.candidate)
+                if path:write_snapshot(path,identity,derived)
+            self.api.cache[cache_key]=derived
         # Cache diagnostics are returned separately so transient hit state can
         # never enter a business payload or its stable digest.
         return dict(self.api.cache[cache_key]),dict(cache_hit=cache_hit,
@@ -902,6 +927,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 items=None,total=None,write_authorized=False)
 
     def get(self,path,query):
+        import time
+        request_started=time.perf_counter();priority_timing={}
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability','view')},
@@ -931,6 +958,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar','/api/v4/radar/priority') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
         index_r2=self._read_index_r2(day) if index_route else None
+        priority_timing['read_index_context_ms']=round((time.perf_counter()-request_started)*1000,3)
         if path=='/api/v4/radar/priority' and not getattr(self,'building_read_index',False):
             if index_r2 is None:raise ValueError('READ_INDEX_R2_PRIORITY_CONTEXT_NOT_PREPARED')
             context=index_r2.response('/api/v4/context')
@@ -947,20 +975,23 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 parameter_digest=hashlib.sha256(parameter_path.read_bytes()).hexdigest()
                 producer_path=Path(__file__).resolve().parent/'research_priority_r1.py'
                 producer_sha256=hashlib.sha256(producer_path.read_bytes()).hexdigest()
-                lifecycle=self._candidate_lifecycle()
+                phase=time.perf_counter();lifecycle=self._candidate_lifecycle()
+                priority_timing['sector_lifecycle_ms']=round((time.perf_counter()-phase)*1000,3)
                 owners=self.api.candidate['owners'][day]
                 stock_source=owners.get('core');sector_source=owners.get('sector')
                 # Detect same-binding source-byte tampering even with a warm
                 # derived ranking. This hashes the bounded consumer closure
                 # (current Priority/D0/Focus inputs plus lifecycle's five sessions)
                 # without decompressing or rescanning those histories.
-                self._verify_candidate_priority_bindings(day)
+                phase=time.perf_counter();self._verify_candidate_priority_bindings(day)
+                priority_timing['source_sha_verification_ms']=round((time.perf_counter()-phase)*1000,3)
                 cache_key=('candidate-priority-preview-v2',self.api.token,day,
                     json.dumps([stock_source,sector_source,parameter_digest,producer_sha256,
                         lifecycle['candidate_digest'],lifecycle['producer_sha256'],lifecycle['parameter_sha256']],
                         sort_keys=True,separators=(',',':')))
                 priority=self.api.cache.get(cache_key)
                 if priority is None:
+                    phase=time.perf_counter()
                     sectors=self._attach_candidate_lifecycle(self.project('sectors',day),lifecycle)
                     priority=build_priority(day,self.api.token,self.project('stocks',day),sectors,
                         {'regime_publication_status':'NOT_PUBLISHED_V4_03'},stock_source,sector_source,parameter_digest)
@@ -971,6 +1002,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                         health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
                     self.api.cache[cache_key]=priority
+                    priority_timing['projection_rank_compute_ms']=round((time.perf_counter()-phase)*1000,3)
+                else:
+                    priority_timing['projection_rank_compute_ms']=0.0
                 # The ranked business object is cached without run-specific
                 # diagnostics; never mutate it while attaching live context.
                 priority=deepcopy(priority)
@@ -978,14 +1012,18 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 # inside the ranking cache: a legal limit replay can change while
                 # the Core/Sector ranking inputs remain byte-identical.
                 try:
+                    phase=time.perf_counter()
                     priority['candidate_market_risk'],market_cache_diagnostics=self._candidate_market_stress()
+                    priority_timing['market_stress_ms']=round((time.perf_counter()-phase)*1000,3)
                 except (OSError,ValueError,KeyError,TypeError) as exc:
+                    priority_timing['market_stress_ms']=round((time.perf_counter()-phase)*1000,3)
                     priority['candidate_market_risk']=dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',
                         status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
                         trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
                         composite_regime_status='NOT_PUBLISHED_V4_03',
                         AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                     market_cache_diagnostics=dict(status='SOURCE_INCOMPLETE',reason=type(exc).__name__)
+                phase=time.perf_counter()
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
                 scope=query.get('scope','stocks')
                 if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')
@@ -995,6 +1033,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 offset=int(query.get('offset',0));limit=int(query.get('limit',30))
                 if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
                 items=rows[offset:offset+limit]
+                priority_timing['digest_and_page_ms']=round((time.perf_counter()-phase)*1000,3)
                 response={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|{
                     'status':'READY' if items or not rows else 'EMPTY_VALID','contract_id':priority['contract_id'],
                     'priority_owner':None,'rule':priority['rule'],'market_permission':priority['market_permission'],
@@ -1008,6 +1047,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     'sector_lifecycle':priority.get('sector_lifecycle'),
                     'candidate_market_risk':priority.get('candidate_market_risk'),
                     'cache_diagnostics':{'market_risk':market_cache_diagnostics},
+                    'performance_timing_ms':priority_timing,
                     'candidate_payload_sha256':priority_sha256,
                     'producer_sha256':producer_sha256}
                 return 200,response
@@ -1061,6 +1101,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     response['rotation_owner_summary']=self._rotation_owner_summary(day)
                     cohort_ref=self.api.candidate['owners'][day].get('validation_cohort')
                     response=annotate_home_readiness(response,cohort_authorized=bool(cohort_ref))
+                    if isinstance(response.get('market'),dict):
+                        try:
+                            candidate_market,_=self._candidate_market_stress()
+                            response['market']['candidate_trend_review']=candidate_market.get('trend_reference',
+                                dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_NOT_BOUND'))
+                        except (OSError,ValueError,KeyError,TypeError) as exc:
+                            response['market']['candidate_trend_review']=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',
+                                reason='TREND_REFERENCE_AUDIT_FAILED_CLOSED',error=type(exc).__name__)
                     try:
                         from workbench_db.v4_operational_risk_pg_r1 import load as load_risk_owner
                         risk_binding,risk_owner=load_risk_owner(self.api.root,self.api.token,day)

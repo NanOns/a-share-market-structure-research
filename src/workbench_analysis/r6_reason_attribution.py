@@ -2,12 +2,64 @@
 from collections import Counter
 import gzip
 import json
+from datetime import date, datetime, timezone
 
 from workbench_analysis.r43_owner_replay import checked
 from workbench_analysis.r7_frozen_invalidation_v2 import evaluate_frozen_invalidation
 
 
 CONTRACT_ID = 'R6_D0_REASON_ATTRIBUTION_R1'
+
+
+def _parse_instant(value):
+    if not isinstance(value,str) or not value.strip():return None
+    try:
+        if 'T' not in value and ' ' not in value:
+            return datetime.combine(date.fromisoformat(value),datetime.min.time(),tzinfo=timezone.utc)
+        parsed=datetime.fromisoformat(value.replace('Z','+00:00'))
+        return parsed if parsed.tzinfo is not None else None
+    except ValueError:
+        try:return datetime.combine(date.fromisoformat(value),datetime.min.time(),tzinfo=timezone.utc)
+        except ValueError:return None
+
+
+def evaluate_d0_source_seal(evidence, *, knowledge_cutoff):
+    """Evaluate explicit source clocks, publication, role and permission facts."""
+    if not isinstance(evidence,dict):evidence={}
+    available=_parse_instant(evidence.get('source_available_at') or evidence.get('available_at'))
+    cutoff=_parse_instant(evidence.get('knowledge_cutoff'))
+    required_present=all(evidence.get(key) not in (None,'') for key in
+        ('source_available_at','knowledge_cutoff','input_publication_id','time_role','source_sha256'))
+    permission_fact=evidence.get('permission_chain_proven')
+    chain=evidence.get('permission_chain')
+    future=_parse_instant(evidence.get('trade_date') or evidence.get('as_of'))
+    cutoff_fact=_parse_instant(knowledge_cutoff)
+    if available is None or cutoff is None or not required_present or not isinstance(permission_fact,bool):
+        return dict(status='HISTORICAL_SEAL_NOT_PROVEN',availability_time_proven=False,
+            cutoff_proven=False,permission_chain_proven=False,
+            reason='SOURCE_CLOCK_PUBLICATION_ROLE_OR_PERMISSION_FACT_MISSING')
+    availability_proven=available<=cutoff
+    cutoff_proven=(cutoff_fact is not None and cutoff<=cutoff_fact and
+                   (future is None or future<=cutoff_fact))
+    permission_proven=(permission_fact is True and isinstance(chain,dict) and
+        bool(chain.get('permission_id')) and bool(chain.get('owner_id')) and bool(chain.get('role')) and
+        chain.get('permission') in ('READ','READ_CANDIDATE','SOURCE_READ') and
+        chain.get('source_binding_sha256')==evidence.get('source_sha256') and
+        chain.get('input_publication_id')==evidence.get('input_publication_id') and
+        isinstance(chain.get('chain_sha256'),str) and len(chain['chain_sha256'])==64 and
+        all(c in '0123456789abcdefABCDEF' for c in chain['chain_sha256']))
+    if not availability_proven or not cutoff_proven:
+        status='SEAL_TIME_REJECTED'
+    elif not permission_proven:
+        status='SEAL_PERMISSION_UNPROVEN'
+    else:
+        status='CANDIDATE_SEAL_PROVEN'
+    return dict(status=status,availability_time_proven=availability_proven,
+        cutoff_proven=cutoff_proven,permission_chain_proven=permission_proven,
+        available_at=evidence.get('source_available_at') or evidence.get('available_at'),
+        knowledge_cutoff=evidence.get('knowledge_cutoff'),
+        input_publication_id=evidence.get('input_publication_id'),time_role=evidence.get('time_role'),
+        source_sha256=evidence.get('source_sha256'))
 
 
 def _load_jsonl(root, binding):
@@ -45,14 +97,25 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         digest_proof=bool(digests) and all(isinstance(value,str) and len(value)==64 and
             all(char in '0123456789abcdef' for char in value.lower()) for value in digests)
         if scenario in ('LAUNCH_CONFIRM','RECOVERY_TURN'):
-            status=('OPEN_SOURCE_SEAL_METADATA_MISSING' if observed else 'SOURCE_INCOMPLETE')
+            seals=[evaluate_d0_source_seal(evidence,knowledge_cutoff=day+'T23:59:59+08:00')
+                   for _,evidence in observed]
+            seal_states=Counter(item['status'] for item in seals)
+            seal_status=('CANDIDATE_SEAL_PROVEN' if seals and all(item['status']=='CANDIDATE_SEAL_PROVEN' for item in seals)
+                    else 'HISTORICAL_SEAL_NOT_PROVEN' if observed else 'SOURCE_INCOMPLETE')
+            status=('CANDIDATE_SOURCE_SEAL_PROVEN' if seal_status=='CANDIDATE_SEAL_PROVEN'
+                    else 'OPEN_SOURCE_SEAL_METADATA_MISSING' if observed else 'SOURCE_INCOMPLETE')
             role='CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY'
         else:
+            seals=[];seal_states=Counter()
+            seal_status='DIAGNOSTIC_ONLY'
             status='DIAGNOSTIC_ONLY'
             role='NOT_IN_FORMAL_D0_AGGREGATION'
         scenario_governance[scenario]=dict(status=status,role=role,observed_rows=len(observed),
             source_owner_digest_verified=True,producer_output_digest_present=digest_proof,
-            availability_time_proven=False,cutoff_proven=False,permission_chain_proven=False,
+            historical_seal_status=seal_status,seal_state_counts=dict(sorted(seal_states.items())),
+            availability_time_proven=bool(seals) and all(x['availability_time_proven'] for x in seals),
+            cutoff_proven=bool(seals) and all(x['cutoff_proven'] for x in seals),
+            permission_chain_proven=bool(seals) and all(x['permission_chain_proven'] for x in seals),
             d0_row_predicates_preserved=True)
     overall = Counter()
     scenario_states = Counter()

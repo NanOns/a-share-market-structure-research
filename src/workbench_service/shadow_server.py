@@ -1,5 +1,6 @@
 """V4_SHADOW_PREVIEW_SERVICE_V1: read-only, no legacy recovery or writers."""
 import json
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -20,11 +21,14 @@ def make_shadow_handler(root):
 
     class Handler(BaseHTTPRequestHandler):
         def send(self, status, body, content_type='application/json; charset=utf-8'):
+            encode_started=time.perf_counter()
             raw = body if isinstance(body, bytes) else json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8')
+            encode_ms=round((time.perf_counter()-encode_started)*1000,3)
             self.send_response(status)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(raw)))
             self.send_header('Cache-Control', 'no-store')
+            self.send_header('Server-Timing',f'response_encode;dur={encode_ms}')
             self.end_headers()
             self.wfile.write(raw)
 

@@ -428,6 +428,64 @@
     "provider": "official TDX daily package",
     "source_root_writes": 0
   },
+  "source_closure_analysis": {
+    "artifact": "FOURTH_BATCH_ARTIFACTS/20261021_D0_MARKET_SOURCE_CLOSURE_ANALYSIS_R1.json",
+    "closure_plan": [
+      {
+        "action": "Version the D0 audit contract to cover 2026-10-15 and bind source clocks, cutoff, role, source hash, and actual PG Owner/Publication permission record for the two formal scenarios.",
+        "step": 1
+      },
+      {
+        "action": "Acquire or reconstruct a source-authenticated same-series market reference through 2026-10-15; freeze exact bytes and bind calendar, version, price basis, inputs, timestamps, publication id and PG permission record.",
+        "step": 2
+      },
+      {
+        "action": "Implement actual PG-backed permission validation in both verifiers; never accept a supplied boolean/hash as proof by itself.",
+        "step": 3
+      },
+      {
+        "action": "Recompute candidate-only D0 seal and market trend; independently compare source dates, values and hashes, then validate same-token reads on 28766.",
+        "step": 4
+      },
+      {
+        "action": "If 2026-10-15 source availability/publication time cannot be proven as of the declared cutoff, keep that historical seal open and start a fully clocked source chain on a later session; do not backfill timestamps.",
+        "step": 5
+      }
+    ],
+    "d0_audit_cutoff": "2026-10-14",
+    "d0_required_metadata_missing": [
+      "source_available_at",
+      "knowledge_cutoff",
+      "input_publication_id",
+      "time_role",
+      "source_sha256"
+    ],
+    "database_write_authority_blocker": false,
+    "market_candidate_owner_trend": {
+      "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+      "contract_version": "1.0.0",
+      "identity": {
+        "adjustment_basis_id": "638c2f8ef490bb9894feacf2a8dbb4218ccec4c53d6330212c48685bd08386fb",
+        "input_source_digest": "cc5ed9ba6b5fa1b4d84e68d43ab01975c5d23cfa70d2d543e0799a219dacbdd1",
+        "market_calendar_id": "R4_OFFICIAL",
+        "market_snapshot_id": "638c2f8ef490bb9894feacf2a8dbb4218ccec4c53d6330212c48685bd08386fb",
+        "trade_date": "2026-10-15"
+      },
+      "input_digest": "efd0a42fbf7f3af0464bc2bd1bdbe340de6f2e9441b4a7c30fa9c06997658e56",
+      "output_digest": "c9af39f1f225dd2e935fd924665778e4533a7afb5e92e424daee79990ccbbdb3",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "quality_state": "OBSERVED",
+      "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+      "trend_axis": "WEAK",
+      "unknown_reason": null
+    },
+    "market_reference_first_trade_date": "2023-07-04",
+    "market_reference_last_trade_date": "2026-09-24",
+    "market_reference_rows": 786,
+    "production_and_pit_admission": false,
+    "r7_market_status": "SOURCE_INCOMPLETE",
+    "status": "OPEN_IMPLEMENTATION_AND_EVIDENCE_GAPS"
+  },
   "source_ingress": {
     "bars": 27832,
     "evidence": "PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json",
@@ -466,7 +524,7 @@
     "unmapped_total": 351
   },
   "verification": {
-    "artifact_count": 26,
+    "artifact_count": 27,
     "artifact_index": "V4_R8_FOURTH_BATCH_ARTIFACT_INDEX_R1",
     "candidate_head_date": "2026-10-15",
     "candidate_only": true,

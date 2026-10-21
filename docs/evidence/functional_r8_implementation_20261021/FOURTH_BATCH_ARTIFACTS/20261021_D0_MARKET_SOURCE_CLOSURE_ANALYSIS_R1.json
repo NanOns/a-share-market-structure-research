@@ -1,0 +1,128 @@
+{
+  "candidate_token": "2026-10-15:c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+  "closure_plan": [
+    {
+      "action": "Version the D0 audit contract to cover 2026-10-15 and bind source clocks, cutoff, role, source hash, and actual PG Owner/Publication permission record for the two formal scenarios.",
+      "step": 1
+    },
+    {
+      "action": "Acquire or reconstruct a source-authenticated same-series market reference through 2026-10-15; freeze exact bytes and bind calendar, version, price basis, inputs, timestamps, publication id and PG permission record.",
+      "step": 2
+    },
+    {
+      "action": "Implement actual PG-backed permission validation in both verifiers; never accept a supplied boolean/hash as proof by itself.",
+      "step": 3
+    },
+    {
+      "action": "Recompute candidate-only D0 seal and market trend; independently compare source dates, values and hashes, then validate same-token reads on 28766.",
+      "step": 4
+    },
+    {
+      "action": "If 2026-10-15 source availability/publication time cannot be proven as of the declared cutoff, keep that historical seal open and start a fully clocked source chain on a later session; do not backfill timestamps.",
+      "step": 5
+    }
+  ],
+  "contract_id": "V4_D0_MARKET_SOURCE_CLOSURE_ANALYSIS_R1",
+  "d0": {
+    "classification": "UNKNOWN/OPEN until metadata and actual PG Owner/Publication permission binding are independently verified; later file-capture time alone cannot prove T0 availability.",
+    "diagnostic_scenarios": [
+      "STRONG_PULLBACK",
+      "TREND_CONTINUE"
+    ],
+    "formal_scenarios": [
+      "LAUNCH_CONFIRM",
+      "RECOVERY_TURN"
+    ],
+    "implementation_blockers": [
+      {
+        "facts": "requires source clock, cutoff, publication id, role and source digest; permission_proven is currently hard-coded false pending actual PG Owner/Publication validation.",
+        "path": "src/workbench_analysis/r6_reason_attribution.py",
+        "symbol": "evaluate_d0_source_seal"
+      },
+      {
+        "facts": "raises R6_DATA_CUTOFF_EXCEEDED when date > 2026-10-14; it cannot audit the 10/15 candidate.",
+        "path": "src/workbench_analysis/r6_reason_attribution.py",
+        "symbol": "candidate_d0_reason_attribution"
+      }
+    ],
+    "missing_from_sample_formal_scenario": [
+      "source_available_at",
+      "knowledge_cutoff",
+      "input_publication_id",
+      "time_role",
+      "source_sha256"
+    ],
+    "required_seal_metadata": [
+      "source_available_at",
+      "knowledge_cutoff",
+      "input_publication_id",
+      "time_role",
+      "source_sha256"
+    ],
+    "scenario_evidence_keys": [
+      "aggregation_role",
+      "checks",
+      "scenario",
+      "status",
+      "unknown_reasons"
+    ],
+    "source_file": {
+      "bytes": 2892297,
+      "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d0_prewatch.jsonl.gz",
+      "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99"
+    }
+  },
+  "database_write_authority_blocker": false,
+  "market": {
+    "candidate_market_owner_trend": {
+      "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+      "contract_version": "1.0.0",
+      "identity": {
+        "adjustment_basis_id": "638c2f8ef490bb9894feacf2a8dbb4218ccec4c53d6330212c48685bd08386fb",
+        "input_source_digest": "cc5ed9ba6b5fa1b4d84e68d43ab01975c5d23cfa70d2d543e0799a219dacbdd1",
+        "market_calendar_id": "R4_OFFICIAL",
+        "market_snapshot_id": "638c2f8ef490bb9894feacf2a8dbb4218ccec4c53d6330212c48685bd08386fb",
+        "trade_date": "2026-10-15"
+      },
+      "input_digest": "efd0a42fbf7f3af0464bc2bd1bdbe340de6f2e9441b4a7c30fa9c06997658e56",
+      "output_digest": "c9af39f1f225dd2e935fd924665778e4533a7afb5e92e424daee79990ccbbdb3",
+      "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "quality_state": "OBSERVED",
+      "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+      "trend_axis": "WEAK",
+      "unknown_reason": null
+    },
+    "classification": "The candidate market Owner has a WEAK observed value on a separate path; R7 market-stress preview remains SOURCE_INCOMPLETE because its same-series source/permission chain is incomplete. Do not conflate these.",
+    "implementation_blockers": [
+      {
+        "facts": "currently returns False pending actual PG Owner/Publication permission validation.",
+        "path": "src/workbench_analysis/r6_candidate_market_stress.py",
+        "symbol": "_permission_chain_proven"
+      },
+      {
+        "facts": "requires trade date, series/version identity, price basis, source hash, market calendar, index close, MA20 and lagged MA20, source availability/cutoff, PG permission chain, publication id and time role.",
+        "path": "src/workbench_analysis/r6_candidate_market_stress.py",
+        "symbol": "adapt_candidate_trend_reference"
+      }
+    ],
+    "reference_contract": "V4_03_MARKET_REFERENCE_PATH_V1",
+    "reference_file": {
+      "bytes": 234720,
+      "path": "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+      "sha256": "898a6554eaefae1206d5a228e2b99f78743ef2d749d40579862c9a5de1bdaedb"
+    },
+    "reference_first_trade_date": "2023-07-04",
+    "reference_gap_to_target": "2026-09-25 through 2026-10-15 (target inclusive); source reference path currently has no rows after 2026-09-24.",
+    "reference_last_trade_date": "2026-09-24",
+    "reference_rows": 786,
+    "separate_r7_stress_status": {
+      "status": "SOURCE_INCOMPLETE",
+      "trend_state": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0"
+    }
+  },
+  "permission_boundary": "2026-10-18 SOT R2 covers necessary development DB DDL/DML and development Head/CAS; it does not manufacture external source availability evidence, PG publication history, or PIT permission.",
+  "production_and_pit_admission": false,
+  "scope": "D0 source seal and R7 market-reference source path, distinct from corrected D0 row aggregation and G1-G4 append/CAS.",
+  "status": "OPEN_IMPLEMENTATION_AND_EVIDENCE_GAPS",
+  "version": "1.0.0"
+}

@@ -121,6 +121,37 @@ def mark_stock_d2_semantics(response):
         else:state='UNKNOWN';reason='QUALIFICATION_INPUT_OR_DETECTOR_UNKNOWN'
         fields['qualification_state']=dict(value=state,quality='KNOWN' if state in ('TRUE','FALSE') else state,
             reason=reason,source=(fields.get('final_eligibility') or {}).get('source'))
+        provenance=(fields.get('input_provenance') or {}).get('value') or {}
+        if isinstance(provenance,dict):
+            scenario_attribution={}
+            for detector in ('SEED','PREWATCH','CONFIRMED'):
+                item=provenance.get(detector) or {}
+                detector_value=item.get('value')
+                detector_status=item.get('status')
+                if detector_value in ('TRUE','FALSE'):
+                    cause='DETECTOR_EVALUATED'
+                elif detector_status=='NOT_IMPLEMENTED':
+                    cause='REQUIRED_DETECTOR_NOT_IMPLEMENTED'
+                elif detector_status=='NOT_APPLICABLE':
+                    cause='DETECTOR_NOT_APPLICABLE'
+                else:
+                    cause='DETECTOR_INPUT_UNKNOWN'
+                scenario_attribution[detector]=dict(value=detector_value,status=detector_status,
+                    required=item.get('required'),cause=cause,
+                    producer_contract_id=item.get('producer_contract_id'),
+                    producer_parameter_set_id=item.get('producer_parameter_set_id'),
+                    source_output_digest=item.get('source_output_digest'))
+            invalidation=provenance.get('frozen_invalidation') or {}
+            if invalidation:
+                scenario_attribution['frozen_invalidation']=dict(value=invalidation.get('value'),
+                    status=invalidation.get('status'),required=invalidation.get('required'),
+                    cause=('REQUIRED_INPUT_NOT_IMPLEMENTED' if invalidation.get('status')=='NOT_IMPLEMENTED'
+                           else 'REQUIRED_INPUT_UNKNOWN' if invalidation.get('value')=='UNKNOWN'
+                           else 'INPUT_EVALUATED'),
+                    producer_contract_id=invalidation.get('producer_contract_id'))
+            fields['qualification_attribution']=dict(contract_id='V4_D2_ACTUAL_REASON_ATTRIBUTION_R1',
+                status=state,final_eligibility=value,reason=reason,detectors=scenario_attribution,
+                preserves_frozen_final_eligibility=True)
     return response
 
 def d2_selection_explanation(fields,source):
@@ -137,8 +168,24 @@ def d2_selection_explanation(fields,source):
     else:interpretation='SCENARIO_REPORTED_WITH_D2_STATUS'
     names=('scenario_status','raw_qualification','final_eligibility','detector_statuses',
            'matched_predicates','unknown_predicates','transition_reasons','input_provenance','identity_status')
+    provenance=owner_field('input_provenance').get('value') or {}
+    attribution=None
+    if isinstance(provenance,dict):
+        attribution={}
+        for detector in ('SEED','PREWATCH','CONFIRMED','frozen_invalidation'):
+            item=provenance.get(detector)
+            if not isinstance(item,dict):continue
+            val=item.get('value');status=item.get('status')
+            if val in ('TRUE','FALSE'):cause='DETECTOR_EVALUATED'
+            elif status=='NOT_IMPLEMENTED':cause='REQUIRED_INPUT_NOT_IMPLEMENTED'
+            elif status=='NOT_APPLICABLE':cause='DETECTOR_NOT_APPLICABLE'
+            else:cause='REQUIRED_INPUT_UNKNOWN' if item.get('required') else 'OPTIONAL_INPUT_UNKNOWN'
+            attribution[detector]=dict(value=val,status=status,required=item.get('required'),cause=cause,
+                producer_contract_id=item.get('producer_contract_id'),
+                producer_parameter_set_id=item.get('producer_parameter_set_id'),
+                source_output_digest=item.get('source_output_digest'))
     return dict(scenario=scenario,**{name:owner_field(name) for name in names},
-        scenario_interpretation=interpretation,source=source)
+        scenario_interpretation=interpretation,qualification_attribution=attribution,source=source)
 
 def current_identity_presentation(identity,source,day):
     identity=identity or {}
@@ -234,6 +281,60 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     isolated_history=None
     def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,chart_history_extension_binding=None,market_fact_index_root=None):
         super().__init__(api,legacy)
+
+    def _candidate_lifecycle(self):
+        """Return cached 10/14 lifecycle calculated from this token's dated Owners."""
+        from pathlib import Path
+        import hashlib
+        from sector.candidate_lifecycle_v1 import build_candidate_lifecycle
+        source_root=Path(__file__).resolve().parents[2]
+        producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()).hexdigest()
+        parameter_sha=hashlib.sha256((source_root/'config/sector_lifecycle_reconstructed_v1.json').read_bytes()).hexdigest()
+        cache_key=('candidate-sector-lifecycle-v1',self.api.token,producer_sha,parameter_sha)
+        if cache_key not in self.api.cache:
+            self.api.cache[cache_key]=build_candidate_lifecycle(self.api.root,self.api.candidate,source_root)
+        return self.api.cache[cache_key]
+
+    def _candidate_market_stress(self):
+        """Bounded post-hoc stress axes; composite market regime remains unknown."""
+        from workbench_analysis.r6_candidate_market_stress import build_candidate_market_stress
+        cache_key=('r6-candidate-market-stress-v1',self.api.token)
+        if cache_key not in self.api.cache:
+            self.api.cache[cache_key]=build_candidate_market_stress(self.api.root,self.api.candidate)
+        return self.api.cache[cache_key]
+
+    def _candidate_focus_reason_attribution(self,day,focus_ids):
+        from workbench_analysis.r6_reason_attribution import candidate_d0_reason_attribution
+        ids=sorted({str(value) for value in (focus_ids or []) if value})
+        import hashlib
+        key=('r6-focus-reason-attribution-v1',self.api.token,day,
+             hashlib.sha256('\n'.join(ids).encode('utf-8')).hexdigest())
+        if key not in self.api.cache:
+            self.api.cache[key]=candidate_d0_reason_attribution(
+                self.api.root,self.api.candidate,day,focus_security_ids=ids)
+        return self.api.cache[key]
+
+    def _attach_candidate_lifecycle(self,rows,lifecycle):
+        """Replace unavailable PG lifecycle placeholders with computed candidate facts."""
+        by_id=lifecycle['items']
+        for row in rows:
+            result=by_id.get(row.get('entity_id'))
+            if not result:continue
+            for key in ('maturity','health'):
+                fact=result[key]
+                value=fact['current']
+                row.setdefault('fields',{})[key]=dict(value=value,
+                    quality='KNOWN' if value not in ('UNKNOWN',None) else 'SOURCE_INCOMPLETE',
+                    reason=';'.join(fact['reason_codes']) if fact['reason_codes'] else None,
+                    unit='state',as_of=lifecycle['T0'],field=key,
+                    evaluated=value not in ('UNKNOWN',None),matched_predicates=fact['matches'],
+                    unknown_predicates=fact['unknown_predicates'],state_reason=result['state_reason'][key],
+                    source=dict(contract_id=result['contract_id'],version=result['version'],
+                        input_digest=result['input_digest'],producer_sha256=lifecycle['producer_sha256'],
+                        parameter_sha256=lifecycle['parameter_sha256'],source_bindings=result['source_bindings'],
+                        evidence_scope=result['evidence_scope'],AS_RECORDED=False,PIT_ELIGIBLE=False,
+                        production_admission=False))
+        return rows
         self.isolated_history=None
         self.chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
         self.chart_history_extension_binding=chart_history_extension_binding
@@ -727,6 +828,25 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                            self.api.candidate['accepted_trade_date'],path)
         forward_response=self._forward_r7_read(path,query,day)
         if forward_response is not None:return forward_response
+        if path=='/api/v4/sectors' and query.get('view')=='candidate':
+            if day!=self.api.candidate['accepted_trade_date']:
+                raise ValueError('CANDIDATE_SECTOR_CURRENT_TOKEN_DATE_REQUIRED')
+            code,response=self._get_product(path,{k:v for k,v in query.items() if k!='view'})
+            if code!=200:return code,response
+            lifecycle=self._candidate_lifecycle()
+            response['items']=self._attach_candidate_lifecycle(response.get('items') or [],lifecycle)
+            response.update(lifecycle_contract='SECTOR_LIFECYCLE_RECONSTRUCTED_AUDIT_R1',
+                lifecycle_version='1.1.0',T0=lifecycle['T0'],context_token=self.api.token,
+                lifecycle_counts={
+                    'sector_count':400,
+                    'maturity_known':sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
+                    'health_known':sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values())},
+                lifecycle_source=dict(candidate_digest=lifecycle['candidate_digest'],
+                    producer_sha256=lifecycle['producer_sha256'],parameter_sha256=lifecycle['parameter_sha256'],
+                    session_window=lifecycle['session_window']),
+                candidate_only=True,production_accepted=False,formal_head_modified=False,
+                AS_RECORDED=False,PIT_ELIGIBLE=False)
+            return code,response
         index_route=(path in ('/api/v4/context','/api/v4/home','/api/v4/stocks','/api/v4/sectors','/api/v4/focus','/api/v4/radar','/api/v4/radar/priority') or
                      path.startswith('/api/v4/stocks/') or path.startswith('/api/v4/sectors/') or path.startswith('/api/v4/focus/'))
         index_r2=self._read_index_r2(day) if index_route else None
@@ -744,16 +864,34 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 import hashlib
                 parameter_path=Path(__file__).resolve().parents[2]/'config/v4_daily_research_priority_r1.json'
                 parameter_digest=hashlib.sha256(parameter_path.read_bytes()).hexdigest()
+                producer_path=Path(__file__).resolve().parent/'research_priority_r1.py'
+                producer_sha256=hashlib.sha256(producer_path.read_bytes()).hexdigest()
+                lifecycle=self._candidate_lifecycle()
                 owners=self.api.candidate['owners'][day]
                 stock_source=owners.get('core');sector_source=owners.get('sector')
                 cache_key=('candidate-priority-preview-v1',self.api.token,day,
-                    json.dumps([stock_source,sector_source,parameter_digest],sort_keys=True,separators=(',',':')))
+                    json.dumps([stock_source,sector_source,parameter_digest,producer_sha256,
+                        lifecycle['candidate_digest'],lifecycle['producer_sha256'],lifecycle['parameter_sha256']],
+                        sort_keys=True,separators=(',',':')))
                 priority=self.api.cache.get(cache_key)
                 if priority is None:
-                    priority=build_priority(day,self.api.token,self.project('stocks',day),self.project('sectors',day),
+                    sectors=self._attach_candidate_lifecycle(self.project('sectors',day),lifecycle)
+                    priority=build_priority(day,self.api.token,self.project('stocks',day),sectors,
                         {'regime_publication_status':'NOT_PUBLISHED_V4_03'},stock_source,sector_source,parameter_digest)
+                    priority['sector_lifecycle']=dict(contract_id=lifecycle['contract_id'],T0=lifecycle['T0'],
+                        input_authority=lifecycle['input_authority'],evidence_scope=lifecycle['evidence_scope'],
+                        candidate_digest=lifecycle['candidate_digest'],producer_sha256=lifecycle['producer_sha256'],
+                        parameter_sha256=lifecycle['parameter_sha256'],session_window=lifecycle['session_window'],
+                        sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
+                        health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
+                    try:
+                        priority['candidate_market_risk']=self._candidate_market_stress()
+                    except (OSError,ValueError,KeyError,TypeError) as exc:
+                        priority['candidate_market_risk']=dict(contract_id='R6_CANDIDATE_MARKET_STRESS_PREVIEW_V1',
+                            status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
+                            composite_regime_status='UNKNOWN_BREADTH_AND_PARTICIPATION_UNAVAILABLE',
+                            AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                     self.api.cache[cache_key]=priority
-                producer_path=Path(__file__).resolve().parent/'research_priority_r1.py'
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
                 scope=query.get('scope','stocks')
                 if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')
@@ -773,8 +911,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     'publication_status':'NOT_ACCEPTED','evidence_class':'NON_PIT',
                     'production_accepted':False,'formal_head_modified':False,
                     'candidate_source_bindings':priority['source_bindings'],
+                    'sector_lifecycle':priority.get('sector_lifecycle'),
+                    'candidate_market_risk':priority.get('candidate_market_risk'),
                     'candidate_payload_sha256':priority_sha256,
-                    'producer_sha256':hashlib.sha256(producer_path.read_bytes()).hexdigest()}
+                    'producer_sha256':producer_sha256}
                 return 200,response
             from workbench_db.v4_operational_risk_pg_r1 import load_priority
             binding,priority=load_priority(self.api.root,self.api.token,day)
@@ -879,6 +1019,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 extra=index.response('/api/v4/focus-meta')
                 if extra is None:raise ValueError('READ_INDEX_FOCUS_NOT_PREPARED')
                 response.update(extra)
+                episodes=self.source('forward',day)['episodes']
+                try:
+                    response['d0_reason_attribution']=self._candidate_focus_reason_attribution(
+                        day,[e.get('entity_id') for e in episodes])
+                except Exception as exc:
+                    response['d0_reason_attribution']=dict(contract_id='R6_D0_REASON_ATTRIBUTION_R1',
+                        status='SOURCE_INCOMPLETE',trade_date=day,items=None,
+                        reason='D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__,
+                        AS_RECORDED=False,PIT_ELIGIBLE=False)
             if path=='/api/v4/sectors':
                 response=self._apply_rotation_auto_acceptance(response,day)
                 response=mark_evaluated_sector_lifecycle(response)
@@ -905,7 +1054,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                      path.startswith('/api/v4/focus/') or path.startswith('/api/v4/forward'))
         pack=self.focus_projection(day) if focus_route else None
         if path=='/api/v4/focus' and code==200:
-            episodes=self.source('forward',day)['episodes'];active={e['entity_id'] for e in episodes if e.get('end_date') is None}
+            episodes=self.source('forward',day)['episodes']
+            try:
+                data['d0_reason_attribution']=self._candidate_focus_reason_attribution(
+                    day,[e.get('entity_id') for e in episodes])
+            except Exception as exc:
+                data['d0_reason_attribution']=dict(contract_id='R6_D0_REASON_ATTRIBUTION_R1',
+                    status='SOURCE_INCOMPLETE',trade_date=day,items=None,
+                    reason='D0_ATTRIBUTION_FAILED_CLOSED:'+type(exc).__name__,
+                    AS_RECORDED=False,PIT_ELIGIBLE=False)
+            active={e['entity_id'] for e in episodes if e.get('end_date') is None}
             stocks={r['entity_id']:r for r in self.project('stocks',day)};sectors={r['entity_id']:r for r in self.project('sectors',day)};groups=Counter();unknown=0
             for sid in active:
                 sector=stocks.get(sid,{}).get('fields',{}).get('primary_industry',{}).get('value')

@@ -18,6 +18,7 @@ export async function stockDetail(main,id,signal){
  const raw=d2.raw_qualification?.value||{};decision.append(C.el('p','各检测器原始资格：'+(Object.keys(raw).length?Object.entries(raw).map(([k,v])=>`${labels[k]||k} ${C.displayValue(v)}`).join(' · '):'D2 未提供')));
  const unknowns=d2.unknown_predicates?.value||[];decision.append(C.el('p',unknowns.length?'必需或可选待核输入：'+unknowns.map(C.displayValue).join('、'):'未发布待核谓词列表。'));
  const detectors=d2.detector_statuses?.value||{};decision.append(C.el('p','检测器接入状态：'+(Object.keys(detectors).length?Object.entries(detectors).map(([k,v])=>`${labels[k]||k} ${C.displayValue(v)}`).join(' · '):'D2 未提供')));
+ const attribution=d2.qualification_attribution||{};if(Object.keys(attribution).length){decision.append(C.el('p','真实资格归因（不改写冻结判定）：'+Object.entries(attribution).map(([k,v])=>`${labels[k]||k}=${v.cause}${v.producer_contract_id?' ['+v.producer_contract_id+']':''}`).join(' · ')));}
  const source=C.el('button','D2 判定来源与完整证据');source.onclick=()=>C.EvidenceDrawer(d2);decision.append(source);main.append(decision);
  const keyPrices=C.el('button','关键价、复权坐标与窗口');keyPrices.onclick=()=>C.EvidenceDrawer(p.key_prices);main.append(keyPrices,C.el('p',p.hypothesis_scope));
  const relations=p.membership_relations;main.append(C.el('h2','所属行业与关联概念'));

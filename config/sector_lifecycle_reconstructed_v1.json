@@ -1,6 +1,6 @@
 {
   "contract_id": "SECTOR_LIFECYCLE_RECONSTRUCTED_V1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "evidence_scope": "CURRENT_RECONSTRUCTED_RESEARCH_ONLY",
   "historical_window_sessions": 5,
   "maturity": {
@@ -24,7 +24,8 @@
     "states": ["NONE", "WATCH", "WEAKENING", "DAMAGED", "UNKNOWN"],
     "weakening_predicates": ["RS5_WORSENED", "BREADTH1_WORSENED", "SEED_RETENTION_WORSENED"],
     "damaged_rule": "RS5_NEGATIVE_AND_BREADTH5_BELOW_0_25",
-    "weakening_minimum_matches": 2
+    "weakening_minimum_matches": 2,
+    "unknown_comparison_rule": "UNKNOWN_WHEN_NO_KNOWN_WEAKENING_MATCH_AND_ANY_T_MINUS_2_INPUT_IS_MISSING; KNOWN_MATCHES_MAY_STILL_ESTABLISH_WATCH_OR_WEAKENING"
   },
   "unknown_rules": ["MISSING_REQUIRED_VALUE", "LOW_QUOTE_COVERAGE", "LESS_THAN_5_ACCEPTED_SESSIONS", "MISSING_PRIOR_SESSION", "NON_COMPARABLE_MEMBERSHIP_SNAPSHOT"],
   "strict_historical_pit": "WAIT_REAL_SESSION_NOT_AS_RECORDED",

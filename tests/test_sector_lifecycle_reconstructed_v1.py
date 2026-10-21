@@ -64,6 +64,15 @@ class SectorLifecycleReconstructedTests(unittest.TestCase):
         self.assertIn('SEED_RETENTION_WORSENED',result['health']['unknown_predicates'])
         self.assertEqual(oracle_health(rows[-1],rows[-2],rows[-3],PARAMS),'WEAKENING')
 
+    def test_no_known_weakening_with_missing_t_minus_2_is_unknown(self):
+        rows=[sector_row(day) for day in DAYS]
+        rows[-3]=sector_row(DAYS[-3],rs5=None,breadth1=None,retention=None)
+        result=self.run_rows(rows)
+        self.assertEqual(result['health']['current'],'UNKNOWN')
+        self.assertEqual(result['health']['unknown_predicates'],[
+            'RS5_WORSENED','BREADTH1_WORSENED','SEED_RETENTION_WORSENED'])
+        self.assertEqual(oracle_health(rows[-1],rows[-2],rows[-3],PARAMS),'UNKNOWN')
+
     def test_noncomparable_membership_and_future_rows_fail_closed(self):
         rows=[sector_row(day) for day in DAYS]
         rows[-2]['membership_snapshot_id']='M2'

@@ -83,9 +83,14 @@ def _evaluate_health(current,prior,prior_prior,parameters):
         state='WEAKENING'
     elif matched:
         state='WATCH'
+    elif unknown_predicates:
+        # NONE means all three comparisons were evaluated and none weakened.
+        # Missing earlier values cannot be treated as evidence of stability.
+        state='UNKNOWN'
     else:
         state='NONE'
-    return state,[],matched,unknown_predicates
+    reasons=['WEAKENING_COMPARISON_INPUT_MISSING'] if state=='UNKNOWN' else []
+    return state,reasons,matched,unknown_predicates
 
 
 def evaluate_sector(sector_id,history,session_dates,source_bindings,parameter_document,*,producer_sha256):

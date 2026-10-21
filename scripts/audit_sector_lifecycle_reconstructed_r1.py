@@ -51,8 +51,9 @@ def oracle_health(current,prior,earlier,params):
     unknown=sum(older[key] is None for key in old)
     if values['sector_rs5']<0 and values['breadth_ret5']<.25:return 'DAMAGED'
     if weakening>=params['health']['weakening_minimum_matches']:return 'WEAKENING'
+    if weakening:return 'WATCH'
     if unknown:return 'UNKNOWN'
-    return 'WATCH' if weakening else 'NONE'
+    return 'NONE'
 
 
 def atomic_json(path,value):
@@ -64,11 +65,13 @@ def atomic_json(path,value):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--root',type=Path,required=True,help='Read-only accepted V4 workspace root')
+    parser.add_argument('--root',type=Path,required=True,help='Read-only V4 workspace root')
+    parser.add_argument('--candidate',type=Path,help='Explicit non-formal successor candidate JSON; uses its dated Owners without changing formal Head')
     parser.add_argument('--source-root',type=Path,default=Path(__file__).resolve().parents[1])
     parser.add_argument('--output',type=Path,default=Path('G:/codex_tmp/r6_sector_lifecycle/sector_lifecycle_r1.json'))
     args=parser.parse_args();root=args.root.resolve();source_root=args.source_root.resolve()
-    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json';head=json.loads(head_path.read_bytes())
+    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    head=json.loads(args.candidate.read_bytes()) if args.candidate else json.loads(head_path.read_bytes())
     day=head['accepted_trade_date'];sessions=head['published_sessions'][-5:]
     if len(sessions)!=5 or sessions[-1]!=day:raise ValueError('SECTOR_LIFECYCLE_REQUIRED_SESSION_WINDOW_UNAVAILABLE')
     params,_=load_parameters(source_root);producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()).hexdigest()
@@ -116,6 +119,7 @@ def main():
         checked['match']=(checked['producer_maturity']==checked['oracle_maturity'] and checked['producer_health']==checked['oracle_health'])
         oracle_checks.append(checked)
     output=dict(contract_id='SECTOR_LIFECYCLE_RECONSTRUCTED_AUDIT_R1',T0=day,
+        input_authority='EXPLICIT_SUCCESSOR_CANDIDATE' if args.candidate else 'FORMAL_HEAD',
         accepted_head_digest=hashlib.sha256(canonical(head)).hexdigest(),session_window=sessions,
         sector_count=len(outputs),unique_sector_count=len({row['sector_id'] for row in outputs}),
         maturity_counts=dict(grouped['maturity']),health_counts=dict(grouped['health']),

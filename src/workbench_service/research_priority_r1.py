@@ -12,6 +12,20 @@ def _numeric(row,key):
     return float(value)
 
 
+def _dated_sector_state(row, key, day):
+    """Admit lifecycle states only with dated, quality-qualified producer proof."""
+    cell=((row or {}).get('fields') or {}).get(key)
+    if not isinstance(cell,dict):return None,'MISSING'
+    value=cell.get('value');source=cell.get('source')
+    if value is None or value=='UNKNOWN':return None,'UNKNOWN'
+    if cell.get('quality') not in ('KNOWN','OBSERVED','RECONSTRUCTED'):return None,'INVALID_QUALITY'
+    if cell.get('as_of')!=day:return None,'INVALID_DATE'
+    if not isinstance(source,dict) or not all(source.get(name) for name in
+            ('input_digest','producer_sha256','parameter_sha256','source_bindings')):
+        return None,'INVALID_PROVENANCE'
+    return value,None
+
+
 def _dated_number(row, key, day, *, positive=False, minimum=None, maximum=None, minimum_exclusive=False):
     """Read a finite, quality-admitted metric at the requested T0."""
     fields=(row or {}).get('fields') or {}
@@ -38,11 +52,27 @@ def build_priority(day,token,stocks,sectors,market,stock_source,sector_source,pa
     sector_rows=[];sector_state={}
     for row in sectors:
         fields=row.get('fields') or {};life=fields.get('maturity',{});health=fields.get('health',{})
-        rs5=_numeric(row,'sector_rs5');rs20=_numeric(row,'sector_rs20')
-        rotation=_value(row,'output_state');maturity=life.get('value');sector_health=health.get('value')
+        rs5,rs5_issue=_dated_number(row,'sector_rs5',day)
+        rs20,rs20_issue=_dated_number(row,'sector_rs20',day)
+        rotation_cell=fields.get('output_state')
+        rotation=rotation_cell.get('value') if isinstance(rotation_cell,dict) else None
+        maturity,maturity_issue=_dated_sector_state(row,'maturity',day)
+        sector_health,health_issue=_dated_sector_state(row,'health',day)
         unknown=[]
         for name,val in (('maturity',maturity),('health',sector_health),('sector_rs5',rs5),('sector_rs20',rs20),('rotation',rotation)):
             if val is None or val=='UNKNOWN':unknown.append(name)
+        invalid=[name for name,issue in (('maturity',maturity_issue),('health',health_issue))
+                 if issue not in (None,'MISSING','UNKNOWN')]
+        invalid.extend(name for name,issue in (('sector_rs5',rs5_issue),('sector_rs20',rs20_issue))
+                       if issue not in (None,'MISSING'))
+        if isinstance(rotation_cell,dict) and (rotation_cell.get('quality') not in ('KNOWN','OBSERVED','RECONSTRUCTED')
+                or rotation_cell.get('as_of') not in (None,day)):
+            invalid.append('rotation')
+        if invalid:
+            sector_state[row['entity_id']]=dict(priority_state='NOT_RANKABLE',rank=None,score=None,
+                unknown_inputs=unknown,invalid_inputs=invalid,exclusion_reason='INVALID_INPUT',
+                exclusion_reasons=['INVALID_INPUT_'+','.join(sorted(invalid))])
+            continue
         if unknown:
             sector_state[row['entity_id']]=dict(priority_state='NOT_RANKABLE',rank=None,score=None,unknown_inputs=unknown)
             continue

@@ -27,11 +27,15 @@ def test_risk_families_keep_independent_denominators_and_unknowns():
 
 
 def test_priority_separates_rankable_from_unknown_and_uses_stable_tiebreak():
+    day='2026-10-13';proof={'input_digest':'a'*64,'producer_sha256':'b'*64,
+        'parameter_sha256':'c'*64,'source_bindings':{'2026-10-13':{'sector':{'sha256':'d'*64}}}}
+    def dated(value):return {'value':value,'quality':'KNOWN','as_of':day,'source':proof}
+    def metric(value):return {'value':value,'quality':'OBSERVED','as_of':day}
     sectors=[
         {'entity_id':'THEME:B','display_name':'B','fields':{
-            'maturity':cell('DEVELOPING'),'health':cell('NONE'),'sector_rs5':cell(0.2),'sector_rs20':cell(0.3),'output_state':cell('ROTATION_ACCEPTED')}},
+            'maturity':dated('DEVELOPING'),'health':dated('NONE'),'sector_rs5':metric(0.2),'sector_rs20':metric(0.3),'output_state':dated('ROTATION_ACCEPTED')}},
         {'entity_id':'THEME:A','display_name':'A','fields':{
-            'maturity':cell('DEVELOPING'),'health':cell('NONE'),'sector_rs5':cell(0.2),'sector_rs20':cell(0.3),'output_state':cell('ROTATION_ACCEPTED')}},
+            'maturity':dated('DEVELOPING'),'health':dated('NONE'),'sector_rs5':metric(0.2),'sector_rs20':metric(0.3),'output_state':dated('ROTATION_ACCEPTED')}},
         {'entity_id':'THEME:U','fields':{'maturity':cell('UNKNOWN','SOURCE_INCOMPLETE')}}]
     stocks=[{'entity_id':'stock-A','fields':{
         'core_price_damage':cell(False),'rps20':cell(10),'rps20_delta3':cell(0.1),'ret5':cell(0.02),

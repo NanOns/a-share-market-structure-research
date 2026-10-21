@@ -32,6 +32,28 @@ def _candidate_focus_reason_cache_key(token,candidate,day,focus_ids):
     return ('r6-focus-reason-attribution-v2',token,_candidate_revision_digest(candidate),day,
             hashlib.sha256('\n'.join(ids).encode('utf-8')).hexdigest())
 
+
+def _exact_price_coordinate(core_row,adjusted_row):
+    """Resolve an exact per-security T0 coordinate from both bound Owners."""
+    core_basis=(core_row or {}).get('price_basis_id')
+    base=(adjusted_row or {}).get('price_basis')
+    revision=(adjusted_row or {}).get('adjustment_source_revision')
+    if (not isinstance(core_basis,str) or not isinstance(base,str) or not isinstance(revision,str)
+            or not core_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:')
+            or not base=='TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'
+            or len(revision)!=64 or any(c not in '0123456789abcdef' for c in revision.lower())):
+        return None
+    derived=base+':'+revision
+    return derived if derived==core_basis else None
+
+
+def _product_projection_config_digest(root):
+    root=Path(root)
+    names=('v4_display_names_authority_v1.json','v4_03_field_registry_v1.json',
+           'v4_04_field_registry_v2.json','v4_08_sector_field_registry_r5.json')
+    payload=[(name,hashlib.sha256((root/'config'/name).read_bytes()).hexdigest()) for name in names]
+    return hashlib.sha256(json.dumps(payload,separators=(',',':')).encode()).hexdigest()
+
 HOME_EVENT_PRIORITY={'INVALIDATED':0,'EXITED':1,'WEAKENED':2,'UPGRADED':3,'REENTERED':4,'NEW':5}
 
 HOME_STOCK_SUMMARY_FIELDS={'effective_event','trade_date'}
@@ -308,18 +330,39 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()).hexdigest()
         parameter_sha=hashlib.sha256((source_root/'config/sector_lifecycle_reconstructed_v1.json').read_bytes()).hexdigest()
         cache_key=_candidate_lifecycle_cache_key(self.api.token,self.api.candidate,producer_sha,parameter_sha)
+        # The cache key binds candidate metadata, but immutable file content is
+        # a separate boundary: re-hash the fixed five-session inputs on every
+        # use, including hot-cache reads. Do not decompress or rescan history.
+        sessions=[s for s in self.api.candidate.get('published_sessions',[])
+                  if s<=self.api.candidate['accepted_trade_date']][-5:]
+        for session in sessions:
+            owners=self.api.candidate.get('owners',{}).get(session) or {}
+            for domain in ('sector','rotation'):
+                binding=owners.get(domain)
+                if not binding:raise ValueError('SECTOR_LIFECYCLE_CANDIDATE_OWNER_MISSING:'+session+':'+domain)
+                checked(self.api.root,binding)
         if cache_key not in self.api.cache:
             self.api.cache[cache_key]=build_candidate_lifecycle(self.api.root,self.api.candidate,source_root)
         return self.api.cache[cache_key]
 
     def _verify_candidate_priority_bindings(self, day):
-        """Recheck the current T0 owner bytes before serving cached Priority pages."""
-        owners=self.api.candidate.get('owners',{}).get(day) or {}
-        for domain in ('core','adjusted','sector'):
-            binding=owners.get(domain)
-            if not binding:
-                raise ValueError('CANDIDATE_PRIORITY_OWNER_MISSING:'+domain)
-            checked(self.api.root,binding)
+        """Recheck exact source bytes consumed by Priority and its explanations."""
+        candidate=self.api.candidate
+        sessions=[s for s in candidate.get('published_sessions',[]) if s<=day][-5:]
+        required={day:('core','adjusted','sector','rotation','focus','prewatch','forward')}
+        for session in sessions:
+            required.setdefault(session,('sector','rotation'))
+        verified=set()
+        for session,domains in required.items():
+            owners=candidate.get('owners',{}).get(session) or {}
+            for domain in domains:
+                identity=(session,domain)
+                if identity in verified:continue
+                verified.add(identity)
+                binding=owners.get(domain)
+                if not binding:
+                    raise ValueError('CANDIDATE_PRIORITY_OWNER_MISSING:'+session+':'+domain)
+                checked(self.api.root,binding)
 
     def _candidate_market_stress(self):
         """Bounded post-hoc stress axes; composite market regime remains unknown."""
@@ -339,6 +382,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         from workbench_analysis.r6_reason_attribution import candidate_d0_reason_attribution
         ids=sorted({str(value) for value in (focus_ids or []) if value})
         key=_candidate_focus_reason_cache_key(self.api.token,self.api.candidate,day,ids)
+        published=self.api.candidate.get('published_sessions',[])
+        prior=[session for session in published if session<day]
+        dependencies=[(day,'prewatch'),(day,'focus'),(day,'forward')]
+        if prior:dependencies.append((prior[-1],'focus'))
+        for session,domain in dependencies:
+            binding=self.api.candidate.get('owners',{}).get(session,{}).get(domain)
+            if not binding:raise ValueError('R6_FOCUS_REASON_SOURCE_NOT_BOUND:'+session+':'+domain)
+            checked(self.api.root,binding)
         if key not in self.api.cache:
             self.api.cache[key]=candidate_d0_reason_attribution(
                 self.api.root,self.api.candidate,day,focus_security_ids=ids)
@@ -899,9 +950,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 lifecycle=self._candidate_lifecycle()
                 owners=self.api.candidate['owners'][day]
                 stock_source=owners.get('core');sector_source=owners.get('sector')
-                # Detect a same-binding source-byte tamper even when this process
-                # already holds a derived ranking. This hashes only the three
-                # current T0 owners used by Priority, without replaying history.
+                # Detect same-binding source-byte tampering even with a warm
+                # derived ranking. This hashes the bounded consumer closure
+                # (current Priority/D0/Focus inputs plus lifecycle's five sessions)
+                # without decompressing or rescanning those histories.
                 self._verify_candidate_priority_bindings(day)
                 cache_key=('candidate-priority-preview-v2',self.api.token,day,
                     json.dumps([stock_source,sector_source,parameter_digest,producer_sha256,
@@ -930,7 +982,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 except (OSError,ValueError,KeyError,TypeError) as exc:
                     priority['candidate_market_risk']=dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',
                         status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
-                        composite_regime_status='UNKNOWN_TREND_AXIS_NOT_RECALCULATED',
+                        trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
+                        composite_regime_status='NOT_PUBLISHED_V4_03',
                         AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                     market_cache_diagnostics=dict(status='SOURCE_INCOMPLETE',reason=type(exc).__name__)
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -1253,8 +1306,14 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         return response
 
     def project(self,domain,day):
-        key=('product-project',day,domain)
-        if key in self.api.cache:return self.api.cache[key]
+        config_digest=_product_projection_config_digest(self.api.root)
+        key=('product-project-v3',self.api.token,_candidate_revision_digest(self.api.candidate),day,domain,config_digest)
+        if key in self.api.cache:
+            # Recheck only the dated Owners that feed this projection. SHA/byte
+            # validation is cheap relative to rebuilding pages and prevents a
+            # same-token, same-binding content replacement from serving stale data.
+            self._verify_product_project_sources(domain,day)
+            return self.api.cache[key]
         data=deepcopy(super().project(domain,day))
         authority=json.loads((self.api.root/'config/v4_display_names_authority_v1.json').read_bytes())
         name_source=authority['source'];names=json.loads(checked(self.api.root,name_source).read_bytes())
@@ -1312,7 +1371,24 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 row['fields']['identity_link_status']=identity_link_presentation(ident,row['search_aliases'],row.get('symbol'),identity_ref_current,day)
                 row['alias_source']=identity_ref
                 for k,v in cores.get(row['entity_id'],{}).get('fields',{}).items():
-                    row['fields'].setdefault(k,owner_cell(v,self.api.candidate['owners'][day]['core'],'fields.'+k,day))
+                    cell=owner_cell(v,self.api.candidate['owners'][day]['core'],'fields.'+k,day)
+                    if k=='prior_low20':row['fields'][k]=cell
+                    else:row['fields'].setdefault(k,cell)
+                core_row=cores.get(row['entity_id'],{})
+                core_basis=core_row.get('price_basis_id')
+                low_cell=row['fields'].get('prior_low20')
+                if isinstance(low_cell,dict):
+                    # Core's prior-low was calculated in its T0 exact target
+                    # coordinate. Bind that coordinate explicitly; the field's
+                    # window_end_trade_date remains the prior session.
+                    valid_core_basis=(isinstance(core_basis,str) and
+                        core_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:') and
+                        len(core_basis.rsplit(':',1)[-1])==64 and
+                        all(c in '0123456789abcdef' for c in core_basis.rsplit(':',1)[-1].lower()))
+                    low_cell['as_of']=day if valid_core_basis else None
+                    low_cell['adjustment_basis']=core_basis if valid_core_basis else None
+                    low_cell['source']=dict(domain='core',owner=self.api.candidate['owners'][day]['core'],
+                        field='prior_low20',price_basis_id=core_basis) if valid_core_basis else None
                 adjusted_row=adjusted.get(row['entity_id'])
                 if adjusted_row:
                     row['fields']['close']=owner_cell(
@@ -1320,12 +1396,16 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                              quality='KNOWN' if adjusted_row.get('adjustment_readiness')=='READY' else 'UNKNOWN'),
                         self.api.candidate['owners'][day]['adjusted'],'close',day)
                     price_basis=adjusted_row.get('price_basis')
+                    # Preserve the exact affine-basis identity. A display alias
+                    # made distinct coordinate IDs compare equal in Priority.
+                    exact_adjusted_basis=_exact_price_coordinate(core_row,adjusted_row)
                     row['fields']['close']['adjustment_basis']=(
-                        'TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'
-                        if adjusted_row.get('adjustment_readiness')=='READY'
+                        exact_adjusted_basis if adjusted_row.get('adjustment_readiness')=='READY'
                         and isinstance(price_basis,str)
                         and price_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE')
-                        else price_basis)
+                        and exact_adjusted_basis==core_basis else None)
+                    row['fields']['close']['source']=dict(domain='adjusted',owner=self.api.candidate['owners'][day]['adjusted'],
+                        field='close',price_basis_id=exact_adjusted_basis) if row['fields']['close']['adjustment_basis'] else None
                     row['fields']['close']['source_price_basis']=price_basis
                 state=d2.get(row['entity_id'],{})
                 for k in ('effective_event','scenario_status','raw_qualification','matched_predicates','unknown_predicates',
@@ -1380,7 +1460,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if domain=='stocks' and field in ('open','high','low','close','amount','volume'):cell['unit']='SHARES' if field=='volume' else 'CNY'
                 for k in ('window_start_trade_date','window_end_trade_date','actual_count','calendar_span','suspended_count','contract_id','parameter_set_id','input_digest','output_digest','evidence','n','k'):
                     if k in rawcell:cell[k]=rawcell[k]
-                if domain=='stocks' and field in original:cell['adjustment_basis']='TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE' if unit in ('adjusted_price','return_ratio') or field.startswith(('ret','ma','atr','prior_high','prior_low')) else cell.get('adjustment_basis')
+                if domain=='stocks' and field in original:
+                    if field in ('close','prior_low20'):
+                        basis=cell.get('adjustment_basis')
+                        cell['adjustment_basis']=(basis if isinstance(basis,str) and
+                            basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:') and
+                            len(basis.rsplit(':',1)[-1])==64 and
+                            all(c in '0123456789abcdef' for c in basis.rsplit(':',1)[-1].lower()) else None)
+                    elif unit in ('adjusted_price','return_ratio') or field.startswith(('ret','ma','atr','prior_high','prior_low')):
+                        cell['adjustment_basis']='TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'
         if domain=='events':
             groups={}
             for row in data:
@@ -1393,6 +1481,31 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['anchor_group_count']=len(group)
         self.api.cache[key]=data
         return data
+
+    def _verify_product_project_sources(self,domain,day):
+        root=self.api.root;candidate=self.api.candidate
+        owners=candidate.get('owners',{}).get(day) or {}
+        domains=('raw','core','adjusted','focus','profile') if domain=='stocks' else ('sector','rotation') if domain=='sectors' else ('raw',)
+        for source_domain in domains:
+            binding=owners.get(source_domain)
+            if binding:checked(root,binding)
+        names_authority=json.loads((root/'config/v4_display_names_authority_v1.json').read_bytes())
+        checked(root,names_authority['source'])
+        if domain not in ('stocks','sectors'):return
+        snapshot_binding=candidate.get('membership_snapshot')
+        if snapshot_binding:
+            snapshot=json.loads(checked(root,snapshot_binding).read_bytes())
+            for name in ('memberships','identity_source'):
+                if snapshot.get(name):checked(root,snapshot[name])
+        reference=candidate.get('native_membership_reference')
+        if reference:
+            authority=json.loads(checked(root,reference).read_bytes())
+            for entry in (authority.get('identity'),authority.get('search_identity'),authority.get('current_identity')):
+                if not isinstance(entry,dict):continue
+                source=entry.get('source')
+                if isinstance(source,dict) and source.get('path'):checked(root,source)
+                lifecycle=entry.get('lifecycle')
+                if isinstance(lifecycle,dict) and lifecycle.get('path'):checked(root,lifecycle)
 
     def page(self,domain,day,q,entity=None,sector=None):
         """Filter the full dated collection; missing sort values always remain last."""

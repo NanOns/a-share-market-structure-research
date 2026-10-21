@@ -4,11 +4,12 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+import math
 import re
 import statistics
 from pathlib import Path
 
-from v4.factors.native import market_axis_primitives
+from v4.factors.native import market_axis_primitives, candidate_threshold
 
 
 def _canonical(value):
@@ -26,6 +27,27 @@ def _checked(root, ref):
 
 def _read_rows(path):
     with gzip.open(path,'rt',encoding='utf-8') as stream:return [json.loads(line) for line in stream]
+
+
+def candidate_breadth_formula_comparison(comparison, *, boundary):
+    """Expose signed-SIGN and positive-indicator breadth on identical pairs."""
+    if not isinstance(boundary,(int,float)) or isinstance(boundary,bool) or not math.isfinite(boundary) or boundary<0:
+        raise ValueError('R7_BREADTH_THRESHOLD_INVALID')
+    rows=list(comparison)
+    if not rows:
+        return dict(evaluable=0,threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
+            signed=dict(value=None,classification='UNKNOWN',formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
+            positive_indicator=dict(value=None,classification='UNKNOWN',formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
+            difference=None,zero_current=0,zero_comparison=0)
+    sign_value=sum((1 if now>0 else -1 if now<0 else 0)-
+                   (1 if old>0 else -1 if old<0 else 0) for now,old in rows)/len(rows)
+    positive_value=sum((1 if now>0 else 0)-(1 if old>0 else 0) for now,old in rows)/len(rows)
+    classify=lambda value:('IMPROVING' if value>boundary else 'DETERIORATING' if value< -boundary else 'STABLE')
+    return dict(evaluable=len(rows),threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
+        signed=dict(value=sign_value,classification=classify(sign_value),formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
+        positive_indicator=dict(value=positive_value,classification=classify(positive_value),formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
+        difference=sign_value-positive_value,zero_current=sum(now==0 for now,_ in rows),
+        zero_comparison=sum(old==0 for _,old in rows))
 
 
 def _limit_owner(root,candidate,day):
@@ -110,19 +132,39 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
             pos=sessions.index(d)
             if pos<1:return None
             today=bars.get(d,{}).get('qfq_ohlc');previous=bars.get(sessions[pos-1],{}).get('qfq_ohlc')
-            return today[3]/previous[3]-1 if today and previous and previous[3]>0 else None
+            if not today or not previous or len(today)<4 or len(previous)<4:return None
+            close,prior_close=today[3],previous[3]
+            if (not isinstance(close,(int,float)) or isinstance(close,bool) or
+                    not isinstance(prior_close,(int,float)) or isinstance(prior_close,bool) or
+                    not math.isfinite(close) or not math.isfinite(prior_close) or close<=0 or prior_close<=0):
+                return None
+            return close/prior_close-1
         now,old=ret(day),ret(prior3)
         if now is not None and old is not None:comparison.append((now,old))
-    breadth=(sum((1 if now>0 else 0)-(1 if old>0 else 0) for now,old in comparison)/len(comparison)
-             if comparison else None)
+    # The existing implementation is the positive-indicator definition. Keep
+    # it for the recorded-axis parity check while exposing the distinct SIGN
+    # definition for independent S02 contract adjudication.
+    breadth_metrics=candidate_breadth_formula_comparison(comparison,
+        boundary=candidate_threshold('market_breadth_axis'))
+    breadth_positive=breadth_metrics['positive_indicator']['value']
+    formula_comparison=dict(breadth_metrics)
+    formula_comparison.update(contract='S02_BREADTH_FORMULA_COMPARISON_R1',
+        positive_indicator={**breadth_metrics['positive_indicator'],'definition':'I(r>0) in {0,1}','zero_return':'0'},
+        signed={**breadth_metrics['signed'],'definition':'SIGN(r) in {-1,0,1}','zero_return':'0'},
+        adjudication='OPEN_SOURCE_CONTRACT_REVIEW_REQUIRED')
     amounts=[]
     for row in core_rows:
         fact=(row.get('fields') or {}).get('amount_ratio20') or {};value=fact.get('value')
         if fact.get('quality_state')=='OBSERVED' and isinstance(value,(int,float)) and not isinstance(value,bool):amounts.append(value)
     participation=statistics.median(amounts) if amounts else None
-    return breadth,participation,dict(comparison_trade_date=prior3,universe_count=len(universe),
+    return breadth_positive,participation,dict(comparison_trade_date=prior3,universe_count=len(universe),
         current_members=len(current),breadth_evaluable=len(comparison),participation_evaluable=len(amounts),
-        breadth_formula='MEAN(SIGN(RET1_T)-SIGN(RET1_T_MINUS_3))',
+        breadth_formula='MEAN(POSITIVE_INDICATOR(RET1_T)-POSITIVE_INDICATOR(RET1_T_MINUS_3))',
+        breadth_formula_comparison=formula_comparison,
+        return_window=dict(current_return='close_t / close_t_minus_1 - 1',
+            comparison_return='close_t_minus_3 / close_t_minus_4 - 1',
+            coordinate='QFQ_OHLC',missing_policy='EXCLUDE_FROM_EVALUABLE_COMPARISON',
+            source='BOUND_MARKET.history.jsonl.gz',as_of=day),
         participation_formula='MEDIAN(CORE.amount_ratio20 WHERE quality_state=OBSERVED)',
         market_owner_binding=market_binding,history_binding=history_ref,membership_binding=membership_ref,
         comparison_membership_binding=predecessor or membership_ref,
@@ -169,7 +211,9 @@ def build_candidate_market_stress(root,candidate):
             raise ValueError('R7_MARKET_AXIS_RECALCULATION_MISMATCH:'+day)
         outputs[day]=dict(T0=day,stress_level=axes['stress_level'],stress_change=axes['stress_change'],
             breadth_axis=axes['breadth_axis'],participation_axis=axes['participation_axis'],
-            composite_regime_status='UNAVAILABLE_TREND_AXIS_NOT_RECALCULATED',status='CANDIDATE_POST_HOC',
+            trend_axis=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='BOUND_MARKET_RELATIVE_REFERENCE_PATH_NOT_PROVEN',
+                contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1'),
+            composite_regime_status='NOT_PUBLISHED_V4_03',status='CANDIDATE_POST_HOC',
             AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False,known_count=len(common),universe_count=len(universe),
             limit_coverage=coverage,limit_state_counts={name:sum(states.get(sid)==name for sid in common)
                 for name in ('NOT_LIMIT','LIMIT_UP','LIMIT_DOWN')},unknown_count=sum(states.get(sid)=='UNKNOWN' for sid in universe),
@@ -183,4 +227,5 @@ def build_candidate_market_stress(root,candidate):
         owners[day]=dict(receipt_path=str(receipt_path),limit=limit_binding,raw=receipt_owner['baostock_source'],core=core_binding)
     return dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',T0=t0,status='READY' if outputs else 'SOURCE_INCOMPLETE',
         input_authority='EXPLICIT_SUCCESSOR_CANDIDATE_PLUS_POST_HOC_DATED_BAOSTOCK',market_stress=outputs,source_owners=owners,
-        composite_regime_status='UNKNOWN_TREND_AXIS_NOT_RECALCULATED',AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
+        trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
+        composite_regime_status='NOT_PUBLISHED_V4_03',AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)

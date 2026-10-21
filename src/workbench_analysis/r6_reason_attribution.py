@@ -30,6 +30,30 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         return dict(contract_id=CONTRACT_ID, status='SOURCE_INCOMPLETE', trade_date=day,
                     reason='CANDIDATE_D0_OWNER_NOT_BOUND', items=None)
     rows = _load_jsonl(root, binding)
+    # Audit source sealing separately from the source's row-level booleans.
+    # A 64-hex producer/source digest plus a valid Owner binding is not an
+    # availability-time seal; keep candidate predicates diagnostic until the
+    # full cutoff and permission chain is present.
+    scenario_governance = {}
+    for scenario in ('LAUNCH_CONFIRM','RECOVERY_TURN','STRONG_PULLBACK','TREND_CONTINUE'):
+        observed=[]
+        for row in rows:
+            confirmation=row.get('confirmation') or {}
+            for evidence in confirmation.get('scenario_evidence') or []:
+                if evidence.get('scenario')==scenario:observed.append((row,evidence))
+        digests={((row.get('confirmation') or {}).get('source_sha256')) for row,_ in observed}
+        digest_proof=bool(digests) and all(isinstance(value,str) and len(value)==64 and
+            all(char in '0123456789abcdef' for char in value.lower()) for value in digests)
+        if scenario in ('LAUNCH_CONFIRM','RECOVERY_TURN'):
+            status=('OPEN_SOURCE_SEAL_METADATA_MISSING' if observed else 'SOURCE_INCOMPLETE')
+            role='CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY'
+        else:
+            status='DIAGNOSTIC_ONLY'
+            role='NOT_IN_FORMAL_D0_AGGREGATION'
+        scenario_governance[scenario]=dict(status=status,role=role,observed_rows=len(observed),
+            source_owner_digest_verified=True,producer_output_digest_present=digest_proof,
+            availability_time_proven=False,cutoff_proven=False,permission_chain_proven=False,
+            d0_row_predicates_preserved=True)
     overall = Counter()
     scenario_states = Counter()
     failed_checks = Counter()
@@ -162,6 +186,10 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         unknown_reasons=[dict(reason=k,count=v) for k,v in unknown_reasons.most_common(20)],
         prewatch_qualification_counts=dict(sorted(prewatch_states.items())),
         prewatch_unknown_predicates=[dict(reason=k,count=v) for k,v in prewatch_unknowns.most_common(20)],
+        scenario_governance=dict(contract_id='V4_D0_CANDIDATE_GOVERNANCE_AUDIT_R1',version='1.0.0',
+            source_binding=binding,scenarios=scenario_governance,
+            diagnostic_unknown_absorbed_into_formal_candidate=False,
+            D0_status_values_unchanged=True),
         focus_trigger_count=focus_triggers,focus_intersection=focus_summary,source=binding,
         AS_RECORDED=False,PIT_ELIGIBLE=False,eligibility_mutated=False,
         scope='CANDIDATE_D0_CHECKS_AND_PREWATCH_OWNER_ONLY; NOT_FORMAL_ORACLE')

@@ -3,7 +3,7 @@
 **日期：** 2026-10-21（北京时间）
 **基线：** `codex/v4-unified-development` @ `922e05e95d0ec4dc45f96550a403c26c8d01465d`
 **阶段合同：** `V4_R3_DEFECT_ROOT_CAUSE_AND_OPEN_FUNCTIONAL_CLOSEOUT_R4`；仅覆盖 2026-10-12、13、14 候选及对应 T0 前冻结事实。排除 10-15 及以后行情、正式 Head、生产 PG 写入、28765 重启、外部复权服务、概率或交易宣称。
-**总状态：** `R4_REPAIR_PARTIAL / PRIORITY_UI_ERROR_SEMANTICS_PASS / D2_CAUSAL_ATTRIBUTION_PASS / PRIORITY_OWNER_RESTORE_BLOCKED / LIMIT_SOURCE_LINEAGE_BLOCKED / FUNCTIONAL_CLOSEOUT_BLOCKED`
+**总状态：** `R4_REPAIR_PARTIAL / PRIORITY_UI_ERROR_SEMANTICS_PASS / PRIORITY_ALGORITHM_OFFLINE_SIM_PASS / D2_CAUSAL_ATTRIBUTION_PASS / PRIORITY_OWNER_RESTORE_BLOCKED / LIMIT_SOURCE_LINEAGE_BLOCKED / FUNCTIONAL_CLOSEOUT_BLOCKED`
 
 ## 阶段门禁和依据
 
@@ -16,9 +16,9 @@
 | 检查 | 实际输入与观察 | 判定及动作 |
 |---|---|---|
 | 当前 binding | 当前 R3 token 为 `2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df`，T0 `2026-10-14`。只读 authority `data/v4/research_priority_authority_r1.json`（SHA-256 `4d0042c9857e70c9482fbaaa40f7e1e4fb29cfffb920f2f0b95531207cbe6a3c`）含旧 token `554f…` 和 `914092…`，不含当前 `2e3a…`。旧 10/14 owner 不是当前 owner，不能跨 token 复用。 | 缺绑定原因直接成立，当前优先级列表仍不可用。没有生成/落库新 Owner，也没有把旧 owner 重新签给新 token。 |
-| 排序算法/板块 0 条 | `src/workbench_service/research_priority_r1.py::build_priority` 对板块要求 `maturity`、`health`、`sector_rs5`、`sector_rs20`、`output_state` 全部已知；缺一项即 `NOT_RANKABLE`，不填中性值。现有输入里代理 RS/宽度不等价于 lifecycle health 或正式 rotation。旧 owner 的原始不排序行需要 PG 只读连接才能逐字段核验；本机连接配置未提供可读 DSN，未改用别的 DB 或数据副本。 | 算法条件已由代码核对；旧 owner 的 0/400 原始逐字段计数本轮未能独立重读，不能声称已完成原因拆解。与一般 sector 榜 395 条可排名不是同一合同。 |
+| 排序算法/板块 0 条 | 直接以 10/14 冻结 candidate-only Core 5,225 行、Profile 5,225 行、Sector native/rotation 400 行运行 `src/workbench_service/research_priority_r1.py::build_priority`，上下文设为当前 R3 token 与 T0。股票结果 `967 RANKABLE / 4,258 NOT_RANKABLE`，前十真实代码为 `SZ.002674, SH.600851, SZ.301313, SH.688282, SH.600693, SZ.300733, SH.688552, SH.605318, SZ.002549, SZ.302132`。股票 4,258 个不排序原因中最多为相对强度未改善 2,432、5 日收益非正 1,669、位置过度延伸 59、结构受损 48，其余为明确输入缺失组合。板块 `0 RANKABLE / 400 NOT_RANKABLE`：266 条的缺项为 `maturity + health`；134 条为 `maturity + health + rotation`。原因与 `build_priority` 条件逐行一致，不做插补。离线 payload SHA-256 `2662ac3c09f7608585d9bec1c822a6ae0258fa74a663b7fe9043cfd8d7e54333`，临时位置 `G:/codex_tmp/R4_priority_offline_candidate.json`；其 stock/sector 输入文件及 SHA-256 保留在 payload source descriptors 中。 | **算法模拟 PASS。** 本轮实际解释了当前 token 的非空股票排序及板块 0/400 字段缺口，满足输出反例要求。它只是候选离线结果，未写入 immutable PG Owner/authority，也没有让真实 API 可读；旧 owner 原始 PG payload 因本机没有只读 DSN 未独立读回。与一般 sector 榜 395 条可排名不是同一合同。 |
 | 前端错误语义 | `api.js::read` 收到 `/radar/priority` 的 `PRODUCT_READ_FAILED / RESEARCH_PRIORITY_BINDING_MISSING` 后，现显示对应候选优先级尚未生成及当前 T0/token、缺失 Priority Owner、不能复用旧 token；`INVALID_QUERY_BOUND`、scope/rankability 参数错误仍显示筛选参数无效。 | 修复已落在 `src/workbench_service/static/core-product-r1/api.js`；负例测试见下文。仅修正页面解释，不等于恢复非空排序结果。 |
-| Owner 物化边界 | `prepare_priority` 会写 PG schema、payload 和 authority；本地目标 DB 为共用 `market_research`，本任务明确禁止生产 PG 写入。候选输入可读，但无隔离写授权；28766 当前服务 token 是旧 `914092…`，且由独立候选目录启动。 | 为守住授权边界，停止在“只读复核 + 本地无副作用模拟”。当前 token 的真实非空列表、API、页面恢复无法验收，因此 P0 未闭环。 |
+| Owner 物化边界 | `prepare_priority` 会写 PG schema、payload 和 authority；本地目标 DB 为共用 `market_research`，本任务明确禁止生产 PG 写入。候选输入可读，离线模拟 payload 已生成在 G 临时目录，但没有隔离写授权；28766 当前服务 token 是旧 `914092…`，且由独立候选目录启动。 | 为守住授权边界，没有物化 PG Owner / authority，不重启含后台 Jobs 的服务。当前 token 的真实 API 列表和页面仍无法验收，因此 P0 未闭环。 |
 
 ## P1 — D2 归因
 

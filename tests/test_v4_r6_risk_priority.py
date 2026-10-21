@@ -72,3 +72,51 @@ def test_first_capture_missed_cutoff_and_settlement_horizons_are_session_based()
     assert missed['settlement_status']=='NOT_DUE'
     assert maturity_schedule('2026-10-14',sessions,'2026-10-15')[1]['status']=='DUE_REQUIRES_SETTLEMENT_OWNER'
     assert due_plan(sessions,'2026-10-14','2026-10-15')[0]['outcome_status']=='DUE'
+
+
+def test_r7_market_stress_cache_is_source_versioned_and_separate(monkeypatch):
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+    from workbench_analysis import r6_candidate_market_stress as stress
+
+    class API:
+        token='same-token'
+        root='G:/codex_tmp/isolated-candidate'
+        candidate={'owner_version':'A'}
+        cache={}
+
+    api=API();api.cache={}
+    bff=object.__new__(CoreProductBFFR1);bff.api=api
+    monkeypatch.setattr(stress,'candidate_market_stress_identity',lambda root,candidate:candidate['owner_version'])
+    monkeypatch.setattr(stress,'build_candidate_market_stress',lambda root,candidate:{'T0':'2026-10-14','market_stress':candidate['owner_version']})
+    first=bff._candidate_market_stress()
+    assert first['market_stress']=='A' and first['cache']['cache_hit'] is False
+    repeated=bff._candidate_market_stress()
+    assert repeated['market_stress']=='A' and repeated['cache']['cache_hit'] is True
+    api.candidate={'owner_version':'B'}
+    replaced=bff._candidate_market_stress()
+    assert replaced['market_stress']=='B' and replaced['cache']['cache_hit'] is False
+    assert len(api.cache)==2
+
+
+def test_r7_frozen_invalidation_contract_vectors_preserve_unknown():
+    import json
+    from pathlib import Path
+    from workbench_analysis.r7_frozen_invalidation_v2 import evaluate_frozen_invalidation,load_contract
+
+    contract,contract_sha=load_contract()
+    assert contract['contract_id']=='FROZEN_INVALIDATION_CONTRACT_R2' and len(contract['vector_set'])>=12
+    assert len(contract_sha)==64
+    for vector in contract['vector_set']:
+        result=evaluate_frozen_invalidation(
+            prior_episode=vector.get('prior_episode'),
+            current_close=vector.get('current_close'),
+            frozen_invalidation_level=vector.get('frozen_invalidation_level'),
+            current_price_basis_id=vector.get('current_price_basis_id','QFQ-1'),
+            frozen_price_basis_id=vector.get('frozen_price_basis_id','QFQ-1'),
+            current_bar_status=vector.get('current_bar_status','ACTUAL'),
+            current_source_sha256=vector.get('current_source_sha256','a'*64),
+            trade_date=vector.get('trade_date','2026-10-14'),
+            source_trade_date=vector.get('source_trade_date','2026-10-14'))
+        assert result['value']==vector['expected'],vector['id']
+        assert result['status']==('IMPLEMENTED' if vector['expected'] in ('TRUE','FALSE') else
+                                  'NOT_APPLICABLE' if vector['expected']=='NOT_APPLICABLE' else 'UNKNOWN'),vector['id']

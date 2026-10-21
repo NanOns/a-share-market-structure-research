@@ -1,0 +1,29 @@
+{
+  "contract_id": "FROZEN_INVALIDATION_CONTRACT_R2",
+  "version": "2.0.0",
+  "status": "CANDIDATE_RECONSTRUCTED_NOT_ACCEPTED",
+  "scope": "V4_10_D2_CANDIDATE_ONLY",
+  "rule": "For an existing prior episode with the exact supported contract and a source-bound actual T close in the same price coordinate, invalidation is TRUE iff close <= the frozen episode invalidation level; otherwise FALSE. Missing prior episode is NOT_APPLICABLE. Missing or conflicting evidence is UNKNOWN.",
+  "required_inputs": ["prior_episode.episode_id", "prior_episode.invalidation_contract_id", "frozen_invalidation_level", "frozen_price_basis_id", "current_close", "current_price_basis_id", "current_bar_status", "current_source_sha256"],
+  "price_basis_rule": "Current and frozen price basis identifiers must match exactly; external adjustment or inferred coordinates are forbidden.",
+  "availability_rule": "Current source must be an observed actual bar dated exactly at T0 and its SHA-256 must be valid. Inputs after T0 are forbidden.",
+  "vector_set": [
+    {"id":"V01_NO_PRIOR","prior_episode":null,"current_close":10,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"NOT_APPLICABLE"},
+    {"id":"V02_EPISODE_ID_MISSING","prior_episode":{"episode_id":null,"invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":10,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V03_PRIOR_CONTRACT_MISSING","prior_episode":{"episode_id":"EP1","invalidation_contract_id":null},"current_close":9,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V04_UNSUPPORTED_PRIOR_CONTRACT","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"OTHER"},"current_close":9,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V05_EQUAL_BOUNDARY","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":10,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"TRUE"},
+    {"id":"V06_BELOW_BOUNDARY","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9.99,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"TRUE"},
+    {"id":"V07_ABOVE_BOUNDARY","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":10.01,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"FALSE"},
+    {"id":"V08_LEVEL_MISSING","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9,"frozen_invalidation_level":null,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V09_CLOSE_MISSING","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":null,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V10_COORDINATE_MISMATCH","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","current_price_basis_id":"T","frozen_price_basis_id":"T-1","expected":"UNKNOWN"},
+    {"id":"V11_NO_ACTUAL_BAR","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9,"frozen_invalidation_level":10,"current_bar_status":"SUSPENDED","expected":"UNKNOWN"},
+    {"id":"V12_BAD_CLOSE","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":-1,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V13_BAD_LEVEL","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9,"frozen_invalidation_level":0,"current_bar_status":"ACTUAL","expected":"UNKNOWN"},
+    {"id":"V14_BAD_SOURCE_SHA","prior_episode":{"episode_id":"EP1","invalidation_contract_id":"FROZEN_INVALIDATION_CONTRACT_R2"},"current_close":9,"frozen_invalidation_level":10,"current_bar_status":"ACTUAL","current_source_sha256":"bad","expected":"UNKNOWN"}
+  ],
+  "production_admission": false,
+  "historical_backfill_admission": false,
+  "notes": "R6 10/14 prior episodes have no frozen invalidation contract or frozen level, so this detector must retain UNKNOWN for those rows. The contract is executable for future candidate rows only when a versioned source producer captures the frozen level and price-basis identity at episode entry."
+}

@@ -297,11 +297,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def _candidate_market_stress(self):
         """Bounded post-hoc stress axes; composite market regime remains unknown."""
-        from workbench_analysis.r6_candidate_market_stress import build_candidate_market_stress
-        cache_key=('r6-candidate-market-stress-v1',self.api.token)
+        from workbench_analysis.r6_candidate_market_stress import (build_candidate_market_stress,
+            candidate_market_stress_identity)
+        source_identity=candidate_market_stress_identity(self.api.root,self.api.candidate)
+        cache_key=('r7-candidate-market-stress-v2',self.api.token,source_identity)
+        cache_hit=cache_key in self.api.cache
         if cache_key not in self.api.cache:
             self.api.cache[cache_key]=build_candidate_market_stress(self.api.root,self.api.candidate)
-        return self.api.cache[cache_key]
+        result=dict(self.api.cache[cache_key])
+        result['cache']={'cache_hit':cache_hit,
+            'cache_identity':source_identity,'cache_key_contract':'R7_CANDIDATE_MARKET_STRESS_CACHE_V2'}
+        return result
 
     def _candidate_focus_reason_attribution(self,day,focus_ids):
         from workbench_analysis.r6_reason_attribution import candidate_d0_reason_attribution
@@ -884,14 +890,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         parameter_sha256=lifecycle['parameter_sha256'],session_window=lifecycle['session_window'],
                         sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                         health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
-                    try:
-                        priority['candidate_market_risk']=self._candidate_market_stress()
-                    except (OSError,ValueError,KeyError,TypeError) as exc:
-                        priority['candidate_market_risk']=dict(contract_id='R6_CANDIDATE_MARKET_STRESS_PREVIEW_V1',
-                            status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
-                            composite_regime_status='UNKNOWN_BREADTH_AND_PARTICIPATION_UNAVAILABLE',
-                            AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                     self.api.cache[cache_key]=priority
+                # Market risk has its own source-version identity. Never keep it
+                # inside the ranking cache: a legal limit replay can change while
+                # the Core/Sector ranking inputs remain byte-identical.
+                try:
+                    priority['candidate_market_risk']=self._candidate_market_stress()
+                except (OSError,ValueError,KeyError,TypeError) as exc:
+                    priority['candidate_market_risk']=dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',
+                        status='SOURCE_INCOMPLETE',T0=day,reason=str(exc),market_stress=None,
+                        composite_regime_status='UNKNOWN_TREND_AXIS_NOT_RECALCULATED',
+                        AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
                 scope=query.get('scope','stocks')
                 if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')

@@ -1,0 +1,334 @@
+{
+  "evidence_contract_id": "R8_BATCH06_D0_SEAL_EVIDENCE_R1",
+  "generated_at": "2026-10-21T22:39:43.429430+08:00",
+  "status": "D0_CODE_READY_HISTORICAL_SOURCE_NOT_PROVEN",
+  "baseline_commit": "d90aae51eeb39599b7d915191d8822a2895cc0f0",
+  "implementation_commit_sha": "ce5f59b5754423183ad0e863a54684b893e93e6b",
+  "remote_branch": "codex/v4-unified-development",
+  "remote_sha_after_code_push": "ce5f59b5754423183ad0e863a54684b893e93e6b",
+  "scope": "D0 Seal is the only P0; no 28765 production switch and no final package.",
+  "formal_scenarios": [
+    "LAUNCH_CONFIRM",
+    "RECOVERY_TURN"
+  ],
+  "diagnostic_only_scenarios": [
+    "STRONG_PULLBACK",
+    "TREND_CONTINUE"
+  ],
+  "historical_t0": "2026-10-15",
+  "predicate_counts_unchanged": {
+    "FALSE": 5111,
+    "TRUE": 64,
+    "UNKNOWN": 51
+  },
+  "scenario_denominator": 10452,
+  "seal_distribution": {
+    "CUTOFF_CONTRACT_UNRESOLVED": 10452
+  },
+  "scenario_results": {
+    "LAUNCH_CONFIRM": {
+      "status": "OPEN_CUTOFF_CONTRACT_UNRESOLVED",
+      "observed_rows": 5226,
+      "seal_state": "CUTOFF_CONTRACT_UNRESOLVED",
+      "seal_state_counts": {
+        "CUTOFF_CONTRACT_UNRESOLVED": 5226
+      },
+      "pg_binding_status": "PG_BINDING_MISSING",
+      "cutoff_status": "CUTOFF_CONTRACT_UNRESOLVED",
+      "role": "CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY"
+    },
+    "RECOVERY_TURN": {
+      "status": "OPEN_CUTOFF_CONTRACT_UNRESOLVED",
+      "observed_rows": 5226,
+      "seal_state": "CUTOFF_CONTRACT_UNRESOLVED",
+      "seal_state_counts": {
+        "CUTOFF_CONTRACT_UNRESOLVED": 5226
+      },
+      "pg_binding_status": "PG_BINDING_MISSING",
+      "cutoff_status": "CUTOFF_CONTRACT_UNRESOLVED",
+      "role": "CANDIDATE_PREDICATE_DIAGNOSTIC_ONLY"
+    },
+    "STRONG_PULLBACK": {
+      "status": "DIAGNOSTIC_ONLY",
+      "observed_rows": 5226,
+      "seal_state": "DIAGNOSTIC_ONLY",
+      "seal_state_counts": {},
+      "pg_binding_status": "PG_BINDING_MISSING",
+      "cutoff_status": "CUTOFF_CONTRACT_UNRESOLVED",
+      "role": "NOT_IN_FORMAL_D0_AGGREGATION"
+    },
+    "TREND_CONTINUE": {
+      "status": "DIAGNOSTIC_ONLY",
+      "observed_rows": 5226,
+      "seal_state": "DIAGNOSTIC_ONLY",
+      "seal_state_counts": {},
+      "pg_binding_status": "PG_BINDING_MISSING",
+      "cutoff_status": "CUTOFF_CONTRACT_UNRESOLVED",
+      "role": "NOT_IN_FORMAL_D0_AGGREGATION"
+    }
+  },
+  "historical_source_class": "SOURCE_REPRODUCIBLE_POST_HOC",
+  "historical_first_availability": "HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN",
+  "first_break": "CUTOFF_CONTRACT_UNRESOLVED",
+  "candidate_owner_binding": {
+    "bytes": 2892297,
+    "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d0_prewatch.jsonl.gz",
+    "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99"
+  },
+  "candidate_owner_sources": [
+    {
+      "role": "RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW",
+      "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/raw.jsonl.gz",
+      "sha256": "47fcb456f599697239da07757e26ee7e5f40550f3a3f3e84d2bb7b51bf1bcfd8",
+      "bytes": 241266,
+      "time_role": "RECONSTRUCTED_INPUT_BINDING",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "TDX_NATIVE_ADJUSTED_DAILY_WINDOW",
+      "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/adjusted.jsonl.gz",
+      "sha256": "1b857b62c0456b0b567b0858266a1a7e490fdadae7d62f66c10f134f7bcf95e1",
+      "bytes": 410237,
+      "time_role": "RECONSTRUCTED_INPUT_BINDING",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "CORE_AND_RELATIVE_STRENGTH_FACTS",
+      "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/core.jsonl.gz",
+      "sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+      "bytes": 19773541,
+      "time_role": "RECONSTRUCTED_INPUT_BINDING",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "D0_PREDICATE_OWNER_OUTPUT",
+      "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d0_prewatch.jsonl.gz",
+      "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99",
+      "bytes": 2892297,
+      "time_role": "RECONSTRUCTED_INPUT_BINDING",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "FROZEN_D0_SCANNER_AND_THRESHOLDS",
+      "path": "config/v4_11_confirmation_detector_contract_r2.json",
+      "sha256": "3c245fbbc0e67c9562c0a0af8622f362817aa158bc4ef6ae4e5cf80b2511e427",
+      "bytes": 9716,
+      "time_role": "VERSIONED_CODE_CONTRACT",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "TARGET_FACT_PRODUCER",
+      "path": "src/v4/target_fact_producers_r4.py",
+      "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258",
+      "bytes": 6426,
+      "time_role": "VERSIONED_CODE_CONTRACT",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "SCENARIO_DETECTOR",
+      "path": "src/workbench_analysis/corrected_focus_replay.py",
+      "sha256": "d78f226caca4765cb1f2746d586fc12ac63f3295a94438c619c920eb582d05d3",
+      "bytes": 16649,
+      "time_role": "VERSIONED_CODE_CONTRACT",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "D0_SOURCE_SEAL_CONTRACT",
+      "path": "config/v4_d0_source_seal_successor_v1.json",
+      "sha256": "84de4fb9eea4f9c2bdaf031716679c37bc36e6bedf8434011eb78172fba53f2f",
+      "bytes": 2233,
+      "time_role": "VERSIONED_CODE_CONTRACT",
+      "source_available_at": null,
+      "source_availability_proven": false
+    },
+    {
+      "role": "D0_PRODUCER_PARAMETERS",
+      "path": "config/research_attention_v3.yaml",
+      "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec",
+      "bytes": 6277,
+      "time_role": "VERSIONED_CODE_CONTRACT",
+      "source_available_at": null,
+      "source_availability_proven": false
+    }
+  ],
+  "pg_identity": {
+    "database": "market_research",
+    "oid": 646711,
+    "server_version_num": "180006",
+    "transaction_read_only": "on",
+    "host": "127.0.0.1",
+    "port": 5432
+  },
+  "pg_query_scope": "EXACT_TARGET_DATE_READ_ONLY; NO OWNER OR PUBLICATION WRITE",
+  "source_ingress_receipt": {
+    "trade_date": "2026-10-15",
+    "source_contract": "TDX_LATEST_PACKAGE_TARGET_SESSION_V2",
+    "source_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+    "package_date": "2026-10-21",
+    "available_at": "2026-10-21T17:35:26+08:00",
+    "time_role": "RECONSTRUCTED_FROM_LATER_PACKAGE",
+    "evidence_class": "RECONSTRUCTED_NON_PIT",
+    "artifact_sha256": "6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8",
+    "artifact_bytes": 2179581,
+    "row_count": 5565,
+    "candidate_only": true,
+    "production_accepted": false,
+    "recorded_at": "2026-10-21T17:44:42.543216+08:00",
+    "byte_readback": {
+      "status": "PASS",
+      "actual_sha256": "6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8",
+      "actual_bytes": 2179581
+    },
+    "historical_first_availability_proven": false
+  },
+  "source_ingress_bar_counts": [
+    {
+      "evidence_class": "RECONSTRUCTED_NON_PIT",
+      "source_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+      "row_count": 5565
+    }
+  ],
+  "d0_pg_owner_publication": {
+    "status": "PG_BINDING_MISSING",
+    "d0_publications": [],
+    "d0_module_owner_rows": [],
+    "stock_prewatch_publications": [],
+    "consumed_source_digest_count": 0,
+    "owner_select_privileges": [],
+    "permission_chain_proven": false,
+    "publications_schema_table_present": true,
+    "module_results_table_present": true,
+    "stock_prewatch_table_present": true
+  },
+  "candidate_pg_publication": {
+    "schema": "v4_r8pub_fde08c597fc76d13",
+    "table_present": true,
+    "expected_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+    "rows": [
+      {
+        "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "trade_date": "2026-10-15",
+        "predecessor_head_sha256": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
+        "candidate_head_sha256": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "owner_authority_sha256": "506b1003a6ed4b7759d75797852f5dcd44cfbf8929675f29f32fbc0f085194a2",
+        "source_freeze_sha256": "ca40dfb96ba18556091497df27ae20adb27d20daffe06b1384fe9cc788f83b4c",
+        "inserted_at": "2026-10-21 20:07:27.040317+08"
+      }
+    ],
+    "status": "TOKEN_MATCH"
+  },
+  "http_readback": {
+    "receipt_path": "G:/codex_tmp/sixth_batch_d0_28766/HTTP_READBACK_R2.json",
+    "receipt_sha256": "e5a789d2b683099a270bcaa211bd513797c6509fd41bdd808f90fcd3e00454f8",
+    "same_context_token": true,
+    "same_trade_date": true,
+    "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+    "trade_date": "2026-10-15",
+    "port": 28766,
+    "routes": [
+      {
+        "name": "home",
+        "path": "/api/v4/home",
+        "http_status": 200,
+        "response_bytes": 200221,
+        "payload_sha256": "167fa04af1cc80f1bd4723e4b739de399ce54864817896aa7e51cf393dbce06b",
+        "elapsed_ms": 1101.798,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "name": "stock_list",
+        "path": "/api/v4/stocks",
+        "http_status": 200,
+        "response_bytes": 132884,
+        "payload_sha256": "4932ab6bc46d157c18dad40c8111ea18cd0131bb4c93f1f7240c5bdd5a7d443d",
+        "elapsed_ms": 83.948,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "name": "stock_detail",
+        "path": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/profile",
+        "http_status": 200,
+        "response_bytes": 188974,
+        "payload_sha256": "eac3cd24131731231cee1dbe1b82385593f84b58e56e4f1ee54fb1b90063a7ce",
+        "elapsed_ms": 1945.791,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "name": "focus",
+        "path": "/api/v4/focus",
+        "http_status": 200,
+        "response_bytes": 95163,
+        "payload_sha256": "442bcd5bd07e0e59ab46db55d4db4c97625058e824a66d416a7e9dca9420ec7a",
+        "elapsed_ms": 1808.114,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "name": "forward",
+        "path": "/api/v4/forward",
+        "http_status": 200,
+        "response_bytes": 2952,
+        "payload_sha256": "abf590199b32b1fa33369cbdd86bb3828925f4bf6af48ba9e49611fb4920d6eb",
+        "elapsed_ms": 4.053,
+        "status": "SOURCE_INCOMPLETE",
+        "trade_date": "2026-10-15"
+      }
+    ],
+    "focus_status": "READY",
+    "focus_reason_code": "CUTOFF_CONTRACT_UNRESOLVED",
+    "transport_success_not_seal_claim": true,
+    "production_accepted": false,
+    "formal_head_match": false,
+    "production_port_28765_touched": false,
+    "live_counterexample": "Initial post-reload request found PG inserted_at datetime not JSON serializable; query now casts inserted_at to text, and all five same-token routes returned HTTP 200."
+  },
+  "negative_test_suite": {
+    "command": "python -m pytest tests/test_v4_d0_source_seal_r1.py tests/test_v4_functional_r8_third_batch.py tests/test_v4_functional_r8_s01_s03.py -q",
+    "result": "52 passed in 0.73s",
+    "coverage": [
+      "tampered bytes",
+      "caller hash and boolean/permission spoof",
+      "missing PG D0 binding",
+      "wrong candidate token and T0",
+      "unresolved cutoff",
+      "late and reconstructed source",
+      "missing timezone",
+      "future source window",
+      "wrong price coordinate",
+      "diagnostic scenario exclusion",
+      "tri-state preservation",
+      "date after former R6 ceiling"
+    ]
+  },
+  "python_compile": "PASS",
+  "runtime_ports": {
+    "127.0.0.1:28766": "LISTEN",
+    "127.0.0.1:28765": "NOT_LISTENING",
+    "127.0.0.1:5432": "LISTEN",
+    "pg_database": "market_research",
+    "pg_pid": 8640,
+    "dev_service_pid": 40864
+  },
+  "future_first_capture_session": {
+    "date": "2026-10-22",
+    "basis": "Next weekday session after 2026-10-21; SSE 2026 calendar says trading resumed 2026-10-08 after National Day closure, with no later October closure before 10-22. Verify current official calendar at capture.",
+    "source": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml",
+    "capture_performed": false
+  },
+  "limitations": [
+    "10/15+ historical source receipts are reconstructed from a later package; no historical first availability proof.",
+    "Actual 10/15 D0 PG Owner/Publication/consumed-source/permission binding is absent. The independently observed R8 candidate Publication token matches PG but is not a D0 publication.",
+    "Cutoff contract remains unresolved for the historical candidate; no PIT or AS_RECORDED claim.",
+    "28766 Forward returns SOURCE_INCOMPLETE; scope is D0 Seal closure, not Forward certification."
+  ]
+}

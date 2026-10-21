@@ -14,13 +14,16 @@ CONTRACT_ID = 'R6_D0_REASON_ATTRIBUTION_R1'
 def _parse_instant(value):
     if not isinstance(value,str) or not value.strip():return None
     try:
-        if 'T' not in value and ' ' not in value:
-            return datetime.combine(date.fromisoformat(value),datetime.min.time(),tzinfo=timezone.utc)
+        if 'T' not in value and ' ' not in value:return None
         parsed=datetime.fromisoformat(value.replace('Z','+00:00'))
         return parsed if parsed.tzinfo is not None else None
-    except ValueError:
-        try:return datetime.combine(date.fromisoformat(value),datetime.min.time(),tzinfo=timezone.utc)
-        except ValueError:return None
+    except ValueError:return None
+
+
+def _parse_day(value):
+    if not isinstance(value, str) or len(value) < 10:return None
+    try:return date.fromisoformat(value[:10])
+    except ValueError:return None
 
 
 def evaluate_d0_source_seal(evidence, *, knowledge_cutoff):
@@ -30,36 +33,30 @@ def evaluate_d0_source_seal(evidence, *, knowledge_cutoff):
     cutoff=_parse_instant(evidence.get('knowledge_cutoff'))
     required_present=all(evidence.get(key) not in (None,'') for key in
         ('source_available_at','knowledge_cutoff','input_publication_id','time_role','source_sha256'))
-    permission_fact=evidence.get('permission_chain_proven')
-    chain=evidence.get('permission_chain')
-    future=_parse_instant(evidence.get('trade_date') or evidence.get('as_of'))
+    # An input object's boolean and a caller-supplied 64-hex digest cannot
+    # establish that a permission existed in the actual PG Owner/Publication.
+    # Until the caller supplies a verifiable PG authority binding, fail closed.
+    future_day=_parse_day(evidence.get('trade_date') or evidence.get('as_of'))
     cutoff_fact=_parse_instant(knowledge_cutoff)
-    if available is None or cutoff is None or not required_present or not isinstance(permission_fact,bool):
+    if available is None or cutoff is None or not required_present:
         return dict(status='HISTORICAL_SEAL_NOT_PROVEN',availability_time_proven=False,
             cutoff_proven=False,permission_chain_proven=False,
             reason='SOURCE_CLOCK_PUBLICATION_ROLE_OR_PERMISSION_FACT_MISSING')
     availability_proven=available<=cutoff
     cutoff_proven=(cutoff_fact is not None and cutoff<=cutoff_fact and
-                   (future is None or future<=cutoff_fact))
-    permission_proven=(permission_fact is True and isinstance(chain,dict) and
-        bool(chain.get('permission_id')) and bool(chain.get('owner_id')) and bool(chain.get('role')) and
-        chain.get('permission') in ('READ','READ_CANDIDATE','SOURCE_READ') and
-        chain.get('source_binding_sha256')==evidence.get('source_sha256') and
-        chain.get('input_publication_id')==evidence.get('input_publication_id') and
-        isinstance(chain.get('chain_sha256'),str) and len(chain['chain_sha256'])==64 and
-        all(c in '0123456789abcdefABCDEF' for c in chain['chain_sha256']))
+                   future_day is not None and future_day<=cutoff_fact.date())
+    permission_proven=False
     if not availability_proven or not cutoff_proven:
         status='SEAL_TIME_REJECTED'
     elif not permission_proven:
         status='SEAL_PERMISSION_UNPROVEN'
-    else:
-        status='CANDIDATE_SEAL_PROVEN'
     return dict(status=status,availability_time_proven=availability_proven,
         cutoff_proven=cutoff_proven,permission_chain_proven=permission_proven,
         available_at=evidence.get('source_available_at') or evidence.get('available_at'),
         knowledge_cutoff=evidence.get('knowledge_cutoff'),
         input_publication_id=evidence.get('input_publication_id'),time_role=evidence.get('time_role'),
-        source_sha256=evidence.get('source_sha256'))
+        source_sha256=evidence.get('source_sha256'),
+        permission_reason='ACTUAL_PG_OWNER_PUBLICATION_BINDING_NOT_VERIFIED')
 
 
 def _load_jsonl(root, binding):

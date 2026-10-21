@@ -37,8 +37,9 @@ def candidate_breadth_formula_comparison(comparison, *, boundary):
         raise ValueError('R7_BREADTH_THRESHOLD_INVALID')
     rows=list(comparison)
     if not rows:
-        return dict(contract_id='S02_BREADTH_FORMULA_COMPARISON_R1',version='1.0.0',
-            compatibility_formula='POSITIVE_INDICATOR',adjudication_status='BUSINESS_SEMANTICS_PENDING',
+        return dict(contract_id='S02_ADVANCERS_SHARE_DELTA3_R1',version='1.0.0',
+            algorithm_id='ADVANCERS_SHARE_DELTA3',compatibility_formula='POSITIVE_INDICATOR',
+            adjudication_status='DEV_CANDIDATE_VERSIONED',
             evaluable=0,threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
             signed=dict(value=None,classification='UNKNOWN',formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
             positive_indicator=dict(value=None,classification='UNKNOWN',formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
@@ -47,8 +48,9 @@ def candidate_breadth_formula_comparison(comparison, *, boundary):
                    (1 if old>0 else -1 if old<0 else 0) for now,old in rows)/len(rows)
     positive_value=sum((1 if now>0 else 0)-(1 if old>0 else 0) for now,old in rows)/len(rows)
     classify=lambda value:('IMPROVING' if value>boundary else 'DETERIORATING' if value< -boundary else 'STABLE')
-    return dict(contract_id='S02_BREADTH_FORMULA_COMPARISON_R1',version='1.0.0',
-        compatibility_formula='POSITIVE_INDICATOR',adjudication_status='BUSINESS_SEMANTICS_PENDING',
+    return dict(contract_id='S02_ADVANCERS_SHARE_DELTA3_R1',version='1.0.0',
+        algorithm_id='ADVANCERS_SHARE_DELTA3',compatibility_formula='POSITIVE_INDICATOR',
+        adjudication_status='DEV_CANDIDATE_VERSIONED',
         evaluable=len(rows),threshold=boundary,threshold_parameter_id='V4_03_MARKET_BREADTH_AXIS',
         signed=dict(value=sign_value,classification=classify(sign_value),formula='MEAN(SIGN(r_t)-SIGN(r_t_minus_3))'),
         positive_indicator=dict(value=positive_value,classification=classify(positive_value),formula='MEAN(I(r_t>0)-I(r_t_minus_3>0))'),
@@ -61,11 +63,10 @@ def _valid_sha(value):
 
 
 def _permission_chain_proven(chain, source_sha256, publication_id):
-    return (isinstance(chain,dict) and _valid_sha(source_sha256) and
-        chain.get('permission_id') and chain.get('owner_id') and chain.get('role') and
-        chain.get('permission') in ('READ','READ_CANDIDATE','SOURCE_READ') and
-        chain.get('source_binding_sha256')==source_sha256 and
-        chain.get('input_publication_id')==publication_id and _valid_sha(chain.get('chain_sha256')))
+    # Fields and a caller-provided digest are not an authority proof. A future
+    # implementation must read and validate the actual PG Owner/Publication
+    # permission binding before allowing a source-backed trend value.
+    return False
 
 
 def adapt_candidate_trend_reference(reference, *, t0, knowledge_cutoff):
@@ -229,7 +230,7 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
     participation=statistics.median(amounts) if amounts else None
     return breadth_positive,participation,dict(comparison_trade_date=prior3,universe_count=len(universe),
         current_members=len(current),breadth_evaluable=len(comparison),participation_evaluable=len(amounts),
-        breadth_formula='MEAN(POSITIVE_INDICATOR(RET1_T)-POSITIVE_INDICATOR(RET1_T_MINUS_3))',
+        breadth_formula='ADVANCERS_SHARE_DELTA3:MEAN(I(RET1_T>0)-I(RET1_T_MINUS_3>0))',
         breadth_formula_comparison=formula_comparison,
         return_window=dict(current_return='close_t / close_t_minus_1 - 1',
             comparison_return='close_t_minus_3 / close_t_minus_4 - 1',

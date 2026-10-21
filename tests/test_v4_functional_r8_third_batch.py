@@ -1,3 +1,6 @@
+import hashlib
+import json
+
 from workbench_analysis.r6_candidate_market_stress import (
     adapt_candidate_trend_reference, candidate_breadth_formula_comparison,
 )
@@ -8,10 +11,11 @@ from workbench_analysis.r8_candidate_derived_cache import cache_path, read_snaps
 
 def test_s02_keeps_distinct_formula_values_and_candidate_semantics():
     result = candidate_breadth_formula_comparison([(0.1, -0.1), (0.0, 0.1)], boundary=0.05)
-    assert result['contract_id'] == 'S02_BREADTH_FORMULA_COMPARISON_R1'
+    assert result['contract_id'] == 'S02_ADVANCERS_SHARE_DELTA3_R1'
     assert result['positive_indicator']['value'] == 0
     assert result['signed']['value'] == 0.5
-    assert result['adjudication_status'] == 'BUSINESS_SEMANTICS_PENDING'
+    assert result['adjudication_status'] == 'DEV_CANDIDATE_VERSIONED'
+    assert result['algorithm_id'] == 'ADVANCERS_SHARE_DELTA3'
 
 
 def test_s02_trend_adapter_requires_same_date_time_permission_and_series_identity():
@@ -22,7 +26,8 @@ def test_s02_trend_adapter_requires_same_date_time_permission_and_series_identit
         permission_chain=dict(permission_id='PERM-1',owner_id='OWNER-1',role='candidate_reader',
             permission='READ_CANDIDATE',source_binding_sha256='a'*64,input_publication_id='PUB-1',chain_sha256='c'*64))
     result=adapt_candidate_trend_reference(ref,t0='2026-10-21',knowledge_cutoff='2026-10-21T15:10:00+08:00')
-    assert result['value']=='STRONG' and result['quality']=='OBSERVED'
+    assert result['value']=='UNKNOWN' and result['quality']=='SOURCE_INCOMPLETE'
+    assert result['reason']=='TREND_REFERENCE_PERMISSION_NOT_PROVEN'
     assert adapt_candidate_trend_reference({**ref,'trade_date':'2026-10-20'},t0='2026-10-21',
         knowledge_cutoff='2026-10-21T15:10:00+08:00')['value']=='UNKNOWN'
     assert adapt_candidate_trend_reference({**ref,'source_available_at':'2026-10-21T15:11:00+08:00'},
@@ -40,7 +45,10 @@ def test_d0_seal_is_driven_by_explicit_clock_and_permission_facts():
         source_sha256='b'*64,trade_date='2026-10-21',permission_chain=dict(permission_id='PERM-1',
             owner_id='OWNER-1',role='candidate_reader',permission='READ_CANDIDATE',
             source_binding_sha256='b'*64,input_publication_id='PUB-1',chain_sha256='c'*64))
-    assert evaluate_d0_source_seal(evidence,knowledge_cutoff=cutoff)['status']=='CANDIDATE_SEAL_PROVEN'
+    result=evaluate_d0_source_seal(evidence,knowledge_cutoff=cutoff)
+    assert result['status']=='SEAL_PERMISSION_UNPROVEN'
+    assert result['permission_chain_proven'] is False
+    assert result['permission_reason']=='ACTUAL_PG_OWNER_PUBLICATION_BINDING_NOT_VERIFIED'
     assert evaluate_d0_source_seal({**evidence,'source_available_at':'2026-10-21T15:06:00+08:00'},
         knowledge_cutoff=cutoff)['status']=='SEAL_TIME_REJECTED'
     assert evaluate_d0_source_seal({**evidence,'permission_chain_proven':False},
@@ -48,6 +56,8 @@ def test_d0_seal_is_driven_by_explicit_clock_and_permission_facts():
     assert evaluate_d0_source_seal({**evidence,'trade_date':'2026-10-22'},
         knowledge_cutoff=cutoff)['status']=='SEAL_TIME_REJECTED'
     assert evaluate_d0_source_seal({'source_sha256':'b'*64},knowledge_cutoff=cutoff)['status']=='HISTORICAL_SEAL_NOT_PROVEN'
+    assert evaluate_d0_source_seal({**evidence,'source_available_at':'2026-10-21',
+        'knowledge_cutoff':'2026-10-21'},knowledge_cutoff=cutoff)['status']=='HISTORICAL_SEAL_NOT_PROVEN'
 
 
 def test_candidate_snapshot_cache_is_atomic_content_and_identity_bound(tmp_path):
@@ -68,7 +78,9 @@ def test_s06p_comparator_separates_formal_and_non_pit_candidate_predecessors():
         candidate_predecessor={'accepted':False,'evidence_class':'NON_PIT'},reference_snapshot=reference,
         candidate_snapshot=candidate,target_session='2026-10-15',compute_sessions=['2026-10-15'],
         source_bindings=[{'owner':'core','sha256':'e'*64}])
-    assert ok['status']=='PASS' and ok['candidate_predecessor_used_as_formal'] is False
+    assert ok['status']=='FAIL_CLOSED' and ok['G3']=='FAIL' and ok['G4']=='FAIL'
+    assert 'G3_ROOT_REQUIRED' in ok['errors']
+    assert 'G4_REAL_PG_OPERATION_REQUIRED' in ok['errors']
     rejected=compare_candidate_append(formal_predecessor={'accepted':False,'head_sha256':'d'*64},
         candidate_predecessor={'accepted':False,'evidence_class':'NON_PIT'},reference_snapshot=reference,
         candidate_snapshot=candidate,target_session='2026-10-15',compute_sessions=['2026-10-15'],
@@ -79,3 +91,41 @@ def test_s06p_comparator_separates_formal_and_non_pit_candidate_predecessors():
         candidate_snapshot=candidate,target_session='2026-10-15',compute_sessions=['2026-10-15'],
         source_bindings=[{'owner':'core','sha256':'e'*64}],revisions_detected=True)
     assert 'REVISION_REQUIRES_RANGE_REPAIR' in revised['errors']
+
+
+def test_s06p_g2_g3_require_actual_bound_bytes_and_g4_requires_pg_receipt(tmp_path):
+    old=b'{"old_head":true}'
+    source=b'{"T0":"2026-10-21","rows":1}'
+    (tmp_path/'old.json').write_bytes(old)
+    (tmp_path/'old-candidate.json').write_bytes(old)
+    (tmp_path/'core.json').write_bytes(source)
+    def ref(name,data):
+        return {'path':name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+    historical=ref('old.json',old)
+    candidate_historical=ref('old-candidate.json',old)
+    source_binding={'owner':'core',**ref('core.json',source)}
+    parameters={'version':'candidate-v2'}
+    window=['2026-10-21']
+    previous_ref={'head_sha256':'d'*64}
+    material={'source_bindings':[{'owner':'core',**ref('core.json',source)}],
+        'parameters':parameters,'window':window,'previous_ref':previous_ref}
+    expected=hashlib.sha256(json.dumps(material,ensure_ascii=False,sort_keys=True,
+        separators=(',',':'),allow_nan=False).encode()).hexdigest()
+    reference={'business_values':{'T0':'2026-10-21','rows':1},
+        'historical_identity_binding':historical}
+    candidate={'business_values':{'T0':'2026-10-21','rows':1},
+        'historical_identity_binding':candidate_historical}
+    result=compare_candidate_append(formal_predecessor={'accepted':True,'head_sha256':'d'*64},
+        candidate_predecessor={'accepted':False,'evidence_class':'NON_PIT'},
+        reference_snapshot=reference,candidate_snapshot=candidate,target_session='2026-10-21',
+        compute_sessions=['2026-10-21'],source_bindings=[source_binding],root=tmp_path,
+        parameters=parameters,window=window,previous_ref=previous_ref,expected_g3_digest=expected)
+    assert result['G2']=='PASS' and result['G3']=='PASS' and result['G4']=='FAIL'
+    (tmp_path/'core.json').write_bytes(b'{"T0":"2026-10-21","rows":2}')
+    tampered=compare_candidate_append(formal_predecessor={'accepted':True,'head_sha256':'d'*64},
+        candidate_predecessor={'accepted':False,'evidence_class':'NON_PIT'},
+        reference_snapshot=reference,candidate_snapshot=candidate,target_session='2026-10-21',
+        compute_sessions=['2026-10-21'],source_bindings=[source_binding],root=tmp_path,
+        parameters=parameters,window=window,previous_ref=previous_ref,expected_g3_digest=expected)
+    assert tampered['G3']=='FAIL'
+    assert any('BINDING_BYTES_OR_SHA_MISMATCH' in error for error in tampered['errors'])

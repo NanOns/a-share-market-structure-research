@@ -1,0 +1,160 @@
+{
+  "contract_id": "V4_R8_FOURTH_BATCH_EVIDENCE_R1",
+  "status": "PARTIAL_OPEN",
+  "audit_baseline": {
+    "branch": "codex/v4-unified-development",
+    "commit": "4c65039b7935ea2396740df8552045afcd8afb61",
+    "phase0": "DEGRADED_PASS"
+  },
+  "authority": {
+    "development_write_authority": "SOT_R2_EFFECTIVE_2026-10-18",
+    "write_scope": [
+      "bounded_development_DDL_DML",
+      "migration",
+      "backfill",
+      "recompute",
+      "development_Head_CAS_validation"
+    ],
+    "production_head_modified": false,
+    "production_accepted": false,
+    "scanner_started": false
+  },
+  "source": {
+    "provider": "official TDX daily package",
+    "package_date": "2026-10-21",
+    "provider_updated_at_shanghai": "2026-10-21 15:58:50",
+    "captured_at_utc": "2026-10-21T09:35:26Z",
+    "bytes": 549730276,
+    "sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+    "source_root_writes": 0,
+    "sessions": [
+      {
+        "date": "2026-10-15",
+        "rows": 5565,
+        "evidence_class": "RECONSTRUCTED_NON_PIT"
+      },
+      {
+        "date": "2026-10-16",
+        "rows": 5567,
+        "evidence_class": "RECONSTRUCTED_NON_PIT"
+      },
+      {
+        "date": "2026-10-19",
+        "rows": 5564,
+        "evidence_class": "RECONSTRUCTED_NON_PIT"
+      },
+      {
+        "date": "2026-10-20",
+        "rows": 5568,
+        "evidence_class": "RECONSTRUCTED_NON_PIT"
+      },
+      {
+        "date": "2026-10-21",
+        "rows": 5568,
+        "evidence_class": "CAPTURED_AFTER_CLOSE_NON_PIT"
+      }
+    ]
+  },
+  "postgres": {
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "market_research",
+    "database_oid": 646711,
+    "server_version_num": "180006",
+    "write_role": "postgres",
+    "schema": "v4_r8_batch04_source_ingress",
+    "tables": [
+      "source_receipts",
+      "tdx_bars"
+    ],
+    "before": {
+      "receipts": 0,
+      "bars": 0
+    },
+    "after": {
+      "receipts": 5,
+      "bars": 27832
+    },
+    "idempotent_replay_before": {
+      "receipts": 5,
+      "bars": 27832
+    },
+    "idempotent_replay_after": {
+      "receipts": 5,
+      "bars": 27832
+    },
+    "publication_created": false,
+    "development_head_modified": false,
+    "formal_head_modified": false
+  },
+  "gates": {
+    "G1": "memory-only claims do not provide source binding; real full append gate remains open",
+    "G2": "bound historical identity bytes checked; positive fixture passes",
+    "G3": "bound source digest recomputed; positive fixture passes and tamper fixture fails",
+    "G4": "requires bound real PG append receipt; remains open because no R8 publication/head append was executed"
+  },
+  "d0_market": {
+    "d0_permission": "SEAL_PERMISSION_UNPROVEN",
+    "market_trend": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0",
+    "composite_permission": "not inferred",
+    "breadth_contract": "S02_ADVANCERS_SHARE_DELTA3_R1",
+    "breadth_version": "1.0.0"
+  },
+  "priority_precompute": {
+    "contract": "R8_CANDIDATE_PRIORITY_OFFLINE_PRECOMPUTE_R1",
+    "T0": "2026-10-14",
+    "formal_head_date": "2026-10-09",
+    "snapshot_bytes": 2202155,
+    "snapshot_sha256": "26dcb19dabe555a23b32d643aa51fd791241bba43b67ba1233eb7464a78147b3",
+    "payload_sha256": "c725fba28b63fe502a460078cbc873e824fa39556bbb8d6ee69e907d9489e0ba",
+    "response_payload_sha256": "80c6430b8205a271d790e3a1a105bfa6bfa26ba59687879af12eb2e04b716191",
+    "stocks": {
+      "total": 5225,
+      "rankable": 967,
+      "excluded": 4258
+    },
+    "sectors": {
+      "total": 400,
+      "rankable": 141,
+      "excluded": 259
+    },
+    "offline_cached_recompute_ms": 328.225,
+    "api_cold_ms": 312.243,
+    "api_hot_ms": 206.926,
+    "api_rank_compute_ms": 0.0,
+    "corrupt_snapshot_probe": {
+      "http": 400,
+      "reason": "R8_PRIORITY_PRECOMPUTE_REQUIRED",
+      "elapsed_ms": 166.244,
+      "restored_original_sha256": true
+    },
+    "production_accepted": false
+  },
+  "api_28766_ms": {
+    "/api/operations/status": 2.21,
+    "/api/v4/home": 918.6,
+    "/api/v4/market": 141.44,
+    "/api/v4/stocks": 307.56,
+    "/api/v4/sectors": 508.81,
+    "/api/v4/focus": 4383.26,
+    "/api/v4/forward/statistics": 3725.03
+  },
+  "verification": {
+    "targeted_tests": {
+      "passed": 45,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "web_listener": "127.0.0.1:28766",
+    "web_listener_pid": 4168,
+    "production_28765_listening": false,
+    "database_port": 5432
+  },
+  "temporary_receipts": [
+    "G:/codex_tmp/r8_fourth_batch/PG_SOURCE_INGRESS_RECEIPT.json",
+    "G:/codex_tmp/r8_fourth_batch/PG_SOURCE_INGRESS_IDEMPOTENCY_RECEIPT.json",
+    "G:/codex_tmp/r8_fourth_batch/PRIORITY_PRECOMPUTE_RECEIPT.json",
+    "G:/codex_tmp/r8_fourth_batch/PRIORITY_API_MEASURE_RUN.txt",
+    "G:/codex_tmp/r8_fourth_batch/PRIORITY_CORRUPT_COLD_PROBE.txt"
+  ]
+}\n

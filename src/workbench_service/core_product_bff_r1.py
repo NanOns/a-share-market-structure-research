@@ -4,7 +4,7 @@ from urllib.parse import unquote
 from collections import Counter
 from copy import deepcopy
 import hashlib
-import json, gzip, re
+import json, gzip, re, os
 from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
@@ -990,7 +990,24 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         lifecycle['candidate_digest'],lifecycle['producer_sha256'],lifecycle['parameter_sha256']],
                         sort_keys=True,separators=(',',':')))
                 priority=self.api.cache.get(cache_key)
+                priority_snapshot_identity=dict(contract='R8_CANDIDATE_PRIORITY_PRECOMPUTE_R1',
+                    token=self.api.token,T0=day,
+                    candidate_sha256=hashlib.sha256(json.dumps(self.api.candidate,ensure_ascii=False,
+                        sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest(),
+                    stock_owner=stock_source,sector_owner=sector_source,
+                    parameter_sha256=parameter_digest,producer_sha256=producer_sha256,
+                    lifecycle_candidate_digest=lifecycle['candidate_digest'],
+                    lifecycle_producer_sha256=lifecycle['producer_sha256'],
+                    lifecycle_parameter_sha256=lifecycle['parameter_sha256'],
+                    lifecycle_window=lifecycle['session_window'])
+                from workbench_analysis.r8_candidate_derived_cache import cache_allowed,cache_path,read_snapshot,write_snapshot
+                priority_snapshot_path=(cache_path(self.api.root,'priority',priority_snapshot_identity)
+                    if cache_allowed(self.api.root) and self.api.candidate.get('owners') else None)
+                if priority is None and priority_snapshot_path:
+                    priority=read_snapshot(priority_snapshot_path,priority_snapshot_identity)
                 if priority is None:
+                    if os.environ.get('R8_REQUIRE_PRIORITY_PRECOMPUTE')=='1':
+                        raise ValueError('R8_PRIORITY_PRECOMPUTE_REQUIRED')
                     phase=time.perf_counter()
                     sectors=self._attach_candidate_lifecycle(self.project('sectors',day),lifecycle)
                     priority=build_priority(day,self.api.token,self.project('stocks',day),sectors,
@@ -1001,9 +1018,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         parameter_sha256=lifecycle['parameter_sha256'],session_window=lifecycle['session_window'],
                         sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                         health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
+                    if priority_snapshot_path:write_snapshot(priority_snapshot_path,priority_snapshot_identity,priority)
                     self.api.cache[cache_key]=priority
                     priority_timing['projection_rank_compute_ms']=round((time.perf_counter()-phase)*1000,3)
                 else:
+                    self.api.cache[cache_key]=priority
                     priority_timing['projection_rank_compute_ms']=0.0
                 # The ranked business object is cached without run-specific
                 # diagnostics; never mutate it while attaching live context.

@@ -1,0 +1,351 @@
+{
+  "acceptance": "PG Owner/Publication, source consumption, reader permissions, exact cutoff and 28766 same-token routes verified. Historical 10/15 remains reconstructed NON_PIT; await a truthful same-cutoff source capture for a positive PIT seal.",
+  "baseline_commit": "f80c783ee06da308a2820abf15c3e6037294f36d",
+  "bff_28766": {
+    "context_http_status": 200,
+    "context_payload_sha256": "fca87e8f91060832a71051cfdabb8583b539ae5208350e7cb0d70563a815d348",
+    "context_response_bytes": 4019,
+    "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+    "context_trade_date": "2026-10-15",
+    "focus_d0": {
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "first_break": "HISTORICAL_SOURCE_RECONSTRUCTED_NON_PIT",
+      "predicate_counts": {
+        "FALSE": 5111,
+        "TRUE": 64,
+        "UNKNOWN": 51
+      },
+      "reason_code": "HISTORICAL_SOURCE_RECONSTRUCTED_NON_PIT",
+      "scenario_governance": {
+        "LAUNCH_CONFIRM": {
+          "cutoff_status": "CUTOFF_CONTRACT_RESOLVED",
+          "pg_binding_status": "PG_BINDING_PRESENT",
+          "seal_state_counts": {
+            "POST_HOC_NON_PIT": 5226
+          },
+          "status": "OPEN_POST_HOC_NON_PIT"
+        },
+        "RECOVERY_TURN": {
+          "cutoff_status": "CUTOFF_CONTRACT_RESOLVED",
+          "pg_binding_status": "PG_BINDING_PRESENT",
+          "seal_state_counts": {
+            "POST_HOC_NON_PIT": 5226
+          },
+          "status": "OPEN_POST_HOC_NON_PIT"
+        },
+        "STRONG_PULLBACK": {
+          "cutoff_status": "CUTOFF_CONTRACT_RESOLVED",
+          "pg_binding_status": "PG_BINDING_PRESENT",
+          "seal_state_counts": {},
+          "status": "DIAGNOSTIC_ONLY"
+        },
+        "TREND_CONTINUE": {
+          "cutoff_status": "CUTOFF_CONTRACT_RESOLVED",
+          "pg_binding_status": "PG_BINDING_PRESENT",
+          "seal_state_counts": {},
+          "status": "DIAGNOSTIC_ONLY"
+        }
+      },
+      "seal_distribution": {
+        "POST_HOC_NON_PIT": 10452
+      },
+      "source_class": "RECONSTRUCTED_NON_PIT",
+      "status": "READY"
+    },
+    "routes": [
+      {
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 910.779,
+        "http_status": 200,
+        "name": "home",
+        "path": "/api/v4/home",
+        "payload_sha256": "167fa04af1cc80f1bd4723e4b739de399ce54864817896aa7e51cf393dbce06b",
+        "response_bytes": 200221,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 91.379,
+        "http_status": 200,
+        "name": "stocks",
+        "path": "/api/v4/stocks",
+        "payload_sha256": "4932ab6bc46d157c18dad40c8111ea18cd0131bb4c93f1f7240c5bdd5a7d443d",
+        "response_bytes": 132884,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 148.336,
+        "http_status": 200,
+        "name": "focus",
+        "path": "/api/v4/focus",
+        "payload_sha256": "7128100d3fff4147e77fb96d8048bc71d588d58b0191b54fbd6cb06752d765e6",
+        "response_bytes": 133265,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 3.124,
+        "http_status": 200,
+        "name": "forward",
+        "path": "/api/v4/forward",
+        "payload_sha256": "abf590199b32b1fa33369cbdd86bb3828925f4bf6af48ba9e49611fb4920d6eb",
+        "response_bytes": 2952,
+        "status": "SOURCE_INCOMPLETE",
+        "trade_date": "2026-10-15"
+      },
+      {
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 706.011,
+        "http_status": 200,
+        "name": "stock_profile",
+        "path": "/api/v4/stocks/SEC-00096141BD5420F5CB3120E687CDA5B9/profile",
+        "payload_sha256": "eac3cd24131731231cee1dbe1b82385593f84b58e56e4f1ee54fb1b90063a7ce",
+        "response_bytes": 188974,
+        "status": "READY",
+        "trade_date": "2026-10-15"
+      }
+    ]
+  },
+  "branch": "codex/v4-unified-development",
+  "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+  "counterexamples": {
+    "fake_owner_sha_seal_state": "SOURCE_DIGEST_MISMATCH",
+    "post_cutoff_source_seal_state": "POST_HOC_AFTER_CUTOFF",
+    "reconstructed_source_class": "RECONSTRUCTED_NON_PIT",
+    "wrong_date_reason": "D0_EXACT_DATE_TOKEN_PUBLICATION_NOT_FOUND",
+    "wrong_date_status": "PG_BINDING_MISSING",
+    "wrong_reader_version_matches_contract": false,
+    "wrong_token_reason": "D0_EXACT_DATE_TOKEN_PUBLICATION_NOT_FOUND",
+    "wrong_token_status": "PG_BINDING_MISSING"
+  },
+  "cutoff_contract": {
+    "basis": "EXACT_R8_SNAPSHOT_PUBLICATION_INSERTED_AT",
+    "knowledge_cutoff": "2026-10-21 20:07:27.040317+08",
+    "r8_clock_readback": {
+      "candidate_token_match": true,
+      "cutoff_matches_r8_inserted_at": true,
+      "r8_candidate_present": true,
+      "trade_date_match": true
+    },
+    "status": "CUTOFF_CONTRACT_RESOLVED"
+  },
+  "d0_owner_publication": {
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false,
+    "fact_digest_readback": "PASS",
+    "field_lineage_samples": {
+      "FALSE": {
+        "check": "LIQ20",
+        "check_value": true,
+        "field_lineage": {
+          "check": "LIQ20",
+          "input_field": "liq20",
+          "input_value": true,
+          "owner_sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+          "owner_version_token": "f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0",
+          "price_coordinate": null,
+          "source_role": "CORE_AND_RELATIVE_STRENGTH_FACTS",
+          "window_role": "TARGET_SESSION_AND_REQUIRED_PRIOR_MASTER_SESSIONS"
+        },
+        "predicate_state": "FALSE",
+        "scenario": "LAUNCH_CONFIRM",
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9"
+      },
+      "TRUE": {
+        "check": "LIQ20",
+        "check_value": true,
+        "field_lineage": {
+          "check": "LIQ20",
+          "input_field": "liq20",
+          "input_value": true,
+          "owner_sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+          "owner_version_token": "f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0",
+          "price_coordinate": null,
+          "source_role": "CORE_AND_RELATIVE_STRENGTH_FACTS",
+          "window_role": "TARGET_SESSION_AND_REQUIRED_PRIOR_MASTER_SESSIONS"
+        },
+        "predicate_state": "TRUE",
+        "scenario": "LAUNCH_CONFIRM",
+        "security_id": "SEC-00F7600938E29E801B3FB9F22775458E"
+      },
+      "UNKNOWN": {
+        "check": "LIQ20",
+        "check_value": true,
+        "field_lineage": {
+          "check": "LIQ20",
+          "input_field": "liq20",
+          "input_value": true,
+          "owner_sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+          "owner_version_token": "f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0",
+          "price_coordinate": null,
+          "source_role": "CORE_AND_RELATIVE_STRENGTH_FACTS",
+          "window_role": "TARGET_SESSION_AND_REQUIRED_PRIOR_MASTER_SESSIONS"
+        },
+        "predicate_state": "UNKNOWN",
+        "scenario": "LAUNCH_CONFIRM",
+        "security_id": "SEC-0629E3092BDED3381FF76D691EEFA8E3"
+      }
+    },
+    "owner_bytes": 2892297,
+    "owner_sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99",
+    "permission_chain_proven": true,
+    "predicate_counts": {
+      "FALSE": 5111,
+      "TRUE": 64,
+      "UNKNOWN": 51
+    },
+    "predicate_digest": "74846022967bc8645c395f67be31a9342ffab73c2207114758d8774e59d312c2",
+    "production_admission": false,
+    "publication_id": "D0B07:2026-10-15:c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c:r9",
+    "reader_role": "v4_r8_d0_seal_reader_r1",
+    "reader_session_user": "postgres",
+    "revision_no": 9,
+    "row_count": 5226,
+    "scenario_fact_rows": 10452,
+    "scenario_status_counts": {
+      "LAUNCH_CONFIRM": {
+        "FALSE": 5127,
+        "TRUE": 48,
+        "UNKNOWN": 51
+      },
+      "RECOVERY_TURN": {
+        "FALSE": 5153,
+        "TRUE": 22,
+        "UNKNOWN": 51
+      }
+    },
+    "select_privileges": {
+      "consumed_sources": true,
+      "facts": true,
+      "publications": true,
+      "r8_publications": true,
+      "r8_schema": true,
+      "schema_usage": true,
+      "source_ingress_schema": true,
+      "source_receipts": true
+    },
+    "source_bytes_all_pass": true,
+    "source_roles": [
+      "CORE_AND_RELATIVE_STRENGTH_FACTS",
+      "D0_BFF_SOURCE_VERIFICATION",
+      "D0_INDEPENDENT_VERIFIER_SCRIPT",
+      "D0_PG_OWNER_PUBLICATION_PRODUCER",
+      "D0_PG_READBACK_VERIFIER",
+      "D0_PG_SCHEMA_MIGRATION",
+      "D0_PG_SEAL_RUNNER",
+      "D0_PREDICATE_OWNER_OUTPUT",
+      "D0_PRODUCER_PARAMETERS",
+      "D0_SOURCE_SEAL_CONTRACT",
+      "FROZEN_D0_SCANNER_AND_THRESHOLDS",
+      "MEMBERSHIP_AUTHORITY_REFERENCE",
+      "RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW",
+      "SCENARIO_DETECTOR",
+      "TARGET_FACT_PRODUCER",
+      "TDX_NATIVE_ADJUSTED_DAILY_WINDOW",
+      "TDX_SOURCE_INGRESS_ARTIFACT",
+      "UNIVERSE_SESSION_MEMBERSHIP"
+    ],
+    "status": "DEV_RECONSTRUCTED_NON_PIT"
+  },
+  "database_identity": {
+    "database": "market_research",
+    "host": "127.0.0.1",
+    "oid": 646711,
+    "port": 5432,
+    "server_version_num": "180006",
+    "transaction_read_only": "on"
+  },
+  "evidence_contract_id": "R8_BATCH07_D0_CUTOFF_PG_EVIDENCE_R1",
+  "final_package_created": false,
+  "generated_at": "2026-10-21T23:32:36.971239+08:00",
+  "implementation_commit_sha": "24973967215035c1c49208c0010791258db02b42",
+  "independent_scanner": {
+    "comparison": "PASS",
+    "mismatch_count": 0,
+    "mismatches": [],
+    "owner_rows": 5226,
+    "predicate_counts": {
+      "FALSE": 5111,
+      "TRUE": 64,
+      "UNKNOWN": 51
+    },
+    "scenario_rows": 10452,
+    "scenario_status_counts": {
+      "LAUNCH_CONFIRM": {
+        "FALSE": 5127,
+        "TRUE": 48,
+        "UNKNOWN": 51
+      },
+      "RECOVERY_TURN": {
+        "FALSE": 5153,
+        "TRUE": 22,
+        "UNKNOWN": 51
+      }
+    }
+  },
+  "production_28765_touched": false,
+  "py_compile": "PASS",
+  "remote_branch": "codex/v4-unified-development",
+  "remote_sha_after_code_push": "24973967215035c1c49208c0010791258db02b42",
+  "report_path": "docs/evidence/functional_r8_implementation_20261021/SEVENTH_BATCH_D0_CUTOFF_PG_REPORT.md",
+  "report_sha256": "5d1275e3c74530ba514e176be97c5588d05ff3477cba226fec72f7d42cdf9102",
+  "runtime_ports": {
+    "28765": false,
+    "28766": true,
+    "5432": true
+  },
+  "seal_evaluation": {
+    "admission": "NOT_ADMITTED",
+    "available_at": "2026-10-21T17:35:26+08:00",
+    "historical_first_availability": "HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN",
+    "knowledge_cutoff": "2026-10-21T20:07:27.040317+08:00",
+    "predicate_state": "OVERALL_TRI_STATE_PRESERVED",
+    "reason": "RECONSTRUCTED_SOURCE_CANNOT_CLAIM_AS_RECORDED",
+    "seal_state": "POST_HOC_NON_PIT",
+    "source_class": "RECONSTRUCTED_NON_PIT"
+  },
+  "source_ingress": {
+    "receipt_count": 1,
+    "restricted_readback": {
+      "artifact_sha256": "6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8",
+      "available_at": "2026-10-21T17:35:26+08:00",
+      "evidence_class": "RECONSTRUCTED_NON_PIT",
+      "exact_artifact_match": true,
+      "receipt_present": true,
+      "time_role": "RECONSTRUCTED_FROM_LATER_PACKAGE"
+    },
+    "sample": {
+      "artifact_bytes": 2179581,
+      "artifact_path": "G:\\codex_tmp\\r8_fourth_batch\\tdx_source_20261021\\tdx_targets\\2026-10-15\\6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8\\bars.json",
+      "artifact_sha256": "6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8",
+      "available_at": "2026-10-21T17:35:26+08:00",
+      "byte_readback": {
+        "actual_bytes": 2179581,
+        "actual_sha256": "6ad6620a5e0fdc0128976d8c1f58d77c68626dc59e44ea2a8fcb685c78e2c4c8",
+        "status": "PASS"
+      },
+      "candidate_only": true,
+      "evidence_class": "RECONSTRUCTED_NON_PIT",
+      "historical_first_availability_proven": false,
+      "package_date": "2026-10-21",
+      "production_accepted": false,
+      "recorded_at": "2026-10-21T17:44:42.543216+08:00",
+      "row_count": 5565,
+      "source_contract": "TDX_LATEST_PACKAGE_TARGET_SESSION_V2",
+      "source_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+      "time_role": "RECONSTRUCTED_FROM_LATER_PACKAGE",
+      "trade_date": "2026-10-15"
+    }
+  },
+  "status": "D0_CODE_PG_INTEGRATION_PASS_CLOCK_WAIT",
+  "targeted_tests": {
+    "command": "pytest tests/test_v4_d0_source_seal_r1.py tests/test_v4_d0_source_seal_batch07_pg.py -q",
+    "result": "18 passed"
+  },
+  "trade_date": "2026-10-15"
+}

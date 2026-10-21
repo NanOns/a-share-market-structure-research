@@ -41,8 +41,8 @@
   },
   "dates": {
     "2026-10-15": "RETAINED_PRIOR_CANDIDATE",
-    "2026-10-16": "NOT_RUN",
-    "2026-10-19": "NOT_RUN",
+    "2026-10-16": "SOURCE_INGRESS_EXACT_READBACK_RECONSTRUCTED_NON_PIT",
+    "2026-10-19": "SOURCE_INGRESS_EXACT_READBACK_RECONSTRUCTED_NON_PIT",
     "2026-10-20": "NOT_RUN",
     "2026-10-21": "NOT_RUN"
   },
@@ -53,7 +53,7 @@
     "FR8-EA4-04": "OPEN",
     "FR8-EA4-05": "OPEN",
     "FR8-EA4-06": "OPEN",
-    "FR8-EA4-07": "OPEN",
+    "FR8-EA4-07": "PARTIAL",
     "FR8-EA4-08": "PARTIAL"
   },
   "production_head_modified": false,
@@ -68,5 +68,40 @@
     "g4": "FAIL",
     "error": "G4_INDEPENDENT_PG_HEAD_TRANSACTION_READBACK_MISMATCH",
     "latest_event": "CORRECTION_NO_PRODUCTION_ACCEPTANCE"
-  }
+  },
+  "source_ingress": {
+    "status": "SOURCE_INGRESS_READBACK_PASS",
+    "schema": "v4_r8_batch04_source_ingress",
+    "receipt_path": "G:/codex_tmp/r8_batch05/PG_SOURCE_INGRESS_20261016_19.json",
+    "receipt_sha256": "9f4869eb870eaa495b0ba7a729655b8bfd2c0fef587452e784495bca97f026b2",
+    "before": {
+      "receipts": 5,
+      "bars": 27832
+    },
+    "after": {
+      "receipts": 5,
+      "bars": 27832
+    },
+    "days": [
+      {
+        "date": "2026-10-16",
+        "rows": 5567,
+        "value_readback": "EXACT_ALL_FIELDS",
+        "evidence_class": "RECONSTRUCTED_NON_PIT",
+        "available_at": "2026-10-21T09:35:26Z",
+        "artifact_sha256": "f210993e62b2996f2e4c4afc6507cfe92acae162605d2e159d56540967f163ff"
+      },
+      {
+        "date": "2026-10-19",
+        "rows": 5564,
+        "value_readback": "EXACT_ALL_FIELDS",
+        "evidence_class": "RECONSTRUCTED_NON_PIT",
+        "available_at": "2026-10-21T09:35:26Z",
+        "artifact_sha256": "06fadc2d63e4963e5762b683154fddb57285ab4a4dbc1b4f1fd1e2cd2bf52181"
+      }
+    ],
+    "development_head_modified": false,
+    "formal_head_unchanged": true
+  },
+  "additional_source_commit_sha": "8163f7a7a37980a0d7f36eabd80cbc2496cbf7c2"
 }

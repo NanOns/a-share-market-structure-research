@@ -19,7 +19,7 @@
 | FR8-EA4-04 | OPEN | G1/G2 仍依赖调用方给出的 `business_values` 与 identity 文件绑定；独立 accepted predecessor Head、全影响域 PG/Owner 数值、状态和历史闭包尚未核验。 |
 | FR8-EA4-05 | OPEN | D0 正式场景尚无基于真实 PG Owner/Publication 的来源时钟、权限和 cutoff seal。10/15 历史可得时间待核原始 source ledger；不倒填。 |
 | FR8-EA4-06 | OPEN | 未补齐同系列市场参考至 10/15+，没有真实 PG 权限链或独立 Close/MA20/MA20(-5) 重算。趋势来源不升级为已封存。 |
-| FR8-EA4-07 | OPEN | 未完整执行 10/16、10/19 的 SourceIngress→Owner→PG→G1–G4→Priority→28766 顺序日更；对象分母、性能样本、幂等增量证明缺失。 |
+| FR8-EA4-07 | PARTIAL | 已对现有开发 PG 中的 10/16、10/19 TDX SourceIngress 全字段读回：5,567 / 5,564 行，来源包 SHA 相同；两日均由 10/21 09:35 UTC 后采包重建，标记 `RECONSTRUCTED_NON_PIT`。Owner→G1–G4→Priority→28766 顺序日更、性能及幂等证明仍未完成。 |
 | FR8-EA4-08 | PARTIAL | 两处 Python 源通过 `py_compile`；`tests/test_v4_functional_r8_third_batch.py` 6 项通过；`git diff --check` 通过。故障矩阵、前端用户动作矩阵与远端 CI 证据未完成。 |
 
 ## 已冻结的真实状态
@@ -28,8 +28,8 @@
 - R8 schema：`v4_r8pub_fde08c597fc76d13`。执行前 ledger 两行；纠错后仍两行，纠错事件一行。
 - 错误旧 token：`c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c`。旧行中的 `production_accepted=true` 和 `USER_AUTHORIZED_OPERATIONAL_DAILY` 原样保留，只追加纠错事件。
 - 仓库 `V4_OPERATIONAL_RESEARCH_HEAD.json` SHA-256：`55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e`；`V4_DATA_ACCEPTED_HEAD.json` SHA-256：`38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40`。正式 accepted predecessor 仍为 10/09，未切换。
-- 端口：5432 PG 监听；28766 既有服务监听；28765 未监听。本轮未对 28766 做同版 HTTP 读回。
-- 代码修改：`src/workbench_db/v4_r8_publication_bridge_v1.py`、`src/workbench_analysis/r8_candidate_append_comparator.py`。
+- SourceIngress 现存读回：schema `v4_r8_batch04_source_ingress`，读前/读后均 5 receipts / 27,832 bars；10/16 为 5,567 行，10/19 为 5,564 行，逐字段相等，来源 SHA `0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede`。回执保存在 `G:/codex_tmp/r8_batch05/PG_SOURCE_INGRESS_20261016_19.json`，SHA-256 `9f4869eb870eaa495b0ba7a729655b8bfd2c0fef587452e784495bca97f026b2`。两个交易日均是 10/21 09:35 UTC 才可得的重建数据，故不作为 PIT 或当时首捕证明。
+- 代码修改：`src/workbench_db/v4_r8_publication_bridge_v1.py`、`src/workbench_analysis/r8_candidate_append_comparator.py`、`scripts/r8_batch04_ingest_tdx_source.py`。源码提交：`6bbb409894a6cd540e13a59f5eb854c9ea84e389`、`8163f7a7a37980a0d7f36eabd80cbc2496cbf7c2`。
 
 ## 阶段结果与下一步
 

@@ -49,11 +49,11 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
     from .d0_source_seal_r1 import (DIAGNOSTIC_SCENARIOS, FORMAL_SCENARIOS,
         build_candidate_lineage, evaluate_d0_source_seal, verify_pg_binding)
     pg_readback=verify_pg_binding(day,candidate_token)
-    lineage=next(((row.get('confirmation') or {}).get('source_lineage') for row in rows
-        if (row.get('confirmation') or {}).get('source_lineage')),None)
-    if lineage is None:
-        lineage=build_candidate_lineage(root,candidate,day,
-            observed_at=datetime.now(timezone.utc).isoformat(),pg_readback=pg_readback)
+    # Resolve the cutoff and D0 Owner/Publication relation from the exact live
+    # candidate token on every read. Embedded lineage can predate the R2
+    # cutoff/PG contract and is descriptive history, never a current authority.
+    lineage=build_candidate_lineage(root,candidate,day,
+        observed_at=datetime.now(timezone.utc).isoformat(),pg_readback=pg_readback)
     scenario_governance = {}
     for scenario in (*FORMAL_SCENARIOS,*DIAGNOSTIC_SCENARIOS):
         observed=[]
@@ -209,11 +209,17 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
     seal_distribution=Counter()
     for scenario in scenario_governance.values():
         seal_distribution.update(scenario.get('seal_state_counts') or {})
+    observed_seal_states={state for scenario in scenario_governance.values()
+        for state in (scenario.get('seal_state_counts') or {})}
     first_break=(
         'D0_SOURCE_LINEAGE_NOT_EMITTED' if lineage is None else
         'CUTOFF_CONTRACT_UNRESOLVED' if lineage.get('cutoff_status')!='CUTOFF_CONTRACT_RESOLVED' else
         'PG_BINDING_MISSING' if pg_readback.get('d0_owner_publication',{}).get('status')!='PG_BINDING_PRESENT' else
-        'SOURCE_CLOCK_OR_PERMISSION_EDGE_UNPROVEN')
+        'HISTORICAL_SOURCE_RECONSTRUCTED_NON_PIT' if 'POST_HOC_NON_PIT' in observed_seal_states else
+        'SOURCE_AVAILABLE_AFTER_KNOWLEDGE_CUTOFF' if 'POST_HOC_AFTER_CUTOFF' in observed_seal_states else
+        'D0_CONSUMED_SOURCE_CLOCK_UNKNOWN' if 'CUTOFF_CONTRACT_UNKNOWN' in observed_seal_states else
+        'D0_SOURCE_SEAL_VERIFIED_DEV_ONLY' if 'VERIFIED_BY_CUTOFF' in observed_seal_states else
+        'D0_SOURCE_SEAL_NO_FORMAL_SCENARIO_ROWS')
     return dict(contract_id=CONTRACT_ID, version='2.0.0', status='READY', trade_date=day,
         total=len(rows), confirmation_status_counts=dict(sorted(overall.items())),
         scenario_status_counts=dict(sorted(scenario_states.items())),
@@ -221,13 +227,13 @@ def candidate_d0_reason_attribution(root, candidate, day, *, focus_security_ids=
         unknown_reasons=[dict(reason=k,count=v) for k,v in unknown_reasons.most_common(20)],
         prewatch_qualification_counts=dict(sorted(prewatch_states.items())),
         prewatch_unknown_predicates=[dict(reason=k,count=v) for k,v in prewatch_unknowns.most_common(20)],
-        scenario_governance=dict(contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R1',version='1.0.0',
+        scenario_governance=dict(contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',version='2.0.0',
             source_binding=binding,scenarios=scenario_governance,
             diagnostic_unknown_absorbed_into_formal_candidate=False,
             D0_status_values_unchanged=True),
         source_verification=dict(source_lineage=lineage,pg_readback=pg_readback,
             first_break=first_break,
-            source_class=('SOURCE_REPRODUCIBLE_POST_HOC' if any(
+            source_class=('RECONSTRUCTED_NON_PIT' if any(
                 item.get('evidence_class')=='RECONSTRUCTED_NON_PIT'
                 for item in pg_readback.get('source_ingress',{}).get('receipts',[])) else 'UNCLASSIFIED'),
             historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',

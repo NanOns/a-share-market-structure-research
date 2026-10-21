@@ -13,8 +13,8 @@ import json
 from pathlib import Path
 from datetime import timezone
 
-CONTRACT_ID = 'V4_D0_SOURCE_SEAL_SUCCESSOR_R1'
-CONTRACT_VERSION = '1.0.0'
+CONTRACT_ID = 'V4_D0_SOURCE_SEAL_SUCCESSOR_R2'
+CONTRACT_VERSION = '2.0.0'
 FORMAL_SCENARIOS = ('LAUNCH_CONFIRM', 'RECOVERY_TURN')
 DIAGNOSTIC_SCENARIOS = ('STRONG_PULLBACK', 'TREND_CONTINUE')
 CHECK_INPUTS = {
@@ -50,7 +50,11 @@ def source_ref(root, binding, *, role, time_role='RECONSTRUCTED_INPUT_BINDING'):
     """Recheck one exact candidate Owner file and describe its source role."""
     from .r43_owner_replay import checked
     path = checked(root, binding)
+    import re
+    parts=Path(binding['path']).parts
+    version_token=next((part for part in parts if re.fullmatch(r'[0-9a-f]{64}',part)),None)
     return dict(role=role, path=binding['path'], sha256=_sha(path), bytes=path.stat().st_size,
+        owner_version_token=version_token,
         time_role=time_role, source_available_at=None,
         source_availability_proven=False,
         availability_reason='CANDIDATE_FILE_BINDING_HAS_NO_TRUSTED_SOURCE_CLOCK')
@@ -151,18 +155,29 @@ def build_candidate_lineage(root, candidate, trade_date, *, observed_at, pg_read
         refs.append(_versioned_source_ref(path,role))
     sessions=[x for x in candidate.get('published_sessions',[]) if x<=trade_date]
     pg_readback=pg_readback or verify_pg_binding(trade_date)
+    r8_rows=(pg_readback.get('candidate_publication') or {}).get('rows') or []
+    exact_r8=next((row for row in r8_rows if row.get('trade_date')==trade_date and
+        row.get('candidate_token')==(pg_readback.get('candidate_publication') or {}).get('expected_token')),None)
+    cutoff=exact_r8.get('inserted_at') if exact_r8 else None
+    cutoff_status='CUTOFF_CONTRACT_RESOLVED' if cutoff else 'CUTOFF_CONTRACT_UNRESOLVED'
     return dict(contract_id=CONTRACT_ID,version=CONTRACT_VERSION,trade_date=trade_date,
         evidence_origin='LIVE_CANDIDATE_OWNER_BINDINGS_RECONCILED_BY_BFF',source_refs=refs,
         producer_observed_at=observed_at,
         observed_at_semantics='BFF_READBACK_TIME_ONLY_NOT_SOURCE_FIRST_AVAILABILITY',
-        time_zone=_observed_timezone(observed_at),knowledge_cutoff=None,cutoff_status='CUTOFF_CONTRACT_UNRESOLVED',
+        time_zone=_observed_timezone(observed_at),knowledge_cutoff=cutoff,cutoff_status=cutoff_status,
+        candidate_token=(pg_readback.get('candidate_publication') or {}).get('expected_token'),
+        cutoff_contract=dict(contract_id='V4_D0_POST_CLOSE_KNOWLEDGE_CUTOFF_R1',version='1.0.0',
+            cutoff_basis='EXACT_R8_SNAPSHOT_PUBLICATION_INSERTED_AT',
+            source_time_comparison='SOURCE_AVAILABLE_AT_MUST_NOT_EXCEED_CUTOFF',
+            cutoff_is_not_exchange_close_time=True,cutoff_is_not_t0_end_of_day=True,
+            historical_reconstructed_sources_remain_non_pit=True),
         independent_source_clocks=_clock_evidence(pg_readback),
         predecessor_window=dict(candidate_session_count=len(sessions),first_candidate_session=sessions[0] if sessions else None,
             target_session=trade_date,history_owner_binding_present=bool(owners.get('raw')),
             coverage_status='CANDIDATE_DAILY_OWNER_BINDINGS_ONLY; FULL_D0_PREDECESSOR_WINDOW_AND_PG_PUBLICATION_NOT_PROVEN'),
         formal_scenarios={scenario:dict(required_checks=list(CHECK_INPUTS[scenario]),
             check_to_input=dict(CHECK_INPUTS[scenario]),
-            source_roles=['RAW_AND_TDX_QFQ_DAILY_WINDOW','TDX_NATIVE_ADJUSTED_DAILY_WINDOW',
+            source_roles=['RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW','TDX_NATIVE_ADJUSTED_DAILY_WINDOW',
                 'CORE_AND_RELATIVE_STRENGTH_FACTS','FROZEN_D0_SCANNER_AND_THRESHOLDS',
                 'TARGET_FACT_PRODUCER','SCENARIO_DETECTOR','D0_SOURCE_SEAL_CONTRACT',
                 'D0_PRODUCER_PARAMETERS']) for scenario in FORMAL_SCENARIOS},
@@ -219,6 +234,14 @@ def _pg_readback(trade_date, candidate_token=None):
                     privilege=(False,False)
                 owner_privileges.append(dict(owner_schema=schema,owner_relation=relation,
                     current_reader_usage=bool(privilege[0]),current_reader_select=bool(privilege[1])))
+    d0_readback = dict(status='PG_BINDING_MISSING',permission_chain_proven=False,
+        publications=[],consumed_source_rows=[],fact_rows=0,fact_digest_readback='NOT_RUN')
+    if candidate_token:
+        try:
+            from .d0_source_seal_r2 import independent_pg_readback
+            d0_readback=independent_pg_readback(trade_date,candidate_token)
+        except Exception as exc:
+            d0_readback.update(status='PG_BINDING_INVALID',reason='D0_RESTRICTED_READER_FAILED:'+type(exc).__name__)
     receipts=[]
     for row in source_rows:
         (trade_day,contract,source_sha,package_day,available,time_role,evidence_class,
@@ -242,6 +265,10 @@ def _pg_readback(trade_date, candidate_token=None):
         module_publication_ids.issubset(publication_ids) and
         module_publication_ids.issubset(consumed_ids) and owner_privileges and
         all(r['current_reader_usage'] and r['current_reader_select'] for r in owner_privileges))
+    batch07_sources=d0_readback.get('consumed_source_rows',[])
+    consumed_sources.extend((d0_readback.get('publications',[{}])[0].get('publication_id',''),
+        row.get('source_role'),None,row.get('source_sha256')) for row in batch07_sources)
+    binding_present=d0_readback.get('status')=='PG_BINDING_PRESENT'
     return dict(database=dict(database=identity[0],oid=identity[1],server_version_num=identity[2],
             transaction_read_only=identity[3],host='127.0.0.1',port=5432),
         source_ingress=dict(schema='v4_r8_batch04_source_ingress',receipt_table_present=bool(receipt_exists),
@@ -251,11 +278,18 @@ def _pg_readback(trade_date, candidate_token=None):
                 ('publication_id','status','model_namespace_id','source_manifest_sha256','computation_identity_sha256','prior_session_publication_id','accepted_at'),r)) for r in publications],
             d0_module_owner_rows=[dict(zip(('publication_id','module_key','module_contract_id','owner_schema','owner_relation','owner_version_token','owner_trade_date','owner_contract_id','result_digest','row_count','quality_status','as_recorded','pit_eligible','created_at'),r)) for r in module_results],
             consumed_source_rows=[dict(zip(('publication_id','source_key','source_revision_id','digest'),r)) for r in consumed_sources],
+            batch07_publications=d0_readback.get('publications',[]),
+            batch07_consumed_sources=batch07_sources,
+            batch07_fact_rows=d0_readback.get('fact_rows'),
+            batch07_fact_digest_readback=d0_readback.get('fact_digest_readback'),
+            batch07_reader=dict(role=d0_readback.get('reader_role'),session_user=d0_readback.get('reader_session_user'),
+                current_user=d0_readback.get('reader_current_user'),transaction_read_only=d0_readback.get('transaction_read_only'),
+                privileges=d0_readback.get('owner_select_privileges')),
             owner_select_privileges=owner_privileges,
             stock_prewatch_table_present=bool(prewatch_exists),
             stock_prewatch_publications=[dict(zip(('publication_id','trade_date','model_contract_id','parameter_set_id','source_publication_id','source_core_logical_digest','publication_digest','row_count','acceptance_scope','created_at'),r)) for r in prewatch_publications],
-            status='PG_BINDING_PRESENT' if binding_present else 'PG_BINDING_MISSING',
-            permission_chain_proven=binding_present,
+            status=d0_readback.get('status','PG_BINDING_MISSING'),
+            permission_chain_proven=bool(binding_present and d0_readback.get('permission_chain_proven')),
             consumed_source_digest_count=len(consumed_digests)),
         candidate_publication=dict(schema='v4_r8pub_fde08c597fc76d13',
             table_present=bool(r8_publications_exists),expected_token=candidate_token,
@@ -283,6 +317,14 @@ def candidate_publication_token_matches(expected_token, observed_row, trade_date
     return bool(isinstance(expected_token,str) and expected_token and
         isinstance(observed_row,dict) and observed_row.get('candidate_token')==expected_token and
         observed_row.get('trade_date')==trade_date)
+
+
+def d0_publication_matches_contract(publication, trade_date, candidate_token):
+    """Require exact D0 publication coordinates and current reader contract."""
+    return bool(isinstance(publication,dict) and publication.get('trade_date')==trade_date and
+        publication.get('candidate_token')==candidate_token and
+        publication.get('producer_contract_id')=='V4_D0_SOURCE_SEAL_SUCCESSOR_R2' and
+        publication.get('producer_version')=='2.0.0')
 
 
 def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_readback):
@@ -340,11 +382,6 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
             return dict(predicate_state=predicate_state,seal_state='SOURCE_DIGEST_MISMATCH',
                 admission='NOT_ADMITTED',reason='D0_PRICE_COORDINATE_MISMATCH',
                 actual_price_coordinate=evidence.get('price_coordinate'))
-        if receipt.get('evidence_class') in ('RECONSTRUCTED_NON_PIT','CAPTURED_AFTER_CLOSE_NON_PIT') or 'RECONSTRUCTED' in str(receipt.get('time_role','')).upper():
-            return dict(predicate_state=predicate_state,seal_state='POST_HOC_AFTER_CUTOFF',
-                source_class='SOURCE_REPRODUCIBLE_POST_HOC',
-                historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',
-                admission='NOT_ADMITTED',reason='POST_HOC_SOURCE_CANNOT_CLAIM_AS_RECORDED')
         if not receipt.get('time_role'):
             return dict(predicate_state=predicate_state,seal_state='PG_BINDING_MISSING',
                 admission='NOT_ADMITTED',reason='PG_SOURCE_TIME_ROLE_MISSING')
@@ -365,12 +402,51 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
                 historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',
                 admission='NOT_ADMITTED',reason='PG_SOURCE_AVAILABLE_AFTER_KNOWLEDGE_CUTOFF',
                 available_at=available.isoformat(),knowledge_cutoff=cutoff.isoformat())
-    if pg_readback.get('d0_owner_publication',{}).get('status')!='PG_BINDING_PRESENT':
+        if receipt.get('evidence_class') in ('RECONSTRUCTED_NON_PIT','CAPTURED_AFTER_CLOSE_NON_PIT') or 'RECONSTRUCTED' in str(receipt.get('time_role','')).upper():
+            return dict(predicate_state=predicate_state,seal_state='POST_HOC_NON_PIT',
+                source_class='RECONSTRUCTED_NON_PIT',
+                historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',
+                admission='NOT_ADMITTED',reason='RECONSTRUCTED_SOURCE_CANNOT_CLAIM_AS_RECORDED',
+                available_at=available.isoformat(),knowledge_cutoff=cutoff.isoformat())
+    d0_binding=pg_readback.get('d0_owner_publication',{})
+    if d0_binding.get('status')!='PG_BINDING_PRESENT':
         return dict(predicate_state=predicate_state,seal_state='PG_BINDING_MISSING',
             admission='NOT_ADMITTED',reason='ACTUAL_PG_D0_OWNER_PUBLICATION_PERMISSION_EDGE_MISSING')
+    publications=d0_binding.get('batch07_publications') or []
+    exact=next((p for p in publications if p.get('trade_date')==evidence.get('trade_date') and
+        p.get('candidate_token')==evidence.get('candidate_token')),None)
+    if not d0_publication_matches_contract(exact,evidence.get('trade_date'),evidence.get('candidate_token')):
+        return dict(predicate_state=predicate_state,seal_state='PG_BINDING_MISSING',
+            admission='NOT_ADMITTED',reason='D0_PG_PUBLICATION_IDENTITY_OR_READER_VERSION_DRIFT')
+    if d0_binding.get('batch07_fact_digest_readback')!='PASS' or not d0_binding.get('permission_chain_proven'):
+        return dict(predicate_state=predicate_state,seal_state='PERMISSION_NOT_PROVEN',
+            admission='NOT_ADMITTED',reason='D0_PG_READER_DIGEST_OR_PERMISSION_CHAIN_FAILED')
+    pg_sources=d0_binding.get('batch07_consumed_sources') or []
+    if not pg_sources or any(r.get('byte_readback')!='PASS' for r in pg_sources):
+        return dict(predicate_state=predicate_state,seal_state='SOURCE_DIGEST_MISMATCH',
+            admission='NOT_ADMITTED',reason='D0_PG_CONSUMED_SOURCE_BYTES_NOT_VERIFIED')
+    from .d0_source_seal_r2 import classify_source
+    for pg_source in pg_sources:
+        source_class=classify_source(pg_source,cutoff)
+        if source_class=='RECONSTRUCTED_AFTER_CUTOFF':
+            return dict(predicate_state=predicate_state,seal_state='POST_HOC_AFTER_CUTOFF',
+                source_class=source_class,admission='NOT_ADMITTED',
+                reason='D0_PG_CONSUMED_SOURCE_AVAILABLE_AFTER_SNAPSHOT_CUTOFF',
+                source_role=pg_source.get('source_role'),available_at=pg_source.get('available_at'),
+                knowledge_cutoff=cutoff.isoformat())
+        if source_class=='RECONSTRUCTED_NON_PIT':
+            return dict(predicate_state=predicate_state,seal_state='POST_HOC_NON_PIT',
+                source_class=source_class,historical_first_availability='HISTORICAL_FIRST_AVAILABILITY_NOT_PROVEN',
+                admission='NOT_ADMITTED',reason='D0_PG_CONSUMED_SOURCE_IS_RECONSTRUCTED',
+                source_role=pg_source.get('source_role'),production_admission=False)
+        if source_class=='UNKNOWN':
+            return dict(predicate_state=predicate_state,seal_state='CUTOFF_CONTRACT_UNKNOWN',
+                admission='NOT_ADMITTED',reason='D0_PG_CONSUMED_SOURCE_HAS_NO_TRUSTED_CLOCK',
+                source_role=pg_source.get('source_role'))
     required_source_digests={r.get('sha256') for r in refs if r.get('role') in
         ('RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW','CORE_AND_RELATIVE_STRENGTH_FACTS')}
-    consumed_digests={r.get('digest') for r in pg_readback.get('d0_owner_publication',{}).get('consumed_source_rows',[])}
+    consumed_digests={r.get('digest') for r in d0_binding.get('consumed_source_rows',[])}
+    consumed_digests.update(r.get('source_sha256') for r in d0_binding.get('batch07_consumed_sources',[]))
     if not required_source_digests.issubset(consumed_digests):
         return dict(predicate_state=predicate_state,seal_state='PG_BINDING_MISSING',
             admission='NOT_ADMITTED',reason='PG_PUBLICATION_DOES_NOT_CONSUME_EXACT_D0_SOURCE_BYTES')
@@ -404,7 +480,7 @@ def source_snapshot_from_pg(trade_date):
     result=verify_pg_binding(trade_date)
     result['receipt_counts']={
         'source_ingress':len(result.get('source_ingress',{}).get('receipts',[])),
-        'd0_publication':len(result.get('d0_owner_publication',{}).get('d0_publications',[])),
-        'd0_module_owner':len(result.get('d0_owner_publication',{}).get('d0_module_owner_rows',[])),
+        'd0_publication':len(result.get('d0_owner_publication',{}).get('batch07_publications',[])),
+        'd0_module_owner':result.get('d0_owner_publication',{}).get('batch07_fact_rows',0),
         'stock_prewatch_publication':len(result.get('d0_owner_publication',{}).get('stock_prewatch_publications',[]))}
     return result

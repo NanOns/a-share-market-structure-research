@@ -1,6 +1,6 @@
 {
-  "contract_id": "V4_D0_SOURCE_SEAL_SUCCESSOR_R1",
-  "version": "1.0.0",
+  "contract_id": "V4_D0_SOURCE_SEAL_SUCCESSOR_R2",
+  "version": "2.0.0",
   "status": "ACTIVE_DEVELOPMENT_CONTRACT",
   "compatible_legacy_contract": "R6_D0_REASON_ATTRIBUTION_R1",
   "formal_scenarios": {
@@ -17,10 +17,18 @@
     "scenario_detector": "src/workbench_analysis/corrected_focus_replay.py"
   },
   "cutoff_policy": {
-    "status": "UNRESOLVED_REQUIRES_EXPLICIT_SCENARIO_TIME_CONTRACT",
-    "rule": "Do not infer cutoff from T0, producer execution time, file mtime, caller assertion, or a reconstructed source receipt.",
+    "status": "RESOLVED_VERSIONED_SNAPSHOT_PUBLICATION_CLOCK",
+    "contract_id": "V4_D0_POST_CLOSE_KNOWLEDGE_CUTOFF_R1",
+    "version": "1.0.0",
+    "clock_source": "Exact candidate-token-matched v4_r8pub_fde08c597fc76d13.r8_publications.inserted_at for the frozen source snapshot",
+    "rule": "A D0 replay cutoff is the timezone-aware PG timestamp of the exact R8 source snapshot publication. Every source available_at must be no later than that timestamp. It is not inferred from exchange close, T0 end of day, producer invocation time, file mtime, or caller assertion.",
     "timezone": "Asia/Shanghai",
-    "time_role_required": true
+    "time_role_required": true,
+    "source_time_role_required": true,
+    "historical_reconstructed_source_class": "RECONSTRUCTED_NON_PIT",
+    "source_available_after_cutoff_class": "RECONSTRUCTED_AFTER_CUTOFF",
+    "historical_reconstructed_pit_eligible": false,
+    "unknown_clock_state": "UNKNOWN"
   },
   "seal_policy": {
     "require_exact_source_bytes_and_sha256": true,
@@ -33,5 +41,5 @@
     "production_admission": false
   },
   "admission_values": ["DEV_DIAGNOSTIC", "DEV_SOURCE_VERIFIED", "NOT_ADMITTED"],
-  "unknown_cutoff_state": "CUTOFF_CONTRACT_UNRESOLVED"
+  "unknown_cutoff_state": "UNKNOWN"
 }

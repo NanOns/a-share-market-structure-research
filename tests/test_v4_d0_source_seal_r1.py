@@ -11,6 +11,7 @@ ROLES = [
     'TARGET_FACT_PRODUCER', 'SCENARIO_DETECTOR', 'D0_SOURCE_SEAL_CONTRACT',
     'D0_PRODUCER_PARAMETERS',
 ]
+TOKEN = 'dev-token-2026-10-22'
 
 
 def evidence_tree(tmp_path, *, cutoff='2026-10-22T08:00:00+00:00'):
@@ -21,14 +22,16 @@ def evidence_tree(tmp_path, *, cutoff='2026-10-22T08:00:00+00:00'):
         (tmp_path/name).write_bytes(raw)
         refs.append(dict(role=role,path=name,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
     return dict(source_refs=refs,cutoff_status='CUTOFF_CONTRACT_RESOLVED',
-        knowledge_cutoff=cutoff,trade_date='2026-10-22')
+        knowledge_cutoff=cutoff,trade_date='2026-10-22',candidate_token=TOKEN)
 
 
 def pg_receipt(*, available='2026-10-22T07:55:00+00:00', evidence_class='CAPTURED_AS_RECORDED'):
     return dict(source_ingress=dict(receipts=[dict(available_at=available,time_role='AS_OF_T0',
         evidence_class=evidence_class,byte_readback=dict(status='PASS'))]),
         d0_owner_publication=dict(status='PG_BINDING_MISSING',permission_chain_proven=False,
-            consumed_source_rows=[]))
+            consumed_source_rows=[],batch07_publications=[dict(trade_date='2026-10-22',candidate_token=TOKEN,
+                producer_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',producer_version='2.0.0')],
+            batch07_fact_digest_readback='PASS',batch07_consumed_sources=[]))
 
 
 def seal(tmp_path, evidence, pg):
@@ -42,7 +45,10 @@ def test_formal_d0_seal_positive_requires_exact_inputs_clock_and_pg_permission(t
     required={r['sha256'] for r in evidence['source_refs'] if r['role'] in (
         'RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW','CORE_AND_RELATIVE_STRENGTH_FACTS')}
     pg['d0_owner_publication'].update(status='PG_BINDING_PRESENT',permission_chain_proven=True,
-        consumed_source_rows=[dict(digest=d) for d in required])
+        consumed_source_rows=[dict(digest=d) for d in required],
+        batch07_consumed_sources=[dict(source_sha256=d,time_role='SAME_DAY_SOURCE_CAPTURE',
+            evidence_class='CAPTURED_AS_RECORDED',available_at='2026-10-22T07:55:00+00:00',
+            byte_readback='PASS') for d in required])
     result=seal(tmp_path,evidence,pg)
     assert result['seal_state']=='VERIFIED_BY_CUTOFF'
     assert result['admission']=='DEV_SOURCE_VERIFIED'
@@ -137,7 +143,7 @@ def test_timezone_missing_and_reconstructed_as_recorded_claim_fail_closed(tmp_pa
     assert result['reason']=='PG_SOURCE_INGRESS_CLOCK_OR_TIMEZONE_MISSING'
     pg=pg_receipt(available='2026-10-22T07:55:00+00:00',evidence_class='RECONSTRUCTED_NON_PIT')
     result=seal(tmp_path,evidence,pg)
-    assert result['seal_state']=='POST_HOC_AFTER_CUTOFF'
+    assert result['seal_state']=='POST_HOC_NON_PIT'
     assert result['admission']=='NOT_ADMITTED'
 
 

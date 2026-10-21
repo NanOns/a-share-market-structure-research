@@ -41,10 +41,10 @@
   },
   "dates": {
     "2026-10-15": "RETAINED_PRIOR_CANDIDATE",
-    "2026-10-16": "SOURCE_INGRESS_EXACT_READBACK_RECONSTRUCTED_NON_PIT",
-    "2026-10-19": "SOURCE_INGRESS_EXACT_READBACK_RECONSTRUCTED_NON_PIT",
+    "2026-10-16": "SOURCE_READY_RECONSTRUCTED_NON_PIT_OWNER_BLOCKED_BAOSTOCK_LOGIN",
+    "2026-10-19": "SOURCE_READY_RECONSTRUCTED_NON_PIT_OWNER_NOT_RUN_AFTER_GAP",
     "2026-10-20": "NOT_RUN",
-    "2026-10-21": "NOT_RUN"
+    "2026-10-21": "RETAINED_PRIOR_BATCH04_POST_CLOSE_CANDIDATE"
   },
   "statuses": {
     "FR8-EA4-01": "PARTIAL",
@@ -103,5 +103,37 @@
     "development_head_modified": false,
     "formal_head_unchanged": true
   },
-  "additional_source_commit_sha": "8163f7a7a37980a0d7f36eabd80cbc2496cbf7c2"
+  "additional_source_commit_sha": "8163f7a7a37980a0d7f36eabd80cbc2496cbf7c2",
+  "additional_source_code_commit_sha": "3fc659ba491f779ae5d1766961a2d7790aa3841d",
+  "real_pg_fault_recovery": {
+    "status": "PASS_FOR_TWO_INJECTED_WINDOWS",
+    "artifact": "FIFTH_BATCH_ARTIFACTS/PG_FAULT_RECOVERY_R1.json",
+    "sha256": "b7ab94618d93177b8d6da0f7cd46359650fcf3a78352e102fc93cdfd9a1bf449",
+    "cases": [
+      "PG_COMMIT_BEFORE_FILE_FINALIZE",
+      "PG_AND_FILE_FINALIZED_BEFORE_FINAL_PG_EVENT"
+    ],
+    "limitations": [
+      "synthetic candidate fixtures",
+      "no live 28766 request fault injection",
+      "other required failure windows not exercised"
+    ]
+  },
+  "g4_positive_fixture": {
+    "status": "G4_PASS",
+    "overall_comparator": "FAIL_CLOSED_G1_G3_OUT_OF_FIXTURE_SCOPE",
+    "artifact": "FIFTH_BATCH_ARTIFACTS/G4_POSITIVE_PG_READBACK_R1.json",
+    "sha256": "59dd8efb5ae6399f7068c3b0f2fd5869d5622c734141e4503407efd844d846c0"
+  },
+  "source_capture": {
+    "status": "SOURCE_READY_POST_HOC",
+    "artifact": "FIFTH_BATCH_ARTIFACTS/SOURCE_CAPTURE_AND_OWNER_RETRY_R1.json",
+    "sha256": "ee304296b690e65002293e6b2bd906d2b4fab1da5e61f16437bea9f5e1e3172",
+    "dates": [
+      "2026-10-16",
+      "2026-10-19"
+    ],
+    "evidence_class": "RECONSTRUCTED_NON_PIT",
+    "owner_blocker": "BAOSTOCK_LOGIN_FAILED"
+  }
 }

@@ -1,0 +1,82 @@
+{
+  "classification": "RECONSTRUCTED_NON_PIT",
+  "contract_id": "R8_BATCH05_SOURCE_CAPTURE_SUMMARY_R1",
+  "ordered_dates": [
+    {
+      "daily_freezes": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "bytes": 1794858,
+        "daily_rows": 5226,
+        "effective_package_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+        "factor_rows": 48,
+        "observed_at": "2026-10-21T21:09:14.221642+08:00",
+        "package_downloaded_at": "2026-10-21T13:07:37+00:00",
+        "package_observed_at": "2026-10-21T13:07:31+00:00",
+        "relative_path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-16/abbc15263b252563a15ab93d6c180c9ae86693edcd35d146279e272198298672.json",
+        "sha256": "840e9dcb50c6d092ef5dd819b5cb9b306d193a32dc3840a07aa3fe1b8d87ec92",
+        "status": null,
+        "tdx_snapshot_sha256": "5c3c07fc2332989b088a58e0a097c8448f37dc954b839f2b0763921380a0c3dd",
+        "tdx_source_available_at": "2026-10-21T13:07:31+00:00"
+      },
+      "source_readiness": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "bytes": 703088,
+        "observed_at": "2026-10-21T21:09:16.179698+08:00",
+        "published": false,
+        "relative_path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-16/2de88d9327b6db7a8e9807dddfb02154116e469780a720667578fb6670ae81f7.json",
+        "sha256": "ef5518fac7e8f781ff6cf7c242bccbf676be88091bc87211ea0319126cbe9b60",
+        "source_ready": true,
+        "status": "SOURCE_READY",
+        "time_eligible": true
+      },
+      "trade_date": "2026-10-16"
+    },
+    {
+      "daily_freezes": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "bytes": 1790475,
+        "daily_rows": 5224,
+        "effective_package_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+        "factor_rows": 19,
+        "observed_at": "2026-10-21T21:12:19.392858+08:00",
+        "package_downloaded_at": "2026-10-21T13:10:34+00:00",
+        "package_observed_at": "2026-10-21T13:10:28+00:00",
+        "relative_path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-19/aaf154c87ca271cfd6e64e263df4ad8916b2c153006523ff6fe3c556e5af540c.json",
+        "sha256": "d76d3a946adf26f3cf5f61c5438ec5e39cfbbf9093066effc2efdc9f126e6d4d",
+        "status": null,
+        "tdx_snapshot_sha256": "c6101c2a615cc96fb53e53e14eca48cfb8905ed5b971b1d0dad428f7053d18c2",
+        "tdx_source_available_at": "2026-10-21T13:10:28+00:00"
+      },
+      "source_readiness": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "bytes": 513816,
+        "observed_at": "2026-10-21T21:12:22.094517+08:00",
+        "published": false,
+        "relative_path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-19/04c337b8856e0801585aef0b6ea7705e72718279621a578920aa095e9c392e50.json",
+        "sha256": "c117a509ec5203eabcec1b77abd4adf85105b7186828760a0c1d5d872ffe7f9e",
+        "source_ready": true,
+        "status": "SOURCE_READY",
+        "time_eligible": true
+      },
+      "trade_date": "2026-10-19"
+    }
+  ],
+  "owner_build_attempts": [
+    {
+      "attempts": 2,
+      "date": "2026-10-16",
+      "head_modified": false,
+      "reported_error": "BAOSTOCK_LOGIN_FAILED",
+      "result": "BAOSTOCK_LOGIN_FAILED"
+    },
+    {
+      "date": "2026-10-19",
+      "owner_build": "NOT_RUN_AFTER_10_16_DEPENDENCY_FAILURE"
+    }
+  ],
+  "status": "PASS"
+}

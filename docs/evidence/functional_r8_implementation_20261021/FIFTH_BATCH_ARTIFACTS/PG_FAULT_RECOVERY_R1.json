@@ -1,0 +1,39 @@
+{
+  "contract_id": "V4_R8_REAL_PG_FAULT_RECOVERY_R1",
+  "database_identity": {
+    "database": "market_research",
+    "database_oid": 646711,
+    "host": "127.0.0.1/32",
+    "port": 5432
+  },
+  "fault_cases": [
+    {
+      "event": "ABORTED",
+      "expected_last_good_sha256": "970aa4ed8c43237d1327a168f96cd8981e833bdddda7b8a67bcfdb2b8d108083",
+      "last_good_restored_exactly": true,
+      "recovery_status": "PASS",
+      "restored_head_sha256": "970aa4ed8c43237d1327a168f96cd8981e833bdddda7b8a67bcfdb2b8d108083",
+      "window": "PG_COMMIT_BEFORE_FILE_FINALIZE"
+    },
+    {
+      "event": "FINALIZED",
+      "event_count_before_after_repeat": [
+        1,
+        1
+      ],
+      "head_matches_candidate": true,
+      "idempotent": true,
+      "recovery_status": "PASS",
+      "repeated_recovery_status": "PASS",
+      "row_sha256": "f901294852675ec88682b70ede7603bfc203bb958b5d5673b1f1c51deb46af2d",
+      "window": "PG_AND_FILE_FINALIZED_BEFORE_FINAL_PG_EVENT"
+    }
+  ],
+  "formal_head_modified": false,
+  "preexisting_ledger_modified": false,
+  "production_accepted": false,
+  "production_port_28765_touched": false,
+  "status": "PASS",
+  "test_schema": "v4_r8pub_36bc6994eaf7eb7b",
+  "test_schema_dropped_exactly": true
+}

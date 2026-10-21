@@ -1,0 +1,251 @@
+{
+  "contract_id": "FUNCTIONAL_R8_REPAIR_BATCH_03",
+  "version": "1.0.0",
+  "status": "THIRD_BATCH_CODE_PARTIAL",
+  "substatuses": {
+    "S02": "PARTIAL",
+    "S04": "PARTIAL",
+    "PERFORMANCE": "PARTIAL",
+    "S06_P_ENGINEERING_VECTORS": "PASS",
+    "S07_API_UI_SCOPE": "PASS_SCOPED",
+    "S05_D": "OPEN",
+    "PG": "OPEN",
+    "PRODUCTION": "NOT_AUTHORIZED"
+  },
+  "git": {
+    "branch": "codex/v4-unified-development",
+    "starting_head": "da2a026793ca28e996c0e05a90849aa798b3dd09",
+    "implementation_commit": "bd010445476a6cfb1fec25de6cf4b6121ee699c1",
+    "push": "PENDING_PUSH"
+  },
+  "phase0": {
+    "status": "DEGRADED_PASS",
+    "receipt": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+    "scanner_invoked": false
+  },
+  "candidate": {
+    "T0": "2026-10-14",
+    "context_token": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
+    "evidence_class": "NON_PIT",
+    "formal_head_date": "2026-10-09",
+    "formal_head_modified": false,
+    "production_accepted": false,
+    "payload_sha256": "25ce170665429175757f3b1f377d4b43da9985d73973bb3d0e1d85fb97eecbba"
+  },
+  "runtime_boundary": {
+    "web_port": 28766,
+    "production_port_28765_listener": false,
+    "database": "127.0.0.1:5432/market_research",
+    "transaction_read_only": "on",
+    "database_write": false,
+    "formal_head_write": false,
+    "TDX_source_modified": false,
+    "D2_producer_implemented": false
+  },
+  "priority": {
+    "universe": 5225,
+    "rankable": 967,
+    "excluded": 4258,
+    "sector_universe": 400,
+    "sector_rankable": 141,
+    "sector_excluded": 259,
+    "first_snapshot_miss_wall_ms": 105472.64,
+    "first_snapshot_miss_stage_ms": {
+      "read_index_context": 1.687,
+      "sector_lifecycle": 41.212,
+      "source_sha_verification": 56.731,
+      "projection_rank_compute": 11561.786,
+      "market_stress": 93627.67,
+      "digest_and_page": 22.246
+    },
+    "persisted_cache_cold_wall_ms": [
+      11746.55,
+      11963.76,
+      11633.49
+    ],
+    "persisted_cache_cold_stage_ms": [
+      {
+        "read_index_context": 0.548,
+        "sector_lifecycle": 44.618,
+        "source_sha_verification": 53.126,
+        "projection_rank_compute": 11354.838,
+        "market_stress": 66.987,
+        "digest_and_page": 16.641
+      },
+      {
+        "read_index_context": 1.824,
+        "sector_lifecycle": 40.994,
+        "source_sha_verification": 52.232,
+        "projection_rank_compute": 11614.074,
+        "market_stress": 54.53,
+        "digest_and_page": 16.876
+      },
+      {
+        "read_index_context": 1.795,
+        "sector_lifecycle": 41.412,
+        "source_sha_verification": 54.049,
+        "projection_rank_compute": 11307.922,
+        "market_stress": 52.971,
+        "digest_and_page": 16.517
+      }
+    ],
+    "persisted_cache_hot_wall_ms": [
+      296.73,
+      302.34,
+      295.58
+    ],
+    "response_encode_ms_final_read": 0.374,
+    "market_cache_identity": "da63839b227cd37260140a96e71eec0af10ee8a3a62bc285cbe1d86f6b7865b1",
+    "first_generation_under_20_seconds": false,
+    "persisted_cache_cold_under_20_seconds": true,
+    "stable_payload_sha_across_runs": true
+  },
+  "s02": {
+    "breadth_contract": "S02_BREADTH_FORMULA_COMPARISON_R1/1.0.0",
+    "recommended_formula": "POSITIVE_INDICATOR",
+    "business_ruling": "PENDING",
+    "comparison": [
+      {
+        "T0": "2026-10-12",
+        "n": 5204,
+        "sign": -0.491929,
+        "positive_indicator": -0.237317,
+        "difference": -0.254612,
+        "class": "DETERIORATING"
+      },
+      {
+        "T0": "2026-10-13",
+        "n": 5206,
+        "sign": 0.451978,
+        "positive_indicator": 0.221667,
+        "difference": 0.230311,
+        "class": "IMPROVING"
+      },
+      {
+        "T0": "2026-10-14",
+        "n": 5206,
+        "sign": -0.80292,
+        "positive_indicator": -0.398579,
+        "difference": -0.404341,
+        "class": "DETERIORATING"
+      }
+    ],
+    "trend_candidate_status": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0",
+    "home_trend_review": "UNKNOWN",
+    "recorded_trend_value_preserved": "WEAK",
+    "composite_regime": "UNKNOWN",
+    "regime_publication": "NOT_PUBLISHED_V4_03"
+  },
+  "s04": {
+    "contract": "V4_D0_CANDIDATE_GOVERNANCE_AUDIT_R1",
+    "d0_denominator": 5225,
+    "overall": {
+      "TRUE": 145,
+      "FALSE": 0,
+      "UNKNOWN": 5080
+    },
+    "LAUNCH_CONFIRM": {
+      "FALSE": 5055,
+      "TRUE": 118,
+      "UNKNOWN": 52,
+      "seal": "HISTORICAL_SEAL_NOT_PROVEN"
+    },
+    "RECOVERY_TURN": {
+      "FALSE": 5138,
+      "TRUE": 35,
+      "UNKNOWN": 52,
+      "seal": "HISTORICAL_SEAL_NOT_PROVEN"
+    },
+    "STRONG_PULLBACK": {
+      "TRUE": 0,
+      "FALSE": 0,
+      "UNKNOWN": 5225,
+      "governance": "DIAGNOSTIC_ONLY"
+    },
+    "TREND_CONTINUE": {
+      "TRUE": 0,
+      "FALSE": 0,
+      "UNKNOWN": 5225,
+      "governance": "DIAGNOSTIC_ONLY"
+    },
+    "candidate_seal_true_rows": 0,
+    "formal_eligibility_mutated": false
+  },
+  "s07_routes": {
+    "home_market": {
+      "http": 200,
+      "T0": "2026-10-14",
+      "trend_review": "UNKNOWN",
+      "composite": "UNKNOWN",
+      "publication": "FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED"
+    },
+    "priority_stocks": {
+      "http": 200,
+      "total": 5225,
+      "rankable": 967,
+      "excluded": 4258
+    },
+    "priority_sectors": {
+      "http": 200,
+      "total": 400,
+      "rankable": 141,
+      "excluded": 259
+    },
+    "focus": {
+      "http": 200,
+      "total": 3247,
+      "d0_attribution_denominator": 5225
+    },
+    "forward_statistics": {
+      "http": 200,
+      "next_capture": "WAIT_SOURCE_READY",
+      "future_outcome_created": false
+    },
+    "stale_token": {
+      "http": 409,
+      "rejected": true
+    },
+    "invalid_page_limit": {
+      "http": 400,
+      "rejected": true
+    },
+    "ui_home_uses_candidate_trend_review": true,
+    "ui_evidence_preserves_recorded_trend": true
+  },
+  "s06_p_vectors": {
+    "contract": "V4_R8_CANDIDATE_APPEND_COMPARATOR_R1/1.0.0",
+    "no_revision_append": {
+      "status": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS"
+    },
+    "revision_detected": {
+      "status": "FAIL_CLOSED",
+      "reason": "REVISION_REQUIRES_RANGE_REPAIR"
+    },
+    "multi_session_replay": {
+      "status": "FAIL_CLOSED",
+      "reason": "G4_APPEND_SCOPE_INVALID"
+    },
+    "writes_performed": false,
+    "candidate_predecessor_used_as_formal": false,
+    "evidence_class": "OFFLINE_ENGINEERING_VECTOR"
+  },
+  "verification": {
+    "pytest": "44 passed",
+    "python_compile": "PASS",
+    "node_check": "PASS",
+    "git_diff_check": "PASS",
+    "github_ci": "NOT_CLAIMED",
+    "independent_external_acceptance": "PENDING"
+  },
+  "next_stage": [
+    "Obtain business ruling on breadth formula semantics",
+    "Bind a legal same-series trend source for later T0 dates",
+    "Supply real D0 publication, availability, cutoff, time-role, and permission-chain evidence",
+    "Reduce remaining first-generation market-stress and projection/rank latency",
+    "Keep D2 threshold producer, PG writes, formal Head, and production release gated"
+  ]
+}

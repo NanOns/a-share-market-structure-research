@@ -1,0 +1,74 @@
+{
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1",
+  "live_smoke": {
+    "adjustment_factor": {
+      "error_code": "0",
+      "fields": [
+        "code",
+        "dividOperateDate",
+        "foreAdjustFactor",
+        "backAdjustFactor",
+        "adjustFactor"
+      ],
+      "method": "query_daily_adjust_factor",
+      "page_count": 1,
+      "provider_date": "2026-10-14",
+      "response_sha256": "1d709d1d7ad6fda61d0a94f89588fcd780e21d503cef270e50c9cb901ef085cf",
+      "row_count": 22
+    },
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "daily": {
+      "error_code": "0",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "method": "query_daily_history_k_AStock",
+      "page_count": 1,
+      "provider_date": "2026-10-14",
+      "response_sha256": "e1ee85c3bb73b9436a198a18438fd693cc1c0d838a0686f450bcebe8d4a600ad",
+      "row_count": 5225
+    },
+    "endpoint": {
+      "configured_host": "public-api.baostock.com",
+      "configured_port": 10030,
+      "connected_peer_ip": "114.94.20.42",
+      "connected_peer_port": 10030
+    },
+    "status": "PASS",
+    "target_date": "2026-10-14"
+  },
+  "manifest_sha256": "6120108c90b219b796379cd95262246c77548717c408687baf1db759296eed0c",
+  "runtime": {
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "version": "0.9.3"
+  },
+  "smoke_receipt": {
+    "path": "reports/v4_baostock/runtime_acceptance/20261014/20261020T174721195551_live_smoke_receipt.json",
+    "sha256": "f9e0d235e7a4b900e968d18638c0e533f69702998c815b72560244cd8dce0dcf"
+  },
+  "status": "ACCEPTED",
+  "supported_methods": [
+    "query_daily_history_k_AStock",
+    "query_daily_adjust_factor"
+  ],
+  "version": "1.0.0"
+}

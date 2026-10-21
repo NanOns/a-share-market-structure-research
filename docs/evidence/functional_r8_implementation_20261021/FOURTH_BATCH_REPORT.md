@@ -2,95 +2,63 @@
 
 ## Result
 
-**Status: PARTIAL / OPEN; ready for independent audit of the implemented controls and captured evidence.** The batch completed a real PostgreSQL TDX SourceIngress write and idempotency replay, tightened G1–G4 evidence checks, hardened D0 and market-source permission, versioned candidate breadth delta, and removed Priority ranking work from the HTTP request path when a valid offline snapshot exists. The requested complete post-10/14 operational append was **not** achieved. The earlier statement that no reusable source-to-Owner/Head path existed was too broad: the project has an operational successor pipeline that appends Owner payload facts to PG and supports isolated file-Head CAS plus same-token HTTP readback. That path was not connected to the new R8 ingress for a complete post-10/14 day, and this batch did not create an R8 publication-ledger record. TDX raw daily bars alone cannot satisfy the complete Owner source contract. No missing business facts or Head transitions were fabricated.
+**Status: development append PASS; independent external audit and D0/market-source gates remain open.** The 2026-10-15 real-source daily increment now completed the full candidate chain: BaoStock retry and TDX reconciliation, exact day freeze, Owner computation and PG payload readback, independent G1–G4 comparator, append-only PG Publication record, development Head CAS, and same-token HTTP acceptance on 28766. The accepted candidate token is `ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2`.
 
-No formal/production Head was modified, no production acceptance was asserted, and no 28765 service was started or used. The report and evidence are intended for the next independent ChatGPT audit.
+The work is candidate-only and `NON_PIT`. The formal Head remains 2026-10-09. No production Head, production service port 28765, scanner, or final production package was changed or accepted. Full machine-readable evidence and copied source receipts are indexed in [ARTIFACT_INDEX.json](FOURTH_BATCH_ARTIFACTS/ARTIFACT_INDEX.json).
 
-## Baseline and applicable contract
+## Stage contract and baseline
 
-- Repository branch: `codex/v4-unified-development`.
-- Audit starting commit: `4c65039b7935ea2396740df8552045afcd8afb61`.
-- The task card and the 2026-10-18 development high-privilege SOT R2 were read before database work. SOT R2 authorizes bounded development database DDL/DML, migration, backfill, recompute and development Head/CAS validation; no repeated database write authorization was requested.
-- Applicable local source repair, runtime performance, identity parity and Phase 0 documents were reviewed before implementation. Phase 0 result remains `DEGRADED_PASS`; no scanner work was started.
-- Updated `AGENTS.md` clauses 12–13 to reflect SOT R2 and keep the production Head / 28765 boundary explicit.
-- Historical and TDX source roots remain unmodified. The TDX distribution was captured into G-drive temporary storage only.
+- Audit start baseline: `codex/v4-unified-development` at `4c65039b7935ea2396740df8552045afcd8afb61`.
+- Phase 0 ended `DEGRADED_PASS`; no scanner work was started.
+- The 2026-10-18 development high-privilege SOT R2 authorized bounded development PostgreSQL DDL/DML, migration, backfill, recomputation, and development Head/CAS validation. No repeated database write request was made.
+- All new workspaces and temporary evidence remained under `G:/codex_tmp`; TDX source roots were read-only and report zero writes.
+- Formal accepted predecessor: 2026-10-09. The candidate workspace predecessor was 2026-10-14, explicitly `NON_PIT`; it was not substituted for the formal predecessor.
 
-## Real source and PostgreSQL evidence
+## BaoStock retry and 351-code reconciliation
 
-A bounded capture used the existing official TDX daily-source adapter. The provider package was dated 2026-10-21, with provider update time 15:58:50 China time; capture completed at `2026-10-21T09:35:26Z` (17:35:26 China time). The package was 549,730,276 bytes with SHA-256 `0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede`. TDX source-root writes: 0.
+10/15 initially failed with provider error `10002007` (`网络接收错误`) at 18:02 China time. A bounded retry found a stale zero-byte session-lock marker left by a stopped diagnostic process; after removing that task-created marker, the 18:32 retry succeeded using the same BaoStock SDK/host. The accepted raw response contains 5,226 daily rows and 22 factor rows. The 10/14 source followed the same transient receive/login-failure pattern and later succeeded at 17:47 on 10/20. Receipts and raw responses for both dates are copied under `FOURTH_BATCH_ARTIFACTS`.
 
-The package yielded the following daily bars. 10/15, 10/16, 10/19 and 10/20 are explicitly `RECONSTRUCTED_NON_PIT`; 10/21 is `CAPTURED_AFTER_CLOSE_NON_PIT`. None is labeled PIT or AS_RECORDED.
+The 351 unmapped TDX rows are **not all BSE**: 350 are `BJ.*` and one is `SZ.301569`. Per the user’s direction, all 350 BJ rows were excluded from this candidate’s SH/SZ calculation universe. `SZ.301569` is an observed 10/15 code and was admitted through the existing date-bounded stable-identity contract; no pre-observation history was invented. Eleven existing identities had no TDX bar and each BaoStock row reported `tradestatus=0`; they are treated as suspended, not inferred as data gaps. The daily scope is therefore 5,215 traded bars plus 11 suspended identities (5,226 total).
 
-| Trade date | Rows | Evidence class |
-| --- | ---: | --- |
-| 2026-10-15 | 5,565 | RECONSTRUCTED_NON_PIT |
-| 2026-10-16 | 5,567 | RECONSTRUCTED_NON_PIT |
-| 2026-10-19 | 5,564 | RECONSTRUCTED_NON_PIT |
-| 2026-10-20 | 5,568 | RECONSTRUCTED_NON_PIT |
-| 2026-10-21 | 5,568 | CAPTURED_AFTER_CLOSE_NON_PIT |
+## Owner, PG Publication, and Head/CAS bridge
 
-A real transaction created development schema `v4_r8_batch04_source_ingress` and its bounded receipt/bar tables, then wrote 5 receipts and 27,832 bars. The write target was `127.0.0.1:5432/market_research`, database OID `646711`, PostgreSQL `18.6`; the task connection reported role `postgres`. A follow-up found and repaired a readback gap: replay had checked counts and source hashes but not every stored value. The new replay compares every row's security key, OHLC, amount, volume, source digest and evidence class against the frozen artifact. The rerun read back all 27,832 rows exactly, remained idempotent at 5 receipts / 27,832 bars, and every receipt insert reported false. The exact replay receipt is committed as `PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json` alongside this report.
+The existing Owner builder was reused and the missing R8 publication bridge was implemented in `src/workbench_db/v4_r8_publication_bridge_v1.py`. The bridge requires a validated single-session candidate, byte-bound G1–G3 evidence, a real CAS rollback drill, exact-token 28766 readback, and a PG append/readback before it records a committed publication. Its development-only schema is `v4_r8pub_fde08c597fc76d13`; `r8_publications` has an append-only trigger. The actual row binds the candidate token, previous and new Head hashes, native Owner authority, source freeze, and HTTP readback.
 
-This transaction is **source ingress only**. It does not create canonical Owners, factor outputs, R8 Publication records or any Head. Before writes, the existing formal Head remained 2026-10-09 and preview T0 was 2026-10-14. The checked R8 Publication/Head path had no candidate publication/head records to advance. Post-write, no formal or development Head/CAS transition was made. Existing preview remains 10/14, `production_accepted=false`.
+- Owner computation: 5,226 objects, 5,215 raw traded rows, zero Core calculation errors; exact coordinate Core and downstream Profile/Structure, Sector/Market, and Focus/Forward stages completed.
+- Owner PG full-payload preparation: 20 newly created dated facts, 148 immutable facts reused, with exact readback.
+- Period numeric oracle: **219,464 checks, zero errors**, based on saved daily history bytes.
+- PG Publication ledger: **one row**, exact readback PASS, append-only trigger present; database `127.0.0.1:5432/market_research`, OID `646711`, PostgreSQL 18.6.
+- Failure drill: deliberately rejected same-token readback; 10/14 candidate Head and joint bytes restored exactly, no PG Publication row inserted, transaction state `ROLLED_BACK`.
+- Successful development CAS: `APPLIED`; the 10/15 candidate Head hash equals its context token. The formal 10/09 Head remained unchanged.
 
-### What the system supports and what blocked this append
+### Independent append gates
 
-- **Design exists:** `operational_daily_executor_v1` → `operational_daily_ready_owner_v2` → `operational_daily_owner_v1` → `operational_successor_release_v1` form a reusable daily candidate path. `v4_operational_owner_authority_v2` can append immutable Owner facts to PG and verify full payload readback. `engineering_shadow_promote` can CAS an isolated G-drive development Head and verify same-token HTTP readback without changing the formal Head.
-- **This batch did not finish wiring R8 SourceIngress into that Owner path or create an R8 publication-ledger transaction.** So this was an implementation gap in this batch, not proof that PostgreSQL or Head CAS cannot support development acceptance.
-- **The actual source attempt failed:** BaoStock's 2026-10-15 daily smoke returned provider code `10002007` (“网络接收错误”) at `2026-10-21T18:02:57.443203+08:00`; the immutable receipt is `reports/v4_baostock/runtime_acceptance/20261015/20261021T180257443203_live_smoke_receipt.json`. The bounded request was not converted into fabricated rows.
-- **The captured TDX bars also do not close the identity contract:** 5,565 target rows include 5,214 rows mapped to the existing 10/14 identity set; 351 rows are unmapped (350 BJ and one SZ), while 11 existing IDs have no target bar. Their trading status cannot be inferred from absence. Creating a complete canonical day requires an authoritative dated identity/status source and the contracted factor/action inputs.
-- **Conclusion:** the platform supports an isolated development Owner/Head CAS path; this attempt remains open because the verified source families and dated identity coverage were insufficient, and the R8 publication bridge is not yet implemented. The prior report incorrectly described this as a wholly absent pipeline. The remaining repair is to wire the R8 source receipt and its provenance into the reusable Owner builder, then execute only after the source contract can produce a complete, status-resolved day.
+The persisted `V4_R8_CANDIDATE_APPEND_COMPARATOR_R2` evidence reports all four gates PASS for the one-session append:
 
-## G1–G4 independent evidence checks
+| Gate | Result | Bound evidence |
+| --- | --- | --- |
+| G1 | PASS | Shared formal/candidate history business bindings match exactly. |
+| G2 | PASS | Historical identity source bytes match by path, size, and SHA-256. |
+| G3 | PASS | Source digest recomputed from seven exact source bindings, generation parameters, append window, and previous reference. |
+| G4 | PASS | PG Owner/Publication row, exact PG readback, single-session CAS, rollback proof, and same-token HTTP receipt. |
 
-The R8 append comparator is now `V4_R8_CANDIDATE_APPEND_COMPARATOR_R2` and verifies evidence from bytes instead of accepting caller assertions:
+The formal predecessor remains separately bound as 2026-10-09. The 2026-10-14 development predecessor is identified as non-PIT and was used only to extend its candidate chain by one session.
 
-- **G1:** the comparator retains separately reportable gate outcomes; memory-only vectors do not establish bound source evidence.
-- **G2:** requires independently bound reference and candidate historical-identity bytes, validates root-contained paths, byte counts and SHA-256, then checks byte identity.
-- **G3:** recomputes the candidate digest from the verified bound source bytes and declared append parameters/window/previous reference; a caller-supplied matching digest alone is insufficient.
-- **G4:** requires a bound `V4_R8_REAL_APPEND_PG_RECEIPT_R1` receipt for the real database append. Boolean claims or a date alone fail closed.
+## 28766 and precomputed performance
 
-Targeted tests include a positive G2/G3 byte-binding fixture, a source tamper negative case, and fail-closed memory-only/G4-without-PG-receipt cases. This establishes comparator behavior, **not** completion of all four business gates on a real post-10/14 R8 publication: G4 and full append remain OPEN because no verified Owner/Publication/development-Head CAS operation was performed.
+The development preview was restarted on the **only** development web port, `127.0.0.1:28766`, after CAS so the server loaded the new exact candidate token. The following routes returned HTTP 200 with `T0=2026-10-15` and the same token: `/api/v4/context`, `/api/operations/status`, `/api/v4/home`, `/api/v4/market`, `/api/v4/stocks`, `/api/v4/sectors`, `/api/v4/focus`, and `/api/v4/forward/statistics`.
 
-## D0, market source and breadth
+The PostgreSQL read index was built offline for the exact token and read back 5,226 stocks, 400 sectors, 3,355 Focus rows, and 165 radar rows. Priority was precomputed offline for 5,226 stocks (701 rankable) and 400 sectors (121 rankable). The first offline computation took 16.263 seconds. Two same-token HTTP priority reads then returned 200 in 171.703 ms and 151.321 ms; each reported `projection_rank_compute_ms=0.0` and identical payload SHA. The precompute now selects snapshots by token, preserving the prior 10/14 snapshot when a later date is added. Candidate lifecycle reconstruction no longer has a 10/14 date cap.
 
-- `r6_reason_attribution.py` no longer treats a date-only clock as midnight or caller booleans/fake hashes as permission proof. D0 permission remains `SEAL_PERMISSION_UNPROVEN` until an actual verified PG Owner/Publication binding is present. Day-level T0 comparison uses the parsed date.
-- `r6_candidate_market_stress.py` no longer accepts caller-shaped permission evidence. Trend stays `UNKNOWN` while its real reference path is incomplete. Four-axis facts are not promoted to formal composite permission.
-- Added versioned breadth contract `S02_ADVANCERS_SHARE_DELTA3_R1`, version `1.0.0`, algorithm `ADVANCERS_SHARE_DELTA3`; it reports the difference in advancing share, with status `DEV_CANDIDATE_VERSIONED`. Existing SIGN remains diagnostic.
-- Actual preview still reports `UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0`; D0 seal state is null/unproven. No market permission is inferred from that output.
+## D0, market source, and limits
 
-## Priority precompute and 28766 acceptance
+The 10/15 D0/Prewatch/market computation completed but correctly remains source-limited: D0 reports 64 TRUE and 5,162 UNKNOWN, its seal state is null, and market trend remains `UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0` (`market_status=SOURCE_INCOMPLETE`). No composite market permission or D0 seal permission was inferred. Repairing those actual-reference inputs remains the next engineering scope; this candidate append does not claim that gate is closed.
 
-Added candidate-only offline materialization using `R8_CANDIDATE_PRIORITY_OFFLINE_PRECOMPUTE_R1` and a versioned identity that binds context token, T0, candidate SHA, owner identities, parameters, producer, lifecycle inputs and session window. Snapshot writes are atomic in the G-drive candidate cache. With `R8_REQUIRE_PRIORITY_PRECOMPUTE=1`, a missing or invalid snapshot fails closed instead of computing rankings inside an HTTP request.
+## Verification and handoff
 
-The fixed preview remains `T0=2026-10-14`, formal Head 2026-10-09. Offline computation produced 5,225 stocks (967 rankable, 4,258 excluded) and 400 sectors (141 rankable, 259 excluded); snapshot size 2,202,155 bytes, SHA-256 `26dcb19dabe555a23b32d643aa51fd791241bba43b67ba1233eb7464a78147b3`. Cached offline rerun took 328.225ms.
+- G1–G4 business comparator: PASS.
+- Source ingress exact-value readback and idempotent replay: PASS for 5 receipts / 27,832 bars, as documented in `PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json`.
+- Candidate Head, PG ledger row, read index, period oracle, rollback proof, priority snapshot, BaoStock receipts/raw responses, and live 28766 route measurements are committed in `FOURTH_BATCH_ARTIFACTS`.
+- The active development service is on 28766; 28765 remains unused. PostgreSQL remained on the existing 5432 instance; no database clone or extra port was created.
 
-On the sole allowed development web slot `127.0.0.1:28766`, Priority cold and hot HTTP calls returned 200/READY in 312.243ms and 206.926ms, both with `projection_rank_compute_ms=0`, 967 rankable stocks, stable payload digest `80c6430b8205a271d790e3a1a105bfa6bfa26ba59687879af12eb2e04b716191`, T0 10/14, `production_accepted=false`. A cold-start probe with the snapshot payload digest deliberately corrupted returned HTTP 400 / `R8_PRIORITY_PRECOMPUTE_REQUIRED` in 166.244ms; the original snapshot bytes were restored and their SHA verified. This confirms the HTTP path does not substitute an in-request ranking when persisted evidence fails validation.
-
-| 28766 route | HTTP | Time (ms) | Result |
-| --- | ---: | ---: | --- |
-| `/api/operations/status` | 200 | 2.21 | status endpoint reachable |
-| `/api/v4/home` | 200 | 918.60 | READY |
-| `/api/v4/market` | 200 | 141.44 | READY |
-| `/api/v4/stocks` | 200 | 307.56 | READY, 5,225 |
-| `/api/v4/sectors` | 200 | 508.81 | READY, 400 |
-| `/api/v4/focus` | 200 | 4,383.26 | READY, 3,247 |
-| `/api/v4/forward/statistics` | 200 | 3,725.03 | READY |
-
-The endpoint acceptance confirms the existing 10/14 preview and its serving paths only. It does not represent a new date becoming visible in the product.
-
-## Verification and remaining acceptance
-
-- Targeted regression set: **45 passed** (`test_v4_functional_r8_third_batch.py`, `test_v4_functional_r8_s01_s03.py`, `test_v4_r6_risk_priority.py`).
-- Python byte-compilation for changed modules and helper scripts passed during implementation.
-- `git diff --check` passed.
-- Final listener check: only `127.0.0.1:28766` was listening for this app (PID 4168). `127.0.0.1:28765` was not listening. PostgreSQL remained on `127.0.0.1:5432`; no separate DB instance or port was created.
-
-### Blocking conditions for a complete daily increment
-
-1. Repair the BaoStock 10/15 transport path or use another already-approved, contract-compatible source; capture dated identity/status and factor/action evidence. Do not infer suspensions from absent TDX bars or generate canonical identities for unmapped rows.
-2. Wire the R8 PG source receipt into the existing reusable operational Owner builder and add the R8 publication/provenance bridge. Then run a bounded development Owner append and isolated development Head/CAS readback without touching formal/production Head.
-3. Run G1–G4 against that actual independently bound append and preserve historical identity bytes. Until then, the new TDX ingress is an evidenced partial increment, not a closed R8 append.
-4. Rebuild and inspect all dependent downstream products and D0/market permission after the actual owner path is present. Current D0/Trend states deliberately remain unproven/UNKNOWN.
-
-**Next stage:** continue the authorized fourth-batch repair by wiring the R8 receipt into the existing Owner/PG/isolated-CAS path, and retry the real source only when a bounded provider attempt can return the required dated families and identity coverage. Then rerun actual PG append + G1–G4. Any later request for production Head, 28765 switch or final package remains a separate release gate.
+**Next stage:** ChatGPT independently audits the committed fourth-batch report and evidence, especially G1–G4 source bindings and the R8 PG Publication receipt. Continue D0/market real-reference repair after that audit. Production Head switching, 28765, and production packaging remain separate gates.

@@ -1,195 +1,407 @@
 {
-  "contract_id": "V4_R8_FOURTH_BATCH_EVIDENCE_R1",
-  "status": "PARTIAL_OPEN",
+  "api_28766": {
+    "base_url": "http://127.0.0.1:28766",
+    "candidate_only": true,
+    "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "contract_id": "R8_28766_CANDIDATE_ACCEPTANCE_READBACK_R1",
+    "formal_head_modified": false,
+    "priority_requests": [
+      {
+        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+        "elapsed_ms": 171.703,
+        "http_status": 200,
+        "performance_timing_ms": {
+          "digest_and_page_ms": 14.361,
+          "market_stress_ms": 0.019,
+          "projection_rank_compute_ms": 0.0,
+          "read_index_context_ms": 0.057,
+          "sector_lifecycle_ms": 23.887,
+          "source_sha_verification_ms": 56.732
+        },
+        "status": "READY",
+        "total": 701
+      },
+      {
+        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+        "elapsed_ms": 151.321,
+        "http_status": 200,
+        "performance_timing_ms": {
+          "digest_and_page_ms": 13.689,
+          "market_stress_ms": 0.02,
+          "projection_rank_compute_ms": 0.0,
+          "read_index_context_ms": 0.051,
+          "sector_lifecycle_ms": 22.676,
+          "source_sha_verification_ms": 55.567
+        },
+        "status": "READY",
+        "total": 701
+      }
+    ],
+    "production_accepted": false,
+    "routes": [
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 85.82,
+        "http_status": 200,
+        "payload_sha256": "faaed8f3a2cf7727fe2aa943efce1adb365ff6ba8c1085fa14e36d7902e69951",
+        "response_bytes": 4021,
+        "response_status": "READY",
+        "route": "/api/v4/context",
+        "total": null
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 2.276,
+        "http_status": 200,
+        "payload_sha256": "59b4805cdd7b361778d484caf440f43ea79fa3189f04c349cab3a626ea367ef1",
+        "response_bytes": 2250,
+        "response_status": null,
+        "route": "/api/operations/status",
+        "total": null
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 1044.658,
+        "http_status": 200,
+        "payload_sha256": "a04b8966a9286837d4982181004fbbcb90217af4c1b380ae49b021c90f89c128",
+        "response_bytes": 173298,
+        "response_status": "READY",
+        "route": "/api/v4/home",
+        "total": null
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 49.031,
+        "http_status": 200,
+        "payload_sha256": "f71b7e6866e7b9cd815a83e73e9e5a8cd8dadcaa0277f626a2a7d50bfb9c27be",
+        "response_bytes": 7792,
+        "response_status": "READY",
+        "route": "/api/v4/market",
+        "total": null
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 73.078,
+        "http_status": 200,
+        "payload_sha256": "430beb746a3f01870736c0e4d41fef901cc6c73596e97ca021b4b686906fdfc7",
+        "response_bytes": 15925,
+        "response_status": "READY",
+        "route": "/api/v4/stocks",
+        "total": 5226
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 544.063,
+        "http_status": 200,
+        "payload_sha256": "bb2858c1bebcd5dccbc5cf44f9fc9693f8e2985e588e182cb1011bf53be2df36",
+        "response_bytes": 10904,
+        "response_status": "READY",
+        "route": "/api/v4/sectors",
+        "total": 400
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 1185.188,
+        "http_status": 200,
+        "payload_sha256": "a8866c90b30ad1bc155d9761795149ef9a938ba612c158dc9103cdc82c1a7449",
+        "response_bytes": 36044,
+        "response_status": "READY",
+        "route": "/api/v4/focus",
+        "total": 3355
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+        "elapsed_ms": 2495.783,
+        "http_status": 200,
+        "payload_sha256": "fc60f6fbe91341611f1ff52fb7a89da3b2bea86cf9a1b76c5d3c2626fdc46c76",
+        "response_bytes": 101208,
+        "response_status": "READY",
+        "route": "/api/v4/forward/statistics",
+        "total": null
+      }
+    ],
+    "status": "PASS",
+    "trade_date": "2026-10-15"
+  },
+  "artifact_index": "FOURTH_BATCH_ARTIFACTS/ARTIFACT_INDEX.json",
   "audit_baseline": {
     "branch": "codex/v4-unified-development",
-    "commit": "4c65039b7935ea2396740df8552045afcd8afb61",
-    "phase0": "DEGRADED_PASS"
+    "current_commit_before_delivery": "6a563cc8c857bb57b718d67aa2f40cbfab269b30",
+    "starting_commit": "4c65039b7935ea2396740df8552045afcd8afb61"
   },
   "authority": {
     "development_write_authority": "SOT_R2_EFFECTIVE_2026-10-18",
-    "write_scope": [
+    "formal_head_modified": false,
+    "production_accepted": false,
+    "production_package_created": false,
+    "scanner_started": false,
+    "scope": [
       "bounded_development_DDL_DML",
       "migration",
       "backfill",
       "recompute",
       "development_Head_CAS_validation"
-    ],
-    "production_head_modified": false,
-    "production_accepted": false,
-    "scanner_started": false
-  },
-  "source": {
-    "provider": "official TDX daily package",
-    "package_date": "2026-10-21",
-    "provider_updated_at_shanghai": "2026-10-21 15:58:50",
-    "captured_at_utc": "2026-10-21T09:35:26Z",
-    "bytes": 549730276,
-    "sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
-    "source_root_writes": 0,
-    "sessions": [
-      {
-        "date": "2026-10-15",
-        "rows": 5565,
-        "evidence_class": "RECONSTRUCTED_NON_PIT"
-      },
-      {
-        "date": "2026-10-16",
-        "rows": 5567,
-        "evidence_class": "RECONSTRUCTED_NON_PIT"
-      },
-      {
-        "date": "2026-10-19",
-        "rows": 5564,
-        "evidence_class": "RECONSTRUCTED_NON_PIT"
-      },
-      {
-        "date": "2026-10-20",
-        "rows": 5568,
-        "evidence_class": "RECONSTRUCTED_NON_PIT"
-      },
-      {
-        "date": "2026-10-21",
-        "rows": 5568,
-        "evidence_class": "CAPTURED_AFTER_CLOSE_NON_PIT"
-      }
     ]
   },
-  "postgres": {
-    "host": "127.0.0.1",
-    "port": 5432,
-    "database": "market_research",
-    "database_oid": 646711,
-    "server_version_num": "180006",
-    "write_role": "postgres",
-    "schema": "v4_r8_batch04_source_ingress",
-    "tables": [
-      "source_receipts",
-      "tdx_bars"
-    ],
-    "before": {
-      "receipts": 0,
-      "bars": 0
+  "baostock": {
+    "2026-10-14": {
+      "accepted_manifest": "docs/evidence/functional_r8_implementation_20261021/FOURTH_BATCH_ARTIFACTS/20261014_ACCEPTED_RUNTIME_MANIFEST.json",
+      "daily_rows": 5225,
+      "factor_rows": 22,
+      "final_status": "PASS",
+      "initial_transient_failures": 2,
+      "receipt": "docs/evidence/functional_r8_implementation_20261021/FOURTH_BATCH_ARTIFACTS/20261014_LIVE_SMOKE_RECEIPT.json"
     },
-    "after": {
-      "receipts": 5,
-      "bars": 27832
+    "2026-10-15": {
+      "accepted_manifest": "docs/evidence/functional_r8_implementation_20261021/FOURTH_BATCH_ARTIFACTS/20261015_ACCEPTED_RUNTIME_MANIFEST.json",
+      "daily_rows": 5226,
+      "factor_rows": 22,
+      "initial_error": "网络接收错误",
+      "initial_error_code": "10002007",
+      "initial_status": "FAIL",
+      "raw_response": "docs/evidence/functional_r8_implementation_20261021/FOURTH_BATCH_ARTIFACTS/20261015_RAW_RESPONSES.json",
+      "receipt": "docs/evidence/functional_r8_implementation_20261021/FOURTH_BATCH_ARTIFACTS/20261015_LIVE_SMOKE_RECEIPT.json",
+      "retry_status": "PASS"
     },
-    "idempotent_replay_before": {
-      "receipts": 5,
-      "bars": 27832
-    },
-    "idempotent_replay_after": {
-      "receipts": 5,
-      "bars": 27832
-    },
-    "exact_value_readback": {
-      "contract": "all 27,832 source-key/OHLC/amount/volume/source-digest/evidence-class tuples",
-      "status": "PASS",
-      "all_sessions": true,
-      "idempotent_replay": true,
-      "receipt": "PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json"
-    },
-    "publication_created": false,
-    "development_head_modified": false,
-    "formal_head_modified": false
+    "host": "public-api.baostock.com:10030",
+    "sdk": "0.9.3"
   },
-  "existing_operational_candidate_path": {
-    "owner_builder": "operational_daily_executor_v1 -> operational_daily_ready_owner_v2 -> operational_daily_owner_v1",
-    "owner_pg_authority": "V4_HEAD_EMBEDDED_NATIVE_PG_OWNER_AUTHORITY_V2",
-    "isolated_head_cas": "operational_successor_release_v1.engineering_shadow_promote",
-    "same_token_http_readback_supported": true,
-    "r8_publication_bridge_implemented": false,
-    "path_used_for_post_2026_10_14_append": false,
-    "formal_head_modified": false
-  },
-  "post_2026_10_14_source_blocker": {
-    "contract_id": "R8_BATCH04_DATED_SOURCE_COVERAGE_BLOCKER_R1",
-    "baostock_target_date": "2026-10-15",
-    "baostock_status": "FAIL",
-    "baostock_error_code": "10002007",
-    "baostock_error_message": "网络接收错误。",
-    "baostock_observed_at_shanghai": "2026-10-21T18:02:57.443203+08:00",
-    "immutable_receipt": "reports/v4_baostock/runtime_acceptance/20261015/20261021T180257443203_live_smoke_receipt.json",
-    "tdx_rows": 5565,
-    "mapped_to_2026_10_14_identity": 5214,
-    "unmapped_rows": 351,
-    "unmapped_breakdown": {
-      "BJ": 350,
-      "SZ": 1
+  "contract_id": "V4_R8_FOURTH_BATCH_EVIDENCE_R2",
+  "d0_market": {
+    "d0_counts": {
+      "TRUE": 64,
+      "UNKNOWN": 5162
     },
-    "existing_identity_ids_without_target_bar": 11,
-    "absent_bar_status_inferred": false,
-    "complete_owner_day_created": false
+    "d0_seal_state": null,
+    "market_status": "SOURCE_INCOMPLETE",
+    "permission_inferred": false,
+    "status": "OPEN_SOURCE_REFERENCE_INCOMPLETE",
+    "trend_state": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0"
   },
   "gates": {
-    "G1": "memory-only claims do not provide source binding; real full append gate remains open",
-    "G2": "bound historical identity bytes checked; positive fixture passes",
-    "G3": "bound source digest recomputed; positive fixture passes and tamper fixture fails",
-    "G4": "requires bound real PG append receipt; remains open because no R8 publication/head append was executed"
+    "G1": "PASS",
+    "G2": "PASS",
+    "G3": "PASS",
+    "G4": "PASS",
+    "errors": [],
+    "final_comparator_status": "PASS",
+    "scope": "one-session development append; external audit remains separate"
   },
-  "d0_market": {
-    "d0_permission": "SEAL_PERMISSION_UNPROVEN",
-    "market_trend": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0",
-    "composite_permission": "not inferred",
-    "breadth_contract": "S02_ADVANCERS_SHARE_DELTA3_R1",
-    "breadth_version": "1.0.0"
+  "next_stage": "ChatGPT independently verify bound G1-G4 evidence; then continue D0 and market real-reference repair",
+  "open_gates": [
+    "independent ChatGPT audit",
+    "D0 source-backed seal permission",
+    "complete market real-reference path and trend"
+  ],
+  "owner_append": {
+    "AS_RECORDED": false,
+    "PIT_ELIGIBLE": false,
+    "candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "core_oracle": {
+      "errors": 0,
+      "owner_rows": 5226
+    },
+    "input_rows": 5226,
+    "period_numeric_oracle": {
+      "checks": 219464,
+      "errors": 0,
+      "status": "PASS"
+    },
+    "pg_owner_preparation": {
+      "created": 20,
+      "reused": 148
+    },
+    "raw_traded": 5215,
+    "status": "PASS",
+    "suspended": 11,
+    "target_session": "2026-10-15"
   },
   "priority_precompute": {
+    "T0": "2026-10-15",
     "contract": "R8_CANDIDATE_PRIORITY_OFFLINE_PRECOMPUTE_R1",
-    "T0": "2026-10-14",
-    "formal_head_date": "2026-10-09",
-    "snapshot_bytes": 2202155,
-    "snapshot_sha256": "26dcb19dabe555a23b32d643aa51fd791241bba43b67ba1233eb7464a78147b3",
-    "payload_sha256": "c725fba28b63fe502a460078cbc873e824fa39556bbb8d6ee69e907d9489e0ba",
-    "response_payload_sha256": "80c6430b8205a271d790e3a1a105bfa6bfa26ba59687879af12eb2e04b716191",
-    "stocks": {
-      "total": 5225,
-      "rankable": 967,
-      "excluded": 4258
-    },
-    "sectors": {
-      "total": 400,
-      "rankable": 141,
-      "excluded": 259
-    },
-    "offline_cached_recompute_ms": 328.225,
-    "api_cold_ms": 312.243,
-    "api_hot_ms": 206.926,
-    "api_rank_compute_ms": 0.0,
-    "corrupt_snapshot_probe": {
-      "http": 400,
-      "reason": "R8_PRIORITY_PRECOMPUTE_REQUIRED",
-      "elapsed_ms": 166.244,
-      "restored_original_sha256": true
-    },
-    "production_accepted": false
+    "http_projection_rank_compute_ms": [
+      0.0,
+      0.0
+    ],
+    "http_reads": [
+      {
+        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+        "elapsed_ms": 171.703,
+        "http_status": 200,
+        "performance_timing_ms": {
+          "digest_and_page_ms": 14.361,
+          "market_stress_ms": 0.019,
+          "projection_rank_compute_ms": 0.0,
+          "read_index_context_ms": 0.057,
+          "sector_lifecycle_ms": 23.887,
+          "source_sha_verification_ms": 56.732
+        },
+        "status": "READY",
+        "total": 701
+      },
+      {
+        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+        "elapsed_ms": 151.321,
+        "http_status": 200,
+        "performance_timing_ms": {
+          "digest_and_page_ms": 13.689,
+          "market_stress_ms": 0.02,
+          "projection_rank_compute_ms": 0.0,
+          "read_index_context_ms": 0.051,
+          "sector_lifecycle_ms": 22.676,
+          "source_sha_verification_ms": 55.567
+        },
+        "status": "READY",
+        "total": 701
+      }
+    ],
+    "offline_compute_ms": 16263.213,
+    "payload_sha256": "312f4a4e97581f6b12919231ec6d192b3328d7b2f11856c4b2a58b6733b120c4",
+    "rankable_sectors": 121,
+    "rankable_stocks": 701,
+    "sectors": 400,
+    "snapshot_bytes": 2049685,
+    "snapshot_sha256": "b98c1c9dadf9f2c64d0c7b6b1d9d449f0974cc047372b446ae783c9726fc3494",
+    "stocks": 5226,
+    "token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2"
   },
-  "api_28766_ms": {
-    "/api/operations/status": 2.21,
-    "/api/v4/home": 918.6,
-    "/api/v4/market": 141.44,
-    "/api/v4/stocks": 307.56,
-    "/api/v4/sectors": 508.81,
-    "/api/v4/focus": 4383.26,
-    "/api/v4/forward/statistics": 3725.03
+  "publication_and_cas": {
+    "append_only_trigger_count": 1,
+    "candidate_head_sha256": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "cas_result": "APPLIED",
+    "contract_id": "V4_R8_REAL_APPEND_PG_RECEIPT_R1",
+    "database_identity": {
+      "database": "market_research",
+      "database_oid": 646711,
+      "host": "127.0.0.1/32",
+      "port": 5432
+    },
+    "formal_head_modified": false,
+    "pg_exact_readback": true,
+    "pg_row_count": 1,
+    "production_accepted": false,
+    "rollback_drill": {
+      "candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "contract_id": "V4_R8_CAS_ROLLBACK_DRILL_R1",
+      "formal_head_modified": false,
+      "head_restored_exactly": true,
+      "joint_restored_exactly": true,
+      "last_good_head_sha256": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
+      "production_accepted": false,
+      "publication_rows_after_failure": 0,
+      "status": "PASS",
+      "transaction_state": "ROLLED_BACK"
+    },
+    "same_token": true,
+    "schema": "v4_r8pub_fde08c597fc76d13",
+    "status": "PASS"
+  },
+  "read_index": {
+    "binding": {
+      "T0": "2026-10-15",
+      "contract_id": "V4_READ_INDEX_R2",
+      "counts": {
+        "focus": 3355,
+        "radar": 165,
+        "sectors": 400,
+        "stocks": 5226
+      },
+      "database_identity": {
+        "database": "market_research",
+        "database_oid": 646711,
+        "host": "127.0.0.1/32",
+        "port": 5432
+      },
+      "digest": "0f6faac757dc5b8ce68fa70582d84f78d346252e384c581199bb82e4633c6211",
+      "engine": "postgresql",
+      "head_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "producer_sha256": "661df67c3b01d685574301970f2be682063269d38e835517e12d92fc7d2887c7",
+      "schema": "v4_3358239a423b8adc37b7d463de2cbaed07341043bb76150dc0d70915"
+    },
+    "contract_id": "V4_READ_INDEX_R2",
+    "exact_rows_readback": {
+      "focus": 3355,
+      "radar": 165,
+      "sectors": 400,
+      "stocks": 5226
+    },
+    "head_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "head_unchanged_during_precompute": true,
+    "trade_date": "2026-10-15"
+  },
+  "source": {
+    "evidence_classes": {
+      "2026-10-15": "RECONSTRUCTED_NON_PIT",
+      "2026-10-16": "RECONSTRUCTED_NON_PIT",
+      "2026-10-19": "RECONSTRUCTED_NON_PIT",
+      "2026-10-20": "RECONSTRUCTED_NON_PIT",
+      "2026-10-21": "CAPTURED_AFTER_CLOSE_NON_PIT"
+    },
+    "package_bytes": 549730276,
+    "package_date": "2026-10-21",
+    "package_sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede",
+    "provider": "official TDX daily package",
+    "source_root_writes": 0
+  },
+  "source_ingress": {
+    "bars": 27832,
+    "evidence": "PG_SOURCE_INGRESS_EXACT_READBACK_RECEIPT.json",
+    "exact_row_value_readback": "PASS",
+    "idempotent_replay": "PASS",
+    "receipts": 5,
+    "schema": "v4_r8_batch04_source_ingress"
+  },
+  "stage_contract": {
+    "candidate_predecessor_date": "2026-10-14",
+    "candidate_predecessor_evidence_class": "NON_PIT",
+    "compute_sessions": [
+      "2026-10-15"
+    ],
+    "formal_head_date": "2026-10-09",
+    "formal_head_sha256": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "next_stage": "CHATGPT_INDEPENDENT_AUDIT",
+    "phase0": "DEGRADED_PASS",
+    "target_session": "2026-10-15",
+    "task": "FOURTH_BATCH_R8_REAL_PG_INCREMENT"
+  },
+  "status": "CANDIDATE_APPEND_PASS_EXTERNAL_AUDIT_OPEN",
+  "tdx_identity_reconciliation": {
+    "SZ.301569": "admitted for 2026-10-15 via existing date-bounded stable identity contract; no earlier history created",
+    "bao_daily_rows": 5226,
+    "bj_in_candidate_universe": false,
+    "suspended_existing_identities": 11,
+    "suspension_evidence": "all 11 BaoStock rows tradestatus=0",
+    "target_rows": 5565,
+    "traded_bars": 5215,
+    "unmapped": {
+      "BJ": 350,
+      "SZ.301569": 1
+    },
+    "unmapped_total": 351
   },
   "verification": {
-    "targeted_tests": {
-      "passed": 45,
-      "failed": 0
+    "artifact_count": 17,
+    "artifact_index": "V4_R8_FOURTH_BATCH_ARTIFACT_INDEX_R1",
+    "candidate_head_date": "2026-10-15",
+    "candidate_only": true,
+    "database_identity": {
+      "database": "market_research",
+      "database_oid": 646711,
+      "host": "127.0.0.1/32",
+      "port": 5432
     },
-    "git_diff_check": "PASS",
-    "web_listener": "127.0.0.1:28766",
-    "web_listener_pid": 4168,
-    "production_28765_listening": false,
-    "database_port": 5432
-  },
-  "temporary_receipts": [
-    "G:/codex_tmp/r8_fourth_batch/PG_SOURCE_INGRESS_RECEIPT.json",
-    "G:/codex_tmp/r8_fourth_batch/PG_SOURCE_INGRESS_IDEMPOTENCY_RECEIPT.json",
-    "G:/codex_tmp/r8_fourth_batch/PRIORITY_PRECOMPUTE_RECEIPT.json",
-    "G:/codex_tmp/r8_fourth_batch/PRIORITY_API_MEASURE_RUN.txt",
-    "G:/codex_tmp/r8_fourth_batch/PRIORITY_CORRUPT_COLD_PROBE.txt"
-  ]
+    "database_port": 5432,
+    "formal_head_date_after": "2026-10-09",
+    "formal_head_sha256_after": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
+    "production_28765_listener": false,
+    "web_listeners_127001": "{\"LocalAddress\":\"127.0.0.1\",\"LocalPort\":28766,\"OwningProcess\":45028}"
+  }
 }

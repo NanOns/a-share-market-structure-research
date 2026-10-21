@@ -1,0 +1,133 @@
+{
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1",
+  "live_smoke": {
+    "adjustment_factor": {
+      "error_code": "0",
+      "fields": [
+        "code",
+        "dividOperateDate",
+        "foreAdjustFactor",
+        "backAdjustFactor",
+        "adjustFactor"
+      ],
+      "method": "query_daily_adjust_factor",
+      "page_count": 1,
+      "provider_date": "2026-10-15",
+      "response_sha256": "eb4ccbe85f319b19a1d12c68eefffebb4ce02bdc783e62090c61894a3ae4f7ec",
+      "row_count": 22
+    },
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "daily": {
+      "error_code": "0",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "method": "query_daily_history_k_AStock",
+      "page_count": 1,
+      "provider_date": "2026-10-15",
+      "response_sha256": "5ec0e574fa638a35f47f199b29db8a6c9eaf7888615e96fa80ad780f971c14ef",
+      "row_count": 5226
+    },
+    "endpoint": {
+      "configured_host": "public-api.baostock.com",
+      "configured_port": 10030,
+      "connected_peer_ip": "114.94.20.42",
+      "connected_peer_port": 10030
+    },
+    "status": "PASS",
+    "target_date": "2026-10-15"
+  },
+  "native_response": {
+    "path": "reports/v4_baostock/runtime_acceptance/20261015/20261021T183204240375_raw_responses.json",
+    "sha256": "e597112d53fe567fa5342c0ce3940eaf58e0c1a8c54cc4729e899e416853d100"
+  },
+  "observed_at": "2026-10-21T18:32:50.131750+08:00",
+  "response_metadata": {
+    "adjustment_factor": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "code",
+        "dividOperateDate",
+        "foreAdjustFactor",
+        "backAdjustFactor",
+        "adjustFacto"
+      ],
+      "page_count": 1,
+      "provider_date": "2026-10-15"
+    },
+    "daily": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "page_count": 1,
+      "provider_date": null
+    }
+  },
+  "response_row_counts": {
+    "adjustment_factor": 22,
+    "daily": 5226
+  },
+  "runtime": {
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "version": "0.9.3"
+  },
+  "schema_adapter": {
+    "contract_id": "BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2",
+    "independent_external_acceptance": "NOT_GRANTED",
+    "role": "SPELLING_AND_RESPONSE_DATE_EVIDENCE_ONLY"
+  },
+  "source_transport_v2": {
+    "adjustment_factor": {
+      "received_at": "2026-10-21T18:32:50.131750+08:00",
+      "requested_at": "2026-10-21T18:32:49.627553+08:00"
+    },
+    "contract_id": "SOURCE_REQUEST_RESPONSE_CLOCK_V2",
+    "daily": {
+      "received_at": "2026-10-21T18:32:49.627542+08:00",
+      "requested_at": "2026-10-21T18:32:06.398548+08:00"
+    }
+  },
+  "status": "PASS",
+  "target_date": "2026-10-15",
+  "tdx_root_write_count": 0,
+  "version": "1.0.0"
+}

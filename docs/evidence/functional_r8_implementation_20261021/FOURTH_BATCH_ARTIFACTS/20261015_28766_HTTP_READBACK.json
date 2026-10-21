@@ -1,0 +1,132 @@
+{
+  "base_url": "http://127.0.0.1:28766",
+  "candidate_only": true,
+  "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+  "contract_id": "R8_28766_CANDIDATE_ACCEPTANCE_READBACK_R1",
+  "formal_head_modified": false,
+  "priority_requests": [
+    {
+      "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+      "elapsed_ms": 171.703,
+      "http_status": 200,
+      "performance_timing_ms": {
+        "digest_and_page_ms": 14.361,
+        "market_stress_ms": 0.019,
+        "projection_rank_compute_ms": 0.0,
+        "read_index_context_ms": 0.057,
+        "sector_lifecycle_ms": 23.887,
+        "source_sha_verification_ms": 56.732
+      },
+      "status": "READY",
+      "total": 701
+    },
+    {
+      "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
+      "elapsed_ms": 151.321,
+      "http_status": 200,
+      "performance_timing_ms": {
+        "digest_and_page_ms": 13.689,
+        "market_stress_ms": 0.02,
+        "projection_rank_compute_ms": 0.0,
+        "read_index_context_ms": 0.051,
+        "sector_lifecycle_ms": 22.676,
+        "source_sha_verification_ms": 55.567
+      },
+      "status": "READY",
+      "total": 701
+    }
+  ],
+  "production_accepted": false,
+  "routes": [
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 85.82,
+      "http_status": 200,
+      "payload_sha256": "faaed8f3a2cf7727fe2aa943efce1adb365ff6ba8c1085fa14e36d7902e69951",
+      "response_bytes": 4021,
+      "response_status": "READY",
+      "route": "/api/v4/context",
+      "total": null
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 2.276,
+      "http_status": 200,
+      "payload_sha256": "59b4805cdd7b361778d484caf440f43ea79fa3189f04c349cab3a626ea367ef1",
+      "response_bytes": 2250,
+      "response_status": null,
+      "route": "/api/operations/status",
+      "total": null
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 1044.658,
+      "http_status": 200,
+      "payload_sha256": "a04b8966a9286837d4982181004fbbcb90217af4c1b380ae49b021c90f89c128",
+      "response_bytes": 173298,
+      "response_status": "READY",
+      "route": "/api/v4/home",
+      "total": null
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 49.031,
+      "http_status": 200,
+      "payload_sha256": "f71b7e6866e7b9cd815a83e73e9e5a8cd8dadcaa0277f626a2a7d50bfb9c27be",
+      "response_bytes": 7792,
+      "response_status": "READY",
+      "route": "/api/v4/market",
+      "total": null
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 73.078,
+      "http_status": 200,
+      "payload_sha256": "430beb746a3f01870736c0e4d41fef901cc6c73596e97ca021b4b686906fdfc7",
+      "response_bytes": 15925,
+      "response_status": "READY",
+      "route": "/api/v4/stocks",
+      "total": 5226
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 544.063,
+      "http_status": 200,
+      "payload_sha256": "bb2858c1bebcd5dccbc5cf44f9fc9693f8e2985e588e182cb1011bf53be2df36",
+      "response_bytes": 10904,
+      "response_status": "READY",
+      "route": "/api/v4/sectors",
+      "total": 400
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 1185.188,
+      "http_status": 200,
+      "payload_sha256": "a8866c90b30ad1bc155d9761795149ef9a938ba612c158dc9103cdc82c1a7449",
+      "response_bytes": 36044,
+      "response_status": "READY",
+      "route": "/api/v4/focus",
+      "total": 3355
+    },
+    {
+      "accepted_trade_date": "2026-10-15",
+      "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "elapsed_ms": 2495.783,
+      "http_status": 200,
+      "payload_sha256": "fc60f6fbe91341611f1ff52fb7a89da3b2bea86cf9a1b76c5d3c2626fdc46c76",
+      "response_bytes": 101208,
+      "response_status": "READY",
+      "route": "/api/v4/forward/statistics",
+      "total": null
+    }
+  ],
+  "status": "PASS",
+  "trade_date": "2026-10-15"
+}

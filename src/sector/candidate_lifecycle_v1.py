@@ -27,7 +27,7 @@ def build_candidate_lifecycle(root, candidate, source_root):
     """Compute one immutable, non-PIT research result from candidate Owners."""
     day = candidate['accepted_trade_date']
     sessions = [s for s in candidate['published_sessions'] if s <= day][-5:]
-    if day > '2026-10-14' or len(sessions) != 5 or sessions[-1] != day:
+    if len(sessions) != 5 or sessions[-1] != day:
         raise ValueError('SECTOR_LIFECYCLE_CANDIDATE_DATE_OR_WINDOW_INVALID')
     histories, rotations, bindings = {}, {}, {}
     for session in sessions:

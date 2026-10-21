@@ -7,7 +7,7 @@ import json
 import os
 import struct
 import zipfile
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from dataclasses import asdict
 from decimal import Decimal, ROUND_HALF_UP, localcontext
 from pathlib import Path
@@ -20,6 +20,20 @@ from .tdx_official_daily_source import sha256_file, _atomic_write
 
 CONTRACT = 'config/v4_r43_corrected_owner_replay_v3.json'
 OUT = 'docs/evidence/r4_3_four_session_closeout_20261009/owner_v3'
+_DAY_RECORD_FORMAT = '<IIIIIfII'
+
+
+class _PackedDayRows:
+    """Re-iterable compact view of a bounded TDX .day history window."""
+
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __iter__(self):
+        return struct.iter_unpack(_DAY_RECORD_FORMAT, self.payload)
+
+    def __len__(self):
+        return len(self.payload) // struct.calcsize(_DAY_RECORD_FORMAT)
 
 
 def load(path):
@@ -206,9 +220,14 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
             if not is_stock_code(code):continue
             if code not in ids:
                 unknown_codes.append(code);continue
-            raw=[v for v in struct.iter_unpack('<IIIIIfII',z.read(name)) if v[0]<=int(max(dates).replace('-',''))]
-            # Preserve enough actual bars for the original 250-bar Profile and period windows.
-            cache[ids[code]['security_id']]=(code,raw[-420:])
+            # Retain the same last 420 eligible records, but pack them per code
+            # instead of holding millions of Python tuples for the whole market.
+            # This keeps incremental full-universe replay within bounded memory.
+            cutoff=int(max(dates).replace('-',''));window=deque(maxlen=420)
+            for row in struct.iter_unpack(_DAY_RECORD_FORMAT,z.read(name)):
+                if row[0]<=cutoff:window.append(row)
+            packed=b''.join(struct.pack(_DAY_RECORD_FORMAT,*row) for row in window)
+            cache[ids[code]['security_id']]=(code,_PackedDayRows(packed))
     if accepted_history:
         # A normal append may add a new bar, but cannot silently borrow an old
         # acceptance after a provider corrects an overlapping historical bar.

@@ -55,10 +55,15 @@ def precompute(root: Path, candidate_path: Path) -> dict:
         raise ValueError("R8_PRIORITY_PRECOMPUTE_FAILED:" + str(response.get("reason") or code))
     cache_root = root / "runtime/r8_derived_cache/priority"
     matches = sorted(cache_root.glob("*.json")) if cache_root.exists() else []
-    if len(matches) != 1:
-        raise ValueError(f"R8_PRIORITY_PRECOMPUTE_SNAPSHOT_COUNT:{len(matches)}")
-    raw = matches[0].read_bytes()
-    envelope = json.loads(raw)
+    token_matches = []
+    for path in matches:
+        candidate_envelope = json.loads(path.read_bytes())
+        if candidate_envelope.get("identity", {}).get("token") == api.token:
+            token_matches.append((path, candidate_envelope))
+    if len(token_matches) != 1:
+        raise ValueError(f"R8_PRIORITY_PRECOMPUTE_TOKEN_SNAPSHOT_COUNT:{len(token_matches)}")
+    snapshot_path, envelope = token_matches[0]
+    raw = snapshot_path.read_bytes()
     payload = envelope.get("payload")
     if not isinstance(payload, dict) or envelope.get("identity", {}).get("token") != api.token:
         raise ValueError("R8_PRIORITY_PRECOMPUTE_SNAPSHOT_IDENTITY_MISMATCH")
@@ -68,7 +73,7 @@ def precompute(root: Path, candidate_path: Path) -> dict:
     return dict(contract_id="R8_CANDIDATE_PRIORITY_OFFLINE_PRECOMPUTE_R1",
         status="PRECOMPUTE_PASS_CANDIDATE_ONLY", T0=api.candidate["accepted_trade_date"],
         token=api.token, candidate_only=True, production_accepted=False,
-        formal_head_modified=False, snapshot_path=str(matches[0]),
+        formal_head_modified=False, snapshot_path=str(snapshot_path),
         snapshot_sha256=hashlib.sha256(raw).hexdigest(), snapshot_bytes=len(raw),
         payload_sha256=envelope.get("payload_sha256"),
         source_binding_identity_sha256=hashlib.sha256(json.dumps(envelope.get("identity"),

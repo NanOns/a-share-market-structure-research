@@ -24,11 +24,26 @@
 | 板块生命周期与排序 | **PARTIAL** | API 读回 400/400 health/maturity `SOURCE_INCOMPLETE`，Priority 0/400 可排序；其中 266 行缺 maturity+health，134 行还缺 rotation。现存 lifecycle 文件是成员/生命周期输入快照，不是独立已验收的计算输出。没有伪造轮动或使用 RS proxy 填补，未写 PG。 |
 | 市场压力风险 | **PARTIAL** | 使用修正后的日涨跌停候选输入，对既有 `market_axis_primitives` 只重算 stress 轴，三个日期均得到覆盖率约 99.35–99.39%、LOW；但 breadth/participation 仍 UNKNOWN，候选没有集成到 market Owner/home API。正式风险 API 仍 `MARKET_PRESSURE_RISK SOURCE_INCOMPLETE 0/1`，原市场 Owner 的压力值仍不可用。 |
 | Focus 与首页计数 | **PARTIAL（口径已对账，数据缺口未修）** | 当前 API 全页读取 3,247 个唯一 Focus tracked-object cohort；首页变化总数 177、展示 30、净信息 191、持续项 330；首页变化页 30 行中 3 条为真实状态变化，27 条为来源不足观察。Radar 177 条事件（NEW 90/UPGRADED 57/WEAKENED 30），使用独立合同和分母。计数差异可解释，但 cohort 中仍有 2,726 条 DATA_UNAVAILABLE，前瞻数据仍 `DATA_MISSING`。 |
-| 5G 概念成员关系 | **PARTIAL** | `THEME:880506` 当前成员 454、映射 442、未映射 12、有报价 440；12 项均为 TDX 快照 `UNMAPPED_QUARANTINED`、无 security_id，并且不在 10/14 core/daily 行中。源文件没有名称/上市/退市日期，不能推断其上市状态；映射缺陷仍待解决。成员采集时间 10/09，存续偏差风险。 |
+| 5G 概念成员关系 | **PARTIAL（页面链路 PASS）** | 浏览器实际打开 `THEME:880506`，页面显示 454 源成员、442 已映射、12 未映射、440 有行情；已映射成员表 442 行可翻页，股票链接可打开。12 项均为 TDX 快照 `UNMAPPED_QUARANTINED`、无 security_id，并且不在 10/14 core/daily 行中。源文件没有名称/上市/退市日期，不能推断其上市状态；映射缺陷仍待解决。成员采集时间 10/09，存续偏差风险。 |
 | 图表 QFQ 冷/热与实际页面 | **PASS（定向样本）** | `SH.600000` 10/14 QFQ 冷读 API 200、422 根；热读 200、422 根、cache hit，规范 payload SHA 一致；浏览器个股详情页实际渲染“真实行情蜡烛图”、120/422 根 QFQ，末根 10/14 收盘 9.65；图表含 5/20/60 均线且最近 200 根 MA 全有值。来源绑定 TDX GBBQ 2026-07-16 除权样本。仅通过一个个股样本，不代表全市场图表验收。 |
-| 概念关系与宽屏/窄屏页面 | **PARTIAL / NOT_VERIFIABLE** | 个股详情的“查看所属板块”真实链接可见，但没有逐项验收所有概念关系详情/成员边。Priority 桌面 DOM 完成验收；未能设置 390×844 viewport，本轮窄屏结论为 NOT_VERIFIABLE。未将浏览器覆盖范围外的页面标记 PASS。 |
+| 概念关系与真实页面 | **PARTIAL** | 个股详情的“查看所属板块”链接可见；5G 概念详情页与 442 个已映射成员的可读关系表已在浏览器读回。12 个 unmapped 成员因无身份映射仍无法形成证券详情关系；除此之外未声称所有概念关系均已验收。Priority 桌面 DOM 完成验收。 |
 
 **综合状态：PARTIAL。** 已完成日涨跌停生产者的局部修复、候选 Priority 页面和焦点计数口径验证、单只股票图表冷/热与浏览器验收。正式 Priority、市场风险集成、板块 lifecycle、D0/Focus 端到端和 5G 身份映射仍有明确缺陷。代码推送不代表外审通过或正式发布。
+
+## 为什么其余项没有闭环
+
+这些条目并非都“无法推进”。除正式 Owner 写入需要额外授权外，上一轮对若干只读候选工作过早停止，按当前证据逐项说明：
+
+| 项目 | 可推进范围 | 目前确切限制 / 上轮未完成项 |
+|---|---|---|
+| 正式 Priority | 当前只读候选榜单、分母和页面已完成 | Formal API 的 `RESEARCH_PRIORITY_BINDING_MISSING` 表示该 token 没有 immutable Priority Owner。将它变为正式已接受结果需要共享 PG 写入/authority 变更，用户未授权；候选预览没有因此停止。 |
+| 日涨跌停→市场风险 | 已完成限价候选重算和 stress primitive 离线试算 | 三份日线源记录观测时间为 10/20，超出 R5 对“各自 T0 以前合法历史输入”的要求；因此可作为“后验候选诊断”，不可当作满足 R5 时点验收的输入。stress 结果也没有进入当前候选 API。上轮应继续查找 T0 前可用源/逐项分类并做隔离 API 预览；不接入正式 Owner 是权限边界。 |
+| 板块 lifecycle | 当前 400 板块可继续做离线审计 | 上轮执行的审计脚本读取的是预览根目录正式 Head `2026-10-09`，窗口为 9/28、9/29、9/30、10/08、10/09，20 个独立 oracle 样本 `FAIL`；证据 `G:\codex_tmp\r5_sector_lifecycle_audit.json` SHA256 `71a7a55b9472f58d249692af61488fa70816822701e2bc397048c863a88a315c`。这既不是 10/14 输入，也未通过独立 oracle，不能写入 10/14 Owner。R5 日期候选审计尚未运行，是上轮遗漏；应先用合法的 10/14 五会话来源重新构建/对账，而非直接写 PG。 |
+| D0/D2 | 对可读取事实继续逐股追因子、parent episode | 当前 10/14 记录没有 confirmed FALSE 或 boundary_event 样本；不能伪造反例或将 UNKNOWN 改 FALSE。上轮只列了 7 个示例而任务卡要求至少 10 个真实样本，并且未完成 D0 parent episode 端到端，这属于未完成取证，不是授权阻塞。 |
+| Focus | 首页/Focus 当前页面、总数与第一页 3/30、27 条来源不足已核对 | 口径问题可解释，但 cohort 仍有 2,726 `DATA_UNAVAILABLE`、3,182 validity UNKNOWN。修复这些行需要其缺失的当日证据源；上轮未按 3,247 项来源字段继续定位每类缺失具体源文件，属于未完成根因盘点。 |
+| 5G 概念 | 概念页和 442 个已映射成员关系已实际读取 | 12 个代码在当前 10/14 core/daily 中均不存在，成员快照没有名称、security_id、上市/退市日期。缺少能安全映射的身份事实，无法从代码猜测或删成员；需要找到合法身份源后再修复。 |
+
+本轮**不要求 390×844 窄屏验收**，此项不作为缺陷或后续门槛。
 
 ## P0-A 日涨跌停：生产者修复、逐日回放与代表样本
 
@@ -93,11 +108,11 @@
 
 ## 留给下一轮独立审计的明确问题
 
-1. 将 10/12–10/14 非 PIT 日涨跌停候选与 pre-close mismatch 逐代码复核；只在被授权的隔离候选范围评估市场 Owner 接入，然后读回风险 API。
+1. 先定位 10/12–10/14 各自 T0 前可用的日涨跌停输入；10/20 采集的 `daily.json` 只能作为后验诊断。再对合法输入与 pre-close mismatch 逐代码复核，并在隔离候选 API 读回 stress 变化。
 2. 查清 R4 与 R5 Priority core/payload 不同的合法来源链与当前有效基线；保持正式 Owner 缺失时 fail-closed。
 3. 独立确认 400 个板块 health/maturity 与 134 个 rotation UNKNOWN 的真实来源合同和生命周期计算产物。
 4. 沿 D0 parent episode、5G 12 个未映射身份和所有概念关系逐实体查原始身份凭据；缺证继续 UNKNOWN。
 5. 对 Focus 3,247 cohort 与首页变化逐实体对账；页面/API只读，不把不同分母合并。
-6. 扩大真实浏览器验收到市场、板块、Focus、概念关系与 390×844；窄屏本轮未验证。
+6. 扩大真实浏览器验收到市场、板块、Focus、概念关系等尚未覆盖的桌面页面。
 
 不得把本次代码提交/推送解释为生产部署、formal Head 更新、PG 写入或发布许可。

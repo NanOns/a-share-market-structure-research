@@ -722,7 +722,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     def get(self,path,query):
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
-        day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability')},
+        day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability','view')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
         forward_response=self._forward_r7_read(path,query,day)
@@ -734,6 +734,48 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             if index_r2 is None:raise ValueError('READ_INDEX_R2_PRIORITY_CONTEXT_NOT_PREPARED')
             context=index_r2.response('/api/v4/context')
             if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
+            if query.get('view') == 'candidate':
+                if day != self.api.candidate['accepted_trade_date']:
+                    raise ValueError('CANDIDATE_PRIORITY_CURRENT_TOKEN_DATE_REQUIRED')
+                if query.get('context_token') != self.api.token:
+                    raise ValueError('CONTEXT_TOKEN_MISMATCH')
+                from workbench_service.research_priority_r1 import build_priority
+                from pathlib import Path
+                import hashlib
+                parameter_path=Path(__file__).resolve().parents[2]/'config/v4_daily_research_priority_r1.json'
+                parameter_digest=hashlib.sha256(parameter_path.read_bytes()).hexdigest()
+                owners=self.api.candidate['owners'][day]
+                stock_source=owners.get('core');sector_source=owners.get('sector')
+                cache_key=('candidate-priority-preview-v1',self.api.token,day,
+                    json.dumps([stock_source,sector_source,parameter_digest],sort_keys=True,separators=(',',':')))
+                priority=self.api.cache.get(cache_key)
+                if priority is None:
+                    priority=build_priority(day,self.api.token,self.project('stocks',day),self.project('sectors',day),
+                        {'regime_publication_status':'NOT_PUBLISHED_V4_03'},stock_source,sector_source,parameter_digest)
+                    self.api.cache[cache_key]=priority
+                producer_path=Path(__file__).resolve().parent/'research_priority_r1.py'
+                priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+                scope=query.get('scope','stocks')
+                if scope not in ('stocks','sectors'):raise ValueError('RESEARCH_PRIORITY_SCOPE_INVALID')
+                subset=priority[scope];rankability=query.get('rankability','RANKABLE')
+                if rankability not in ('RANKABLE','NOT_RANKABLE'):raise ValueError('RESEARCH_PRIORITY_RANKABILITY_INVALID')
+                rows=subset.get('all_items',[]) if rankability=='RANKABLE' else subset.get('not_rankable_rows',[])
+                offset=int(query.get('offset',0));limit=int(query.get('limit',30))
+                if not 0<=offset<=1000000 or not 1<=limit<=200:raise ValueError('INVALID_QUERY_BOUND')
+                items=rows[offset:offset+limit]
+                response={k:context[k] for k in ('context','context_token','production_accepted','source_quality') if k in context}|{
+                    'status':'READY' if items or not rows else 'EMPTY_VALID','contract_id':priority['contract_id'],
+                    'priority_owner':None,'rule':priority['rule'],'market_permission':priority['market_permission'],
+                    'scope':scope,'rankability':rankability,'total':len(rows),'rankable_total':subset['rankable'],
+                    'not_rankable_total':subset['not_rankable'],'offset':offset,'limit':limit,
+                    'has_next':offset+len(items)<len(rows),'items':items,'T0':day,'context_token':self.api.token,
+                    'read_scope':'DEVELOPMENT_CANDIDATE_PREVIEW','candidate_status':'CANDIDATE_RECONSTRUCTED',
+                    'publication_status':'NOT_ACCEPTED','evidence_class':'NON_PIT',
+                    'production_accepted':False,'formal_head_modified':False,
+                    'candidate_source_bindings':priority['source_bindings'],
+                    'candidate_payload_sha256':priority_sha256,
+                    'producer_sha256':hashlib.sha256(producer_path.read_bytes()).hexdigest()}
+                return 200,response
             from workbench_db.v4_operational_risk_pg_r1 import load_priority
             binding,priority=load_priority(self.api.root,self.api.token,day)
             scope=query.get('scope','stocks')

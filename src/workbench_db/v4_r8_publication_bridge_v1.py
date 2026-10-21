@@ -85,6 +85,7 @@ def recover_candidate_publications(root):
     import os
     from workbench_analysis.operational_daily_storage_v1 import atomic_json, exclusive_lock
     from workbench_analysis.r43_owner_replay import checked
+    from workbench_analysis.operational_successor_v1 import digest
     from workbench_analysis.tdx_official_daily_source import sha256_file, _atomic_write
     root = Path(root).resolve()
     if os.environ.get("R4_NATIVE_ISOLATION") != "1" or root.drive.upper() != "G:" or not root.is_relative_to(Path("G:/codex_tmp").resolve()):
@@ -135,7 +136,9 @@ def recover_candidate_publications(root):
                 event_type = "ABORTED"
                 event_evidence = {"reason":"RESTART_BEFORE_FINALIZE_READBACK","restored_head_sha256":sha256_file(head)}
             else:
-                if actual_head != record.get("head_sha256") or row[6].get("status") != "PENDING":
+                current_candidate = json.loads(head.read_bytes())
+                if (actual_head != record.get("head_sha256") or digest(current_candidate) != token
+                        or row[6].get("status") != "PENDING"):
                     raise ValueError("R8_RECOVERY_FINALIZED_HEAD_OR_ROW_MISMATCH")
                 readback = record.get("readback")
                 if not isinstance(readback,dict) or readback.get("context_token") != token or readback.get("production_accepted") is not False:

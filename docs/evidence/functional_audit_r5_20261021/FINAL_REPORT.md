@@ -1,59 +1,103 @@
 # V4 R5 现役功能定点实修审计报告
 
 日期：2026-10-21（Asia/Shanghai）
+
 任务卡：`V4_R4外审_R5真实业务功能定点实修任务_截至1014_20261021.md`
+
 基线：`codex/v4-unified-development` @ `90cbc653cd23559b6a970f0c472c02221a25de9a`
-数据截止：2026-10-14。没有使用 2026-10-15 及以后行情。
 
-## 阶段合同、适用文档与范围
+数据范围：截至 2026-10-14；没有读取或使用 2026-10-15 及以后行情。
 
-本轮依据任务卡及 `AGENTS.md`，并查阅了 `docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md`、`docs/operations/V4_R4_SOURCE_POLICY_MIGRATION_20261009.md`、R4 外审最终报告、日涨跌停规则配置和相关生产者代码。阶段合同是：只修复截止 10 月 14 日的现役 V4 真实功能缺陷；以冻结候选输入作可审计、只读、非 PIT 的离线重建；完成定向 API 和浏览器读回；明确区分候选与正式已接受状态；不得修改 TDX 源、生产 PG 数据、正式 Head 或生产服务。
+## 阶段合同、适用文档与边界
 
-本轮未重复已通过项目，也未做 PG 化、Schema 治理或额外流程门禁改造。结果按“已通过的局部实修”和“仍有功能缺口/需下轮处理”分别记账。
+执行前查阅 R5 任务卡、`AGENTS.md`、`docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md`、`docs/operations/V4_R4_SOURCE_POLICY_MIGRATION_20261009.md`、R4 外审报告、日涨跌停规则合同和本次涉及的生产者/BFF/页面代码。阶段合同：只修复截至 10 月 14 日的现役功能问题；先查现行数据绑定，再以只读候选方式核实实际业务数据；实际读回 API 并用浏览器核验页面；明确区分候选与已接受结果；不重复已通过任务，不扩大行情日期范围。
 
-## 执行环境及安全边界
+本轮只读使用共享 `127.0.0.1:5432/market_research`。28766 候选预览 PID `50688`，工作目录 `G:\codex_tmp\v4_daily_candidate_chain_20261020`，状态 READY，T0 `2026-10-14`，context token `2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df`，formal Head `2026-10-09`。当前服务 `production_accepted=false` 且 `formal_head_modified=false`。监听核对：`127.0.0.1:28766` 为 PID 50688；28765 未监听；PostgreSQL 5432 为 PID 8640。本轮未写生产 PG、未改正式 Head、未部署/重启 28765，也未运行采集器或写入工作进程。没有修改 `D:\new_tdx` 或其他 TDX 只读源目录。
 
-- 分支/基线符合任务卡；本报告形成时待提交的改动仅包括本报告、两处服务代码、一处日涨跌停生产者和定向测试。原有未跟踪目录 `.githooks/`、`config_back/`、`script_back/` 保留，不纳入提交。
-- 28766 候选预览已重启加载本轮代码：PID `29752`，入口 `G:\codex_tmp\v4_daily_candidate_chain_20261020\serve_preview_28766.py`。状态 API 为 `READY`，T0 `2026-10-14`，formal Head `2026-10-09`，候选 token `2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df`，`production_accepted=false`、`formal_head_modified=false`。
-- 监听核对：网页开发端口 `127.0.0.1:28766`；生产网页端口 `28765` 未监听；共享 PostgreSQL `127.0.0.1:5432` PID `8640`。本轮没有执行生产 PG 写入、迁移、正式 Head 修改或 28765 部署。
-- 28766 仅访问候选数据及现有共享 PG 读取路径；候选数据产物写入 `G:\codex_tmp\v4_daily_candidate_chain_20261020\...`。未写入 `D:\new_tdx` 或其他 TDX 源根目录。
+## 分项验收结论
 
-## 分项验收
-
-| 项目 | 结论 | 实际证据与剩余问题 |
+| 范围 | 状态 | 验收结论与未闭环点 |
 |---|---|---|
-| 日涨跌停源错配（P0-A） | **PARTIAL** | 修复了生产者将 `core.owners` 与 trace dates 按位置 zip、无条件取 trace 中 baostock 来源的错配。现在按该日期 owner 的精确 RAW 路径查找同一候选目录，核验 `SUCCESSOR_CANDIDATE.json` RAW 绑定、日期、证券代码唯一性，并优先绑定同目录 `sources/daily.json`；缺失/错配时失败关闭。对当前链路 10/12 (`54ed1b92…`)、10/13 (`e137824c…`)、10/14 (`727b8c2e…`) 用新代码分别重算 5,224、5,225、5,225 行。详见下方回放数字。输出是隔离的重建候选，`AS_RECORDED=false`、`PIT_ELIGIBLE=false`；没有回写市场 Owner/API/PG，故端到端正式风险/榜单联动仍未验收。仍有参考价/特殊阶段 UNKNOWN。 |
-| Priority 榜单无法读取 | **PARTIAL** | 修复 28766 候选预览读取：当前有效 token 的 `/api/v4/radar/priority?view=candidate` 现场返回 200；股票全量 5,225，排序 967、不可排序 4,258；板块全量 400、排序 0、不可排序 400。浏览器桌面端实际渲染候选标签、股票榜与证据抽屉，板块缺字段明确显示为空且不排序。正式视图仍返回 `RESEARCH_PRIORITY_BINDING_MISSING`，按正式 Owner 语义保留缺源。现用股票来源为 10/14 owner `727b8c2e…` core SHA `021c0e6f…`，候选 payload SHA `c4945baac152000a39c3c330c6019f3488a635a1ce9288268d119c30254be163`；R4 记录的 payload SHA 是 `2662ac3c…`、core SHA 是 `2c1d4751…`，身份不同。未选择旧副本来伪造一致性。窄屏 390×844 本轮没有可控 viewport 验收，故不声称通过。 |
-| Priority 真实排序/可解释性 | **PARTIAL** | API 返回首位及理由可读，例如 `SZ.000158 常山北明`，因子包含结构、RPS20 变化、5 日收益、延展度与距前低等；页面显示非 PIT/未接受声明。与 R4 历史榜单不相同，排序来源差异待独立对账；不构成发布或交易权限。 |
-| D0/D2 | **PARTIAL** | 复核 10/14 冻结 D2 输入 5,225 行：最终资格 UNKNOWN 5,160、TRUE 65；freshness stale 5,160、fresh 65；confirmed UNKNOWN 5,080、TRUE 145。输出均是重建非 PIT，未发现 false 被强行变真。此处数据缺口主要来自滞后/缺证，不能据此宣称 D0/D2 缺陷修复；D0 业务链路与 Parent episode 关联没有在本轮完成端到端纠正及页面读回。 |
-| 板块、市场风险 | **PARTIAL** | 5G 概念 `THEME:880506` API 可读，当前成员 454、映射 442、未映射 12，报价可用 440；板块 lifecycle 明确为 `SOURCE_INCOMPLETE / SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE`。候选日涨跌停修复后尚未重建并回读市场 Owner 风险轴；旧市场 Owner 仍绑定错误的旧日涨跌停 SHA，stress 保持 UNKNOWN。不得把本地重算比例当成已接受风险事实。 |
-| Focus | **PARTIAL** | 实际 API `/api/v4/focus?limit=1` 返回总数 3,247；与 `focus_status` 的 5,225 证券覆盖表不是同一集合/分母。首页“变化数”与 Focus Owner 风险事件未完成逐行核对和真实页面验收，故原缺陷尚未关闭。 |
-| 概念关系、真实页面 | **PARTIAL** | `THEME:880506` 的概念详情 API 与当前成员读回成功，保留 12 个未映射成员；本轮没有修复原始成员身份映射来源，也未完成跨页面概念关系、图表冷/热路径及窄屏验证。桌面 Priority 候选页已实际读取浏览器 DOM/画面；真实浏览器检查覆盖范围仅限 Priority。 |
+| P0-A 日涨跌停来源错配 | **PARTIAL** | 已修正日涨跌停生产者的日期/owner 来源选择并按三个现行日期 lineage 离线重算；源覆盖从约 0.9–1.1% 回到约 99.35–99.39%。但来源捕获时间为 10/20，属 NON_PIT 候选；10/12、10/13 没有当前服务 token 绑定；仍有 60 条代表样本之外的差异/未知核验、参考价错配审计记录，且未接入市场 Owner/API。不能宣称正式风险修复完成。 |
+| P0-B Priority 榜单不能读取 | **PARTIAL** | 当前候选 token 下候选 API 200、桌面浏览器显示 967 个可排序股票中的前 30 行及 0/400 板块；标题已纠正为“研究优先级”。正式 API 仍以 `RESEARCH_PRIORITY_BINDING_MISSING` 失败关闭。当前 R5 输入 SHA 与 R4 历史 payload/core SHA 不同，榜单差异尚未完成来源身份对账；仅候选预览可用。 |
+| D0/D2 状态与解释 | **PARTIAL** | R4 已通过的因果分解结果不重复执行。10/14 D2 5,225 行中 TRUE 65、UNKNOWN 5,160；confirmed TRUE 145、UNKNOWN 5,080；未发现 FALSE 被强行判 TRUE。当前证据没有可复现的 detector 生产者错误，因此保留 UNKNOWN；D0/parent episode 与 Focus 页面端到端缺陷未修复。 |
+| 板块生命周期与排序 | **PARTIAL** | API 读回 400/400 health/maturity `SOURCE_INCOMPLETE`，Priority 0/400 可排序；其中 266 行缺 maturity+health，134 行还缺 rotation。现存 lifecycle 文件是成员/生命周期输入快照，不是独立已验收的计算输出。没有伪造轮动或使用 RS proxy 填补，未写 PG。 |
+| 市场压力风险 | **PARTIAL** | 使用修正后的日涨跌停候选输入，对既有 `market_axis_primitives` 只重算 stress 轴，三个日期均得到覆盖率约 99.35–99.39%、LOW；但 breadth/participation 仍 UNKNOWN，候选没有集成到 market Owner/home API。正式风险 API 仍 `MARKET_PRESSURE_RISK SOURCE_INCOMPLETE 0/1`，原市场 Owner 的压力值仍不可用。 |
+| Focus 与首页计数 | **PARTIAL（口径已对账，数据缺口未修）** | 当前 API 全页读取 3,247 个唯一 Focus tracked-object cohort；首页变化总数 177、展示 30、净信息 191、持续项 330；首页变化页 30 行中 3 条为真实状态变化，27 条为来源不足观察。Radar 177 条事件（NEW 90/UPGRADED 57/WEAKENED 30），使用独立合同和分母。计数差异可解释，但 cohort 中仍有 2,726 条 DATA_UNAVAILABLE，前瞻数据仍 `DATA_MISSING`。 |
+| 5G 概念成员关系 | **PARTIAL** | `THEME:880506` 当前成员 454、映射 442、未映射 12、有报价 440；12 项均为 TDX 快照 `UNMAPPED_QUARANTINED`、无 security_id，并且不在 10/14 core/daily 行中。源文件没有名称/上市/退市日期，不能推断其上市状态；映射缺陷仍待解决。成员采集时间 10/09，存续偏差风险。 |
+| 图表 QFQ 冷/热与实际页面 | **PASS（定向样本）** | `SH.600000` 10/14 QFQ 冷读 API 200、422 根；热读 200、422 根、cache hit，规范 payload SHA 一致；浏览器个股详情页实际渲染“真实行情蜡烛图”、120/422 根 QFQ，末根 10/14 收盘 9.65；图表含 5/20/60 均线且最近 200 根 MA 全有值。来源绑定 TDX GBBQ 2026-07-16 除权样本。仅通过一个个股样本，不代表全市场图表验收。 |
+| 概念关系与宽屏/窄屏页面 | **PARTIAL / NOT_VERIFIABLE** | 个股详情的“查看所属板块”真实链接可见，但没有逐项验收所有概念关系详情/成员边。Priority 桌面 DOM 完成验收；未能设置 390×844 viewport，本轮窄屏结论为 NOT_VERIFIABLE。未将浏览器覆盖范围外的页面标记 PASS。 |
 
-**综合结论：PARTIAL。** 两个优先缺陷已有可复核的局部修复，但正式 Priority、市场风险/Focus 联动及 D0/D2、概念与全页面验收仍有剩余缺陷。本报告不是发布验收，也不授权进入受门禁约束的下一阶段。
+**综合状态：PARTIAL。** 已完成日涨跌停生产者的局部修复、候选 Priority 页面和焦点计数口径验证、单只股票图表冷/热与浏览器验收。正式 Priority、市场风险集成、板块 lifecycle、D0/Focus 端到端和 5G 身份映射仍有明确缺陷。代码推送不代表外审通过或正式发布。
 
-## 日涨跌停回放证据
+## P0-A 日涨跌停：生产者修复、逐日回放与代表样本
 
-每个日期均由当日现行 lineage owner 的精确 RAW 绑定解析到其候选 `sources/daily.json`；数据源是候选冻结的 BaoStock 日线捕获，观测时间为 10 月 20 日，因此仅用于候选回建，不属于当时可得 PIT 证据。规则仍按版本化 `config/v4_02_price_limit_rules_r3.json`，日线不能证明盘中触板。
+生产者原有问题是把 `core.owners` 与 source trace dates 按位置 zip，并直接选择 trace 中 BaoStock 来源；这会把旧日期查询绑定到当前 owner 行。修改后，按当日 lineage owner 的精确 RAW 路径确定候选目录，核验 `SUCCESSOR_CANDIDATE.json` RAW binding、交易日、证券代码唯一性，并读取同目录 `sources/daily.json`。缺失或绑定不一致时失败关闭。实际唯一调用点为 `src/workbench_analysis/r43_market_replay.py`。
 
-| 交易日 | 新来源 SHA256 | 新状态计数 | UNKNOWN 原因 | 回建文件 SHA256 |
-|---|---|---|---|---|
-| 2026-10-12 | `97f750e3b3eba8f898ef905ab0c3df0cd6ef0e0f73622bb886f4698d29cc2bc9` | NOT_LIMIT 5,122；UP 47；DOWN 23；SUSPENDED 12；UNKNOWN 20 | reference price unknown 18；special period 2 | `518760542fffbac438b432abaebe17a0bc4d217d5b226a4fadd58353eef2f3a7` |
-| 2026-10-13 | `c8b0a5719735a52923bd1cbcfe1e07509d61c44a88e5ee4a17bd3b18c7a052ff` | NOT_LIMIT 5,112；UP 69；DOWN 10；SUSPENDED 13；UNKNOWN 21 | reference price unknown 20；special period 1 | `3ae015150a5d16aca8e1c8da3ab36638627509cc832e77526cc10f5d9b9a7aac` |
-| 2026-10-14 | `8f949e7418355e8f60dbd859598e27ad948c4cfdf9bed69b37c5f04d65db755e` | NOT_LIMIT 5,141；UP 37；DOWN 13；SUSPENDED 11；UNKNOWN 23 | reference price unknown 22；special period 1 | `10038767951f38df66fa387eed47f45f38f5b501b3953f4e2590285c7e62c69b` |
+当前 10/12、10/13、10/14 lineage owner 分别为 `54ed1b92…`、`e137824c…`、`727b8c2e…`。三份 `daily.json` 的内容 SHA 分别为 `97f750e3b3eba8f898ef905ab0c3df0cd6ef0e0f73622bb886f4698d29cc2bc9`、`c8b0a5719735a52923bd1cbcfe1e07509d61c44a88e5ee4a17bd3b18c7a052ff`、`8f949e7418355e8f60dbd859598e27ad948c4cfdf9bed69b37c5f04d65db755e`。观察时间分别为 2026-10-20 10:19:45、13:05:26、17:52:01 +08:00；这是后验候选来源，不是当时可得证据。规则合同 `config/v4_02_price_limit_rules_r3.json` SHA256 `68679333821c50ea8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0`，规则版本 `LIMIT_RULES_V1_1`。
 
-10/14 旧链路为 NOT_LIMIT 59、SUSPENDED 5、UNKNOWN 5,161、UP/DOWN 均为 0；新候选回建有 5,138 行状态变化。10/13 旧链路为 NOT_LIMIT 47、SUSPENDED 6、UNKNOWN 5,172、UP/DOWN 均为 0；新候选回建有 5,151 行状态变化。该比较证明源错配导致覆盖严重不足，并不证明新候选完全正确。按对齐收盘参考核对的未匹配记录分别为 10/12 16、10/13 17、10/14 20；均需保留为审计问题。
+| 日期 | 新状态计数（总行数） | UNKNOWN 拆分 | 新产物 SHA256 | 与旧链状态不同 |
+|---|---|---|---|---:|
+| 10/12 | NOT_LIMIT 5,122；UP 47；DOWN 23；SUSPENDED 12；UNKNOWN 20（5,224） | reference price 18；special period 2 | `518760542fffbac438b432abaebe17a0bc4d217d5b226a4fadd58353eef2f3a7` | 5,147 |
+| 10/13 | NOT_LIMIT 5,112；UP 69；DOWN 10；SUSPENDED 13；UNKNOWN 21（5,225） | reference price 20；special period 1 | `3ae015150a5d16aca8e1c8da3ab36638627509cc832e77526cc10f5d9b9a7aac` | 5,151 |
+| 10/14 | NOT_LIMIT 5,141；UP 37；DOWN 13；SUSPENDED 11；UNKNOWN 23（5,225） | reference price 22；special period 1 | `10038767951f38df66fa387eed47f45f38f5b501b3953f4e2590285c7e62c69b` | 5,138 |
 
-回放目录：`G:\codex_tmp\v4_daily_candidate_chain_20261020\r5_daily_limit_materialization_8ab7eeecc0a7_54ed_e137_727b\{date}`；每个子目录含 `DAILY_PRICE_LIMIT_REPLAY.json`、`DAILY_PRICE_LIMIT_CONTRACT_V1.json` 与压缩输出。10/14 receipt SHA256：`7fe282ad…`；10/13：`3771869e…`；10/12：`e2de8106…`。
+同日对齐收盘参考价与前序 RAW close 核查仍分别有 16、17、20 条差异，必须保留为审计问题。日线只证明收盘状态，不证明盘中触板。离线回放文件位于 `G:\codex_tmp\v4_daily_candidate_chain_20261020\r5_daily_limit_materialization_8ab7eeecc0a7_54ed_e137_727b\{date}`，每个日期含压缩结果、合同和回执。20 只代表性证券/日期（共 60 组）的逐代码 old/new 状态及 OHLC、参考价、前序 close、owner、来源记录存于 `G:\codex_tmp\r5_daily_limit_current_samples.json`，SHA256 `eb061e5df2800085b964750de5be81026c3193608ac9913a77ff6935ce951335`。10/12、10/13 样本没有当前候选服务 token；10/14 使用本报告所列 token。样本核验不替代全量逐代码复核。
 
-## 代码修改与定向验收
+## 市场压力轴候选试算（未集成）
 
-- `src/workbench_analysis/r43_daily_price_limits.py`：按候选 owner/日期绑定当前 BaoStock 日线源，强化 source/date/code 校验，回执携带实际来源绑定，支持隔离输出目录。
-- `src/workbench_service/core_product_bff_r1.py`：增加严格限于当前 token/T0 的只读 Priority 候选重建路径，附输入绑定和 payload/producer SHA；正式读取路径不回退候选。
-- `src/workbench_service/static/core-product-r1/app.js`：增加正式/候选页签、候选状态提示、不可排序分母、个股因子理由及证据抽屉。
-- `tests/test_r43_daily_price_limit_source_r5.py`：覆盖 RAW owner 精确绑定、错日期 fail-closed、候选 RAW 绑定不一致。
-- 定向测试：`3 passed`。JS `node --check`（`app.js`、`api.js`）通过；`git diff --check` 通过。临时目录和 Python 缓存均在 `G:\codex_tmp`。单测通过只证明以上局部实现，不替代本报告中标为 PARTIAL 的业务验收。
+隔离试算复用 `market_axis_primitives` 与原回放分母，只替换为上表修正的日期限价候选。下表的 corrected ratio 以同一证券集合计算。没有写市场 Owner、Head 或 API。
 
-## 下一步
+| 日期 | 旧限价覆盖率 / 旧 DOWN | 修正覆盖率 / DOWN | 重算压力 / 变化 |
+|---|---:|---:|---|
+| 10/12 | 0.957% / 0 | 99.387% / 23 | LOW / RISING |
+| 10/13 | 0.900% / 0 | 99.349% / 10 | LOW / DECLINING |
+| 10/14 | 1.129% / 0 | 99.349% / 13 | LOW / RISING |
 
-下一轮独立审计优先核对：① R4 与 R5 Priority 输入 owner/payload 身份差异并决定有效基线；② 将日涨跌停候选回建以明确证据接入隔离市场风险 Owner，重读市场 API，不发布正式 Head；③ D0/D2 parent episode、Focus 总数与首页变化计数逐行核对；④ 5G 未映射成员身份来源与板块 lifecycle；⑤ 图表、概念关系与 390×844 浏览器验收。任何正式 PG 写入、正式 Head 修改或 28765 部署仍需用户单独授权。
+证据 JSON `G:\codex_tmp\r5_market_stress_replay.json` SHA256 `b94aaaf127160ab442fdf76d1f85e2cf6e40032d2f9e28b1a2a4d2d9a9842240`，其中 `accepted=false`、`PIT_ELIGIBLE=false`、`not_integrated_to_home_api=true`。breadth 与 participation quality 为 UNKNOWN，所以不能把此项试算写成已接受“市场综合环境”。
+
+## P0-B Priority API 与浏览器读回
+
+候选 API 使用当前 token：
+
+- `GET /api/v4/radar/priority?view=candidate&scope=stocks&limit=10`：HTTP 200；总证券 5,225，可排序 967，排除 4,258。股票来源 core SHA `021c0e6fbcb3684d0fc8a2aa6f3f7b40353c22a2b7391264911aa2493ccdfcce`，payload SHA `c4945baac152000a39c3c330c6019f3488a635a1ce9288268d119c30254be163`。
+- `scope=sectors`：HTTP 200；400 唯一板块，0 可排序，400 排除。health/maturity 均为 `SOURCE_INCOMPLETE`。组合分布为 216 个 rotation NONE、45 ROTATION_FAILED、4 ROTATION_PULSE、1 ROTATION_IN（这 266 项 rotation quality 为 KNOWN），另 134 项 rotation UNKNOWN；所有 400 项 health/maturity 均未知。
+- 正式视图：HTTP 400 `RESEARCH_PRIORITY_BINDING_MISSING`；旧 token：HTTP 409 `CONTEXT_TOKEN_MISMATCH`。
+
+候选 API 首位 `SZ.000158 常山北明`，分数 11.74123；理由可解释为核心结构未破、20 会话相对强度改善、5 会话收益为正、未显著延伸、与前 20 会话低点距离可计算。前十证券为常山北明、瑞立科密、*ST尔雅、周大生、航民股份、五矿发展、柳药集团、联发股份、上海石化、兴蓉环境。
+
+10/21 桌面浏览器实际打开 `/v4/research/radar/priority?view=candidate&trade_date=2026-10-14`，DOM 标题为“研究优先级”，候选页状态、T0/token、板块 0/400、股票 30/967、首位证券与中文排序原因及证据按钮均已渲染。候选标题错误的旧 UI 文案已在 `app.js` 修复并通过本轮浏览器读回。R4 历史 payload SHA `2662ac3c09f7608585d9bec1c822a6ae0258fa74a663b7fe9043cfd8d7e54333`、core SHA 前缀 `2c1d4751…` 与本次当前候选来源不同，尚无独立证据认定二者应当相同；不声称榜单结果对账完成。API 分页/来源摘要 JSON `G:\codex_tmp\r5_sector_stock_api_audit.json` SHA256 `869cf59678d80b23c6e4914ef72ca8bfb92ea1e262c84b6eb4bf986f63ce4b52`。
+
+## D0/D2、Focus、5G 概念成员
+
+**D0/D2。** 采用已经形成的 R4 定向复核结论，避免重复运行通过任务：10/14 corrected D2 输入 5,225 行，confirmed TRUE 145、UNKNOWN 5,080；final eligibility TRUE 65、UNKNOWN 5,160；final freshness fresh 65、stale 5,160。875 行存在 prior episode，4,285 行无 prior。无 prior 的 4,249 行只因 confirmed UNKNOWN 而阻断，36 行还有其他必需未知输入；有 prior 的 795 行 confirmed UNKNOWN，80 行 confirmed TRUE 仍被 frozen invalidation UNKNOWN 阻断。最终 TRUE 65 行无 prior。当前分布没有 confirmed FALSE，也没有可用 boundary_event 样本，因此本轮不能构造“真实 false 边界样本”或据此断言 detector 错误。代码路径 `src/v4/research_state.py::reduce_state` 与 R4 定向证据说明，缺 prior 时 CONFIRMED TRUE 且唯一 frozen invalidation UNKNOWN 不应被判 stale；未发现本轮可复制的 producer 错误，UNKNOWN 保留。代表样本可按 R4 报告中的 `SZ.001965`、`SZ.002469`（confirmed true/fresh），`SH.688349`、`SH.600703`（confirmed unknown/stale），`SH.601059`（prewatch/暂停未知），`SZ.000582`、`SH.601995`（seed unknown）复核。D0 parent episode 及页面端到端验收仍未关闭。
+
+**Focus。** API 全量分页 3,247 行、3,247 个唯一 entity；tracked-object cohort 不是 5,225 证券全市场或用户持仓。事件分布：DATA_UNAVAILABLE 2,726、NEW 96、PERSISTENT 330、UPGRADED 63、WEAKENED 32；validity UNKNOWN 3,182、VALID 65；path READY 65、PARTIAL 472、UNAVAILABLE 2,710。实际浏览器 Focus 页可见 3,247 清单，第一页 30 条观察中 3 条是真实事件、27 条是来源不足观察；首页“关注对象变化”明确显示符合 177 / 展示 30，净变化 191、持续记录 330。Radar 单独返回 177 条事件，NEW 90/UPGRADED 57/WEAKENED 30。由此解释了首页总事件与 Focus 清单首屏观察数不同的口径，但 2,726 个 DATA_UNAVAILABLE、3,182 个 UNKNOWN 及前瞻 `DATA_MISSING` 仍是未解决的数据缺口。JSON `G:\codex_tmp\r5_focus_audit.json` SHA256 `cf4c92c25d61741ceec3410a4e3f4f216f2876b0a3f1529800b1c65dd9fa235c`。浏览器首页与 Focus 读回通过不表示 cohort 全体资格正确。
+
+**5G (`THEME:880506`)。** 10/14 当前 API 返回 454 原始成员，442 已映射，12 未映射，440 有报价。以下 12 项的 identity 均为 `UNMAPPED_QUARANTINED`、`security_id=null`、成员源 `infoharbor_block.dat`；均未匹配 10/14 core 或 daily 的 `source_security_key`，没有当日行情。原始快照没有名称、上市日期、退市日期，故这些行的身份/上市状态仍 UNKNOWN，不推断其为已退市证券。代码：`BJ.920021`、`BJ.920028`、`BJ.920186`、`BJ.920249`、`BJ.920556`、`BJ.920640`、`BJ.920720`、`BJ.920876`、`BJ.920924`、`BJ.920932`、`BJ.920961`、`SZ.301718`。成员快照 `docs/evidence/r4_3_four_session_closeout_20261009/latest_member_S.jsonl.gz` SHA256 `be1cb3b1e53bc5d104c0eda165428fae4fb03abcb7208ea8abe22ee68d3ee3be`；其采集时点 10/09，故 10/14 使用时带存续偏差风险。生命周期 API 原因为 `SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE`。本轮未找到已计算/独立验收的 lifecycle 输出 Owner，不具备安全接入条件。
+
+## 图表冷/热 API 与浏览器
+
+同一 28766 context 下请求 `/api/v4/stocks/SH.600000/chart?period=D&price_basis=QFQ&limit=200&offset=0`：冷读 HTTP 200、422 根、5,780.266ms、cache miss；热读 HTTP 200、422 根、172.671ms、cache hit。规范化 payload SHA 均为 `b5c04f9bcbc51832fe2b6a2944fc6e4c4a57ec21d8b59f3b93f9be44506da9aa`；422 根逐项 transport digest `5ad270964111d41ff3341b051eea8d206999857a8544ee78e09c157da73388ba`。返回 200 根这一窗口中 MA5/20/60 各 200 个有效值；总历史从 2025-01-13 延展到 T0 2026-10-14。输入历史 cutoff 10/12，QFQ 使用 T0 绑定的 TDX GBBQ SHA `c2f07f4aa8a9e8893e5dc24c1a83ac63f2ab27198ecde444154fd591c73e2739`；上海浦发 2026-07-16 类别 1 除权记录 `c1=4.199999809265137` 是实际样本。不是外部复权服务。
+
+浏览器从个股列表搜索 600000，打开 `SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0` 的浦发银行详情；切换“价格口径”到“原生前复权”后 DOM 可见“真实行情蜡烛图；数据缺口保留交易日位置”“展示 120 / 422 根”“候选 QFQ 由逐日 RAW Owner、T0 冻结的 TDX GBBQ 和精确有理数坐标计算”及“末根 2026-10-14 收盘 9.65”。冷/热 JSON `G:\codex_tmp\r5_chart_cold_hot_audit.json` SHA256 `d73dba6e881e6145be8dd0ca08d5841674941537b28f64831a9b4a35746f1eb3`。这里完成单证券 API 与页面样本，不代表多证券图表回归覆盖。
+
+## 代码修改、文件与校验
+
+- `src/workbench_analysis/r43_daily_price_limits.py`：修复按现行日期 owner 的 RAW binding 选取日线来源，校验日期/行/代码，候选隔离输出。
+- `src/workbench_service/core_product_bff_r1.py`：只读候选 Priority preview，限当前 token/T0；正式已接受路径仍要求 immutable Priority Owner。
+- `src/workbench_service/static/core-product-r1/app.js`：候选/正式切换页签、来源与未排序说明；Priority route 标题修正为“研究优先级”。
+- `tests/test_r43_daily_price_limit_source_r5.py`：精确 owner 绑定及 fail-closed 覆盖。
+
+校验：日限价定向测试 3 passed；既有 BFF API error tests 4 passed；`node --check` 检查 `app.js` 与 `api.js` 通过；`git diff --check` 通过。校验只证明局部实现与语法，不替代上方实际 API、数据和页面验收。
+
+## 留给下一轮独立审计的明确问题
+
+1. 将 10/12–10/14 非 PIT 日涨跌停候选与 pre-close mismatch 逐代码复核；只在被授权的隔离候选范围评估市场 Owner 接入，然后读回风险 API。
+2. 查清 R4 与 R5 Priority core/payload 不同的合法来源链与当前有效基线；保持正式 Owner 缺失时 fail-closed。
+3. 独立确认 400 个板块 health/maturity 与 134 个 rotation UNKNOWN 的真实来源合同和生命周期计算产物。
+4. 沿 D0 parent episode、5G 12 个未映射身份和所有概念关系逐实体查原始身份凭据；缺证继续 UNKNOWN。
+5. 对 Focus 3,247 cohort 与首页变化逐实体对账；页面/API只读，不把不同分母合并。
+6. 扩大真实浏览器验收到市场、板块、Focus、概念关系与 390×844；窄屏本轮未验证。
+
+不得把本次代码提交/推送解释为生产部署、formal Head 更新、PG 写入或发布许可。

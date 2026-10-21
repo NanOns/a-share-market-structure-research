@@ -40,6 +40,15 @@ def test_unknown_interrupts_actual_downgrade_sequence():
     assert first['downgrade_count']==1 and stale['downgrade_count']==0 and resumed['downgrade_count']==1
     assert resumed['maturity']=='PREWATCH' and resumed['final_eligibility']=='FALSE'
 
+def test_unknown_frozen_invalidation_does_not_block_without_prior_episode():
+    x=fixture(stage='CONFIRMED')
+    x['frozen_invalidation']['value']='UNKNOWN'
+    result=reduce_state(x)
+    assert result['episode_id'] is not None
+    assert 'frozen_invalidation' not in result['unknown_predicates']
+    assert result['final_eligibility']=='TRUE'
+    assert result['state_freshness']=='FRESH'
+
 def test_expiry_baseline_accumulates_and_unknown_keeps_market_age():
     state=reduce_state(fixture())
     for offset,metric in enumerate([.9,1.8,2.7,3.1],1):

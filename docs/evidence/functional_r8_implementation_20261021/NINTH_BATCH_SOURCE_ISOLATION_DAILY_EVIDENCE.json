@@ -1,0 +1,287 @@
+{
+  "contract_id": "NINTH_BATCH_SOURCE_ISOLATION_DAILY_EVIDENCE_R1",
+  "version": "1.0.0",
+  "status": "INCOMPLETE_FAIL_CLOSED",
+  "task_card": "V4_R8_BATCH08_EXTERNAL_AUDIT_R1_BATCH09_INCREMENT_AND_D0_SOURCE_FIX_20261022.md",
+  "requested_baseline": "b5d6ba78cc32d5eb249e2fbd3626aa70b012c4b6",
+  "branch": "codex/v4-unified-development",
+  "code": {
+    "fix_commit": "3dbbda499201e5829d5506fcc4f8def2af6d0a5d",
+    "remote_confirmed": true,
+    "changed_files": [
+      "src/workbench_analysis/d0_source_seal_r1.py",
+      "tests/test_v4_d0_source_seal_r1.py",
+      "tests/test_v4_d0_source_seal_batch07_pg.py"
+    ],
+    "targeted_test_result": "23 passed",
+    "py_compile": "PASS",
+    "git_diff_check": "PASS",
+    "exact_source_contract": "D0 verifier binds exactly one SourceIngress receipt to the R8 token, D0 consumed-source publication, source freeze, package/version token, and artifact SHA256/bytes; unrelated same-day receipts remain diagnostic only; zero/multiple/conflicting matches fail closed."
+  },
+  "historical_2026_10_15": {
+    "publication_id": "D0B07:2026-10-15:c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c:r15",
+    "source_class": "POST_HOC_NON_PIT",
+    "predicate_counts": {
+      "FALSE": 5111,
+      "TRUE": 64,
+      "UNKNOWN": 51
+    },
+    "exact_candidate_binding": "EXACT_MATCH",
+    "same_day_receipts_selected": 1,
+    "preserved": "Historical NON_PIT and D0 three-state results unchanged; no historical publication rewrite."
+  },
+  "real_source_evidence": {
+    "2026-10-16": {
+      "freeze": {
+        "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-16/abbc15263b252563a15ab93d6c180c9ae86693edcd35d146279e272198298672.json",
+        "bytes": 1794858,
+        "sha256": "840e9dcb50c6d092ef5dd819b5cb9b306d193a32dc3840a07aa3fe1b8d87ec92"
+      },
+      "freeze_contract": "DYNAMIC_DAILY_SOURCE_FREEZE_V1",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "tdx_source_available_at": "2026-10-21T13:07:31+00:00",
+      "baostock_response": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261016/20261021T210751383018_raw_responses.json",
+        "sha256": "fac0d41b622349ddb5ff5b0936d525ffeb9f3558c0b22122e1fae42909da4e15"
+      },
+      "source_readiness": {
+        "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-16/2de88d9327b6db7a8e9807dddfb02154116e469780a720667578fb6670ae81f7.json",
+        "bytes": 703088,
+        "sha256": "ef5518fac7e8f781ff6cf7c242bccbf676be88091bc87211ea0319126cbe9b60"
+      },
+      "readiness_status": "SOURCE_READY",
+      "source_ready": true
+    },
+    "2026-10-19": {
+      "freeze": {
+        "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-19/aaf154c87ca271cfd6e64e263df4ad8916b2c153006523ff6fe3c556e5af540c.json",
+        "bytes": 1790475,
+        "sha256": "d76d3a946adf26f3cf5f61c5438ec5e39cfbbf9093066effc2efdc9f126e6d4d"
+      },
+      "freeze_contract": "DYNAMIC_DAILY_SOURCE_FREEZE_V1",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "tdx_source_available_at": "2026-10-21T13:10:28+00:00",
+      "baostock_response": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261019/20261021T211048598233_raw_responses.json",
+        "sha256": "16aa66e4991eda0597b81e53bae6edb391894eb4f41a7dbe34c9bc99a66bed7d"
+      },
+      "source_readiness": {
+        "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-19/04c337b8856e0801585aef0b6ea7705e72718279621a578920aa095e9c392e50.json",
+        "bytes": 513816,
+        "sha256": "c117a509ec5203eabcec1b77abd4adf85105b7186828760a0c1d5d872ffe7f9e"
+      },
+      "readiness_status": "SOURCE_READY",
+      "source_ready": true
+    },
+    "2026-10-20": {
+      "freeze": {
+        "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-20/07631da9e27f1bfd08797050898b0748ad0377ec23d3019f689ebd01b7e190b6.json",
+        "bytes": 1790162,
+        "sha256": "48e9743c487f3b2fe1d876809e09b5dd55c89ffdbc94a201b3632f803a01f28b"
+      },
+      "freeze_contract": "DYNAMIC_DAILY_SOURCE_FREEZE_V1",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "tdx_source_available_at": "2026-10-21T23:33:22+00:00",
+      "baostock_response": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261020/20261022T073218921858_raw_responses.json",
+        "sha256": "a826e7d13a84b012820b2540ff13ab7fe3948cdd484b3a8917f685ee0cea8736"
+      },
+      "source_readiness": {
+        "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-20/253decb0f6889ee42d62c2a2372f00c097c1da62cf923fed093f4de4c093a8e0.json",
+        "bytes": 513864,
+        "sha256": "d91b98544095a1313c5d7ab12b2be9c277b7ffe759e73a6f0ed7cf91c0b48169"
+      },
+      "readiness_status": "SOURCE_READY",
+      "source_ready": true,
+      "accepted_runtime_manifest": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261020/accepted_runtime_manifest.json",
+        "bytes": 2075,
+        "sha256": "9eae063ee4b77a9ccb3c3cfd5353c254a6fe09b8e358c15e9983fdaaf9e2dd72",
+        "auth_mode": "PUBLIC_ANONYMOUS",
+        "status": "ACCEPTED",
+        "daily_row_count": 5224,
+        "daily_response_sha256": "a80e343f7274379ee8ae2b2196ad757a2580b988357979628de509efa86b9297",
+        "factor_row_count": 25,
+        "factor_response_sha256": "e620eda45839f4c69cbe6fdb0357e796c10f4c2453901856e04151c75b9f58b6",
+        "smoke_receipt": {
+          "path": "reports/v4_baostock/runtime_acceptance/20261020/20261022T073218921858_live_smoke_receipt.json",
+          "sha256": "5bbe21435ad4a07a61f8dca418e3cbeb74bbb271b2d1802067b4e908735097fb"
+        }
+      }
+    },
+    "2026-10-21": {
+      "freeze": {
+        "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-21/b89fff40cd85eb939e3ee61a243f37dfec6f88a3791276e9dd62db7e060077e9.json",
+        "bytes": 1791461,
+        "sha256": "b7b94ee4177f8e162896e7be7f77c4cb1236401c8277b7dc3423131486b917d8"
+      },
+      "freeze_contract": "DYNAMIC_DAILY_SOURCE_FREEZE_V1",
+      "AS_RECORDED": false,
+      "PIT_ELIGIBLE": false,
+      "tdx_source_available_at": "2026-10-21T23:34:02+00:00",
+      "baostock_response": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261021/20261022T073231935643_raw_responses.json",
+        "sha256": "794aad68cc319f251394ecdf8fadac9acff6b4e05af49768a03fbf69920d0abf"
+      },
+      "source_readiness": {
+        "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-21/b26e3acba65368581a3066cf3e7f6643b9e166f6bc4164bf731e8195163b6742.json",
+        "bytes": 513852,
+        "sha256": "b058e80f473f1fa2b403c42128c3e29e2507a0b246ec08333025cfe6fce566a1"
+      },
+      "readiness_status": "SOURCE_READY",
+      "source_ready": true,
+      "accepted_runtime_manifest": {
+        "path": "reports/v4_baostock/runtime_acceptance/20261021/accepted_runtime_manifest.json",
+        "bytes": 2075,
+        "sha256": "35204ba2811e00d872aac3d3432319413c901f19ef76c8235d36a273d0b1e9c8",
+        "auth_mode": "PUBLIC_ANONYMOUS",
+        "status": "ACCEPTED",
+        "daily_row_count": 5224,
+        "daily_response_sha256": "4454098ea3c294aa0eb7d864246c3233566a2fbb9c80d2c2447e21fd4ff1d727",
+        "factor_row_count": 26,
+        "factor_response_sha256": "9f9102cbc5ccadcb50b4edd18482dd73983cc910e158d28ef6ff0e71e284308e",
+        "smoke_receipt": {
+          "path": "reports/v4_baostock/runtime_acceptance/20261021/20261022T073231935643_live_smoke_receipt.json",
+          "sha256": "6a51e4c68fc571822fd7a40972d3246a23096f9ec04221399c4506f42a4b5b35"
+        }
+      }
+    }
+  },
+  "owner_2026_10_16": {
+    "status": "OWNER_REPLAY_COMPLETE_CANDIDATE_SEALED",
+    "candidate_path": "data/v4/dynamic_daily_owners/2026-10-16/dcf50bdb71427fc802dd55c371dfa064e5ef3b35212b62ffdc143b39d613de07/SUCCESSOR_CANDIDATE.json",
+    "candidate_bytes": 63185,
+    "candidate_sha256": "cb85fcade6d610ca7ac58677ca2aacbb4118502d9047c6c912cac0f5bf3550bd",
+    "candidate_token": "cb85fcade6d610ca7ac58677ca2aacbb4118502d9047c6c912cac0f5bf3550bd",
+    "accepted_trade_date": "2026-10-16",
+    "predecessor": {
+      "bytes": 74180,
+      "path": "data/v4/predecessors/c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c.json",
+      "sha256": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c"
+    },
+    "source_freeze": {
+      "path": "data/v4/dynamic_daily_sources/daily_freezes/2026-10-16/abbc15263b252563a15ab93d6c180c9ae86693edcd35d146279e272198298672.json",
+      "bytes": 1794858,
+      "sha256": "840e9dcb50c6d092ef5dd819b5cb9b306d193a32dc3840a07aa3fe1b8d87ec92"
+    },
+    "source_readiness": {
+      "path": "data/v4/dynamic_daily_sources/source_readiness/2026-10-16/2de88d9327b6db7a8e9807dddfb02154116e469780a720667578fb6670ae81f7.json",
+      "bytes": 703088,
+      "sha256": "ef5518fac7e8f781ff6cf7c242bccbf676be88091bc87211ea0319126cbe9b60"
+    },
+    "owner_contracts": [
+      "adjusted",
+      "base_profile",
+      "core",
+      "diagnostic",
+      "events",
+      "focus",
+      "forward",
+      "lifecycle",
+      "market",
+      "period_adjusted",
+      "period_raw",
+      "prewatch",
+      "profile",
+      "raw",
+      "relative_sector",
+      "rotation",
+      "sector",
+      "sector_receipt",
+      "seed",
+      "special_phase"
+    ],
+    "owner_rows": 5226,
+    "actual_raw_rows": 5216,
+    "D0_predicate_counts": {
+      "UNKNOWN": 5136,
+      "TRUE": 90
+    },
+    "Focus_Forward": "Replay artifacts written for all 5,226 security objects."
+  },
+  "independent_numeric_2026_10_16": {
+    "contract_id": "NINTH_BATCH_1016_FULL_UNIVERSE_NUMERIC_READBACK_R1",
+    "database": {
+      "database": "market_research",
+      "host": "127.0.0.1/32",
+      "port": 5432,
+      "transaction_read_only": "on"
+    },
+    "target_date": "2026-10-16",
+    "candidate_token": "cb85fcade6d610ca7ac58677ca2aacbb4118502d9047c6c912cac0f5bf3550bd",
+    "tdx_native_artifact_sha256": "5c3c07fc2332989b088a58e0a097c8448f37dc954b839f2b0763921380a0c3dd",
+    "pg_source_ingress_rows": 5567,
+    "candidate_raw_rows": 5216,
+    "source_native_rows": 5216,
+    "baostock_rows": 5226,
+    "qfq_rows_independently_verified": 5215,
+    "ret1_rows_independently_verified": 5214,
+    "amount_cross_source_differences": 0,
+    "mismatch_count": 2,
+    "mismatch_examples": [
+      {
+        "code": "SZ.002871",
+        "field": "ret1",
+        "owner": 0.01920529801324511,
+        "independent": 0.015841584158415856
+      },
+      {
+        "code": "SH.600825",
+        "why": "MISSING_SOURCE_OR_OWNER"
+      }
+    ],
+    "acceptance": "FAIL_CLOSED",
+    "acceptance_reason": "Independent full-market comparison found one ret1 discrepancy and one candidate/source mapping gap; not resolved."
+  },
+  "pg": {
+    "identity": {
+      "database": "market_research",
+      "database_oid": 646711,
+      "host": "127.0.0.1/32",
+      "port": 5432
+    },
+    "r8_schema": "v4_r8pub_fde08c597fc76d13",
+    "r8_candidate_publications_2026_10_16_to_21": 0,
+    "r8_rows_confirmed_read_only": true,
+    "d0_new_date_publications": 0,
+    "read_transaction": "READ ONLY",
+    "required_scoped_writes_used": false,
+    "reason": "Candidate R8 G1-G3 evidence and candidate-specific rollback drill are required before CAS publication. Independent numerical check is FAIL_CLOSED."
+  },
+  "daily_chain": {
+    "2026-10-16": "Owner compute and candidate seal complete; PG R8 publication blocked by G1-G3/rollback and numeric mismatch.",
+    "2026-10-19": "Real freeze and SOURCE_READY exist (post-hoc); Owner build correctly failed because 10/16 was not the immediate published predecessor.",
+    "2026-10-20": "Real BaoStock accepted response and TDX/Bao freeze plus SOURCE_READY captured; post-hoc NON_PIT. Owner build blocked by sequential predecessor.",
+    "2026-10-21": "Real BaoStock accepted response and TDX/Bao freeze plus SOURCE_READY captured; post-hoc NON_PIT. Owner build blocked by sequential predecessor."
+  },
+  "28766": {
+    "port": "127.0.0.1:28766",
+    "pid": 2968,
+    "state": "EXISTING_PRIOR_CANDIDATE_SERVER; NOT_RESTARTED_OR_VERIFIED_FOR_BATCH09_TOKEN",
+    "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c"
+  },
+  "28765": {
+    "port": "127.0.0.1:28765",
+    "state": "NOT_LISTENING; UNTOUCHED"
+  },
+  "acceptance": {
+    "code_fix": "PASS",
+    "historic_PG_preservation": "PASS",
+    "10_16_Owner_compute": "PASS",
+    "10_20_10_21_real_source_capture": "PASS",
+    "10_16_independent_numeric": "FAIL_CLOSED",
+    "candidate_PG_publication": "NOT_RUN_GATED",
+    "10_19_10_21_business_increment_and_downstream_28766": "BLOCKED_BY_SEQUENCE",
+    "overall": "INCOMPLETE_FAIL_CLOSED",
+    "production_switch": "NOT_AUTHORIZED_OR_PERFORMED"
+  },
+  "next_stage": [
+    "Resolve the 10/16 ret1 discrepancy and SH.600825 source mapping against immutable raw input and PG SourceIngress.",
+    "Produce candidate-bound independent G1-G3 evidence and a real candidate-specific CAS rollback drill; then publish 10/16 R8 and D0 candidate closures.",
+    "Continue 10/19, 10/20, 10/21 in order, including Focus/Forward/Priority, idempotency, independent PG readback, and same-token 28766 verification.",
+    "Re-evaluate positive Dev as-of Seal only if actual source availability qualifies against the D0 cutoff; preserve all late captures as NON_PIT."
+  ]
+}

@@ -350,6 +350,7 @@ def _pg_readback(trade_date, candidate_token=None):
             batch07_fact_digest_readback=d0_readback.get('fact_digest_readback'),
             batch07_reader=dict(role=d0_readback.get('reader_role'),session_user=d0_readback.get('reader_session_user'),
                 current_user=d0_readback.get('reader_current_user'),transaction_read_only=d0_readback.get('transaction_read_only'),
+                historical_source_readback=d0_readback.get('historical_source_readback'),
                 privileges=d0_readback.get('owner_select_privileges')),
             owner_select_privileges=owner_privileges,
             stock_prewatch_table_present=bool(prewatch_exists),

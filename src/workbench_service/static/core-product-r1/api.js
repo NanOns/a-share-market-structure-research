@@ -11,12 +11,15 @@ export function getContext() {
 function errorMessage(path, params, response, data) {
   const readFailure = data.code === 'PRODUCT_READ_FAILED';
   const reason = String(data.reason || '来源描述符不可用');
-  if (path === 'radar/priority' && readFailure && reason.startsWith('RESEARCH_PRIORITY_BINDING_MISSING')) {
+  // The live candidate preview wraps BFF ValueErrors as
+  // INVALID_OPERATIONAL_QUERY, while other handlers use PRODUCT_READ_FAILED.
+  // Interpret the stable domain reason independently of that transport wrapper.
+  if (path === 'radar/priority' && reason.startsWith('RESEARCH_PRIORITY_BINDING_MISSING')) {
     const token = context?.context_token || '未知';
     const tradeDate = params?.trade_date || context?.context?.trade_date || '未知';
     return `对应候选研究优先级尚未生成（T0 ${tradeDate}；token ${token}）。已知缺口：当前候选没有绑定 Priority Owner；旧 token 结果不能跨版本复用。`;
   }
-  if (path === 'radar/priority' && readFailure &&
+  if (path === 'radar/priority' &&
       ['RESEARCH_PRIORITY_SCOPE_INVALID', 'RESEARCH_PRIORITY_RANKABILITY_INVALID', 'INVALID_QUERY_BOUND'].includes(reason)) {
     return '筛选参数无效，请调整后重试。';
   }

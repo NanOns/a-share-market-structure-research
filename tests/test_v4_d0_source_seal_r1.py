@@ -26,12 +26,25 @@ def evidence_tree(tmp_path, *, cutoff='2026-10-22T08:00:00+00:00'):
 
 
 def pg_receipt(*, available='2026-10-22T07:55:00+00:00', evidence_class='CAPTURED_AS_RECORDED'):
-    return dict(source_ingress=dict(receipts=[dict(available_at=available,time_role='AS_OF_T0',
-        evidence_class=evidence_class,byte_readback=dict(status='PASS'))]),
+    package_sha='a'*64;artifact_sha='b'*64;source_freeze='f'*64;artifact_bytes=17
+    receipt=dict(trade_date='2026-10-22',source_sha256=package_sha,package_date='2026-10-22',
+        available_at=available,time_role='AS_OF_T0',evidence_class=evidence_class,
+        artifact_sha256=artifact_sha,artifact_bytes=artifact_bytes,artifact_path='source.bin',
+        byte_readback=dict(status='PASS'))
+    ingress=dict(source_role='TDX_SOURCE_INGRESS_ARTIFACT',source_sha256=package_sha,
+        source_bytes=artifact_bytes,owner_version_token=package_sha,time_role='AS_OF_T0',
+        evidence_class=evidence_class,available_at=available,source_ingress_artifact_sha256=artifact_sha,
+        source_path='source.bin',byte_readback='PASS')
+    return dict(source_ingress=dict(receipts=[receipt],candidate_source_binding=dict(status='EXACT_MATCH',
+        candidate_token=TOKEN,trade_date='2026-10-22',source_freeze_sha256=source_freeze,
+        package_sha256=package_sha,artifact_sha256=artifact_sha,artifact_bytes=artifact_bytes,match_count=1)),
         d0_owner_publication=dict(status='PG_BINDING_MISSING',permission_chain_proven=False,
             consumed_source_rows=[],batch07_publications=[dict(trade_date='2026-10-22',candidate_token=TOKEN,
-                producer_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',producer_version='2.1.0')],
-            batch07_fact_digest_readback='PASS',batch07_consumed_sources=[]))
+                producer_contract_id='V4_D0_SOURCE_SEAL_SUCCESSOR_R2',producer_version='2.1.0',
+                source_freeze_sha256=source_freeze)],
+            batch07_fact_digest_readback='PASS',batch07_consumed_sources=[ingress]),
+        candidate_publication=dict(rows=[dict(candidate_token=TOKEN,trade_date='2026-10-22',
+            source_freeze_sha256=source_freeze)]))
 
 
 def seal(tmp_path, evidence, pg):
@@ -48,7 +61,7 @@ def test_formal_d0_seal_positive_requires_exact_inputs_clock_and_pg_permission(t
         consumed_source_rows=[dict(digest=d) for d in required],
         batch07_consumed_sources=[dict(source_sha256=d,time_role='SAME_DAY_SOURCE_CAPTURE',
             evidence_class='CAPTURED_AS_RECORDED',available_at='2026-10-22T07:55:00+00:00',
-            byte_readback='PASS') for d in required])
+            byte_readback='PASS') for d in required]+pg['d0_owner_publication']['batch07_consumed_sources'])
     result=seal(tmp_path,evidence,pg)
     assert result['seal_state']=='VERIFIED_BY_CUTOFF'
     assert result['admission']=='DEV_SOURCE_VERIFIED'
@@ -117,6 +130,56 @@ def test_source_receipt_from_another_t0_is_rejected(tmp_path):
     result=seal(tmp_path,evidence,pg)
     assert result['seal_state']=='PG_BINDING_MISSING'
     assert result['reason']=='PG_SOURCE_RECEIPT_T0_MISMATCH'
+
+
+def test_same_day_non_candidate_receipts_do_not_contaminate_exact_candidate_source(tmp_path):
+    evidence=evidence_tree(tmp_path)
+    pg=pg_receipt()
+    exact=pg['source_ingress']['receipts'][0]
+    unrelated={**exact,'source_sha256':'c'*64,'artifact_sha256':'d'*64,
+        'evidence_class':'RECONSTRUCTED_NON_PIT','time_role':'RECONSTRUCTED_FROM_LATER_PACKAGE',
+        'available_at':'2026-10-22T09:00:00+00:00','byte_readback':{'status':'PASS'}}
+    pg['source_ingress']['all_receipts_diagnostic']=[unrelated,exact]
+    # Production PG readback exposes only the receipt selected by the exact
+    # candidate binding to the validator; day-wide diagnostics stay separate.
+    pg['source_ingress']['receipts']=[exact]
+    required={r['sha256'] for r in evidence['source_refs'] if r['role'] in (
+        'RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW','CORE_AND_RELATIVE_STRENGTH_FACTS')}
+    pg['d0_owner_publication'].update(status='PG_BINDING_PRESENT',permission_chain_proven=True,
+        consumed_source_rows=[dict(digest=d) for d in required],
+        batch07_fact_digest_readback='PASS',batch07_consumed_sources=[dict(source_sha256=d,
+            time_role='SAME_DAY_SOURCE_CAPTURE',evidence_class='CAPTURED_AS_RECORDED',
+            available_at='2026-10-22T07:55:00+00:00',byte_readback='PASS') for d in required]+
+            pg['d0_owner_publication']['batch07_consumed_sources'])
+    result=seal(tmp_path,evidence,pg)
+    assert result['seal_state']=='VERIFIED_BY_CUTOFF'
+    assert result['admission']=='DEV_SOURCE_VERIFIED'
+
+
+def test_missing_or_duplicate_candidate_receipt_binding_fails_closed(tmp_path):
+    evidence=evidence_tree(tmp_path)
+    pg=pg_receipt()
+    pg['source_ingress']['candidate_source_binding']['status']='AMBIGUOUS'
+    pg['source_ingress']['candidate_source_binding']['match_count']=2
+    pg['source_ingress']['receipts']*=2
+    result=seal(tmp_path,evidence,pg)
+    assert result['seal_state']=='PG_BINDING_MISSING'
+    assert result['reason']=='PG_CANDIDATE_EXACT_SOURCE_BINDING_MISSING_OR_AMBIGUOUS'
+
+
+def test_source_freeze_and_consumed_package_must_match_exact_candidate(tmp_path):
+    evidence=evidence_tree(tmp_path)
+    pg=pg_receipt()
+    pg['candidate_publication']['rows'][0]['source_freeze_sha256']='9'*64
+    result=seal(tmp_path,evidence,pg)
+    assert result['seal_state']=='PG_BINDING_MISSING'
+    assert result['reason']=='PG_CANDIDATE_EXACT_SOURCE_BINDING_MISSING_OR_AMBIGUOUS'
+
+    pg=pg_receipt()
+    pg['d0_owner_publication']['batch07_consumed_sources'][0]['owner_version_token']='8'*64
+    result=seal(tmp_path,evidence,pg)
+    assert result['seal_state']=='PG_BINDING_MISSING'
+    assert result['reason']=='PG_CANDIDATE_EXACT_SOURCE_BINDING_MISSING_OR_AMBIGUOUS'
 
 
 def test_future_window_trade_date_and_wrong_price_coordinate_are_rejected(tmp_path):

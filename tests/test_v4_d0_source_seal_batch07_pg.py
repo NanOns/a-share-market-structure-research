@@ -75,9 +75,22 @@ def test_late_source_counterexample_keeps_predicate_state(tmp_path):
         refs.append(dict(role=role,path=f'{i}.bin',sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
     evidence=dict(trade_date=TRADE_DATE,candidate_token=TOKEN,cutoff_status='CUTOFF_CONTRACT_RESOLVED',
         knowledge_cutoff='2026-10-21T12:00:00+00:00',source_refs=refs)
-    pg=dict(source_ingress=dict(receipts=[dict(trade_date=TRADE_DATE,time_role='SAME_DAY_CAPTURE',
-        evidence_class='CAPTURED_AS_RECORDED',available_at='2026-10-21T12:00:01+00:00',
-        byte_readback=dict(status='PASS'))]),d0_owner_publication={})
+    package_sha='a'*64;artifact_sha='b'*64;source_freeze='f'*64;artifact_bytes=17
+    available='2026-10-21T12:00:01+00:00'
+    pg=dict(source_ingress=dict(receipts=[dict(trade_date=TRADE_DATE,source_sha256=package_sha,
+        package_date=TRADE_DATE,artifact_sha256=artifact_sha,artifact_bytes=artifact_bytes,
+        artifact_path='source.bin',time_role='SAME_DAY_CAPTURE',evidence_class='CAPTURED_AS_RECORDED',
+        available_at=available,byte_readback=dict(status='PASS'))],candidate_source_binding=dict(
+            status='EXACT_MATCH',match_count=1,candidate_token=TOKEN,trade_date=TRADE_DATE,
+            source_freeze_sha256=source_freeze,package_sha256=package_sha,
+            artifact_sha256=artifact_sha,artifact_bytes=artifact_bytes)),
+        candidate_publication=dict(rows=[dict(candidate_token=TOKEN,trade_date=TRADE_DATE,
+            source_freeze_sha256=source_freeze)]),
+        d0_owner_publication=dict(batch07_publications=[dict(candidate_token=TOKEN,trade_date=TRADE_DATE,
+            source_freeze_sha256=source_freeze)],batch07_consumed_sources=[dict(
+                source_role='TDX_SOURCE_INGRESS_ARTIFACT',owner_version_token=package_sha,
+                source_ingress_artifact_sha256=artifact_sha,source_bytes=artifact_bytes)],
+            status='PG_BINDING_MISSING',permission_chain_proven=False))
     result=evaluate_d0_source_seal(root=tmp_path,evidence=evidence,scenario='LAUNCH_CONFIRM',
         predicate_state='UNKNOWN',pg_readback=pg)
     assert result['seal_state']=='POST_HOC_AFTER_CUTOFF'

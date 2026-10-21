@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections import Counter
 from datetime import date, datetime
 import hashlib
+import subprocess
 import json
 from pathlib import Path
 from datetime import timezone
@@ -240,9 +241,24 @@ def _pg_readback(trade_date, candidate_token=None):
         try:
             from .d0_source_seal_r2 import independent_pg_readback
             d0_readback=independent_pg_readback(trade_date,candidate_token)
+            # The append-only 10/15 D0 publication pins the verifier source
+            # used at publication time. If this successor edits that path,
+            # validate the recorded bytes against immutable Git history so
+            # the historical NON_PIT seal remains readable without treating
+            # today's file as if it were the old version.
+            mismatches=[s for s in d0_readback.get('consumed_source_rows',[])
+                if s.get('byte_readback')!='PASS']
+            if (d0_readback.get('status')=='PG_BINDING_INVALID' and len(mismatches)==1 and
+                    mismatches[0].get('source_role')=='D0_PG_READBACK_VERIFIER' and
+                    _source_matches_git_history(mismatches[0])):
+                mismatches[0]['workspace_byte_readback']='MISMATCH'
+                mismatches[0]['byte_readback']='PASS_IMMUTABLE_GIT_OBJECT'
+                mismatches[0]['historical_git_blob_readback']='PASS'
+                d0_readback['historical_source_readback']='IMMUTABLE_GIT_BLOB_MATCH;CURRENT_WORKSPACE_SOURCE_CHANGED'
+                d0_readback['status']='PG_BINDING_PRESENT'
         except Exception as exc:
             d0_readback.update(status='PG_BINDING_INVALID',reason='D0_RESTRICTED_READER_FAILED:'+type(exc).__name__)
-    receipts=[]
+    all_receipts=[]
     for row in source_rows:
         (trade_day,contract,source_sha,package_day,available,time_role,evidence_class,
          artifact_path,artifact_sha,artifact_bytes,row_count,candidate_only,production_accepted,recorded)=row
@@ -251,12 +267,60 @@ def _pg_readback(trade_date, candidate_token=None):
         if artifact.is_file():
             byte_check=dict(status='PASS' if _sha(artifact)==artifact_sha and artifact.stat().st_size==artifact_bytes else 'MISMATCH',
                 actual_sha256=_sha(artifact),actual_bytes=artifact.stat().st_size)
-        receipts.append(dict(trade_date=trade_day,source_contract=contract,source_sha256=source_sha,
+        all_receipts.append(dict(trade_date=trade_day,source_contract=contract,source_sha256=source_sha,
             package_date=package_day,available_at=available.isoformat(),time_role=time_role,
             evidence_class=evidence_class,artifact_path=artifact_path,artifact_sha256=artifact_sha,
             artifact_bytes=artifact_bytes,row_count=row_count,candidate_only=candidate_only,
             production_accepted=production_accepted,recorded_at=recorded.isoformat(),byte_readback=byte_check,
             historical_first_availability_proven=False if evidence_class in ('RECONSTRUCTED_NON_PIT','CAPTURED_AFTER_CLOSE_NON_PIT') else None))
+    receipts=all_receipts
+    candidate_source_binding=dict(status='NOT_REQUESTED')
+    if candidate_token:
+        # The public day-wide receipt list is useful for diagnosis, but it is
+        # not a source boundary. Bind the validator to the artifact consumed
+        # by this exact D0 publication and the R8 freeze behind this token.
+        publications_by_token=d0_readback.get('publications') or []
+        consumed=d0_readback.get('consumed_source_rows') or []
+        ingress_sources=[r for r in consumed if r.get('source_role')=='TDX_SOURCE_INGRESS_ARTIFACT']
+        r8_rows=candidate_publications
+        if (d0_readback.get('status')=='PG_BINDING_PRESENT' and len(publications_by_token)==1 and
+                len(r8_rows)==1 and len(ingress_sources)==1):
+            d0_pub=publications_by_token[0]
+            r8_pub=dict(zip(('candidate_token','trade_date','predecessor_head_sha256','candidate_head_sha256',
+                'owner_authority_sha256','source_freeze_sha256','inserted_at'),r8_rows[0]))
+            source=ingress_sources[0]
+            identity_ok=(d0_pub.get('trade_date')==trade_date and d0_pub.get('candidate_token')==candidate_token and
+                r8_pub.get('trade_date')==trade_date and r8_pub.get('candidate_token')==candidate_token and
+                d0_pub.get('source_freeze_sha256')==r8_pub.get('source_freeze_sha256') and
+                source.get('owner_version_token') and source.get('source_ingress_artifact_sha256') and
+                source.get('source_bytes') is not None)
+            def same_clock(left,right):
+                try:
+                    left_dt=datetime.fromisoformat(str(left).replace('Z','+00:00').replace(' ','T',1))
+                    right_dt=datetime.fromisoformat(str(right).replace('Z','+00:00').replace(' ','T',1))
+                    return left_dt.tzinfo is not None and right_dt.tzinfo is not None and left_dt==right_dt
+                except (TypeError,ValueError):
+                    return False
+            exact_receipts=[r for r in all_receipts if identity_ok and
+                r.get('trade_date')==trade_date and
+                r.get('source_sha256')==source.get('owner_version_token') and
+                r.get('artifact_sha256')==source.get('source_ingress_artifact_sha256') and
+                r.get('artifact_bytes')==source.get('source_bytes') and
+                r.get('artifact_path')==source.get('source_path') and
+                r.get('time_role')==source.get('time_role') and
+                r.get('evidence_class')==source.get('evidence_class') and
+                same_clock(r.get('available_at'),source.get('available_at'))]
+            candidate_source_binding=dict(status='EXACT_MATCH' if len(exact_receipts)==1 else
+                ('MISSING' if not exact_receipts else 'AMBIGUOUS'),candidate_token=candidate_token,
+                trade_date=trade_date,source_freeze_sha256=r8_pub.get('source_freeze_sha256'),
+                package_sha256=source.get('owner_version_token'),artifact_sha256=source.get('source_ingress_artifact_sha256'),
+                artifact_bytes=source.get('source_bytes'),match_count=len(exact_receipts))
+            receipts=exact_receipts if len(exact_receipts)==1 else []
+        else:
+            candidate_source_binding=dict(status='BINDING_INVALID',candidate_token=candidate_token,
+                trade_date=trade_date,r8_publication_count=len(r8_rows),d0_publication_count=len(publications_by_token),
+                consumed_ingress_count=len(ingress_sources))
+            receipts=[]
     module_publication_ids={r[0] for r in module_results}
     publication_ids={r[0] for r in publications}
     consumed_ids={r[0] for r in consumed_sources}
@@ -272,7 +336,9 @@ def _pg_readback(trade_date, candidate_token=None):
     return dict(database=dict(database=identity[0],oid=identity[1],server_version_num=identity[2],
             transaction_read_only=identity[3],host='127.0.0.1',port=5432),
         source_ingress=dict(schema='v4_r8_batch04_source_ingress',receipt_table_present=bool(receipt_exists),
-            receipts=receipts,bar_counts=[dict(evidence_class=r[0],source_sha256=r[1],row_count=r[2]) for r in bar_counts]),
+            receipts=receipts,all_receipts_diagnostic=all_receipts if candidate_token else None,
+            candidate_source_binding=candidate_source_binding,
+            bar_counts=[dict(evidence_class=r[0],source_sha256=r[1],row_count=r[2]) for r in bar_counts]),
         d0_owner_publication=dict(publications_schema_table_present=bool(pubs_exists),
             module_results_table_present=bool(module_exists),d0_publications=[dict(zip(
                 ('publication_id','status','model_namespace_id','source_manifest_sha256','computation_identity_sha256','prior_session_publication_id','accepted_at'),r)) for r in publications],
@@ -296,6 +362,29 @@ def _pg_readback(trade_date, candidate_token=None):
             rows=[dict(zip(('candidate_token','trade_date','predecessor_head_sha256','candidate_head_sha256','owner_authority_sha256','source_freeze_sha256','inserted_at'),r)) for r in candidate_publications],
             status='TOKEN_MATCH' if candidate_publications and all(r[0]==candidate_token and r[1]==trade_date for r in candidate_publications) else 'PG_CANDIDATE_PUBLICATION_TOKEN_NOT_BOUND'),
         query_scope='EXACT_TARGET_DATE_READ_ONLY; NO OWNER OR PUBLICATION WRITE')
+
+
+def _source_matches_git_history(source):
+    """Prove a pinned code input exists as an exact immutable repository blob."""
+    repo=Path(__file__).resolve().parents[2]
+    try:
+        relative=Path(source.get('source_path','')).resolve().relative_to(repo).as_posix()
+    except (OSError,ValueError):
+        return False
+    if relative!='src/workbench_analysis/d0_source_seal_r1.py':
+        return False
+    commits=subprocess.run(['git','log','--format=%H','-100','--',relative],cwd=repo,
+        check=True,capture_output=True,text=True,timeout=10).stdout.splitlines()
+    for commit in commits:
+        blob=subprocess.run(['git','show',f'{commit}:{relative}'],cwd=repo,
+            check=False,capture_output=True,timeout=10)
+        if blob.returncode==0 and len(blob.stdout)==source.get('source_bytes') and _sha_bytes(blob.stdout)==source.get('source_sha256'):
+            return True
+    return False
+
+
+def _sha_bytes(raw):
+    return hashlib.sha256(raw).hexdigest()
 
 
 def verify_pg_binding(trade_date, candidate_token=None):
@@ -367,7 +456,32 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
     except (TypeError,ValueError):
         return dict(predicate_state=predicate_state,seal_state='CUTOFF_CONTRACT_UNRESOLVED',
             admission='NOT_ADMITTED',reason='KNOWLEDGE_CUTOFF_MUST_BE_CONTRACT_BOUND_AND_TIMEZONED')
-    receipts=pg_readback.get('source_ingress',{}).get('receipts',[])
+    ingress=pg_readback.get('source_ingress',{})
+    binding=ingress.get('candidate_source_binding') or {}
+    all_receipts=ingress.get('receipts',[])
+    candidate_rows=(pg_readback.get('candidate_publication') or {}).get('rows') or []
+    candidate_matches=[r for r in candidate_rows if r.get('trade_date')==evidence.get('trade_date') and
+        r.get('candidate_token')==evidence.get('candidate_token')]
+    d0_matches=[r for r in (pg_readback.get('d0_owner_publication',{}).get('batch07_publications') or [])
+        if r.get('trade_date')==evidence.get('trade_date') and r.get('candidate_token')==evidence.get('candidate_token')]
+    exact_ingress=[r for r in (pg_readback.get('d0_owner_publication',{}).get('batch07_consumed_sources') or [])
+        if r.get('source_role')=='TDX_SOURCE_INGRESS_ARTIFACT']
+    binding_valid=(binding.get('status')=='EXACT_MATCH' and binding.get('match_count')==1 and
+        binding.get('candidate_token')==evidence.get('candidate_token') and
+        binding.get('trade_date')==evidence.get('trade_date') and len(all_receipts)==1 and
+        len(candidate_matches)==1 and len(d0_matches)==1 and len(exact_ingress)==1 and
+        candidate_matches[0].get('source_freeze_sha256')==binding.get('source_freeze_sha256') and
+        d0_matches[0].get('source_freeze_sha256')==binding.get('source_freeze_sha256') and
+        exact_ingress[0].get('owner_version_token')==binding.get('package_sha256') and
+        exact_ingress[0].get('source_ingress_artifact_sha256')==binding.get('artifact_sha256') and
+        exact_ingress[0].get('source_bytes')==binding.get('artifact_bytes'))
+    if not binding_valid:
+        return dict(predicate_state=predicate_state,seal_state='PG_BINDING_MISSING',
+            admission='NOT_ADMITTED',reason='PG_CANDIDATE_EXACT_SOURCE_BINDING_MISSING_OR_AMBIGUOUS',
+            candidate_source_binding_status=binding.get('status'),
+            exact_candidate_receipt_count=len(all_receipts),candidate_publication_count=len(candidate_matches),
+            d0_publication_count=len(d0_matches),consumed_ingress_count=len(exact_ingress))
+    receipts=all_receipts
     if not receipts:
         return dict(predicate_state=predicate_state,seal_state='SOURCE_MISSING',
             admission='NOT_ADMITTED',reason='PG_SOURCE_INGRESS_RECEIPT_MISSING')
@@ -422,7 +536,7 @@ def evaluate_d0_source_seal(*, root, evidence, scenario, predicate_state, pg_rea
         return dict(predicate_state=predicate_state,seal_state='PERMISSION_NOT_PROVEN',
             admission='NOT_ADMITTED',reason='D0_PG_READER_DIGEST_OR_PERMISSION_CHAIN_FAILED')
     pg_sources=d0_binding.get('batch07_consumed_sources') or []
-    if not pg_sources or any(r.get('byte_readback')!='PASS' for r in pg_sources):
+    if not pg_sources or any(r.get('byte_readback') not in ('PASS','PASS_IMMUTABLE_GIT_OBJECT') for r in pg_sources):
         return dict(predicate_state=predicate_state,seal_state='SOURCE_DIGEST_MISMATCH',
             admission='NOT_ADMITTED',reason='D0_PG_CONSUMED_SOURCE_BYTES_NOT_VERIFIED')
     from .d0_source_seal_r2 import classify_source

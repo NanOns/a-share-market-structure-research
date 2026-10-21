@@ -32,16 +32,26 @@ def clean(x):
 
 
 def confirmation(values):
+    # R6_D0_REASON_ATTRIBUTION_R1 defines only LAUNCH_CONFIRM and
+    # RECOVERY_TURN as formal D0 aggregation inputs. STRONG_PULLBACK and
+    # TREND_CONTINUE are diagnostic-only; their expected missing evidence
+    # must not turn otherwise-FALSE formal D0 rows into UNKNOWN.
+    formal_scenarios={'LAUNCH_CONFIRM','RECOVERY_TURN'}
     _,manifest,_,machine,scanner=d0.package();legacy=scanner(values);evidence=[];matches=[];unknown=[]
     for scenario in machine['scenario_priority']:
         branch=legacy[d0.SCENARIO_KEYS[scenario]];checks=branch['checks']
         reasons=[k+':UNKNOWN' for k,v in checks.items() if v is None]
         if scenario=='TREND_CONTINUE':reasons.append('CURRENT_WITH_LOO_BREADTH_SUPPORT:SAME_DAY_DOWNSTREAM_DIAGNOSTIC_ONLY')
         state='UNKNOWN' if reasons else 'TRUE' if branch['eligible'] is True else 'FALSE'
-        if state=='TRUE':matches.append(scenario)
-        unknown.extend(scenario+':'+r for r in reasons)
-        evidence.append(dict(scenario=scenario,status=state,checks=checks,unknown_reasons=reasons))
+        is_formal=scenario in formal_scenarios
+        if is_formal:
+            if state=='TRUE':matches.append(scenario)
+            unknown.extend(scenario+':'+r for r in reasons)
+        evidence.append(dict(scenario=scenario,status=state,
+             aggregation_role='FORMAL_D0' if is_formal else 'DIAGNOSTIC_ONLY',
+             checks=checks,unknown_reasons=reasons))
     return dict(confirmation_status='TRUE' if matches else 'UNKNOWN' if unknown else 'FALSE',
+         formal_aggregation_scenarios=[s for s in machine['scenario_priority'] if s in formal_scenarios],
          primary_scenario=matches[0] if matches else None,matched_scenarios=matches,
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])
 
@@ -60,7 +70,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     contract=out/'FOCUS_STAGE_CONTRACT_V1.json'
     write(contract,dict(contract_id='V4_R4_CORRECTED_D0_D2_FOCUS_FORWARD_V1',task='R4.1',
         source_admission='Exact R4 sealed owner files; corrected candidate only',
-        D0='Original scanner/parameters/priority and UNKNOWN-dominant wrapper',
+        D0='Original scanner/parameters; formal aggregation uses LAUNCH_CONFIRM and RECOVERY_TURN only; diagnostic scenarios remain observable but excluded',
         D2='Unchanged R5 candidate reducer and full field/temporal/publication validator',
         focus='Original membership/path/outcome kernels; independent corrected namespace',
         accepted=False,AS_RECORDED=False,production_admission=False,

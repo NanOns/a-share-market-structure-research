@@ -2,133 +2,177 @@
   "api_28766": {
     "base_url": "http://127.0.0.1:28766",
     "candidate_only": true,
-    "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-    "contract_id": "R8_28766_CANDIDATE_ACCEPTANCE_READBACK_R1",
+    "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+    "contract_id": "R8_28766_D0_REPAIR_POSTFIX_READBACK_R1",
+    "formal_head_match": false,
     "formal_head_modified": false,
     "priority_requests": [
       {
-        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
-        "elapsed_ms": 171.703,
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 138.718,
+        "formal_head_match": false,
         "http_status": 200,
-        "performance_timing_ms": {
-          "digest_and_page_ms": 14.361,
-          "market_stress_ms": 0.019,
-          "projection_rank_compute_ms": 0.0,
-          "read_index_context_ms": 0.057,
-          "sector_lifecycle_ms": 23.887,
-          "source_sha_verification_ms": 56.732
-        },
-        "status": "READY",
-        "total": 701
-      },
-      {
-        "candidate_payload_sha256": "652a7e73eaf526708bd9d9e4dc91ad5868f70f38478d67217fd8549a55d2f1d8",
-        "elapsed_ms": 151.321,
-        "http_status": 200,
-        "performance_timing_ms": {
-          "digest_and_page_ms": 13.689,
-          "market_stress_ms": 0.02,
-          "projection_rank_compute_ms": 0.0,
-          "read_index_context_ms": 0.051,
-          "sector_lifecycle_ms": 22.676,
-          "source_sha_verification_ms": 55.567
-        },
-        "status": "READY",
+        "payload_sha256": "72325e3e051677f5f6b1466aca3cef00a7af50c1ef7cff05f9c5f9ff062d4d42",
+        "production_accepted": false,
+        "projection_rank_compute_ms": 0.0,
+        "rankable_total": 701,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 32961,
+        "response_status": "READY",
+        "route": "/api/v4/radar/priority",
         "total": 701
       }
     ],
     "production_accepted": false,
+    "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
     "routes": [
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 85.82,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 80.173,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "faaed8f3a2cf7727fe2aa943efce1adb365ff6ba8c1085fa14e36d7902e69951",
-        "response_bytes": 4021,
+        "payload_sha256": "fca87e8f91060832a71051cfdabb8583b539ae5208350e7cb0d70563a815d348",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 4019,
         "response_status": "READY",
         "route": "/api/v4/context",
         "total": null
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 2.276,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 2.38,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "59b4805cdd7b361778d484caf440f43ea79fa3189f04c349cab3a626ea367ef1",
-        "response_bytes": 2250,
+        "payload_sha256": "e604a274a5d06b037309be739473b699155ab0f05e44f0f84a8a28f85247afa3",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 2244,
         "response_status": null,
         "route": "/api/operations/status",
         "total": null
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 1044.658,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 789.893,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "a04b8966a9286837d4982181004fbbcb90217af4c1b380ae49b021c90f89c128",
-        "response_bytes": 173298,
+        "payload_sha256": "167fa04af1cc80f1bd4723e4b739de399ce54864817896aa7e51cf393dbce06b",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 200221,
         "response_status": "READY",
         "route": "/api/v4/home",
         "total": null
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 49.031,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 34.101,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "f71b7e6866e7b9cd815a83e73e9e5a8cd8dadcaa0277f626a2a7d50bfb9c27be",
-        "response_bytes": 7792,
+        "payload_sha256": "03378c7533e2f4c437753a5d56fd719a04d1d76c94cc606d6788c187823f0451",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 9512,
         "response_status": "READY",
         "route": "/api/v4/market",
         "total": null
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 73.078,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 73.063,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "430beb746a3f01870736c0e4d41fef901cc6c73596e97ca021b4b686906fdfc7",
-        "response_bytes": 15925,
+        "payload_sha256": "4932ab6bc46d157c18dad40c8111ea18cd0131bb4c93f1f7240c5bdd5a7d443d",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 132884,
         "response_status": "READY",
         "route": "/api/v4/stocks",
         "total": 5226
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 544.063,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 419.063,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "bb2858c1bebcd5dccbc5cf44f9fc9693f8e2985e588e182cb1011bf53be2df36",
-        "response_bytes": 10904,
+        "payload_sha256": "771845b8d816ec957d281e9030a471b5e96e753c78f22877db52c9b6452073bd",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 86008,
         "response_status": "READY",
         "route": "/api/v4/sectors",
         "total": 400
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 1185.188,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 364.862,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "a8866c90b30ad1bc155d9761795149ef9a938ba612c158dc9103cdc82c1a7449",
-        "response_bytes": 36044,
+        "payload_sha256": "0eed884546e2b3b660f281da1a8d3788eb2c8a87d83cd5d8a8d895f24c8e187b",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 70581,
         "response_status": "READY",
         "route": "/api/v4/focus",
-        "total": 3355
+        "total": 404
       },
       {
         "accepted_trade_date": "2026-10-15",
-        "context_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-        "elapsed_ms": 2495.783,
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 2294.779,
+        "formal_head_match": false,
         "http_status": 200,
-        "payload_sha256": "fc60f6fbe91341611f1ff52fb7a89da3b2bea86cf9a1b76c5d3c2626fdc46c76",
-        "response_bytes": 101208,
+        "payload_sha256": "ac593ac6a342da1b816d3e9cbd6fee44e56486b8c004621e8581ded5713fe8f8",
+        "production_accepted": false,
+        "projection_rank_compute_ms": null,
+        "rankable_total": null,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 101209,
         "response_status": "READY",
         "route": "/api/v4/forward/statistics",
         "total": null
+      },
+      {
+        "accepted_trade_date": "2026-10-15",
+        "context_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "elapsed_ms": 138.718,
+        "formal_head_match": false,
+        "http_status": 200,
+        "payload_sha256": "72325e3e051677f5f6b1466aca3cef00a7af50c1ef7cff05f9c5f9ff062d4d42",
+        "production_accepted": false,
+        "projection_rank_compute_ms": 0.0,
+        "rankable_total": 701,
+        "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+        "response_bytes": 32961,
+        "response_status": "READY",
+        "route": "/api/v4/radar/priority",
+        "total": 701
       }
     ],
-    "status": "PASS",
+    "superseded_candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
     "trade_date": "2026-10-15"
   },
   "artifact_index": "FOURTH_BATCH_ARTIFACTS/ARTIFACT_INDEX.json",
@@ -177,13 +221,23 @@
   "contract_id": "V4_R8_FOURTH_BATCH_EVIDENCE_R2",
   "d0_market": {
     "d0_counts": {
+      "FALSE": 5111,
+      "ROWS": 5226,
       "TRUE": 64,
-      "UNKNOWN": 5162
+      "UNKNOWN": 51
     },
     "d0_seal_state": null,
+    "diagnostic_only_unknown_escalations_removed": 5111,
     "market_status": "SOURCE_INCOMPLETE",
     "permission_inferred": false,
-    "status": "OPEN_SOURCE_REFERENCE_INCOMPLETE",
+    "repair_unknown_analysis": {
+      "ACTUAL_BAR_FALSE": 11,
+      "ACTUAL_BAR_TRUE_WITH_FORMAL_UNKNOWN": 40,
+      "CLV_MISSING": 14,
+      "WINDOW_VALID": 47
+    },
+    "root_cause": "Prior wrapper aggregated UNKNOWN reasons from all four scenario branches. STRONG_PULLBACK and TREND_CONTINUE are diagnostic-only under R6_D0_REASON_ATTRIBUTION_R1; their expected missing downstream evidence escalated otherwise-FALSE formal rows to UNKNOWN.",
+    "status": "D0_FORMAL_AGGREGATION_REPAIRED; SEAL_OPEN; MARKET_SOURCE_OPEN",
     "trend_state": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0"
   },
   "gates": {
@@ -193,9 +247,9 @@
     "G4": "PASS",
     "errors": [],
     "final_comparator_status": "PASS",
-    "scope": "one-session development append; external audit remains separate"
+    "scope": "corrected one-session development append; external audit and source permission remain separate"
   },
-  "next_stage": "ChatGPT independently verify bound G1-G4 evidence; then continue D0 and market real-reference repair",
+  "next_stage": "ChatGPT independently audit corrected D0 aggregation, G1-G4 bound PG evidence, disclosed initial readback scope-label defect and its fix; continue D0 seal and market real-source repair",
   "open_gates": [
     "independent ChatGPT audit",
     "D0 source-backed seal permission",
@@ -204,7 +258,7 @@
   "owner_append": {
     "AS_RECORDED": false,
     "PIT_ELIGIBLE": false,
-    "candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
     "core_oracle": {
       "errors": 0,
       "owner_rows": 5226
@@ -224,11 +278,20 @@
     "suspended": 11,
     "target_session": "2026-10-15"
   },
+  "post_cas_reader_scope_correction": {
+    "bridge_guard": "src/workbench_db/v4_r8_publication_bridge_v1.py",
+    "contract_id": "R8_ISOLATED_ROOT_PREVIEW_SEMANTICS_R1",
+    "corrected_28766_readback_production_accepted": false,
+    "finding": "The first post-CAS 28766 response equated isolated-root Head equality with formal acceptance and returned production_accepted=true. The formal production Head and 28765 were untouched. Isolated G:/codex_tmp roots now always report DEVELOPMENT_CANDIDATE_PREVIEW and production_accepted=false; the PG append bridge rejects any other readback scope. A restarted 28766 same-token readback passed across nine routes.",
+    "original_pg_receipt_readback_production_accepted": true,
+    "pg_receipt_preserved_immutable": true,
+    "source": "src/workbench_analysis/operational_successor_v1.py",
+    "status": "FIXED_AND_READ_BACK"
+  },
   "priority_precompute": {
     "T0": "2026-10-15",
     "contract": "R8_CANDIDATE_PRIORITY_OFFLINE_PRECOMPUTE_R1",
     "http_projection_rank_compute_ms": [
-      0.0,
       0.0
     ],
     "http_reads": [
@@ -263,19 +326,28 @@
         "total": 701
       }
     ],
-    "offline_compute_ms": 16263.213,
-    "payload_sha256": "312f4a4e97581f6b12919231ec6d192b3328d7b2f11856c4b2a58b6733b120c4",
+    "offline_compute_ms": 16112.259,
+    "payload_sha256": "7403e389a6d0e59ab91f39f3a6d81d77c10d7a7e185b07dcbaf824dfd6b9f9e4",
+    "post_fix_http_elapsed_ms": [
+      138.718
+    ],
     "rankable_sectors": 121,
     "rankable_stocks": 701,
     "sectors": 400,
     "snapshot_bytes": 2049685,
-    "snapshot_sha256": "b98c1c9dadf9f2c64d0c7b6b1d9d449f0974cc047372b446ae783c9726fc3494",
+    "snapshot_sha256": "16f4df51b14dab1da8a5d566e614b8b39c84d35bf2f6d54cbfc0f841973d1406",
     "stocks": 5226,
-    "token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2"
+    "token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c"
   },
   "publication_and_cas": {
     "append_only_trigger_count": 1,
-    "candidate_head_sha256": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "candidate_head_sha256": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+    "candidate_publication_receipt": {
+      "bytes": 2887,
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\r8_publication_bridge_v1\\receipts\\c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c.json",
+      "sha256": "d55f730cf05457bcbdcab619e2d2078fd729463ba7412f5392cb7d600eef0fbe"
+    },
+    "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
     "cas_result": "APPLIED",
     "contract_id": "V4_R8_REAL_APPEND_PG_RECEIPT_R1",
     "database_identity": {
@@ -286,19 +358,24 @@
     },
     "formal_head_modified": false,
     "pg_exact_readback": true,
-    "pg_row_count": 1,
+    "pg_receipt_sha256": "d55f730cf05457bcbdcab619e2d2078fd729463ba7412f5392cb7d600eef0fbe",
+    "pg_row_count": 2,
     "production_accepted": false,
     "rollback_drill": {
-      "candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "candidate_head_sha256": null,
+      "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
       "contract_id": "V4_R8_CAS_ROLLBACK_DRILL_R1",
+      "development_candidate_root": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020",
       "formal_head_modified": false,
       "head_restored_exactly": true,
-      "joint_restored_exactly": true,
       "last_good_head_sha256": "2e3a2dd57284e2f8566c265a7c1f112dbc50e7dab3a473f73873d9d02a88b0df",
       "production_accepted": false,
       "publication_rows_after_failure": 0,
+      "publication_rows_before_failure": 0,
       "status": "PASS",
-      "transaction_state": "ROLLED_BACK"
+      "superseded_head_sha256": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+      "transaction_state": "ROLLED_BACK",
+      "version": "1.0.0"
     },
     "same_token": true,
     "schema": "v4_r8pub_fde08c597fc76d13",
@@ -306,11 +383,10 @@
   },
   "read_index": {
     "binding": {
-      "T0": "2026-10-15",
       "contract_id": "V4_READ_INDEX_R2",
       "counts": {
-        "focus": 3355,
-        "radar": 165,
+        "focus": 404,
+        "radar": 367,
         "sectors": 400,
         "stocks": 5226
       },
@@ -320,20 +396,21 @@
         "host": "127.0.0.1/32",
         "port": 5432
       },
-      "digest": "0f6faac757dc5b8ce68fa70582d84f78d346252e384c581199bb82e4633c6211",
-      "engine": "postgresql",
-      "head_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
-      "producer_sha256": "661df67c3b01d685574301970f2be682063269d38e835517e12d92fc7d2887c7",
-      "schema": "v4_3358239a423b8adc37b7d463de2cbaed07341043bb76150dc0d70915"
+      "digest": "93e748eca57940dc4c2b853ff0b6cd6d95381dc62d78b47a41ad102283bf7cac",
+      "readback_status": "PASS",
+      "schema": "v4_f91dde981ea637ca740c4a587533306f97d66ac5591351ea7bb748f5",
+      "sealed": true,
+      "token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+      "trade_date": "2026-10-15"
     },
     "contract_id": "V4_READ_INDEX_R2",
     "exact_rows_readback": {
-      "focus": 3355,
-      "radar": 165,
+      "focus": 404,
+      "radar": 367,
       "sectors": 400,
       "stocks": 5226
     },
-    "head_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
+    "head_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
     "head_unchanged_during_precompute": true,
     "trade_date": "2026-10-15"
   },
@@ -373,6 +450,7 @@
     "task": "FOURTH_BATCH_R8_REAL_PG_INCREMENT"
   },
   "status": "CANDIDATE_APPEND_PASS_EXTERNAL_AUDIT_OPEN",
+  "superseded_candidate_token": "ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2",
   "tdx_identity_reconciliation": {
     "SZ.301569": "admitted for 2026-10-15 via existing date-bounded stable identity contract; no earlier history created",
     "bao_daily_rows": 5226,
@@ -388,10 +466,11 @@
     "unmapped_total": 351
   },
   "verification": {
-    "artifact_count": 17,
+    "artifact_count": 26,
     "artifact_index": "V4_R8_FOURTH_BATCH_ARTIFACT_INDEX_R1",
     "candidate_head_date": "2026-10-15",
     "candidate_only": true,
+    "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
     "database_identity": {
       "database": "market_research",
       "database_oid": 646711,
@@ -402,6 +481,6 @@
     "formal_head_date_after": "2026-10-09",
     "formal_head_sha256_after": "55d78be5a773c1c7d0475b1a0d755bfa6f4cefb14cc28e273945cc3acf4dc83e",
     "production_28765_listener": false,
-    "web_listeners_127001": "{\"LocalAddress\":\"127.0.0.1\",\"LocalPort\":28766,\"OwningProcess\":45028}"
+    "web_listeners_127001": "127.0.0.1:28766 (PID 6892)"
   }
 }

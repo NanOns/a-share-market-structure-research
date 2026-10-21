@@ -1,0 +1,93 @@
+{
+  "candidate_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+  "contract_id": "V4_D0_FORMAL_AGGREGATION_REPAIR_R1",
+  "corrected_code": "src/workbench_analysis/corrected_focus_replay.py",
+  "corrected_counts": {
+    "FALSE": 5111,
+    "TRUE": 64,
+    "UNKNOWN": 51
+  },
+  "diagnostic_only_scenarios": [
+    "STRONG_PULLBACK",
+    "TREND_CONTINUE"
+  ],
+  "evidence": {
+    "corrected_owner": {
+      "bytes": 2892297,
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\dynamic_daily_owners\\2026-10-15\\f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0\\owner_v3_d0_formal_r2\\owners\\2026-10-15\\corrected_d0_prewatch.jsonl.gz",
+      "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99"
+    },
+    "d0_seal_state": null,
+    "production_admission": false,
+    "replay_summary": {
+      "episodes": 404,
+      "events": 404,
+      "focus": {
+        "bytes": 241444,
+        "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/CORRECTED_FOCUS_FORWARD.json.gz",
+        "sha256": "b5dc6bc52cb5af332dcf516915e3f50b94ddd340db54529511d5f3197e0103c3"
+      },
+      "next_stage": "INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE",
+      "outcomes": {
+        "PENDING": 2020
+      },
+      "owners": [
+        {
+          "D0": {
+            "FALSE": 5111,
+            "TRUE": 64,
+            "UNKNOWN": 51
+          },
+          "D2": {
+            "bytes": 1575994,
+            "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d2.json.gz",
+            "sha256": "11aa9e3972caeec0be963770cc8e560ecd117195825214140906a37eafbc7f12"
+          },
+          "D2_freshness": {
+            "FRESH": 5175,
+            "STALE": 51
+          },
+          "PREWATCH": {
+            "FALSE": 4837,
+            "TRUE": 355,
+            "UNKNOWN": 34
+          },
+          "calculations": {
+            "bytes": 2892297,
+            "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99"
+          },
+          "facts": {
+            "bytes": 691129,
+            "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_state_input_facts.jsonl.gz",
+            "sha256": "f4e106bdd1c80763d049b70d477f677513339eec9369edd016c4e5ef77f52137"
+          },
+          "rows": 5226,
+          "trade_date": "2026-10-15"
+        }
+      ],
+      "production_admission": false
+    }
+  },
+  "formal_aggregation_scenarios": [
+    "LAUNCH_CONFIRM",
+    "RECOVERY_TURN"
+  ],
+  "note": "Reason counts overlap; 47 unique stocks have invalid windows; of the 51 formal UNKNOWN rows, 11 have no 2026-10-15 bar and 40 have a current bar but missing historical/window inputs. Fourteen have missing CLV. These missing inputs remain UNKNOWN.",
+  "old_reported_counts": {
+    "FALSE": 0,
+    "TRUE": 64,
+    "UNKNOWN": 5162
+  },
+  "root_cause": "Prior wrapper aggregated UNKNOWN reasons from all four scenario branches. STRONG_PULLBACK and TREND_CONTINUE are diagnostic-only under R6_D0_REASON_ATTRIBUTION_R1; their expected missing downstream evidence escalated otherwise-FALSE formal rows to UNKNOWN.",
+  "rows": 5226,
+  "status": "RECOMPUTED_CANDIDATE",
+  "target_session": "2026-10-15",
+  "unique_missing_input_counts": {
+    "ACTUAL_BAR_FALSE": 11,
+    "ACTUAL_BAR_TRUE_WITH_FORMAL_UNKNOWN": 40,
+    "CLV_MISSING": 14,
+    "WINDOW_VALID": 47
+  },
+  "version": "1.0.0"
+}

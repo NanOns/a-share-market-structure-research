@@ -133,6 +133,12 @@ class OperationalSuccessorReaderV1(CandidateReadV2):
         head_path=self.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
         formal_head=json.loads(head_path.read_bytes()) if head_path.exists() else {}
         formal_head_match=formal_head_matches_candidate(formal_head,self.candidate,self.token)
+        # A pointer under the isolated engineering root is a development
+        # candidate Head, even when its bytes match the candidate. It cannot
+        # establish acceptance by the separate formal operational Head.
+        development_root=Path('G:/codex_tmp').resolve()
+        isolated_candidate_root=self.root.resolve().is_relative_to(development_root)
+        formal_head_match=formal_head_match and not isolated_candidate_root
         return dict(metadata(current,day),contract_id=CONTRACT,context_token=self.token,publication_id=self.token,
                     accepted_trade_date=day,data_cutoff_date=day,available_trade_dates=self.candidate['published_sessions'],
                     membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,

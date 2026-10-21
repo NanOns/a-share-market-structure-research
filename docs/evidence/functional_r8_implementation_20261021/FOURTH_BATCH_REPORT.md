@@ -2,9 +2,17 @@
 
 ## Result
 
-**Status: development append PASS; independent external audit and D0/market-source gates remain open.** The 2026-10-15 real-source daily increment now completed the full candidate chain: BaoStock retry and TDX reconciliation, exact day freeze, Owner computation and PG payload readback, independent G1–G4 comparator, append-only PG Publication record, development Head CAS, and same-token HTTP acceptance on 28766. The accepted candidate token is `ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2`.
+**Status: corrected development append PASS; independent external audit, D0 seal, and market-source gates remain open.** The 2026-10-15 real-source daily increment now completed the full candidate chain: BaoStock retry and TDX reconciliation, exact day freeze, Owner computation and PG payload readback, independent G1–G4 comparator, append-only PG Publication record, development Head CAS, and same-token HTTP acceptance on 28766. The corrected candidate token is `c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c`; the prior token `ed65f0ff84d2e7f0ed1c7a3c2663a53ee364b951ba8822718ec2ae6dc5e00ed2` is retained as a superseded historical candidate.
 
 The work is candidate-only and `NON_PIT`. The formal Head remains 2026-10-09. No production Head, production service port 28765, scanner, or final production package was changed or accepted. Full machine-readable evidence and copied source receipts are indexed in [ARTIFACT_INDEX.json](FOURTH_BATCH_ARTIFACTS/ARTIFACT_INDEX.json).
+
+## Follow-up repair: D0 aggregation and isolated preview labeling
+
+The prior 10/15 result counted UNKNOWN values from all four D0 branches. The versioned reason-attribution contract marks `STRONG_PULLBACK` and `TREND_CONTINUE` as diagnostic-only; they were incorrectly allowed to override a FALSE result from the two formal branches, `LAUNCH_CONFIRM` and `RECOVERY_TURN`. The repair limits D0 aggregation to those two formal branches and preserves diagnostic outputs in evidence. The saved 5,226-row candidate now recomputes to **5,111 FALSE / 64 TRUE / 51 UNKNOWN**. Of the 51 genuine UNKNOWN rows, 47 lack a valid historical feature window; 11 have no 10/15 bar, while 40 have a bar but incomplete historical/window inputs; 14 also lack CLV (overlapping counts). The old 5,162 UNKNOWN figure overstated formal uncertainty by 5,111 rows.
+
+The corrected candidate was appended with token `c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c`; G1–G4 comparator status is PASS, the append-only PG ledger now has two rows, and rollback restored the 10/14 last-good Head byte-for-byte. `28766` was restarted and returned the same token with HTTP 200 across nine routes, including priority; the priority response took 138.718 ms and reported `projection_rank_compute_ms=0.0`.
+
+The first same-token HTTP readback, before the corrective restart, exposed a related status-label defect: a candidate Head inside the isolated temporary root was treated as formal acceptance and the response said `production_accepted=true`. This did not change the formal 10/09 Head or start/listen on 28765. `OperationalSuccessorReaderV1` now forces isolated `G:/codex_tmp` roots to candidate-preview semantics, and the R8 bridge rejects a readback that does not report `production_accepted=false` and `DEVELOPMENT_CANDIDATE_PREVIEW`. The original append receipt is preserved unchanged and the discrepancy is explicitly included in its follow-up evidence for independent audit.
 
 ## Stage contract and baseline
 
@@ -27,7 +35,7 @@ The existing Owner builder was reused and the missing R8 publication bridge was 
 - Owner computation: 5,226 objects, 5,215 raw traded rows, zero Core calculation errors; exact coordinate Core and downstream Profile/Structure, Sector/Market, and Focus/Forward stages completed.
 - Owner PG full-payload preparation: 20 newly created dated facts, 148 immutable facts reused, with exact readback.
 - Period numeric oracle: **219,464 checks, zero errors**, based on saved daily history bytes.
-- PG Publication ledger: **one row**, exact readback PASS, append-only trigger present; database `127.0.0.1:5432/market_research`, OID `646711`, PostgreSQL 18.6.
+- PG Publication ledger: **two append-only rows** (the superseded candidate and corrected candidate), exact readback PASS, append-only trigger present; database `127.0.0.1:5432/market_research`, OID `646711`, PostgreSQL 18.6.
 - Failure drill: deliberately rejected same-token readback; 10/14 candidate Head and joint bytes restored exactly, no PG Publication row inserted, transaction state `ROLLED_BACK`.
 - Successful development CAS: `APPLIED`; the 10/15 candidate Head hash equals its context token. The formal 10/09 Head remained unchanged.
 
@@ -46,13 +54,13 @@ The formal predecessor remains separately bound as 2026-10-09. The 2026-10-14 de
 
 ## 28766 and precomputed performance
 
-The development preview was restarted on the **only** development web port, `127.0.0.1:28766`, after CAS so the server loaded the new exact candidate token. The following routes returned HTTP 200 with `T0=2026-10-15` and the same token: `/api/v4/context`, `/api/operations/status`, `/api/v4/home`, `/api/v4/market`, `/api/v4/stocks`, `/api/v4/sectors`, `/api/v4/focus`, and `/api/v4/forward/statistics`.
+The development preview was restarted on the **only** development web port, `127.0.0.1:28766`, after CAS so the server loaded the new exact candidate token. After the isolated-root preview label fix, all nine routes returned HTTP 200 with `T0=2026-10-15`, the same token, `read_scope=DEVELOPMENT_CANDIDATE_PREVIEW`, and `production_accepted=false`: `/api/v4/context`, `/api/operations/status`, `/api/v4/home`, `/api/v4/market`, `/api/v4/stocks`, `/api/v4/sectors`, `/api/v4/focus`, `/api/v4/forward/statistics`, and `/api/v4/radar/priority`.
 
-The PostgreSQL read index was built offline for the exact token and read back 5,226 stocks, 400 sectors, 3,355 Focus rows, and 165 radar rows. Priority was precomputed offline for 5,226 stocks (701 rankable) and 400 sectors (121 rankable). The first offline computation took 16.263 seconds. Two same-token HTTP priority reads then returned 200 in 171.703 ms and 151.321 ms; each reported `projection_rank_compute_ms=0.0` and identical payload SHA. The precompute now selects snapshots by token, preserving the prior 10/14 snapshot when a later date is added. Candidate lifecycle reconstruction no longer has a 10/14 date cap.
+The corrected token R2 read index is sealed in PG and reads back 5,226 stocks, 400 sectors, 404 Focus rows, and 367 radar rows. Priority was precomputed offline for 5,226 stocks (701 rankable) and 400 sectors (121 rankable) in 16.112 seconds. The post-fix same-token priority request returned 200 in 138.718 ms with `projection_rank_compute_ms=0.0`. The earlier 3,355 Focus / 165 radar counts belong to the superseded token. The precompute selects snapshots by token, preserving the prior 10/14 snapshot when a later date is added. Candidate lifecycle reconstruction no longer has a 10/14 date cap.
 
 ## D0, market source, and limits
 
-The 10/15 D0/Prewatch/market computation completed but correctly remains source-limited: D0 reports 64 TRUE and 5,162 UNKNOWN, its seal state is null, and market trend remains `UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0` (`market_status=SOURCE_INCOMPLETE`). No composite market permission or D0 seal permission was inferred. Repairing those actual-reference inputs remains the next engineering scope; this candidate append does not claim that gate is closed.
+The 10/15 D0/Prewatch/market computation completed but correctly remains source-limited: corrected D0 reports 64 TRUE, 5,111 FALSE, and 51 UNKNOWN; the prior 5,162 UNKNOWN was an aggregation defect, its seal state is null, and market trend remains `UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0` (`market_status=SOURCE_INCOMPLETE`). No composite market permission or D0 seal permission was inferred. Repairing those actual-reference inputs remains the next engineering scope; this candidate append does not claim that gate is closed.
 
 ## Verification and handoff
 

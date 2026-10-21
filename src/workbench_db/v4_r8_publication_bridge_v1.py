@@ -106,7 +106,10 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
     day = candidate["accepted_trade_date"]
     head = root / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
     joint = root / "config/v4_current_native_joint_authority_v3.json"
-    transaction = root / "runtime/dynamic_daily/publication_transaction.json"
+    # Preserve one immutable transaction receipt per candidate token. A later
+    # corrected candidate on the same T0 must not overwrite the audit bytes
+    # referenced by an earlier append receipt.
+    transaction = root / "runtime/dynamic_daily/publication_transactions" / (digest(candidate) + ".json")
     schema, database_identity = prepare_schema(root)
     expected = candidate["predecessor"]["sha256"]
     # The R8 candidate-only policy does not authorize the separate full
@@ -133,9 +136,16 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
         def verified_readback(current_candidate):
             observed = readback(current_candidate)
             if (observed.get("status") != "PASS" or observed.get("context_token") != token
-                    or observed.get("accepted_trade_date") != day):
+                    or observed.get("accepted_trade_date") != day
+                    or observed.get("production_accepted") is not False
+                    or observed.get("read_scope") != "DEVELOPMENT_CANDIDATE_PREVIEW"):
                 raise ValueError("R8_HTTP_SAME_TOKEN_READBACK_FAILED")
             candidate_head_sha = sha256_file(head)
+            # _commit_pointers writes this exact payload after the callback
+            # returns. Write it now so the append-only PG row can bind the
+            # final transaction bytes rather than a transient pending state.
+            atomic_json(root, transaction, dict(state="COMMITTED", predecessor=ref(root, archive),
+                head_sha256=candidate_head_sha, readback=observed, **coordination))
             payload = dict(contract_id=CONTRACT, candidate_token=token, trade_date=day,
                 predecessor_head_sha256=expected, candidate_head_sha256=candidate_head_sha,
                 owner_authority_sha256=owner_authority["sha256"], source_freeze_sha256=source_freeze["sha256"],

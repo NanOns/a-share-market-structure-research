@@ -90,7 +90,8 @@ def compare_candidate_append(*, formal_predecessor, candidate_predecessor,
                              reference_snapshot, candidate_snapshot, target_session,
                              compute_sessions, source_bindings, revisions_detected=False,
                              root=None, parameters=None, window=None, previous_ref=None,
-                             expected_g3_digest=None, pg_receipt_binding=None):
+                              expected_g3_digest=None, pg_receipt_binding=None,
+                              pg_schema=None, pg_database_identity=None):
     """Compare candidate evidence without treating caller assertions as proof.
 
     G1 remains a scoped value comparison. G2/G3 require actual bound bytes.
@@ -132,25 +133,51 @@ def compare_candidate_append(*, formal_predecessor, candidate_predecessor,
         errors.append(g3_error)
 
     g4_pass = False
-    if root is not None and isinstance(pg_receipt_binding, dict):
+    if root is not None and isinstance(pg_receipt_binding, dict) and isinstance(pg_schema,str):
         try:
             raw, _ = _read_binding(root, pg_receipt_binding)
             receipt = json.loads(raw)
-            required = (receipt.get("contract_id") == "V4_R8_REAL_APPEND_PG_RECEIPT_R1" and
+            # G4 is an independent, read-only database check. Values in the
+            # receipt are bindings for comparison, never proof of the write.
+            from workbench_db.v4_native import connection
+            with connection(pg_schema, read_only=True) as pg:
+                identity = pg.execute("SELECT current_database(), (SELECT oid FROM pg_database WHERE datname=current_database()), inet_server_addr()::text, inet_server_port()",()).fetchone()
+                db_identity = {"database":identity[0],"database_oid":identity[1],"host":identity[2],"port":identity[3]}
+                row = pg.execute("SELECT candidate_token,trade_date::text,predecessor_head_sha256,candidate_head_sha256,owner_authority_sha256,source_freeze_sha256,readback FROM r8_publications WHERE candidate_token=%s",(receipt.get("candidate_token"),)).fetchone()
+                event = pg.execute("SELECT event_type,row_sha256,evidence FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1",(receipt.get("candidate_token"),)).fetchone()
+                expected_row_sha = _digest([*row[:6],row[6]]) if row else None
+                tx_raw, _ = _read_binding(root, receipt.get("publication_transaction")) if receipt.get("publication_transaction") else (b"",None)
+                tx = json.loads(tx_raw) if tx_raw else {}
+                head_path = Path(root) / "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json"
+                actual_head_sha = hashlib.sha256(head_path.read_bytes()).hexdigest()
+            pg_matches = bool(row and event and event[0] == "FINALIZED" and event[1] == expected_row_sha
+                and event[2].get("readback") == receipt.get("readback")
+                and event[2].get("transaction_sha256") == hashlib.sha256(tx_raw).hexdigest()
+                and row[:6] == (receipt.get("candidate_token"),target_session,receipt.get("predecessor_head_sha256"),
+                    receipt.get("candidate_head_sha256"),receipt.get("owner_authority",{}).get("sha256"),
+                    receipt.get("source_freeze",{}).get("sha256"))
+                and row[6].get("status") == "PENDING"
+                and receipt.get("pg_row_sha256") == expected_row_sha
+                and db_identity == pg_database_identity
+                and receipt.get("pg_database_identity") == db_identity
+                and tx.get("state") == "COMMITTED" and tx.get("candidate_token") == receipt.get("candidate_token")
+                and tx.get("head_sha256") == actual_head_sha == receipt.get("candidate_head_sha256"))
+            required = (receipt.get("contract_id") == "V4_R8_REAL_APPEND_PG_RECEIPT_R2" and
                 receipt.get("trade_date") == target_session and
                 receipt.get("compute_sessions") == [target_session] and
                 receipt.get("candidate_only") is True and
                 receipt.get("formal_head_modified") is False and
                 receipt.get("production_accepted") is False and
-                receipt.get("pg_readback_match") is True and
                 receipt.get("cas_result") in ("APPLIED", "IDEMPOTENT") and
                 receipt.get("write_count") == 1 and
                 receipt.get("duplicate_write_count") == 0 and
                 receipt.get("last_good_preserved_on_failure") is True)
-            g4_pass = bool(required and list(compute_sessions or []) == [target_session]
+            g4_pass = bool(required and pg_matches and list(compute_sessions or []) == [target_session]
                             and not revisions_detected)
             if not required:
                 errors.append("G4_PG_RECEIPT_FIELDS_INVALID")
+            elif not pg_matches:
+                errors.append("G4_INDEPENDENT_PG_HEAD_TRANSACTION_READBACK_MISMATCH")
         except (OSError, ValueError, json.JSONDecodeError):
             errors.append("G4_PG_RECEIPT_BYTES_INVALID")
     elif revisions_detected:

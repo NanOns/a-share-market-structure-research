@@ -119,7 +119,35 @@
       "SEC-FD2DAB76BEAA85DC417BEA3C7AF005B8",
       "SEC-7C8816903D4BA9B6267531D5705888B9",
       "SEC-92877F11D578CAFB2252B6F02013B014"
-    ]
+    ],
+    "core_unknown_reason_occurrences": {
+      "MISSING_OR_SUSPENDED_ENDPOINT": 127,
+      "RETURN_OR_UNIVERSE_UNKNOWN": 54,
+      "EXACT_DATED_RPS_ENDPOINT_UNKNOWN": 84,
+      "UNEXPLAINED_DATA_GAP": 472,
+      "CURRENT_BAR_UNAVAILABLE": 180,
+      "DATED_MARKET_REFERENCE_UNPROVEN": 46,
+      "ZERO_DENOMINATOR": 5,
+      "INSUFFICIENT_HISTORY": 152,
+      "INSUFFICIENT_SESSION_HISTORY": 23
+    },
+    "core_unknown_reason_unique_security_ids": {
+      "MISSING_OR_SUSPENDED_ENDPOINT": 33,
+      "RETURN_OR_UNIVERSE_UNKNOWN": 36,
+      "EXACT_DATED_RPS_ENDPOINT_UNKNOWN": 40,
+      "UNEXPLAINED_DATA_GAP": 21,
+      "CURRENT_BAR_UNAVAILABLE": 9,
+      "DATED_MARKET_REFERENCE_UNPROVEN": 18,
+      "ZERO_DENOMINATOR": 5,
+      "INSUFFICIENT_HISTORY": 7,
+      "INSUFFICIENT_SESSION_HISTORY": 7
+    },
+    "status_source_scope": {
+      "frozen_BaoStock_daily_status_last_session": "2026-10-08",
+      "target_session": "2026-10-20",
+      "status_rows_for_2026-10-09_through_target": "NOT_CAPTURED_IN_FROZEN_ACQUISITION",
+      "interpretation": "An absent TDX bar cannot be reclassified as a confirmed suspension without date-bound status evidence; missing state remains UNKNOWN."
+    }
   },
   "candidate_members_without_identity_or_d0": [],
   "new_candidate_identity_rows": {

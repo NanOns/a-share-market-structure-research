@@ -11,7 +11,7 @@
 
 本轮修正了 API 返回缺少“请求数据日期”独立标识的问题。所有带有上下文对象的产品响应现在保留候选快照 token，同时明确返回快照上下文日期、实际数据日期和目标日期的 Owner bindings。新增回归用例证明 10/20 历史行不会被标成 10/21 数据。`tests/test_v4_ux_r2_contract.py` 定向回归为 26 passed，`git diff --check` 通过。
 
-重启唯一开发服务后，28766 的 10/20 股票列表 API 返回 `READY`、5,224 行，响应 context 和行的 `trade_date` 均为 2026-10-20；响应带有 snapshot context token/date、`data_trade_date=2026-10-20` 及 10/20 Owner bindings。该候选当前 context token 仍为 10/21 `d778e5e…368a5`。只读 PG ReadIndex reader 检查该 token/day 返回 `READ_INDEX_DATE_NOT_PREPARED`；因此此 HTTP 结果不是新 PG ReadIndex 发布/读回证据。尚未完成“dated Owner token”版本链重建或 10/19→10/20→10/21 的顺序重基。
+重启唯一开发服务后，28766 的 10/20 股票列表 API 返回 `READY`、5,224 行；响应明确区分快照 token/date（10/21 `d778e5e…368a5`）与 `data_trade_date=2026-10-20`，两行样本均为 10/20，并附有 10/20 Owner bindings。只读 PG ReadIndex reader 检查该 token/day 返回 `READ_INDEX_DATE_NOT_PREPARED`；因此此 HTTP 结果不是新 PG ReadIndex 发布/读回证据。尚未完成“dated Owner token”版本链重建或 10/19→10/20→10/21 的顺序重基。
 
 浏览器可见验收通过安全的 in-app browser 打开 28766 并实际选择 10/20。日期控件/URL 更新为 `trade_date=2026-10-20`，页面头部显示研究日期 10/20；但内容区一直停留在“正在读取研究数据…”，因此 UI 状态为 `PARTIAL`，没有把页面记为通过。未遇到或绕过浏览器安全拒绝。
 

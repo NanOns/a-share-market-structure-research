@@ -272,7 +272,7 @@ class UXR2RouteContractTests(unittest.TestCase):
             'owners':{'2026-10-20':{'core':{'sha256':'dated-owner-sha'}}}})
         bff._get_dated_product=lambda _path,_query:(200,{
             'context_token':'snapshot-token',
-            'context':{'trade_date':'2026-10-21','accepted_trade_date':'2026-10-21'},
+            'context':{'trade_date':'2026-10-20','accepted_trade_date':'2026-10-20'},
             'items':[{'trade_date':'2026-10-20'}]})
         code,payload=bff.get('/api/v4/stocks',{
             'trade_date':'2026-10-20','context_token':'snapshot-token'})

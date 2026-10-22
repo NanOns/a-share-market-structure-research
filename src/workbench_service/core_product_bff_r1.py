@@ -943,7 +943,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if isinstance(context,dict):
             payload=dict(payload)
             payload['snapshot_context_token']=payload.get('context_token',self.api.token)
-            payload['snapshot_context_trade_date']=context.get('trade_date',context.get('accepted_trade_date'))
+            payload['snapshot_context_trade_date']=self.api.candidate.get(
+                'accepted_trade_date',context.get('accepted_trade_date',context.get('trade_date')))
             payload['data_trade_date']=day
             payload['dated_owner_bindings']=self.api.candidate.get('owners',{}).get(day,{})
         return code,payload

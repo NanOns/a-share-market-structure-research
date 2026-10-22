@@ -6,6 +6,7 @@ from datetime import date, datetime, timezone
 import gzip
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 
@@ -30,6 +31,50 @@ def canonical(value):
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+def archive_immutable_bytes(candidate_root, source_role, raw):
+    """Persist exact consumed bytes under a content address for new publications.
+
+    The append-only candidate archive makes PG readback independent of the
+    current Git checkout. Existing objects are accepted only after full byte
+    verification; a digest/path collision fails closed.
+    """
+    digest = sha(raw)
+    root = Path(candidate_root).resolve()
+    target = root / 'data' / 'v4' / 'immutable_source_archive' / 'sha256' / digest[:2] / digest
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists():
+        existing = target.read_bytes()
+        if len(existing) != len(raw) or sha(existing) != digest:
+            raise ValueError('D0_IMMUTABLE_ARCHIVE_COLLISION:' + source_role)
+    else:
+        temporary = target.with_name(target.name + '.tmp-' + str(os.getpid()))
+        try:
+            with temporary.open('xb') as stream:
+                stream.write(raw)
+                stream.flush()
+                os.fsync(stream.fileno())
+            if sha(temporary.read_bytes()) != digest:
+                raise ValueError('D0_IMMUTABLE_ARCHIVE_WRITE_MISMATCH:' + source_role)
+            try:
+                temporary.rename(target)
+            except FileExistsError:
+                if sha(target.read_bytes()) != digest:
+                    raise ValueError('D0_IMMUTABLE_ARCHIVE_RACE_MISMATCH:' + source_role)
+        finally:
+            if temporary.exists():
+                temporary.unlink()
+    return str(target), digest, len(raw)
+
+
+def _archive_source_ref(candidate_root, source):
+    path = Path(source['source_path'])
+    raw = path.read_bytes()
+    if len(raw) != source['source_bytes'] or sha(raw) != source['source_sha256']:
+        raise ValueError('D0_SOURCE_CHANGED_BEFORE_ARCHIVE:' + source['source_role'])
+    archived_path, digest, byte_count = archive_immutable_bytes(candidate_root, source['source_role'], raw)
+    return dict(source, source_path=archived_path, source_sha256=digest, source_bytes=byte_count)
 
 
 def file_ref(root, binding, role, owner_contract, version_token, *, time_role, evidence_class, available_at=None, ingress_sha=None):
@@ -311,6 +356,10 @@ def publish_candidate(*, repository_root, candidate_root, candidate, trade_date,
             owner_contract_id=source_contract,owner_version_token=source_sha,time_role=time_role,evidence_class=evidence_class,
             available_at=available,source_ingress_artifact_sha256=artifact_sha)
         source_refs = list(owner_refs.values()) + [receipt_ref]
+        # Freeze every consumed byte before calculating the closure identity or
+        # inserting PG rows. The reader continues to hash source_path strictly;
+        # only the storage location changes for newly published candidates.
+        source_refs = [_archive_source_ref(candidate_root, source) for source in source_refs]
         pred_rows=[]
         fact_rows=[]
         for row in owner_rows:

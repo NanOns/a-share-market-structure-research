@@ -1,0 +1,132 @@
+{
+  "contract_id": "BATCH10_R2_EXECUTION_REPAIR_EVIDENCE_R1",
+  "execution_date": "2026-10-22",
+  "repository": "NanOns/a-share-market-structure-research",
+  "branch": "codex/v4-unified-development",
+  "baseline_head": "00e4a34c64d2767f8b9f9ebc6efb7c7f7b50aeb3",
+  "phase0": "DEGRADED_PASS",
+  "overall_status": "BATCH10_R2_PARTIAL",
+  "milestones": {
+    "R2-M0": {
+      "status": "PASS",
+      "scope": "content-addressed code/source archive implementation and targeted tests",
+      "implementation": [
+        "src/workbench_analysis/d0_source_seal_r2.py::archive_immutable_bytes",
+        "src/workbench_analysis/d0_source_seal_r2.py::_archive_source_ref",
+        "src/workbench_analysis/d0_source_seal_r2.py::publish_candidate"
+      ],
+      "archive_layout": "<candidate_root>/data/v4/immutable_source_archive/sha256/<first-two>/<sha256>",
+      "archive_behavior": {
+        "source_changed_after_archive": "ARCHIVED_BYTES_REMAIN_HASH_VALID",
+        "existing_digest_path_with_corrupt_bytes": "D0_IMMUTABLE_ARCHIVE_COLLISION (fail closed)",
+        "reader_sha_and_byte_checks": "UNCHANGED_STRICT"
+      },
+      "targeted_test": {
+        "path": "tests/test_d0_immutable_source_archive_r2.py",
+        "command": "$env:TMP='G:\\codex_tmp'; $env:TEMP='G:\\codex_tmp'; $env:TMPDIR='G:\\codex_tmp'; $env:PYTHONPATH='src'; python -m pytest -q tests/test_d0_immutable_source_archive_r2.py",
+        "result": "2 passed"
+      },
+      "historical_rows_modified": false
+    },
+    "R2-M1": {
+      "status": "FAIL",
+      "trade_date": "2026-10-16",
+      "old_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+      "correct_date_membership_candidate_token_not_published": "ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6",
+      "correct_date_membership_T0": "2026-10-16",
+      "owner_sha_comparison": {
+        "membership_reference_sha_changed": true,
+        "raw_sha_changed": false,
+        "adjusted_sha_changed": false,
+        "core_sha_changed": false,
+        "prewatch_sha_changed": false,
+        "focus_sha_changed": false,
+        "profile_sha_changed": false,
+        "market_sha_changed": false,
+        "sector_sha_changed": false,
+        "rotation_sha_changed": false,
+        "forward_sha_changed": false
+      },
+      "actual_publish_attempt": {
+        "command": "python scripts/run_batch10_r2_d0_release.py --from-date 2026-10-16 --to-date 2026-10-16 --input-root G:\\codex_tmp\\v4_daily_candidate_chain_20261020 --candidate-safe",
+        "dry_run": false,
+        "publisher": "workbench_analysis.d0_source_seal_r2.publish_candidate",
+        "result": "FAIL_CLOSED_BEFORE_D0_INSERT",
+        "exception": "ValueError: D0_R8_SNAPSHOT_PUBLICATION_NOT_FOUND",
+        "stack_trace": [
+          "scripts/run_batch10_r2_d0_release.py:87 in main -> publish_candidate(...) ",
+          "src/workbench_analysis/d0_source_seal_r2.py:314 in publish_candidate -> raise ValueError('D0_R8_SNAPSHOT_PUBLICATION_NOT_FOUND')"
+        ],
+        "failure_point": "SELECT candidate_token,trade_date,owner_authority_sha256,source_freeze_sha256,inserted_at FROM v4_r8pub_fde08c597fc76d13.r8_publications WHERE candidate_token=%s AND trade_date=%s"
+      },
+      "dry_run": {
+        "command": "python scripts/run_batch10_r2_d0_release.py --from-date 2026-10-16 --to-date 2026-10-16 --input-root G:\\codex_tmp\\v4_daily_candidate_chain_20261020 --candidate-safe --dry-run",
+        "selected_token": "ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6",
+        "result": "DRY_RUN"
+      },
+      "new_r8_rows": 0,
+      "new_d0_rows": 0,
+      "G1_G4": "NOT_REACHED"
+    },
+    "R2-M2": {
+      "status": "NOT_VERIFIABLE",
+      "reason": "M1 did not produce a recomputed and published 10/16 predecessor; no four-date rebase was run.",
+      "old_tokens": {
+        "2026-10-19": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "2026-10-20": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "2026-10-21": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"
+      },
+      "new_tokens": null,
+      "pg_writes": 0
+    },
+    "R2-M3": {
+      "status": "FAIL",
+      "required_new_2026_10_21_token": null,
+      "28766": {
+        "listener_pid": 7844,
+        "port": 28766,
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "http_business_readback": [
+          {"route": "/api/operations/status", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"},
+          {"route": "/api/v4/context", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
+          {"route": "/api/v4/home", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
+          {"route": "/api/v4/focus", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "total": 3929},
+          {"route": "/api/v4/forward/statistics", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
+          {"route": "/api/v4/radar/priority", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "rankable_total": 936, "universe_total": 5224},
+          {"route": "/api/v4/stocks", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "total": 5224}
+        ],
+        "new_token_page_acceptance": "NOT_RUN",
+        "six_entry_full_business_acceptance": "NOT_PASSED",
+        "ui_dom": "UI_DOM_NOT_VERIFIED"
+      },
+      "production_28765_listener": false
+    },
+    "R2-M4": {
+      "status": "PARTIAL",
+      "passed_negative_case": "corrupted content-addressed object rejected",
+      "passed_mutability_case": "archive remains valid after mutable source replacement",
+      "d0_missing_r8_case": "failed closed before D0 row insert",
+      "pg_post_insert_cas_recovery": "NOT_RUN",
+      "resume_partial_four_day_chain": "NOT_RUN",
+      "two_round_service_performance": "NOT_RUN"
+    }
+  },
+  "database": {
+    "identity": {"database": "market_research", "server_address": "127.0.0.1/32", "port": 5432, "listener_pid": 8640},
+    "read_only_audit": true,
+    "write_ddl_dml_executed": false,
+    "old_r8_rows_observed": [
+      {"trade_date": "2026-10-16", "candidate_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440"},
+      {"trade_date": "2026-10-19", "candidate_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862"},
+      {"trade_date": "2026-10-20", "candidate_token": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad"},
+      {"trade_date": "2026-10-21", "candidate_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"}
+    ],
+    "query": "SELECT trade_date::text,candidate_token FROM v4_r8pub_fde08c597fc76d13.r8_publications WHERE candidate_token=ANY(%s) ORDER BY trade_date,candidate_token"
+  },
+  "worktree": {
+    "formal_28765_modified": false,
+    "formal_head_modified": false,
+    "existing_untracked_paths_preserved": [".githooks/", "config_back/", "script_back/"]
+  },
+  "known_blocker": "Only a metadata-rebound 10/16 candidate is present. Its Core/Focus/Prewatch and other Owner bytes equal the old candidate, and PG lacks R8 publication for that token. Full rebuild/rebase and page cutover therefore did not happen in this execution."
+}

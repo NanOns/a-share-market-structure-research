@@ -91,3 +91,12 @@ This supersedes the earlier statement that the 2,399 endpoint UNKNOWNs remain op
 ## Annotation follow-up R2 supersedes R1 endpoint counts
 
 The exact candidate identity source key was also missing for two newly listed current members. The core replay now reads the bound candidate Identity authority and includes the complete 5,226 current membership rows. Independent numeric comparison across the full core owner confirms 5,202 exact RPS5 deltas, 24 matching endpoint UNKNOWNs, zero mismatches, and zero current-RPS5 mismatches. All 5,224 existing formal D0 rows now join to the corrected core and recompute to TRUE/FALSE/UNKNOWN = 137/5,015/72 with frozen scanner PASS. Two candidate members still lack formal D0 rows, so the full candidate D0/Focus/Priority owner has not been published. See [`NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md`](NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md).
+
+
+## Annotation follow-up 3: full 10/20 identity, RPS and D0 closure
+
+The R2 evidence is superseded where it stated that two current members had no D0 rows and where it reported the 5,224-row subset totals. After binding candidate date-scoped Identity into Core and Focus, both securities are present; the full candidate has 5,226 Core and D0 rows. The complete formal D0 recompute is **141 TRUE / 5,033 FALSE / 52 UNKNOWN**, with frozen scanner PASS and zero mismatches.
+
+The corrected endpoint has 5,202 exact observed RPS5 delta matches, 24 genuine exact-endpoint UNKNOWNs, and zero numerical mismatches. The two newly active securities still have insufficient observed history/window evidence, so their D0 remains UNKNOWN. Other reason/check counts and hashes are in [`NINTH_BATCH_D0_FOCUS_EXACT_IDENTITY_R3_EVIDENCE.json`](NINTH_BATCH_D0_FOCUS_EXACT_IDENTITY_R3_EVIDENCE.json); the hash-bound full D0, D2 and Focus/Forward bytes are attached alongside it.
+
+This remains candidate-only. No successor R8/D0 publication or Priority acceptance was performed, and 28766 has not read these artifacts under a new same-version token; the service still exposes its prior 10/21 token. No same-day frozen CSRC industry-membership receipt is available, so sector-dependent values stay UNKNOWN. The D0 recomputation is reconstructed from real frozen sources, not a point-in-time reconstruction; `AS_RECORDED=false` and `PIT_ELIGIBLE=false` remain in force. No 28765 action occurred.

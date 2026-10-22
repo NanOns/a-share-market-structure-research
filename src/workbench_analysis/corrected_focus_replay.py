@@ -62,6 +62,11 @@ def confirmation(values, *, source_lineage=None):
     return result
 
 
+def focus_identity_source_binding(sources):
+    """Prefer the exact date-bound Identity rows included in a candidate core."""
+    return sources.get('candidate_identity') or sources['identity']
+
+
 def materialize_focus(root, *, input_namespace=None, output_namespace=None, sector_namespace=None):
     root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
     if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
@@ -90,7 +95,7 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
-    symbols = security_symbols(root, sources['identity'])
+    symbols = security_symbols(root, focus_identity_source_binding(sources))
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
         from .d0_source_seal_r1 import build_scenario_lineage

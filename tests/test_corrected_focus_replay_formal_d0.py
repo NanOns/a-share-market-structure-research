@@ -47,3 +47,10 @@ def test_formal_unknown_remains_unknown(monkeypatch):
 
     assert result["confirmation_status"] == "UNKNOWN"
     assert "FORMAL:UNKNOWN" in result["scenario_evidence"][0]["unknown_reasons"]
+
+
+def test_focus_prefers_candidate_date_bound_identity_rows():
+    accepted = {"path": "accepted.json", "sha256": "a" * 64}
+    dated = {"path": "dated.json", "sha256": "b" * 64}
+    assert replay.focus_identity_source_binding({"identity": accepted, "candidate_identity": dated}) == dated
+    assert replay.focus_identity_source_binding({"identity": accepted}) == accepted

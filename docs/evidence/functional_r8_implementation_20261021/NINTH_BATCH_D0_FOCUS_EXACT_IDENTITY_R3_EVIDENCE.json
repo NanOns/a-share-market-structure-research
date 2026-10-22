@@ -1,0 +1,176 @@
+{
+  "contract_id": "NINTH_BATCH_EXACT_IDENTITY_AND_D0_UNKNOWN_FOLLOWUP_R3",
+  "trade_date": "2026-10-20",
+  "status": "FULL_CORE_AND_D0_FOCUS_RECOMPUTED_CANDIDATE_ONLY_NOT_PUBLISHED",
+  "source_class": "REAL_FROZEN_RECONSTRUCTED_NON_PIT",
+  "production_admission": false,
+  "published_to_pg": false,
+  "candidate_token_read_from_28766": false,
+  "core": {
+    "rows": 5226,
+    "sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83",
+    "bytes": 19756712,
+    "numeric_oracle_mismatches": 0
+  },
+  "rps5_delta3": {
+    "rows": 5226,
+    "observed_exact_matches": 5202,
+    "exact_unknown": 24,
+    "numeric_mismatches": 0,
+    "unknown_reason": "EXACT_DATED_RPS_ENDPOINT_UNKNOWN"
+  },
+  "formal_d0": {
+    "rows": 5226,
+    "status_counts": {
+      "TRUE": 141,
+      "FALSE": 5033,
+      "UNKNOWN": 52
+    },
+    "frozen_scanner": "PASS",
+    "frozen_scanner_mismatches": 0,
+    "unknown_check_occurrences": {
+      "AMR20_GTE_120": 44,
+      "CLOSE_ABOVE_PHC20": 44,
+      "LIQ20": 88,
+      "NOT_SEVERE_DROP": 90,
+      "NOT_STRUCTURE_BREAK": 90,
+      "NO_INTRADAY_REJECT_HIGH20": 44,
+      "WINDOW_VALID": 94,
+      "AMR20_GTE_105": 44,
+      "R5_OR_R20": 44,
+      "BREAKOUT_V3": 42,
+      "CLV_GTE_060": 14,
+      "NOT_EXTENDED": 86,
+      "NOT_FIRST_DAY_DAMAGE": 84,
+      "POSITIVE_RET1": 26,
+      "CLOSE_GTE_098_MA20": 42,
+      "CLV_GTE_055": 14,
+      "RPS5_DELTA3_POSITIVE": 24
+    },
+    "unknown_reason_occurrences": {
+      "WINDOW_VALID:UNKNOWN": 94,
+      "LIQ20:UNKNOWN": 88,
+      "NOT_STRUCTURE_BREAK:UNKNOWN": 90,
+      "NOT_SEVERE_DROP:UNKNOWN": 90,
+      "CLOSE_ABOVE_PHC20:UNKNOWN": 44,
+      "AMR20_GTE_120:UNKNOWN": 44,
+      "NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 44,
+      "R5_OR_R20:UNKNOWN": 44,
+      "AMR20_GTE_105:UNKNOWN": 44,
+      "NOT_EXTENDED:UNKNOWN": 86,
+      "NOT_FIRST_DAY_DAMAGE:UNKNOWN": 84,
+      "BREAKOUT_V3:UNKNOWN": 42,
+      "POSITIVE_RET1:UNKNOWN": 26,
+      "CLV_GTE_060:UNKNOWN": 14,
+      "CLV_GTE_055:UNKNOWN": 14,
+      "RPS5_DELTA3_POSITIVE:UNKNOWN": 24,
+      "CLOSE_GTE_098_MA20:UNKNOWN": 42
+    },
+    "unknown_security_ids": [
+      "SEC-0CED9C98A4AD950694769189292E64E4",
+      "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+      "SEC-136918D82E3F96DEEAAA30978AE00749",
+      "SEC-142D4C5EDBC67DC057B51BC41DBACEFE",
+      "SEC-1522973706EBA28F6BA3EE086FA28B40",
+      "SEC-179EF2E8D881021644265684E438A139",
+      "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+      "SEC-19B69D0E609E7CF7A37FE9B6611A98E1",
+      "SEC-1DF472F8D2BDA9F4213B11FCA17A8D40",
+      "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+      "SEC-30EAD73C8C1BA2FD7BC9853FF7571E52",
+      "SEC-340382159F3CB4C7713AEC707561055E",
+      "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+      "SEC-3CDA7A384F91DD01752B00A480D2624A",
+      "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+      "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+      "SEC-727B4462EB615309F3CF61974E3EF7FC",
+      "SEC-732E873BE10158FF4EBED4BA44D0D8DA",
+      "SEC-7498F090F5D9948979F2EFD53B1C4E49",
+      "SEC-7A1F28C9234719290BCA8EEC1F18AFAD",
+      "SEC-7C05406966A54580B33BD8241F3E7288",
+      "SEC-8A47636032C3650935607E15AD1C72C8",
+      "SEC-8CEBC4E7F06A6E43A7728C08F6D5911D",
+      "SEC-936DF6465B8603EE0B71C15F93E06F3B",
+      "SEC-9A2222852908DCC43E96059AFF5737DD",
+      "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+      "SEC-9C9E8D2D8E5770EEA9928DA6C3F621BD",
+      "SEC-9D607E340AD822943D95F679042F2D7A",
+      "SEC-A17F411A81787AFD319B23D4882D926A",
+      "SEC-A94CC314405C8437CE79555A7DC05B82",
+      "SEC-AC08013664C6EE8A51147B45617A314F",
+      "SEC-B17169139D0E3492B2CA012774B6B125",
+      "SEC-B74E512DC4FA6CC5E5B054B70738A7EE",
+      "SEC-B9FCBA3896CC48C09B01286A0B75A11F",
+      "SEC-BC33762D522F6D902F4276943181FC1C",
+      "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+      "SEC-C48D57E0B3B6808E50EE082A71E31F04",
+      "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+      "SEC-CAFBE206FEA136BCF9C5923BDC15586A",
+      "SEC-DBA72E9F1B99EF0636647A50EB77B57B",
+      "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+      "SEC-DFADF94E4E2879E1A7D5F0B3CF5CAE67",
+      "SEC-E0A79DA222310313C07F68A6D1B90A4B",
+      "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+      "SEC-E607E5BB9794A7D1B98A109A1F75DCA2",
+      "SEC-E61AC412252F032E8DBD3D474702A506",
+      "SEC-E8F172CA42780258DBEEDB78A0E4A75C",
+      "SEC-F07E01AC9EDBF8EC2B4F5FBFB54C172A",
+      "SEC-F1E598256EF480E50EC0288E97A331EF",
+      "SEC-FD2DAB76BEAA85DC417BEA3C7AF005B8",
+      "SEC-7C8816903D4BA9B6267531D5705888B9",
+      "SEC-92877F11D578CAFB2252B6F02013B014"
+    ]
+  },
+  "candidate_members_without_identity_or_d0": [],
+  "new_candidate_identity_rows": {
+    "security_ids": [
+      "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+      "SEC-6054AE867A60481EDA16B0E02AF1DB09"
+    ],
+    "included_in_core_and_d0": true,
+    "remaining_status": "UNKNOWN due insufficient observed history/window"
+  },
+  "focus_forward": {
+    "episodes": 679,
+    "events": 679,
+    "status_binding": {
+      "bytes": 1076530,
+      "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6_focus/owners/2026-10-20/focus_status.json",
+      "sha256": "b8b604ed7f4c2f0e774fffd23e3bb56c46e94b64a7e74b832cae3f3b169ca921"
+    },
+    "artifact_binding": {
+      "path": "NINTH_BATCH_FOCUS_FORWARD_20261020_R1.json.gz",
+      "bytes": 403122,
+      "sha256": "050456abb20f4d77752132f3bc492247f30239c8fb5b2b1daa2b903e8d601558"
+    }
+  },
+  "artifact_bindings": {
+    "d0": {
+      "path": "NINTH_BATCH_D0_FORMAL_RECOMPUTE_20261020_R4.jsonl.gz",
+      "bytes": 4264679,
+      "sha256": "e42078311d79651a87c0133ef5e90816d84e039fcbff483138fdb660bfce6d53"
+    },
+    "d2": {
+      "path": "NINTH_BATCH_FOCUS_D2_20261020_R1.json.gz",
+      "bytes": 1598098,
+      "sha256": "d6849802fce2e51c01f2400a4e3202b988666b7002621e93e435fb9a3be0f4d0"
+    },
+    "focus_forward": {
+      "path": "NINTH_BATCH_FOCUS_FORWARD_20261020_R1.json.gz",
+      "bytes": 403122,
+      "sha256": "050456abb20f4d77752132f3bc492247f30239c8fb5b2b1daa2b903e8d601558"
+    }
+  },
+  "remaining_unknowns_policy": "Retain UNKNOWN where frozen real-source windows or exact endpoint evidence are absent; no synthetic/sample backfill.",
+  "remaining_closure": {
+    "same_day_frozen_sector_membership_source": "MISSING; sector/industry dependent outputs stay UNKNOWN",
+    "priority_recompute": "NOT_RUN_TO_ACCEPTANCE",
+    "successor_r8_d0_publication": "NOT_PUBLISHED",
+    "28766_same_token_route_readback": "NOT_RUN; 28766 still exposes prior 2026-10-21 token",
+    "28765_touched": false
+  },
+  "supersedes": [
+    "NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_EVIDENCE.formal_D0_subset",
+    "NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md statement that two candidate members lack D0 rows"
+  ]
+}

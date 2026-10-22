@@ -184,10 +184,19 @@ def materialize_core(root, dates=None, *, exact_membership_candidates=None):
                 raise ValueError('DATED_IDENTITY_SOURCE_KEY_AMBIGUOUS:'+code)
             code_owner[code]=row['security_id']
         ids={row['source_security_key'].lower():row for row in identity}
+        candidate_identity_path=out/'EXACT_DATED_CANDIDATE_IDENTITY_ROWS.json'
+        write(candidate_identity_path,dict(contract_id='V4_EXACT_DATED_CANDIDATE_IDENTITY_ROWS_R1',
+            source_authorities=membership_bindings,rows=sorted(identity_by_id.values(),key=lambda row:row['security_id']),
+            AS_RECORDED=False,PIT_ELIGIBLE=False))
+        candidate_identity_binding=ref(root,candidate_identity_path)
+    else:
+        candidate_identity_binding=None
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
                  identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'),
                  dated_membership_authorities=membership_bindings)
+    if candidate_identity_binding is not None:
+        sources['candidate_identity']=candidate_identity_binding
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
     historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']

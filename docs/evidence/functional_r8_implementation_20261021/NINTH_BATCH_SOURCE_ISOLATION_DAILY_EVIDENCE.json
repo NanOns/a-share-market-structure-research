@@ -1238,5 +1238,366 @@
     "A separate authorized task must repair or supersede the immutable 10/16 membership authority reference to enable complete historical Focus/Priority/Stocks route closure.",
     "No 28765 cutover or final packaging was performed."
   ],
-  "captured_at": "2026-10-22T01:46:02.727144+00:00"
+  "captured_at": "2026-10-22T01:46:02.727144+00:00",
+  "annotation_followup": {
+    "10_20_rps_endpoint_check": {
+      "comparable_known_delta_rows": 2825,
+      "disposition": "KEEP_UNKNOWN_UNTIL_EXACT_DATED_ENDPOINT_BINDING_IS_REPAIRED",
+      "exact_value_matches_between_stored_delta_and_current_minus_old_owner_endpoint": 1,
+      "old_2026_10_15_owner_endpoint_values_present_for": 2381,
+      "old_snapshot_backfill_performed": false,
+      "unknown_delta3_values": 2399
+    },
+    "28766_current_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+    "code_changes": [
+      "src/workbench_analysis/operational_successor_v1.py",
+      "tests/test_operational_successor_membership_scope.py",
+      "tests/test_corrected_focus_replay_formal_d0.py"
+    ],
+    "formal_D0_recomputation": {
+      "contract_id": "NINTH_BATCH_D0_FORMAL_RECOMPUTE_DIAGNOSTIC_R1",
+      "dates": {
+        "2026-10-16": {
+          "diagnostic_unknown_row_counts": {
+            "STRONG_PULLBACK": 5226,
+            "TREND_CONTINUE": 5226
+          },
+          "formal_unknown_reason_counts": {
+            "LAUNCH_CONFIRM|AMR20_GTE_120:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|BREAKOUT_V3:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|CLOSE_ABOVE_PHC20:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|CLV_GTE_060:UNKNOWN": 16,
+            "LAUNCH_CONFIRM|LIQ20:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|NOT_EXTENDED:UNKNOWN": 44,
+            "LAUNCH_CONFIRM|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|NOT_SEVERE_DROP:UNKNOWN": 44,
+            "LAUNCH_CONFIRM|NOT_STRUCTURE_BREAK:UNKNOWN": 46,
+            "LAUNCH_CONFIRM|NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|POSITIVE_RET1:UNKNOWN": 11,
+            "LAUNCH_CONFIRM|WINDOW_VALID:UNKNOWN": 46,
+            "RECOVERY_TURN|AMR20_GTE_105:UNKNOWN": 45,
+            "RECOVERY_TURN|CLOSE_GTE_098_MA20:UNKNOWN": 43,
+            "RECOVERY_TURN|CLV_GTE_055:UNKNOWN": 16,
+            "RECOVERY_TURN|LIQ20:UNKNOWN": 45,
+            "RECOVERY_TURN|NOT_EXTENDED:UNKNOWN": 44,
+            "RECOVERY_TURN|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 43,
+            "RECOVERY_TURN|NOT_SEVERE_DROP:UNKNOWN": 44,
+            "RECOVERY_TURN|NOT_STRUCTURE_BREAK:UNKNOWN": 46,
+            "RECOVERY_TURN|POSITIVE_RET1:UNKNOWN": 11,
+            "RECOVERY_TURN|R5_OR_R20:UNKNOWN": 45,
+            "RECOVERY_TURN|RPS5_DELTA3_POSITIVE:UNKNOWN": 24,
+            "RECOVERY_TURN|WINDOW_VALID:UNKNOWN": 46
+          },
+          "input_candidate_token": "e8e2b9b1bfa4c155300f49929c39dbae52c7a32514fd6930a5fe66f2d282d3da",
+          "input_precomputed_owner_sha256": "416ea964fc6ab7a85be24581431a9eb7261f86e4dcb08444f6af043934b4fccf",
+          "input_precomputed_status_counts": {
+            "TRUE": 90,
+            "UNKNOWN": 5136
+          },
+          "input_rows": 5226,
+          "production_admission": false,
+          "publication_status": "RECOMPUTED_CANDIDATE_ONLY_NOT_PUBLISHED",
+          "recomputed_owner_binding": {
+            "bytes": 3383193,
+            "path": "data/v4/dynamic_daily_owners/2026-10-16/dcf50bdb71427fc802dd55c371dfa064e5ef3b35212b62ffdc143b39d613de07/owner_v3_d0_formal_recompute_r1/owners/2026-10-16/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "f47f1159d970d91ff5dbef15087cffbccec877fea3c3cc2a13d4181d009cfa9e"
+          },
+          "recomputed_status_counts": {
+            "FALSE": 5084,
+            "TRUE": 90,
+            "UNKNOWN": 52
+          },
+          "scenario_status_counts": {
+            "LAUNCH_CONFIRM": {
+              "FALSE": 5116,
+              "TRUE": 58,
+              "UNKNOWN": 52
+            },
+            "RECOVERY_TURN": {
+              "FALSE": 5137,
+              "TRUE": 37,
+              "UNKNOWN": 52
+            },
+            "STRONG_PULLBACK": {
+              "UNKNOWN": 5226
+            },
+            "TREND_CONTINUE": {
+              "UNKNOWN": 5226
+            }
+          },
+          "source_class": "REAL_FROZEN_RECONSTRUCTED_NON_PIT",
+          "target_values_missing_rps5_delta3": 24
+        },
+        "2026-10-19": {
+          "diagnostic_unknown_row_counts": {
+            "STRONG_PULLBACK": 5224,
+            "TREND_CONTINUE": 5224
+          },
+          "formal_unknown_reason_counts": {
+            "LAUNCH_CONFIRM|AMR20_GTE_120:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|BREAKOUT_V3:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|CLOSE_ABOVE_PHC20:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|CLV_GTE_060:UNKNOWN": 17,
+            "LAUNCH_CONFIRM|LIQ20:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|NOT_EXTENDED:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|NOT_SEVERE_DROP:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|NOT_STRUCTURE_BREAK:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 45,
+            "LAUNCH_CONFIRM|POSITIVE_RET1:UNKNOWN": 12,
+            "LAUNCH_CONFIRM|WINDOW_VALID:UNKNOWN": 47,
+            "RECOVERY_TURN|AMR20_GTE_105:UNKNOWN": 45,
+            "RECOVERY_TURN|CLOSE_GTE_098_MA20:UNKNOWN": 42,
+            "RECOVERY_TURN|CLV_GTE_055:UNKNOWN": 17,
+            "RECOVERY_TURN|LIQ20:UNKNOWN": 41,
+            "RECOVERY_TURN|NOT_EXTENDED:UNKNOWN": 43,
+            "RECOVERY_TURN|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 42,
+            "RECOVERY_TURN|NOT_SEVERE_DROP:UNKNOWN": 43,
+            "RECOVERY_TURN|NOT_STRUCTURE_BREAK:UNKNOWN": 45,
+            "RECOVERY_TURN|POSITIVE_RET1:UNKNOWN": 12,
+            "RECOVERY_TURN|R5_OR_R20:UNKNOWN": 45,
+            "RECOVERY_TURN|RPS5_DELTA3_POSITIVE:UNKNOWN": 21,
+            "RECOVERY_TURN|WINDOW_VALID:UNKNOWN": 47
+          },
+          "input_candidate_token": "5bcbd93f70fb12e334cfee56020a020b89cffe002275b572afb06c1db44a766e",
+          "input_precomputed_owner_sha256": "05fed9da9d8297846f56e9cc6a0329cb9873dcbe82705b775d3c4eed64fbfd98",
+          "input_precomputed_status_counts": {
+            "TRUE": 152,
+            "UNKNOWN": 5072
+          },
+          "input_rows": 5224,
+          "production_admission": false,
+          "publication_status": "RECOMPUTED_CANDIDATE_ONLY_NOT_PUBLISHED",
+          "recomputed_owner_binding": {
+            "bytes": 3393169,
+            "path": "data/v4/dynamic_daily_owners/2026-10-19/9d9e5f314a0be91ed6ba394194c329c7d3ff87d2a0624ac92566e19f47703e4c/owner_v3_d0_formal_recompute_r1/owners/2026-10-19/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "873608c7aa7fc89e358d34890e62af60c9035117e4192f7d9beb7a9a129f1c9e"
+          },
+          "recomputed_status_counts": {
+            "FALSE": 5018,
+            "TRUE": 152,
+            "UNKNOWN": 54
+          },
+          "scenario_status_counts": {
+            "LAUNCH_CONFIRM": {
+              "FALSE": 5061,
+              "TRUE": 109,
+              "UNKNOWN": 54
+            },
+            "RECOVERY_TURN": {
+              "FALSE": 5108,
+              "TRUE": 62,
+              "UNKNOWN": 54
+            },
+            "STRONG_PULLBACK": {
+              "UNKNOWN": 5224
+            },
+            "TREND_CONTINUE": {
+              "UNKNOWN": 5224
+            }
+          },
+          "source_class": "REAL_FROZEN_RECONSTRUCTED_NON_PIT",
+          "target_values_missing_rps5_delta3": 21
+        },
+        "2026-10-20": {
+          "diagnostic_unknown_row_counts": {
+            "STRONG_PULLBACK": 5224,
+            "TREND_CONTINUE": 5224
+          },
+          "formal_unknown_reason_counts": {
+            "LAUNCH_CONFIRM|AMR20_GTE_120:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|BREAKOUT_V3:UNKNOWN": 40,
+            "LAUNCH_CONFIRM|CLOSE_ABOVE_PHC20:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|CLV_GTE_060:UNKNOWN": 12,
+            "LAUNCH_CONFIRM|LIQ20:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|NOT_EXTENDED:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 40,
+            "LAUNCH_CONFIRM|NOT_SEVERE_DROP:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|NOT_STRUCTURE_BREAK:UNKNOWN": 43,
+            "LAUNCH_CONFIRM|NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|POSITIVE_RET1:UNKNOWN": 11,
+            "LAUNCH_CONFIRM|WINDOW_VALID:UNKNOWN": 45,
+            "RECOVERY_TURN|AMR20_GTE_105:UNKNOWN": 42,
+            "RECOVERY_TURN|CLOSE_GTE_098_MA20:UNKNOWN": 40,
+            "RECOVERY_TURN|CLV_GTE_055:UNKNOWN": 12,
+            "RECOVERY_TURN|LIQ20:UNKNOWN": 42,
+            "RECOVERY_TURN|NOT_EXTENDED:UNKNOWN": 41,
+            "RECOVERY_TURN|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 40,
+            "RECOVERY_TURN|NOT_SEVERE_DROP:UNKNOWN": 43,
+            "RECOVERY_TURN|NOT_STRUCTURE_BREAK:UNKNOWN": 43,
+            "RECOVERY_TURN|POSITIVE_RET1:UNKNOWN": 11,
+            "RECOVERY_TURN|R5_OR_R20:UNKNOWN": 67,
+            "RECOVERY_TURN|RPS5_DELTA3_POSITIVE:UNKNOWN": 2399,
+            "RECOVERY_TURN|WINDOW_VALID:UNKNOWN": 45
+          },
+          "input_candidate_token": "c4927d2c08fe6cf5822701213e4a3ba14b7511846d0af6ca5caa0bcdda93df31",
+          "input_precomputed_owner_sha256": "33758098ce258d802fa0138e4f3bbbc59d04498ab848c76697b5e21aa83c1ae9",
+          "input_precomputed_status_counts": {
+            "TRUE": 115,
+            "UNKNOWN": 5109
+          },
+          "input_rows": 5224,
+          "production_admission": false,
+          "publication_status": "RECOMPUTED_CANDIDATE_ONLY_NOT_PUBLISHED",
+          "recomputed_owner_binding": {
+            "bytes": 3401925,
+            "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3_d0_formal_recompute_r1/owners/2026-10-20/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "a275f6406aa055f2e6286720bfb75827d9145fed42ae5e64578901e9e9ab60da"
+          },
+          "recomputed_status_counts": {
+            "FALSE": 2736,
+            "TRUE": 115,
+            "UNKNOWN": 2373
+          },
+          "scenario_status_counts": {
+            "LAUNCH_CONFIRM": {
+              "FALSE": 5078,
+              "TRUE": 96,
+              "UNKNOWN": 50
+            },
+            "RECOVERY_TURN": {
+              "FALSE": 2781,
+              "TRUE": 23,
+              "UNKNOWN": 2420
+            },
+            "STRONG_PULLBACK": {
+              "UNKNOWN": 5224
+            },
+            "TREND_CONTINUE": {
+              "UNKNOWN": 5224
+            }
+          },
+          "source_class": "REAL_FROZEN_RECONSTRUCTED_NON_PIT",
+          "target_values_missing_rps5_delta3": 2399
+        },
+        "2026-10-21": {
+          "diagnostic_unknown_row_counts": {
+            "STRONG_PULLBACK": 5224,
+            "TREND_CONTINUE": 5224
+          },
+          "formal_unknown_reason_counts": {
+            "LAUNCH_CONFIRM|AMR20_GTE_120:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|BREAKOUT_V3:UNKNOWN": 40,
+            "LAUNCH_CONFIRM|CLOSE_ABOVE_PHC20:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|CLV_GTE_060:UNKNOWN": 13,
+            "LAUNCH_CONFIRM|LIQ20:UNKNOWN": 40,
+            "LAUNCH_CONFIRM|NOT_EXTENDED:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 40,
+            "LAUNCH_CONFIRM|NOT_SEVERE_DROP:UNKNOWN": 42,
+            "LAUNCH_CONFIRM|NOT_STRUCTURE_BREAK:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 41,
+            "LAUNCH_CONFIRM|POSITIVE_RET1:UNKNOWN": 8,
+            "LAUNCH_CONFIRM|WINDOW_VALID:UNKNOWN": 43,
+            "RECOVERY_TURN|AMR20_GTE_105:UNKNOWN": 41,
+            "RECOVERY_TURN|CLOSE_GTE_098_MA20:UNKNOWN": 40,
+            "RECOVERY_TURN|CLV_GTE_055:UNKNOWN": 13,
+            "RECOVERY_TURN|LIQ20:UNKNOWN": 40,
+            "RECOVERY_TURN|NOT_EXTENDED:UNKNOWN": 41,
+            "RECOVERY_TURN|NOT_FIRST_DAY_DAMAGE:UNKNOWN": 40,
+            "RECOVERY_TURN|NOT_SEVERE_DROP:UNKNOWN": 42,
+            "RECOVERY_TURN|NOT_STRUCTURE_BREAK:UNKNOWN": 41,
+            "RECOVERY_TURN|POSITIVE_RET1:UNKNOWN": 8,
+            "RECOVERY_TURN|R5_OR_R20:UNKNOWN": 42,
+            "RECOVERY_TURN|RPS5_DELTA3_POSITIVE:UNKNOWN": 19,
+            "RECOVERY_TURN|WINDOW_VALID:UNKNOWN": 43
+          },
+          "input_candidate_token": "fc1cb2b5c92e72e2f9c00b1c9b788269dfba16ecfd5a53948622a84f47689f68",
+          "input_precomputed_owner_sha256": "528001cbddcaf1cbf44d8ff249db6517aaf4cc26f6af7cec0d4b43f669f12ff9",
+          "input_precomputed_status_counts": {
+            "TRUE": 99,
+            "UNKNOWN": 5125
+          },
+          "input_rows": 5224,
+          "production_admission": false,
+          "publication_status": "RECOMPUTED_CANDIDATE_ONLY_NOT_PUBLISHED",
+          "recomputed_owner_binding": {
+            "bytes": 3395700,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/0a60d3525e2012bace9c4326dea9f5e345822a239d293a6f5351c302e17727fa/owner_v3_d0_formal_recompute_r1/owners/2026-10-21/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "4bfda07bc4afe2735b59608111264354d8f643bdc8589efc12f825be56f90cce"
+          },
+          "recomputed_status_counts": {
+            "FALSE": 5076,
+            "TRUE": 99,
+            "UNKNOWN": 49
+          },
+          "scenario_status_counts": {
+            "LAUNCH_CONFIRM": {
+              "FALSE": 5098,
+              "TRUE": 78,
+              "UNKNOWN": 48
+            },
+            "RECOVERY_TURN": {
+              "FALSE": 5147,
+              "TRUE": 28,
+              "UNKNOWN": 49
+            },
+            "STRONG_PULLBACK": {
+              "UNKNOWN": 5224
+            },
+            "TREND_CONTINUE": {
+              "UNKNOWN": 5224
+            }
+          },
+          "source_class": "REAL_FROZEN_RECONSTRUCTED_NON_PIT",
+          "target_values_missing_rps5_delta3": 19
+        }
+      },
+      "production_admission": false,
+      "published_to_PG": false,
+      "status": "SOURCE_BOUND_RECOMPUTATION_PASS_NOT_PUBLISHED",
+      "summary_binding": {
+        "bytes": 9309,
+        "path": "docs/evidence/functional_r8_implementation_20261021/D0_FORMAL_RECOMPUTE_DIAGNOSTIC_R1.json",
+        "sha256": "b68bccad1a97903aec4e2942af6adfeefc9478fc246865e8cc03ef56b8f5573b"
+      }
+    },
+    "formal_recompute_owner_PG_published": false,
+    "membership_authority_supersession": {
+      "database_identity": {
+        "database": "market_research",
+        "database_oid": 646711,
+        "host": "127.0.0.1/32",
+        "port": 5432
+      },
+      "historical_flags": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false
+      },
+      "membership_snapshot_binding": {
+        "bytes": 2281,
+        "path": "data/v4/dynamic_daily_owners/2026-10-16/dcf50bdb71427fc802dd55c371dfa064e5ef3b35212b62ffdc143b39d613de07/MEMBER_SNAPSHOT_S.json",
+        "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+      },
+      "new_authority_T0": "2026-10-16",
+      "new_candidate_R8_D0_publication": false,
+      "new_candidate_binding": {
+        "bytes": 80642,
+        "path": "data/v4/dynamic_daily_owners/2026-10-16/dcf50bdb71427fc802dd55c371dfa064e5ef3b35212b62ffdc143b39d613de07/SUCCESSOR_CANDIDATE_MEMBERSHIP_R1.json",
+        "sha256": "ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6"
+      },
+      "new_candidate_token": "40a2ab9ccbfcac4e32bac490f0fc3d6052952090bb71ce24975cdc25b38a3450",
+      "old_authority_T0": "2026-10-15",
+      "old_candidate_token": "e8e2b9b1bfa4c155300f49929c39dbae52c7a32514fd6930a5fe66f2d282d3da",
+      "readback_rows": {
+        "identity": 5226,
+        "membership": 55136,
+        "search_identity": 6055
+      },
+      "status": "PG_APPEND_AND_READBACK_PASS_NOT_R8_PUBLISHED"
+    },
+    "production_28765_touched": false,
+    "reason_codes": {
+      "10_20_formal_unknown": "RPS5_DELTA3_EXACT_2026_10_15_ENDPOINT_UNKNOWN",
+      "membership": "PREDECESSOR_T0_AUTHORITY_CARRIED_FORWARD",
+      "old_D0_population": "DIAGNOSTIC_ONLY_SCENARIOS_INCLUDED_IN_STORED_AGGREGATE"
+    },
+    "remaining": [
+      "append-only superseding R8/D0 publication for formal-recomputed owner bytes",
+      "rebase and publish later dates in sequence against corrected 10/16 token",
+      "same-token read-index and 28766 route verification",
+      "repair exact 10/20 RPS5 2026-10-15 endpoint source/identity binding"
+    ],
+    "status": "PARTIAL_MEMBERSHIP_SCOPE_REPAIRED_D0_REPUBLICATION_REQUIRED",
+    "targeted_test_result": "28 passed"
+  }
 }

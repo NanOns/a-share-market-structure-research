@@ -10,6 +10,31 @@ from .market_source_acquisition import official_sessions
 CONTRACT = 'V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1'
 REQUIRED = frozenset(('raw','adjusted','core','profile','sector','relative_sector','market','focus','forward',
                       'rotation','lifecycle','special_phase','period_raw','period_adjusted','diagnostic'))
+MEMBERSHIP_REFERENCE_KEY = 'native_membership_reference'
+MEMBERSHIP_REFERENCE_CONTRACT = 'V4_NATIVE_MEMBERSHIP_REFERENCE_AUTHORITY_R1'
+
+
+def validate_membership_reference_scope(root, candidate):
+    """Reject a carried-forward membership PG authority scoped to another T0.
+
+    Successor candidates copy most of their predecessor's metadata. The
+    membership authority is date-scoped too, so changing only
+    ``accepted_trade_date`` must not leave a predecessor authority attached.
+    """
+    binding = candidate.get(MEMBERSHIP_REFERENCE_KEY)
+    if binding is None:
+        if candidate.get('exact_daily_adjustment_contract'):
+            raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_REQUIRED')
+        return None
+    authority = json.loads(checked(root, binding).read_bytes())
+    if authority.get('contract_id') != MEMBERSHIP_REFERENCE_CONTRACT:
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_CONTRACT_MISMATCH')
+    if (authority.get('T0') != candidate.get('accepted_trade_date')
+            or authority.get('membership_snapshot') != candidate.get('membership_snapshot')):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_SCOPE_MISMATCH')
+    if any(authority.get(k) is not False for k in ('AS_RECORDED', 'PIT_ELIGIBLE')):
+        raise ValueError('NATIVE_MEMBERSHIP_REFERENCE_PIT_ESCALATION')
+    return authority
 
 
 def rotation_display_completeness(rotation_rows, sector_rows, *, rotation_owner_bound, sector_owner_bound):
@@ -94,6 +119,7 @@ def validate(root, candidate):
     if snapshot.get('membership_snapshot_id')!=candidate['membership_snapshot_id'] or snapshot.get('PIT_ELIGIBLE') is not False:
         raise ValueError('SUCCESSOR_MEMBERSHIP_LINEAGE_MISMATCH')
     checked(root,snapshot['memberships']);checked(root,snapshot['identity_source'])
+    validate_membership_reference_scope(root,candidate)
     registry=json.loads(checked(root,candidate['registry']).read_bytes())
     if registry.get('owner_bindings')!=candidate['owners']:
         raise ValueError('SUCCESSOR_OWNER_REGISTRY_MISMATCH')

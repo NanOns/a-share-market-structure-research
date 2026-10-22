@@ -1,6 +1,8 @@
 # Ninth Batch: Exact Source Isolation and Daily Increment Report
 
-**Review status:** `DEV_INCREMENT_COMPLETE_WITH_10_16_READ_INDEX_LIMITATION`
+**Original ninth-batch status:** `DEV_INCREMENT_COMPLETE_WITH_10_16_READ_INDEX_LIMITATION`
+
+**Annotation follow-up status:** `PARTIAL_MEMBERSHIP_SCOPE_REPAIRED_D0_REPUBLICATION_REQUIRED`
 **Branch:** `codex/v4-unified-development`
 **Requested baseline:** `b5d6ba78cc32d5eb249e2fbd3626aa70b012c4b6` (ancestor of the starting branch state)
 **Development PG:** `127.0.0.1:5432/market_research`, OID `646711`
@@ -42,3 +44,38 @@ Code, sequential development R8/D0 publication, exact source readback, idempoten
 No 28765 production switch, production Head update or final packaging was performed. This development push is not external acceptance.
 
 See [`NINTH_BATCH_SOURCE_ISOLATION_DAILY_EVIDENCE.json`](NINTH_BATCH_SOURCE_ISOLATION_DAILY_EVIDENCE.json) for machine-readable bindings and results.
+
+## Follow-up after reviewer annotation (2026-10-22)
+
+The reviewer called out the remaining 10/16 membership failure and the high D0 `UNKNOWN` counts. The findings below use the real frozen candidate files and readback from the authorized development PG.
+
+### D0 `UNKNOWN` root cause and source-bound recomputation
+
+The 10/16, 10/19, 10/20 and 10/21 prewatch files were generated before formal D0 aggregation stopped counting `STRONG_PULLBACK` and `TREND_CONTINUE`. Both are explicitly diagnostic-only in `V4_D0_SOURCE_SEAL_SUCCESSOR_R2`; each is `UNKNOWN` for every security in these files. That made an unrelated diagnostic unknown override otherwise determinate formal FALSE rows.
+
+Using the real frozen `target_values` and the current formal aggregator, I wrote separate recompute-only owner files under `G:/codex_tmp/v4_daily_candidate_chain_20261020/.../owner_v3_d0_formal_recompute_r1/`. No old owner file or publication was overwritten. Counts changed as follows:
+
+| Date | Previously published TRUE / FALSE / UNKNOWN | Formal recomputation TRUE / FALSE / UNKNOWN |
+|---|---:|---:|
+| 10/16 | 90 / 0 / 5,136 | 90 / 5,084 / 52 |
+| 10/19 | 152 / 0 / 5,072 | 152 / 5,018 / 54 |
+| 10/20 | 115 / 0 / 5,109 | 115 / 2,736 / 2,373 |
+| 10/21 | 99 / 0 / 5,125 | 99 / 5,076 / 49 |
+
+This is a source-bound recomputation, not a corrected PG publication or 28766 readback. The D0 owner bytes are part of the R8 candidate token, so publishing corrected rows requires a superseding candidate token and the corresponding append-only R8/D0 chain.
+
+The per-date source hashes, owner output bindings, scenario counts and unresolved formal reasons are in [`D0_FORMAL_RECOMPUTE_DIAGNOSTIC_R1.json`](D0_FORMAL_RECOMPUTE_DIAGNOSTIC_R1.json).
+
+The remaining 10/20 formal `UNKNOWN` is not caused by those diagnostics. Its `RECOVERY_TURN` has 2,420 unknown rows, including 2,399 `RPS5_DELTA3` values with `EXACT_DATED_RPS_ENDPOINT_UNKNOWN` at prior endpoint 10/15. The old 10/15 Owner happens to contain a value for 2,381 of those securities, but that endpoint is not interchangeable: among the 2,825 rows with a stored 10/20 delta, only one equals current RPS5 minus the old 10/15 RPS5; 2,824 differ. I did not backfill from the mismatched snapshot. The 10/20 RPS endpoint producer/source scope remains open for a separate exact-source repair, and those true unknowns stay unknown.
+
+### 10/16 Membership authority repair
+
+The 10/16 candidate inherited a `native_membership_reference` authority with `T0=2026-10-15`. Although its membership bytes matched the 10/16 snapshot, the PG authority was date-scoped to 10/15 and correctly failed closed. I appended a new 10/16-scoped membership, identity and search-identity authority in development PG, read all three back (55,136 membership rows, 5,226 current identity rows and 6,055 search rows), and saved a superseding candidate file under the G-drive candidate root. Its token is `ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6`; the prior token and its files remain unchanged.
+
+The successor validator now rejects a carried-forward membership authority whose `T0` or snapshot binding differs from the candidate. This prevents publication of the same mismatch in future candidates. The superseding membership candidate has not yet been R8/D0-published, and 28766 still serves the prior 10/21 token; therefore the 10/16 full-route limitation is not yet closed.
+
+### Follow-up validation and remaining work
+
+The membership-scope and formal-aggregation regressions pass with the existing D0 source-isolation regressions (**28 passed**). Historical 10/15 NON_PIT and its three-state results remain unchanged. The development database and only 28766 were used; no 28765 production action occurred.
+
+Remaining work: create and independently verify superseding R8/D0 publications for the corrected formal aggregates, rebase later candidate dates in order where tokens depend on the corrected 10/16 candidate, and repeat the same-token read-index/28766 checks. Independently repair the 10/20 exact 10/15 RPS5 endpoint binding before claiming that portion's `UNKNOWN` population has been resolved.

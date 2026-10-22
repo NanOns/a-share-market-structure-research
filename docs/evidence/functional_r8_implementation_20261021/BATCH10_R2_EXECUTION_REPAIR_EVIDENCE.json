@@ -412,44 +412,54 @@
         "candidate_payload_sha256": "20b3807bc7d6381f19780d4bca460bc77633aa10c3c9d2e173467a824ad1d128"
       },
       "market_breadth": {
-        "http": 400,
-        "status": null,
-        "token": null,
-        "accepted_date": null,
-        "total": null,
-        "rankable_total": null,
-        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH",
-        "rows": 0
+        "http": 200,
+        "status": "READY",
+        "token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+        "accepted_date": "2026-10-21",
+        "metrics": {
+          "up": 1935,
+          "down": 3061,
+          "flat": 220,
+          "unknown": 8,
+          "denominator": 5224,
+          "actual_quote_count": 5216,
+          "amount_cny": 1429171847255.75
+        }
       },
       "market_indices": {
-        "http": 400,
-        "status": null,
-        "token": null,
-        "accepted_date": null,
-        "total": null,
-        "rankable_total": null,
-        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH",
-        "rows": 0
+        "http": 200,
+        "status": "READY",
+        "token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+        "accepted_date": "2026-10-21",
+        "total": 5,
+        "latest": {
+          "sh000001": 3713.03,
+          "sz399001": 11704.35,
+          "sz399006": 2694.71,
+          "sh000300": 4111.93,
+          "sh000852": 6780.26
+        }
       },
       "market_limits": {
-        "http": 400,
-        "status": null,
-        "token": null,
-        "accepted_date": null,
-        "total": null,
-        "rankable_total": null,
-        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH",
-        "rows": 0
+        "http": 200,
+        "status": "READY",
+        "token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+        "accepted_date": "2026-10-21",
+        "total": 5224,
+        "counts": {
+          "LIMIT_UP": 50,
+          "LIMIT_DOWN": 5,
+          "NOT_LIMIT": 5143,
+          "SUSPENDED": 8,
+          "UNKNOWN": 18
+        }
       },
       "market_ladders": {
-        "http": 400,
-        "status": null,
-        "token": null,
-        "accepted_date": null,
-        "total": null,
-        "rankable_total": null,
-        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH",
-        "rows": 0
+        "http": 200,
+        "status": "READY",
+        "token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+        "accepted_date": "2026-10-21",
+        "total": 50
       },
       "stock_search": {
         "http": 200,
@@ -515,9 +525,20 @@
   },
   "unresolved_acceptance": {
     "date_2026_10_19_readindex": "not bound to immutable candidate token; requires new sequential descendant tokens to repair",
-    "market_api_four_routes": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH",
+    "market_api_four_routes": "PASS: breadth, indices, limits, ladders are READY under exact 2026-10-21 Candidate Token after rebuilding exact-date product pack",
     "date_cycle": "2026-10-20 row response remains under 2026-10-21 context token",
     "forward": "historical_rows=0;live_rows=0;home_data_missing=true",
     "visible_page": "not verified"
+  },
+  "market_product_binding": {
+    "authority_scope": "DEVELOPMENT_CANDIDATE_EXACT_DATE",
+    "date": "2026-10-21",
+    "head_token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+    "manifest_path": "data/v4/core_product_read_pg_r1/d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5/2026-10-21/MANIFEST.json",
+    "manifest_sha256": "07f7ac14a0c0071046c93986928bad79184ae10181090128e4882285ad027e60",
+    "authority_path": "config/core_product_read_authority_r1.json",
+    "authority_sha256": "1f69b47f7960686e25f9da03666d2cbaf2348ef8a81b7a17869d8f1751ea1dde",
+    "indices": 5,
+    "pg_history_index_built": true
   }
 }

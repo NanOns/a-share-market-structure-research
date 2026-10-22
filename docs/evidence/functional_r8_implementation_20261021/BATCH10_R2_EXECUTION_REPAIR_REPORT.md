@@ -33,7 +33,7 @@
 | M0 不可变 D0 源码版本绑定 | **PASS** | 已提交基线实现将消费源码原字节原子归档到 content-addressed SHA 路径；摘要碰撞/损坏时 fail closed，reader SHA 与 bytes 检查未放宽。`tests/test_d0_immutable_source_archive_r2.py` 覆盖正例与损坏负例。 |
 | M1 10/16 日期成员修复与 R8/D0 | **PASS** | 10/16 新 Token `57b1…e1bcc` 的 R8 与 D0 在开发 PG 发布；D0 5,226 行，TRUE 90 / FALSE 5,084 / UNKNOWN 52。独立限制 reader 回读 10,452 facts，digest PASS。 |
 | M2 前态顺序重建 10/19—10/21 | **PARTIAL** | 三日 Owner/Core/可计算因子/Profile/Market/Sector/D0/D2/Focus/Forward 与 R8/D0 发布均执行；三个日期的数值 oracle 分别 292,516 checks、0 errors；10/20、10/21 ReadIndex 与 Priority 已生成（10/21 Priority 股票 936/5,224、板块 8/400 可排名）。10/19 ReadIndex 因版本内缺少 `native_membership_reference`，返回 `NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK`；不能在不改变 Token 的情况下补写候选绑定，因此 M2 不能全通过。 |
-| M3 28766 同版本六入口业务验收 | **PARTIAL** | 服务 Preview Token 为 `d778…368a5`；Context/Home/Stocks(5,224)/Sectors(400)/Focus(3,929)/Forward/Priority API 响应 Token 一致。搜索 600703 返回 1 项，煤炭搜索返回 2 项，`type=INDUSTRY` 返回 132 项。Forward 历史与 live 均 0 项，Home 标记 `DATA_MISSING`。市场 breadth/indices/limits/ladders 四 API 全返回 `CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH`；10/20 行读取虽为 10/20，响应上下文仍是 10/21 Token。没有完成用户要求的六入口页面可见验收、日期周期交互验收和完整市场页面数值验收。 |
+| M3 28766 同版本六入口业务验收 | **PARTIAL** | 服务 Preview Token 为 `d778…368a5`；Context/Home/Stocks(5,224)/Sectors(400)/Focus(3,929)/Forward/Priority API 响应 Token 一致。搜索 600703 返回 1 项，煤炭搜索返回 2 项，`type=INDUSTRY` 返回 132 项。Forward 历史与 live 均 0 项，Home 标记 `DATA_MISSING`。首轮发现旧市场包后，已重建精确绑定当前 Head 的只读 PG 产品包，市场 breadth/indices/limits/ladders 四 API 均 READY；业务值为涨 1,935 / 跌 3,061 / 平 220 / 未知 8（分母 5,224，实际行情 5,216，成交额 CNY 1,429,171,847,255.75）、指数 5 项、涨停 50 / 跌停 5 / 停牌 8 / 未知 18、梯队 50。10/20 行读取虽为 10/20，响应上下文仍是 10/21 Token。API 层六入口业务值已有同 Token 读回，但没有完成用户要求的可见页面验收与日期周期交互验收。 |
 | M4 独立发布与恢复演练 | **PARTIAL** | 四日 D0 限制 reader 独立读回全部 PASS；R8/D0 发布及 G1-G3/CAS rollback 演练已记录通过；10 项针对性 pytest 通过。post-insert 故障注入、完整部分链恢复、混合日期拒绝演练、双轮服务性能验收及可见浏览器页面验收未完成。 |
 
 ## 服务、数据库与保护边界
@@ -41,7 +41,7 @@
 - 28766：`127.0.0.1:28766`，Candidate Preview，Token `d778…368a5`，接受日期 2026-10-21，正式接受标记 false。
 - 28765：未监听；没有停止或重启生产服务。
 - PostgreSQL：`127.0.0.1:5432/market_research`，OID 646711；独立 D0 查询以受限 reader role、`transaction_read_only=on` 执行。
-- R8 schema：`v4_r8pub_fde08c597fc76d13`；D0 schema：`v4_r8d0seal_batch07_r1`。
+- R8 schema：`v4_r8pub_fde08c597fc76d13`；D0 schema：`v4_r8d0seal_batch07_r1`。10/21 精确市场产品包 `MANIFEST.json` SHA256 `07f7ac14a0c0071046c93986928bad79184ae10181090128e4882285ad027e60`，authority SHA256 `1f69b47f7960686e25f9da03666d2cbaf2348ef8a81b7a17869d8f1751ea1dde`。
 - 未修改正式 Head，未改写历史 NON_PIT 身份；无 DROP/DELETE。
 - Computer Use 在获取当前 Windows 浏览器 URL 时因安全置信检查失败而停止；停止后未继续桌面 UI 操作。API 读回不等同于可见页面验收。
 

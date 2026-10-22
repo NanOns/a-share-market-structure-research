@@ -39,6 +39,9 @@ def test_success_and_restart_transaction(simulated):
     root,head,candidate=simulated
     result=release.promote(root,candidate,sha256_file(head),lambda c:dict(status='PASS',context_token=digest(c),accepted_trade_date=c['accepted_trade_date']))
     assert result['status']=='PUBLISHED'
+    transaction=json.loads((root/'runtime/dynamic_daily/publication_transaction.json').read_bytes())
+    assert transaction['state']=='COMMITTED'
+    assert transaction['candidate_token']==digest(candidate)
     before=head.read_bytes();release.recover(root);assert head.read_bytes()==before
 
 

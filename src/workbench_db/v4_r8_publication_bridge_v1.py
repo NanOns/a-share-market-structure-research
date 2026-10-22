@@ -282,6 +282,10 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
             except Exception:
                 pass
             raise
+        # The callback computes this value locally while the CAS is being
+        # verified. Read it again after the successful CAS so the finalized
+        # receipt path has an in-scope value as well.
+        candidate_head_sha = sha256_file(head)
         # _commit_pointers has now durably finalized the transaction file.
         # Only now append the PG finalization event and invoke the independent
         # G4 reader. This ordering makes a crash before this point fail closed.

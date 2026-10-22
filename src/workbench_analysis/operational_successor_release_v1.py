@@ -94,7 +94,8 @@ def _commit_pointers(pointer_root,head,current_joint,transaction,candidate,befor
             else:_atomic_write(current_joint,joint_before,tdx_root=Path('D:/new_tdx'))
         atomic_json(root,transaction,dict(state='ROLLED_BACK',predecessor=ref(root,archive),failed_token=digest(candidate),**coordination))
         raise
-    atomic_json(root,transaction,dict(state='COMMITTED',predecessor=ref(root,archive),head_sha256=current,readback=receipt,**coordination))
+    atomic_json(root,transaction,dict(state='COMMITTED',predecessor=ref(root,archive),head_sha256=current,
+        candidate_token=digest(candidate),readback=receipt,**coordination))
     return dict(status='PUBLISHED',accepted_trade_date=candidate['accepted_trade_date'],context_token=digest(candidate),head_sha256=current)
 
 

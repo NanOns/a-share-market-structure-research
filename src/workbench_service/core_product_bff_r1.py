@@ -9,7 +9,7 @@ from .operational_successor_bff_v1 import OperationalSuccessorBFFV1
 from .r43_operational_bff import owner_cell
 from .stock_views import aggregate
 from .domain_views import CHANGE_EVENTS, RISK_EVENTS, ROTATIONS
-from workbench_analysis.r43_owner_replay import checked
+from workbench_analysis.r43_owner_replay import checked, ref
 from workbench_analysis.validation_cohort_read_contract_r3 import read_statistics, read_authorized_statistics
 from .research_hypotheses_r3 import competing_explanations
 from .operational_risk_v1 import build_stock_family,build_sector_family,build_market_family
@@ -1345,9 +1345,54 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             from .native_product_catalog_v3 import KEY,load
             embedded=KEY in self.api.candidate
             if embedded or self.api.candidate.get('exact_daily_adjustment_contract'):
-                authority=load(self.api.root,self.api.candidate)
-                binding=authority['dates'].get(day)
-                manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
+                try:
+                    authority=load(self.api.root,self.api.candidate)
+                    binding=authority['dates'].get(day)
+                    manifest=json.loads(checked(self.api.root,binding).read_bytes()) if binding else None
+                except ValueError as exc:
+                    # Some daily R8 candidates have exact, dated Owner bindings
+                    # but do not embed the full product catalogue. In the
+                    # development preview only, allow a per-date pack whose
+                    # manifest is pinned to this exact candidate Head and whose
+                    # market/history inputs match the candidate's Owner bytes.
+                    # This is deliberately not a fallback to another date or to
+                    # a global mutable authority.
+                    if (str(exc)!='EMBEDDED_PRODUCT_CATALOG_REQUIRED_NO_FALLBACK'
+                            or self.api.context().get('read_scope')!='DEVELOPMENT_CANDIDATE_PREVIEW'):
+                        raise
+                    authority_path=self.api.root/'config/core_product_read_authority_r1.json'
+                    if not authority_path.is_file():
+                        raise
+                    authority=json.loads(authority_path.read_bytes())
+                    manifest=dated_product_manifest(self.api.root,authority,day)
+                    if manifest is not None:
+                        if manifest.get('authority_scope')!='DEVELOPMENT_CANDIDATE_EXACT_DATE':
+                            raise ValueError('CANDIDATE_PRODUCT_AUTHORITY_SCOPE_REQUIRED')
+                        head=self.api.root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+                        if (manifest.get('T0')!=day or manifest.get('head')!=ref(self.api.root,head)
+                                or head.read_bytes()!=checked(self.api.root,manifest['head']).read_bytes()):
+                            raise ValueError('CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH')
+                        sources=manifest.get('source_bindings') or {}
+                        owners=self.api.candidate.get('owners',{}).get(day,{})
+                        for owner_name in ('raw','core','market'):
+                            if sources.get(owner_name)!=owners.get(owner_name):
+                                raise ValueError('CANDIDATE_PRODUCT_OWNER_BINDING_MISMATCH:'+owner_name)
+                        # The R8 candidate pins the dated history stream beside
+                        # its exact Core Owner, while older candidate metadata
+                        # does not repeat that ref under owners[day]. Bind the
+                        # pack to that sibling and verify its bytes directly.
+                        core_binding=owners.get('core') or {}
+                        expected_history=(Path(core_binding.get('path','')).parent/'history.jsonl.gz'
+                                          if core_binding.get('path') else None)
+                        history_binding=sources.get('history') or {}
+                        if (expected_history is None or history_binding.get('path')!=expected_history.as_posix()
+                                or checked(self.api.root,history_binding).stat().st_size!=history_binding.get('bytes')):
+                            raise ValueError('CANDIDATE_PRODUCT_OWNER_BINDING_MISMATCH:history')
+                        history=manifest.get('history_index') or {}
+                        fact_token=manifest.get('fact_token',manifest['head']['sha256'])
+                        if (history.get('engine')!='postgresql'
+                                or (history.get('T0'),history.get('head_token'))!=(day,fact_token)):
+                            raise ValueError('CANDIDATE_PRODUCT_HISTORY_BINDING_MISMATCH')
             else:
                 authority=self.api.root/'config/core_product_read_authority_r1.json'
                 if not authority.exists():return None

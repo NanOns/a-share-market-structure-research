@@ -1,132 +1,188 @@
 {
-  "contract_id": "BATCH10_R2_EXECUTION_REPAIR_EVIDENCE_R1",
+  "contract_id": "BATCH10_R2_EXECUTION_REPAIR_EVIDENCE_R2",
   "execution_date": "2026-10-22",
   "repository": "NanOns/a-share-market-structure-research",
   "branch": "codex/v4-unified-development",
-  "baseline_head": "00e4a34c64d2767f8b9f9ebc6efb7c7f7b50aeb3",
+  "requested_audit_baseline": "00e4a34c64d2767f8b9f9ebc6efb7c7f7b50aeb3",
+  "pre_execution_remote_head": "fb147663612c9c07c1ee4c61f4f89d7097c72c66",
   "phase0": "DEGRADED_PASS",
   "overall_status": "BATCH10_R2_PARTIAL",
   "milestones": {
-    "R2-M0": {
+    "M0": {
       "status": "PASS",
-      "scope": "content-addressed code/source archive implementation and targeted tests",
-      "implementation": [
-        "src/workbench_analysis/d0_source_seal_r2.py::archive_immutable_bytes",
-        "src/workbench_analysis/d0_source_seal_r2.py::_archive_source_ref",
-        "src/workbench_analysis/d0_source_seal_r2.py::publish_candidate"
-      ],
+      "scope": "D0 immutable consumed-source bytes and fail-closed validation",
+      "implementation_commit": "fb147663612c9c07c1ee4c61f4f89d7097c72c66",
       "archive_layout": "<candidate_root>/data/v4/immutable_source_archive/sha256/<first-two>/<sha256>",
-      "archive_behavior": {
-        "source_changed_after_archive": "ARCHIVED_BYTES_REMAIN_HASH_VALID",
-        "existing_digest_path_with_corrupt_bytes": "D0_IMMUTABLE_ARCHIVE_COLLISION (fail closed)",
-        "reader_sha_and_byte_checks": "UNCHANGED_STRICT"
+      "behavior": {
+        "archive_atomic_and_content_addressed": true,
+        "mutable_source_replacement_preserves_archived_original": true,
+        "corrupt_existing_digest_object_rejected": "D0_IMMUTABLE_ARCHIVE_COLLISION",
+        "reader_sha_bytes_validation_unchanged": true,
+        "historical_rows_modified": false
       },
-      "targeted_test": {
+      "tests": {
         "path": "tests/test_d0_immutable_source_archive_r2.py",
-        "command": "$env:TMP='G:\\codex_tmp'; $env:TEMP='G:\\codex_tmp'; $env:TMPDIR='G:\\codex_tmp'; $env:PYTHONPATH='src'; python -m pytest -q tests/test_d0_immutable_source_archive_r2.py",
         "result": "2 passed"
-      },
-      "historical_rows_modified": false
+      }
     },
-    "R2-M1": {
-      "status": "FAIL",
+    "M1": {
+      "status": "PASS",
       "trade_date": "2026-10-16",
       "old_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
-      "correct_date_membership_candidate_token_not_published": "ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6",
-      "correct_date_membership_T0": "2026-10-16",
-      "owner_sha_comparison": {
-        "membership_reference_sha_changed": true,
-        "raw_sha_changed": false,
-        "adjusted_sha_changed": false,
-        "core_sha_changed": false,
-        "prewatch_sha_changed": false,
-        "focus_sha_changed": false,
-        "profile_sha_changed": false,
-        "market_sha_changed": false,
-        "sector_sha_changed": false,
-        "rotation_sha_changed": false,
-        "forward_sha_changed": false
+      "new_token": "ef87b9b4212908e56a0ba3fb315d173e18522f70e8d73f81b6d02bc18c55227f",
+      "R8": {
+        "schema": "v4_r8pub_fde08c597fc76d13",
+        "owner_authority_sha256": "e274702bdb4e2c6f6eb41ef0a2725bcb6288b438894b8463a1478e3362a6bd8e",
+        "source_freeze_sha256": "840e9dcb50c6d092ef5dd819b5cb9b306d193a32dc3840a07aa3fe1b8d87ec92",
+        "inserted_at": "2026-10-22T14:20:06.591561+08:00"
       },
-      "actual_publish_attempt": {
-        "command": "python scripts/run_batch10_r2_d0_release.py --from-date 2026-10-16 --to-date 2026-10-16 --input-root G:\\codex_tmp\\v4_daily_candidate_chain_20261020 --candidate-safe",
-        "dry_run": false,
-        "publisher": "workbench_analysis.d0_source_seal_r2.publish_candidate",
-        "result": "FAIL_CLOSED_BEFORE_D0_INSERT",
-        "exception": "ValueError: D0_R8_SNAPSHOT_PUBLICATION_NOT_FOUND",
-        "stack_trace": [
-          "scripts/run_batch10_r2_d0_release.py:87 in main -> publish_candidate(...) ",
-          "src/workbench_analysis/d0_source_seal_r2.py:314 in publish_candidate -> raise ValueError('D0_R8_SNAPSHOT_PUBLICATION_NOT_FOUND')"
-        ],
-        "failure_point": "SELECT candidate_token,trade_date,owner_authority_sha256,source_freeze_sha256,inserted_at FROM v4_r8pub_fde08c597fc76d13.r8_publications WHERE candidate_token=%s AND trade_date=%s"
-      },
-      "dry_run": {
-        "command": "python scripts/run_batch10_r2_d0_release.py --from-date 2026-10-16 --to-date 2026-10-16 --input-root G:\\codex_tmp\\v4_daily_candidate_chain_20261020 --candidate-safe --dry-run",
-        "selected_token": "ab13eb13456fcf2d725137d5404ef55e10a4b6496203da5ecb50faff7c694ea6",
-        "result": "DRY_RUN"
-      },
-      "new_r8_rows": 0,
-      "new_d0_rows": 0,
-      "G1_G4": "NOT_REACHED"
+      "D0": {
+        "publication_id": "D0B07:2026-10-16:ef87b9b4212908e56a0ba3fb315d173e18522f70e8d73f81b6d02bc18c55227f:r1",
+        "publication_status": "DEV_ASOF_SOURCE_VERIFIED",
+        "row_count": 5226,
+        "owner_sha256": "a52bfa0ddd9d33d2f5443de9e0b452db59839b2ef9ea5e940d4ea2eac162a4e0",
+        "predicate_digest": "682ddfcfc04a2ab4d7b9fe5b59afb0545ca50fef787d8ea6be387f6af922bb44",
+        "counts": {"TRUE": 90, "FALSE": 5084, "UNKNOWN": 52},
+        "as_recorded": false,
+        "pit_eligible": false
+      }
     },
-    "R2-M2": {
-      "status": "NOT_VERIFIABLE",
-      "reason": "M1 did not produce a recomputed and published 10/16 predecessor; no four-date rebase was run.",
-      "old_tokens": {
-        "2026-10-19": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
-        "2026-10-20": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
-        "2026-10-21": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"
-      },
-      "new_tokens": null,
-      "pg_writes": 0
-    },
-    "R2-M3": {
-      "status": "FAIL",
-      "required_new_2026_10_21_token": null,
-      "28766": {
-        "listener_pid": 7844,
-        "port": 28766,
-        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
-        "http_business_readback": [
-          {"route": "/api/operations/status", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"},
-          {"route": "/api/v4/context", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
-          {"route": "/api/v4/home", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
-          {"route": "/api/v4/focus", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "total": 3929},
-          {"route": "/api/v4/forward/statistics", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY"},
-          {"route": "/api/v4/radar/priority", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "rankable_total": 936, "universe_total": 5224},
-          {"route": "/api/v4/stocks", "http_status": 200, "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528", "status": "READY", "total": 5224}
-        ],
-        "new_token_page_acceptance": "NOT_RUN",
-        "six_entry_full_business_acceptance": "NOT_PASSED",
-        "ui_dom": "UI_DOM_NOT_VERIFIED"
-      },
-      "production_28765_listener": false
-    },
-    "R2-M4": {
+    "M2": {
       "status": "PARTIAL",
-      "passed_negative_case": "corrupted content-addressed object rejected",
-      "passed_mutability_case": "archive remains valid after mutable source replacement",
-      "d0_missing_r8_case": "failed closed before D0 row insert",
-      "pg_post_insert_cas_recovery": "NOT_RUN",
-      "resume_partial_four_day_chain": "NOT_RUN",
-      "two_round_service_performance": "NOT_RUN"
+      "rebase_order": ["2026-10-19", "2026-10-20", "2026-10-21"],
+      "dates": [
+        {
+          "date": "2026-10-19",
+          "old_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+          "new_token": "e6065c7e728aa50e011e656ff9f46225339ec69220212ad6b8a4219dbd85a49f",
+          "predecessor": "ef87b9b4212908e56a0ba3fb315d173e18522f70e8d73f81b6d02bc18c55227f",
+          "owner_rows": 5224,
+          "R8_owner_authority_sha256": "eb5c061a11c7b44e65c6af5a864de15ab6dd908ce67d0a966ded166d7bd2c230",
+          "R8_source_freeze_sha256": "d76d3a946adf26f3cf5f61c5438ec5e39cfbbf9093066effc2efdc9f126e6d4d",
+          "D0_publication_id": "D0B07:2026-10-19:e6065c7e728aa50e011e656ff9f46225339ec69220212ad6b8a4219dbd85a49f:r1",
+          "D0_owner_sha256": "e6c98097dcc5d73cce27b1f4dbe86985b65824fffd282d54b58b9178f4f33a1f",
+          "D0_predicate_digest": "820934aa0d7c38b2e7a5ed7c1e7e79abc58d19f0d4fd4116958c99a494f65867",
+          "D0_counts": {"TRUE": 152, "FALSE": 5018, "UNKNOWN": 54}
+        },
+        {
+          "date": "2026-10-20",
+          "old_token": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+          "new_token": "906c16ca05fe185871652e001044cea06971dcd7860d73f2442980d1474e7147",
+          "predecessor": "e6065c7e728aa50e011e656ff9f46225339ec69220212ad6b8a4219dbd85a49f",
+          "owner_rows": 5224,
+          "R8_owner_authority_sha256": "4f9895bbc5400aa0261386709e3c001824cc16d188319b36f0904bca76516c1e",
+          "R8_source_freeze_sha256": "48e9743c487f3b2fe1d876809e09b5dd55c89ffdbc94a201b3632f803a01f28b",
+          "D0_publication_id": "D0B07:2026-10-20:906c16ca05fe185871652e001044cea06971dcd7860d73f2442980d1474e7147:r1",
+          "D0_owner_sha256": "cacdd77c97a8fdbadc64f3b8332bbb0f4edd3041b32c5f1738559fb521865fab",
+          "D0_predicate_digest": "f127d20b2645a826afb9497bbdbf4743abd57b9a10d162ab4940f08c400788b7",
+          "D0_counts": {"TRUE": 115, "FALSE": 2736, "UNKNOWN": 2373},
+          "factor_audit": {
+            "field": "rps5_delta3",
+            "published_owner_observed": 2825,
+            "published_owner_unknown": 2399,
+            "independent_expected_observed": 5202,
+            "independent_expected_unknown": 24,
+            "result": "MISMATCH_REQUIRES_OWNER_AND_DOWNSTREAM_REBUILD"
+          }
+        },
+        {
+          "date": "2026-10-21",
+          "old_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+          "new_token": "e8094ffefe07e18e90dcbd2a0077347745269b94a9ca56d85aa8c3a512031af4",
+          "predecessor": "906c16ca05fe185871652e001044cea06971dcd7860d73f2442980d1474e7147",
+          "owner_rows": 5224,
+          "R8_owner_authority_sha256": "0a3cc6ae8059a28aa4ae7a3984eeefa45ff90347eaafc7e3d163b4e854f4f716",
+          "R8_source_freeze_sha256": "b7b94ee4177f8e162896e7be7f77c4cb1236401c8277b7dc3423131486b917d8",
+          "D0_publication_id": "D0B07:2026-10-21:e8094ffefe07e18e90dcbd2a0077347745269b94a9ca56d85aa8c3a512031af4:r1",
+          "D0_owner_sha256": "3ea6bccdae24d24247de929fb520715cbac6f44e916dedddeb5badd4dc6bdd6a",
+          "D0_predicate_digest": "02fc42e51bf243814b01796cd26e44d75736489432c22d5ef797fead9488e535",
+          "D0_counts": {"TRUE": 99, "FALSE": 5076, "UNKNOWN": 49},
+          "core_factor_counts": {
+            "rps5_delta3": {"OBSERVED": 5205, "UNKNOWN": 19},
+            "rps20_delta3": {"OBSERVED": 5191, "UNKNOWN": 33}
+          }
+        }
+      ],
+      "all_four_publications_non_pit": true
+    },
+    "M3": {
+      "status": "PARTIAL",
+      "service": {
+        "host": "127.0.0.1",
+        "port": 28766,
+        "pid": 44092,
+        "mode": "V4_DEVELOPMENT_CANDIDATE_PREVIEW",
+        "candidate_only": true,
+        "production_accepted": false,
+        "context_token": "e8094ffefe07e18e90dcbd2a0077347745269b94a9ca56d85aa8c3a512031af4",
+        "production_28765_listener": false
+      },
+      "database": {
+        "identity": {
+          "database": "market_research",
+          "server_address": "127.0.0.1/32",
+          "port": 5432,
+          "database_oid": 646711,
+          "listener_pid": 8640
+        },
+        "r8_schema": "v4_r8pub_fde08c597fc76d13",
+        "d0_schema": "v4_r8d0seal_batch07_r1",
+        "read_transaction_rolled_back": true
+      },
+      "market_page": {
+        "breadth": {"up": 1935, "down": 3061, "flat": 220, "unknown": 8, "denominator": 5224, "actual_quote_count": 5216, "amount_cny": 1429171847255.75},
+        "indices_count": 5,
+        "limit_counts": {"LIMIT_UP": 50, "LIMIT_DOWN": 5, "NOT_LIMIT": 5143, "SUSPENDED": 8, "UNKNOWN": 18},
+        "classifiable_denominator": 5206,
+        "tradable_rule_evaluable_denominator": 5198,
+        "daily_limit_up_ladder_total": 50,
+        "ladder_first_board": 34,
+        "ladder_streak_unknown": 16,
+        "page_dom_values_visible": true,
+        "product_manifest_sha256": "c15f052078733d155c7b2c3eee2cb879b672e460fae4b953ae12581b82b3e1e1",
+        "read_authority_sha256": "3d22910d089690cc4e14820f18ff58283682be0b23ca5aeb7bff2693b7361192"
+      },
+      "read_index_and_priority": {
+        "read_index_schema": "v4_1b20796ae9caf15af034c3c827cd7b761ad7b11406eebdfaccb7c2fb",
+        "counts": {"stocks": 5224, "sectors": 400, "focus": 3929, "radar": 368},
+        "stock_rankable": 936,
+        "stock_universe": 5224,
+        "sector_rankable": 8,
+        "sector_universe": 400,
+        "priority_sample": {"rank": 1, "symbol": "SZ.300015", "ret5": 0.024453024453024552, "rps20": 66.51279092133103, "rps20_delta3": 4.342307950386257, "score": 11.621904}
+      },
+      "six_entry_dom": {
+        "context_token": "e8094ffefe07e18e90dcbd2a0077347745269b94a9ca56d85aa8c3a512031af4",
+        "pages": {
+          "home": {"visible": true, "stocks": 5224, "sectors": 400, "radar": 368, "forward_status": "DATA_MISSING"},
+          "market": {"visible": true, "business_values": true},
+          "sectors": {"visible": true, "rows": 400, "lifecycle": "SOURCE_INCOMPLETE"},
+          "stocks": {"visible": true, "rows": 5224, "search_600703": {"rows": 1, "display_name": "三安光电", "symbol": "SH.600703"}, "qualification": "UNKNOWN"},
+          "focus": {"visible": true, "rows": 3929, "formal_validation_cohort": "NOT_ADMITTED"},
+          "forward": {"visible": true, "historical_denominator": null, "matured_settlement_count": 0}
+        },
+        "sector_search": {"query": "煤炭", "results": 2},
+        "sector_type_filter": {"value": "INDUSTRY", "results": 132},
+        "date_cycle": {"selected_date": "2026-10-20", "url_parameter": "trade_date=2026-10-20", "list_state": "STUCK_LOADING", "api_context_date": "2026-10-21", "result": "FAIL"}
+      }
+    },
+    "M4": {
+      "status": "PARTIAL",
+      "passed": ["content-addressed archive mutation case", "corrupt archive object rejected", "D0 idempotent retry", "R8/CAS rollback left no PG leak"],
+      "not_run": ["post-insert recovery fault injection", "partial four-date chain resume", "mixed-date read rejection drill", "two-round service performance acceptance"],
+      "single_round_priority_timing_ms": {"sector_lifecycle": 29.941, "source_sha_verification": 61.878, "digest_and_page": 14.792}
     }
   },
-  "database": {
-    "identity": {"database": "market_research", "server_address": "127.0.0.1/32", "port": 5432, "listener_pid": 8640},
-    "read_only_audit": true,
-    "write_ddl_dml_executed": false,
-    "old_r8_rows_observed": [
-      {"trade_date": "2026-10-16", "candidate_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440"},
-      {"trade_date": "2026-10-19", "candidate_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862"},
-      {"trade_date": "2026-10-20", "candidate_token": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad"},
-      {"trade_date": "2026-10-21", "candidate_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528"}
-    ],
-    "query": "SELECT trade_date::text,candidate_token FROM v4_r8pub_fde08c597fc76d13.r8_publications WHERE candidate_token=ANY(%s) ORDER BY trade_date,candidate_token"
+  "tests": {
+    "command": "python -m pytest -q tests/test_d0_immutable_source_archive_r2.py tests/test_core_product_candidate_pack_r2.py",
+    "result": "5 passed",
+    "temporary_storage": "G:/codex_tmp"
   },
-  "worktree": {
-    "formal_28765_modified": false,
+  "preservation": {
     "formal_head_modified": false,
-    "existing_untracked_paths_preserved": [".githooks/", "config_back/", "script_back/"]
+    "production_28765_modified_or_restarted": false,
+    "historical_non_pit_rewritten": false,
+    "unrelated_untracked_paths_preserved": [".githooks/", "config_back/", "script_back/"]
   },
-  "known_blocker": "Only a metadata-rebound 10/16 candidate is present. Its Core/Focus/Prewatch and other Owner bytes equal the old candidate, and PG lacks R8 publication for that token. Full rebuild/rebase and page cutover therefore did not happen in this execution."
+  "evidence_note": "PG tokens and hashes are from a read-only transaction rolled back after SELECT. Page values are from the 28766 DOM and exact-token API reads. Any missing/unknown data remains explicit; M2-M4 are not claimed as accepted."
 }

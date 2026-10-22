@@ -40,6 +40,7 @@ def main(argv=None):
     parser.add_argument('--input-root', required=True, type=Path)
     parser.add_argument('--resume', action='store_true', help='skip dates whose exact-token D0 PG readback is already valid')
     parser.add_argument('--dry-run', action='store_true', help='validate candidates and emit plan without database writes')
+    parser.add_argument('--candidate-token', help='select one exact immutable candidate token when a date has superseding revisions')
     parser.add_argument('--candidate-safe', action='store_true', help='required; prohibit production admission and formal Head changes')
     args = parser.parse_args(argv)
     if not args.candidate_safe:
@@ -61,6 +62,8 @@ def main(argv=None):
         for candidate_path in paths:
             candidate_value = json.loads(candidate_path.read_bytes())
             if candidate_value.get('accepted_trade_date') != day:
+                continue
+            if args.candidate_token and digest(candidate_value) != args.candidate_token:
                 continue
             try:
                 membership_value = json.loads((root / candidate_value['native_membership_reference']['path']).read_bytes())

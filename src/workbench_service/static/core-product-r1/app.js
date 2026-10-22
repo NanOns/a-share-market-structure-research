@@ -97,12 +97,14 @@ async function render(){controller?.abort();controller=new AbortController();con
   const stats=await read('forward/statistics',{trade_date:context.context.trade_date,limit:30},signal),d=stats.data||{};
   if(d.historical||d.live){
    const grid=C.el('div',undefined,'grid');
-   for(const [title,value] of [['历史研究全域记录',d.historical?.count??'未发布'],['实时首次冻结',d.live?.count??'未发布'],['已到期研究结算',d.matured_settlement_count??'未发布']])grid.append(C.StatCard(title,value));
+   const liveCount=d.live?.count;
+   const liveDisplay=liveCount==null||liveCount===0?'WAIT_REAL_FIRST_CAPTURE':liveCount;
+   for(const [title,value] of [['历史研究全域记录',d.historical?.count??'未发布'],['实时首次冻结',liveDisplay],['已到期研究结算',d.matured_settlement_count??'未发布']])grid.append(C.StatCard(title,value));
    main.append(grid);
   }else main.append(C.EmptyState('Forward PG读索引不可用；总量、分母和明细保持未知，需检查日更作业与PG状态。'));
   if(view==='live'){
    const live=d.live||{};main.append(C.el('h2','在线前瞻观察'));
-   main.append(C.el('p',live.count==null?'暂无已发布的 Lane L 首次冻结计数；未知计数不记为零。':live.count===0?'真实前瞻观察从下一个满足采集条件的交易日开始；当前已有 '+(d.historical?.count??'不可得')+' 条历史研究样本。':'首次冻结 '+live.count+' 条；最近 T0 '+(live.latest_t0||'不可得')));
+   main.append(C.el('p',live.count==null||live.count===0?'WAIT_REAL_FIRST_CAPTURE：当前没有符合条件的真实首次捕获；缺少首次捕获证据时不生成 Lane L 观察。历史研究样本 '+(d.historical?.count??'不可得')+' 条，Lane L 尚无可发布观察。':'首次冻结 '+live.count+' 条；最近 T0 '+(live.latest_t0||'不可得')));
    if(live.next_capture){const p=live.next_capture;main.append(C.el('p','采集计划 '+(p.status||'未知')+' · 缺口 '+((p.missing_sessions||[]).join('、')||'无')+' · 本批 '+((p.collection_batch_dates||[]).join('、')||'等待来源就绪')));main.append(C.el('p','信号 T0 '+(p.signal_T0||'不可得')+' · 价格收盘 '+(p.market_close_at||'不可得')+' · 来源就绪 '+(p.source_ready_at||'待确认')+' · 首次可用 '+(p.first_available_at||'待确认')));main.append(C.el('p','Head 接受 '+(p.head_accepted_at||'待确认')+' · 冻结 '+(p.frozen_at||'待确认')+' · 冻结窗口结束 '+(p.capture_window_end||'不可得')+' · 最近成功 '+(p.last_successful_capture||d.published_t0||'无')+' · 下次尝试 '+(p.next_attempt_at||'未安排')+' · 最近失败 '+(p.last_failure?.error||p.last_failure?.error_code||p.last_failure?.status||'无')));}
    const late=d.candidate_late_observation;
    if(late?.status==='CANDIDATE_ONLY_LATE_OBSERVED'){
@@ -122,7 +124,7 @@ async function render(){controller?.abort();controller=new AbortController();con
    main.append(ruleFilter,statusFilter);
    const page=await read('forward/observations',{lane,trade_date:params.get('trade_date')||context.context.trade_date,rule:params.get('rule')||undefined,status:params.get('status')||undefined,limit:30,offset:Number(params.get('offset')||0)},signal);
    if(page.status==='ERROR')main.append(C.EmptyState('该列表数据源错误；不将错误显示为空结果。'));
-   else if(!page.items?.length)main.append(C.EmptyState(lane==='historical'?'当前没有已发布的历史研究分母。':'真实前瞻观察从下一个满足采集条件的交易日开始；当前已有 '+(d.historical?.count??'未知')+' 条历史研究样本。'));
+   else if(!page.items?.length)main.append(C.EmptyState(lane==='historical'?'当前没有已发布的历史研究分母。':'WAIT_REAL_FIRST_CAPTURE：真实首次捕获条件未具备；当前已有 '+(d.historical?.count??'未知')+' 条历史研究样本，尚无 Lane L 观察。'));
    for(const row of page.items||[]){const detail=C.el('details');detail.append(C.el('summary',row.T0+' · '+row.entity_type+' '+(row.symbol||row.entity_id)+' · '+(row.event_code||row.status)));detail.append(C.el('p','状态 '+row.status+' · 规则 '+row.rule_id+' v'+row.rule_version+' · 身份 '+row.membership_basis+' · 证据 '+row.evidence_class));detail.append(C.el('p','原因 '+(row.reason_codes||[]).join(', ')+' · 缺失 '+(row.missing_inputs||[]).join(', ')));const source=C.el('button','输入值、截断时刻与来源摘要');source.onclick=()=>C.EvidenceDrawer({values:row.values,source_hashes:row.source_hashes,input_cutoff:row.input_cutoff,captured_at:row.captured_at});detail.append(source);if(row.entity_type==='STOCK')detail.append(C.el('span',' · '),C.link('股票画像','/v4/research/stocks/'+row.entity_id));main.append(detail);}
    if(page.total!==undefined)main.append(C.Pagination(page,next=>{params.set('offset',next);history.replaceState(history.state||{},'','?'+params);render();}));
    const exp=C.el('button','导出当前页CSV');exp.onclick=()=>{const rows=page.items||[],cols=['T0','rule_id','rule_version','entity_type','entity_id','status','event_code','membership_basis','evidence_class','reason_codes','missing_inputs','source_hashes'];const q=x=>'"'+String(Array.isArray(x)?x.join('|'):typeof x==='object'?JSON.stringify(x):x??'').replaceAll('"','""')+'"';const text=[cols.join(','),...rows.map(r=>cols.map(k=>q(r[k])).join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+text],{type:'text/csv;charset=utf-8'}));a.download='forward-'+lane+'-'+context.context.trade_date+'.csv';a.click();URL.revokeObjectURL(a.href);};main.append(exp);

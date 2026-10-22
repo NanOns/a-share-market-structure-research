@@ -72,7 +72,8 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
         gbbq=hashlib.sha256(blob).hexdigest(),member_sources=member_source_hashes,
         revision_guard=revision_guard,
         increment_scope={k:increment[k] for k in ('contract_id','mode','compute_sessions','history_dependencies','revisions')},
-        producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')})
+        producer={name:sha256_file(root/'src/workbench_analysis'/name) for name in ('operational_daily_owner_v1.py','operational_owner_adapter_v1.py')},
+        runtime_producer={'r43_owner_replay.py':sha256_file(Path(__file__).with_name('r43_owner_replay.py'))})
     generation_key=hashlib.sha256(json.dumps(generation,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     if adjustment_contract:
         policy=load(checked(root,adjustment_contract['policy']))
@@ -167,25 +168,30 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
     present={q['params'].get('date',q['params'].get('day')) for q in queries if q.get('method') in ('query_all_stock','validated_daily_universe') and q.get('path')}
     missing=[d for d in required if d not in present]
     if missing:
-        from .baostock_supplemental import RequestBudget
-        from .operational_baostock_client_v1 import BaoStockClient
-        from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest
-        manifest=load_runtime_acceptance_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
-        with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
-            for target in missing:
-                cache=root/'data/v4/dynamic_daily_sources/dated_universe'/target/'query_all_stock.json'
-                if cache.is_file():payload=load(cache)
-                else:
+        caches={target:root/'data/v4/dynamic_daily_sources/dated_universe'/target/'query_all_stock.json' for target in missing}
+        uncached=[target for target,cache in caches.items() if not cache.is_file()]
+        # Archived dates are sufficient for reconstruction. Do not perform a
+        # provider login just to read them; contact BaoStock only for genuinely
+        # missing dated-universe inputs, then continue to fail closed on gaps.
+        if uncached:
+            from .baostock_supplemental import RequestBudget
+            from .operational_baostock_client_v1 import BaoStockClient
+            from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest
+            manifest=load_runtime_acceptance_manifest(checked(root,freeze['runtime_manifest']),project_root=root)
+            with BaoStockClient(RequestBudget(root/'reports/v4_baostock/request_ledger.json'),auth_mode=manifest['auth_mode'],runtime_acceptance_manifest=manifest) as client:
+                for target in uncached:
                     requested=datetime.now(timezone.utc).isoformat()
                     rows,metadata=client.query_rows('dynamic_dated_universe','query_all_stock',day=target,max_rows=12000,max_pages=3)
                     if not rows or metadata.get('error_code')!='0':raise ValueError('DATED_UNIVERSE_RESPONSE_NOT_READY')
                     payload=dict(contract_id='DYNAMIC_DATED_UNIVERSE_SOURCE_V1',target_session=target,rows=rows,metadata=metadata,
                                  requested_at=requested,received_at=datetime.now(timezone.utc).isoformat(),AS_RECORDED=False)
-                    atomic_json(root,cache,payload)
-                if payload['target_session']!=target:raise ValueError('DATED_UNIVERSE_CACHE_DATE_MISMATCH')
-                unknown=[r['code'] for r in payload['rows'] if is_stock_code(r['code']) and r['code'].upper() not in bycode and not r['code'].lower().startswith('bj.')]
-                if unknown:raise ValueError('NEW_CANONICAL_IDENTITY_REQUIRED:'+','.join(unknown[:10]))
-                queries.append(dict(method='query_all_stock',params={'day':target},path=str(cache),requested_at=payload['requested_at'],received_at=payload['received_at']))
+                    atomic_json(root,caches[target],payload)
+        for target,cache in caches.items():
+            payload=load(cache)
+            if payload['target_session']!=target:raise ValueError('DATED_UNIVERSE_CACHE_DATE_MISMATCH')
+            unknown=[r['code'] for r in payload['rows'] if is_stock_code(r['code']) and r['code'].upper() not in bycode and not r['code'].lower().startswith('bj.')]
+            if unknown:raise ValueError('NEW_CANONICAL_IDENTITY_REQUIRED:'+','.join(unknown[:10]))
+            queries.append(dict(method='query_all_stock',params={'day':target},path=str(cache),requested_at=payload['requested_at'],received_at=payload['received_at']))
     acquisition=dict(acquisition,queries=queries);ap=folder/'sources/acquisition.json';atomic_json(root,ap,acquisition)
     package=freeze.get('effective_package') or load(root/'data/v4/dynamic_daily_sources/tdx_latest_v2.json')
     if package['download']['sha256']!=barsdoc['source_sha256']:raise ValueError('LATEST_PACKAGE_REVISION_MOVED')

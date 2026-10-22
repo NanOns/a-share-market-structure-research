@@ -241,9 +241,18 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
         previous=sessions[sessions.index(target)-1]
         members=dated_identity.get(target)
         if members is None:raise ValueError('NO_DATED_IDENTITY_UNIVERSE:'+target)
+        # Delta endpoints must be ranked in the target's affine QFQ coordinate.
+        # Reusing an endpoint score cached from its own target coordinate makes
+        # cross-date deltas incomparable after corporate actions.
+        endpoint_dates=({sessions[sessions.index(target)-k] for k in (1,3)} if target in dates else set())
+        endpoint_members={d:set(dated_identity[d]) for d in endpoint_dates if d in dated_identity}
+        if endpoint_dates-set(endpoint_members):
+            raise ValueError('NO_EXACT_DATED_RPS_MEMBERSHIP:'+','.join(sorted(endpoint_dates-set(endpoint_members))))
+        endpoint_returns={(d,h):{} for d in endpoint_dates for h in (5,20)}
+        source_members=set(members).union(*(endpoint_members.values() or [set()]))
         for i in progress_items(identity,progress_counter,coordinate_endpoint=target,phase='CORE'):
             sid=i['security_id']
-            if sid not in members:continue
+            if sid not in source_members:continue
             code=i['source_security_key'].lower()
             raw=cache[sid][1] if sid in cache else []
             bs=transform_window(raw,events[code],dispositions,target) if raw else []
@@ -272,8 +281,14 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
                 state='ACTUAL' if q else 'ADJUSTMENT_UNKNOWN' if b else 'CONFIRMED_SUSPENSION' if status[sid].get(day)=='SUSPENDED' else 'UNKNOWN'
                 obs.append(Observation(day,state,Bar(*q,float(b['amount']),float(b['volume']),basis,source_digest) if q else None))
             values={k:asdict(v) for k,v in compute_core(obs,sid,asof=target).items()}
-            rows.append(dict(security_id=sid,source_security_key=code.upper(),board_scope=i['board_scope'],
-                 trade_date=target,price_basis_id=basis,fields=values,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
+            if sid in members:
+                rows.append(dict(security_id=sid,source_security_key=code.upper(),board_scope=i['board_scope'],
+                     trade_date=target,price_basis_id=basis,fields=values,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
+            for endpoint in endpoint_dates:
+                if sid not in endpoint_members[endpoint]:continue
+                endpoint_values=compute_core(obs,sid,asof=endpoint)
+                for h in (5,20):endpoint_returns[(endpoint,h)][sid]=endpoint_values[f'ret{h}'].value
+            if sid not in members:continue
             if target not in dates:continue
             histories[sid]=bs
             pv={k:asdict(v) for k,v in compute_core(obs,sid,asof=previous).items()} if obs[0].trade_date<=previous else {}
@@ -302,6 +317,8 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
             scores=midrank({s:r['fields'][f'ret{h}']['value'] for s,r in factorby.items()},members)
             rps[target,h]=scores
             for sid,row in factorby.items():row['fields'][f'rps{h}']=dict(value=scores.get(sid),quality_state='OBSERVED' if scores.get(sid) is not None else 'UNKNOWN',unknown_reason=None if scores.get(sid) is not None else 'RETURN_OR_UNIVERSE_UNKNOWN',contract_id='RPS_MIDRANK_V1',denominator=sum(v is not None for v in scores.values()))
+            for endpoint in endpoint_dates:
+                rps[endpoint,h]=midrank(endpoint_returns[(endpoint,h)],endpoint_members[endpoint])
         if target not in dates:continue
         for h in (1,3,5):
             start=sessions[sessions.index(target)-h];start_members=dated_identity.get(start,set())

@@ -13,7 +13,7 @@
 
 10/16 新候选 R8/D0 发布成功；随后按 predecessor 顺序完成 10/19、10/20、10/21 Owner 全链重算及 R8/D0 开发 PG 发布。Oracle 对三个重建日期分别通过 292,516 项核验，零错误。限制读角色对四个日期的 D0 独立 PG 回读均为 `PG_BINDING_PRESENT`、`permission_chain_proven=true`、事务只读且 fact digest PASS。
 
-10/21 新 Token 的 28766 Candidate Preview 已运行。Home、Stocks、Sectors、Focus、Forward 与 Priority API 可读；股票/板块搜索与行业筛选有实际结果。尚未达到“页面完整整链验收”：市场四 API 因 `CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH` 返回 400；10/19 ReadIndex 缺少候选绑定；10/20 日期请求返回的行是 10/20，但上下文仍指向 10/21 Token；浏览器可见页面验收被 Computer Use Windows URL 安全检查中止，因此没有 DOM/截图证据。不得将以上项目记为通过。
+10/21 新 Token 的 28766 Candidate Preview 已运行。Home、Stocks、Sectors、Focus、Forward 与 Priority API 可读；股票/板块搜索与行业筛选有实际结果。尚未达到“页面完整整链验收”：首轮市场 API 因旧产品包绑定返回 400，随后已按 d778 当前 Head 重建，四路 API 现在均 READY；10/19 ReadIndex 缺少候选绑定；10/20 日期请求返回的行是 10/20，但上下文仍指向 10/21 Token；浏览器可见页面验收被 Computer Use Windows URL 安全检查中止，因此没有 DOM/截图证据。不得将以上项目记为通过。
 
 ## 新旧 Token 与开发 PG 发布
 

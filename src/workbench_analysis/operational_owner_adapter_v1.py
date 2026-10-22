@@ -140,7 +140,11 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         prior=previous['profiles'][-1]
         bootstrap=dict(prior_snapshot={'frozen_manifest_episode':prior['snapshot']},
                        prior_security_ids=[r['security_id'] for r in core.gzrows(core.checked(root,prior['owner']['core']))])
-    profiles=load(profile_path)['owners'] if profile_path.exists() else s['materialize_profiles_structure'](root,progress_counter=counter('PROFILE'),**bootstrap)
+    profiles=load(profile_path)['owners'] if profile_path.exists() else s['materialize_profiles_structure'](
+        root,progress_counter=counter('PROFILE'),
+        lifecycle_rows=lifecycle.get('source_rows',[]) if lifecycle else None,
+        lifecycle_trade_date=lifecycle.get('trade_date') if lifecycle else None,
+        **bootstrap)
     report('PROFILE','COMPLETED')
     sec=private_scope(sector,dict(load=load,ref=ref,EVIDENCE=folder.relative_to(root).as_posix(),
                                capture=lambda base:membership_snapshot,

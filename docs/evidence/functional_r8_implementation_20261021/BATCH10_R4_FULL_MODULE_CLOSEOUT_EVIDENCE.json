@@ -1,0 +1,1220 @@
+{
+  "contract_id": "BATCH10_R4_FORWARD_AND_FULL_MODULE_FUNCTIONAL_CLOSEOUT",
+  "evidence_contract": "BATCH10_R4_FULL_MODULE_CLOSEOUT_EVIDENCE_R1",
+  "created_at_local": "2026-10-23 Asia/Shanghai",
+  "branch": "codex/v4-unified-development",
+  "baseline_head": "78ab4c898096c71a093b288258909e81f4ba5732",
+  "remote_head_before_work": "78ab4c898096c71a093b288258909e81f4ba5732",
+  "overall_disposition": "BATCH10_R4_NOT_CLOSED / FULL_V4_RESEARCH_CHAIN_NOT_ACCEPTED",
+  "gate_statuses": {
+    "FR8-R4-01": "FAIL",
+    "FR8-R4-02": "PASS",
+    "FR8-R4-03": "PARTIAL",
+    "FR8-R4-04": "PARTIAL",
+    "FR8-R4-05": "PARTIAL"
+  },
+  "environment": {
+    "dev_ui": "127.0.0.1:28766",
+    "production_ui": "127.0.0.1:28765 (not used; no listener observed)",
+    "dev_postgresql": "127.0.0.1:5432/market_research",
+    "read_transactions": "SET TRANSACTION READ ONLY",
+    "formal_head_changed": false,
+    "non_pit_preserved": true,
+    "storage": "G:/codex_tmp for task temp; repo evidence only under repo docs/evidence"
+  },
+  "R4_A": {
+    "disposition": "REBASE_REQUIRED",
+    "old_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+    "revised_token": "daeb6ed118605b9e1e0ed057e95ca6b84a6f2e4c25154bb71fbc70f42268a0ac",
+    "semantic_comparison": {
+      "core": {
+        "diffs": {
+          "rps5_delta3": 79,
+          "rps20_delta3": 72
+        },
+        "examples": {
+          "rps5_delta3": {
+            "security_id": "SEC-BBDD861E8E162E1C74B43243B4D94E49",
+            "old": "{'contract_id': 'RPS_MIDRANK_V1', 'prior_endpoint': '2026-10-14', 'quality_state': 'OBSERVED', 'unknown_reason': None, 'value': -22.982001432712607}",
+            "new": "{'contract_id': 'RPS_MIDRANK_V1', 'prior_endpoint': '2026-10-14', 'quality_state': 'OBSERVED', 'unknown_reason': None, 'value': -22.962796516253988}"
+          },
+          "rps20_delta3": {
+            "security_id": "SEC-3DE896A079CBC0A3436A466872C1DFEC",
+            "old": "{'contract_id': 'RPS_MIDRANK_V1', 'prior_endpoint': '2026-10-14', 'quality_state': 'OBSERVED', 'unknown_reason': None, 'value': -18.85216111721776}",
+            "new": "{'contract_id': 'RPS_MIDRANK_V1', 'prior_endpoint': '2026-10-14', 'quality_state': 'OBSERVED', 'unknown_reason': None, 'value': -18.255777892900724}"
+          }
+        }
+      },
+      "base_profile": {
+        "diffs": {},
+        "examples": {}
+      },
+      "profile": {
+        "diffs": {},
+        "examples": {}
+      },
+      "prewatch": {
+        "diffs": {
+          "confirmation": 5224,
+          "target_values": 79
+        },
+        "examples": {
+          "confirmation": {
+            "security_id": "SEC-7F4545F1951CCD4F7EC593D417B9BBCB",
+            "old": "{'confirmation_status': 'UNKNOWN', 'matched_scenarios': [], 'primary_scenario': None, 'scenario_evidence': [{'checks': {'ACTUAL_BAR': True, 'AMR20_GTE_120': False, 'BREAKOUT_V3': F",
+            "new": "{'confirmation_status': 'FALSE', 'formal_aggregation_scenarios': ['LAUNCH_CONFIRM', 'RECOVERY_TURN'], 'matched_scenarios': [], 'primary_scenario': None, 'scenario_evidence': [{'agg"
+          },
+          "target_values": {
+            "security_id": "SEC-BBDD861E8E162E1C74B43243B4D94E49",
+            "old": "{'absolute_severe_drop': False, 'accel_log5_20': -0.007611666235180307, 'actual_bar': True, 'amr20_mean_prior': 0.786668884058799, 'amr20_median_prior': 0.8515550982042828, 'amr5_m",
+            "new": "{'absolute_severe_drop': False, 'accel_log5_20': -0.007611666235180307, 'actual_bar': True, 'amr20_mean_prior': 0.786668884058799, 'amr20_median_prior': 0.8515550982042828, 'amr5_m"
+          }
+        }
+      }
+    },
+    "raw_and_adjusted": {
+      "rows": 5213,
+      "numeric_and_adjustment_fields_equal": true,
+      "identity_added": 0,
+      "identity_removed": 0,
+      "raw_source_sha256": "a8fecbfd4bc8e1c89171501561572c914e43f2436eb628bcc4446fd17933f1c9",
+      "adjusted_source_sha256": "e8630b3996469d32233250ff9998dcf3ff8beb7ca70ed475bb7e8366e680a254"
+    },
+    "postwatch_d0": {
+      "objects": 5224,
+      "confirmation_status_changed": 5224,
+      "target_values_changed": 79,
+      "same_signals": true,
+      "same_prewatch": true
+    },
+    "lineage": {
+      "10_20_candidate_token": "283fec0eacc4035237a60f2c8dea77586be09dafa4b1b4df072e02c765ab7562",
+      "10_20_predecessor_sha256": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+      "10_21_candidate_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
+      "10_21_predecessor_token": "283fec0eacc4035237a60f2c8dea77586be09dafa4b1b4df072e02c765ab7562"
+    },
+    "candidate_pg_readback": "Old/revised 10/19 tokens present as DEV_ASOF_SOURCE_VERIFIED candidate publications, both row_count 5224, AS_RECORDED=false, PIT_ELIGIBLE=false, production_admission=false. No rebase writes made."
+  },
+  "R4_A_5226_5224": {
+    "core_rows": 5226,
+    "profile_rows": 5224,
+    "core_only": [
+      {
+        "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+        "source_security_key": "SH.601059"
+      },
+      {
+        "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+        "source_security_key": "SH.601198"
+      }
+    ],
+    "profile_only": [],
+    "source_readiness_absent_codes": [
+      "SH.601059",
+      "SH.601198"
+    ],
+    "absence_is_delisting_evidence": false,
+    "display_policy": "Preserve Core/D0 row identities; do not fabricate profile history. Verify search availability separately; not accepted as resolved because exact UI search/API proof was not captured."
+  },
+  "R4_B": {
+    "disposition": "PASS_FOR_HISTORICAL_NON_PIT_DATA_AND_DATABASE_ACCOUNTING_ONLY",
+    "lane": "RETROSPECTIVE_RESEARCH",
+    "logical_rows_total": 73115,
+    "actual_pg_namespace": "v4_r8_forward_0c2b84fb3e1a0c42",
+    "database": "market_research@127.0.0.1:5432",
+    "contract": "R7 rule versions 1.0.0; SECTOR_STRENGTH_TRANSITION_R1 and STOCK_RIGHT_STRUCTURE_EVENT_R1",
+    "daily": [
+      {
+        "trade_date": "2026-09-28",
+        "raw_rows": 5622,
+        "latest_unique": 5622,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 75,
+        "NO_MATCH": 5117,
+        "UNKNOWN": 430,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "ab6f38c21cfcfe5c8a9af474cda6a2406736699351d13bdcdcda675a347d86b4"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-09-29",
+        "raw_rows": 5623,
+        "latest_unique": 5623,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 96,
+        "NO_MATCH": 5494,
+        "UNKNOWN": 33,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "1b8b19f7a1ea837a9ba2bb9339781268825ece32e28c0707f38aa200aa7ba68d"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-09-30",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 123,
+        "NO_MATCH": 5467,
+        "UNKNOWN": 34,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "ed3ee3ba3835b1d4c8d2b5633f66a2f1252d60968bfb1272edf81403b8498b92"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-08",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 143,
+        "NO_MATCH": 5447,
+        "UNKNOWN": 34,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "454cc385937f371a144f6dd54737198d41b16b65c523d2069dbf2e6b44693297"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-09",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 212,
+        "NO_MATCH": 5379,
+        "UNKNOWN": 33,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "a4435f56eb97c5050ea34ed951dae7ca7217b73367f5663a990c1e2431d52129"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-12",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 154,
+        "NO_MATCH": 5437,
+        "UNKNOWN": 33,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "7657aeda3d739f5d26ef6ca2883972f4877942cf180cda7b261e7c5251f44ad0"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-13",
+        "raw_rows": 5625,
+        "latest_unique": 5625,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 121,
+        "NO_MATCH": 5471,
+        "UNKNOWN": 33,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "e6e302d3a9e0b44d62c214c847b78dd69fde52e9b39a697ebda042037057b3ce"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-14",
+        "raw_rows": 5625,
+        "latest_unique": 5625,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 130,
+        "NO_MATCH": 5464,
+        "UNKNOWN": 31,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "7111927b7f97aceec2f2155d1d9f71879ca89d0245e8c2c1d087ce3ce4225bcd"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-15",
+        "raw_rows": 5626,
+        "latest_unique": 5626,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 46,
+        "NO_MATCH": 5546,
+        "UNKNOWN": 34,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "a0d6e31475af0efbc5021e9ed9c0aa19a7e6d9782014330199e6f76c3bec4dc5"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-16",
+        "raw_rows": 5626,
+        "latest_unique": 5626,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 53,
+        "NO_MATCH": 5539,
+        "UNKNOWN": 34,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "32808ffe16039a0113a00876fb53d001535265c19492a4f98f4785feedbf1162"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-19",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 111,
+        "NO_MATCH": 5481,
+        "UNKNOWN": 32,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "2f65b61502c3bf0640dfc9238704eb250fbc6d92713b9093218d763c3e87bd4f"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-20",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 73,
+        "NO_MATCH": 5521,
+        "UNKNOWN": 30,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "ae88dcd6f4ac4c6d4dd0e54ab88a7260a58464c6b47b84b3335e0810a2cce762"
+        ],
+        "binding_missing": false
+      },
+      {
+        "trade_date": "2026-10-21",
+        "raw_rows": 5624,
+        "latest_unique": 5624,
+        "duplicate_revision_rows_collapsed": 0,
+        "MATCH": 93,
+        "NO_MATCH": 5505,
+        "UNKNOWN": 26,
+        "late": 0,
+        "other_status": {},
+        "rules": [
+          [
+            "SECTOR_STRENGTH_TRANSITION_R1",
+            "1.0.0",
+            "SECTOR"
+          ],
+          [
+            "STOCK_RIGHT_STRUCTURE_EVENT_R1",
+            "1.0.0",
+            "STOCK"
+          ]
+        ],
+        "source_sha256": [
+          "ebbf04acc8c09e5823626c8cafec6490e33af5b215ab768b5761c23ab670de7a"
+        ],
+        "binding_missing": false
+      }
+    ],
+    "settlements": [
+      {
+        "trade_date": "2026-09-28",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 75
+        }
+      },
+      {
+        "trade_date": "2026-09-28",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 74,
+          "SOURCE_GAP": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-28",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 74,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-29",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 90,
+          "SOURCE_GAP": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-29",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 90,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-29",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 88,
+          "SUSPENDED": 3
+        }
+      },
+      {
+        "trade_date": "2026-09-30",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 120,
+          "SOURCE_GAP": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-30",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 120,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-09-30",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 119,
+          "SUSPENDED": 2
+        }
+      },
+      {
+        "trade_date": "2026-10-08",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 135
+        }
+      },
+      {
+        "trade_date": "2026-10-08",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 134,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-08",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 134,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-09",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 151
+        }
+      },
+      {
+        "trade_date": "2026-10-09",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 150,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-09",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 151
+        }
+      },
+      {
+        "trade_date": "2026-10-12",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 151,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-12",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 151,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-12",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 152
+        }
+      },
+      {
+        "trade_date": "2026-10-13",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 113
+        }
+      },
+      {
+        "trade_date": "2026-10-13",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 113
+        }
+      },
+      {
+        "trade_date": "2026-10-13",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 113
+        }
+      },
+      {
+        "trade_date": "2026-10-14",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 130
+        }
+      },
+      {
+        "trade_date": "2026-10-14",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 130
+        }
+      },
+      {
+        "trade_date": "2026-10-14",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "SETTLED": 129,
+          "SUSPENDED": 1
+        }
+      },
+      {
+        "trade_date": "2026-10-15",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 45
+        }
+      },
+      {
+        "trade_date": "2026-10-15",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 45
+        }
+      },
+      {
+        "trade_date": "2026-10-15",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "DUE_SOURCE_NOT_ACCEPTED": 45
+        }
+      },
+      {
+        "trade_date": "2026-10-16",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 51
+        }
+      },
+      {
+        "trade_date": "2026-10-16",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "SETTLED": 51
+        }
+      },
+      {
+        "trade_date": "2026-10-16",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 51
+        }
+      },
+      {
+        "trade_date": "2026-10-19",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 108
+        }
+      },
+      {
+        "trade_date": "2026-10-19",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "DUE_SOURCE_NOT_ACCEPTED": 108
+        }
+      },
+      {
+        "trade_date": "2026-10-19",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 108
+        }
+      },
+      {
+        "trade_date": "2026-10-20",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "SETTLED": 73
+        }
+      },
+      {
+        "trade_date": "2026-10-20",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 73
+        }
+      },
+      {
+        "trade_date": "2026-10-20",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 73
+        }
+      },
+      {
+        "trade_date": "2026-10-21",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 1,
+        "counts": {
+          "DUE_SOURCE_NOT_ACCEPTED": 86
+        }
+      },
+      {
+        "trade_date": "2026-10-21",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 3,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 86
+        }
+      },
+      {
+        "trade_date": "2026-10-21",
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "horizon": 5,
+        "counts": {
+          "PENDING_FUTURE_SESSION": 86
+        }
+      }
+    ],
+    "publish_indexes": [
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 1,
+        "trade_date": "2026-09-28",
+        "payload_sha256": "e8111d105a2e52a2aded23a2a5933b77284662ec9356721d470b74a3746aab6f",
+        "source_run_id": "9859205c942fad9e4095f7edfac6b17b11af84e4c1a2c106e97e3ac99d492d9c",
+        "published_at": "2026-10-22T13:05:35.191228+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 2,
+        "trade_date": "2026-09-29",
+        "payload_sha256": "244b7271202a3ab2a0b1ad43fdbb561ba4c9a7fbca68741b2cf654cf7376dc02",
+        "source_run_id": "77130f32eb68460eeff9cdffc30b4a9ad54e63cac219f2fa98dde5943fc39882",
+        "published_at": "2026-10-22T13:05:35.731756+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 3,
+        "trade_date": "2026-09-30",
+        "payload_sha256": "3df5d6fe15ec00a0a08aced29032b3adaea9cfc9e22577a05384b45f03d96d96",
+        "source_run_id": "b1bd403223d1dbb924668d1e05969ef601f4533e5a2a3755a065c40b787db96b",
+        "published_at": "2026-10-22T13:05:36.328765+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 4,
+        "trade_date": "2026-10-08",
+        "payload_sha256": "47d57d9b37dcc91cd06ecefd9b1427441c6f906be03539727cacd3d53e5743e8",
+        "source_run_id": "3916a879d1d8ba4f96d13d30a22f041f1d485268e13713f2940c86165b8adc8e",
+        "published_at": "2026-10-22T13:05:37.020974+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 5,
+        "trade_date": "2026-10-09",
+        "payload_sha256": "bfb393bac84a60fa7d231348a699fd87bb3415e1550b56a46992f70880435a7d",
+        "source_run_id": "0151c05ec8d0672aa4718b8291621221d195ceabf05e9c543edc26e3af74f458",
+        "published_at": "2026-10-22T13:05:37.644016+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 6,
+        "trade_date": "2026-10-12",
+        "payload_sha256": "f9a9869f1ff42ed06e70f10bbd5126c65fab85b20cd2ae5e7194c83a458f4990",
+        "source_run_id": "457edabcb747b97a8af7c0bd4019687af3db7018dac392759185458649e99810",
+        "published_at": "2026-10-22T13:05:38.770778+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 7,
+        "trade_date": "2026-10-13",
+        "payload_sha256": "482f14c4e59bd7da99188adc8f8660d1e65c2b51cee49b30dd57a9aa2b5daf33",
+        "source_run_id": "08392588afc6be4d932687e374a5d8e8eda9d7898279faa0b03aafc9e83c5949",
+        "published_at": "2026-10-22T13:05:39.639347+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 8,
+        "trade_date": "2026-10-14",
+        "payload_sha256": "4bfc518d91aaae4795527465966a47df1653112d9b6b52e47f0e7fe9abc53674",
+        "source_run_id": "cd8214fead7c3033b18f3a7853d89dbd32b01a85fa17804dd3684aebb39adad4",
+        "published_at": "2026-10-22T13:05:40.500157+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 9,
+        "trade_date": "2026-10-15",
+        "payload_sha256": "dcd1b4ae5c8da216553e802be1c9abe8ee4fbd0ddbbfae5c699ee1e10011c8e2",
+        "source_run_id": "cc5e078661f6c53b10ed6bcd31db6d192c0fa04ffb6fef581e73fd5db5fc7bc4",
+        "published_at": "2026-10-22T13:05:41.572661+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 10,
+        "trade_date": "2026-10-16",
+        "payload_sha256": "39a15118807d58e2a06e3fe054326733153707704508e6a247a7ade6f819ee35",
+        "source_run_id": "8f5efd55447dfab1bc2a896fa9cf73cdc935df1e77450a957739fe05c7b85fb6",
+        "published_at": "2026-10-22T13:05:42.760222+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 11,
+        "trade_date": "2026-10-19",
+        "payload_sha256": "83a51060b16f4c207220d6b47d6fd5e3f779454b91120a79ce5d549acccfa7c6",
+        "source_run_id": "ecc7d5b9cf1ac14b439e7f2a8e1ab819dae4e4f5362e36262a9cd380d9d7687d",
+        "published_at": "2026-10-22T13:05:44.376118+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 12,
+        "trade_date": "2026-10-20",
+        "payload_sha256": "6929d6bdb2b794873b624e5dc4fc02541cac8b6ea6a075db5b3094d8b373c3ab",
+        "source_run_id": "606bf0d366d30aa3e7d1663a73fead7a4a0b96ca21d49c052562ddaef4e45d6b",
+        "published_at": "2026-10-22T13:05:45.392667+00:00"
+      },
+      {
+        "lane": "RETROSPECTIVE_RESEARCH",
+        "generation": 13,
+        "trade_date": "2026-10-21",
+        "payload_sha256": "bc42ac4f77e4638c897c7305f8afd0220a4609ef10304d17629a7e75d36ea118",
+        "source_run_id": "fcb92f4551725a306644a588de987c79c513d056dbbd49980e12f7928b25495e",
+        "published_at": "2026-10-22T13:05:46.586170+00:00"
+      }
+    ],
+    "fact_counts": {
+      "daily_bundles": 13,
+      "settlement_bundles": 13,
+      "publish_indexes": 13,
+      "aggregate_rows": 13
+    },
+    "kind_counts": [
+      [
+        "adjusted",
+        4
+      ],
+      [
+        "base_profile",
+        8
+      ],
+      [
+        "core",
+        8
+      ],
+      [
+        "diagnostic",
+        8
+      ],
+      [
+        "events",
+        8
+      ],
+      [
+        "focus",
+        8
+      ],
+      [
+        "forward",
+        8
+      ],
+      [
+        "lifecycle",
+        8
+      ],
+      [
+        "market",
+        8
+      ],
+      [
+        "period_adjusted",
+        4
+      ],
+      [
+        "period_raw",
+        4
+      ],
+      [
+        "prewatch",
+        8
+      ],
+      [
+        "profile",
+        8
+      ],
+      [
+        "r7_aggregate_stats",
+        13
+      ],
+      [
+        "r7_daily_universe",
+        13
+      ],
+      [
+        "r7_definition_byte_identity",
+        1
+      ],
+      [
+        "r7_fep_projection",
+        3
+      ],
+      [
+        "r7_pipeline_run",
+        13
+      ],
+      [
+        "r7_publish_index",
+        13
+      ],
+      [
+        "r7_settlement_aggregate",
+        39
+      ],
+      [
+        "r7_settlement_schedule",
+        13
+      ],
+      [
+        "r7_signal_definition",
+        2
+      ],
+      [
+        "raw",
+        8
+      ],
+      [
+        "reference_current_identity",
+        3
+      ],
+      [
+        "reference_identity",
+        3
+      ],
+      [
+        "reference_memberships",
+        3
+      ],
+      [
+        "reference_search_identity",
+        3
+      ],
+      [
+        "relative_sector",
+        8
+      ],
+      [
+        "rotation",
+        8
+      ],
+      [
+        "sector",
+        8
+      ],
+      [
+        "sector_receipt",
+        8
+      ],
+      [
+        "seed",
+        8
+      ],
+      [
+        "special_phase",
+        8
+      ]
+    ],
+    "uniqueness_method": "latest revision keyed by (T0,evidence_lane,rule_id,rule_version,entity_id); settlement latest by (lane,observation_id,horizon_sessions).",
+    "rows_collapsed_as_revision_duplicates": 0,
+    "total_late_observed_not_pit": 0,
+    "source_bindings_missing": false,
+    "NON_PIT": true,
+    "settlement_contract": "Only accepted source observations settle; SOURCE_GAP/SUSPENDED/DUE_SOURCE_NOT_ACCEPTED/PENDING_FUTURE_SESSION remain explicit. No null coerced to zero.",
+    "UI_caveat": "Home and Forward totals observed at 73115; Focus settlement/FEP widgets failed to load; market/global parity filters and CSV export replay not comprehensively verified."
+  },
+  "R4_C": {
+    "disposition": "CODE_FIXED_TARGETED_TEST_PASS_REAL_CLOCK_WAIT",
+    "root_cause": "operational_daily_owner_v1.seal compares exact lifecycle active ids with profile owner status ids; r43_structure_replay previously emitted status rows only for identities present in core factors, omitting lifecycle-active identities with no core/profile history. Actual bars remain separately conserved from ACTUAL_TRADED source counts.",
+    "fix_files": [
+      "src/workbench_analysis/r43_structure_replay.py",
+      "src/workbench_analysis/operational_owner_adapter_v1.py",
+      "tests/test_forward_lane_lifecycle_conservation.py"
+    ],
+    "fix": "append lifecycle-only identities into dated status projection with sourced ACTUAL_TRADED/SUSPENDED/DATA_GAP or UNKNOWN; actual_bar_present only true for ACTUAL_TRADED; duplicate IDs/date mismatch fail closed; no bars fabricated or identities deleted.",
+    "targeted_tests": {
+      "command": "E:\\python\\python.exe -m pytest -q tests\\test_forward_lane_lifecycle_conservation.py",
+      "result": "2 passed in 0.60s"
+    },
+    "frozen_capture_replay": "Not rerun end-to-end; no 10/22 first-capture eligibility. 28766 focus DOM reports first capture absent/not admitted; no LIVE_OOS promotion.",
+    "PG_fixture": "Not executed; status remains PARTIAL pending a source-replay PG fixture/readback."
+  },
+  "R4_D": {
+    "disposition": "PARTIAL",
+    "ui": {
+      "base_url": "http://127.0.0.1:28766/v4/research",
+      "snapshot_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
+      "context_trade_date": "2026-10-21",
+      "entries": [
+        {
+          "name": "home",
+          "path": "/home",
+          "dom_status": "loaded",
+          "observed": [
+            "股票5224",
+            "行业与概念400",
+            "事件雷达413（明确非正式Priority）",
+            "历史研究观察73115",
+            "到期结算3260",
+            "轮动Owner 400/400"
+          ],
+          "actual_value": "Cross-domain counts and identified fail-closed state for online first capture."
+        },
+        {
+          "name": "market",
+          "path": "/market",
+          "dom_status": "partial",
+          "observed": [
+            "正式市场四轴未发布",
+            "market breadth/index/limits widgets show 筛选参数无效"
+          ],
+          "api_evidence": {
+            "status": 400,
+            "code": "INVALID_OPERATIONAL_QUERY",
+            "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH"
+          }
+        },
+        {
+          "name": "sectors",
+          "path": "/sectors",
+          "dom_status": "loaded_but_partial",
+          "observed": [
+            "sector table populated with real 10/21 TDX industry rows and member counts",
+            "maturity/health fields show UNKNOWN: sector lifecycle pg owner unavailable"
+          ],
+          "example": "煤炭 INDUSTRY:T0101; mapped/source members 32/32; 20-session RS 9.524 (research proxy)"
+        },
+        {
+          "name": "stocks",
+          "path": "/stocks",
+          "dom_status": "loaded_but_partial",
+          "observed": [
+            "real stock rows and prices rendered",
+            "qualification fields UNKNOWN because formal operational source unpublished"
+          ],
+          "example": "三一重能 SH.688349 close 13.580; qualification UNKNOWN"
+        },
+        {
+          "name": "focus",
+          "path": "/focus",
+          "dom_status": "partial",
+          "observed": [
+            "reconstructed read-only focus events populated",
+            "first capture not admitted; 2026-10-22 T0 capture missing; historical candidates excluded from formal queue",
+            "Forward settlement and FEP sections show connection interrupted"
+          ]
+        },
+        {
+          "name": "forward",
+          "path": "/forward",
+          "dom_status": "partial",
+          "observed": [
+            "historical sample 73115",
+            "online first capture WAIT_REAL_FIRST_CAPTURE",
+            "settled aggregate 3260",
+            "date/rule/status filters and pagination visible; first page 5624 for 10/21"
+          ]
+        }
+      ],
+      "dom_notes": "Full visible DOM was read from the browser tab using accessibility snapshots / rendered body text; no screenshot file was retained. Browser was locally bound to 28766; 28765 was not used."
+    },
+    "transport_api_checks": {
+      "home": 200,
+      "stocks": 200,
+      "sectors": 200,
+      "focus": 200,
+      "forward_statistics": 200,
+      "market_breadth": {
+        "http": 400,
+        "code": "INVALID_OPERATIONAL_QUERY",
+        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH"
+      }
+    },
+    "data_facts": {
+      "context_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
+      "context_date": "2026-10-21",
+      "home_stocks": 5224,
+      "home_sectors": 400,
+      "home_radar_events": 413,
+      "forward_historical": 73115,
+      "forward_matured_settlement": 3260,
+      "sector_rows": 400,
+      "stock_rows": 5224,
+      "focus_events": 413
+    },
+    "actual_fail_closed_observations": [
+      "Market breadth/index/limits endpoint reports candidate product/head binding mismatch and is not substituted with another date.",
+      "Sector lifecycle maturity/health is UNKNOWN while PG owner is unavailable.",
+      "Focus first-capture queue explicitly not admitted and missing T0 receipt; settlement/FEP section connection errors.",
+      "Forward first-capture stays WAIT_REAL_FIRST_CAPTURE."
+    ],
+    "not_verified": [
+      "10/19->10/20->10/21 UI date-switch round trip",
+      "searching both SH.601059 and SH.601198 through visible stock filter",
+      "CSV export download data equality",
+      "full Priority 8/400 rejection accounting",
+      "all detail and D/W/M RAW/QFQ paths with captured owner/source SHA"
+    ],
+    "screenshots": [],
+    "visible_dom_capture": "Browser accessibility/visible DOM captured for all six routes; descriptions stored in report. No binary screenshot was created."
+  },
+  "R4_E": {
+    "disposition": "PARTIAL",
+    "completed": [
+      "no 10/22 source was used or synthesized",
+      "old 10/19 and 10/20/10/21 immutable owners retained",
+      "prior 10/20 D0 correct aggregate preserved per stored R3 evidence: 141 TRUE / 5033 FALSE / 52 UNKNOWN",
+      "source replacement, PG failure injection, CAS/LAST_GOOD, and comprehensive P95 not run"
+    ],
+    "performance": null
+  },
+  "code_and_ci": {
+    "git_diff_check": "PASS",
+    "targeted_regression": "PASS 2/2",
+    "full_ci": "NOT_RUN",
+    "successful_github_workflow": "NOT_VERIFIED"
+  },
+  "provenance": {
+    "forward_audit_script": "G:/codex_tmp/batch10_r4_forward_audit.py",
+    "forward_audit_output": "G:/codex_tmp/batch10_r4_forward_audit_output.txt",
+    "semantic_comparison": "G:/codex_tmp/batch10_r4_semantic_comparison.txt",
+    "predecessor_comparison": "G:/codex_tmp/batch10_r4_predecessor_comparison.json",
+    "dev_service_script": "G:/codex_tmp/batch10r2_28766_1021_d778.py",
+    "raw_screenshots": []
+  }
+}

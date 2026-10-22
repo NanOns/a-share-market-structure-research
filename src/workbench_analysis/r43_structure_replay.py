@@ -28,6 +28,41 @@ def gzwrite(root,path,rows):
     return base_gzwrite(root,path,rows)
 
 
+def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
+    """Retain every source-active identity in the dated status projection.
+
+    Core/profile rows can be smaller than the source lifecycle universe (for
+    example, a newly listed identity without enough history).  Such identities
+    still need an explicit status row, sourced from the lifecycle snapshot;
+    they must not be dropped or assigned a fabricated bar.
+    """
+    by_id={}
+    for row in statuses:
+        sid=str(row.get('security_id') or '')
+        if not sid or sid in by_id:
+            raise ValueError('LIFECYCLE_STATUS_IDENTITY_DUPLICATE_OR_EMPTY')
+        by_id[sid]=row
+    lifecycle_by_id={}
+    for row in lifecycle_rows:
+        sid=str(row.get('security_id') or '')
+        if not sid or sid in lifecycle_by_id or row.get('trade_date')!=trade_date:
+            raise ValueError('LIFECYCLE_SOURCE_IDENTITY_DUPLICATE_OR_DATE_MISMATCH')
+        lifecycle_by_id[sid]=row
+    for sid,row in lifecycle_by_id.items():
+        if sid in by_id:
+            continue
+        source_status=row.get('status')
+        if source_status not in {'ACTUAL_TRADED','SUSPENDED','DATA_GAP'}:
+            source_status='UNKNOWN'
+        by_id[sid]=dict(security_id=sid,trade_date=trade_date,
+            actual_bar_present=source_status=='ACTUAL_TRADED',status=source_status,
+            status_conflict=False,lifecycle_only=True,
+            reason='SOURCE_ACTIVE_WITHOUT_CORE_PROFILE_HISTORY')
+    if set(by_id)!=set(lifecycle_by_id):
+        raise ValueError('FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED')
+    return [by_id[sid] for sid in sorted(by_id)]
+
+
 class CorrectedBinder(EpisodeBinder):
     """Bind only saved, hash-verified corrected outputs; never calculate factors here."""
     def __init__(self, contracts, day, cutoff, owner, profiles, status_rows):
@@ -109,7 +144,8 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
         self.engineering_empty_seed=False
 
 
-def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None):
+def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_ids=None, progress_counter=None,
+                                   lifecycle_rows=None,lifecycle_trade_date=None):
     root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
     write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.3',
@@ -155,6 +191,8 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
             r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else verified_status.get((sid,day),'UNKNOWN'),status_conflict=False))
+        if lifecycle_rows is not None and day==lifecycle_trade_date:
+            statuses=conserve_lifecycle_status_rows(statuses,lifecycle_rows,trade_date=day)
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))
         engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
         results=[]

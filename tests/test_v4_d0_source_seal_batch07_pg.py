@@ -2,6 +2,7 @@
 from datetime import datetime
 import hashlib
 import json
+import pytest
 
 from workbench_analysis.d0_source_seal_r1 import (
     d0_publication_matches_contract, evaluate_d0_source_seal,
@@ -111,6 +112,18 @@ class _ReceiptLookup:
         return [row for row in self.rows if row[1]==self.params[1]]
 
 
+class _DatedReceiptLookup:
+    def __init__(self,rows):self.rows=rows;self.params=None
+    def execute(self,query,params):
+        self.params=params
+        assert 'WHERE trade_date=%s AND source_sha256=%s' in query
+        return self
+    def fetchall(self):
+        return [entry['row'] for entry in self.rows
+            if entry['trade_date']==self.params[0].isoformat()
+            and entry['row'][1]==self.params[1]]
+
+
 def _freeze_candidate(tmp_path):
     artifact=tmp_path/'ingress.json';artifact.write_bytes(b'bound real source bytes')
     package_sha='a'*64
@@ -125,14 +138,36 @@ def _freeze_candidate(tmp_path):
     return candidate,binding,receipt
 
 
-def test_source_ingress_joins_candidate_freeze_not_latest_receipt(tmp_path):
-    candidate,binding,exact=_freeze_candidate(tmp_path)
-    newer=('TDX_CONTRACT','b'*64,*exact[2:])
-    pg=_ReceiptLookup([newer,exact])
-    freeze,receipt=_exact_source_ingress(pg,tmp_path,candidate,TRADE_DATE,binding['sha256'])
+@pytest.mark.parametrize('trade_date,package_sha', [
+    ('2026-10-15', 'a'*64),
+    ('2026-10-16', 'b'*64),
+    ('2026-10-19', 'c'*64),
+    ('2026-11-02', 'd'*64),
+])
+def test_source_ingress_joins_each_candidate_freeze_not_latest_or_same_day_receipt(
+        tmp_path, trade_date, package_sha):
+    artifact=tmp_path/f'ingress-{trade_date}.json'
+    artifact.write_bytes(('bound source '+trade_date).encode())
+    freeze={'target_session':trade_date,'effective_package':{
+        'contract_id':'TDX_CONTRACT','provider_package_date':trade_date,
+        'download':{'sha256':package_sha,'target_date':trade_date}}}
+    raw=json.dumps(freeze,separators=(',',':')).encode()
+    freeze_path=tmp_path/f'freeze-{trade_date}.json';freeze_path.write_bytes(raw)
+    binding={'path':freeze_path.name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}
+    candidate={'accepted_trade_date':trade_date,'source_registry':{trade_date:{'freeze':binding}}}
+    exact=('TDX_CONTRACT',package_sha,trade_date,'2026-10-21T17:35:26+08:00',
+        'CAPTURED_AS_RECORDED','CAPTURED_AS_RECORDED',str(artifact),
+        hashlib.sha256(artifact.read_bytes()).hexdigest(),artifact.stat().st_size,
+        '2026-10-21T17:44:42+08:00')
+    # Same-day unrelated package and a later-session receipt must not shadow
+    # the freeze-bound source. The lookup applies both date and package SHA.
+    decoys=[dict(trade_date=trade_date,row=('TDX_CONTRACT','e'*64,*exact[2:])),
+        dict(trade_date='2099-12-31',row=exact)]
+    pg=_DatedReceiptLookup([dict(trade_date=trade_date,row=exact),*decoys])
+    freeze,receipt=_exact_source_ingress(pg,tmp_path,candidate,trade_date,binding['sha256'])
     assert receipt==exact
-    assert freeze['target_session']==TRADE_DATE
-    assert pg.params==(datetime.fromisoformat(TRADE_DATE).date(), 'a'*64)
+    assert freeze['target_session']==trade_date
+    assert pg.params==(datetime.fromisoformat(trade_date).date(),package_sha)
 
 
 def test_duplicate_exact_ingress_receipts_fail_closed(tmp_path):

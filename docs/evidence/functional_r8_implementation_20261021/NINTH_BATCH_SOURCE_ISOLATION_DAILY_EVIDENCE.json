@@ -1842,5 +1842,23 @@
     "R8/D0 superseding publication is not yet made for the full 5,226-row 10/20 recompute; downstream Priority has not been accepted",
     "no same-day frozen CSRC sector-membership receipt is available for 10/20; sector-derived values remain UNKNOWN",
     "28766 remains on the prior 10/21 token; same-token routes are not verified against this recompute"
-  ]
+  ],
+  "generalization_validation": {
+    "contract": "CANDIDATE_DATE_AND_EXACT_SOURCE_IDENTITY_DRIVEN",
+    "hardcoded_trade_date_in_repaired_contract_paths": false,
+    "source_ingress_selection": "candidate source_registry[trade_date].freeze -> exact package date + package SHA -> unique receipt -> artifact SHA/bytes rehash",
+    "membership_authority_selection": "candidate accepted_trade_date + exact membership snapshot; stale predecessor T0 fails closed",
+    "regression_dates": [
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-22",
+      "2026-11-02"
+    ],
+    "focused_test_command": "pytest tests/test_v4_d0_source_seal_batch07_pg.py tests/test_operational_successor_membership_scope.py tests/test_v4_d0_source_seal_r1.py tests/test_corrected_owner_replay_r4.py tests/test_corrected_focus_replay_formal_d0.py -q",
+    "focused_test_result": "45 passed",
+    "unknown_policy": "Do not infer absent source rows or create synthetic values; unresolved values remain UNKNOWN with their exact missing-source reason."
+  }
 }

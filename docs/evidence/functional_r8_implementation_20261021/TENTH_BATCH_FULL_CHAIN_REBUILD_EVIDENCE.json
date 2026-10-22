@@ -362,7 +362,7 @@
         97
       ]
     ],
-    "independent_readback_status": "PG_BINDING_INVALID",
+    "independent_readback_status": "PG_BINDING_INVALID_SOURCE_BYTE_MISMATCH",
     "readback_rows": [
       10452,
       10448,
@@ -391,7 +391,33 @@
         "UNKNOWN": 49
       }
     },
-    "corrected_d0_published": false
+    "corrected_d0_published": false,
+    "source_byte_mismatches": {
+      "2026-10-16": [
+        {
+          "role": "D0_PG_OWNER_PUBLICATION_PRODUCER",
+          "bound_sha256": "bcd4ec6ec2c6fa46da4cdfcb8feb1dd0047822d3adb5d17065021f5ead732861",
+          "current": {
+            "path": "src/workbench_analysis/d0_source_seal_r2.py",
+            "current_sha256": "a26bf2e48c372fd996584c568abe5f5ee77c6b0bd925bf4da49767dbb0f292ba",
+            "current_bytes": 45472
+          }
+        }
+      ],
+      "all_four_dates": [
+        {
+          "role": "SCENARIO_DETECTOR",
+          "bound_sha256": "d78f226caca4765cb1f2746d586fc12ac63f3295a94438c619c920eb582d05d3",
+          "current": {
+            "path": "src/workbench_analysis/corrected_focus_replay.py",
+            "current_sha256": "597308d10b0c541b43c1a257fd9ef33dea7f18f84cc799594e85b825c1441a4d",
+            "current_bytes": 16864
+          }
+        }
+      ],
+      "other_checked_closures": "fact digests, exact SourceIngress match, time chain, closure fingerprints, D0 permissions and row counts passed; byte identity remains a hard binding check."
+    },
+    "root_cause": "Old immutable D0 publications bind producer/detector source bytes that differ from current checked-out bytes. The verifier correctly fails closed; a superseding source-bound publication is required."
   },
   "corrected_numeric_candidates": {
     "2026-10-20": {

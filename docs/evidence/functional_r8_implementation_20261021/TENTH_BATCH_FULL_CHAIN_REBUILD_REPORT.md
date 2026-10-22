@@ -18,7 +18,7 @@
 |---|---|---|
 | P0-A 来源与日期成员 | `PARTIAL` | 10/16 现存 R8 Owner token 为 `33cf6cdb…b5fc440`，其候选成员引用仍有日期范围问题。ReadIndex 配置记录过 superseding token `ab13eb13…694ea6`，但 PG 无对应 R8 发布；后续日期仍以旧 10/16 token 为 predecessor。|
 | P0-B Core/因子/周期/Profile | `PARTIAL` | 10/20 的完整 5,226 行 corrected Core 对照有 5,202 个 RPS5-delta 精确匹配、24 个端点 UNKNOWN、0 个数值差异；仍是候选文件。缺少四日全因子族质量分母表及 10/21 同版 PG/页面读回。|
-| P0-C D0/D2/Focus/Forward/Priority | `PARTIAL` | 正式两场景重算候选计数：10/16 `90/5084/52`、10/19 `152/5018/54`、10/20 `141/5033/52`、10/21 `99/5076/49`（TRUE/FALSE/UNKNOWN）。开发 PG 当前发布仍绑旧 token；最新独立 D0 PG 读回为 `PG_BINDING_INVALID`。D2 失效价位依合同要求继续 `CONTRACT_BLOCKED`；Forward 统计 Owner 缺失。|
+| P0-C D0/D2/Focus/Forward/Priority | `PARTIAL` | 正式两场景重算候选计数：10/16 `90/5084/52`、10/19 `152/5018/54`、10/20 `141/5033/52`、10/21 `99/5076/49`（TRUE/FALSE/UNKNOWN）。开发 PG 当前发布仍绑旧 token；最新独立 D0 PG 读回为 `PG_BINDING_INVALID`：10/16 的旧 Owner Publisher 源码和四日 `SCENARIO_DETECTOR` 都与当前源码字节不一致。其余事实摘要、来源入口、时间链、闭包、权限及行数检查通过；校验器按源码绑定 fail-closed，须由新候选以当前源码生成并重发，不能改写旧绑定。D2 失效价位依合同要求继续 `CONTRACT_BLOCKED`；Forward 统计 Owner 缺失。|
 | P0-D Market/Sector/Rotation/RS | `PARTIAL` | 页面 Market 为 `SOURCE_INCOMPLETE`；首页当前板块总数 400、Priority 可排名 8。任务要求的指数历史参考、宽度/趋势及板块来源同版验证没有完成；缺失来源不能用 CSRC 替代 TDX 行业/概念成员。|
 | P0-E PG 发布 / 28766 六入口 | `FAIL` | PG R8 发布仍为 10/16 `33cf…`、10/19 `f9c4…`、10/20 `dba3…`、10/21 `c8b6…`。六入口 API 的网络层都 200，但全部返回旧 token；纠正结果未在页面消费。|
 | P1 故障注入 / 性能 | `NOT_RUN` | 正确性候选尚未在统一新 token 页面链生效，本轮未启动压测或故障注入。|

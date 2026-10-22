@@ -34,7 +34,7 @@
 | M1 10/16 日期成员修复与 R8/D0 | **PASS** | 10/16 新 Token `57b1…e1bcc` 的 R8 与 D0 在开发 PG 发布；D0 5,226 行，TRUE 90 / FALSE 5,084 / UNKNOWN 52。独立限制 reader 回读 10,452 facts，digest PASS。 |
 | M2 前态顺序重建 10/19—10/21 | **PARTIAL** | 三日 Owner/Core/可计算因子/Profile/Market/Sector/D0/D2/Focus/Forward 与 R8/D0 发布均执行；三个日期的数值 oracle 分别 292,516 checks、0 errors；10/20、10/21 ReadIndex 与 Priority 已生成（10/21 Priority 股票 936/5,224、板块 8/400 可排名）。10/19 ReadIndex 因版本内缺少 `native_membership_reference`，返回 `NATIVE_IDENTITY_REFERENCE_REQUIRED_NO_FALLBACK`；不能在不改变 Token 的情况下补写候选绑定，因此 M2 不能全通过。 |
 | M3 28766 同版本六入口业务验收 | **PARTIAL** | 服务 Preview Token 为 `d778…368a5`；Context/Home/Stocks(5,224)/Sectors(400)/Focus(3,929)/Forward/Priority API 响应 Token 一致。搜索 600703 返回 1 项，煤炭搜索返回 2 项，`type=INDUSTRY` 返回 132 项。Forward 历史与 live 均 0 项，Home 标记 `DATA_MISSING`。首轮发现旧市场包后，已重建精确绑定当前 Head 的只读 PG 产品包，市场 breadth/indices/limits/ladders 四 API 均 READY；业务值为涨 1,935 / 跌 3,061 / 平 220 / 未知 8（分母 5,224，实际行情 5,216，成交额 CNY 1,429,171,847,255.75）、指数 5 项、涨停 50 / 跌停 5 / 停牌 8 / 未知 18、梯队 50。10/20 行读取虽为 10/20，响应上下文仍是 10/21 Token。API 层六入口业务值已有同 Token 读回，但没有完成用户要求的可见页面验收与日期周期交互验收。 |
-| M4 独立发布与恢复演练 | **PARTIAL** | 四日 D0 限制 reader 独立读回全部 PASS；R8/D0 发布及 G1-G3/CAS rollback 演练已记录通过；10 项针对性 pytest 通过。post-insert 故障注入、完整部分链恢复、混合日期拒绝演练、双轮服务性能验收及可见浏览器页面验收未完成。 |
+| M4 独立发布与恢复演练 | **PARTIAL** | 四日 D0 限制 reader 独立读回全部 PASS；R8/D0 发布及 G1-G3/CAS rollback 演练已记录通过；11 项针对性 pytest 通过。post-insert 故障注入、完整部分链恢复、混合日期拒绝演练、双轮服务性能验收及可见浏览器页面验收未完成。 |
 
 ## 服务、数据库与保护边界
 
@@ -49,6 +49,6 @@
 
 - `src/workbench_analysis/r43_owner_replay.py`：目标日期 QFQ 坐标下重算 RPS delta 的精确端点横截面。
 - `src/workbench_analysis/operational_daily_owner_v1.py`：Owner generation key 纳入实际 Core producer；缓存日期齐全时不触发不必要的 provider 登录。
-- 回归命令：`$env:TMP='G:\codex_tmp'; $env:TEMP='G:\codex_tmp'; $env:TMPDIR='G:\codex_tmp'; $env:PYTHONPATH='src'; python -m pytest -q tests\test_d0_immutable_source_archive_r2.py tests\test_core_product_candidate_pack_r2.py tests\test_v4_exact_policy_immutable_binding.py tests\test_operational_runtime_acceptance_v2.py`
-- 本次结果：`10 passed in 1.09s`；`git diff --check` 通过。
+- 回归命令：`$env:TMP='G:\codex_tmp'; $env:TEMP='G:\codex_tmp'; $env:TMPDIR='G:\codex_tmp'; $env:PYTHONPATH='src'; python -m pytest -q tests\test_d0_immutable_source_archive_r2.py tests\test_core_product_candidate_pack_r2.py tests\test_v4_exact_policy_immutable_binding.py tests\test_operational_runtime_acceptance_v2.py tests\test_r43_target_coordinate_rps_delta.py`
+- 本次结果：`11 passed in 0.93s`；`git diff --check` 通过。
 - API、PG 限制 reader、端口、Token、hash 与保留边界的机器可读明细见 `BATCH10_R2_EXECUTION_REPAIR_EVIDENCE.json`。

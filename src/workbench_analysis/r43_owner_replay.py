@@ -109,6 +109,11 @@ def midrank(returns, members):
                  .5*(bisect.bisect_right(values,returns[s])-bisect.bisect_left(values,returns[s])-1))/(n-1) for s in members}
 
 
+def rank_exact_endpoint_rps(returns, endpoint_members):
+    """Rank endpoint returns against that endpoint's exact dated membership."""
+    return midrank(returns, set(endpoint_members))
+
+
 def progress_items(rows, callback, *, coordinate_endpoint=None, phase=None, clock=None):
     """Report completed loop work in bounded batches; never alter numeric rows."""
     if callback is None:
@@ -314,11 +319,11 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
                 sample.append(dict(security_id=sid,code=code,bars=bs[-22:],events=[dict(date=e.event_date,category=e.category) for e in events[code] if e.event_date<=int(target.replace('-',''))][-10:]))
         factorby={r['security_id']:r for r in rows}
         for h in (5,20):
-            scores=midrank({s:r['fields'][f'ret{h}']['value'] for s,r in factorby.items()},members)
+            scores=rank_exact_endpoint_rps({s:r['fields'][f'ret{h}']['value'] for s,r in factorby.items()},members)
             rps[target,h]=scores
             for sid,row in factorby.items():row['fields'][f'rps{h}']=dict(value=scores.get(sid),quality_state='OBSERVED' if scores.get(sid) is not None else 'UNKNOWN',unknown_reason=None if scores.get(sid) is not None else 'RETURN_OR_UNIVERSE_UNKNOWN',contract_id='RPS_MIDRANK_V1',denominator=sum(v is not None for v in scores.values()))
             for endpoint in endpoint_dates:
-                rps[endpoint,h]=midrank(endpoint_returns[(endpoint,h)],endpoint_members[endpoint])
+                rps[endpoint,h]=rank_exact_endpoint_rps(endpoint_returns[(endpoint,h)],endpoint_members[endpoint])
         if target not in dates:continue
         for h in (1,3,5):
             start=sessions[sessions.index(target)-h];start_members=dated_identity.get(start,set())

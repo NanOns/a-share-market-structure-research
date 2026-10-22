@@ -264,6 +264,24 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertTrue(indexed['production_accepted'])
         self.assertTrue(indexed['context']['formal_head_match'])
 
+    def test_dated_product_envelope_separates_snapshot_and_historical_data_context(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        bff=object.__new__(CoreProductBFFR1)
+        bff.api=SimpleNamespace(token='snapshot-token',candidate={
+            'accepted_trade_date':'2026-10-21',
+            'owners':{'2026-10-20':{'core':{'sha256':'dated-owner-sha'}}}})
+        bff._get_dated_product=lambda _path,_query:(200,{
+            'context_token':'snapshot-token',
+            'context':{'trade_date':'2026-10-21','accepted_trade_date':'2026-10-21'},
+            'items':[{'trade_date':'2026-10-20'}]})
+        code,payload=bff.get('/api/v4/stocks',{
+            'trade_date':'2026-10-20','context_token':'snapshot-token'})
+        self.assertEqual(code,200)
+        self.assertEqual(payload['snapshot_context_token'],'snapshot-token')
+        self.assertEqual(payload['snapshot_context_trade_date'],'2026-10-21')
+        self.assertEqual(payload['data_trade_date'],'2026-10-20')
+        self.assertEqual(payload['dated_owner_bindings'],{'core':{'sha256':'dated-owner-sha'}})
+
     def test_legacy_r1_home_is_explicitly_marked_for_compatibility(self):
         legacy = {
             'read_index_status': 'LEGACY_R1_AUTHORITY_ONLY',

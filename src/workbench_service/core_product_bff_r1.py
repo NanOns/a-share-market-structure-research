@@ -928,6 +928,27 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 items=None,total=None,write_authorized=False)
 
     def get(self,path,query):
+        """Bind every dated product response to both snapshot and data dates.
+
+        ``context_token`` identifies the candidate snapshot, while historical
+        rows are read from a date-scoped Owner. Keeping these identities
+        separate prevents clients from treating the snapshot date as the row
+        date when switching dates, paging, searching, or opening details.
+        """
+        code,payload=self._get_dated_product(path,query)
+        if not isinstance(payload,dict):
+            return code,payload
+        day=query.get('trade_date',self.api.candidate['accepted_trade_date'])
+        context=payload.get('context')
+        if isinstance(context,dict):
+            payload=dict(payload)
+            payload['snapshot_context_token']=payload.get('context_token',self.api.token)
+            payload['snapshot_context_trade_date']=context.get('trade_date',context.get('accepted_trade_date'))
+            payload['data_trade_date']=day
+            payload['dated_owner_bindings']=self.api.candidate.get('owners',{}).get(day,{})
+        return code,payload
+
+    def _get_dated_product(self,path,query):
         import time
         request_started=time.perf_counter();priority_timing={}
         from workbench_db.v4_read_index_r2 import validate_query

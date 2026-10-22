@@ -1,0 +1,84 @@
+{
+  "contract_id": "BATCH10-R3-FOUR-GAPS-REPAIR/R1",
+  "execution_date": "2026-10-22",
+  "timezone": "Asia/Shanghai",
+  "branch": "codex/v4-unified-development",
+  "requested_audit_baseline": "5cfa4c5e9793538a640749d39cf50dbe39acc8c5",
+  "pre_execution_head": "5cfa4c5e9793538a640749d39cf50dbe39acc8c5",
+  "remote_head_at_start": "5cfa4c5e9793538a640749d39cf50dbe39acc8c5",
+  "phase0": "DEGRADED_PASS",
+  "overall_status": "BATCH10_R3_PARTIAL",
+  "upgrade_documents_consulted": [
+    "docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md",
+    "docs/evidence/functional_r8_implementation_20261021/S00_S06_P_S05_D_PREPARATION.md",
+    "docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md",
+    "AGENTS.md"
+  ],
+  "code_changes": {
+    "src/workbench_service/core_product_bff_r1.py": "Wraps dated product responses with snapshot_context_token, snapshot_context_trade_date, data_trade_date, and dated_owner_bindings when a context is present.",
+    "tests/test_v4_ux_r2_contract.py": "Regression test distinguishes the 10/21 snapshot context from a 10/20 historical payload and checks 10/20 Owner bindings."
+  },
+  "tests": {
+    "command": "python -m pytest -q tests\\test_v4_ux_r2_contract.py",
+    "result": "26 passed in 0.23s",
+    "git_diff_check": "PASS"
+  },
+  "api_readback": {
+    "service": "127.0.0.1:28766",
+    "production_port_28765_listener": false,
+    "database": "127.0.0.1:5432/market_research",
+    "read_only_http": true,
+    "route": "/api/v4/stocks?trade_date=2026-10-20&context_token=d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5&limit=2&offset=0",
+    "status": "READY",
+    "snapshot_context_token": "d778e5e80eb47a52b45942d43cafe189f2757b9492d11e38b5cf08a103f368a5",
+    "snapshot_context_trade_date": "2026-10-20",
+    "data_trade_date": "2026-10-20",
+    "row_dates": ["2026-10-20", "2026-10-20"],
+    "total": 5224,
+    "dated_owner_bindings_present": true,
+    "new_dated_owner_token_chain_published": false
+  },
+  "direct_pg_readback": {
+    "database": "127.0.0.1:5432/market_research",
+    "reader_mode": "read-only",
+    "query_scope": "ReadIndex authority for context token d778e5e…368a5 and T0 2026-10-20",
+    "result": "READ_INDEX_DATE_NOT_PREPARED",
+    "new_pg_publication_or_readback": false
+  },
+  "visible_ui": {
+    "tool": "cua_repl in-app browser",
+    "url": "http://127.0.0.1:28766/v4?trade_date=2026-10-20&offset=0",
+    "date_selector_changed": true,
+    "header_research_date": "2026-10-20",
+    "body_state": "STUCK_LOADING_RESEARCH_DATA",
+    "acceptance": "PARTIAL",
+    "safety_policy_denial": false,
+    "screenshot_observed": true
+  },
+  "milestones": {
+    "readindex_1019_identity_and_1020_1021_rebase": "PARTIAL",
+    "rps5_delta3_full_5226_d0_owner_pg_publish_readback": "OPEN",
+    "forward_lane_h": "OPEN",
+    "forward_lane_l": "WAIT_REAL_FIRST_CAPTURE",
+    "historical_date_context_token_owner_consistency": "PARTIAL",
+    "visible_ui_acceptance": "PARTIAL"
+  },
+  "preservation": {
+    "historical_non_pit_rewritten": false,
+    "formal_head_modified": false,
+    "production_28765_touched": false,
+    "drop_or_delete_used": false,
+    "synthetic_forward_first_capture_created": false,
+    "unrelated_untracked_paths_preserved": [".githooks/", "config_back/", "script_back/"]
+  },
+  "source_notes": {
+    "r2_rps5_independent_rows": 5226,
+    "r2_rps5_exact": 5202,
+    "r2_rps5_unknown": 24,
+    "r2_formal_d0_join_rows": 5224,
+    "missing_formal_d0_rows": 2,
+    "forward_historical_and_live_rows_observed_in_r2": 0,
+    "forward_source": "docs/evidence/functional_r8_implementation_20261021/BATCH10_R2_EXECUTION_REPAIR_EVIDENCE.json"
+  },
+  "next_stage": "Complete source and identity closure before rebuilding sequential dated candidate tokens, publishing complete 10/20 D0, and re-running full PG/API/UI acceptance."
+}

@@ -84,6 +84,7 @@ def main() -> None:
         "read_index": {
             "authority_contract": "V4_READ_INDEX_AUTHORITY_R2",
             "authority_binding_file": "G:/codex_tmp/v4_daily_candidate_chain_20261020/config/v4_read_index_authority_r2.json",
+            "authority_binding_sha256": "d805c13730750b3fe1dcd07b47e0cb16fc00b670161d934e9359b65d628a5337",
             "2026-10-19": {"status": "READY", "stocks_total": 5224, "schema": "v4_a50e701bc0e68312c2d32baefc2b17b0cd957206c4ebd9b54decae30", "digest": "987c5c456062ad3237c77a34397a89b6e83cff49aead512e6414f9b8257753ee", "native_identity_authority_bound": True},
             "2026-10-20": {"status": "READY", "stocks_total": 5224, "schema": "v4_1ef7141b2990885dccd6f61250c7b4fdda602995cc5b786b4d37c724", "digest": "34b77f72939a0822679b8454ead4d6fd5a5e63e7a919e15566b5694f9c16330f", "native_identity_authority_bound": True},
             "2026-10-21": {"status": "READY", "stocks_total": 5224, "schema": "v4_a9a294dfbf0379874f4401086f31f78627dadd660ba47d508bb8c398", "digest": "e7f3e07959c263bce4fb1c111168255eb622499acecf848521e0130cbde89f2d", "native_identity_authority_bound": True},

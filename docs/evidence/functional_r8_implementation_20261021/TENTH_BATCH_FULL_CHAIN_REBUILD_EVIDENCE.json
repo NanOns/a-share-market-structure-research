@@ -1,0 +1,585 @@
+{
+  "contract_id": "V4_TENTH_BATCH_FULL_CHAIN_REBUILD_EVIDENCE_R1",
+  "version": "1.0.0",
+  "status": "BATCH10_FULL_CHAIN_PARTIAL_OR_FAIL",
+  "recorded_at": "2026-10-22T12:28:38.769076+08:00",
+  "baseline": {
+    "branch": "codex/v4-unified-development",
+    "head": "23b77e39abce5b78c321122ee418da94cc2ad320",
+    "requested_audit_baseline": "23b77e39abce5b78c321122ee418da94cc2ad320",
+    "head_matches_baseline": true,
+    "working_tree_initial_untracked": [
+      ".githooks/",
+      "config_back/",
+      "script_back/"
+    ],
+    "unrelated_untracked_preserved": true
+  },
+  "phase0": {
+    "status": "DEGRADED_PASS",
+    "source": "docs/V4_PHASE0_FINAL_ACCEPTANCE_R3_1_20260925.md",
+    "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
+    "general_scanner_started": false
+  },
+  "contracts_consulted": [
+    "docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md",
+    "docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md",
+    "docs/upgrade/V4_AUTO_EXACT_DAILY_CONTINUATION_R1_20261013.md",
+    "docs/upgrade/V4_INCREMENT_IDENTITY_PARITY_AMENDMENT_R1_1_20261013.md"
+  ],
+  "environment": {
+    "pg": {
+      "identity": [
+        "market_research",
+        646711,
+        "127.0.0.1/32",
+        5432
+      ],
+      "read_transactions_read_only": true,
+      "r8_schema": "v4_r8pub_fde08c597fc76d13",
+      "d0_schema": "v4_r8d0seal_batch07_r1"
+    },
+    "listeners": {
+      "production_28765": "NOT_LISTENING_UNTOUCHED",
+      "development_28766": "127.0.0.1:28766 PID 7844",
+      "postgresql": "127.0.0.1:5432 PID 8640"
+    }
+  },
+  "candidate_chain": {
+    "existing_candidates": [
+      {
+        "trade_date": "2026-10-16",
+        "candidate_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "folder": "data\\v4\\dynamic_daily_owners\\2026-10-16\\dcf50bdb71427fc802dd55c371dfa064e5ef3b35212b62ffdc143b39d613de07",
+        "predecessor_token": "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "owner_path": "SUCCESSOR_CANDIDATE.json"
+      },
+      {
+        "trade_date": "2026-10-19",
+        "candidate_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "folder": "data\\v4\\dynamic_daily_owners\\2026-10-19\\9d9e5f314a0be91ed6ba394194c329c7d3ff87d2a0624ac92566e19f47703e4c",
+        "predecessor_token": "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "owner_path": "SUCCESSOR_CANDIDATE.json"
+      },
+      {
+        "trade_date": "2026-10-20",
+        "candidate_token": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "folder": "data\\v4\\dynamic_daily_owners\\2026-10-20\\a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3",
+        "predecessor_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "owner_path": "SUCCESSOR_CANDIDATE.json"
+      },
+      {
+        "trade_date": "2026-10-21",
+        "candidate_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "folder": "data\\v4\\dynamic_daily_owners\\2026-10-21\\0a60d3525e2012bace9c4326dea9f5e345822a239d293a6f5351c302e17727fa",
+        "predecessor_token": "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "owner_path": "SUCCESSOR_CANDIDATE.json"
+      }
+    ],
+    "r8_publications": [
+      [
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "c40e07216d40d28dd2be20c0b2d2bbe59c5006b0405649e26ea8e3f4f586a47c",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "01b22385a77c75f2dcd817eab4c1e7972f57c5ee46cee7fe8c85618d3dfe8116",
+        "840e9dcb50c6d092ef5dd819b5cb9b306d193a32dc3840a07aa3fe1b8d87ec92",
+        "2026-10-22 07:48:44.485+08"
+      ],
+      [
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "cefd47885fcbf7b0183178421ebf1e77b365d6115d3027ff7a0c975ee0e63d58",
+        "d76d3a946adf26f3cf5f61c5438ec5e39cfbbf9093066effc2efdc9f126e6d4d",
+        "2026-10-22 08:33:15.050085+08"
+      ],
+      [
+        "2026-10-20",
+        "38507df2f8c42f8d9af600bfe0aff86c149470506224db2b3c97e41cd5b6697c",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "38507df2f8c42f8d9af600bfe0aff86c149470506224db2b3c97e41cd5b6697c",
+        "0c39c4af0b6e17e3613f4be42e322a82230ca61aa9ca4a48d7bc2c383321a66d",
+        "48e9743c487f3b2fe1d876809e09b5dd55c89ffdbc94a201b3632f803a01f28b",
+        "2026-10-22 09:05:59.909338+08"
+      ],
+      [
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "0c39c4af0b6e17e3613f4be42e322a82230ca61aa9ca4a48d7bc2c383321a66d",
+        "48e9743c487f3b2fe1d876809e09b5dd55c89ffdbc94a201b3632f803a01f28b",
+        "2026-10-22 09:08:34.391009+08"
+      ],
+      [
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "4f98b297ea523bfa99d4d16bc02619547a3ca77ffec36c95801d17635a473dd3",
+        "b7b94ee4177f8e162896e7be7f77c4cb1236401c8277b7dc3423131486b917d8",
+        "2026-10-22 09:42:55.284169+08"
+      ]
+    ],
+    "r8_events": [
+      [
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "FINALIZED",
+        "2026-10-22 07:49:44.171459+08"
+      ],
+      [
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "FINALIZED",
+        "2026-10-22 08:33:15.193155+08"
+      ],
+      [
+        "2026-10-20",
+        "38507df2f8c42f8d9af600bfe0aff86c149470506224db2b3c97e41cd5b6697c",
+        "ABORTED",
+        "2026-10-22 09:06:00.049105+08"
+      ],
+      [
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "FINALIZED",
+        "2026-10-22 09:08:34.509214+08"
+      ],
+      [
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "FINALIZED",
+        "2026-10-22 09:42:55.422262+08"
+      ]
+    ],
+    "status": "NO_SUPERSEDING_R8_PUBLICATION_FOR_CORRECTED_BATCH10_OUTPUTS"
+  },
+  "d0_pg": {
+    "publications": [
+      [
+        "D0B07:2026-10-16:33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440:r1",
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "416ea964fc6ab7a85be24581431a9eb7261f86e4dcb08444f6af043934b4fccf",
+        3279584,
+        5226,
+        "DEV_RECONSTRUCTED_NON_PIT",
+        false,
+        false,
+        false,
+        1,
+        false,
+        "2026-10-22 07:48:44.485+08",
+        "2026-10-22 07:50:06.911878+08"
+      ],
+      [
+        "D0B07:2026-10-19:f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862:r1",
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "05fed9da9d8297846f56e9cc6a0329cb9873dcbe82705b775d3c4eed64fbfd98",
+        3287327,
+        5224,
+        "DEV_RECONSTRUCTED_NON_PIT",
+        false,
+        false,
+        false,
+        1,
+        false,
+        "2026-10-22 08:33:15.050085+08",
+        "2026-10-22 08:34:16.78287+08"
+      ],
+      [
+        "D0B07:2026-10-19:f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862:r2",
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "05fed9da9d8297846f56e9cc6a0329cb9873dcbe82705b775d3c4eed64fbfd98",
+        3287327,
+        5224,
+        "DEV_ASOF_SOURCE_VERIFIED",
+        false,
+        false,
+        false,
+        2,
+        true,
+        "2026-10-22 08:33:15.050085+08",
+        "2026-10-22 10:24:02.066442+08"
+      ],
+      [
+        "D0B07:2026-10-19:f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862:r3",
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "05fed9da9d8297846f56e9cc6a0329cb9873dcbe82705b775d3c4eed64fbfd98",
+        3287327,
+        5224,
+        "DEV_ASOF_SOURCE_VERIFIED",
+        false,
+        false,
+        false,
+        3,
+        true,
+        "2026-10-22 08:33:15.050085+08",
+        "2026-10-22 10:25:10.248077+08"
+      ],
+      [
+        "D0B07:2026-10-20:dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad:r1",
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "33758098ce258d802fa0138e4f3bbbc59d04498ab848c76697b5e21aa83c1ae9",
+        3282416,
+        5224,
+        "DEV_RECONSTRUCTED_NON_PIT",
+        false,
+        false,
+        false,
+        1,
+        false,
+        "2026-10-22 09:08:34.391009+08",
+        "2026-10-22 09:08:41.627537+08"
+      ],
+      [
+        "D0B07:2026-10-20:dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad:r2",
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "33758098ce258d802fa0138e4f3bbbc59d04498ab848c76697b5e21aa83c1ae9",
+        3282416,
+        5224,
+        "DEV_ASOF_SOURCE_VERIFIED",
+        false,
+        false,
+        false,
+        2,
+        true,
+        "2026-10-22 09:08:34.391009+08",
+        "2026-10-22 10:25:14.809528+08"
+      ],
+      [
+        "D0B07:2026-10-21:c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528:r1",
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "528001cbddcaf1cbf44d8ff249db6517aaf4cc26f6af7cec0d4b43f669f12ff9",
+        3286998,
+        5224,
+        "DEV_RECONSTRUCTED_NON_PIT",
+        false,
+        false,
+        false,
+        1,
+        false,
+        "2026-10-22 09:42:55.284169+08",
+        "2026-10-22 09:43:02.07869+08"
+      ],
+      [
+        "D0B07:2026-10-21:c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528:r2",
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "528001cbddcaf1cbf44d8ff249db6517aaf4cc26f6af7cec0d4b43f669f12ff9",
+        3286998,
+        5224,
+        "DEV_ASOF_SOURCE_VERIFIED",
+        false,
+        false,
+        false,
+        2,
+        true,
+        "2026-10-22 09:42:55.284169+08",
+        "2026-10-22 10:25:19.138224+08"
+      ]
+    ],
+    "scenario_fact_status_counts": [
+      [
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "FALSE",
+        10253
+      ],
+      [
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "TRUE",
+        95
+      ],
+      [
+        "2026-10-16",
+        "33cf6cdb91f51592cddebb41667c22720eb68e47592d179e8dfd0b0b5b5fc440",
+        "UNKNOWN",
+        104
+      ],
+      [
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "FALSE",
+        10169
+      ],
+      [
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "TRUE",
+        171
+      ],
+      [
+        "2026-10-19",
+        "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
+        "UNKNOWN",
+        108
+      ],
+      [
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "FALSE",
+        7859
+      ],
+      [
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "TRUE",
+        119
+      ],
+      [
+        "2026-10-20",
+        "dba3131d7405ab5eac4fddff2a4b3ccb1ecb76ce3c70e907fd63a68406bd9aad",
+        "UNKNOWN",
+        2470
+      ],
+      [
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "FALSE",
+        10245
+      ],
+      [
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "TRUE",
+        106
+      ],
+      [
+        "2026-10-21",
+        "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "UNKNOWN",
+        97
+      ]
+    ],
+    "independent_readback_status": "PG_BINDING_INVALID",
+    "readback_rows": [
+      10452,
+      10448,
+      10448,
+      10448
+    ],
+    "corrected_d0_candidates": {
+      "2026-10-16": {
+        "TRUE": 90,
+        "FALSE": 5084,
+        "UNKNOWN": 52
+      },
+      "2026-10-19": {
+        "TRUE": 152,
+        "FALSE": 5018,
+        "UNKNOWN": 54
+      },
+      "2026-10-20": {
+        "TRUE": 141,
+        "FALSE": 5033,
+        "UNKNOWN": 52
+      },
+      "2026-10-21": {
+        "TRUE": 99,
+        "FALSE": 5076,
+        "UNKNOWN": 49
+      }
+    },
+    "corrected_d0_published": false
+  },
+  "corrected_numeric_candidates": {
+    "2026-10-20": {
+      "core_rows": 5226,
+      "rps5_delta3_exact_matches": 5202,
+      "endpoint_unknown": 24,
+      "numeric_mismatches": 0,
+      "formal_d0": {
+        "TRUE": 141,
+        "FALSE": 5033,
+        "UNKNOWN": 52
+      },
+      "source": "NINTH_BATCH_D0_FOCUS_EXACT_IDENTITY_R3_EVIDENCE.json"
+    },
+    "publication_state": "candidate_only"
+  },
+  "28766_routes": {
+    "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+    "production_accepted": false,
+    "context_token_expected_and_returned": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+    "trade_date": "2026-10-21",
+    "six_entry_api_readback": [
+      {
+        "path": "/api/v4/home",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "84db8677e16a7e72f691adef1d6adf7feff877f4bf0a4f209d62301ee479296a",
+        "total": null,
+        "counts": {
+          "focus": 3929,
+          "radar": {
+            "href": "/v4/research/radar",
+            "scope": "ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE",
+            "value": 368,
+            "reason": "FORMAL_RADAR_PRIORITY_NOT_PUBLISHED",
+            "source": {
+              "path": "data/v4/dynamic_daily_owners/2026-10-21/0a60d3525e2012bace9c4326dea9f5e345822a239d293a6f5351c302e17727fa/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+              "bytes": 22192294,
+              "sha256": "88bcdfdf07155df6fc7f62bb1acbe9b6bca525a9625035e0d3c7d0c35e3f04c8"
+            },
+            "status": "PARTIAL",
+            "quality": "KNOWN"
+          },
+          "stocks": 5224,
+          "forward": {
+            "value": null,
+            "quality": "DATA_MISSING",
+            "matured_settlement_count": 0,
+            "latest_live_observation_T0": null,
+            "last_successful_increment_T0": null,
+            "source": null,
+            "historical_research_count": null,
+            "live_frozen_count": null,
+            "updated_at": null,
+            "href": "/v4/research/forward"
+          },
+          "sectors": 400
+        },
+        "gap_domains": [
+          "forward"
+        ]
+      },
+      {
+        "path": "/api/v4/market",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "fa18fd974a407ca318eeea3fd4fb4140ab9bda0b0b287a898b46ce91e91ff3c3",
+        "total": null,
+        "counts": null,
+        "gap_domains": []
+      },
+      {
+        "path": "/api/v4/sectors",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "d464fbe4467ff02d44628caba55de9482bf90cbeec3de1d6b5d2a83dbe25adb0",
+        "total": 400,
+        "counts": null,
+        "gap_domains": []
+      },
+      {
+        "path": "/api/v4/stocks",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "077b598bb8c2841a360152792943cdb2640cdd38f9090c4da6f1f9438b6766b7",
+        "total": 5224,
+        "counts": null,
+        "gap_domains": []
+      },
+      {
+        "path": "/api/v4/focus",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "4d7d0a6cc8a59fe4a751ab5323019b2ab93da65b88f44afeb9d797b8424fce13",
+        "total": 3929,
+        "counts": null,
+        "gap_domains": []
+      },
+      {
+        "path": "/api/v4/forward/statistics",
+        "http_status": 200,
+        "status": "READY",
+        "context_token": "c8b6b32f7fd578c7a6bb347320382f091c1545b01c1d70b4a9ca68b049d3c528",
+        "trade_date": "2026-10-21",
+        "response_sha256": "a510c4ac3f43d95e3940dce67c80fb492f7351746bb06c273d1721a8fb6b0980",
+        "total": null,
+        "counts": null,
+        "gap_domains": []
+      }
+    ],
+    "browser_dom_acceptance": "NOT_PERFORMED",
+    "current_home_counts": {
+      "stocks": 5224,
+      "sectors": 400,
+      "focus": 3929,
+      "radar": 368,
+      "priority_stock_rankable": 936,
+      "priority_sector_rankable": 8
+    },
+    "forward": "DATA_MISSING",
+    "market": "SOURCE_INCOMPLETE",
+    "sector_taxonomy": "TDX_INDUSTRY_CONCEPT"
+  },
+  "source_pit": {
+    "2026-10-16": "RECONSTRUCTED_NON_PIT",
+    "2026-10-19": "RECONSTRUCTED_NON_PIT",
+    "2026-10-20": "RECONSTRUCTED_NON_PIT",
+    "2026-10-21": "CAPTURED_AFTER_CLOSE_NON_PIT",
+    "historical_pit_relabelled": false
+  },
+  "gates": {
+    "P0_A": "PARTIAL",
+    "P0_B": "PARTIAL",
+    "P0_C": "PARTIAL",
+    "P0_D": "PARTIAL",
+    "P0_E": "FAIL",
+    "P1": "NOT_RUN"
+  },
+  "acceptance": {
+    "overall": "BATCH10_FULL_CHAIN_PARTIAL_OR_FAIL",
+    "A_to_E_all_pass": false,
+    "reason": "Latest corrected factor/D0 and membership outputs remain candidate-only; live 28766 serves the prior token. API HTTP 200 does not establish business-value acceptance. Source gaps remain in market/sector/rotation/forward and D2 invalidation semantics stay contract-blocked.",
+    "production_28765_touched": false
+  },
+  "next_exact_nodes": [
+    "Create the corrected 2026-10-16 date-scoped membership successor and R8/D0 publication, preserving 33cf… as immutable history.",
+    "Rebuild 2026-10-19, 2026-10-20, 2026-10-21 in predecessor-token order; bind the corrected 10/20 identity/RPS and full 10/21 outputs.",
+    "Resolve PG_BINDING_INVALID with current exact owner/publication/source closure and verify independent restricted-role readback before changing 28766.",
+    "Recalculate ReadIndex/Priority for each superseding token; publish the corrected dev candidate through R8 Head/CAS and D0 PG.",
+    "Switch only 28766 after successful new-token readback, then verify all six page/API routes plus details, pagination, date and period selection under that token.",
+    "Keep absent market/sector inputs UNKNOWN with explicit cause; complete source restoration or mark the affected domain blocked.",
+    "Keep D2 invalidation value CONTRACT_BLOCKED until S05-D threshold/coordinate contract is adjudicated.",
+    "Run the P1 failure-injection and bounded performance set only after P0 correctness chain is live."
+  ],
+  "source_hashes": {
+    "docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md": {
+      "sha256": "6c7a503293ed268d83472cea270b083203b739cc5bcf185c03672a33bdd7b093",
+      "bytes": 30104
+    },
+    "docs/V4_PHASE0_FINAL_ACCEPTANCE_R3_1_20260925.md": {
+      "sha256": "9339df30d789efdb7f1bb8ef5d1143fd99e5963ab242480e6a54ca9d6a577b85",
+      "bytes": 4395
+    },
+    "docs/evidence/functional_r8_implementation_20261021/NINTH_BATCH_SOURCE_ISOLATION_DAILY_EVIDENCE.json": {
+      "sha256": "d84ffed3fab00cb39997a1d58572f92fe56f5e44724c2de4246c0eaf61bdd148",
+      "bytes": 86601
+    },
+    "docs/evidence/functional_r8_implementation_20261021/NINTH_BATCH_D0_FOCUS_EXACT_IDENTITY_R3_EVIDENCE.json": {
+      "sha256": "438369b7ce869e3e3c0c2255c7475ac6091b0b2137fa1fbbc035a96afcbd2176",
+      "bytes": 8093
+    },
+    "src/workbench_analysis/d0_source_seal_r2.py": {
+      "sha256": "a26bf2e48c372fd996584c568abe5f5ee77c6b0bd925bf4da49767dbb0f292ba",
+      "bytes": 45472
+    },
+    "src/workbench_analysis/corrected_owner_replay.py": {
+      "sha256": "056fe4f7841edea9cc42960c3a64ede3a3896ec1bb99c4b4ed062d1f6c469a12",
+      "bytes": 21806
+    }
+  }
+}

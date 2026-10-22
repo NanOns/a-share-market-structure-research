@@ -95,7 +95,51 @@ def midrank(returns, members):
                  .5*(bisect.bisect_right(values,returns[s])-bisect.bisect_left(values,returns[s])-1))/(n-1) for s in members}
 
 
-def materialize_core(root, dates=None):
+def _dated_membership_overrides(root, candidates, required):
+    """Read exact, date-scoped candidate membership instead of same-day providers.
+
+    RPS endpoints use the universe attached to that exact candidate date. A
+    same-day BaoStock roster is useful source evidence, but it cannot replace
+    the candidate's PG-backed membership authority after the date has been
+    sealed.
+    """
+    if not candidates:
+        return {}, {}
+    from workbench_db.v4_membership_reference_pg_v1 import read_identity
+    from workbench_db.v4_forward_pg_r1 import canonical, digest
+
+    overrides = {}
+    bindings = {}
+    identity_overrides = {}
+    for day, candidate in sorted(candidates.items()):
+        if day not in required:
+            continue
+        if candidate.get('accepted_trade_date') != day:
+            raise ValueError('DATED_MEMBERSHIP_CANDIDATE_DATE_MISMATCH:' + day)
+        if candidate.get('native_membership_reference') is None:
+            raise ValueError('DATED_MEMBERSHIP_REFERENCE_REQUIRED:' + day)
+        rows = read_identity(root, candidate)
+        ids = {row['security_id'] for row in rows}
+        if len(ids) != len(rows):
+            raise ValueError('DATED_MEMBERSHIP_IDENTITY_DUPLICATE:' + day)
+        overrides[day] = ids
+        identity_overrides[day] = {row['security_id']: row for row in rows}
+        bindings[day] = dict(candidate_token=digest(canonical(candidate)),
+            membership_snapshot=candidate['membership_snapshot'],
+            native_membership_reference=candidate['native_membership_reference'],
+            identity_rows=len(rows),
+            identity_set_sha256=hashlib.sha256('\n'.join(sorted(ids)).encode()).hexdigest())
+    return overrides, bindings, identity_overrides
+
+
+def _apply_dated_membership_overrides(dated_identity, overrides, required):
+    for day, members in overrides.items():
+        if day in required:
+            dated_identity[day] = set(members)
+    return dated_identity
+
+
+def materialize_core(root, dates=None, *, exact_membership_candidates=None):
     root = Path(root).resolve(); policy = load(root/CONTRACT)
     dates = dates or policy['target_sessions']; out = root/OUT; out.mkdir(parents=True, exist_ok=True)
     protected = {p: sha256_file(root/p) for p in ('config/v4_joint_release_authority_v1.json','data/v4/V4_DATA_ACCEPTED_HEAD.json')}
@@ -123,9 +167,27 @@ def materialize_core(root, dates=None):
     events=defaultdict(list)
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
+    membership_overrides,membership_bindings,identity_overrides=_dated_membership_overrides(
+        root, exact_membership_candidates or {}, required)
+    exact_identity_by_id={}
+    for day in sorted(identity_overrides):
+        exact_identity_by_id.update(identity_overrides[day])
+    if exact_identity_by_id:
+        identity_by_id={row['security_id']:row for row in identity}
+        identity_by_id.update(exact_identity_by_id)
+        identity=list(identity_by_id.values())
+        code_owner={}
+        for row in identity:
+            code=row['source_security_key'].lower()
+            prior_sid=code_owner.get(code)
+            if prior_sid is not None and prior_sid!=row['security_id']:
+                raise ValueError('DATED_IDENTITY_SOURCE_KEY_AMBIGUOUS:'+code)
+            code_owner[code]=row['security_id']
+        ids={row['source_security_key'].lower():row for row in identity}
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
                  identity=head['component_artifacts']['IDENTITY_UNIVERSE'],contract=ref(root,root/CONTRACT),
-                 core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
+                 core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'),
+                 dated_membership_authorities=membership_bindings)
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
     historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']
@@ -145,6 +207,9 @@ def materialize_core(root, dates=None):
         for code,r in rows.items():
             if code in ids:status[ids[code]['security_id']][day]='SUSPENDED' if r.get('tradestatus')=='0' else 'ACTUAL_TRADED'
     for day,rows in universes.items():dated_identity[day]={ids[c]['security_id'] for c in rows if c in ids}
+    # Exact candidate PG authorities take precedence over same-day provider
+    # rosters and historical universe snapshots for their own T0 only.
+    _apply_dated_membership_overrides(dated_identity,membership_overrides,required)
     cache={}; unknown_codes=[]
     with zipfile.ZipFile(package) as z:
         for name in z.namelist():
@@ -166,9 +231,15 @@ def materialize_core(root, dates=None):
         previous=sessions[sessions.index(target)-1]
         members=dated_identity.get(target)
         if members is None:raise ValueError('NO_DATED_IDENTITY_UNIVERSE:'+target)
+        endpoint_dates=({sessions[sessions.index(target)-k] for k in (1,3)} if target in dates else set())
+        endpoint_members={d:set(dated_identity[d]) for d in endpoint_dates if d in dated_identity}
+        if endpoint_dates-set(endpoint_members):
+            raise ValueError('NO_EXACT_DATED_RPS_MEMBERSHIP:'+','.join(sorted(endpoint_dates-set(endpoint_members))))
+        endpoint_returns={(d,h):{} for d in endpoint_dates for h in (5,20)}
+        source_members=set(members).union(*(endpoint_members.values() or [set()]))
         for i in identity:
             sid=i['security_id']
-            if sid not in members or sid not in cache:continue
+            if sid not in source_members or sid not in cache:continue
             code,raw=cache[sid];bs=transform_window(raw,events[code],dispositions,target)
             if not bs:continue
             revision=hashlib.sha256(json.dumps(dict(code=code,gbbq=sources['gbbq']['sha256'],
@@ -182,8 +253,14 @@ def materialize_core(root, dates=None):
                 state='ACTUAL' if q else 'ADJUSTMENT_UNKNOWN' if b else 'CONFIRMED_SUSPENSION' if status[sid].get(day)=='SUSPENDED' else 'UNKNOWN'
                 obs.append(Observation(day,state,Bar(*q,float(b['amount']),float(b['volume']),basis,source_digest) if q else None))
             values={k:asdict(v) for k,v in compute_core(obs,sid,asof=target).items()}
-            rows.append(dict(security_id=sid,source_security_key=code.upper(),board_scope=i['board_scope'],
-                 trade_date=target,price_basis_id=basis,fields=values,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
+            if sid in members:
+                rows.append(dict(security_id=sid,source_security_key=code.upper(),board_scope=i['board_scope'],
+                     trade_date=target,price_basis_id=basis,fields=values,knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
+            for endpoint in endpoint_dates:
+                if sid not in endpoint_members[endpoint]:continue
+                endpoint_values=compute_core(obs,sid,asof=endpoint)
+                for h in (5,20):endpoint_returns[(endpoint,h)][sid]=endpoint_values[f'ret{h}'].value
+            if sid not in members:continue
             if target not in dates:continue
             histories[sid]=bs
             pv={k:asdict(v) for k,v in compute_core(obs,sid,asof=previous).items()} if obs[0].trade_date<=previous else {}
@@ -212,6 +289,9 @@ def materialize_core(root, dates=None):
             scores=midrank({s:r['fields'][f'ret{h}']['value'] for s,r in factorby.items()},members)
             rps[target,h]=scores
             for sid,row in factorby.items():row['fields'][f'rps{h}']=dict(value=scores.get(sid),quality_state='OBSERVED' if scores.get(sid) is not None else 'UNKNOWN',unknown_reason=None if scores.get(sid) is not None else 'RETURN_OR_UNIVERSE_UNKNOWN',contract_id='RPS_MIDRANK_V1',denominator=sum(v is not None for v in scores.values()))
+            for endpoint in endpoint_dates:
+                endpoint_scores=midrank(endpoint_returns[(endpoint,h)],endpoint_members[endpoint])
+                rps[endpoint,h]=endpoint_scores
         if target not in dates:continue
         for h in (1,3,5):
             start=sessions[sessions.index(target)-h];start_members=dated_identity.get(start,set())

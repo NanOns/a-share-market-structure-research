@@ -4,7 +4,9 @@ from pathlib import Path
 import pytest
 
 from tdx.gbbq_reader import GbbqRecord
-from workbench_analysis.corrected_owner_replay import transform_window, independent_affine, midrank
+from workbench_analysis.corrected_owner_replay import (
+    transform_window, independent_affine, midrank, _apply_dated_membership_overrides,
+)
 from v4.factors.core import rps_midrank
 
 
@@ -36,6 +38,18 @@ def test_future_events_and_suspension_gap_do_not_leak():
 def test_sorted_midrank_preserves_frozen_tie_formula():
     values={'a':1.0,'b':1.0,'c':2.0,'d':None,'e':-2.0}
     assert midrank(values,set(values))==rps_midrank(values,list(values))[0]
+
+
+def test_exact_candidate_membership_overrides_same_day_provider_roster_only_for_its_date():
+    dated={'2026-10-15':{'PROVIDER_ONLY'},'2026-10-20':{'OTHER_PROVIDER'}}
+    result=_apply_dated_membership_overrides(dated,{
+        '2026-10-15':{'CANDIDATE_15'},'2026-10-19':{'CANDIDATE_19'},
+    },{'2026-10-15','2026-10-19'})
+    assert result=={
+        '2026-10-15':{'CANDIDATE_15'},
+        '2026-10-19':{'CANDIDATE_19'},
+        '2026-10-20':{'OTHER_PROVIDER'},
+    }
 
 
 def test_descendant_reader_preserves_exact_head_and_producer_identities():

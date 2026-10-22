@@ -1599,5 +1599,39 @@
     ],
     "status": "PARTIAL_MEMBERSHIP_SCOPE_REPAIRED_D0_REPUBLICATION_REQUIRED",
     "targeted_test_result": "28 passed"
+  },
+  "annotation_followup_rps_endpoint_repair": {
+    "status": "EXACT_DATED_MEMBERSHIP_AND_IDENTITY_RECOMPUTED_DEV_CANDIDATE_ONLY_NOT_PUBLISHED",
+    "evidence": "NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_EVIDENCE.json",
+    "report": "NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md",
+    "RPS5_DELTA3": {
+      "core_rows": 5226,
+      "observed": 5202,
+      "unknown": 24,
+      "independent_exact_matches": 5202,
+      "mismatches": 0,
+      "independent_current_rps5_mismatches": 0,
+      "valid_ret5": {
+        "2026-10-15": 5206,
+        "2026-10-20": 5208
+      },
+      "unknown_reason": "EXACT_DATED_RPS_ENDPOINT_UNKNOWN"
+    },
+    "formal_D0_subset": {
+      "rows": 5224,
+      "updated_rows": 5224,
+      "TRUE": 137,
+      "FALSE": 5015,
+      "UNKNOWN": 72,
+      "previous_UNKNOWN": 2373,
+      "rps5_delta3_unknown": 22,
+      "independent_frozen_scanner": "PASS",
+      "mismatch_count": 0
+    },
+    "candidate_members_without_D0": [
+      "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+      "SEC-6054AE867A60481EDA16B0E02AF1DB09"
+    ],
+    "new_R8_D0_publication": false
   }
 }

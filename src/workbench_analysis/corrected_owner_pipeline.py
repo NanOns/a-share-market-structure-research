@@ -4,7 +4,8 @@ from .corrected_owner_replay import load, checked, ref, OUT, CONTRACT, materiali
 from .market_source_acquisition import write, official_sessions
 
 
-def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all'):
+def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all',
+                                 exact_membership_candidates=None):
     root=Path(root).resolve();out=root/OUT;policy=load(root/CONTRACT)
     seal=out/'OWNER_STAGE_SEAL_V1.json'
     if seal.exists():
@@ -15,13 +16,22 @@ def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all')
         raise ValueError('CORRECTED_SESSION_OUTSIDE_VERSIONED_CONTRACT')
     if (out/'CORE_REPLAY.json').exists():
         core=load(out/'CORE_REPLAY.json')
+        if exact_membership_candidates:
+            expected={day:c['native_membership_reference']['sha256']
+                for day,c in exact_membership_candidates.items()
+                if c.get('native_membership_reference')}
+            actual={day:binding['native_membership_reference']['sha256']
+                for owner in core['owners']
+                for day,binding in owner.get('sources',{}).get('dated_membership_authorities',{}).items()}
+            if any(actual.get(day)!=sha for day,sha in expected.items()):
+                raise ValueError('EXACT_DATED_MEMBERSHIP_REPLAY_NAMESPACE_REQUIRED')
         current=load(root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json')
         capture=load(checked(root,current['capture_receipt']))
         if capture['package']['sha256']!=core['owners'][0]['sources']['package']['sha256']:
             raise ValueError('NEW_SOURCE_REVISION_REQUIRES_SEPARATE_CORRECTED_OWNER_NAMESPACE')
         for owner in core['owners']:
             for key in ('core','prior_core','history','raw','adjusted'):checked(root,owner[key])
-    else:materialize_core(root)
+    else:materialize_core(root,exact_membership_candidates=exact_membership_candidates)
     if stage=='core':return dict(status='CORRECTED_CORE_READY',receipt=str(out/'CORE_REPLAY.json'))
     if not (out/'PROFILE_STRUCTURE_REPLAY.json').exists():
         from .corrected_structure_replay import materialize_profiles_structure

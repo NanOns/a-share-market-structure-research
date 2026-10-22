@@ -35,17 +35,21 @@ def test_later_reconstructed_source_before_replay_freeze_stays_non_pit():
     assert classify_source(source,datetime.fromisoformat('2026-10-21T12:00:00+00:00'))=='RECONSTRUCTED_NON_PIT'
 
 
-def test_next_real_same_cutoff_capture_can_be_dev_pit_verified():
+def test_exact_late_capture_can_be_dev_asof_verified_without_pit_escalation():
     candidate={'AS_RECORDED':False,'PIT_ELIGIBLE':False,'historical_PIT_permission':False}
     cutoff=datetime.fromisoformat('2026-10-22T17:00:00+08:00')
-    args=dict(evidence_class='CAPTURED_AS_RECORDED',time_role='SAME_DAY_SOURCE_CAPTURE',
-        available_at='2026-10-22T16:40:00+08:00',cutoff=cutoff,
-        membership_observed_at='2026-10-22T16:42:00+08:00',membership_trade_date='2026-10-22',
-        source_package_date='2026-10-22',trade_date='2026-10-22')
+    args=dict(evidence_class='RECONSTRUCTED_NON_PIT',time_role='RECONSTRUCTED_FROM_LATER_PACKAGE',
+        available_at='2026-10-21T17:35:26+08:00',cutoff=cutoff,
+        membership_observed_at='2026-10-09T09:44:01+08:00',membership_reference_t0='2026-10-16',
+        source_package_date='2026-10-21',trade_date='2026-10-16')
     proof=dict(candidate_validated=True,exact_source_binding=True)
     assert same_cutoff_source_eligible(candidate,**args,**proof)
     assert not same_cutoff_source_eligible(candidate,**{**args,'available_at':'2026-10-22T17:00:01+08:00'},**proof)
-    assert not same_cutoff_source_eligible(candidate,**{**args,'time_role':'POST_CLOSE_LATE_CAPTURE'},**proof)
+    assert same_cutoff_source_eligible(candidate,**{**args,'evidence_class':'CAPTURED_AFTER_CLOSE_NON_PIT',
+        'time_role':'POST_CLOSE_LATE_CAPTURE'},**proof)
+    assert not same_cutoff_source_eligible(candidate,**{**args,'evidence_class':'UNKNOWN'},**proof)
+    assert not same_cutoff_source_eligible(candidate,**{**args,'source_package_date':'2026-10-23'},**proof)
+    assert not same_cutoff_source_eligible(candidate,**{**args,'membership_reference_t0':'2026-10-15'},**proof)
     assert not same_cutoff_source_eligible({**candidate,'PIT_ELIGIBLE':True},**args,**proof)
     assert not same_cutoff_source_eligible(candidate,**args,**{**proof,'exact_source_binding':False})
 

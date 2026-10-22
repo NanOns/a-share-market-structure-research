@@ -79,3 +79,15 @@ The successor validator now rejects a carried-forward membership authority whose
 The membership-scope and formal-aggregation regressions pass with the existing D0 source-isolation regressions (**28 passed**). Historical 10/15 NON_PIT and its three-state results remain unchanged. The development database and only 28766 were used; no 28765 production action occurred.
 
 Remaining work: create and independently verify superseding R8/D0 publications for the corrected formal aggregates, rebase later candidate dates in order where tokens depend on the corrected 10/16 candidate, and repeat the same-token read-index/28766 checks. Independently repair the 10/20 exact 10/15 RPS5 endpoint binding before claiming that portion's `UNKNOWN` population has been resolved.
+
+
+## Annotation follow-up 2: exact RPS5 endpoint and UNKNOWN reduction
+
+The earlier open 10/20 RPS5 endpoint was recomputed from frozen TDX source after fixing candidate-membership precedence and computing the 10/15 endpoint in the 10/20 price coordinate. Independent row-level verification now matches 5,202 observed deltas exactly, retains 22 exact endpoint UNKNOWNs, and finds zero mismatches. The formal D0 development-only recomputation is TRUE/FALSE/UNKNOWN = 137/5,015/72; the frozen scanner comparison passes. Two security IDs without a matching core identity row remain UNKNOWN.
+
+This supersedes the earlier statement that the 2,399 endpoint UNKNOWNs remain open. The revised Owner is not yet rebound into a superseding R8 candidate, appended to PG, or served from 28766. Details: [`NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R1_REPORT.md`](NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R1_REPORT.md) and its evidence JSON.
+
+
+## Annotation follow-up R2 supersedes R1 endpoint counts
+
+The exact candidate identity source key was also missing for two newly listed current members. The core replay now reads the bound candidate Identity authority and includes the complete 5,226 current membership rows. Independent numeric comparison across the full core owner confirms 5,202 exact RPS5 deltas, 24 matching endpoint UNKNOWNs, zero mismatches, and zero current-RPS5 mismatches. All 5,224 existing formal D0 rows now join to the corrected core and recompute to TRUE/FALSE/UNKNOWN = 137/5,015/72 with frozen scanner PASS. Two candidate members still lack formal D0 rows, so the full candidate D0/Focus/Priority owner has not been published. See [`NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md`](NINTH_BATCH_RPS5_ENDPOINT_REPAIR_R2_REPORT.md).

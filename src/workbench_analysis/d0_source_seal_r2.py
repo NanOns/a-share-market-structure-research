@@ -17,6 +17,11 @@ CHECK_INPUTS = {
     'RECOVERY_TURN': {'ACTUAL_BAR':'actual_bar','AMR20_GTE_105':'amr20_mean_prior','CLOSE_GTE_098_MA20':'close_to_ma20','CLV_GTE_055':'clv','INPUT_IDENTITY_COMPATIBLE':'input_identity_compatible','LIQ20':'liq20','NORMAL_UNIVERSE':'normal_universe','NOT_EXTENDED':'extended_v3','NOT_FIRST_DAY_DAMAGE':'first_day_damage','NOT_SEVERE_DROP':'severe_drop','NOT_STRUCTURE_BREAK':'structure_break_v3','POSITIVE_RET1':'ret1_adj','R5_OR_R20':'rps5_or_rps20','RPS5_DELTA3_POSITIVE':'rps5_delta3','WINDOW_VALID':'window_valid'},
 }
 SCHEMA = 'v4_r8d0seal_batch07_r1'
+DEV_ASOF_SOURCE_CLASSES = frozenset((
+    'CAPTURED_AS_RECORDED',
+    'CAPTURED_AFTER_CLOSE_NON_PIT',
+    'RECONSTRUCTED_NON_PIT',
+))
 
 
 def canonical(value):
@@ -75,7 +80,7 @@ def classify_source(source, cutoff):
 
 def same_cutoff_source_eligible(candidate, *, evidence_class, time_role, available_at, cutoff,
                                 membership_observed_at, candidate_validated=False,
-                                exact_source_binding=False,membership_trade_date=None,
+                                exact_source_binding=False,membership_reference_t0=None,
                                 source_package_date=None,trade_date=None):
     """Verify a development source clock without changing the candidate's PIT flags.
 
@@ -88,15 +93,19 @@ def same_cutoff_source_eligible(candidate, *, evidence_class, time_role, availab
         membership=datetime.fromisoformat(str(membership_observed_at).replace('Z','+00:00'))
     except (TypeError,ValueError):
         return False
+    try:
+        package_day = date.fromisoformat(str(source_package_date))
+        target_day = date.fromisoformat(str(trade_date))
+    except (TypeError, ValueError):
+        return False
     if not cutoff.tzinfo or not available.tzinfo or not membership.tzinfo:
         return False
-    return bool(candidate_validated and exact_source_binding and membership_trade_date==trade_date and
-        source_package_date==trade_date and
+    return bool(candidate_validated and exact_source_binding and membership_reference_t0==trade_date and
+        package_day <= cutoff.date() and target_day <= cutoff.date() and
         candidate.get('historical_PIT_permission') is False and
         candidate.get('AS_RECORDED') is False and candidate.get('PIT_ELIGIBLE') is False and
-        evidence_class not in ('RECONSTRUCTED_NON_PIT','CAPTURED_AFTER_CLOSE_NON_PIT') and
-        'RECONSTRUCTED' not in str(time_role).upper() and 'LATE' not in str(time_role).upper() and
-        evidence_class == 'CAPTURED_AS_RECORDED' and available<=cutoff and membership<=cutoff)
+        evidence_class in DEV_ASOF_SOURCE_CLASSES and bool(str(time_role).strip()) and
+        available<=cutoff and membership<=cutoff)
 
 
 def _bound_json(root, binding, code):
@@ -239,7 +248,16 @@ def publish_candidate(*, repository_root, candidate_root, candidate, trade_date,
     membership_clock_raw=(membership_snapshot.get('membership_observed_at') or membership_snapshot.get('observed_at') or
         membership_snapshot.get('available_at') or membership_snapshot.get('source_available_at') or
         membership_snapshot.get('member_set_asof') or membership_snapshot.get('snapshot_membership_asof'))
-    membership_trade_date=str(membership_snapshot.get('member_set_asof') or '')[:10]
+    membership_clock=None
+    try:
+        parsed_membership_clock=datetime.fromisoformat(str(membership_clock_raw).replace('Z','+00:00'))
+        if parsed_membership_clock.tzinfo is not None:
+            membership_clock=parsed_membership_clock
+    except (TypeError,ValueError):
+        pass
+    membership_reference=_bound_json(candidate_root,candidate['native_membership_reference'],
+        'D0_MEMBERSHIP_REFERENCE_BYTES_MISMATCH')
+    membership_reference_t0=membership_reference.get('T0')
     with psycopg.connect(configured_dsn(), connect_timeout=5) as pg:
         pg.execute("SET LOCAL statement_timeout='60s'")
         pg.execute("SET LOCAL lock_timeout='5s'")
@@ -254,7 +272,7 @@ def publish_candidate(*, repository_root, candidate_root, candidate, trade_date,
         owner_refs = {}
         source_truthful=same_cutoff_source_eligible(candidate,evidence_class=evidence_class,time_role=time_role,
             available_at=available,cutoff=cutoff,membership_observed_at=membership_clock_raw,
-            candidate_validated=True,exact_source_binding=True,membership_trade_date=membership_trade_date,
+            candidate_validated=True,exact_source_binding=True,membership_reference_t0=membership_reference_t0,
             source_package_date=str(source_package_date),trade_date=trade_date)
         source_evidence_class=evidence_class
         source_time_role=time_role
@@ -317,7 +335,10 @@ def publish_candidate(*, repository_root, candidate_root, candidate, trade_date,
             published_sessions=[s for s in candidate.get('published_sessions',[]) if s<=trade_date],
             raw_owner_sha256=owner_refs['RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW']['source_sha256'],
             source_freeze_sha256=snapshot[3],r8_owner_authority_sha256=snapshot[2],membership_snapshot_id=candidate.get('membership_snapshot_id'),
-            membership_snapshot_sha256=membership_binding['sha256'],price_coordinate='TDX_NATIVE_AFFINE_QFQ')
+            membership_snapshot_sha256=membership_binding['sha256'],
+            membership_reference_t0=membership_reference_t0,
+            source_package_date=str(source_package_date),
+            price_coordinate='TDX_NATIVE_AFFINE_QFQ')
         d0_computed_at=datetime.now(timezone.utc)
         for ref in source_refs:
             if ref['source_role'] in ('RAW_AND_TDX_NATIVE_QFQ_PRICE_WINDOW','TDX_NATIVE_ADJUSTED_DAILY_WINDOW',
@@ -454,8 +475,10 @@ def independent_pg_readback(trade_date, candidate_token, *, publication_id=None)
         cutoff_match=bool(r8 and r8[0]==candidate_token and r8[1]==trade_date and r8[4]==datetime.fromisoformat(publication['knowledge_cutoff_at'].replace(' ','T',1)))
         ingress_ref=next((s for s in consumed if s['source_role']=='TDX_SOURCE_INGRESS_ARTIFACT'),None)
         ingress_time=datetime.fromisoformat(ingress_ref['available_at'].replace(' ','T',1)) if ingress_ref and ingress_ref.get('available_at') else None
+        expected_package_date=(publication['predecessor_window'] or {}).get('source_package_date')
+        package_date_match=bool(expected_package_date and str(ingress[2])==expected_package_date) if ingress else False
         ingress_match=bool(len(ingress_rows)==1 and ingress and ingress_ref and ingress[1]==ingress_ref['owner_version_token'] and ingress[3]==ingress_ref['source_ingress_artifact_sha256'] and ingress[4]==ingress_ref['source_bytes'] and ingress_time==ingress[5] and
-            (publication['publication_status']!='DEV_ASOF_SOURCE_VERIFIED' or str(ingress[2])==trade_date))
+            (publication['publication_status']!='DEV_ASOF_SOURCE_VERIFIED' or package_date_match))
         producer_match=publication['producer_contract_id']==CONTRACT_ID and publication['producer_version']==CONTRACT_VERSION
         truth_flags_match=((publication['publication_status']=='DEV_RECONSTRUCTED_NON_PIT' and publication['as_recorded'] is False and publication['pit_eligible'] is False and publication['dev_asof_source_verified'] is False) or
             (publication['publication_status']=='DEV_SOURCE_VERIFIED' and publication['as_recorded'] is True and publication['pit_eligible'] is True and publication['dev_asof_source_verified'] is False) or
@@ -512,6 +535,7 @@ def independent_pg_readback(trade_date, candidate_token, *, publication_id=None)
             snapshot_clock_readback=dict(r8_candidate_present=bool(r8),cutoff_matches_r8_inserted_at=cutoff_match,
                 candidate_token_match=bool(r8 and r8[0]==candidate_token),trade_date_match=bool(r8 and r8[1]==trade_date)),
             source_ingress_readback=dict(receipt_present=bool(ingress),match_count=len(ingress_rows),exact_artifact_match=ingress_match,
+                expected_package_date=expected_package_date,package_date_match=package_date_match,
                 package_date=str(ingress[2]) if ingress else None,artifact_sha256=ingress[3] if ingress else None,available_at=ingress[5].isoformat() if ingress else None,
                 time_role=ingress[6] if ingress else None,evidence_class=ingress[7] if ingress else None),
             time_chain_readback=dict(valid=time_chain_valid,status='LEGACY_BATCH07_NO_DERIVED_CLOCKS' if legacy_clock_chain else 'VERIFIED',source_snapshot_cutoff_at=publication['source_snapshot_cutoff_at'],

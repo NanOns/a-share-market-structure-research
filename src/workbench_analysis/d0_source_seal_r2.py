@@ -89,13 +89,22 @@ def file_ref(root, binding, role, owner_contract, version_token, *, time_role, e
 
 
 def owner_version_from_binding(binding, trade_date):
-    """Extract the immutable 64-hex owner run token from its bound path."""
+    """Return the immutable owner token from a run path or content address.
+
+    Normal generated Owners carry a 64-hex run token in their dated path.
+    Reconstructed NON-PIT owners can arrive from a frozen evidence archive whose
+    directory layout predates that convention. For those, the exact bound file
+    SHA is itself a stable, byte-verifiable version token; require a dated path
+    component before accepting that fallback.
+    """
     parts=Path(binding['path']).parts
     try: start=parts.index(trade_date)+1
     except ValueError: start=0
     for part in parts[start:]:
         if re.fullmatch(r'[0-9a-f]{64}',part):
             return part
+    if trade_date in parts and re.fullmatch(r'[0-9a-f]{64}',str(binding.get('sha256',''))):
+        return binding['sha256']
     raise ValueError('D0_OWNER_VERSION_TOKEN_NOT_BOUND:'+binding.get('path',''))
 
 

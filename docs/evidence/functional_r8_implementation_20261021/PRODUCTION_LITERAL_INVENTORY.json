@@ -923879,5 +923879,9 @@
       "context": "golden_scope=dict(date='2026-09-24',members=3553,qualification_observations=6188,sectors=541,",
       "verifier": "scripts/check_v4_business_literals.py"
     }
-  ]
+  ],
+  "repository_head_at_scan": "d6eed78eb8ef72b193323210b56b8ece789d468e",
+  "scan_command": "python scripts/check_v4_business_literals.py --output docs/evidence/functional_r8_implementation_20261021/PRODUCTION_LITERAL_INVENTORY.json",
+  "phase0_status": "DEGRADED_PASS",
+  "phase0_scope": "静态源码/配置/依赖清单；运行时加载、数据库和服务验收仍未验证"
 }

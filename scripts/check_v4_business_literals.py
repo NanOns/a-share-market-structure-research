@@ -26,6 +26,9 @@ SECTOR_RE = re.compile(r"(?i)(?:\b(?:INDUSTRY|THEME):[A-Z0-9_-]+\b|\bT\d{4}\b)")
 EXT = {".py", ".js", ".ts", ".tsx", ".jsx", ".html", ".sql", ".json", ".yaml", ".yml", ".toml", ".ini", ".cmd", ".bat", ".ps1", ".sh"}
 ROOT_FILES = {"OPEN_RESEARCH_WORKBENCH.cmd", "OPEN_UNIFIED_WORKBENCH.cmd"}
 ENTRYPOINT_CONTRACT = "config/v4_active_runtime_entrypoints_v1.json"
+V4_JOINT_UI_NAMES = {"index.html", "app.js", "api.js", "components.js",
+                     "labels.js", "stock.js", "replay.js", "style.css"}
+V4_CONTROL_ADAPTER_UI_NAMES = {"app.js"}
 
 
 def active_entrypoint_inventory(files: list[str]) -> tuple[list[str], dict]:
@@ -69,6 +72,13 @@ def tracked_files() -> list[str]:
             continue
         if rel.startswith(("src/", "scripts/", "config/", "migrations/", "tools/", "runtime/", "tests/")) or p.parent == Path(".") or rel in ROOT_FILES:
             keep.append(rel)
+    # Runtime-selected UI bundles may live under data/v4 rather than src/. Add
+    # only the exact files SHA-bound by the active V4 UI contracts so their
+    # imports and browser calls are part of the code closure.
+    keep.extend(configured_ui_asset_targets(
+        items, "config/v4_joint_release_authority_v1.json", V4_JOINT_UI_NAMES))
+    keep.extend(configured_ui_asset_targets(
+        items, "config/v4_control_adapter_v2.json", V4_CONTROL_ADAPTER_UI_NAMES))
     return sorted(set(keep))
 
 
@@ -89,6 +99,91 @@ def module_map(files: list[str]) -> dict[str, str]:
         elif p.parent==Path('.'):
             result[p.stem]=rel
     return result
+
+
+def configured_ui_asset_targets(files: list[str], contract_path: str,
+                                allowed_names: set[str]) -> set[str]:
+    """Return exact SHA-bound UI files selected by a named V4 route contract."""
+    targets: set[str] = set()
+    if contract_path not in files:
+        return targets
+    try:
+        contract = json.loads((ROOT / contract_path).read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError, TypeError):
+        return targets
+    bindings = contract.get("ui_assets")
+    if not isinstance(bindings, dict):
+        return targets
+    for name, binding in bindings.items():
+        if name not in allowed_names or not isinstance(binding, dict):
+            continue
+        rel = binding.get("path")
+        expected = binding.get("sha256")
+        if not isinstance(rel, str) or rel not in files or not isinstance(expected, str):
+            continue
+        try:
+            path = (ROOT / rel).resolve()
+            if path.is_relative_to(ROOT.resolve()) and hashlib.sha256(path.read_bytes()).hexdigest() == expected:
+                targets.add(rel)
+        except OSError:
+            continue
+    return targets
+
+
+def v4_ui_targets(entrypoint: str, files: list[str]) -> set[str]:
+    """Model the V4 static allowlists, not every file stored under static/."""
+    research = "src/workbench_service/static/research/"
+    static = "src/workbench_service/static/"
+    targets: set[str] = set()
+    if entrypoint in {"src/workbench_service/v4_server.py",
+                      "src/workbench_service/v4_control_server_v2.py"}:
+        targets.update(static + name for name in (
+            "r43-operational-preview.html", "v4-workbench.html", "v4-workbench.js"))
+        targets.add(research + "index.html")
+        # Only names accepted by the route's /v4/assets allowlist are included.
+        allowed = (("app.js", "api.js", "components.js", "labels.js", "stock.js",
+                    "replay.js", "rotation-auto-acceptance.js", "style.css")
+                   if entrypoint == "src/workbench_service/v4_server.py"
+                   else ("api.js", "components.js", "labels.js", "stock.js", "replay.js", "style.css"))
+        targets.update(research + name for name in allowed)
+        # Operational compatibility assets are conditionally served by the V4
+        # handlers when an accepted operational publication is present.
+        compat_names = (("app.js", "api.js", "components.js")
+                        if entrypoint == "src/workbench_service/v4_server.py"
+                        else ("api.js", "components.js"))
+        targets.update(static + "r43-compat/" + name for name in compat_names)
+        if entrypoint == "src/workbench_service/v4_control_server_v2.py":
+            # Its app.js route is explicitly bound by the control adapter.
+            targets.update(configured_ui_asset_targets(
+                files, "config/v4_control_adapter_v2.json", V4_CONTROL_ADAPTER_UI_NAMES))
+            targets.add(static + "r43-control-v2/app.js")
+    elif entrypoint == "src/workbench_desktop/engine.py":
+        targets.update(static + "core-product-r1/" + name for name in (
+            "app.js", "api.js", "components.js", "stock.js", "replay.js",
+            "labels.js", "desktop_status.js"))
+    # Joint releases are selected at request time by the V4 handlers. Include
+    # only the currently SHA-bound asset paths, never every archived release.
+    if entrypoint in {"src/workbench_service/v4_server.py",
+                      "src/workbench_service/v4_control_server_v2.py"}:
+        joint_path = "config/v4_joint_release_authority_v1.json"
+        allowed = (V4_JOINT_UI_NAMES if entrypoint == "src/workbench_service/v4_server.py"
+                   else V4_JOINT_UI_NAMES - {"app.js"})
+        bound_targets = configured_ui_asset_targets(files, joint_path, allowed)
+        if joint_path in files:
+            try:
+                joint = json.loads((ROOT / joint_path).read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError, TypeError):
+                joint = {}
+            # Current V4 routes have a bounded asset-name allowlist. Do not
+            # admit arbitrary keys from a malformed or future contract.
+            bindings = joint.get("ui_assets")
+            if isinstance(bindings, dict):
+                for name, binding in bindings.items():
+                    if name in allowed and isinstance(binding, dict):
+                        rel = binding.get("path")
+                        if isinstance(rel, str) and rel in bound_targets:
+                            targets.add(rel)
+    return {target for target in targets if target in files}
 
 
 def _parents(tree: ast.AST) -> dict[ast.AST, ast.AST]:
@@ -252,12 +347,10 @@ def runtime_graph(files: list[str]) -> tuple[set[str], dict[str, list[str]], lis
         if rel.endswith(".py"):
             graph[rel] = imports(ROOT / rel, rel, modules)
         else: graph[rel] = set()
-    # Merge static service edges AFTER imports. Dynamic asset selection requires
-    # conservative coverage; it is not proof that all browser routes resolve.
-    static_assets=[x for x in files if x.startswith("src/workbench_service/static/")]
+    # Merge only assets that the V4 HTTP/desktop entrypoints can serve. A blanket
+    # static/ edge incorrectly made V2/V3 pages reachable from the V4 runtime.
     for rel in active_entries:
-        if rel in {"src/workbench_service/v4_server.py","src/workbench_service/v4_control_server_v2.py","src/workbench_desktop/engine.py"}:
-            graph.setdefault(rel,set()).update(static_assets)
+        graph.setdefault(rel, set()).update(v4_ui_targets(rel, files))
     # Follow literal HTML/JS/JSX module and asset references outside that directory.
     # HTTP fetch routes are recorded separately as unresolved runtime edges.
     for rel in files:
@@ -374,6 +467,9 @@ def verified_false_positive(rel: str, category: str, literal: str, line: str) ->
     if category=="CONSTANT_SECURITY_ID" and re.fullmatch(r"9{6}",literal) and "coalesce(current_rank,potential_rank," in line.lower():
         return "SQL_RANK_ORDERING_SENTINEL"
     if category=="CONSTANT_SECURITY_ID" and rel=="src/production/workbench.py" and "#"+literal.lower() in line.lower():
+        return "CSS_HEX_COLOR"
+    if (category=="CONSTANT_SECURITY_ID" and Path(rel).suffix.lower()==".css"
+            and re.search(r"(?<![0-9a-f])#"+re.escape(literal)+r"(?![0-9a-f])",line,re.I)):
         return "CSS_HEX_COLOR"
     if category in {"CONSTANT_DATE","CONSTANT_SECURITY_ID"} and rel=="src/tdx/_gbbq_key.py" and re.search(r"[\"'][0-9a-f]{64,}[\"']",line,re.I):
         return "ENCRYPTED_KEY_CIPHERTEXT"

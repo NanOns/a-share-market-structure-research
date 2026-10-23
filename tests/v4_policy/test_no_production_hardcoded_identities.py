@@ -54,6 +54,7 @@ def test_whole_repository_has_no_new_business_literal_candidates():
         item["semantic_key"] for item in findings
         if not item['file'].startswith('tests/') and item["category"] != "CONSTANT_DATE_COMPONENTS"
         and item["handling"] != "VERSIONED_MARKET_REFERENCE"
+        and item["handling"] != "FALSE_POSITIVE"
         and not item.get('temporal_consumption_proof')
     }
     added = sorted(current_keys - baseline_keys)

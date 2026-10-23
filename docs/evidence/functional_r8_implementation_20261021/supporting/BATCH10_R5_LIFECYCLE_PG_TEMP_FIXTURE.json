@@ -1,0 +1,47 @@
+{
+  "contract_id": "BATCH10_R5_LIFECYCLE_BAR_RECEIPT_PG_FIXTURE_R1",
+  "database": {
+    "database": "market_research",
+    "database_oid": 646711,
+    "server_version_num": "180006",
+    "transaction_read_only": "off"
+  },
+  "formal_head_changed": false,
+  "generated_at": "2026-10-23T10:31:20.198673+08:00",
+  "permanent_schema_or_table_changes": false,
+  "production_accepted": false,
+  "rows": [
+    {
+      "actual_bar_present": false,
+      "security_id": "sid-actual-no-raw",
+      "status": "ACTUAL_TRADED",
+      "status_conflict": true
+    },
+    {
+      "actual_bar_present": true,
+      "security_id": "sid-actual-same-raw",
+      "status": "ACTUAL_TRADED",
+      "status_conflict": false
+    },
+    {
+      "actual_bar_present": false,
+      "security_id": "sid-actual-wrong-day-raw",
+      "status": "ACTUAL_TRADED",
+      "status_conflict": true
+    },
+    {
+      "actual_bar_present": false,
+      "security_id": "sid-suspended-no-raw",
+      "status": "SUSPENDED",
+      "status_conflict": false
+    },
+    {
+      "actual_bar_present": true,
+      "security_id": "sid-suspended-same-raw",
+      "status": "SUSPENDED",
+      "status_conflict": true
+    }
+  ],
+  "scope": "SESSION_LOCAL_TEMP_TABLES_ONLY_ON_COMMIT_DROP",
+  "status": "REAL_PG_TEMP_FIXTURE_PASS"
+}

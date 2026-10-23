@@ -28,7 +28,7 @@ def gzwrite(root,path,rows):
     return base_gzwrite(root,path,rows)
 
 
-def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
+def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date, raw_rows=()):
     """Retain every source-active identity in the dated status projection.
 
     Core/profile rows can be smaller than the source lifecycle universe (for
@@ -36,6 +36,12 @@ def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
     still need an explicit status row, sourced from the lifecycle snapshot;
     they must not be dropped or assigned a fabricated bar.
     """
+    raw_ids=set()
+    for row in raw_rows:
+        sid=str(row.get('security_id') or '')
+        if not sid or sid in raw_ids or row.get('trade_date')!=trade_date:
+            raise ValueError('LIFECYCLE_RAW_BAR_IDENTITY_DUPLICATE_OR_DATE_MISMATCH')
+        raw_ids.add(sid)
     by_id={}
     for row in statuses:
         sid=str(row.get('security_id') or '')
@@ -52,8 +58,11 @@ def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
         else:
             # The status code alone must not create a bar claim. Preserve the
             # separately observed bar bit only for the one compatible status.
-            projected['actual_bar_present']=bool(
-                source_status=='ACTUAL_TRADED' and projected.get('actual_bar_present') is True)
+            projected['actual_bar_present']=sid in raw_ids
+            if projected['actual_bar_present'] != (source_status=='ACTUAL_TRADED'):
+                projected['status_conflict']=True
+            if source_status=='ACTUAL_TRADED' and not projected['actual_bar_present']:
+                projected.setdefault('reason','RAW_BAR_RECEIPT_NOT_FOUND_FOR_DATE_AND_SECURITY')
         by_id[sid]=projected
     lifecycle_by_id={}
     for row in lifecycle_rows:
@@ -67,10 +76,12 @@ def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
         source_status=row.get('status')
         if source_status not in {'ACTUAL_TRADED','SUSPENDED','DATA_GAP'}:
             source_status='UNKNOWN'
+        has_raw_bar=sid in raw_ids
         by_id[sid]=dict(security_id=sid,trade_date=trade_date,
-            actual_bar_present=source_status=='ACTUAL_TRADED',status=source_status,
-            status_conflict=False,lifecycle_only=True,
-            reason='SOURCE_ACTIVE_WITHOUT_CORE_PROFILE_HISTORY')
+            actual_bar_present=has_raw_bar,status=source_status,
+            status_conflict=has_raw_bar!=(source_status=='ACTUAL_TRADED'),lifecycle_only=True,
+            reason=('SOURCE_ACTIVE_WITHOUT_CORE_PROFILE_HISTORY' if has_raw_bar or source_status!='ACTUAL_TRADED'
+                    else 'RAW_BAR_RECEIPT_NOT_FOUND_FOR_DATE_AND_SECURITY'))
     if set(by_id)!=set(lifecycle_by_id):
         raise ValueError('FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED')
     return [by_id[sid] for sid in sorted(by_id)]
@@ -215,7 +226,9 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
                 progress_counter(dict(total=len(factors),processed=processed,unit='securities',coordinate_endpoint=day,phase='PROFILE'))
         if seen_history_ids!=set(factors_by_id):raise ValueError('PROFILE_HISTORY_CORE_CONSERVATION_FAILED')
         if lifecycle_rows is not None and day==lifecycle_trade_date:
-            statuses=conserve_lifecycle_status_rows(statuses,lifecycle_rows,trade_date=day)
+            raw_rows=gzrows(checked(root,owner['raw']))
+            raw_rows=[r for r in raw_rows if r.get('trade_date')==day]
+            statuses=conserve_lifecycle_status_rows(statuses,lifecycle_rows,trade_date=day,raw_rows=raw_rows)
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))
         engine=CorrectedEpisodeEngine(c,day,cutoff,owner,profiles,statuses)
         results=[]

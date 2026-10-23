@@ -14,6 +14,7 @@ def test_lifecycle_only_new_or_no_history_identity_is_retained_without_a_bar():
           "status": "ACTUAL_TRADED", "actual_bar_present": True}],
         lifecycle,
         trade_date="2026-10-22",
+        raw_rows=[],
     )
 
     by_id = {row["security_id"]: row for row in projected}
@@ -23,6 +24,43 @@ def test_lifecycle_only_new_or_no_history_identity_is_retained_without_a_bar():
     assert by_id["sid-new"]["lifecycle_only"] is True
     assert by_id["sid-unknown"]["status"] == "UNKNOWN"
     assert by_id["sid-unknown"]["actual_bar_present"] is False
+    assert by_id["sid-traded"]["status"] == "ACTUAL_TRADED"
+    assert by_id["sid-traded"]["actual_bar_present"] is False
+    assert by_id["sid-traded"]["reason"] == "RAW_BAR_RECEIPT_NOT_FOUND_FOR_DATE_AND_SECURITY"
+
+
+def test_lifecycle_only_actual_traded_requires_same_day_same_security_raw_bar():
+    lifecycle = [{"security_id": "sid-a", "trade_date": "2026-10-22", "status": "ACTUAL_TRADED"}]
+    raw = [{"security_id": "sid-a", "trade_date": "2026-10-22"}]
+    projected = conserve_lifecycle_status_rows([], lifecycle, trade_date="2026-10-22", raw_rows=raw)
+    assert projected[0]["actual_bar_present"] is True
+
+
+def test_raw_bar_presence_is_independent_of_lifecycle_status():
+    lifecycle = [{"security_id": "sid-a", "trade_date": "2026-10-22", "status": "SUSPENDED"}]
+    raw = [{"security_id": "sid-a", "trade_date": "2026-10-22"}]
+    projected = conserve_lifecycle_status_rows([], lifecycle, trade_date="2026-10-22", raw_rows=raw)
+    assert projected[0]["status"] == "SUSPENDED"
+    assert projected[0]["actual_bar_present"] is True
+    assert projected[0]["status_conflict"] is True
+
+
+@pytest.mark.parametrize("raw", [
+    [{"security_id": "sid-other", "trade_date": "2026-10-22"}],
+    [{"security_id": "sid-a", "trade_date": "2026-10-21"}],
+])
+def test_lifecycle_only_actual_traded_rejects_wrong_security_or_day_raw_bar(raw):
+    lifecycle = [{"security_id": "sid-a", "trade_date": "2026-10-22", "status": "ACTUAL_TRADED"}]
+    projected = conserve_lifecycle_status_rows([], lifecycle, trade_date="2026-10-22", raw_rows=raw if raw[0]["trade_date"] == "2026-10-22" else [])
+    assert projected[0]["status"] == "ACTUAL_TRADED"
+    assert projected[0]["actual_bar_present"] is False
+
+
+def test_raw_receipt_with_wrong_date_is_rejected():
+    lifecycle = [{"security_id": "sid-a", "trade_date": "2026-10-22", "status": "ACTUAL_TRADED"}]
+    with pytest.raises(ValueError, match="LIFECYCLE_RAW_BAR_IDENTITY_DUPLICATE_OR_DATE_MISMATCH"):
+        conserve_lifecycle_status_rows([], lifecycle, trade_date="2026-10-22",
+            raw_rows=[{"security_id": "sid-a", "trade_date": "2026-10-21"}])
 
 
 def test_lifecycle_projection_rejects_duplicate_source_identities():

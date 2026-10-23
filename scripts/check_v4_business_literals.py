@@ -111,6 +111,13 @@ def configured_ui_asset_targets(files: list[str], contract_path: str,
         contract = json.loads((ROOT / contract_path).read_text(encoding="utf-8"))
     except (OSError, UnicodeError, ValueError, TypeError):
         return targets
+    expected_contract_ids = {
+        "config/v4_joint_release_authority_v1.json": {
+            "V4_JOINT_RELEASE_V1", "V4_JOINT_RELEASE_V2_PG_CONTENT"},
+        "config/v4_control_adapter_v2.json": {"V4_CONTROL_ADAPTER_V2"},
+    }
+    if contract.get("contract_id") not in expected_contract_ids.get(contract_path, set()):
+        return targets
     bindings = contract.get("ui_assets")
     if not isinstance(bindings, dict):
         return targets

@@ -100,7 +100,7 @@ def test_v4_ui_graph_uses_route_allowlists_and_excludes_legacy_static_files(tmp_
         path.write_text(body, encoding='utf-8')
     adapter_path = tmp_path / adapter
     adapter_path.parent.mkdir(parents=True, exist_ok=True)
-    adapter_path.write_text(json.dumps({'ui_assets': {'app.js': {
+    adapter_path.write_text(json.dumps({'contract_id': 'V4_CONTROL_ADAPTER_V2', 'ui_assets': {'app.js': {
         'path': control_asset,
         'sha256': hashlib.sha256((tmp_path / control_asset).read_bytes()).hexdigest(),
     }}}), encoding='utf-8')
@@ -156,6 +156,10 @@ def test_sha_bound_joint_ui_assets_are_scanned_as_dynamic_v4_dependencies(tmp_pa
     assert {release, app, style} <= bound_assets
     assert {release, app, style, 'data/v4/ui_releases/sha-bound/module.js'} <= reachable
     assert legacy not in reachable
+    contract_path.write_text(json.dumps({'contract_id': 'UNSUPPORTED_RELEASE', 'ui_assets': bindings}),
+                             encoding='utf-8')
+    assert not scanner.configured_ui_asset_targets(
+        candidates, contract, scanner.V4_JOINT_UI_NAMES)
 
 
 def test_css_hex_colors_do_not_create_security_identity_findings():

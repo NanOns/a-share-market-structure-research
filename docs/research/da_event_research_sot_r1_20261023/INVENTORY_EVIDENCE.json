@@ -1,0 +1,1407 @@
+{
+  "captured_at": "2026-10-23T17:06:00.2377507+08:00",
+  "head": "df6e312f773500f300d435cd51910961c79f7475",
+  "branch": "codex/v4-unified-development",
+  "initial_status": [
+    "A  config/core_product_index_benchmark_v1.json",
+    " M run_breakout_prep_v2.py",
+    " M run_early_mover_v2.py",
+    " M run_forward_observation.py",
+    " M run_live_forward.py",
+    " M run_phase0_2b.py",
+    " M run_priority_v2.py",
+    " M run_r3_integrated_seal.py",
+    " M run_sector_leader_v2.py",
+    " M run_shadow_v2.py",
+    " M run_steady_trend_v2.py",
+    " M run_strong_pullback_v2.py",
+    " M scripts/a12_build_v4_05_r4_core_profile_r1.py",
+    " M scripts/a12_r2_build_v4_05_r4_core_profile.py",
+    " M scripts/accept_v4_dm01_baostock_runtime.py",
+    " M scripts/build_fp05_market.py",
+    " M scripts/build_fp06_sector.py",
+    " M scripts/build_v4_02_dated_trading_status.py",
+    " M scripts/build_v4_02_formal_periods.py",
+    " M scripts/build_v4_02_full_market_isst.py",
+    " M scripts/build_v4_02_price_limits.py",
+    " M scripts/build_v4_02_price_limits_generic.py",
+    " M scripts/build_v4_05_r3_core_profile.py",
+    " M scripts/build_v4_05_r3_market_regime.py",
+    " M scripts/build_v4_05_r4_core_profile.py",
+    " M scripts/check_v4_business_literals.py",
+    " M scripts/run_v4_04_full_market_candidate.py",
+    " M scripts/run_v4_04_full_market_candidate_r4.py",
+    " M scripts/v4_02_build_raw_selected_v2.py",
+    " M scripts/verify_a02_a05_a04_scoped_r3.py",
+    " M src/phase0_2a_runner.py",
+    " M src/phase0_2b_runner.py",
+    " M src/production/release.py",
+    " M src/upgrade_m1.py",
+    " M src/v4/accepted_input.py",
+    " M src/v4/replay_r3_guards.py",
+    " M src/v4/scoped_promotions_r3.py",
+    " M src/workbench_analysis/corrected_sector_replay.py",
+    " M src/workbench_analysis/dm01_accepted_builder_registry.py",
+    " M src/workbench_analysis/dm01_accepted_chain_v1.py",
+    " M src/workbench_analysis/dm01_publication_history_reader_v1.py",
+    " M src/workbench_analysis/dm01_publication_history_reader_v2.py",
+    " M src/workbench_analysis/historical_stage_governance_r17.py",
+    " M src/workbench_analysis/operational_daily_owner_v1.py",
+    " M src/workbench_analysis/operational_product_pack_v3.py",
+    " M src/workbench_analysis/source_authority_owner_bootstrap_r1.py",
+    " M src/workbench_analysis/tdx_member_retro_r43.py",
+    " M src/workbench_analysis/v4_current_stage_authority.py",
+    " M src/workbench_desktop/qa.py",
+    " M src/workbench_desktop/qa_daily.py",
+    " M src/workbench_service/core_product_bff_r1.py",
+    " M src/workbench_service/core_product_server_r1.py",
+    " M src/workbench_service/operational_daily_server_v1.py",
+    " M src/workbench_service/operational_gap_bff_v2.py",
+    " M src/workbench_service/production_v4.py",
+    " M src/workbench_service/static/r43-operational-preview.html",
+    " M src/workbench_service/v4_control_server_v2.py",
+    " M src/workbench_service/v4_server.py",
+    " M tests/test_fixed_qfq_samples.py",
+    " M tests/v4_04/test_accepted_input.py",
+    " M tests/v4_04/test_all_rule_branches.py",
+    " M tests/v4_05/test_replay_gate_a_r3.py",
+    " M tests/v4_joint/test_operational_product_pack_v3.py",
+    " M tests/v4_policy/test_no_production_hardcoded_identities.py",
+    "?? .githooks/",
+    "?? config/v4_active_runtime_entrypoints_v1.json",
+    "?? config_back/",
+    "?? script_back/",
+    "?? tests/test_phase0_2b_dynamic_anchor.py",
+    "?? tests/test_scoped_promotion_dynamic_dates.py"
+  ],
+  "preexisting_tracked_changes": [
+    {
+      "path": "config/core_product_index_benchmark_v1.json",
+      "sha256": "E22E3F8CA10B9CAE13C4B1D9E8B1E6F4F822F87C2E5A73E20E9C08BDB27D863E"
+    },
+    {
+      "path": "run_breakout_prep_v2.py",
+      "sha256": "0296792B89C0AD2C46846B66620DFC2947EEF4F70C92ACAEBE23DD84EBC9C1A1"
+    },
+    {
+      "path": "run_early_mover_v2.py",
+      "sha256": "A83C0794FF1E670465583D9F546C08A81DD24D7989D29BA02EC06E5B977E9996"
+    },
+    {
+      "path": "run_forward_observation.py",
+      "sha256": "DFE7888195DC2930ED114223327A78A0D4121C6EC7E924B60C6104F74A5C5363"
+    },
+    {
+      "path": "run_live_forward.py",
+      "sha256": "1649DBA0F318DD7451E54359EA12D359B64323B008BAF0F9C7AC4CF21EB45104"
+    },
+    {
+      "path": "run_phase0_2b.py",
+      "sha256": "BD16CF441034A8B0E907058905EFB0B3300B9DC153018C9C5B3BD2BF7BF06324"
+    },
+    {
+      "path": "run_priority_v2.py",
+      "sha256": "949D629ACEB06BE3AAE9C49C5253E049B3F4C75C47A0447E86D4DE926E1811DD"
+    },
+    {
+      "path": "run_r3_integrated_seal.py",
+      "sha256": "021125851EBB924C2099E42CBAE59DA4E47156B1E7EE41D7094CB982B26EF989"
+    },
+    {
+      "path": "run_sector_leader_v2.py",
+      "sha256": "D8126EBB8BF06DB1C1338CB74DEA53C3A9D0A458B8EFDE113757657DB7C4DBE9"
+    },
+    {
+      "path": "run_shadow_v2.py",
+      "sha256": "D449FCE6E8FCF15FAE0141CBE002B147C070D8675F470ACA52B5D2340F8779C7"
+    },
+    {
+      "path": "run_steady_trend_v2.py",
+      "sha256": "1CB79617AF404CC6711B0E236F8872DEEA8C819FEE5FD05A55FB7939AC4E1E94"
+    },
+    {
+      "path": "run_strong_pullback_v2.py",
+      "sha256": "79A26228415160277B6A78EC37DE2485AC9462B1E16C7E619491DCEA45049C20"
+    },
+    {
+      "path": "scripts/a12_build_v4_05_r4_core_profile_r1.py",
+      "sha256": "E333DFDCD7A412A77CA2E06D4E28332F8C78956B2EBCE94B47DAD4102105F4CA"
+    },
+    {
+      "path": "scripts/a12_r2_build_v4_05_r4_core_profile.py",
+      "sha256": "CC75EC92F9E831691959250063C1F641641AB08B4EAFEE402261BCC577EB14EA"
+    },
+    {
+      "path": "scripts/accept_v4_dm01_baostock_runtime.py",
+      "sha256": "B91BDCE44FD4CC544DE88B0F051335CDC2EE43B71592FE5C8D425EA13FC446CA"
+    },
+    {
+      "path": "scripts/build_fp05_market.py",
+      "sha256": "55AFE124B5CFF52F5D1D78C577D779BE59939244A2423199C6BD7D52F60A9E1B"
+    },
+    {
+      "path": "scripts/build_fp06_sector.py",
+      "sha256": "430425EF5D4D2CD351008EEDDE7F10321BDE4E1ABAC218CF8D6F9CAE175AEB71"
+    },
+    {
+      "path": "scripts/build_v4_02_dated_trading_status.py",
+      "sha256": "0699147EA4634100C69B684361480264AFC3B929D3170335871065A28F377BF6"
+    },
+    {
+      "path": "scripts/build_v4_02_formal_periods.py",
+      "sha256": "DEEB2B9CD62A144020280A955BD5C3CFDDD9CD6DAB895C56D7C11BCBA48F515D"
+    },
+    {
+      "path": "scripts/build_v4_02_full_market_isst.py",
+      "sha256": "1DF6847964F059E2E57BD5919BB685ECA0A3ED7B2AD23F2889257BC527F5F248"
+    },
+    {
+      "path": "scripts/build_v4_02_price_limits.py",
+      "sha256": "54A53CCF8C80CE4C00A2AF8749C959D210293F8F1DD7B39838478F7D37B67EFF"
+    },
+    {
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "BC199DCADDFE305EFB0746463B35E6EBA1B4D73DDEC04D5495DD92F92FC998F3"
+    },
+    {
+      "path": "scripts/build_v4_05_r3_core_profile.py",
+      "sha256": "010CD43D4CDB1337D4451AB2FD2C492B5AEABAEC55ADBEC7DFC91229EA6D9EC4"
+    },
+    {
+      "path": "scripts/build_v4_05_r3_market_regime.py",
+      "sha256": "BD7953406889F5C5D6755DE2B970D065D100F7FB330B64C6A9C47E2248B1AF86"
+    },
+    {
+      "path": "scripts/build_v4_05_r4_core_profile.py",
+      "sha256": "0AF6D8821E0DD31DA056155C1B6550B2AD53DFF6BA7CD48BD91908B4A9134A1C"
+    },
+    {
+      "path": "scripts/check_v4_business_literals.py",
+      "sha256": "7A60F0CC11B1D6FB70E3C84F885AB74D732FADC8D994A31DC928B17CBF3EA88A"
+    },
+    {
+      "path": "scripts/run_v4_04_full_market_candidate.py",
+      "sha256": "5B13EC2CA4C71946A4F8C7255DE4A1357A1F157D3B74AD4C72826D92B7B2BCE4"
+    },
+    {
+      "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+      "sha256": "1E94C1741C5C37C3740187E961E50F7F53264347D1528E5E922BAB07327E1E88"
+    },
+    {
+      "path": "scripts/v4_02_build_raw_selected_v2.py",
+      "sha256": "FA4E08B425A4D0F536086FE53BCA1A5E2BF10198C7E474D8861B9685EC7A0C72"
+    },
+    {
+      "path": "scripts/verify_a02_a05_a04_scoped_r3.py",
+      "sha256": "3D8105CA29399956AE7717E41AC7005A6F3D68DD7B973CB3BED5B376D7B73F24"
+    },
+    {
+      "path": "src/phase0_2a_runner.py",
+      "sha256": "CD3062B04A10B5A92372BB47805B06D9D23F41C83224532095B98A2C4C29DFB5"
+    },
+    {
+      "path": "src/phase0_2b_runner.py",
+      "sha256": "EEDAB5676E2378A0EE522EACBE5D565706E543FC755048E74073960D63A80FF5"
+    },
+    {
+      "path": "src/production/release.py",
+      "sha256": "6D6494662D3F7738E9A101472CAA99E4D82285070CB4CBB270391798408C21A8"
+    },
+    {
+      "path": "src/upgrade_m1.py",
+      "sha256": "01A4AB1ED937C23DA2965C6F09713D2AEEE5B37750FDF42F337A2A2EB10FF681"
+    },
+    {
+      "path": "src/v4/accepted_input.py",
+      "sha256": "E3153596ABB04C795B860B0C6CC835D3ED7B7A6C41384C05AE196C0D2B01C681"
+    },
+    {
+      "path": "src/v4/replay_r3_guards.py",
+      "sha256": "92414A41330EA06A8FB3CB9BFB954A1B144B34B2017AE42DA157847F81134326"
+    },
+    {
+      "path": "src/v4/scoped_promotions_r3.py",
+      "sha256": "D011EBB9BD9071D267FBB06D32B787EAA60288AFAA830FAB12288EA0A7D82399"
+    },
+    {
+      "path": "src/workbench_analysis/corrected_sector_replay.py",
+      "sha256": "934968E6E714B609785EDE4AAE6906E978B4FF18A597E0D3D7F7E2ED67778733"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "sha256": "C1C5F4F7A3F0CEA3FEB29AF64CAE2E1CF6B5C8F1CA5F430F0365C4023EDE9091"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_accepted_chain_v1.py",
+      "sha256": "5E56E0CB1D6AE1546614FEF077B570BA9C9570A4A457A793E3AEFB76A9CB975E"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v1.py",
+      "sha256": "A05B29380393622712B58F1124D241BDCEBA884643B85958032570E28386A0D1"
+    },
+    {
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v2.py",
+      "sha256": "9C7FDB130A9D5B94203E1DE4F582AAEB9FD5235BE89621790916913C4D9FC37B"
+    },
+    {
+      "path": "src/workbench_analysis/historical_stage_governance_r17.py",
+      "sha256": "B8B66DD479833C9BEE53E9DD517708E89190C32E37931BD231382755894BB238"
+    },
+    {
+      "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+      "sha256": "449FC54326E8AFA94099F59AC9C3F666AFA88B7DF300F0ED2351AFF1AB1C37B2"
+    },
+    {
+      "path": "src/workbench_analysis/operational_product_pack_v3.py",
+      "sha256": "6EB97C18842933B11080AEBA0524030F00EBF72A2427C71470051098C76EA70F"
+    },
+    {
+      "path": "src/workbench_analysis/source_authority_owner_bootstrap_r1.py",
+      "sha256": "DF43C19B84616775BC554AD5E12A37E4A06F09E9A9CF4406A7C81FA00BEAD837"
+    },
+    {
+      "path": "src/workbench_analysis/tdx_member_retro_r43.py",
+      "sha256": "59605E12BC91EDD09BD17622B783CD14F17DC6A7E1A6D9F3E705A265EF5D6C2A"
+    },
+    {
+      "path": "src/workbench_analysis/v4_current_stage_authority.py",
+      "sha256": "DA485FE1DB200A1FDF98676483F2A85260728865EE301F086B1D9066D00A80BC"
+    },
+    {
+      "path": "src/workbench_desktop/qa.py",
+      "sha256": "48DAEDED18F4AF83FB5D63456D8B626A2EA9DE4482605A73617E60F678167ED4"
+    },
+    {
+      "path": "src/workbench_desktop/qa_daily.py",
+      "sha256": "43A174A3AC5093D0AD7D14DA13ACB42D2C53D9E088D521F9138B404C448A880D"
+    },
+    {
+      "path": "src/workbench_service/core_product_bff_r1.py",
+      "sha256": "51248B99AE302FC6785BDB4AD8DA2C60E5B33611D24BB856E421927A5F0B799C"
+    },
+    {
+      "path": "src/workbench_service/core_product_server_r1.py",
+      "sha256": "5610752B0A36C2BA31989471567C1285A4B4D32F284ADE3257BAD58902C31845"
+    },
+    {
+      "path": "src/workbench_service/operational_daily_server_v1.py",
+      "sha256": "BE752FE8823CEA8191ECA182331E9F6BAE1C1DC4816F37041D7931A489039989"
+    },
+    {
+      "path": "src/workbench_service/operational_gap_bff_v2.py",
+      "sha256": "B4E68C2F6A05BF1008DD1798D04E67221F817C801BD069B62143A3E734C7575F"
+    },
+    {
+      "path": "src/workbench_service/production_v4.py",
+      "sha256": "61AD74E5F07FE4E0A2A585977AA27DF218C975BD1754B6ACE74D53D93556E392"
+    },
+    {
+      "path": "src/workbench_service/static/r43-operational-preview.html",
+      "sha256": "071C52FFA53931F796A89D9A1FF416526BE9FF7E40C192DDC06765716C9D31F1"
+    },
+    {
+      "path": "src/workbench_service/v4_control_server_v2.py",
+      "sha256": "B04B50763914B45BFFB7D0AB1B26356AFBFB084E9EDB082819A7BC3A735CE2A3"
+    },
+    {
+      "path": "src/workbench_service/v4_server.py",
+      "sha256": "111D98FB92E61D4DC20D72FC38BDFA0A66C6CE57AF7826F9630B85E76A405FFE"
+    },
+    {
+      "path": "tests/test_fixed_qfq_samples.py",
+      "sha256": "394EDEB47934C23C4CCBC315D7CF74F7FACC0D28C2351736E08AAEEAC608BA04"
+    },
+    {
+      "path": "tests/v4_04/test_accepted_input.py",
+      "sha256": "751BD8377F08A8CFDE5C0B36292464AAC8B21CA0B8371454864B426EB6B3BB7C"
+    },
+    {
+      "path": "tests/v4_04/test_all_rule_branches.py",
+      "sha256": "45C7D792D26AE88486E3CD44E553102BEE63329A67C0BD7ED9B0A80E8EBA98EF"
+    },
+    {
+      "path": "tests/v4_05/test_replay_gate_a_r3.py",
+      "sha256": "FC1172F7F390EEC2D2F08820C907A9F36E4AF2FCE309E34056A9C91695D32230"
+    },
+    {
+      "path": "tests/v4_joint/test_operational_product_pack_v3.py",
+      "sha256": "9EC7F4BD96E7BEE7532CE7936EC8F8A888078580E83073C4C54B3AF905A89F41"
+    },
+    {
+      "path": "tests/v4_policy/test_no_production_hardcoded_identities.py",
+      "sha256": "AC06E0EDCD3B56A3CDF8B97A7A5C8322EDBCFA05AF5FD2B0D6BA943CEFF4CC0F"
+    }
+  ],
+  "listeners": [
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5432,
+      "OwningProcess": 8640
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 28766,
+      "OwningProcess": 52916
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5432,
+      "OwningProcess": 8640
+    }
+  ],
+  "processes": [
+    {
+      "ProcessId": 8640,
+      "Name": "postgres.exe",
+      "ExecutablePath": null
+    },
+    {
+      "ProcessId": 52916,
+      "Name": "python.exe",
+      "ExecutablePath": "E:\\python\\python.exe"
+    }
+  ],
+  "api": [
+    {
+      "payload": {
+        "gaps": [
+          {
+            "state": "SOURCE_INCOMPLETE",
+            "domain": "rotation",
+            "next_task": "Complete source QA and independent validation before publishing this domain",
+            "task_stage": "FP03",
+            "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+            "owner_scope": "2026-10-21 operational research",
+            "ui_presentation": "来源已接入；当前域仍在独立验证，未作为已接受结果发布",
+            "validation_state": "VALIDATION_ONGOING",
+            "producer_binding_status": "BOUND"
+          },
+          {
+            "state": "SOURCE_INCOMPLETE",
+            "domain": "forward",
+            "next_task": "Complete source QA and independent validation before publishing this domain",
+            "task_stage": "FP10",
+            "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+            "owner_scope": "2026-10-21 operational research",
+            "ui_presentation": "来源已接入；当前域仍在独立验证，未作为已接受结果发布",
+            "validation_state": "VALIDATION_ONGOING",
+            "producer_binding_status": "BOUND"
+          },
+          {
+            "state": "SOURCE_INCOMPLETE",
+            "domain": "forward/statistics",
+            "reason": "NO_FORWARD_ENROLLMENT_STATISTICS_OWNER",
+            "next_task": "Bind real dated producer, verify source QA and token, then browser acceptance under FP10",
+            "task_stage": "FP10",
+            "contract_id": "V4_OPERATIONAL_ROUTE_GAP_V2",
+            "owner_scope": "2026-10-21 operational research",
+            "missing_owner": "DATED_OPERATIONAL_FORWARD_STATISTICS_OWNER",
+            "ui_presentation": "来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期"
+          }
+        ],
+        "counts": {
+          "focus": 3975,
+          "stocks": 5224,
+          "sectors": 400
+        },
+        "status": "READY",
+        "context": {
+          "taxonomy": "TDX_INDUSTRY_CONCEPT",
+          "read_scope": "DEVELOPMENT_CANDIDATE_PREVIEW",
+          "release_id": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "trade_date": "2026-10-21",
+          "AS_RECORDED": false,
+          "contract_id": "V4_OPERATIONAL_INCREMENTAL_SUCCESSOR_V1",
+          "focus_write": false,
+          "PIT_ELIGIBLE": false,
+          "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "publication_id": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "scoped_release": true,
+          "bff_contract_id": "CORE_PRODUCT_BFF_R1",
+          "data_updated_at": "2026-10-23T08:40:33.279901+08:00",
+          "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+          "membership_mode": "TDX_LATEST_MEMBER_RETRO_V1",
+          "model_namespace": "TDX_INDUSTRY_CONCEPT",
+          "data_cutoff_date": "2026-10-21",
+          "domain_readiness": {
+            "focus": {
+              "earliest_valid_date": "2026-09-28"
+            }
+          },
+          "formal_head_date": "2026-10-21",
+          "formal_head_match": false,
+          "knowledge_lineage": "RECONSTRUCTED_LATEST_MEMBERSHIP",
+          "read_source_label": "通达信最新成员回算；非历史当日成员",
+          "accepted_trade_date": "2026-10-21",
+          "membership_snapshot": {
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/MEMBER_SNAPSHOT_S.json",
+            "bytes": 2281,
+            "sha256": "11d1c790c6dbd071a72556a45561faf19f12e1e3b23afce92730789d3d2ce258"
+          },
+          "production_accepted": false,
+          "available_trade_dates": [
+            "2026-09-28",
+            "2026-09-29",
+            "2026-09-30",
+            "2026-10-08",
+            "2026-10-09",
+            "2026-10-12",
+            "2026-10-13",
+            "2026-10-14",
+            "2026-10-15",
+            "2026-10-16",
+            "2026-10-19",
+            "2026-10-20",
+            "2026-10-21"
+          ],
+          "membership_observed_at": "2026-10-09T09:44:01.158745+08:00",
+          "membership_snapshot_id": "TDX_MEMBER_SNAPSHOT_S_20261009_44f6d2c7cfd4eaf4b218bf237b7776aad81ab11b54b2c01175e6eebf9a65b0ca",
+          "survivorship_bias_risk": true,
+          "historical_PIT_permission": false,
+          "operational_release_scope": [
+            "stocks_daily",
+            "sectors_current_facts",
+            "market_current",
+            "focus_read_corrected",
+            "diagnostics"
+          ],
+          "production_eligible_scope": "DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY",
+          "rotation_validation_state": "AUTO_ACCEPTED_WITH_LIMITATIONS",
+          "external_domain_disposition": {
+            "forward": "VALIDATION_ONGOING",
+            "rotation": "VALIDATION_ONGOING"
+          },
+          "automatic_domain_disposition": {
+            "forward": "VALIDATION_ONGOING",
+            "rotation": "AUTO_ACCEPTED_WITH_LIMITATIONS"
+          },
+          "product_engineering_acceptance": "EXTERNAL_PENDING",
+          "independent_external_acceptance": false,
+          "HISTORICAL_FIRST_AVAILABLE_PROVEN": false
+        },
+        "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "data_trade_date": "2026-10-21",
+        "production_accepted": false,
+        "dated_owner_bindings": {
+          "adjusted": {
+            "bytes": 410616,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/adjusted.jsonl.gz",
+            "sha256": "9611cdfbe29f6ce74d77e29f42d08fae226c5a9bf4591ef02c405b26b1d62745"
+          },
+          "base_profile": {
+            "bytes": 43572289,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/profiles.jsonl.gz",
+            "sha256": "c44d052278628487eb172aa26b37cbf4165766ab07769d8a48f24f8c2963896a"
+          },
+          "core": {
+            "bytes": 19755700,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/core.jsonl.gz",
+            "sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"
+          },
+          "diagnostic": {
+            "bytes": 8049,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PROFILE_STRUCTURE_OWNER.json",
+            "sha256": "b5f51dc47cfd42824f85a9052d89c54d9c15f4582686500b52ba6f657e2d6bb4"
+          },
+          "events": {
+            "bytes": 226757,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/structure/events.jsonl",
+            "sha256": "01bd5131aa1b6efe1f46aa5b70af280a5951a7aa7bd751823c5e9cde2df7913f"
+          },
+          "focus": {
+            "bytes": 2030582,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/corrected_d2.json.gz",
+            "sha256": "2320b768f5690d5c056693e0311a30f296d62915a35820aba1096c045a699911"
+          },
+          "forward": {
+            "bytes": 19945104,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+            "sha256": "ef57471ccc4d2c5a66205767164646ec818df7d75f9d0e5e58aad4c7f00191a0"
+          },
+          "lifecycle": {
+            "bytes": 1666872,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sources/2026-10-21/lifecycle.json",
+            "sha256": "cfedfc2d338ca6c1340d6693a87e5761600505163404b9e4a647f8aa101f1a08"
+          },
+          "market": {
+            "bytes": 7623,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+            "sha256": "cf98bb746fcb0a342200e87b6794d0b02b25a8366ea48a683a58a61e9466fed4"
+          },
+          "period_adjusted": {
+            "bytes": 3119503,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PERIOD_ADJUSTED.jsonl.gz",
+            "sha256": "92b5ac56f6b027604bf49c611874c19705ca6c87aa1b49ec2e36ca75ae9176fa"
+          },
+          "period_raw": {
+            "bytes": 3114838,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PERIOD_RAW.jsonl.gz",
+            "sha256": "1d21ed373b58b6a0eefc0dc2e639e2f023280809e3516d02c8d67072326f0ffe"
+          },
+          "prewatch": {
+            "bytes": 3285257,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/corrected_d0_prewatch.jsonl.gz",
+            "sha256": "a3c78bb405be0661e5570ca773dfb42ac625d6ca5440f6947ef808eeafa16c27"
+          },
+          "profile": {
+            "bytes": 48068288,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/profiles_with_tdx_relative.jsonl.gz",
+            "sha256": "5feb39ac104c494dcaeaa49187ad44779cbbc3d4e9e69c971f63405dd7fb64ec"
+          },
+          "raw": {
+            "bytes": 240788,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/raw.jsonl.gz",
+            "sha256": "59e8f1055a69de96ec210c1e610a1d4595606eaed591f52f2f1bfe067303bb08"
+          },
+          "relative_sector": {
+            "bytes": 2187405,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/relative_sector_loo.jsonl.gz",
+            "sha256": "9164982c1cac07bafb99feaa83c5ff23b4ea75116b88739d82b02353885e01bb"
+          },
+          "rotation": {
+            "bytes": 5133785,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/rotation.jsonl.gz",
+            "sha256": "cf1512e4097c05c543eaa06947581644886053f1e34695dcda1f14f6fbb23a3e"
+          },
+          "sector": {
+            "bytes": 1711923,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+            "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455"
+          },
+          "sector_receipt": {
+            "bytes": 1239319,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/SECTOR_REPLAY.json",
+            "sha256": "00be6892a1ba0bed3f2083f259c6bc0d692187964c885ae0c6669c1a4bbfa55a"
+          },
+          "seed": {
+            "bytes": 144869,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/base_seed.jsonl.gz",
+            "sha256": "4b7dafc4b255fe8636d5000997ba02f3edc0abd831b1f5d56ce6fdd75c557d8b"
+          },
+          "special_phase": {
+            "bytes": 1580,
+            "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sources/2026-10-21/special_phase.json",
+            "sha256": "e5806dfe436d6cc9ab99be274a720641cb8d99dfa995fdd73ef6273087a8a0d7"
+          }
+        },
+        "snapshot_context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "snapshot_context_trade_date": "2026-10-21"
+      },
+      "http_status": 200,
+      "path": "/api/v4/context"
+    }
+  ],
+  "files": [
+    {
+      "path": "config/online_source_registry_v3.json",
+      "sha256": "893D6D3F501D02DA8A22BB005C5FF551AC722E00567F45D32BC298181CAA9493"
+    },
+    {
+      "path": "config/p09_runtime_capabilities_v1.json",
+      "sha256": "21489F383BB6D36116D4F7976BAA556761375C8E54AAD41DFFC72C37F2FC4FA4"
+    },
+    {
+      "path": "config/m14_runtime_capabilities_v1.json",
+      "sha256": "B29D24FD39739E166C1FDB74E163735479846734C3C4547FD83A259D2764C219"
+    },
+    {
+      "path": "config/p09_topic_sector_mapping_v1.json",
+      "sha256": "87D4235E494B39D6F2C1926C9D3A51B340788EA17A6AC2D7C3CECACB12C4DD9E"
+    },
+    {
+      "path": "config/trading_calendar.yaml",
+      "sha256": "09EDF953BD499A97448F0136DC2426DA963FE537553E8FF309E91C04F6FA3B6E"
+    },
+    {
+      "path": "src/workbench_online/event_models.py",
+      "sha256": "22E6BBCC0F579225CFA23752ABB079B375AC7EFE04321CA1E0179BACD1625A6A"
+    },
+    {
+      "path": "src/workbench_online/event_batch.py",
+      "sha256": "5088E8FBAAAA96520A3D2B364D8F11E7FB8500E97B0ACECCE44F98F3701CA57A"
+    },
+    {
+      "path": "src/workbench_online/external_evidence.py",
+      "sha256": "FB8B0E081C3F82849F2F700693DDF248379C02BEE092DE4876B51436741DDF9B"
+    },
+    {
+      "path": "src/workbench_online/p09_products.py",
+      "sha256": "40B3E7C7BFB4B9B6A99F0B1A32930CDCE9E6B597F2C4054DF89D5D4B40F79093"
+    },
+    {
+      "path": "src/workbench_service/p09_context.py",
+      "sha256": "FF81194AFE9D521F72F82F29587D599BD32A99FFC6F16EC4ACD57A4AEEDD286A"
+    },
+    {
+      "path": "src/workbench_service/research_hypotheses_r3.py",
+      "sha256": "E4F39E4563008C9F97F746E224729E82478742329293120EF350F1CDEAC1040C"
+    },
+    {
+      "path": "src/workbench_service/production_v4.py",
+      "sha256": "61AD74E5F07FE4E0A2A585977AA27DF218C975BD1754B6ACE74D53D93556E392"
+    },
+    {
+      "path": "src/workbench_db/v4_membership_reference_pg_v1.py",
+      "sha256": "2B8E942B5E56A6848C4B3FEECE6EED2F21E5D5FFE5D996FDD09EB7C9EF1CF86B"
+    },
+    {
+      "path": "docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md",
+      "sha256": "6C7A503293ED268D83472CEA270B083203B739CC5BCF185C03672A33BDD7B093"
+    },
+    {
+      "path": "docs/M14_EXTERNAL_EVIDENCE_CONTRACT_V1.md",
+      "sha256": "E6FCC17C50D177648CA8EC9FE43251BE7B947FC36D06F55667D48AF10371F32B"
+    }
+  ],
+  "contract_id": "DA-EVENT-SOT-ADOPTION-INVENTORY-20261023/R1",
+  "source": {
+    "id": "1rIqHlLL8LKadabNNFVrn82jRwag4pJGd",
+    "url": "https://drive.google.com/file/d/1rIqHlLL8LKadabNNFVrn82jRwag4pJGd/view?usp=drivesdk",
+    "title": "A股全渠道新闻事件催化与题材映射研究流程规范_SOT_R1_20261023.md",
+    "mime_type": "text/markdown",
+    "remote_size_bytes": 43863,
+    "remote_modified_at": "2026-10-23T08:52:54.231Z",
+    "snapshot_sha256": "eaf5ae2e49f932393c211cd0ed5fc9dbd3023df84904a5f833a722b0ec2b7b58",
+    "snapshot_lines": 543,
+    "snapshot_kind": "CONNECTOR_READABLE_TEXT_UTF8",
+    "remote_checksum_available": false
+  },
+  "calendar": {
+    "head_status": "LOCAL_READY_FOR_EXTERNAL_AUDIT",
+    "head_contract": "DM01_R4_CALENDAR_HEAD_V1",
+    "binding": {
+      "bytes": 5147,
+      "path": "data/v4/dm01_r4/calendar/SESSION_CALENDAR_20260930_20261231_R1.json",
+      "sha256": "3cbce200d5dff2916b98af050c51c16fc2906c82da7214af9d8f0c736fc12465"
+    },
+    "actual_sha256": "3CBCE200D5DFF2916B98AF050C51C16FC2906C82DA7214AF9D8F0C736FC12465",
+    "coverage_start": "2026-09-30",
+    "coverage_end": "2026-12-31",
+    "agreement": true,
+    "exchanges": [
+      "SSE",
+      "SZSE"
+    ],
+    "session_count": 62,
+    "sources": [
+      {
+        "exchange": "SSE",
+        "source": {
+          "bytes": 29251,
+          "path": "data/v4/source_evidence/dm01_r4/calendar/SSE_2026_holidays.html",
+          "sha256": "4e260b815ce1309175ed994e6490a4ccd51b998a5f92bcdc41cec00fc6823dc7"
+        }
+      },
+      {
+        "exchange": "SZSE",
+        "source": {
+          "bytes": 24946,
+          "path": "data/v4/source_evidence/dm01_r4/calendar/SZSE_2026_holidays.html",
+          "sha256": "1656d8708d5faed33c7588538639d96128f39fdface02cfa6eb66d796c40f14e"
+        }
+      }
+    ]
+  },
+  "scope": {
+    "production_code_modified": false,
+    "database_sql_executed": false,
+    "news_endpoints_probed": false,
+    "services_started_or_stopped": false,
+    "drive_written": false,
+    "inventory_status": "DEGRADED_PASS",
+    "engineering_status": "PLAN_READY_FOR_REVIEW",
+    "research_full_chain_accepted": false
+  },
+  "search": {
+    "roots": [
+      "src",
+      "config",
+      "tests"
+    ],
+    "identifiers": [
+      "DA-EVENT-RESEARCH",
+      "S1_PRIMARY",
+      "A_VERIFIED_DIRECT",
+      "PUBLIC_UNPRICED",
+      "Q01_WINDOW",
+      "milestone_id",
+      "alternative_drivers"
+    ],
+    "matched": false,
+    "limitation": "仅定向标识检索，不能证明不存在同义能力"
+  },
+  "configuration_snapshots": {
+    "config/online_source_registry_v3.json": {
+      "schema_version": "v3-online-source-registry-v1",
+      "contract_id": "V3_ONLINE_SOURCE_REGISTRY_1",
+      "stage": "P09-01-A",
+      "stage_status": "STATIC_ONLY",
+      "enabled": false,
+      "network_calls_allowed": false,
+      "credential_use_allowed": false,
+      "production_network_enabled": false,
+      "raw_payloads_persisted": false,
+      "tdx_inputs_modified": false,
+      "shared_request_policy": {
+        "policy_id": "P09_ONLINE_BOUNDED_V1",
+        "current_probe_required_before_enable": true,
+        "max_total_seconds": 12,
+        "max_source_seconds": 8,
+        "max_response_bytes": 2097152,
+        "max_concurrent_sources": 4,
+        "max_event_page_size": 20,
+        "max_quote_batch_size": 50,
+        "credentials_allowed": false,
+        "future_data_allowed": false,
+        "automated_trading_allowed": false,
+        "probability_claims_allowed": false
+      },
+      "sources": [
+        {
+          "source_id": "EXT01",
+          "dataset": "LIMIT_POOL_UP",
+          "source_name": "THS_LIMIT_UP",
+          "method": "GET",
+          "endpoint_template": "https://data.10jqka.com.cn/dataapi/limit_up/limit_up_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330323&order_type=0&date={YYYYMMDD}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "page_default": 1,
+            "limit_default": 50,
+            "field_codes_status": "UNRESOLVED",
+            "field_codes": null,
+            "filter": "HS,GEM2STAR",
+            "order_field": "330323",
+            "order_type": 0,
+            "date_semantics": "YYYYMMDD_ASIA_SHANGHAI"
+          },
+          "field_contract": {
+            "source_fields": [
+              "code",
+              "name",
+              "latest",
+              "change_rate",
+              "amount",
+              "order_amount",
+              "currency_value",
+              "turnover_rate",
+              "open_num",
+              "reason_type",
+              "first_limit_up_time",
+              "last_limit_up_time"
+            ],
+            "normalized_fields": {
+              "code": "security_id",
+              "name": "security_name",
+              "latest": "price",
+              "change_rate": "ret1",
+              "amount": "amount",
+              "order_amount": "seal_amount",
+              "currency_value": "float_market_cap",
+              "turnover_rate": "turnover",
+              "open_num": "open_count",
+              "reason_type": "source_reason",
+              "first_limit_up_time": "first_limit_up_time",
+              "last_limit_up_time": "last_limit_up_time"
+            },
+            "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+            "conversion_rules": [
+              "change_rate scale requires sample confirmation",
+              "Unix second zero maps to NULL, not 1970-01-01",
+              "amount, seal_amount and float_market_cap remain separate facts"
+            ]
+          },
+          "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT02",
+          "dataset": "LIMIT_POOL_DOWN",
+          "source_name": "THS_LIMIT_DOWN",
+          "method": "GET",
+          "endpoint_template": "https://data.10jqka.com.cn/dataapi/limit_up/lower_limit_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330334&order_type=0&date={YYYYMMDD}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "page_default": 1,
+            "limit_default": 50,
+            "field_codes_status": "UNRESOLVED",
+            "field_codes": null,
+            "filter": "HS,GEM2STAR",
+            "order_field": "330334",
+            "order_type": 0,
+            "date_semantics": "YYYYMMDD_ASIA_SHANGHAI"
+          },
+          "field_contract": {
+            "source_fields": [
+              "code",
+              "name",
+              "latest",
+              "change_rate",
+              "amount",
+              "first_limit_down_time",
+              "last_limit_down_time"
+            ],
+            "normalized_fields": {
+              "code": "security_id",
+              "name": "security_name",
+              "latest": "price",
+              "change_rate": "ret1",
+              "amount": "amount",
+              "first_limit_down_time": "first_limit_down_time",
+              "last_limit_down_time": "last_limit_down_time"
+            },
+            "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+            "conversion_rules": [
+              "change_rate scale requires sample confirmation",
+              "do not derive down-limit members from the up-limit pool",
+              "Unix second zero maps to NULL, not 1970-01-01"
+            ]
+          },
+          "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT03",
+          "dataset": "SOURCE_TOPICS",
+          "source_name": "XGT_PLATES",
+          "method": "GET",
+          "endpoint_template": "https://flash-api.xuangubao.cn/api/surge_stock/plates?date={BEIJING_MIDNIGHT_UNIX_SECONDS}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "date_semantics": "BEIJING_MIDNIGHT_UNIX_SECONDS",
+            "join_key": "source_topic_id",
+            "same_day_join_required_with": "EXT04"
+          },
+          "field_contract": {
+            "source_fields": [
+              "id",
+              "name",
+              "description"
+            ],
+            "normalized_fields": {
+              "id": "source_topic_id",
+              "name": "topic_name",
+              "description": "source_description"
+            },
+            "conversion_status": "STATIC_SEMANTICS_ONLY",
+            "conversion_rules": [
+              "preserve source order",
+              "missing description remains NULL; do not generate a reason"
+            ]
+          },
+          "storage_policy": "NORMALIZED_TOPIC_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT04",
+          "dataset": "TOPIC_MEMBERS",
+          "source_name": "XGT_TOPIC_STOCKS",
+          "method": "GET",
+          "endpoint_template": "https://flash-api.xuangubao.cn/api/surge_stock/stocks?date={YYYYMMDD}&normal=true&uplimit=true",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "date_semantics": "YYYYMMDD_ASIA_SHANGHAI",
+            "join_key": "source_topic_id",
+            "same_day_join_required_with": "EXT03"
+          },
+          "field_contract": {
+            "source_fields": [
+              "plates",
+              "items",
+              "fields",
+              "stock_array"
+            ],
+            "normalized_fields": {
+              "topic_id": "source_topic_id",
+              "stock_code": "source_code",
+              "uplimit": "is_limit_up"
+            },
+            "conversion_status": "ARRAY_SCHEMA_UNRESOLVED_UNTIL_CURRENT_PROBE",
+            "conversion_rules": [
+              "map arrays by returned field names",
+              "reject unequal array lengths",
+              "do not assume array position is code or return rate",
+              "only explicit is_limit_up=true enters limit-up distribution"
+            ]
+          },
+          "storage_policy": "NORMALIZED_TOPIC_MEMBER_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT05",
+          "dataset": "EVENT_POOLS",
+          "source_name": "XGT_EVENT_POOL",
+          "method": "GET",
+          "endpoint_template": "https://flash-api.xuangubao.cn/api/pool/detail?pool_name={pool_name}&date={YYYYMMDD}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "date_semantics": "YYYYMMDD_ASIA_SHANGHAI",
+            "pool_name_source": "event_pools",
+            "source_symbol_deduplication": true
+          },
+          "field_contract": {
+            "source_fields": [
+              "symbol",
+              "stock_chi_name",
+              "price",
+              "change_percent",
+              "turnover_ratio",
+              "non_restricted_capital",
+              "first_limit_up",
+              "last_limit_up",
+              "last_break_limit_up",
+              "break_limit_up_times",
+              "m_days_n_boards_days",
+              "m_days_n_boards_boards",
+              "limit_up_days",
+              "yesterday_limit_up_days",
+              "surge_reason.related_plates",
+              "plate_name"
+            ],
+            "normalized_fields": {
+              "symbol": "security_id",
+              "stock_chi_name": "security_name",
+              "price": "price",
+              "change_percent": "ret1",
+              "turnover_ratio": "turnover",
+              "non_restricted_capital": "float_market_cap",
+              "first_limit_up": "first_limit_up_time",
+              "last_limit_up": "last_limit_up_time",
+              "last_break_limit_up": "last_break_time",
+              "break_limit_up_times": "open_count",
+              "m_days_n_boards_days": "m_days",
+              "m_days_n_boards_boards": "n_boards",
+              "limit_up_days": "source_limit_days",
+              "yesterday_limit_up_days": "previous_source_limit_days",
+              "surge_reason.related_plates": "related_plates",
+              "plate_name": "source_topic_name"
+            },
+            "conversion_status": "UNRESOLVED_UNTIL_CURRENT_PROBE",
+            "conversion_rules": [
+              "confirm percentage scale with one known quote",
+              "retain pool-limited meanings",
+              "do not rename source_limit_days as consecutive_limit_days before semantic confirmation"
+            ]
+          },
+          "storage_policy": "NORMALIZED_EVENT_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT06",
+          "dataset": "MARKET_OVERVIEW",
+          "source_name": "THS_MARKET_OVERVIEW",
+          "method": "GET",
+          "endpoint_template": "https://data.10jqka.com.cn/mobileapi/hotspot_focus/market_state/v1/overview",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "UNKNOWN",
+          "request_contract": {
+            "date_parameter": "NOT_DECLARED",
+            "historical_query_supported": false
+          },
+          "field_contract": {
+            "source_fields": [
+              "all_strings"
+            ],
+            "normalized_fields": {
+              "source_fields": "source_fields"
+            },
+            "conversion_status": "SCHEMA_UNRESOLVED_UNTIL_CURRENT_PROBE",
+            "conversion_rules": [
+              "do not add a date parameter and claim historical support",
+              "source failure must degrade the overview card without blanking local research"
+            ]
+          },
+          "storage_policy": "RESPONSE_CONTRACT_REQUIRED; RAW_PAYLOAD_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT07",
+          "dataset": "HOT_STOCK_RANKINGS",
+          "source_name": "THS_HOT_STOCK",
+          "method": "GET",
+          "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/stock?stock_type=a&type={hour|day}&list_type={normal|skyrocket}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "LATEST_ONLY_UNTIL_PROBED",
+          "request_contract": {
+            "modes": [
+              "hour/normal",
+              "hour/skyrocket",
+              "day/normal",
+              "day/skyrocket"
+            ],
+            "platform_order_preserved": true
+          },
+          "field_contract": {
+            "source_fields": [
+              "stock_list",
+              "order",
+              "hot_rank_chg",
+              "rise_and_fall",
+              "rate",
+              "tag"
+            ],
+            "normalized_fields": {
+              "order": "platform_rank",
+              "hot_rank_chg": "rank_change",
+              "rise_and_fall": "rise_and_fall",
+              "rate": "source_rate",
+              "tag": "source_tag"
+            },
+            "conversion_status": "STATIC_SEMANTICS_ONLY",
+            "conversion_rules": [
+              "do not rank again locally",
+              "rate is not normalized to return without evidence",
+              "market mapping must be explicit"
+            ]
+          },
+          "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT08",
+          "dataset": "HOT_PLATE_RANKINGS",
+          "source_name": "THS_HOT_PLATE",
+          "method": "GET",
+          "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/plate?type={concept|industry}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "LATEST_ONLY_UNTIL_PROBED",
+          "request_contract": {
+            "modes": [
+              "concept",
+              "industry"
+            ],
+            "platform_order_preserved": true
+          },
+          "field_contract": {
+            "source_fields": [
+              "plate_list",
+              "code",
+              "name",
+              "hot_value",
+              "hot_tag",
+              "etf_fields"
+            ],
+            "normalized_fields": {
+              "code": "source_plate_id",
+              "name": "plate_name",
+              "hot_value": "hot_value",
+              "hot_tag": "source_tag"
+            },
+            "conversion_status": "STATIC_SEMANTICS_ONLY",
+            "conversion_rules": [
+              "ETF association is metadata only",
+              "do not insert ETF rows as A-share members",
+              "mapping to local sector is optional and non-blocking"
+            ]
+          },
+          "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT09",
+          "dataset": "HOT_TOPIC_RANKINGS",
+          "source_name": "THS_HOT_TOPIC",
+          "method": "GET",
+          "endpoint_template": "https://dq.10jqka.com.cn/fuyao/hot_list_data/out/hot_list/v1/topic?page={page}&page_size=30",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "LATEST_ONLY_UNTIL_PROBED",
+          "request_contract": {
+            "page_default": 1,
+            "page_size_default": 30,
+            "more_pages_status": "NOT_VERIFIED",
+            "platform_order_preserved": true
+          },
+          "field_contract": {
+            "source_fields": [
+              "topic_list",
+              "title",
+              "subtitle",
+              "description",
+              "jump_url"
+            ],
+            "normalized_fields": {
+              "title": "topic_title",
+              "subtitle": "topic_subtitle",
+              "description": "source_description",
+              "jump_url": "safe_external_url"
+            },
+            "conversion_status": "STATIC_SEMANTICS_ONLY",
+            "conversion_rules": [
+              "do not use the stock endpoint as a topic response",
+              "external link is displayed only after safe URL validation",
+              "missing stock membership is not fabricated"
+            ]
+          },
+          "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT10",
+          "dataset": "EM_HOT_STOCK_RANKING",
+          "source_name": "EM_HOT_STOCK",
+          "method": "GET",
+          "endpoint_template": "https://gbcdn.dfcfw.com/rank/popularityList.js",
+          "public_entrypoint": "https://guba.eastmoney.com/rank/",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "LATEST_ONLY_UNTIL_PROBED",
+          "request_contract": {
+            "request_builder": "reuse_workbench_online.eastmoney_hot_rank",
+            "platform_order_preserved": true,
+            "decoder_status": "EXISTING_DECODER_REQUIRES_CURRENT_PROBE"
+          },
+          "field_contract": {
+            "source_fields": [
+              "code",
+              "rankNumber",
+              "changeNumber",
+              "exactTime",
+              "history"
+            ],
+            "normalized_fields": {
+              "code": "source_code",
+              "rankNumber": "platform_rank",
+              "changeNumber": "rank_change",
+              "exactTime": "source_exact_time"
+            },
+            "conversion_status": "STATIC_SEMANTICS_ONLY",
+            "conversion_rules": [
+              "reuse existing public decoder",
+              "do not change platform ranking",
+              "if source time is missing or mixed, expose that limitation"
+            ]
+          },
+          "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+        },
+        {
+          "source_id": "EXT11",
+          "dataset": "LIVE_QUOTES",
+          "source_name": "EASTMONEY_QUOTES",
+          "method": "GET",
+          "endpoint_template": "https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&invt=2&fields=f2,f3,f6,f12,f13,f14,f47,f168,f170&secids={comma_separated_ids}",
+          "evidence_level": "STATIC",
+          "capability_status": "NOT_VERIFIED",
+          "enabled": false,
+          "history_support": "LATEST_ONLY",
+          "request_contract": {
+            "request_builder": "reuse_workbench_online.eastmoney_quotes",
+            "batch_size": 50,
+            "supported_markets": [
+              "SH",
+              "SZ"
+            ],
+            "unsupported_markets": [
+              "BJ"
+            ],
+            "max_concurrent_batches": 4
+          },
+          "field_contract": {
+            "source_fields": [
+              "f2",
+              "f3",
+              "f6",
+              "f12",
+              "f13",
+              "f14",
+              "f47",
+              "f168",
+              "f170"
+            ],
+            "normalized_fields": {
+              "f2": "price",
+              "f3": "ret1_percent_then_divide_100",
+              "f6": "amount",
+              "f12": "source_code",
+              "f13": "market",
+              "f14": "security_name",
+              "f47": "volume",
+              "f168": "turnover_percent_then_divide_100",
+              "f170": "source_field_unresolved"
+            },
+            "conversion_status": "SOURCE_CODE_STATIC; UNITS_REQUIRE_CURRENT_PROBE",
+            "conversion_rules": [
+              "SH maps to 1.code and SZ maps to 0.code",
+              "do not treat f170 as quote_time",
+              "no reliable source quote_time is claimed",
+              "unsupported BJ rows remain uncovered rather than blocking SH/SZ"
+            ]
+          },
+          "storage_policy": "REQUEST_TIME_ONLY; RAW_PAYLOAD_AND_ROWS_FORBIDDEN"
+        }
+      ],
+      "event_pools": [
+        {
+          "pool_name": "super_stock",
+          "pool_type": "SUPER",
+          "meaning": "强势股池",
+          "forbidden_inference": "not automatically limit-up"
+        },
+        {
+          "pool_name": "limit_up",
+          "pool_type": "LIMIT_UP",
+          "meaning": "涨停池",
+          "forbidden_inference": "count as sealed only when source state is explicit"
+        },
+        {
+          "pool_name": "limit_up_broken",
+          "pool_type": "BROKEN",
+          "meaning": "炸板池",
+          "forbidden_inference": "not all non-limit-up stocks"
+        },
+        {
+          "pool_name": "yesterday_limit_up",
+          "pool_type": "YESTERDAY_LIMIT_UP",
+          "meaning": "昨日涨停今日表现",
+          "forbidden_inference": "not today's limit-up or promotion failure"
+        },
+        {
+          "pool_name": "limit_down",
+          "pool_type": "LIMIT_DOWN",
+          "meaning": "跌停池",
+          "forbidden_inference": "not exact down-limit from negative return alone"
+        },
+        {
+          "pool_name": "new_stock",
+          "pool_type": "NEW_STOCK",
+          "meaning": "新股池",
+          "forbidden_inference": "not every new stock is limit-up"
+        },
+        {
+          "pool_name": "nearly_new",
+          "pool_type": "NEARLY_NEW",
+          "meaning": "次新股池",
+          "forbidden_inference": "do not invent listing-day boundary"
+        }
+      ]
+    },
+    "config/p09_runtime_capabilities_v1.json": {
+      "contract_id": "v3-p09-runtime-capabilities-v1.0",
+      "evidence_receipt": null,
+      "capability_basis": "VERSIONED_CONFIG_AFTER_USER_LOCAL_DATA_RESET",
+      "last_verified_date": "2026-09-13",
+      "sources": {
+        "EXT02": "CURRENT_PROBE",
+        "EXT03": "CURRENT_PROBE",
+        "EXT04": "CURRENT_PROBE",
+        "EXT05": "CURRENT_PROBE",
+        "EXT06": "CURRENT_PROBE",
+        "EXT07": "CURRENT_PROBE",
+        "EXT08": "CURRENT_PROBE",
+        "EXT09": "CURRENT_PROBE"
+      }
+    },
+    "config/m14_runtime_capabilities_v1.json": {
+      "schema_version": "m14-runtime-capabilities-v1",
+      "contract_id": "M14_RUNTIME_CAPABILITY_GATE_V1_0",
+      "mode": "LOCAL_PROJECT",
+      "capabilities": {
+        "HOT_RANKINGS": {
+          "status": "ENABLED",
+          "source_ids": [
+            "EASTMONEY_HOT_RANK",
+            "TONGHUASHUN_HOT_RANK"
+          ],
+          "mode": "DIRECT_EPHEMERAL_LATEST",
+          "supports_latest": true,
+          "supports_history": false,
+          "persist_payload": false,
+          "persist_rows": false,
+          "persist_batches": false
+        },
+        "EXTERNAL_EVIDENCE": {
+          "status": "UNAVAILABLE",
+          "source_ids": [],
+          "supports_latest": false
+        },
+        "QUOTES_LATEST": {
+          "status": "NOT_VERIFIED",
+          "source_ids": [
+            "EASTMONEY_QUOTES_LATEST"
+          ],
+          "mode": "DISPLAY_ENRICHMENT_ONLY",
+          "supports_latest": false,
+          "supports_history": false,
+          "persist_payload": false,
+          "persist_rows": false,
+          "persist_batches": false,
+          "formal_api_enabled": false,
+          "hot_rank_display_enrichment": true
+        },
+        "LH_LIST": {
+          "status": "DEFERRED",
+          "source_ids": [],
+          "supports_latest": false
+        }
+      }
+    },
+    "config/p09_topic_sector_mapping_v1.json": {
+      "contract_id": "v3-p09-topic-sector-mapping-v1.0",
+      "status": "PARTIAL_REVIEWED_RELATED_ONLY",
+      "evidence_basis": "2026-09-11 EXT03/04 source topic names exactly match unique 2026-09-10 fixed-run local sector names; each has three canonical member overlaps. Cross-source member universes differ, so relation is RELATED, not EXACT.",
+      "source_probe": "reports/upgrade_v3/P09-SOURCE-METADATA-PROBE-20260913.json",
+      "source_ext03_sha256": "88f247f10ee1aeb01989ca5b6b0246c07ffa01702a75c3d59af810c17dc83dbf",
+      "source_ext04_sha256": "508d1783b5e2ae37fad928de9960143289b606cc77c0953e20e3d664fe7d1b79",
+      "local_run_id": "research-5369ba9e65074cf599bbea230e24ff7b",
+      "local_trade_date": "2026-09-10",
+      "local_membership_snapshot_id": "f3c7f45b1e3adf05d6bc12163e3ed734766efa3c42c47d657d36028899567534",
+      "entries": [
+        {
+          "publication_id": "m4-8a99c99719061f4f1f166d0b9184506c",
+          "sector_id": "THEME:880670",
+          "source_topic_key": "EXT03:18129294",
+          "source_topic_name": "光通信",
+          "relation": "RELATED",
+          "evidence_id": "P09-MAP-20260911-18129294-880670",
+          "source_member_count": 4,
+          "local_member_count": 152,
+          "overlap_count": 3,
+          "source_trade_date": "2026-09-11",
+          "local_trade_date": "2026-09-10"
+        },
+        {
+          "publication_id": "m4-8a99c99719061f4f1f166d0b9184506c",
+          "sector_id": "THEME:880520",
+          "source_topic_key": "EXT03:87056697",
+          "source_topic_name": "智能电网",
+          "relation": "RELATED",
+          "evidence_id": "P09-MAP-20260911-87056697-880520",
+          "source_member_count": 5,
+          "local_member_count": 277,
+          "overlap_count": 3,
+          "source_trade_date": "2026-09-11",
+          "local_trade_date": "2026-09-10"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "preexisting_tracked_changes_checked": 64,
+    "preexisting_tracked_changed": [
+      "scripts/check_v4_business_literals.py",
+      "tests/v4_policy/test_no_production_hardcoded_identities.py"
+    ],
+    "source_sections_complete": true,
+    "business_code_modified": false,
+    "database_sql_executed": false,
+    "source_bytes_match": true,
+    "source_sha256_match": true,
+    "all_qa_identifiers_present": true,
+    "all_regression_identifiers_present": true,
+    "concurrent_change_note": "两个既有文件在本任务只读盘点期间发生外部变化；本任务未写入且不回退或提交它们。",
+    "checked_at": "2026-10-23T17:14:20.9854541+08:00"
+  }
+}

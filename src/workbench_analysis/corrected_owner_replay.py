@@ -41,7 +41,8 @@ def checked(root, binding):
 
 def gzwrite(root, path, rows):
     raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
-    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=Path('D:/new_tdx'))
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=configured_tdx_root(root))
     return ref(root, path)
 
 
@@ -161,9 +162,11 @@ def materialize_core(root, dates=None, *, exact_membership_candidates=None):
     source_pointer=load(root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json')
     capture=load(checked(root,source_pointer['capture_receipt'])); package=checked(root,capture['package'])
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
-    source_gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq'); blob=source_gbbq.read_bytes()
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    tdx_root=configured_tdx_root(root)
+    source_gbbq=tdx_root/'T0002/hq_cache/gbbq'; blob=source_gbbq.read_bytes()
     gpath=root/'data/v4/corrected_owner_sources'/hashlib.sha256(blob).hexdigest()/'gbbq'
-    _atomic_write(gpath,blob,tdx_root=Path('D:/new_tdx'))
+    _atomic_write(gpath,blob,tdx_root=tdx_root)
     events=defaultdict(list)
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']

@@ -8,6 +8,10 @@ from workbench_analysis.r43_owner_replay import gzwrite
 
 
 def test_gzwrite_streams_rows_deterministically_and_keeps_old_file_on_failure(tmp_path: Path) -> None:
+    config = tmp_path / 'config'
+    config.mkdir()
+    (config / 'dm01_go_forward_runtime_contract_r4r1.json').write_text(
+        json.dumps({'read_only_tdx_roots': [str(tmp_path / 'configured_tdx')]}), encoding='utf-8')
     target = tmp_path / "rows.jsonl.gz"
     rows = [{"n": 1}, {"n": 2}]
 

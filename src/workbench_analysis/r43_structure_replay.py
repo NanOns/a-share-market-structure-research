@@ -14,12 +14,16 @@ from .v4_12_frozen_snapshot_v2 import load_contract
 from .v4_12_input_binder import InputBinder
 
 
-def membership_metadata(root):
-    snapshot=load(Path(root)/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json')
+def membership_metadata(root, snapshot=None):
+    snapshot=snapshot or globals().get('MEMBERSHIP_SNAPSHOT')
+    if snapshot is None:
+        # Direct historical replay retains its frozen input. The operational
+        # adapter supplies the current dated snapshot explicitly.
+        snapshot=load(Path(root)/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json')
     return {k:snapshot[k] for k in ('membership_mode','taxonomy','membership_snapshot_id','membership_observed_at','member_set_asof','knowledge_lineage','AS_RECORDED','PIT_ELIGIBLE','HISTORICAL_FIRST_AVAILABLE_PROVEN','production_eligible_scope','survivorship_bias_risk')}
 
 def gzwrite(root,path,rows):
-    metadata=membership_metadata(root)
+    metadata=membership_metadata(root,globals().get('MEMBERSHIP_SNAPSHOT'))
     for r in rows:
         r.update(metadata)
         for family in ('fields','states'):
@@ -85,6 +89,21 @@ def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date, raw_
     if set(by_id)!=set(lifecycle_by_id):
         raise ValueError('FULL_OWNER_LIFECYCLE_CONSERVATION_FAILED')
     return [by_id[sid] for sid in sorted(by_id)]
+
+
+def apply_dated_provider_status(verified_status, code_to_id, query_receipts, *, load_json=None):
+    """Merge status facts from the exact acquisition bound to this Core Owner."""
+    load_json=load_json or load
+    for query in query_receipts:
+        if not query.get('path') or query.get('method')!='query_daily_history_k_AStock':
+            continue
+        day=query.get('params',{}).get('date',query.get('params',{}).get('day'))
+        if not day:raise ValueError('DATED_PROVIDER_STATUS_QUERY_DATE_MISSING')
+        for row in load_json(query['path']).get('rows',[]):
+            sid=code_to_id.get(str(row.get('code') or '').lower())
+            if sid:
+                verified_status[sid,day]='SUSPENDED' if row.get('tradestatus')=='0' else 'ACTUAL_TRADED'
+    return verified_status
 
 
 class CorrectedBinder(EpisodeBinder):
@@ -190,14 +209,14 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
         verified_status[r['security_id'],r['trade_date']]=r['status']
     identity=load(checked(root,replay['owners'][0]['sources']['identity']))['rows']
     code_to_id={r['source_security_key'].lower():r['security_id'] for r in identity}
-    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
-    for query in acquisition['queries']:
-        if query.get('path') and query['method']=='query_daily_history_k_AStock':
-            date=query['params'].get('date',query['params'].get('day'))
-            for row in load(query['path']).get('rows',[]):
-                sid=code_to_id.get(row['code'].lower())
-                if sid:verified_status[sid,date]='SUSPENDED' if row.get('tradestatus')=='0' else 'ACTUAL_TRADED'
-    write(out/'VERIFIED_STATUS_SOURCE_BINDINGS.json',dict(historical_status=historical_status,acquisition=ref(root,root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json'),rule='Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN'))
+    source_bindings=load(out/'SOURCE_BINDINGS.json')
+    acquisition_binding=source_bindings.get('sources',{}).get('acquisition')
+    if not isinstance(acquisition_binding,dict):
+        raise ValueError('PROFILE_STATUS_ACQUISITION_BINDING_MISSING')
+    checked(root,acquisition_binding)
+    apply_dated_provider_status(verified_status,code_to_id,source_bindings.get('query_receipts',[]))
+    write(out/'VERIFIED_STATUS_SOURCE_BINDINGS.json',dict(historical_status=historical_status,
+          acquisition=acquisition_binding,rule='Actual ZIP BAR takes precedence; missing BAR is SUSPENDED only when saved provider or accepted historical status proves suspension, otherwise UNKNOWN'))
     cutoff=datetime.now(timezone.utc).isoformat()
     cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
     for owner in replay['owners']:

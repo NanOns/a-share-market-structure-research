@@ -56,7 +56,10 @@ def checked(root, binding):
 def gzwrite(root, path, rows):
     from workbench_analysis.daily_source_freeze import ensure_outside_tdx
     path=Path(path)
-    ensure_outside_tdx(path,Path('D:/new_tdx'))
+    tdx_contract=json.loads((Path(root)/'config/dm01_go_forward_runtime_contract_r4r1.json').read_bytes())
+    read_only_roots=[Path(value) for value in tdx_contract.get('read_only_tdx_roots',[])]
+    if not read_only_roots:raise ValueError('SOURCE_TDX_ROOT_MISSING')
+    for read_only_root in read_only_roots:ensure_outside_tdx(path,read_only_root)
     path.parent.mkdir(parents=True,exist_ok=True)
     fd,name=__import__('tempfile').mkstemp(prefix=path.name+'.',suffix='.tmp',dir=path.parent)
     try:
@@ -213,6 +216,7 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
+                 acquisition=source_inputs['acquisition'],
                  identity=identity_binding,contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
     snapshot=checked(root,source_inputs['membership'])

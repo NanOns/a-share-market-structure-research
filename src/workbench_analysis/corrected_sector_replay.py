@@ -11,9 +11,19 @@ from sector.native_r5 import build_native
 from v4.base_seed import _normalize_facts, evaluate_facts, _known, _unknown
 
 
+def _industry_query_for_day(acquisition, day):
+    matches=[q for q in acquisition.get('queries',[]) if q.get('method')=='query_stock_industry'
+             and q.get('params')=={'date':day}]
+    if len(matches)!=1:
+        raise ValueError('DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS:'+day)
+    if not matches[0].get('path'):
+        raise ValueError('DATED_INDUSTRY_QUERY_PAYLOAD_MISSING:'+day)
+    return matches[0]
+
+
 def dated_industry_memberships(root, day, universe):
     root=Path(root);acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
-    query=next(q for q in acquisition['queries'] if q['method']=='query_stock_industry' and q['params']=={'date':day})
+    query=_industry_query_for_day(acquisition,day)
     payload=load(query['path']);rows=payload['rows'];result=[];revision=query['source_revision']
     for row in rows:
         code=row['code'].lower()
@@ -36,7 +46,8 @@ def materialize_sectors(root):
     import baostock
     source=inspect.getsource(baostock.query_stock_industry).encode()
     from .tdx_official_daily_source import _atomic_write
-    _atomic_write(out/'QUERY_STOCK_INDUSTRY_SDK_SOURCE.py',source,tdx_root=Path('D:/new_tdx'))
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    _atomic_write(out/'QUERY_STOCK_INDUSTRY_SDK_SOURCE.py',source,tdx_root=configured_tdx_root(root))
     params=load(root/'config/v4_08_algorithm_parameter_set_r5.json');seedparams=load(root/'config/v4_07_parameter_set_v1.json')
     sessions=official_sessions(root)
     for result in replay['owners']:

@@ -163,7 +163,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         publication=dict(**metadata,contract_id='V4_R4_CORRECTED_D2_PUBLICATION_V1',rows=rows,accepted=False,
             source_contract=ref(root,contract),fact_manifest_digest=digest(manifest))
         prior_pid='R4_D2:'+digest(publication);publication['publication_id']=prior_pid;prior={r['entity_id']:r for r in rows};days[day]=rows
-        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+        from .tdx_latest_daily_source_v2 import configured_tdx_root
+        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=configured_tdx_root(root))
         for r in calculations:r.update(metadata);r['research_mainline_context']=mainline_context[day].get(r['security_id'])
         for r in factrows:r.update(metadata)
         calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations)
@@ -204,7 +205,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     projection.update(**metadata,contract_id='V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1',source_bindings=bindings,
          production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'
-    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=configured_tdx_root(root))
     result=dict(owners=receipts,focus=ref(root,path),episodes=len(projection['episodes']),events=len(projection['events']),
           outcomes=dict(Counter(o['outcome_status'] for e in projection['episodes'] for o in e['outcomes'])),
           production_admission=False,next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE')

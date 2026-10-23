@@ -106,6 +106,56 @@ def test_core_cannot_fall_back_to_a_historical_default(tmp_path):
     assert list(tmp_path.iterdir())==[]
 
 
+def test_profile_status_uses_only_dated_bound_query_receipts(tmp_path):
+    from workbench_analysis.r43_structure_replay import apply_dated_provider_status
+    _write(tmp_path, 'sources/daily.json', {'rows': [
+        {'code': 'sh.600001', 'tradestatus': '0'},
+        {'code': 'sz.000002', 'tradestatus': '1'},
+    ]})
+    status = apply_dated_provider_status({}, {'sh.600001': 'SYN-A', 'sz.000002': 'SYN-B'}, [
+        {'method': 'query_daily_history_k_AStock', 'params': {'date': '2026-03-04'},
+         'path': str(tmp_path / 'sources/daily.json')},
+    ])
+    assert status == {('SYN-A', '2026-03-04'): 'SUSPENDED',
+                      ('SYN-B', '2026-03-04'): 'ACTUAL_TRADED'}
+
+
+def test_r43_profile_metadata_uses_the_current_membership_snapshot():
+    from workbench_analysis import r43_structure_replay as structure
+    from workbench_analysis.operational_owner_adapter_v1 import private_scope
+    current={
+        'membership_mode': 'CURRENT_DATED', 'taxonomy': 'TDX',
+        'membership_snapshot_id': 'SYNTHETIC-CURRENT',
+        'membership_observed_at': '2026-03-04T16:00:00+08:00',
+        'member_set_asof': '2026-03-04T16:00:00+08:00',
+        'knowledge_lineage': 'PIT_OBSERVED', 'AS_RECORDED': True,
+        'PIT_ELIGIBLE': True, 'HISTORICAL_FIRST_AVAILABLE_PROVEN': True,
+        'production_eligible_scope': 'CANDIDATE_ONLY', 'survivorship_bias_risk': False,
+    }
+    scope=private_scope(structure, {'MEMBERSHIP_SNAPSHOT': current})
+    assert scope['membership_metadata'](Path('.')) == current
+
+
+def test_profile_status_rejects_undated_source_query():
+    from workbench_analysis.r43_structure_replay import apply_dated_provider_status
+    with pytest.raises(ValueError, match='DATED_PROVIDER_STATUS_QUERY_DATE_MISSING'):
+        apply_dated_provider_status({}, {}, [{'method': 'query_daily_history_k_AStock',
+                                               'path': 'ignored.json', 'params': {}}])
+
+
+def test_corrected_sector_requires_one_exact_dated_industry_query():
+    from workbench_analysis.corrected_sector_replay import _industry_query_for_day
+    query={'method': 'query_stock_industry', 'params': {'date': '2026-03-04'},
+           'path': 'sources/industry.json'}
+    assert _industry_query_for_day({'queries': [query]}, '2026-03-04') == query
+    with pytest.raises(ValueError, match='DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS'):
+        _industry_query_for_day({'queries': []}, '2026-03-04')
+    with pytest.raises(ValueError, match='DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS'):
+        _industry_query_for_day({'queries': [query, query]}, '2026-03-04')
+    with pytest.raises(ValueError, match='DATED_INDUSTRY_QUERY_PAYLOAD_MISSING'):
+        _industry_query_for_day({'queries': [dict(query, path=None)]}, '2026-03-04')
+
+
 def test_explicit_historical_manifest_freezes_actions_and_members(tmp_path):
     parent, freeze, tdx = _fixture(tmp_path)
     identity=_write(tmp_path,'frozen/identity.json',{'rows':[]})

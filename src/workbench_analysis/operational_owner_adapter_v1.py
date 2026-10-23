@@ -75,7 +75,8 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
             import hashlib
             destination=folder/'executed_sources'/hashlib.sha256(blob).hexdigest()/origins[target]
             destination.parent.mkdir(parents=True,exist_ok=True)
-            immutable_source_write(destination,blob,tdx_root=Path('D:/new_tdx'))
+            from .tdx_latest_daily_source_v2 import configured_tdx_root
+            immutable_source_write(destination,blob,tdx_root=configured_tdx_root(root))
             return core.ref(base,destination)
         return core.ref(base,target)
     output=(folder/'owner_v3').relative_to(root).as_posix()
@@ -133,7 +134,8 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         if name=='scripts' and 'run_v4_04_full_market_candidate_r4' in fromlist:
             return SimpleNamespace(run_v4_04_full_market_candidate_r4=builder)
         return real_import(name,globals,locals,fromlist,level)
-    s=private_scope(structure,dict(common,__builtins__=dict(vars(builtins),__import__=structure_import)))
+    s=private_scope(structure,dict(common,MEMBERSHIP_SNAPSHOT=membership_snapshot,
+        __builtins__=dict(vars(builtins),__import__=structure_import)))
     profile_path=folder/'owner_v3/PROFILE_STRUCTURE_REPLAY.json'
     report('PROFILE','RUNNING')
     bootstrap={}

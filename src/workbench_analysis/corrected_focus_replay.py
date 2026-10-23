@@ -98,7 +98,6 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     from .r43_owner_replay import ref as owner_ref
     calendar_binding=owner_ref(root,out/'FOCUS_CALENDAR.json')
-    acquisition=load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
     sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
     symbols = security_symbols(root, focus_identity_source_binding(sources))
@@ -186,7 +185,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
         publication=dict(contract_id='V4_R4_CORRECTED_D2_PUBLICATION_V1',rows=rows,accepted=False,AS_RECORDED=False,
             source_contract=ref(root,contract),fact_manifest_digest=digest(manifest))
         prior_pid='R4_D2:'+digest(publication);publication['publication_id']=prior_pid;prior={r['entity_id']:r for r in rows};days[day]=rows
-        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+        from .tdx_latest_daily_source_v2 import configured_tdx_root
+        path=folder/'corrected_d2.json.gz';_atomic_write(path,gzip.compress(json.dumps(publication,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=configured_tdx_root(root))
         calc=gzwrite(root,folder/'corrected_d0_prewatch.jsonl.gz',calculations)
         fact=gzwrite(root,folder/'corrected_state_input_facts.jsonl.gz',factrows)
         write(folder/'focus_status.json',dict(rows=statusrows));pathstatus[day]=ref(root,folder/'focus_status.json')
@@ -214,7 +214,8 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     projection.update(contract_id='V4_R4_CORRECTED_FOCUS_FORWARD_CANDIDATE_V1',source_bindings=bindings,
          knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,production_admission=False)
     path=out/'CORRECTED_FOCUS_FORWARD.json.gz'
-    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=Path('D:/new_tdx'))
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    _atomic_write(path,gzip.compress(json.dumps(projection,ensure_ascii=False,sort_keys=True).encode(),mtime=0),tdx_root=configured_tdx_root(root))
     result=dict(owners=receipts,focus=ref(root,path),episodes=len(projection['episodes']),events=len(projection['events']),
           outcomes=dict(Counter(o['outcome_status'] for e in projection['episodes'] for o in e['outcomes'])),
           production_admission=False,next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE')

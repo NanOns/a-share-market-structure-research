@@ -31,6 +31,25 @@ def _read_rows(path):
     with gzip.open(path,'rt',encoding='utf-8') as stream:return [json.loads(line) for line in stream]
 
 
+def _comparison_universe(root,candidate,prior3,membership_ref):
+    """Use the exact predecessor Core Owner as denominator when available.
+
+    The historical-universe binding is a fallback for old candidates that do
+    not carry a dated Core Owner. Reading and inflating that multi-year source
+    on every Home request when the exact dated Core is already bound was both
+    redundant and the dominant avoidable cold-start cost.
+    """
+    predecessor=candidate.get('owners',{}).get(prior3,{}).get('core')
+    if predecessor:
+        rows=_read_rows(_checked(root,predecessor))
+        universe={row['security_id'] for row in rows if row.get('security_id')}
+        return universe,predecessor
+    rows=_read_rows(_checked(root,membership_ref))
+    universe={row['security_id'] for row in rows if row.get('trade_date')==prior3 and
+              row.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT')}
+    return universe,membership_ref
+
+
 def candidate_breadth_formula_comparison(comparison, *, boundary):
     """Expose signed-SIGN and positive-indicator breadth on identical pairs."""
     if not isinstance(boundary,(int,float)) or isinstance(boundary,bool) or not math.isfinite(boundary) or boundary<0:
@@ -262,9 +281,15 @@ def _limit_owner(root,candidate,day):
             receipt_path=path.parents[2]/'DAILY_PRICE_LIMIT_REPLAY.json'
             if receipt_path.is_file():receipt_paths.append(receipt_path)
         if len(bound_limits)>1:raise ValueError('R7_MARKET_STRESS_DATED_LIMIT_BINDING_AMBIGUOUS:'+day)
-    # Legacy materializations remain eligible only when their exact input and
-    # output match the bound market Owner. Never select a candidate by mtime.
-    receipt_paths+=list(Path(root).glob('r5_daily_limit_materialization_*/'+day+'/DAILY_PRICE_LIMIT_REPLAY.json'))
+    # Search legacy materializations only when the dated market Owner has no
+    # colocated receipt. The normal R9 path binds the exact limit artifact and
+    # its receipt; scanning every historical materialization on each cache-key
+    # lookup made a cold Home request proportional to the whole candidate root.
+    # Legacy receipts remain eligible only when no exact receipt is present and
+    # their input and output still match the bound Owner below.
+    if not receipt_paths:
+        receipt_paths.extend(Path(root).glob(
+            'r5_daily_limit_materialization_*/'+day+'/DAILY_PRICE_LIMIT_REPLAY.json'))
     for receipt_path in sorted(set(receipt_paths)):
         receipt_bytes=receipt_path.read_bytes();receipt=json.loads(receipt_bytes)
         if receipt.get('production_admission') is not False or not receipt.get('contract'):
@@ -452,18 +477,12 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
             status='PROVEN_EQUAL' if equal else 'NEW_NON_PIT_DERIVATION_REQUIRED_AND_CALCULATED',production_admission=False)
     history_rows=_read_rows(_checked(root,history_ref))
     history={r['security_id']:{b['trade_date']:b for b in r.get('bars',[])} for r in history_rows}
-    membership_rows=_read_rows(_checked(root,membership_ref))
     from workbench_analysis.market_source_acquisition import official_sessions
     sessions=[session for session in official_sessions(Path(root)) if session<=day]
     index=sessions.index(day);prior3=sessions[index-3] if index>=3 else None
     if prior3 is None or market.get('comparison_trade_date')!=prior3:
         raise ValueError('R7_MARKET_BREADTH_COMPARISON_SESSION_MISMATCH:'+day)
-    predecessor=candidate.get('owners',{}).get(prior3,{}).get('core')
-    if predecessor:
-        universe={r['security_id'] for r in _read_rows(_checked(root,predecessor)) if r.get('security_id')}
-    else:
-        universe={r['security_id'] for r in membership_rows if r.get('trade_date')==prior3 and
-                  r.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT')}
+    universe,comparison_membership_binding=_comparison_universe(root,candidate,prior3,membership_ref)
     current={r['security_id']:r for r in core_rows if r.get('security_id') in universe}
     comparison=[]
     for sid in current:
@@ -507,7 +526,7 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
             source='BOUND_MARKET.history.jsonl.gz',as_of=day),
         participation_formula='MEDIAN(CORE.amount_ratio20 WHERE quality_state=OBSERVED)',
         market_owner_binding=market_binding,history_binding=history_ref,membership_binding=membership_ref,
-        comparison_membership_binding=predecessor or membership_ref,
+        comparison_membership_binding=comparison_membership_binding,
         recorded_breadth_axis=market.get('axes',{}).get('breadth_axis'),
         core_source_reconciliation=core_reconciliation,
         recorded_participation_axis=market.get('axes',{}).get('participation_axis'))

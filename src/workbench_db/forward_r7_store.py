@@ -677,15 +677,20 @@ class ForwardR7Store:
         with self._connect() as pg:
             pg.execute("SET TRANSACTION READ ONLY")
             identity=ForwardFactStore._database_identity(pg)
-            ordinal=pg.execute(sql.SQL("SELECT COALESCE(MAX(ordinal),0) FROM {}.forward_facts").format(
-                sql.Identifier(self.schema))).fetchone()[0]
-        return identity,int(ordinal)
+            count,ordinal=pg.execute(sql.SQL(
+                "SELECT COUNT(*),COALESCE(MAX(ordinal),0) FROM {}.forward_facts"
+            ).format(sql.Identifier(self.schema))).fetchone()
+        # Sequence values are allocated before commit. A transaction holding a
+        # lower ordinal can commit after a higher ordinal, so MAX(ordinal)
+        # alone is not a complete append watermark. Under the append-only
+        # facts contract, row count catches that late lower-ordinal commit.
+        return identity,int(count),int(ordinal)
 
     def read_matured_count(self, *, cache=None):
         # Reuse only when the immutable fact append watermark is unchanged.
         # Check once more after a cache miss so a concurrent append can never
         # publish a stale count into the shared request cache.
-        cache_key=("forward-r7-matured-count-v1",self.schema)
+        cache_key=("forward-r7-matured-count-v1",self.schema) if cache is not None else None
         before=self._matured_count_watermark() if cache is not None else None
         if cache is not None:
             cached=cache.get(cache_key)

@@ -142,6 +142,29 @@ def env_for(rel: str, reachable: bool) -> tuple[str, str]:
     return "UNREACHABLE_STATIC", "UNRESOLVED"
 
 
+def semantic_candidate_key(rel: str, category: str, literal: str, line: str) -> str:
+    normalized = " ".join(line.strip()[:320].split())
+    return hashlib.sha256(f"{rel}\0{category}\0{literal}\0{normalized}".encode("utf-8")).hexdigest()
+
+
+def date_component_literals(tree: ast.AST) -> list[tuple[int, str]]:
+    found = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        fn = node.func
+        name = fn.id if isinstance(fn, ast.Name) else (fn.attr if isinstance(fn, ast.Attribute) else "")
+        if name not in {"date", "datetime", "Timestamp"} or len(node.args) < 3:
+            continue
+        parts = node.args[:3]
+        if not all(isinstance(x, ast.Constant) and isinstance(x.value, int) for x in parts):
+            continue
+        year, month, day = (x.value for x in parts)
+        if 1900 <= year <= 2099 and 1 <= month <= 12 and 1 <= day <= 31:
+            found.append((node.lineno, f"{year:04d}-{month:02d}-{day:02d}"))
+    return found
+
+
 def scan(files: list[str]) -> tuple[list[dict], dict]:
     reachable, graph, seeds, paths = runtime_graph(files)
     findings = []
@@ -163,11 +186,14 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
             try: tree = ast.parse(text)
             except SyntaxError as exc: ast_parse_failures.append({"file":rel,"line":exc.lineno,"reason":exc.msg})
         nodes_by_line = {}
+        ast_date_calls = {}
         if tree:
             for n in ast.walk(tree):
                 if isinstance(n, ast.Constant) and isinstance(n.value, (str, int)):
                     nodes_by_line.setdefault(n.lineno, set()).add(type(n).__name__)
                 elif isinstance(n, ast.JoinedStr): nodes_by_line.setdefault(n.lineno, set()).add(type(n).__name__)
+            for line_no, literal in date_component_literals(tree):
+                ast_date_calls.setdefault(line_no, []).append(literal)
         for line_no, line in enumerate(lines, 1):
             # Comment-only lines do not drive runtime values.
             if ext == ".py" and line.lstrip().startswith("#"): continue
@@ -179,6 +205,10 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                     if category == "CONSTANT_SECTOR_ID" and m.group().upper() == "T0002" and "T0002/" in line:
                         continue  # TDX cache directory name, not a taxonomy ID.
                     matches.append((category, m.group(), m.start()+1))
+            for literal in ast_date_calls.get(line_no, ()):
+                item = ("CONSTANT_DATE_COMPONENTS", literal, max(1, line.find("(") + 2))
+                if item not in matches:
+                    matches.append(item)
             for category, literal, col in matches:
                 env, disposition = env_for(rel, rel in reachable)
                 node_types = sorted(nodes_by_line.get(line_no, ()))
@@ -199,10 +229,13 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                 if protocol: disposition = "CONTRACT_CONSTANT"
                 if frozen_path_literal: disposition = "HISTORICAL_FROZEN"
                 finding_id = f"LIT-{len(findings)+1:06d}"
+                # Keep the legacy fingerprint for the non-waiving change detector.
+                # A separate semantic key is stable when lines are inserted above.
                 candidate_key = hashlib.sha256(f"{rel}\0{line_no}\0{category}\0{literal}\0{context}".encode("utf-8")).hexdigest()
+                semantic_key = semantic_candidate_key(rel, category, literal, line)
                 findings.append({"id": finding_id, "file": rel, "line": line_no, "column": col,
                     "literal": literal, "category": category, "ast_node_types": node_types,
-                    "candidate_key": candidate_key,
+                    "candidate_key": candidate_key, "semantic_key": semantic_key,
                     "environment": env, "runtime_reachable": rel in reachable,
                     "entrypoints": [paths[rel][0]] if rel in paths else [], "call_chain": paths.get(rel, []),
                     "classification": disposition, "functional_impact": "Exact immutable evidence path binding; retained only as dated historical input." if frozen_path_literal else "Review source and business context; scanner is candidate recall.",
@@ -225,16 +258,37 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
     return findings, summary
 
 
+def global_gate(findings: list[dict]) -> dict:
+    """Evaluate the current runtime gate independently from baseline drift."""
+    reachable = [x for x in findings if x.get("runtime_reachable")]
+    unresolved = [x for x in reachable if x.get("handling") == "UNRESOLVED"]
+    return {
+        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
+        "reachable_candidates": len(reachable),
+        "active_violations": sum(1 for x in reachable if x.get("handling") == "ACTIVE_VIOLATION"),
+        "active_unknown": len(unresolved),
+        "unresolved_candidate_ids": [x.get("semantic_key") for x in unresolved],
+    }
+
+
+def gate_exit_code(gate: dict, *, allow_incomplete_inventory: bool = False) -> int:
+    if gate.get("active_unknown", 0) and not allow_incomplete_inventory:
+        return 1
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="扫描 V4 正常运行路径中的固定交易日、证券和板块身份")
     parser.add_argument("--output", type=Path, required=True, help="机器可读清单输出路径")
-    parser.add_argument("--fail-on-reachable", action="store_true", help="存在可达路径的固定业务字面量候选时返回失败")
+    parser.add_argument("--fail-on-reachable", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--allow-incomplete-inventory", action="store_true",
+                        help="仅生成诊断清单时允许未裁定的可达候选以零退出；不得作为准入")
     args = parser.parse_args()
     files = tracked_files(); findings, summary = scan(files)
     reachable, graph, seeds, _ = runtime_graph(files)
-    reachable_hits = sum(1 for x in findings if x["runtime_reachable"] and x["handling"] == "UNRESOLVED")
-    gate_status = "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if reachable_hits else "GLOBAL_RUNTIME_LITERAL_GATE_PASS"
-    payload = {"schema_version": "V4-PRODUCTION-LITERAL-INVENTORY/1", "status": gate_status,
+    gate = global_gate(findings)
+    reachable_hits = gate["active_unknown"]
+    payload = {"schema_version": "V4-PRODUCTION-LITERAL-INVENTORY/2", **gate,
         "summary": summary, "runtime_graph": {"entrypoints":seeds,"edges":graph,"dynamic_import_sites":summary["dynamic_import_sites"]}, "findings": findings}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temp = args.output.with_suffix(args.output.suffix + ".tmp")
@@ -244,7 +298,7 @@ def main() -> int:
     compact_summary.update(entrypoint_count=len(seeds),dynamic_import_site_count=len(summary["dynamic_import_sites"]),python_ast_parse_failure_count=len(summary["python_ast_parse_failures"]))
     print(json.dumps({"output": args.output.as_posix(), "summary": compact_summary, "literal_candidates": len(findings),
                       "reachable_unresolved_candidates": reachable_hits}, ensure_ascii=False))
-    return 1 if args.fail_on_reachable and reachable_hits else 0
+    return gate_exit_code(gate, allow_incomplete_inventory=args.allow_incomplete_inventory)
 
 
 if __name__ == "__main__":

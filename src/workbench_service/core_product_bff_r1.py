@@ -502,7 +502,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if getattr(self,'building_read_index',False):return None
         from workbench_db.v4_read_index_r2 import AUTHORITY,load
         path=self.api.root/AUTHORITY
-        try:stat=path.stat();signature=(stat.st_mtime_ns,stat.st_size)
+        try:
+            authority_bytes=path.read_bytes()
+            signature=(len(authority_bytes),hashlib.sha256(authority_bytes).hexdigest())
         except FileNotFoundError:signature=None
         key=('product-read-index-r2',self.api.token,day,signature)
         if key not in self.api.cache:

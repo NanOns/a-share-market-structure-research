@@ -30,6 +30,31 @@ def test_priority_cache_key_is_stable_for_identical_owner_closure():
     assert first == second
 
 
+def test_read_index_cache_reloads_same_size_authority_content_change(monkeypatch, tmp_path):
+    from workbench_db import v4_read_index_r2
+    from workbench_db.v4_read_index_r2 import AUTHORITY
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+
+    authority = tmp_path / AUTHORITY
+    authority.parent.mkdir(parents=True, exist_ok=True)
+    authority.write_bytes(b'{"a":1}')
+    first_stat = authority.stat()
+    loaded = []
+    monkeypatch.setattr(v4_read_index_r2, "load",
+                        lambda _root, _token, _day, **_kwargs: loaded.append(authority.read_bytes()) or object())
+    bff = object.__new__(CoreProductBFFR1)
+    bff.api = SimpleNamespace(root=tmp_path, token="token", cache={},
+                              candidate={"accepted_trade_date": "2099-01-01"})
+
+    bff._read_index_r2("2099-01-01")
+    authority.write_bytes(b'{"b":2}')
+    import os
+    os.utime(authority, ns=(first_stat.st_atime_ns, first_stat.st_mtime_ns))
+    bff._read_index_r2("2099-01-01")
+
+    assert loaded == [b'{"a":1}', b'{"b":2}']
+
+
 def test_priority_cache_key_invalidates_when_a_source_or_rule_changes():
     stock, sector, lifecycle = inputs()
     original = _candidate_priority_cache_key("token", "2026-10-21", stock, sector,
@@ -146,7 +171,7 @@ def test_forward_pg_read_outage_fails_closed_without_zero_or_stale_data(tmp_path
 def test_matured_forward_count_cache_requires_stable_append_watermark(monkeypatch):
     store = object.__new__(forward_r7_store.ForwardR7Store)
     store.schema = "v4_test_forward"
-    watermark = [("dev-db", 17)]
+    watermark = [("dev-db", 100, 17)]
     computations = []
 
     monkeypatch.setattr(store, "_matured_count_watermark", lambda: watermark[0])
@@ -157,13 +182,20 @@ def test_matured_forward_count_cache_requires_stable_append_watermark(monkeypatc
     assert store.read_matured_count(cache=cache) == 3260
     assert len(computations) == 1
 
-    watermark[0] = ("dev-db", 18)
+    watermark[0] = ("dev-db", 101, 18)
     assert store.read_matured_count(cache=cache) == 3260
     assert len(computations) == 2
 
-    cache.clear()
-    calls = iter([("dev-db", 18), ("dev-db", 19), ("dev-db", 19), ("dev-db", 19)])
-    monkeypatch.setattr(store, "_matured_count_watermark", lambda: next(calls))
+    # A lower sequence value can commit after a higher one. MAX(ordinal)
+    # remains unchanged, but append-only row count advances and invalidates.
+    watermark[0] = ("dev-db", 102, 18)
     assert store.read_matured_count(cache=cache) == 3260
     assert len(computations) == 3
+
+    cache.clear()
+    calls = iter([("dev-db", 102, 18), ("dev-db", 103, 18),
+                  ("dev-db", 103, 18), ("dev-db", 103, 18)])
+    monkeypatch.setattr(store, "_matured_count_watermark", lambda: next(calls))
+    assert store.read_matured_count(cache=cache) == 3260
+    assert len(computations) == 4
     assert ("forward-r7-matured-count-v1", store.schema) not in cache

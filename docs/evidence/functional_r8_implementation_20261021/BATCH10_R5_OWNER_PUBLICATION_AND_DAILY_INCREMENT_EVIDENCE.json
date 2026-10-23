@@ -16,7 +16,7 @@
   "contract_id": "BATCH10_R5_OWNER_PUBLICATION_AND_DAILY_INCREMENT_EVIDENCE_R1",
   "gate_statuses": {
     "D2_frozen_level": "CONTRACT_BLOCKED_DEFERRED_BY_USER_INSTRUCTION",
-    "P0_A_exact_token_owner_publication": "FAIL_EXACT_R8_D0_PRIORITY_NOT_PUBLISHED",
+    "P0_A_exact_token_owner_publication": "FAIL_EXACT_TASK_TOKEN_R8_D0_NOT_FOUND; DATE_LEVEL_DATA_AND_OTHER_TOKEN_CANDIDATES_EXIST",
     "P0_A_read_index_2026_10_20": "FAIL_NOT_FOUND",
     "P0_A_read_index_2026_10_21": "REAL_PG_PASS",
     "P0_B_lifecycle_bar_receipt": "CODE_PASS_REAL_PG_TEMP_FIXTURE_PASS",
@@ -25,7 +25,7 @@
     "P0_D_2026_10_22_increment": "FAIL_REAL_SOURCE_NOT_AVAILABLE",
     "R6_S02_performance": "DEFERRED_BY_USER_INSTRUCTION"
   },
-  "generated_at": "2026-10-23T10:33:25.707731+08:00",
+    "generated_at": "2026-10-23T10:51:03+08:00",
   "git": {
     "branch": "codex/v4-unified-development",
     "head": "e5b499fc23faaf21a6c819d8f0bd18fa611952e6",
@@ -36,8 +36,34 @@
     "formal_head_changed": false,
     "forward_validation_cohort": "WAIT_TRUE_FIRST_CAPTURE; no authorized cohort Owner",
     "production_accepted": false,
-    "r8_d0_exact_candidate_publication": "NOT_FOUND_FOR_TASK_TOKENS",
-    "read_index_exact_candidate_publication": "10/21_FOUND; 10/20_NOT_FOUND"
+    "r8_d0_exact_candidate_publication": "NOT_FOUND_FOR_SPECIFIED_TASK_TOKENS; DATE_LEVEL_DATA_AND_OTHER_TOKEN_ROWS_EXIST",
+    "date_level_data_availability": {
+      "2026-10-20": {
+        "source_ingress_rows": 5568,
+        "source_ingress_time_role": "RECONSTRUCTED_FROM_LATER_PACKAGE",
+        "other_token_r8_publications_exist": true,
+        "other_token_d0_publications_exist": true,
+        "other_token_d0_publication_rows": 4,
+        "requested_token": "a5b169a8cde60cc6ba86f1efbb7714020e578264bfea33634532ab407df70b70",
+        "requested_token_r8_publication": false,
+        "requested_token_d0_publication": false,
+        "requested_token_read_index": false
+      },
+      "2026-10-21": {
+        "source_ingress_rows": 5568,
+        "source_ingress_time_role": "POST_CLOSE_LATE_CAPTURE",
+        "other_token_r8_publications_exist": true,
+        "other_token_d0_publications_exist": true,
+        "other_token_d0_publication_rows": 5,
+        "requested_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "requested_token_r8_publication": false,
+        "requested_token_d0_publication": false,
+        "requested_token_read_index": true,
+        "served_28766_focus_rows": 3975
+      }
+    },
+    "read_index_exact_candidate_publication": "10/21_FOUND; 10/20_NOT_FOUND",
+    "correction_note": "Date-level 10/21 source and UI data existed. Exact-token absence refers only to the specified R4 candidate tokens; other-token R8/D0 rows exist and are enumerated under pg_readback.",
   },
   "lifecycle_pg_fixture": {
     "scope": "session-local temporary tables; no permanent DDL/DML",

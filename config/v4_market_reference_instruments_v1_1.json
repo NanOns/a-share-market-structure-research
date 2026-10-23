@@ -1,0 +1,49 @@
+{
+  "contract_id": "V4_MARKET_REFERENCE_INSTRUMENTS_V1",
+  "version": "1.1.0",
+  "classification": "REFERENCE_DATA",
+  "runtime_authorized": true,
+  "meaning": "版本化市场指数参考目录；用于会话覆盖与有类型来源绑定的指数展示，不作为个股准入或评分例外。",
+  "instruments": [
+    {
+      "instrument_id": "SH.000001",
+      "exchange": "SH",
+      "code": "000001",
+      "instrument_type": "MARKET_INDEX",
+      "role": "SSE_SESSION_REFERENCE",
+      "source_kind": "TDX_INDEX_DAY"
+    },
+    {
+      "instrument_id": "SZ.399001",
+      "exchange": "SZ",
+      "code": "399001",
+      "instrument_type": "MARKET_INDEX",
+      "role": "SZSE_SESSION_REFERENCE",
+      "source_kind": "TDX_INDEX_DAY"
+    },
+    {
+      "instrument_id": "SZ.399006",
+      "exchange": "SZ",
+      "code": "399006",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_UNIVERSE_COVERAGE_REFERENCE",
+      "source_kind": "TDX_INDEX_DAY"
+    },
+    {
+      "instrument_id": "SH.000300",
+      "exchange": "SH",
+      "code": "000300",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY"
+    },
+    {
+      "instrument_id": "SH.000852",
+      "exchange": "SH",
+      "code": "000852",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY"
+    }
+  ]
+}

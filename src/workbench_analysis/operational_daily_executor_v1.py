@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 import json
 from . import tdx_official_daily_source as tdx
-from .tdx_latest_daily_source_v2 import capture_latest_tdx_package,extract_target_session_bars
+from .tdx_latest_daily_source_v2 import capture_latest_tdx_package,extract_target_session_bars,configured_tdx_root
 from .operational_daily_storage_v1 import output_path,atomic_json
 from .operational_runtime_acceptance_v2 import load as load_runtime_acceptance_manifest,error as runtime_acceptance_error
 from .baostock_supplemental import package_metadata
@@ -60,10 +60,11 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     time_check=source_readiness(day,now)
     if not time_check['time_eligible']:return time_check
     snapshot=output_path(root,root/'data/v4/dynamic_daily_sources')
-    package=capture_latest_tdx_package(snapshot_root=snapshot)
+    tdx_root=configured_tdx_root(root)
+    package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root)
     if not package.get('download'):
         return dict(status='WAIT_TDX',reason='LATEST_OFFICIAL_PACKAGE_NOT_FROZEN')
-    bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
+    bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
     # A pre-gate package with absent target bars receives one bounded fresh
     # post-gate capture, even if CDN validators/publication text are unchanged.
     # downloaded_at tracks the full request, independently of earliest source
@@ -72,9 +73,9 @@ def execute_sources(root,day,mode,*,capture_only=False,cancelled=lambda:False,re
     checked_at=package.get('downloaded_at') or package['observed_at']
     if (bars['status']!='TARGET_BARS_EXTRACTED' and package['provider_package_date']>=day
             and datetime.fromisoformat(checked_at)<gate<=datetime.now(timezone.utc)):
-        package=capture_latest_tdx_package(snapshot_root=snapshot,force_refresh=True)
+        package=capture_latest_tdx_package(snapshot_root=snapshot,tdx_root=tdx_root,force_refresh=True)
         if not package.get('download'):return dict(status='WAIT_TDX',reason='POST_GATE_OFFICIAL_CAPTURE_NOT_FROZEN')
-        bars=extract_target_session_bars(package,day,snapshot_root=snapshot)
+        bars=extract_target_session_bars(package,day,snapshot_root=snapshot,tdx_root=tdx_root)
     manifest_path=root/'reports/v4_baostock/runtime_acceptance'/day.replace('-','')/'accepted_runtime_manifest.json'
     try:
         manifest=load_runtime_acceptance_manifest(manifest_path,project_root=root)
@@ -308,7 +309,7 @@ def verify_source_gate(root,day,artifact,result,now=None):
             status='PREVIOUS_HEAD_IDENTITY_SCOPE_MATCH' if scope_matches else 'WAIT_DATED_IDENTITY_AUTHORITY',
             scope_matches=scope_matches,expected_codes=sorted(expected_codes),actual_codes=sorted(actual_codes),
             new_identity_admitted=False,provider_status='NATIVE_PROVIDERS_RECONCILED' if reconciled else 'NATIVE_PROVIDER_RECONCILIATION_FAILED')
-        gbbq=Path('D:/new_tdx/T0002/hq_cache/gbbq')
+        gbbq=configured_tdx_root(root)/'T0002/hq_cache/gbbq'
         before=gbbq.stat();gbbq_sha=tdx.sha256_file(gbbq);after=gbbq.stat()
         if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise ValueError('GBBQ_CHANGED_DURING_READINESS')
         dependencies=dict(parent_head=ref(root,head_path),lifecycle=life_binding,identity=life['identity'],

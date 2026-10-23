@@ -49,7 +49,7 @@ def _periods(connection: duckdb.DuckDBPyConnection, path: Path, limit: int, cuto
       ORDER BY canonical_security_id, period_last_session
     """
     rows = defaultdict(list)
-    cur = connection.execute(query, [cutoff, str(path)])
+    cur = connection.execute(query, [str(path), cutoff])
     for sid, date, view, status, basis, close, source_digest in cur.fetchall():
         rows[sid].append({"period_last_session": iso_date(date), "period_view": view,
                           "period_status": status, "price_basis": basis,
@@ -68,7 +68,7 @@ def _daily(connection: duckdb.DuckDBPyConnection, path: Path, cutoff: int) -> di
       ORDER BY canonical_security_id, trade_date
     """
     rows = defaultdict(list)
-    cur = connection.execute(query, [cutoff, str(path)])
+    cur = connection.execute(query, [str(path), cutoff])
     while batch := cur.fetchmany(20000):
         for sid, symbol, board, date, close, high, low, amount, quality in batch:
             rows[sid].append({"source_security_key": symbol, "board_scope": board,

@@ -237,17 +237,56 @@ def _limit_owner(root,candidate,day):
     owner=candidate.get('owners',{}).get(day,{})
     expected=owner.get('raw',{}).get('path','')
     match=re.search(r'dynamic_daily_owners[/\\]'+re.escape(day)+r'[/\\]([^/\\]+)',expected)
-    if not match:raise ValueError('R7_MARKET_STRESS_DATED_CANDIDATE_OWNER_ID_MISSING:'+day)
-    candidate_owner_id=match.group(1);raw_ref=owner.get('raw') or {}
+    registry=candidate.get('source_registry',{}).get(day) or {}
+    generation_ref=registry.get('generation');freeze_ref=registry.get('freeze')
+    if generation_ref and freeze_ref:
+        generation=json.loads(_checked(root,generation_ref).read_bytes())
+        if generation.get('source_freeze')!=freeze_ref.get('sha256'):
+            raise ValueError('R7_MARKET_STRESS_GENERATION_FREEZE_MISMATCH:'+day)
+        generation_root=_checked(root,generation_ref).parent
+        candidate_owner_id=generation_root.name
+    elif match:
+        candidate_owner_id=match.group(1)
+        generation_root=Path(root)/'data/v4/dynamic_daily_owners'/day/candidate_owner_id
+    else:raise ValueError('R7_MARKET_STRESS_DATED_CANDIDATE_OWNER_ID_MISSING:'+day)
+    raw_ref=owner.get('raw') or {}
     if len(str(raw_ref.get('sha256',''))) != 64:raise ValueError('R7_MARKET_STRESS_CANDIDATE_RAW_BINDING_MISSING:'+day)
-    matches=[]
-    for receipt_path in Path(root).glob('r5_daily_limit_materialization_*/'+day+'/DAILY_PRICE_LIMIT_REPLAY.json'):
+    matches=[];bound_limits=[];receipt_paths=[]
+    if owner.get('market'):
+        market=json.loads(_checked(root,owner['market']).read_bytes())
+        bound_limits=[item for item in market.get('input_bindings',[])
+                      if Path(item.get('path','')).name=='daily_price_limits_v1.jsonl.gz'
+                      and '/owners/'+day+'/' in item['path'].replace('\\','/')]
+        for binding in bound_limits:
+            path=_checked(root,binding)
+            receipt_path=path.parents[2]/'DAILY_PRICE_LIMIT_REPLAY.json'
+            if receipt_path.is_file():receipt_paths.append(receipt_path)
+        if len(bound_limits)>1:raise ValueError('R7_MARKET_STRESS_DATED_LIMIT_BINDING_AMBIGUOUS:'+day)
+    # Legacy materializations remain eligible only when their exact input and
+    # output match the bound market Owner. Never select a candidate by mtime.
+    receipt_paths+=list(Path(root).glob('r5_daily_limit_materialization_*/'+day+'/DAILY_PRICE_LIMIT_REPLAY.json'))
+    for receipt_path in sorted(set(receipt_paths)):
         receipt_bytes=receipt_path.read_bytes();receipt=json.loads(receipt_bytes)
         if receipt.get('production_admission') is not False or not receipt.get('contract'):
             continue
         _checked(root,receipt['contract'])
         for row in receipt.get('owners',[]):
+            if bound_limits and row.get('artifact') not in bound_limits:continue
+            if row.get('raw_binding') is not None and row['raw_binding']!=raw_ref:continue
             source=row.get('baostock_source') or {}
+            if bound_limits and source.get('candidate_owner_id') is None:
+                # Older receipts lack the new display metadata. Prove their
+                # exact daily rows against this date's frozen capture instead.
+                freeze_ref=(candidate.get('source_registry',{}).get(day) or {}).get('freeze')
+                if not freeze_ref:continue
+                freeze=json.loads(_checked(root,freeze_ref).read_bytes())
+                payload=json.loads(_checked(root,source).read_bytes())
+                if (freeze.get('target_session')!=day or payload.get('rows')!=freeze.get('normalized',{}).get('daily',{}).get('rows')
+                        or any(item.get('date')!=day for item in payload.get('rows',[]))):continue
+                source=dict(source,trade_date=day,candidate_owner_id=candidate_owner_id,
+                    capture_observed_at=payload.get('observed_at'),source_freeze=freeze_ref,
+                    temporal_proof='EXACT_BOUND_MARKET_LIMIT_AND_DATED_FREEZE_ROWS_V1')
+                row=dict(row,baostock_source=source)
             if (row.get('trade_date')!=day or source.get('trade_date')!=day or
                     source.get('candidate_owner_id')!=candidate_owner_id):
                 continue
@@ -261,8 +300,9 @@ def _limit_owner(root,candidate,day):
                 if capture_time.tzinfo is None:continue
             except ValueError:
                 continue
-            raw_dir=Path(raw_ref['path']).parent
-            try:(Path(source['path'])).relative_to(raw_dir)
+            # Daily source lives in generation/sources, while RAW lives in
+            # generation/owner_v3/owners/day. They are siblings, not children.
+            try:source_path.resolve().relative_to(generation_root.resolve())
             except ValueError:continue
             binding=row.get('artifact') or {}
             _checked(root,binding)
@@ -306,7 +346,8 @@ def _candidate_trend_reference(root,candidate,day):
     binding=bindings[0];path=_checked(root,binding)
     with gzip.open(path,'rt',encoding='utf-8') as stream:
         rows=[json.loads(line) for line in stream if line.strip()]
-    sessions=head.get('published_sessions')
+    from workbench_analysis.market_source_acquisition import official_sessions
+    sessions=official_sessions(root)
     if not isinstance(sessions,list):return None
     ordered=sorted({session for session in sessions if isinstance(session,str) and session<=day})
     if len(ordered)<25 or ordered[-1]!=day:return None
@@ -371,7 +412,7 @@ def candidate_market_stress_identity(root,candidate):
     return hashlib.sha256(_canonical(source)).hexdigest()
 
 
-def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_rows):
+def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_rows,*,allow_reprojection=False):
     market_path=_checked(root,market_binding);market=json.loads(market_path.read_bytes())
     if market.get('trade_date')!=day or market.get('AS_RECORDED') is not False or market.get('accepted') is not False:
         raise ValueError('R7_MARKET_OWNER_DATE_OR_AUTHORITY_MISMATCH:'+day)
@@ -379,8 +420,36 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
     bound={Path(ref['path']).name:ref for ref in bindings}
     history_ref=bound.get('history.jsonl.gz')
     membership_ref=next((ref for ref in bindings if 'historical_universe' in Path(ref['path']).name),None)
-    if not history_ref or not membership_ref or bound.get(Path(core_binding['path']).name)!=core_binding:
+    core_refs=[ref for ref in bindings if Path(ref['path']).name==Path(core_binding['path']).name]
+    if not history_ref or not membership_ref or len(core_refs)!=1:
         raise ValueError('R7_MARKET_OWNER_REQUIRED_INPUT_BINDING_MISSING:'+day)
+    core_reconciliation=None
+    if core_refs[0]!=core_binding:
+        # RPS-only annotations can mint a new Core Owner without changing the
+        # market's consumed fields. Verify those exact field envelopes and the
+        # complete identity set; bind both versions in this new NON_PIT result.
+        # Any market-consumed field change still requires a producer rebuild.
+        old_core=_read_rows(_checked(root,core_refs[0]))
+        def consumed(rows):
+            result={}
+            for row in rows:
+                sid=row.get('security_id')
+                if not sid or sid in result:raise ValueError('R7_MARKET_CORE_IDENTITY_AMBIGUOUS:'+day)
+                result[sid]={key:row.get(key) for key in ('trade_date','source_security_key','board_scope')}
+                result[sid]['amount_ratio20']=(row.get('fields') or {}).get('amount_ratio20')
+            return result
+        old_consumed,new_consumed=consumed(old_core),consumed(core_rows)
+        equal=old_consumed==new_consumed
+        if not equal and not allow_reprojection:
+            raise ValueError('R7_MARKET_CORE_CONSUMED_FIELD_REVISION_REQUIRED:'+day)
+        core_reconciliation=dict(contract_id='R9_MARKET_CORE_SOURCE_REPROJECTION_V1',
+            original_core=core_refs[0],current_core=core_binding,
+            consumed_fields=['security_id','trade_date','source_security_key','board_scope','fields.amount_ratio20'],
+            original_count=len(old_core),identity_count=len(core_rows),
+            added_identities=sorted(set(new_consumed)-set(old_consumed)),
+            removed_identities=sorted(set(old_consumed)-set(new_consumed)),
+            changed_envelopes=sum(old_consumed[sid]!=new_consumed[sid] for sid in set(old_consumed)&set(new_consumed)),
+            status='PROVEN_EQUAL' if equal else 'NEW_NON_PIT_DERIVATION_REQUIRED_AND_CALCULATED',production_admission=False)
     history_rows=_read_rows(_checked(root,history_ref))
     history={r['security_id']:{b['trade_date']:b for b in r.get('bars',[])} for r in history_rows}
     membership_rows=_read_rows(_checked(root,membership_ref))
@@ -426,7 +495,7 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
     amounts=[]
     for row in core_rows:
         fact=(row.get('fields') or {}).get('amount_ratio20') or {};value=fact.get('value')
-        if fact.get('quality_state')=='OBSERVED' and isinstance(value,(int,float)) and not isinstance(value,bool):amounts.append(value)
+        if fact.get('quality_state')=='OBSERVED' and isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value):amounts.append(value)
     participation=statistics.median(amounts) if amounts else None
     return breadth_positive,participation,dict(comparison_trade_date=prior3,universe_count=len(universe),
         current_members=len(current),breadth_evaluable=len(comparison),participation_evaluable=len(amounts),
@@ -440,12 +509,26 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
         market_owner_binding=market_binding,history_binding=history_ref,membership_binding=membership_ref,
         comparison_membership_binding=predecessor or membership_ref,
         recorded_breadth_axis=market.get('axes',{}).get('breadth_axis'),
+        core_source_reconciliation=core_reconciliation,
         recorded_participation_axis=market.get('axes',{}).get('participation_axis'))
 
 
 def build_candidate_market_stress(root,candidate):
     """Recalculate available market axes from verified date-bound candidate inputs."""
     root=Path(root);t0=candidate['accepted_trade_date']
+    scope=candidate.get('r9_derivation_scope') or {}
+    allow_reprojection=False
+    if scope.get('market_reprojection_contract')=='R9_MARKET_CORE_SOURCE_REPROJECTION_V1':
+        original=json.loads(_checked(root,scope['source_head']).read_bytes())
+        from .operational_successor_v1 import digest
+        if (scope.get('contract_id')!='V4_R9_CANDIDATE_OWNER_SCOPE_V1'
+                or scope.get('production_admission') is not False
+                or scope.get('T0')!=t0 or scope.get('source_context_token')!=digest(original)
+                or scope.get('source_owners')!=original.get('owners',{}).get(t0)
+                or original.get('owners')!=candidate.get('owners')
+                or original.get('accepted_trade_date')!=t0):
+            raise ValueError('R9_MARKET_REPROJECTION_SCOPE_MISMATCH')
+        allow_reprojection=True
     dates=_stress_window_days(candidate)
     outputs={};owners={}
     references=candidate.get('market_trend_references') or {}
@@ -470,7 +553,8 @@ def build_candidate_market_stress(root,candidate):
                 prior_valid=dict(day=prior_day,ratio=sum(prior_states[s]=='LIMIT_DOWN' for s in comparable)/len(comparable),
                     current_ratio=sum(valid[s]=='LIMIT_DOWN' for s in comparable)/len(comparable),common_count=len(comparable),owner=prior_binding)
         market_binding=candidate['owners'][day].get('market') or {}
-        breadth,participation,axis_inputs=_market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_rows)
+        breadth,participation,axis_inputs=_market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_rows,
+            allow_reprojection=allow_reprojection)
         source_identity=dict(day=day,core=core_binding,limits=limit_binding,receipt_sha256s=receipt_owner['_receipt_sha256s'],
             source=receipt_owner['baostock_source'],market=market_binding,axis_inputs=axis_inputs,prior=prior_valid)
         source_digest=hashlib.sha256(_canonical(source_identity)).hexdigest()
@@ -480,7 +564,7 @@ def build_candidate_market_stress(root,candidate):
             stress_change_current_provided=bool(prior_valid),trade_date=day,market_calendar_id='V4_OFFICIAL',
             market_snapshot_id=market_binding.get('sha256') or core_binding['sha256'],
             adjustment_basis_id=core_binding['sha256'],input_source_digest=source_digest)
-        if (axis_inputs['recorded_breadth_axis']!=axes['breadth_axis'] or
+        if not allow_reprojection and (axis_inputs['recorded_breadth_axis']!=axes['breadth_axis'] or
                 axis_inputs['recorded_participation_axis']!=axes['participation_axis']):
             raise ValueError('R7_MARKET_AXIS_RECALCULATION_MISMATCH:'+day)
         trend_reference=references.get(day)

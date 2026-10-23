@@ -38,7 +38,7 @@ def private_scope(module, replacements):
 PROFILE_LIFECYCLE_CONSERVATION_CONTRACT = "DYNAMIC_PROFILE_LIFECYCLE_CONSERVATION_R1"
 
 
-def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,lifecycle_binding=None,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False,predecessor=None,progress=None):
+def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,observed_at,lifecycle_binding=None,exact_adjustment=False,exact_daily_policy=None,candidate_only_exact=False,predecessor=None,progress=None,source_inputs=None):
     root=Path(root).resolve();folder=Path(folder).resolve()
     if exact_daily_policy:
         from .operational_daily_exact_policy_v2 import verify
@@ -116,7 +116,8 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
     owners=load(core_path)['owners'] if core_path.exists() else c['materialize_core'](root,dates,
         basis_namespace='TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE' if exact_adjustment else 'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',
         identity_binding=identity_binding,identity_rows=identity_rows,required_active_ids=active_security_ids,
-        accepted_history=previous['profiles'][-1]['owner']['history'] if previous else None,progress_counter=counter('CORE'))
+        accepted_history=previous['profiles'][-1]['owner']['history'] if previous else None,progress_counter=counter('CORE'),
+        **(dict(source_inputs=source_inputs) if source_inputs is not None else {}))
     if [r['trade_date'] for r in owners]!=list(dates):raise ValueError('COMPUTE_OWNER_DATES_MISMATCH')
     report('CORE','COMPLETED')
     from scripts import run_v4_04_full_market_candidate_r4 as original_builder
@@ -175,6 +176,8 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         from .operational_increment_plan_v1 import sector_history
         from .market_source_acquisition import official_sessions
         sessions=official_sessions(root);index=sessions.index(dates[0])
+        from .operational_daily_sources_v2 import dependency_sessions
+        dependency_sessions(sessions,dates,(1,3))
         sector_bootstrap=dict(predecessor_history=sector_history(root,previous['profiles'],previous['sectors'],
                             {sessions[index-1],sessions[index-3]}))
     sectors=load(sector_path) if sector_path.exists() else sec['run'](root,progress_counter=counter('SECTOR_MARKET'),**sector_bootstrap)
@@ -199,6 +202,7 @@ def replay(root,folder,dates,read_mappings,*,membership_snapshot,seed_registry,o
         from .operational_increment_plan_v1 import focus_predecessor
         focus_bootstrap=dict(predecessor_state=focus_predecessor(root,previous['accepted_days']))
         focus_bootstrap['predecessor_state']['research_mainline_source_bindings']=[r['relative_sector'] for r in previous['sectors']]
-    forwards=load(focus_path) if focus_path.exists() else f['materialize_focus'](root,progress_counter=counter('FOCUS_FORWARD'),**focus_bootstrap)
+    forwards=load(focus_path) if focus_path.exists() else f['materialize_focus'](root,progress_counter=counter('FOCUS_FORWARD'),
+        sector_namespace=(folder/'sector_v3').relative_to(root).as_posix(),**focus_bootstrap)
     report('FOCUS_FORWARD','COMPLETED')
     return dict(core=owners,profiles=profiles,sectors=sectors,market=markets,focus=forwards)

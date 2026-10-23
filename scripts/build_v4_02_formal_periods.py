@@ -141,7 +141,7 @@ def main() -> int:
     parser.add_argument("--weekly-output", required=True)
     parser.add_argument("--monthly-output", required=True)
     parser.add_argument("--receipt", required=True)
-    parser.add_argument("--asof", type=int, help="可选目标交易日；省略时取输入日历和 universe 的共同末日")
+    parser.add_argument("--asof", type=int, required=True, help="显式目标交易日；日历末日不代表 universe、状态和行情已齐备")
     args = parser.parse_args()
     universe_path, status_path, raw_path = (ROOT / args.universe, ROOT / args.status, ROOT / args.raw)
     classification_path, dispositions_path = ROOT / args.classification, ROOT / args.dispositions
@@ -157,22 +157,28 @@ def main() -> int:
     all_sessions = [value for market in calendars.values() for kind in market.values() for group in kind.values()
                     for value in (group["first_session"], group["last_session"])]
     calendar_start, calendar_end = min(all_sessions), max(all_sessions)
-    asof = int(args.asof) if args.asof is not None else calendar_end
+    asof = int(args.asof)
     if not calendar_start <= asof <= calendar_end:
         raise SystemExit("ASOF_OUTSIDE_INPUT_CALENDAR_SCOPE")
     source_cutoff = min(asof, calendar_end)
 
     gap_facts = {}
+    target_status = {}
     status_sha = sha(status_path)
     with gzip.open(status_path, "rt", encoding="utf-8") as f:
         for line in f:
             row = json.loads(line)
+            if int(row['trade_date'].replace('-',''))==asof:
+                key=row['source_security_key']
+                if key in target_status:raise ValueError('TARGET_STATUS_IDENTITY_AMBIGUOUS:'+key)
+                target_status[key]=row['status']
             if row["status"] != "ACTUAL_TRADED":
                 gap_facts[(row["source_security_key"], int(row["trade_date"].replace("-", "")))] = row["status"]
 
     # Exact membership-session counts and actual bar date lists; uint32 arrays keep the index compact.
     members: dict[str, dict] = {}
     membership_sessions = 0
+    target_members = set()
     with gzip.open(universe_path, "rt", encoding="utf-8") as f:
         for line in f:
             row = json.loads(line)
@@ -181,6 +187,14 @@ def main() -> int:
             d = int(row["trade_date"].replace("-", ""))
             if d > asof:
                 continue
+            if d==asof:
+                if key in target_members:raise ValueError('TARGET_UNIVERSE_IDENTITY_AMBIGUOUS:'+key)
+                target_members.add(key)
+                state=target_status.get(key)
+                if state not in ('ACTUAL_TRADED','SUSPENDED'):
+                    raise ValueError('TARGET_STATUS_MISSING_OR_INCOMPLETE:'+key)
+                if bool(row.get('source_bar_present'))!=(state=='ACTUAL_TRADED'):
+                    raise ValueError('TARGET_UNIVERSE_STATUS_BAR_CONFLICT:'+key)
             membership_sessions += 1
             item = members.setdefault(key, {"security_id": sid, "board": board, "market": market,
                                             "actual_dates": array.array("I"), "stats": defaultdict(Counter)})
@@ -202,6 +216,7 @@ def main() -> int:
             if row.get("source_bar_present") is True:
                 item["actual_dates"].append(d)
 
+    if not target_members:raise ValueError('TARGET_UNIVERSE_SESSION_MISSING')
     for item in members.values():
         item["actual_dates"] = sorted(item["actual_dates"])
 

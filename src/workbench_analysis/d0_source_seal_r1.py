@@ -96,7 +96,8 @@ def _observed_timezone(value):
     return 'UTC' if parsed.utcoffset().total_seconds()==0 else parsed.strftime('%z')
 
 
-def build_scenario_lineage(root, *, trade_date, owner, parameters_path, observed_at, calendar_binding):
+def build_scenario_lineage(root, *, trade_date, owner, parameters_path, observed_at, calendar_binding,
+                           scenario_detector_path='src/workbench_analysis/corrected_focus_replay.py'):
     """Make the formal scenario-to-input-to-byte lineage without extra inputs."""
     from .r43_owner_replay import ref
     source_refs = [
@@ -107,7 +108,7 @@ def build_scenario_lineage(root, *, trade_date, owner, parameters_path, observed
             source_availability_proven=False),
         _versioned_source_ref('config/v4_11_confirmation_detector_contract_r2.json','FROZEN_D0_SCANNER_AND_THRESHOLDS'),
         _versioned_source_ref('src/v4/target_fact_producers_r4.py','TARGET_FACT_PRODUCER'),
-        _versioned_source_ref('src/workbench_analysis/corrected_focus_replay.py','SCENARIO_DETECTOR'),
+        _versioned_source_ref(scenario_detector_path,'SCENARIO_DETECTOR'),
         _versioned_source_ref('config/v4_d0_source_seal_successor_v1.json','D0_SOURCE_SEAL_CONTRACT'),
         _versioned_source_ref(parameters_path,'D0_PRODUCER_PARAMETERS'),
     ]

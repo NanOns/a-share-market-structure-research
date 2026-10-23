@@ -37,20 +37,26 @@ def confirmation(values, *, source_lineage=None):
     # TREND_CONTINUE are diagnostic-only; their expected missing evidence
     # must not turn otherwise-FALSE formal D0 rows into UNKNOWN.
     formal_scenarios={'LAUNCH_CONFIRM','RECOVERY_TURN'}
-    _,manifest,_,machine,scanner=d0.package();legacy=scanner(values);evidence=[];matches=[];unknown=[]
+    _,manifest,_,machine,scanner=d0.package();legacy=scanner(values);evidence=[];matches=[];unknown=[];legacy_matches=[];legacy_unknown=[]
     for scenario in machine['scenario_priority']:
         branch=legacy[d0.SCENARIO_KEYS[scenario]];checks=branch['checks']
         reasons=[k+':UNKNOWN' for k,v in checks.items() if v is None]
         if scenario=='TREND_CONTINUE':reasons.append('CURRENT_WITH_LOO_BREADTH_SUPPORT:SAME_DAY_DOWNSTREAM_DIAGNOSTIC_ONLY')
         state='UNKNOWN' if reasons else 'TRUE' if branch['eligible'] is True else 'FALSE'
+        if state=='TRUE':legacy_matches.append(scenario)
+        legacy_unknown.extend(reasons)
         is_formal=scenario in formal_scenarios
         if is_formal:
             if state=='TRUE':matches.append(scenario)
             unknown.extend(scenario+':'+r for r in reasons)
         evidence.append(dict(scenario=scenario,status=state,
+             legacy_eligible=branch['eligible'],
              aggregation_role='FORMAL_D0' if is_formal else 'DIAGNOSTIC_ONLY',
              checks=checks,unknown_reasons=reasons))
     result = dict(confirmation_status='TRUE' if matches else 'UNKNOWN' if unknown else 'FALSE',
+         aggregation_contract_id='V4_D0_FORMAL_SCENARIO_AGGREGATION_V2',
+         legacy_confirmation_status='TRUE' if legacy_matches else 'UNKNOWN' if legacy_unknown else 'FALSE',
+         production_admission=False,
          formal_aggregation_scenarios=[s for s in machine['scenario_priority'] if s in formal_scenarios],
          primary_scenario=matches[0] if matches else None,matched_scenarios=matches,
          scenario_evidence=evidence,source_sha256=manifest['legacy_source']['sha256'])

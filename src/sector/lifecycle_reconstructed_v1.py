@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 
 CONTRACT='SECTOR_LIFECYCLE_RECONSTRUCTED_V1'
@@ -18,7 +19,7 @@ def _value(row,name):
     if not isinstance(cell,dict) or cell.get('quality') in ('UNKNOWN','SOURCE_INCOMPLETE','DATA_UNAVAILABLE'):
         return None
     value=cell.get('value')
-    return value if isinstance(value,(int,float)) and not isinstance(value,bool) else None
+    return value if isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value) else None
 
 
 def _quality(row,name):

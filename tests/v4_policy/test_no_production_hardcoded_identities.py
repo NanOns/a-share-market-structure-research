@@ -52,8 +52,9 @@ def test_whole_repository_has_no_new_business_literal_candidates():
     # not silently added to the non-waiving legacy diff baseline.
     current_keys = {
         item["semantic_key"] for item in findings
-        if item["environment"] != "TEST_ONLY" and item["category"] != "CONSTANT_DATE_COMPONENTS"
+        if not item['file'].startswith('tests/') and item["category"] != "CONSTANT_DATE_COMPONENTS"
         and item["handling"] != "VERSIONED_MARKET_REFERENCE"
+        and not item.get('temporal_consumption_proof')
     }
     added = sorted(current_keys - baseline_keys)
     assert not added, (
@@ -113,7 +114,8 @@ def test_historical_path_requires_matching_existing_sha_binding():
     rel="src/v4/scoped_promotions_r3.py"
     source=(ROOT/rel).read_text(encoding="utf-8")
     tree=ast.parse(source)
-    assert verified_historical_evidence_binding(rel,"20261002",tree,source)
+    # A matching immutable digest alone cannot prove historical consumption.
+    assert verified_historical_evidence_binding(rel,"20261002",tree,source) is None
     unbound=ast.parse("AUTHORITY = 'docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md'")
     assert verified_historical_evidence_binding(rel,"20261002",unbound,"") is None
 

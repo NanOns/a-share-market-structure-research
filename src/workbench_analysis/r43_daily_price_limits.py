@@ -86,6 +86,6 @@ def materialize_daily_limits(root,*,core_path=None,output_root=None,source_trace
             for k in ('limit_up_price','limit_down_price'):state[k]=str(state[k]) if state[k] is not None else None
             records.append(state)
         artifact=gzwrite(root,out/'owners'/day/'daily_price_limits_v1.jsonl.gz',records)
-        receipts.append(dict(trade_date=day,artifact=artifact,baostock_source=baostock_binding,rows=len(records),counts=dict(Counter(r['limit_state'] for r in records)),unknown_reasons=dict(Counter(r['reason'] for r in records if r['limit_state']=='UNKNOWN')),limit_coverage=sum(r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT') for r in records)/len(records),daily_observable_known=sum(r['daily_high_equals_limit_up'] is not None for r in records)))
+        receipts.append(dict(trade_date=day,artifact=artifact,raw_binding=owner['raw'],baostock_source=baostock_binding,rows=len(records),counts=dict(Counter(r['limit_state'] for r in records)),unknown_reasons=dict(Counter(r['reason'] for r in records if r['limit_state']=='UNKNOWN')),limit_coverage=sum(r['limit_state'] in ('LIMIT_UP','LIMIT_DOWN','NOT_LIMIT') for r in records)/len(records),daily_observable_known=sum(r['daily_high_equals_limit_up'] is not None for r in records)))
     write(out/'DAILY_PRICE_LIMIT_REPLAY.json',dict(contract=ref(root,contract),owners=receipts,acceptance='EXECUTED_DATED_DAILY_CLOSE_AND_EXTREMA_LIMIT_OBSERVATIONS',production_admission=False))
     return receipts

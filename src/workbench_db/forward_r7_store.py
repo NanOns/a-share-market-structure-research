@@ -7,6 +7,8 @@ import json
 import os
 from pathlib import Path
 import statistics
+from contextlib import contextmanager
+from contextvars import ContextVar
 
 import psycopg
 from psycopg import sql
@@ -21,6 +23,7 @@ SETTLEMENT_STATUS_STATES = (
     "SETTLED", "NO_QUOTE", "SUSPENDED", "SOURCE_GAP",
     "DUE_SOURCE_NOT_ACCEPTED", "PENDING_FUTURE_SESSION",
 )
+_READ_SNAPSHOT = ContextVar('forward_r7_read_snapshot', default=None)
 
 
 def summarize_settlement_schedule(trade_date, lane, horizon, scheduled):
@@ -92,6 +95,7 @@ class ForwardR7Store:
                     or receipt.get('candidate_baseline')!=receipt.get('source_before')):
                 raise RuntimeError('ISOLATED_FORWARD_BASELINE_RECEIPT_INVALID')
             with psycopg.connect(self.dsn,connect_timeout=5) as pg:
+                pg.execute('SET TRANSACTION READ ONLY')
                 present=pg.execute('SELECT 1 FROM information_schema.tables WHERE table_schema=%s AND table_name=%s',(expected,'forward_facts')).fetchone()
             if not present:raise RuntimeError('ISOLATED_FORWARD_FACTS_TABLE_MISSING')
             return expected
@@ -104,6 +108,7 @@ class ForwardR7Store:
             except (OSError, ValueError, TypeError):
                 target_date = None
         with psycopg.connect(self.dsn, connect_timeout=5) as pg:
+            pg.execute('SET TRANSACTION READ ONLY')
             candidates = pg.execute("""SELECT s.schema_name
                 FROM information_schema.schemata s
                 JOIN information_schema.tables t ON t.table_schema=s.schema_name
@@ -133,6 +138,19 @@ class ForwardR7Store:
     def _connect(self):
         return psycopg.connect(self.dsn, connect_timeout=5)
 
+    @contextmanager
+    def _read_snapshot(self):
+        """一个查询视图内观察与结算使用同一只读快照，且不跨请求共享连接。"""
+        current=_READ_SNAPSHOT.get()
+        if current is not None and current[0] is self:
+            yield current[1]
+            return
+        with self._connect() as pg:
+            pg.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
+            token=_READ_SNAPSHOT.set((self,pg))
+            try:yield pg
+            finally:_READ_SNAPSHOT.reset(token)
+
     @staticmethod
     def _stable_hash(value):
         """Hash immutable research facts while preserving first-write audit clocks."""
@@ -158,6 +176,7 @@ class ForwardR7Store:
 
     def verify_existing_storage(self):
         with self._connect() as pg:
+            pg.execute('SET TRANSACTION READ ONLY')
             present = pg.execute("""SELECT 1 FROM information_schema.tables
                 WHERE table_schema=%s AND table_name='forward_facts' AND table_type='BASE TABLE'""",
                 (self.schema,)).fetchone()
@@ -184,8 +203,7 @@ class ForwardR7Store:
         return digest
 
     def _read_facts(self, kind: str):
-        with self._connect() as pg:
-            pg.execute("SET TRANSACTION READ ONLY")
+        with self._read_snapshot() as pg:
             rows = pg.execute(sql.SQL("""SELECT fact_key,payload FROM {}.forward_facts
                 WHERE kind=%s ORDER BY ordinal""").format(sql.Identifier(self.schema)), (kind,)).fetchall()
         return [(key, json.loads(payload)) for key, payload in rows]
@@ -196,8 +214,7 @@ class ForwardR7Store:
             if not prefix.endswith(":"):
                 raise ValueError("FORWARD_FACT_KEY_PREFIX_INVALID")
             return "(fact_key >= %s AND fact_key < %s)", [prefix, prefix[:-1] + ";"]
-        with self._connect() as pg:
-            pg.execute("SET TRANSACTION READ ONLY")
+        with self._read_snapshot() as pg:
             if kind == "r7_daily_universe":
                 if lane:
                     clause, params = prefix_clause(f"v2:{trade_date}:{lane}:")
@@ -455,6 +472,7 @@ class ForwardR7Store:
         own = pg is None
         conn = pg or self._connect()
         try:
+            if own:conn.execute('SET TRANSACTION READ ONLY')
             rows = conn.execute(sql.SQL("""SELECT payload FROM {}.forward_facts
                 WHERE kind='r7_publish_index' ORDER BY ordinal DESC""").format(
                     sql.Identifier(self.schema))).fetchall()
@@ -581,6 +599,12 @@ class ForwardR7Store:
                         horizon: int | None = None, status: str | None = None,
                         limit: int = 30, offset: int = 0, revision: int | None = None,
                         settlement_revision: int | None = None):
+        with self._read_snapshot():
+            return self._read_settlement_snapshot(lane=lane,trade_date=trade_date,horizon=horizon,status=status,
+                limit=limit,offset=offset,revision=revision,settlement_revision=settlement_revision)
+
+    def _read_settlement_snapshot(self, *, lane=None, trade_date=None, horizon=None, status=None,
+                                  limit=30, offset=0, revision=None, settlement_revision=None):
         if not 1 <= limit <= 200 or not 0 <= offset <= 1_000_000:
             raise ValueError("INVALID_QUERY_BOUND")
         latest_observations = {}
@@ -704,6 +728,10 @@ class ForwardR7Store:
         return count
 
     def _read_matured_count_exact(self):
+        with self._read_snapshot():
+            return self._count_latest_revisions()
+
+    def _count_latest_revisions(self):
         # Derive this value from the same latest observation/settlement revisions
         # as the paged API. Aggregate facts remain audit evidence, not a second
         # potentially stale source for the home-page count.

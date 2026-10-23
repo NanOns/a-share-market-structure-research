@@ -132,7 +132,8 @@ def validate_query(query, token, dates, default_day, path):
     if 'event' in query and query['event'] != '':
         if path not in ('/api/v4/radar','/api/v4/focus/events'): raise ValueError('UNKNOWN_PARAMETER')
         if query['event'] not in ('INVALIDATED','EXITED','WEAKENED','UPGRADED','REENTERED','NEW','PERSISTENT','DATA_UNAVAILABLE'): raise ValueError('INVALID_EVENT')
-    day=query.get('trade_date', default_day)
+    day=query.get('trade_date',query.get('as_of',default_day))
+    if 'as_of' in query and query['as_of']!=day:raise ValueError('AS_OF_TRADE_DATE_MISMATCH')
     if day not in dates: raise ValueError('TARGET_DATE_NOT_GRANTED')
     if path!='/api/v4/context' and query.get('context_token')!=token:
         raise ValueError('CONTEXT_TOKEN_MISMATCH')

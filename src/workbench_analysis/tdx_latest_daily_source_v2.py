@@ -8,6 +8,19 @@ from .market_source_acquisition import is_stock_code
 CONTRACT = 'TDX_LATEST_PACKAGE_TARGET_SESSION_V2'
 
 
+def configured_tdx_root(root=None,selected=None):
+    root=Path(root) if root is not None else Path(__file__).resolve().parents[2]
+    contract=json.loads((root/'config/dm01_go_forward_runtime_contract_r4r1.json').read_bytes())
+    roots=list(dict.fromkeys(Path(p).resolve() for p in contract.get('read_only_tdx_roots',[])))
+    if selected is not None:
+        chosen=Path(selected).resolve()
+        if chosen not in roots:raise ValueError('SOURCE_TDX_ROOT_NOT_CONFIGURED')
+        return chosen
+    if not roots:raise ValueError('SOURCE_TDX_ROOT_MISSING')
+    if len(roots)!=1:raise ValueError('SOURCE_TDX_ROOT_AMBIGUOUS')
+    return roots[0]
+
+
 def _package_validator(url,timeout):
     """The provider can replace ZIP bytes without changing publication metadata."""
     old.validate_official_url(url)
@@ -34,7 +47,8 @@ def _refresh_existing_downloader():
     if result.returncode:raise ValueError('TDX_REVISED_PACKAGE_FRESH_ADAPTER_FAILED')
 
 
-def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), timeout=30, force_refresh=False):
+def capture_latest_tdx_package(*, snapshot_root, tdx_root=None, timeout=30, force_refresh=False):
+    tdx_root=Path(tdx_root) if tdx_root is not None else configured_tdx_root()
     # Probe current metadata first. V1 rechecks it before downloading, so a
     # provider revision race becomes WAIT rather than mislabeled bytes.
     response=old._request(old.PAGE_URL, timeout=timeout)
@@ -79,18 +93,29 @@ def capture_latest_tdx_package(*, snapshot_root, tdx_root=Path('D:/new_tdx'), ti
 
 
 def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root,
-                                tdx_root=Path('D:/new_tdx')):
+                                tdx_root=None):
+    tdx_root=Path(tdx_root) if tdx_root is not None else configured_tdx_root()
     date.fromisoformat(trade_date)
     source=latest_package_ref['download']; package=Path(source['path'])
     if package.stat().st_size!=source['bytes'] or old.sha256_file(package)!=source['sha256']:
         raise ValueError('LATEST_PACKAGE_BINDING_MISMATCH')
+    clocks=[latest_package_ref['observed_at']]
+    completed=latest_package_ref.get('downloaded_at')
+    received=latest_package_ref.get('source_transport_v2',{}).get('received_at')
+    clocks.extend(value for value in (completed,received) if value)
+    instants=[datetime.fromisoformat(value.replace('Z','+00:00')) for value in clocks]
+    if any(value.tzinfo is None for value in instants):raise ValueError('SOURCE_AVAILABILITY_AWARE_CLOCK_REQUIRED')
+    available_at=max(instants).isoformat()
+    clock_basis='DOWNLOAD_COMPLETED_AT' if completed or received else 'LEGACY_CAPTURE_OBSERVED_AT_ONLY'
     cache=Path(snapshot_root)/'tdx_target_refs'/source['sha256']/(trade_date+'.json')
     old.ensure_outside_tdx(cache,tdx_root)
     if cache.is_file():
         cached=json.loads(cache.read_bytes());binding=cached['artifact'];artifact=Path(binding['path'])
         if artifact.is_file() and old.sha256_file(artifact)==binding['sha256']:
             content=json.loads(artifact.read_bytes())
-            if content['target_session']==trade_date and content['source_sha256']==source['sha256']:
+            if (content['target_session']==trade_date and content['source_sha256']==source['sha256']
+                    and content.get('source_available_at')==available_at
+                    and content.get('source_availability_basis')==clock_basis):
                 return dict(content,artifact=binding,frozen_at=cached['frozen_at'])
     old._zip_validate(package)
     target=int(trade_date.replace('-','')); bars=[]; maximum=0; coverage=set(); excluded=[]
@@ -130,7 +155,7 @@ def extract_target_session_bars(latest_package_ref, trade_date, *, snapshot_root
         package_content_max_trade_date=str(maximum)[:4]+'-'+str(maximum)[4:6]+'-'+str(maximum)[6:] if maximum else None,
         bars_date_coverage=sorted(coverage),source_sha256=source['sha256'],
         reconstruction_from_later_snapshot=latest_package_ref['provider_package_date']>trade_date,
-        source_available_at=latest_package_ref.get('source_transport_v2',{}).get('received_at',latest_package_ref['observed_at']),
+        source_available_at=available_at,source_availability_basis=clock_basis,
         AS_RECORDED=False,PIT_ELIGIBLE=False,status='TARGET_BARS_EXTRACTED' if bars else 'WAIT_TDX_TARGET_BARS',
         target_bars=bars,row_count=len(bars),tdx_root_write_count=0,
         excluded_non_stock_entries=excluded,scope='TYPED_A_STOCK_BARS_ONLY')

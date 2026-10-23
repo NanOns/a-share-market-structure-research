@@ -1,12 +1,53 @@
 {
   "contract_id": "CORE_PRODUCT_INDEX_BENCHMARK_V1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scope": "Market reference index series only; never a stock-selection filter or fixed business universe.",
   "benchmarks": [
-    {"symbol": "sh000001", "display_name": "上证指数"},
-    {"symbol": "sz399001", "display_name": "深证成指"},
-    {"symbol": "sz399006", "display_name": "创业板指"},
-    {"symbol": "sh000300", "display_name": "沪深300"},
-    {"symbol": "sh000852", "display_name": "中证1000"}
-  ]
+    {
+      "symbol": "sh000001",
+      "display_name": "上证指数",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY",
+      "price_basis": "RAW_INDEX_POINTS"
+    },
+    {
+      "symbol": "sz399001",
+      "display_name": "深证成指",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY",
+      "price_basis": "RAW_INDEX_POINTS"
+    },
+    {
+      "symbol": "sz399006",
+      "display_name": "创业板指",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY",
+      "price_basis": "RAW_INDEX_POINTS"
+    },
+    {
+      "symbol": "sh000300",
+      "display_name": "沪深300",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY",
+      "price_basis": "RAW_INDEX_POINTS"
+    },
+    {
+      "symbol": "sh000852",
+      "display_name": "中证1000",
+      "instrument_type": "MARKET_INDEX",
+      "role": "MARKET_BENCHMARK",
+      "source_kind": "TDX_INDEX_DAY",
+      "price_basis": "RAW_INDEX_POINTS"
+    }
+  ],
+  "reference_version": "1.1.0",
+  "reference_instruments": {
+    "path": "config/v4_market_reference_instruments_v1_1.json",
+    "sha256": "07071d58adf26a4f8b07f964b030d24bed696afff89c734d80da0e4e71856902",
+    "bytes": 1446
+  }
 }

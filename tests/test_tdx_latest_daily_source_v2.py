@@ -32,6 +32,28 @@ def test_absent_date_not_inferred_from_package_date(tmp_path):
     assert a['status']=='WAIT_TDX_TARGET_BARS' and not a['target_bars']
 
 
+def test_download_completion_invalidates_earlier_availability_cache(tmp_path):
+    p=package(tmp_path)
+    early=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen')
+    p['downloaded_at']='2026-10-09T10:42:00+00:00'
+    ready=extract_target_session_bars(p,'2026-10-08',snapshot_root=tmp_path/'frozen')
+    assert ready['source_available_at']==p['downloaded_at']
+    assert ready['source_availability_basis']=='DOWNLOAD_COMPLETED_AT'
+    assert early['artifact']!=ready['artifact']
+    assert Path(early['artifact']['path']).is_file()
+
+
+def test_configured_root_has_no_machine_default_and_rejects_ambiguity(tmp_path):
+    folder=tmp_path/'config';folder.mkdir()
+    path=folder/'dm01_go_forward_runtime_contract_r4r1.json'
+    path.write_text(json.dumps({'read_only_tdx_roots':[]}))
+    with pytest.raises(ValueError,match='MISSING'):module.configured_tdx_root(tmp_path)
+    roots=[str(tmp_path/'native-a'),str(tmp_path/'native-b')]
+    path.write_text(json.dumps({'read_only_tdx_roots':roots}))
+    with pytest.raises(ValueError,match='AMBIGUOUS'):module.configured_tdx_root(tmp_path)
+    assert module.configured_tdx_root(tmp_path,roots[1])==Path(roots[1]).resolve()
+
+
 def test_tamper_fails(tmp_path):
     p=package(tmp_path);Path(p['download']['path']).write_bytes(b'html')
     with pytest.raises(ValueError,match='BINDING'):

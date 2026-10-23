@@ -65,7 +65,13 @@ def build_priority(day,token,stocks,sectors,market,stock_source,sector_source,pa
                  if issue not in (None,'MISSING','UNKNOWN')]
         invalid.extend(name for name,issue in (('sector_rs5',rs5_issue),('sector_rs20',rs20_issue))
                        if issue not in (None,'MISSING'))
-        if isinstance(rotation_cell,dict) and (rotation_cell.get('quality') not in ('KNOWN','OBSERVED','RECONSTRUCTED')
+        for name,value,allowed in (
+            ('maturity',maturity,{'MATURE','DEVELOPING','EARLY','NONE'}),
+            ('health',sector_health,{'NONE','WATCH','WEAKENING','DAMAGED'}),
+            ('rotation',rotation,{'ROTATION_IN','ROTATION_ACCEPTED','ROTATION_EXPANDING',
+                'ROTATION_REACCELERATING','ROTATION_PULSE','ROTATION_OUT','ROTATION_FAILED','NONE'})):
+            if value not in (None,'UNKNOWN') and value not in allowed:invalid.append(name)
+        if isinstance(rotation_cell,dict) and rotation not in (None,'UNKNOWN') and (rotation_cell.get('quality') not in ('KNOWN','OBSERVED','RECONSTRUCTED','PROXY_RECONSTRUCTED')
                 or rotation_cell.get('as_of') not in (None,day)):
             invalid.append('rotation')
         if invalid:
@@ -74,7 +80,8 @@ def build_priority(day,token,stocks,sectors,market,stock_source,sector_source,pa
                 exclusion_reasons=['INVALID_INPUT_'+','.join(sorted(invalid))])
             continue
         if unknown:
-            sector_state[row['entity_id']]=dict(priority_state='NOT_RANKABLE',rank=None,score=None,unknown_inputs=unknown)
+            sector_state[row['entity_id']]=dict(priority_state='NOT_RANKABLE',rank=None,score=None,unknown_inputs=unknown,
+                exclusion_reason='MISSING_INPUT',exclusion_reasons=['MISSING_INPUT_'+','.join(unknown)])
             continue
         score=(4 if rotation in ('ROTATION_IN','ROTATION_ACCEPTED','ROTATION_EXPANDING','ROTATION_REACCELERATING') else
                2 if rotation=='ROTATION_PULSE' else 0)
@@ -100,6 +107,8 @@ def build_priority(day,token,stocks,sectors,market,stock_source,sector_source,pa
         if not isinstance(damage_cell,dict):
             invalid.append('core_price_damage')
         elif damage_cell.get('quality') not in ('KNOWN','OBSERVED','RECONSTRUCTED') or not isinstance(damage,(bool,)):
+            invalid.append('core_price_damage')
+        elif damage_cell.get('as_of') not in (None,day):
             invalid.append('core_price_damage')
         metrics={}
         for name,kwargs in (

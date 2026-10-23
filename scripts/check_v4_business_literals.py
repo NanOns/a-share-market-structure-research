@@ -79,9 +79,13 @@ def module_map(files: list[str]) -> dict[str, str]:
         if p.parts[0] == "src":
             parts = list(p.with_suffix("").parts[1:])
             if parts and parts[-1] == "__init__": parts.pop()
-            if parts: result[".".join(parts)] = rel
+            if parts:
+                result[".".join(parts)] = rel
+                result["src."+".".join(parts)] = rel
         elif p.parts[0] in {"scripts", "tools", "tests"}:
             result[p.with_suffix("").as_posix().replace("/", ".")] = rel
+        elif p.parent==Path('.'):
+            result[p.stem]=rel
     return result
 
 
@@ -105,6 +109,13 @@ def imports(path: Path, rel: str, modules: dict[str, str]) -> set[str]:
             candidates = [mod] + [mod + "." + n.name for n in node.names]
             for name in candidates:
                 if name in modules: found.add(modules[name])
+        elif isinstance(node,ast.Call):
+            name=ast.unparse(node.func)
+            if name in {'__import__','importlib.import_module','runpy.run_module','runpy.run_path'} and node.args:
+                target=node.args[0]
+                if isinstance(target,ast.Constant) and isinstance(target.value,str):
+                    if target.value in modules:found.add(modules[target.value])
+                    elif name=='runpy.run_path' and target.value in modules.values():found.add(target.value)
     return found
 
 
@@ -117,20 +128,36 @@ def runtime_graph(files: list[str]) -> tuple[set[str], dict[str, list[str]], lis
         p = Path(rel)
         if p.suffix.lower() in {".cmd", ".bat", ".ps1"} and rel in active_entries:
             try:
-                body = p.read_text(encoding="utf-8-sig")
+                body = (ROOT/p).read_text(encoding="utf-8-sig")
                 for target in re.findall(r"(?:python(?:\.exe)?|py)\s+(?:-\w+\s+)*[\"']?([^\s\"']+\.py)", body, re.I):
                     normalized = target.replace("\\", "/")
                     if normalized in files: seeds.add(normalized)
             except OSError: pass
-    # The current V4 service loads static UI assets by dynamically selected names.
-    static_assets=[x for x in files if x.startswith("src/workbench_service/static/")]
-    for rel in active_entries:
-        if rel in {"src/workbench_service/v4_server.py","src/workbench_service/v4_control_server_v2.py","src/workbench_desktop/engine.py"}:
-            graph.setdefault(rel,set()).update(static_assets)
     for rel in files:
         if rel.endswith(".py"):
             graph[rel] = imports(ROOT / rel, rel, modules)
         else: graph[rel] = set()
+    # Merge static service edges AFTER imports. Dynamic asset selection requires
+    # conservative coverage; it is not proof that all browser routes resolve.
+    static_assets=[x for x in files if x.startswith("src/workbench_service/static/")]
+    for rel in active_entries:
+        if rel in {"src/workbench_service/v4_server.py","src/workbench_service/v4_control_server_v2.py","src/workbench_desktop/engine.py"}:
+            graph.setdefault(rel,set()).update(static_assets)
+    # Follow literal HTML/JS/JSX module and asset references outside that directory.
+    # HTTP fetch routes are recorded separately as unresolved runtime edges.
+    for rel in files:
+        if Path(rel).suffix.lower() not in {".html", ".js", ".jsx", ".ts", ".tsx"}: continue
+        try: body=(ROOT/rel).read_text(encoding="utf-8-sig")
+        except (OSError,UnicodeError): continue
+        for target in re.findall(r'''(?:src\s*=\s*|href\s*=\s*|from\s+|import\s*\(?\s*)["']([^"']+)["']''',body):
+            target=target.split("?",1)[0].split("#",1)[0]
+            if "://" in target or target.startswith("//"): continue
+            candidate=(ROOT/rel).parent/target if not target.startswith("/") else ROOT/target.lstrip("/")
+            for path in (candidate, candidate.with_suffix(".js"), candidate.with_suffix(".jsx"), candidate.with_suffix(".ts"), candidate.with_suffix(".tsx")):
+                resolved=path.resolve()
+                if resolved.is_relative_to(ROOT.resolve()):
+                    linked=resolved.relative_to(ROOT.resolve()).as_posix()
+                    if linked in files: graph[rel].add(linked)
     # Resolve literal Python script references in cmd/PowerShell/config launchers.
     for rel in files:
         if Path(rel).suffix.lower() not in {".cmd", ".bat", ".ps1", ".json", ".yaml", ".yml", ".toml", ".ini"}: continue
@@ -162,6 +189,7 @@ def runtime_graph(files: list[str]) -> tuple[set[str], dict[str, list[str]], lis
 
 
 def env_for(rel: str, reachable: bool) -> tuple[str, str]:
+    if rel.startswith("tests/") and reachable:return "ACTIVE_TEST_IMPORT","UNRESOLVED"
     if rel.startswith("tests/"): return "TEST_ONLY", "TEST_ONLY"
     if rel.startswith("docs/evidence/") or rel.startswith("docs/audits/"): return "HISTORICAL_FROZEN", "HISTORICAL_FROZEN"
     if rel.startswith("config/") or rel.startswith("migrations/"): return ("ACTIVE_CONFIG" if reachable else "CONFIG_REACHABILITY_UNRESOLVED"), ("UNRESOLVED" if reachable else "UNRESOLVED")
@@ -177,16 +205,46 @@ def semantic_candidate_key(rel: str, category: str, literal: str, line: str) -> 
 
 def versioned_market_reference(rel: str, literal: str) -> bool:
     """Prove only the explicit index benchmark contract's configured symbols."""
-    if rel!="config/core_product_index_benchmark_v1.json":return False
+    if rel not in {"config/core_product_index_benchmark_v1.json","config/v4_market_reference_instruments_v1_1.json"}:return False
     try:
-        contract=json.loads((ROOT/rel).read_text(encoding="utf-8"))
+        contract=json.loads((ROOT/"config/core_product_index_benchmark_v1.json").read_text(encoding="utf-8"))
         consumer=(ROOT/"src/workbench_analysis/operational_product_pack_v3.py").read_text(encoding="utf-8")
+        if rel.endswith('v1_1.json'):
+            binding=contract.get('reference_instruments',{})
+            if binding.get('path')!=rel or binding.get('sha256')!=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest():return False
+            catalog=json.loads((ROOT/rel).read_bytes())
+            matches=[row for row in catalog.get('instruments',[]) if literal.upper() in
+                     (str(row.get('instrument_id','')).upper(),str(row.get('code','')).upper())]
+            return (catalog.get('version')==contract.get('reference_version') and catalog.get('runtime_authorized') is True
+                    and len(matches)==1 and matches[0].get('instrument_type')=='MARKET_INDEX'
+                    and matches[0].get('source_kind')=='TDX_INDEX_DAY' and 'INDEX_BENCHMARK_TYPE_OR_SOURCE_INVALID' in consumer)
         return (contract.get("contract_id")=="CORE_PRODUCT_INDEX_BENCHMARK_V1"
                 and bool(contract.get("version"))
                 and any(str(item.get("symbol","" )).lower()==literal.lower() for item in contract.get("benchmarks",[]))
                 and "index_benchmark_contract(root)" in consumer
                 and "index_reference_contract" in consumer)
     except (OSError,ValueError,TypeError,AttributeError):return False
+
+
+def temporal_evidence_authority(rel,literal):
+    """只认可已逐字段核验的阶段权威读取；不豁免当前数据来源。"""
+    if rel!='config/operational_daily_source_authority_v2.json':return None
+    try:
+        value=json.loads((ROOT/rel).read_bytes())
+        if value.get('contract_id')!='V4_DAILY_OWNER_SOURCE_CONTEXT_V2' or value.get('version')!='2.0.0':return None
+        readers=value.get('evidence_readers',{})
+        for name in ('phase0','upgrade_document','task_contract'):
+            binding=value.get(name,{})
+            if literal not in binding.get('path',''):continue
+            proof=readers.get(name,{})
+            if proof.get('time_role')!='ENGINEERING_AUTHORITY_ONLY' or not proof.get('field') or not proof.get('function'):return None
+            for consumer in proof.get('consumer_bindings',[]):
+                if hashlib.sha256((ROOT/consumer['path']).read_bytes()).hexdigest()!=consumer['sha256']:return None
+            if len(proof.get('consumer_bindings',[]))!=2:return None
+            if hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()!=binding['sha256']:return None
+            return dict(contract=rel,version=value['version'],binding=binding,**proof)
+    except (OSError,ValueError,KeyError,TypeError):return None
+    return None
 
 
 def verified_false_positive(rel: str, category: str, literal: str, line: str) -> str | None:
@@ -210,7 +268,17 @@ def verified_false_positive(rel: str, category: str, literal: str, line: str) ->
 
 
 def verified_historical_evidence_binding(rel: str, literal: str, tree: ast.AST, source: str) -> str | None:
-    """Require a real evidence file and a matching adjacent source digest."""
+    """A content hash proves bytes, not historical-only consumption.
+
+    Current consumers can use an immutable old receipt as a current default.
+    Until a versioned, consumer-specific temporal proof is supplied, keep the
+    candidate unresolved even if its adjacent digest matches.
+    """
+    return None
+
+
+def immutable_evidence_bytes(rel: str, literal: str, tree: ast.AST, source: str) -> str | None:
+    """Byte identity diagnostic only; never an admission exemption."""
     assignments={}
     for node in ast.walk(tree):
         if isinstance(node,ast.Assign):
@@ -265,7 +333,7 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
         if ext in {".json", ".yaml", ".yml", ".toml", ".ini"}: counts["config"] += 1
         if ext in {".html", ".js", ".ts", ".tsx", ".jsx"}: counts["ui"] += 1
         if rel.startswith("scripts/") or p.name.startswith("run_"): counts["runtime_scripts"] += 1
-        try: text = p.read_text(encoding="utf-8-sig")
+        try: text = (ROOT/p).read_text(encoding="utf-8-sig")
         except (OSError, UnicodeError): continue
         lines = text.splitlines()
         tree = None
@@ -301,11 +369,13 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                 node_types = sorted(nodes_by_line.get(line_no, ()))
                 context = line.strip()[:320]
                 historical_binding=verified_historical_evidence_binding(rel,literal,tree,text) if tree else None
+                temporal_proof=temporal_evidence_authority(rel,literal)
                 # Exempt declaration of documented protocol/formats from date-shaped matches.
                 protocol = bool(category == "CONSTANT_DATE" and re.fullmatch(r"YYYY[-/]MM[-/]DD", literal))
                 false_positive=verified_false_positive(rel,category,literal,line)
                 if protocol: disposition = "CONTRACT_CONSTANT"
                 if historical_binding: disposition = "AUTHORIZED_IMMUTABLE_FACT"
+                if temporal_proof:disposition='AUTHORIZED_IMMUTABLE_FACT'
                 market_reference=versioned_market_reference(rel,literal)
                 if market_reference: disposition="VERSIONED_MARKET_REFERENCE"
                 if false_positive:disposition="FALSE_POSITIVE"
@@ -323,24 +393,46 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                     "handling": disposition if disposition in {"CONTRACT_CONSTANT", "AUTHORIZED_IMMUTABLE_FACT", "VERSIONED_MARKET_REFERENCE", "FALSE_POSITIVE"} else ("TEST_ONLY" if env == "TEST_ONLY" else "UNRESOLVED"),
                     "replacement_source": (historical_binding if historical_binding else "config/core_product_index_benchmark_v1.json" if market_reference else false_positive), "modification_commit": None,
                     "regression_id": None, "context": context,
+                    "temporal_consumption_proof":temporal_proof,
                     "verifier": "scripts/check_v4_business_literals.py"})
-    dynamic_sites=[]
+    dynamic_sites=[];dynamic_edges=[];browser_routes=[]
+    modules=module_map(files)
     for rel in files:
+        if Path(rel).suffix.lower() in {'.js','.jsx','.ts','.tsx','.html'}:
+            try:body=(ROOT/rel).read_text(encoding='utf-8-sig')
+            except (OSError,UnicodeError):continue
+            for line_no,line in enumerate(body.splitlines(),1):
+                if re.search(r'\bfetch\s*\(|\bimport\s*\(',line):
+                    browser_routes.append(dict(file=rel,line=line_no,runtime_reachable=rel in reachable,
+                                               expression=line.strip()[:240],status='ROUTE_REVIEW_REQUIRED'))
         if not rel.endswith('.py'):continue
         try:body=(ROOT/rel).read_text(encoding='utf-8-sig')
         except (OSError,UnicodeError):continue
-        if re.search(r"\b(?:importlib\.import_module|__import__|runpy\.run_path|eval\s*\(|exec\s*\()",body):dynamic_sites.append(rel)
+        try:tree=ast.parse(body)
+        except (SyntaxError,UnicodeError):continue
+        for node in ast.walk(tree):
+            if not isinstance(node,ast.Call):continue
+            name=ast.unparse(node.func)
+            if name not in {'importlib.import_module','__import__','runpy.run_path','runpy.run_module','eval','exec'}:continue
+            if rel not in dynamic_sites:dynamic_sites.append(rel)
+            literal=bool(node.args and isinstance(node.args[0],ast.Constant) and isinstance(node.args[0].value,str))
+            target=node.args[0].value if literal else None
+            resolved=literal and (target in modules or name=='runpy.run_path' and target in modules.values())
+            dynamic_edges.append(dict(file=rel,line=node.lineno,function=name,
+                runtime_reachable=rel in reachable,target=node.args[0].value if literal else None,
+                status='LITERAL_IMPORT_RESOLVED' if resolved else 'UNRESOLVED'))
     summary = {"files_scanned": len(files), "source_python": counts["python"], "source_js": counts["javascript"],
         "runtime_scripts": counts["runtime_scripts"], "config": counts["config"], "sql": counts["sql"], "ui": counts["ui"],
         "active_reachable": sum(1 for x in reachable if x in files),
         "unclassified_outside_active_inventory":sum(1 for x in files if x not in reachable and x not in seeds),
         "test_only": sum(1 for x in files if x.startswith("tests/")), "python_reachable_files": len(reachable),
         "entrypoints": seeds, "import_edges": sum(len(x) for x in graph.values()), "dynamic_import_sites": dynamic_sites,
+        "dynamic_edges":dynamic_edges,"browser_routes":browser_routes,
         "python_ast_parse_failures": ast_parse_failures,"active_entrypoint_inventory":entrypoint_evidence}
     return findings, summary
 
 
-def global_gate(findings: list[dict]) -> dict:
+def global_gate(findings: list[dict], summary: dict | None = None) -> dict:
     """Evaluate the current runtime gate independently from baseline drift."""
     reachable = [x for x in findings if x.get("runtime_reachable")]
     unresolved = [x for x in reachable if x.get("handling") == "UNRESOLVED"]
@@ -351,13 +443,18 @@ def global_gate(findings: list[dict]) -> dict:
     active_violations=sum(1 for x in reachable if x.get("handling")=="ACTIVE_VIOLATION")
     _,evidence=active_entrypoint_inventory(tracked_files())
     inventory_unknown=evidence.get("status")!="SOURCE_VERIFIED"
+    dynamic_unknown=[row for row in (summary or {}).get('dynamic_edges',[]) if row['status']=='UNRESOLVED'
+                     and (row['runtime_reachable'] or row['file'].startswith(('scripts/','tools/')))]
+    browser_unknown=[row for row in (summary or {}).get('browser_routes',[]) if row['runtime_reachable']]
     return {
-        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved or active_violations or unverified_maintenance or inventory_unknown else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
+        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved or active_violations or unverified_maintenance or inventory_unknown or dynamic_unknown or browser_unknown else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
         "reachable_candidates": len(reachable),
         "active_violations": active_violations,
         "active_unknown": len(unresolved),
         "unverified_maintenance_candidates":len(unverified_maintenance),
         "active_entrypoint_inventory_status":evidence.get("status"),
+        "dynamic_unresolved":len(dynamic_unknown),
+        "browser_route_unresolved":len(browser_unknown),
         "unresolved_candidate_ids": [x.get("semantic_key") for x in unresolved],
         "unverified_maintenance_candidate_ids":[x.get("semantic_key") for x in unverified_maintenance],
     }
@@ -366,6 +463,8 @@ def global_gate(findings: list[dict]) -> dict:
 def gate_exit_code(gate: dict, *, allow_incomplete_inventory: bool = False) -> int:
     blocking=(gate.get("active_unknown",0) or gate.get("active_violations",0)
               or gate.get("unverified_maintenance_candidates",0)
+              or gate.get("dynamic_unresolved",0)
+              or gate.get("browser_route_unresolved",0)
               or gate.get("active_entrypoint_inventory_status")!="SOURCE_VERIFIED")
     if blocking and not allow_incomplete_inventory:
         return 1
@@ -381,7 +480,7 @@ def main() -> int:
     args = parser.parse_args()
     files = tracked_files(); findings, summary = scan(files)
     reachable, graph, seeds, _ = runtime_graph(files)
-    gate = global_gate(findings)
+    gate = global_gate(findings,summary)
     reachable_hits = gate["active_unknown"]
     payload = {"schema_version": "V4-PRODUCTION-LITERAL-INVENTORY/2", **gate,
         "summary": summary, "runtime_graph": {"entrypoints":seeds,"edges":graph,"dynamic_import_sites":summary["dynamic_import_sites"]}, "findings": findings}
@@ -389,7 +488,7 @@ def main() -> int:
     temp = args.output.with_suffix(args.output.suffix + ".tmp")
     temp.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     temp.replace(args.output)
-    compact_summary={k:v for k,v in summary.items() if k not in {"entrypoints","dynamic_import_sites","python_ast_parse_failures"}}
+    compact_summary={k:v for k,v in summary.items() if k not in {"entrypoints","dynamic_import_sites","python_ast_parse_failures","dynamic_edges","browser_routes"}}
     compact_summary.update(entrypoint_count=len(seeds),dynamic_import_site_count=len(summary["dynamic_import_sites"]),python_ast_parse_failure_count=len(summary["python_ast_parse_failures"]))
     print(json.dumps({"output": args.output.as_posix(), "summary": compact_summary, "literal_candidates": len(findings),
                       "reachable_unresolved_candidates": reachable_hits}, ensure_ascii=False))

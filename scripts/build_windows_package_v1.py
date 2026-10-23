@@ -185,6 +185,11 @@ def exact_metadata_resources(root,policy_binding,policy,max_json_bytes=2*1024*10
 
 
 def prepare():
+    # Direct callers must pass the same strict admission as main().
+    result=subprocess.run([sys.executable,'-B',str(ROOT/'scripts/check_v4_business_literals.py'),
+        '--output','G:/codex_tmp/V4_BUILD_LITERAL_ADMISSION.json'],cwd=ROOT)
+    if result.returncode:
+        raise SystemExit('V4_LITERAL_ADMISSION_BLOCKED：固定身份或动态依赖仍未裁定，构建已停止')
     global PYINSTALLER_SOURCE_PATHS
     for key in ('TMP','TEMP','TMPDIR'):
         os.environ[key] = 'G:/codex_tmp'

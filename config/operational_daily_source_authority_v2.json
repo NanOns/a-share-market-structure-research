@@ -1,0 +1,76 @@
+{
+  "contract_id": "V4_DAILY_OWNER_SOURCE_CONTEXT_V2",
+  "version": "2.0.0",
+  "scope": "当前目标日由冻结收据传入；历史文件仅为明确的阶段和算法证据，不决定当日来源或计算日期。",
+  "historical_replay": "仅接受显式 V4_EXPLICIT_HISTORICAL_OWNER_REPLAY_V1，绑定目标日、前态摘要及来源 SHA。",
+  "phase0": {
+    "path": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json",
+    "sha256": "fb15e8131405921375c93f277ebdcc1d39ea518399e03f6e55d18bba0003e583",
+    "bytes": 11209
+  },
+  "upgrade_document": {
+    "path": "docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md",
+    "sha256": "376c2847dfe1ef2cba8245b0de75a19d913a67d818470e5c8bc0a8ad54261535",
+    "bytes": 41055
+  },
+  "task_contract": {
+    "path": "docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md",
+    "sha256": "6c7a503293ed268d83472cea270b083203b739cc5bcf185c03672a33bdd7b093",
+    "bytes": 30104
+  },
+  "runtime_contract": {
+    "path": "config/dm01_go_forward_runtime_contract_r4r1.json",
+    "sha256": "6452a8398800d2728df8bbfc7dfe84786790d988a70905ecc2c61b77a2201b17",
+    "bytes": 27865
+  },
+  "evidence_readers": {
+    "phase0": {
+      "function": "workbench_analysis.operational_daily_sources_v2.resolve -> operational_daily_owner_v1.prepare",
+      "field": "phase0_status",
+      "time_role": "ENGINEERING_AUTHORITY_ONLY",
+      "temporal_scope": "仅阶段准入和收据审计；目标交易日、成员和行情从 freeze、前态与 source_registry 读取。",
+      "consumer_bindings": [
+        {
+          "path": "src/workbench_analysis/operational_daily_sources_v2.py",
+          "sha256": "ad437e603402c0d7beef5c12df6eef7d8f563f6ce2f968ccb9d880c96d82553e"
+        },
+        {
+          "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+          "sha256": "67b5f19267f645c6266394bfceb50e79677d2e4d75c3a18c865063a608ec55dc"
+        }
+      ]
+    },
+    "upgrade_document": {
+      "function": "workbench_analysis.operational_daily_sources_v2.resolve -> operational_daily_owner_v1.prepare",
+      "field": "STAGE_ENTRY.upgrade_document",
+      "time_role": "ENGINEERING_AUTHORITY_ONLY",
+      "temporal_scope": "仅阶段准入和收据审计；目标交易日、成员和行情从 freeze、前态与 source_registry 读取。",
+      "consumer_bindings": [
+        {
+          "path": "src/workbench_analysis/operational_daily_sources_v2.py",
+          "sha256": "ad437e603402c0d7beef5c12df6eef7d8f563f6ce2f968ccb9d880c96d82553e"
+        },
+        {
+          "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+          "sha256": "67b5f19267f645c6266394bfceb50e79677d2e4d75c3a18c865063a608ec55dc"
+        }
+      ]
+    },
+    "task_contract": {
+      "function": "workbench_analysis.operational_daily_sources_v2.resolve -> operational_daily_owner_v1.prepare",
+      "field": "STAGE_ENTRY.task_contract",
+      "time_role": "ENGINEERING_AUTHORITY_ONLY",
+      "temporal_scope": "仅阶段准入和收据审计；目标交易日、成员和行情从 freeze、前态与 source_registry 读取。",
+      "consumer_bindings": [
+        {
+          "path": "src/workbench_analysis/operational_daily_sources_v2.py",
+          "sha256": "ad437e603402c0d7beef5c12df6eef7d8f563f6ce2f968ccb9d880c96d82553e"
+        },
+        {
+          "path": "src/workbench_analysis/operational_daily_owner_v1.py",
+          "sha256": "67b5f19267f645c6266394bfceb50e79677d2e4d75c3a18c865063a608ec55dc"
+        }
+      ]
+    }
+  }
+}

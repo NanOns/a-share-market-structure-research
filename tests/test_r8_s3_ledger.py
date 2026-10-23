@@ -101,10 +101,12 @@ def test_due_settlement_appends_revision_and_is_idempotent(monkeypatch):
 
 
 def test_settlement_reads_only_latest_capture_revision_by_lane(monkeypatch):
+    from contextlib import nullcontext
     old=_row(revision=1,source_digest="a"*64)
     current=_row(revision=2,source_digest="b"*64)
     old_id=make_observation_id(old); current_id=make_observation_id(current)
     store=object.__new__(ForwardR7Store)
+    monkeypatch.setattr(store,'_read_snapshot',nullcontext)
     monkeypatch.setattr(store,"_daily_facts",lambda **kwargs:[
         dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",lane="RETROSPECTIVE_RESEARCH",rows=[old]),
         dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",lane="RETROSPECTIVE_RESEARCH",rows=[current])])
@@ -124,8 +126,10 @@ def test_settlement_reads_only_latest_capture_revision_by_lane(monkeypatch):
 
 
 def test_settlement_reader_selects_latest_append_revision(monkeypatch):
+    from contextlib import nullcontext
     row=_row(); obs=make_observation_id(row)
     store=object.__new__(ForwardR7Store)
+    monkeypatch.setattr(store,'_read_snapshot',nullcontext)
     monkeypatch.setattr(store,"_daily_facts",lambda **kwargs:[dict(identity_contract="V4_FORWARD_OBSERVATION_ID_R2",
         lane="RETROSPECTIVE_RESEARCH",rows=[row])])
     monkeypatch.setattr(store,"_settlement_facts",lambda **kwargs:[

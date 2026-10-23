@@ -1,5 +1,5 @@
 """Prepare dated native PG read packs before atomic operational publication."""
-import json,gzip,hashlib,zipfile,struct,re
+import json,gzip,hashlib,zipfile,struct,re,math
 import sqlite3,tempfile
 from contextlib import closing
 from pathlib import Path
@@ -27,17 +27,104 @@ def canonical_history_rows(path,logical):
                 logical.update(payload+b'\n');yield json.loads(payload)
 
 def index_benchmark_contract(root):
+    root=Path(root)
     path=Path(root)/'config/core_product_index_benchmark_v1.json'
     value=json.loads(path.read_bytes())
     if value.get('contract_id')!='CORE_PRODUCT_INDEX_BENCHMARK_V1' or not value.get('version') or not value.get('benchmarks'):
         raise ValueError('VERSIONED_INDEX_BENCHMARK_CONTRACT_REQUIRED')
+    reference_binding=value.get('reference_instruments')
+    if not isinstance(reference_binding,dict):raise ValueError('INDEX_REFERENCE_CATALOG_REQUIRED')
+    catalog=json.loads(checked(root,reference_binding).read_bytes())
+    if (catalog.get('contract_id')!='V4_MARKET_REFERENCE_INSTRUMENTS_V1'
+            or catalog.get('version')!=value.get('reference_version')
+            or catalog.get('runtime_authorized') is not True):
+        raise ValueError('INDEX_REFERENCE_CATALOG_INVALID')
+    instruments=catalog.get('instruments',[])
+    ids=[item.get('instrument_id','').replace('.','').lower() for item in instruments]
+    if len(ids)!=len(set(ids)):raise ValueError('INDEX_REFERENCE_CATALOG_DUPLICATE')
+    reference=dict(zip(ids,instruments))
     seen=set()
     for benchmark in value['benchmarks']:
         symbol=benchmark.get('symbol','').lower()
         if not re.fullmatch(r'(?:sh|sz|bj)\d{6}',symbol) or symbol in seen or not benchmark.get('display_name'):
             raise ValueError('INDEX_BENCHMARK_CONTRACT_INVALID')
+        item=reference.get(symbol,{})
+        if (item.get('instrument_type')!='MARKET_INDEX'
+                or benchmark.get('instrument_type')!='MARKET_INDEX'
+                or benchmark.get('role')!='MARKET_BENCHMARK'
+                or item.get('source_kind')!='TDX_INDEX_DAY'
+                or benchmark.get('source_kind')!='TDX_INDEX_DAY'
+                or benchmark.get('price_basis')!='RAW_INDEX_POINTS'):
+            raise ValueError('INDEX_BENCHMARK_TYPE_OR_SOURCE_INVALID:'+symbol)
         seen.add(symbol)
     return value,dict(path=path.relative_to(root).as_posix(),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+
+
+def index_series(archive,benchmark,day,source_catalog,package_sha256):
+    """只有带包身份及逐序列摘要的类型目录能够授权指数点位。"""
+    symbol=benchmark['symbol'].lower()
+    if (source_catalog.get('contract_id')!='V4_TDX_INDEX_SOURCE_CATALOG_V1'
+            or source_catalog.get('version')!='1.0.0'
+            or source_catalog.get('package_sha256')!=package_sha256):
+        raise ValueError('INDEX_SOURCE_CATALOG_INVALID')
+    entries=[row for row in source_catalog.get('instruments',[]) if row.get('symbol','').lower()==symbol]
+    if len(entries)!=1:raise ValueError('INDEX_SOURCE_MISSING_OR_AMBIGUOUS:'+symbol)
+    source=entries[0];member=symbol[:2]+'/lday/'+symbol+'.day'
+    if (source.get('instrument_type')!='MARKET_INDEX' or source.get('source_kind')!='TDX_INDEX_DAY'
+            or source.get('role')!='MARKET_BENCHMARK' or source.get('price_basis')!='RAW_INDEX_POINTS'
+            or source.get('member')!=member or source.get('trade_date')!=day):
+        raise ValueError('INDEX_SOURCE_TYPE_OR_DATE_MISMATCH:'+symbol)
+    if archive.namelist().count(member)!=1:raise ValueError('INDEX_SOURCE_MEMBER_MISSING_OR_AMBIGUOUS:'+symbol)
+    blob=archive.read(member)
+    if hashlib.sha256(blob).hexdigest()!=source.get('sha256'):
+        raise ValueError('INDEX_SOURCE_DIGEST_MISMATCH:'+symbol)
+    if not blob or len(blob)%32:raise ValueError('INDEX_SOURCE_RECORD_INVALID:'+symbol)
+    bars=[];previous=None
+    from datetime import date
+    for row in struct.iter_unpack('<IIIIIfII',blob):
+        dt=str(row[0]);dt=dt[:4]+'-'+dt[4:6]+'-'+dt[6:]
+        date.fromisoformat(dt)
+        if previous is not None and dt<=previous:raise ValueError('INDEX_SOURCE_DATE_ORDER_INVALID:'+symbol)
+        previous=dt
+        if dt>day:continue
+        o,h,l,c=(value/100 for value in row[1:5])
+        if not (0<l<=min(o,c)<=max(o,c)<=h and math.isfinite(row[5]) and row[5]>=0):
+            raise ValueError('INDEX_SOURCE_PRICE_INVALID:'+symbol)
+        bars.append(dict(trade_date=dt,open=o,high=h,low=l,close=c,amount=row[5],volume=row[6],quality='KNOWN'))
+    if not bars or bars[-1]['trade_date']!=day:raise ValueError('INDEX_SOURCE_TARGET_SESSION_MISSING:'+symbol)
+    return dict(symbol=symbol,display_name=benchmark['display_name'],bars=bars[-120:],price_basis='RAW_INDEX_POINTS',
+                instrument_type='MARKET_INDEX',source_kind='TDX_INDEX_DAY',source_member=member,
+                volume_unit='SOURCE_NATIVE_UNVERIFIED',source_sha256=source['sha256'])
+
+
+def capture_index_source_catalog(root,package_binding,day):
+    """从已核验冻结包捕获有类型的指数目录；缺失只关闭对应指数能力。"""
+    contract,reference=index_benchmark_contract(root)
+    catalog=dict(contract_id='V4_TDX_INDEX_SOURCE_CATALOG_V1',version='1.0.0',
+        package_sha256=package_binding['sha256'],benchmark_contract=reference,trade_date=day,
+        reference_instruments=contract['reference_instruments'],instruments=[],missing_sources=[])
+    with zipfile.ZipFile(checked(root,package_binding)) as archive:
+        for benchmark in contract['benchmarks']:
+            symbol=benchmark['symbol'].lower();member=symbol[:2]+'/lday/'+symbol+'.day'
+            if archive.namelist().count(member)!=1:
+                catalog['missing_sources'].append(dict(symbol=symbol,reason='INDEX_SOURCE_MEMBER_MISSING_OR_AMBIGUOUS'))
+                continue
+            source=dict(symbol=symbol,member=member,trade_date=day,instrument_type=benchmark['instrument_type'],
+                role=benchmark['role'],source_kind=benchmark['source_kind'],price_basis=benchmark['price_basis'],
+                sha256=hashlib.sha256(archive.read(member)).hexdigest())
+            catalog['instruments'].append(source)
+            try:index_series(archive,benchmark,day,catalog,package_binding['sha256'])
+            except (ValueError,KeyError,struct.error) as error:
+                catalog['instruments'].pop()
+                catalog['missing_sources'].append(dict(symbol=symbol,reason=str(error)))
+    catalog['status']='KNOWN' if not catalog['missing_sources'] else 'SOURCE_INCOMPLETE'
+    return catalog
+
+
+def validate_index_catalog_contract(catalog,benchmark_binding,reference_binding):
+    if (catalog.get('benchmark_contract')!=benchmark_binding
+            or catalog.get('reference_instruments')!=reference_binding):
+        raise ValueError('INDEX_SOURCE_CONTRACT_REVISION_MISMATCH')
 
 def market_facts(root,candidate,day,owner):
     bindings=dict(history=owner['history'],package=owner['sources']['package'],**{name:candidate['owners'][day][name] for name in ('raw','core','market')})
@@ -61,19 +148,27 @@ def market_facts(root,candidate,day,owner):
             run+=1
         ladders.append(dict(entity_id=item['security_id'],symbol=item['source_security_key'],consecutive_limit_up_lower_bound=run,exact_streak=run if exact else None,reason=None if exact else 'PREFIX_NOT_BOUND'))
     index_contract,bindings['index_reference_contract']=index_benchmark_contract(root)
-    indices=[]
+    indices=[];index_errors=[]
+    catalog_binding=owner['sources'].get('index_source_catalog')
+    source_catalog=json.loads(checked(root,catalog_binding).read_bytes()) if catalog_binding else None
+    if catalog_binding:bindings['index_source_catalog']=catalog_binding
+    catalog_error=None
+    if source_catalog is not None:
+        try:validate_index_catalog_contract(source_catalog,bindings['index_reference_contract'],index_contract['reference_instruments'])
+        except ValueError as error:catalog_error=str(error)
     with zipfile.ZipFile(checked(root,bindings['package'])) as archive:
-        members={name.lower():name for name in archive.namelist()}
         for benchmark in index_contract['benchmarks']:
-            symbol=benchmark['symbol'].lower();name=benchmark['display_name']
-            member=members.get(symbol[:2]+'/lday/'+symbol+'.day')
-            if not member:continue
-            bars=[]
-            for row in struct.iter_unpack('<IIIIIfII',archive.read(member)):
-                dt=str(row[0]);dt=dt[:4]+'-'+dt[4:6]+'-'+dt[6:]
-                if dt<=day:bars.append(dict(trade_date=dt,open=row[1]/100,high=row[2]/100,low=row[3]/100,close=row[4]/100,amount=row[5],volume=row[6],quality='KNOWN'))
-            if bars and bars[-1]['trade_date']==day:indices.append(dict(symbol=symbol,display_name=name,bars=bars[-120:],price_basis='RAW_INDEX_POINTS',volume_unit='SOURCE_NATIVE_UNVERIFIED',source_member=member))
+            if catalog_error:
+                index_errors.append(dict(symbol=benchmark['symbol'],reason=catalog_error))
+                continue
+            if source_catalog is None:
+                index_errors.append(dict(symbol=benchmark['symbol'],reason='SOURCE_INDEX_CATALOG_MISSING'))
+                continue
+            try:indices.append(index_series(archive,benchmark,day,source_catalog,bindings['package']['sha256']))
+            except (ValueError,KeyError,struct.error) as error:
+                index_errors.append(dict(symbol=benchmark['symbol'],reason=str(error)))
     facts=dict(contract_id='CORE_PRODUCT_MARKET_FACT_READ_R1',trade_date=day,index_benchmark_contract=dict(contract_id=index_contract['contract_id'],version=index_contract['version'],sha256=bindings['index_reference_contract']['sha256']),breadth=dict(breadth,denominator=len(core),actual_quote_count=len(raw),amount_cny=sum(row['amount'] for row in raw.values()),definition='ret1 in native T0 QFQ coordinate; actual T0 bar required'),indices=indices,
+        index_quality='KNOWN' if not index_errors else 'UNKNOWN',index_missing_sources=index_errors,
         limits=dict(counts=dict(Counter(row['limit_state'] for row in limits)),rows=limits),ladders=ladders,sources=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False)
     return facts,bindings
 

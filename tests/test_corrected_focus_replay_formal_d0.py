@@ -1,4 +1,6 @@
 from workbench_analysis import corrected_focus_replay as replay
+from workbench_analysis import r43_focus_replay as daily_replay
+import pytest
 
 
 def install_scanner(monkeypatch, branch_states):
@@ -19,7 +21,8 @@ def install_scanner(monkeypatch, branch_states):
     monkeypatch.setattr(replay.d0, "package", lambda: (None, manifest, None, machine, scanner))
 
 
-def test_diagnostic_unknowns_do_not_poison_formal_false(monkeypatch):
+@pytest.mark.parametrize('producer',[replay,daily_replay])
+def test_diagnostic_unknowns_do_not_poison_formal_false(monkeypatch,producer):
     install_scanner(monkeypatch, {
         "LAUNCH_CONFIRM": {"FORMAL": False},
         "RECOVERY_TURN": {"FORMAL": False},
@@ -27,9 +30,11 @@ def test_diagnostic_unknowns_do_not_poison_formal_false(monkeypatch):
         "TREND_CONTINUE": {"DIAGNOSTIC": None},
     })
 
-    result = replay.confirmation({})
+    result = producer.confirmation({})
 
     assert result["confirmation_status"] == "FALSE"
+    assert result['legacy_confirmation_status']=='UNKNOWN'
+    assert result['production_admission'] is False
     assert result["formal_aggregation_scenarios"] == ["LAUNCH_CONFIRM", "RECOVERY_TURN"]
     assert all(row["aggregation_role"] == "DIAGNOSTIC_ONLY"
                for row in result["scenario_evidence"] if row["scenario"] in {"STRONG_PULLBACK", "TREND_CONTINUE"})

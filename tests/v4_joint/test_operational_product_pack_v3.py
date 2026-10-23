@@ -52,21 +52,23 @@ def test_legacy_product_bootstrap_rejects_unversioned_dated_catalog(tmp_path):
 
 
 def test_market_index_symbols_are_read_from_versioned_benchmark_contract(tmp_path):
+    from pathlib import Path
     config=tmp_path/'config';config.mkdir()
-    path=config/'core_product_index_benchmark_v1.json'
-    path.write_text(json.dumps({'contract_id':'CORE_PRODUCT_INDEX_BENCHMARK_V1','version':'1.0.0',
-        'benchmarks':[{'symbol':'bj123456','display_name':'测试指数'}]}),encoding='utf-8')
+    source=Path(__file__).resolve().parents[2]/'config'
+    for name in ('core_product_index_benchmark_v1.json','v4_market_reference_instruments_v1_1.json'):
+        (config/name).write_bytes((source/name).read_bytes())
     value,binding=index_benchmark_contract(tmp_path)
-    assert value['benchmarks'][0]['symbol']=='bj123456'
+    assert value['benchmarks'][0]['instrument_type']=='MARKET_INDEX'
     assert binding['path']=='config/core_product_index_benchmark_v1.json'
     assert len(binding['sha256'])==64
 
 
 def test_market_index_contract_rejects_stock_selection_or_duplicate_entries(tmp_path):
-    config=tmp_path/'config';config.mkdir()
+    test_market_index_symbols_are_read_from_versioned_benchmark_contract(tmp_path)
+    config=tmp_path/'config'
     path=config/'core_product_index_benchmark_v1.json'
-    path.write_text(json.dumps({'contract_id':'CORE_PRODUCT_INDEX_BENCHMARK_V1','version':'1.0.0',
-        'benchmarks':[{'symbol':'sh123456','display_name':'测试指数'},
-                      {'symbol':'sh123456','display_name':'重复指数'}]}),encoding='utf-8')
+    value=json.loads(path.read_bytes())
+    value['benchmarks'].append(dict(value['benchmarks'][0]))
+    path.write_text(json.dumps(value),encoding='utf-8')
     with pytest.raises(ValueError,match='INDEX_BENCHMARK_CONTRACT_INVALID'):
         index_benchmark_contract(tmp_path)

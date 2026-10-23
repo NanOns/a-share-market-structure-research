@@ -174,7 +174,8 @@ def unknown_active_core_row(identity_row, target, sessions, basis_namespace):
 
 
 def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE', accepted_history=None, progress_counter=None,
-                     identity_binding=None, identity_rows=None, required_active_ids=None):
+                     identity_binding=None, identity_rows=None, required_active_ids=None, source_inputs=None):
+    if not source_inputs:raise ValueError('SOURCE_CORE_INPUT_CONTEXT_REQUIRED')
     if basis_namespace not in ('TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE','TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'):
         raise ValueError('UNSUPPORTED_CORE_BASIS_NAMESPACE')
     root = Path(root).resolve(); policy = load(root/CONTRACT)
@@ -188,8 +189,9 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
     required_active_ids = set(required_active_ids or ())
     ids = {r['source_security_key'].lower():r for r in identity}
     sessions = official_sessions(root)
-    required = sorted(set(dates) | {sessions[sessions.index(d)-k] for d in dates for k in (1,3,4,5)})
-    acquisition = load(root/'docs/evidence/source_acquisition_r4_20261009/capture/acquisition.json')
+    from workbench_analysis.operational_daily_sources_v2 import dependency_sessions
+    required = dependency_sessions(sessions,dates)
+    acquisition = load(checked(root,source_inputs['acquisition']))
     batches = {}; universes = {}; bao_queries=[]
     for q in acquisition['queries']:
         if q.get('path') and q['method'] in ('query_daily_history_k_AStock','query_all_stock','validated_daily_universe'):
@@ -197,23 +199,29 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
             if q['method']=='query_daily_history_k_AStock':batches[day]={r['code'].lower():r for r in rows}
             else:universes[day]={r['code'].lower():r for r in rows if is_stock_code(r['code'])}
             bao_queries.append(q)
-    source_pointer=load(root/'reports/audits/DM01_A01_R3_TDX_SOURCE_CAPTURE_R1.json')
+    source_pointer=load(checked(root,source_inputs['package_pointer']))
     capture=load(checked(root,source_pointer['capture_receipt'])); package=checked(root,capture['package'])
     if capture['official_publication_date'] < max(dates):raise ValueError('OFFICIAL_PACKAGE_STALE')
-    frozen_previous=load(root/'docs/evidence/source_acquisition_r4_20261009/owner_repair_v1/CORE_REPLAY.json')['owners'][0]
+    previous_document=load(checked(root,source_inputs['previous_core']))
+    if len(previous_document.get('owners',[]))!=1:raise ValueError('SOURCE_PREVIOUS_CORE_AMBIGUOUS')
+    frozen_previous=previous_document['owners'][0]
     source_gbbq=checked(root,frozen_previous['sources']['gbbq']); blob=source_gbbq.read_bytes()
     gpath=root/'data/v4/corrected_owner_sources'/hashlib.sha256(blob).hexdigest()/'gbbq'
-    _atomic_write(gpath,blob,tdx_root=Path('D:/new_tdx'))
+    from .tdx_latest_daily_source_v2 import configured_tdx_root
+    _atomic_write(gpath,blob,tdx_root=configured_tdx_root(root))
     events=defaultdict(list)
     for e in read_gbbq(gpath):events[e.security_id.lower()].append(e)
     dispositions=load(root/'config/v4_02_gbbq_price_impact_classification_v1.json')['dispositions']
     sources=dict(package=capture['package'],receipt=source_pointer['capture_receipt'],gbbq=ref(root,gpath),
                  identity=identity_binding,contract=ref(root,root/CONTRACT),
                  core_kernel=ref(root,root/'src/v4/factors/core.py'),adjustment_kernel=ref(root,root/'src/adjustment/tdx_adjustment.py'))
-    snapshot=root/'docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json'
+    snapshot=checked(root,source_inputs['membership'])
     sources['latest_tdx_member_snapshot']=ref(root,snapshot)
     sources['r43_producer']=ref(root,Path(__file__))
-    sources['typed_delta_v2']=ref(root,root/'docs/evidence/r4_2_1_20261009/TDX_A_STOCK_DELTA_V2_RUNTIME_RECEIPT.json')
+    sources['daily_source_freeze_v2']=source_inputs['source_freeze']
+    if source_inputs.get('index_source_catalog'):
+        checked(root,source_inputs['index_source_catalog'])
+        sources['index_source_catalog']=source_inputs['index_source_catalog']
     source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     status=defaultdict(dict)
     historical=load(root/'config/v4_sector_operational_authority_v1.json')['sources']['historical_status']

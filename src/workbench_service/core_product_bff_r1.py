@@ -43,6 +43,16 @@ def _candidate_priority_cache_key(token,day,stock_source,sector_source,parameter
             json.dumps(lineage,sort_keys=True,separators=(',',':')))
 
 
+def _retained_price_coordinate(value):
+    """保留两代已声明的原生仿射坐标，完整摘要不可降为展示别名。"""
+    if not isinstance(value,str) or ':' not in value:return None
+    base,revision=value.rsplit(':',1)
+    if (base not in ('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE',
+                     'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE')
+            or len(revision)!=64 or any(c not in '0123456789abcdef' for c in revision.lower())):return None
+    return value
+
+
 def _exact_price_coordinate(core_row,adjusted_row):
     """Resolve an exact per-security T0 coordinate from both bound Owners."""
     core_basis=(core_row or {}).get('price_basis_id')
@@ -375,7 +385,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         import hashlib
         from sector.candidate_lifecycle_v1 import build_candidate_lifecycle
         source_root=Path(__file__).resolve().parents[2]
-        producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()).hexdigest()
+        producer_sha=hashlib.sha256((source_root/'src/sector/lifecycle_reconstructed_v1.py').read_bytes()+
+            (source_root/'src/sector/candidate_lifecycle_v1.py').read_bytes()).hexdigest()
         parameter_sha=hashlib.sha256((source_root/'config/sector_lifecycle_reconstructed_v1.json').read_bytes()).hexdigest()
         cache_key=_candidate_lifecycle_cache_key(self.api.token,self.api.candidate,producer_sha,parameter_sha)
         # The cache key binds candidate metadata, but immutable file content is
@@ -985,6 +996,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         separate prevents clients from treating the snapshot date as the row
         date when switching dates, paging, searching, or opening details.
         """
+        if 'as_of' in query:
+            if query.get('trade_date',query['as_of'])!=query['as_of']:raise ValueError('AS_OF_TRADE_DATE_MISMATCH')
+            query=dict(query,trade_date=query['as_of'])
         code,payload=self._get_dated_product(path,query)
         if not isinstance(payload,dict):
             return code,payload
@@ -1022,7 +1036,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             response.update(lifecycle_contract='SECTOR_LIFECYCLE_RECONSTRUCTED_AUDIT_R1',
                 lifecycle_version='1.1.0',T0=lifecycle['T0'],context_token=self.api.token,
                 lifecycle_counts={
-                    'sector_count':400,
+                    'sector_count':len(lifecycle['items']),
                     'maturity_known':sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                     'health_known':sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values())},
                 lifecycle_source=dict(candidate_digest=lifecycle['candidate_digest'],
@@ -1090,7 +1104,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         input_authority=lifecycle['input_authority'],evidence_scope=lifecycle['evidence_scope'],
                         candidate_digest=lifecycle['candidate_digest'],producer_sha256=lifecycle['producer_sha256'],
                         parameter_sha256=lifecycle['parameter_sha256'],session_window=lifecycle['session_window'],
-                        sector_count=400,maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
+                        sector_count=len(lifecycle['items']),maturity_known=sum(r['maturity']['current']!='UNKNOWN' for r in lifecycle['items'].values()),
                         health_known=sum(r['health']['current']!='UNKNOWN' for r in lifecycle['items'].values()))
                     if priority_snapshot_path:write_snapshot(priority_snapshot_path,priority_snapshot_identity,priority)
                     self.api.cache[cache_key]=priority
@@ -1197,8 +1211,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     if isinstance(response.get('market'),dict):
                         try:
                             candidate_market,_=self._candidate_market_stress()
-                            response['market']['candidate_trend_review']=candidate_market.get('trend_reference',
-                                dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_NOT_BOUND'))
+                            dated=(candidate_market.get('market_stress') or {}).get(day) or {}
+                            response['market']['candidate_trend_review']=dict(dated.get('trend_axis') or
+                                dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_NOT_BOUND_TO_REQUEST_DATE'),
+                                as_of=day)
                         except (OSError,ValueError,KeyError,TypeError) as exc:
                             response['market']['candidate_trend_review']=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',
                                 reason='TREND_REFERENCE_AUDIT_FAILED_CLOSED',error=type(exc).__name__)
@@ -1665,10 +1681,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if domain=='stocks' and field in original:
                     if field in ('close','prior_low20'):
                         basis=cell.get('adjustment_basis')
-                        cell['adjustment_basis']=(basis if isinstance(basis,str) and
-                            basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:') and
-                            len(basis.rsplit(':',1)[-1])==64 and
-                            all(c in '0123456789abcdef' for c in basis.rsplit(':',1)[-1].lower()) else None)
+                        cell['adjustment_basis']=_retained_price_coordinate(basis)
                     elif unit in ('adjusted_price','return_ratio') or field.startswith(('ret','ma','atr','prior_high','prior_low')):
                         cell['adjustment_basis']='TDX_NATIVE_AFFINE_QFQ_T0_COORDINATE'
         if domain=='events':

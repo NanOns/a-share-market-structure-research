@@ -1,0 +1,90 @@
+{
+  "contract_id": "V4_R9_UI_GRAPH_REPAIR_EVIDENCE_V1",
+  "language": "zh-CN",
+  "recorded_at": "2026-10-24",
+  "status": "V4 UI 依赖图范围修正已提交；运行闭包严格扫描仍阻断",
+  "scope": {
+    "description": "仓库内 V4 功能模块及其实际依赖；排除 V1-V3 独立旧功能",
+    "entrypoint_contract": "config/v4_active_runtime_entrypoints_v1.json",
+    "entrypoint_inventory_status": "SOURCE_VERIFIED",
+    "entrypoint_count": 7,
+    "scanned_files": 3983,
+    "reachable_v4_files": 639,
+    "reachable_v4_ui_files": 31,
+    "legacy_static_examples_reachable": [],
+    "legacy_static_examples_checked": [
+      "src/workbench_service/static/online-events-v3.html",
+      "src/workbench_service/static/online-p09-v3.html",
+      "src/workbench_service/static/research-v3.html",
+      "src/workbench_service/static/operations.html",
+      "src/workbench_service/static/index.html",
+      "src/workbench_service/static/v2/index.html",
+      "src/workbench_service/static/focus-tracker.html"
+    ]
+  },
+  "implementation": {
+    "scanner": "scripts/check_v4_business_literals.py",
+    "regression_tests": [
+      "tests/v4_joint/test_r9_scanner_resolution.py",
+      "tests/v4_policy/test_no_production_hardcoded_identities.py"
+    ],
+    "changes": [
+      "Model only V4 HTTP and desktop static resources served by their route allowlists.",
+      "Include only current joint-release and control-adapter UI files whose configured paths and SHA-256 bindings match.",
+      "Scan literal imports from the bound bundle while excluding unserved V2/V3 static pages.",
+      "Classify CSS #RRGGBB syntax narrowly as a false positive; retain bare six-digit literals as candidates."
+    ],
+    "code_commit": "0f5fdf9eade19dc54903d3e7d2592d5c1b7e8d5d",
+    "remote_branch": "codex/v4-unified-development"
+  },
+  "verification": {
+    "command": "pytest -q tests/v4_joint/test_r9_scanner_resolution.py tests/v4_policy/test_no_production_hardcoded_identities.py tests/v4_joint/test_r9_source_context.py tests/v4_joint/test_r9_market_cache_scope.py tests/test_r43_streaming_gzwrite.py",
+    "passed": 39,
+    "failed": 0,
+    "git_diff_check": "PASS",
+    "strict_scan_command": "python -B scripts/check_v4_business_literals.py --output G:/codex_tmp/R9_V4_SCANNER_UI_GRAPH_STRICT_20261024.json",
+    "strict_scan_exit_code": 1,
+    "strict_scan_result": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED",
+    "strict_scan_output_sha256": "75317C5DF3C77B567D39F5807824F123177E8E3B0C7B6A9BC606060668E88BFC",
+    "strict_scan_output_bytes": 41619418,
+    "strict_scan_import_edges": 11155,
+    "v4_reachable_candidates": 2215,
+    "v4_active_unresolved_candidates": 2198,
+    "v4_active_violations": 0,
+    "v4_active_dynamic_unresolved": 11,
+    "v4_active_browser_fetch_import_sites": 9,
+    "global_nonreachable_maintenance_candidates": 5003,
+    "global_dynamic_unresolved_including_non_v4_maintenance": 36,
+    "count_scope_note": "5003 与其中 25 个非活动动态项包含 V4 运行闭包外维护代码，不代表 V4 缺陷数。"
+  },
+  "scope_history": {
+    "prior_reported_reachable_files": 652,
+    "current_reachable_files": 639,
+    "prior_reported_unresolved_candidates": 2211,
+    "current_unresolved_candidates": 2198,
+    "prior_reported_runtime_dynamic_edges": 25,
+    "current_runtime_dynamic_edges": 11,
+    "prior_reported_browser_sites": 25,
+    "current_browser_sites": 9,
+    "interpretation": "计数变化来自依赖闭包纠正与纳入当前 SHA 绑定发布 UI，不等于净修复 13 个业务缺陷。"
+  },
+  "runtime_boundary": {
+    "duckdb_business_database_queried": false,
+    "pg_reads": 0,
+    "pg_writes": 0,
+    "formal_or_accepted_head_changed": false,
+    "service_or_windows_restarted": false,
+    "28765_or_28766_touched": false,
+    "temporary_output_location": "G:/codex_tmp"
+  },
+  "open_items": [
+    "D2 invalidation-price semantics remain delegated to the next ChatGPT independent audit.",
+    "D0 source cutoff/seal contract is unresolved.",
+    "Market trend reference, breadth/SIGN adjudication, and composite publication remain open.",
+    "Full new-day Source-to-Core-to-derived chain, G1/G3, PG publication/CAS success and failure recovery are not complete.",
+    "Focus Priority ordering and Forward LIVE first-capture require business definition or authorized data.",
+    "Historical amount differences and the 10/09 end-to-end replay certificate remain open.",
+    "The new UI code was not loaded into 28766; browser runtime acceptance is not evidenced.",
+    "The V4 runtime closure remains blocked by 2198 unresolved literal candidates, 11 dynamic execution sites, and 9 browser route sites."
+  ]
+}

@@ -3,7 +3,7 @@
 - Task: `BATCH10_R4_FORWARD_AND_FULL_MODULE_FUNCTIONAL_CLOSEOUT`
 - Date: 2026-10-23 (Asia/Shanghai)
 - Branch: `codex/v4-unified-development`; baseline `78ab4c898096c71a093b288258909e81f4ba5732` was checked against the remote before execution.
-- Final disposition: **PARTIAL**. R4-A and R4-B passed for candidate lineage and retrospective accounting. Lane L conservation is repaired and PG-fixture verified; live first capture remains clock-gated. Six entry pages and chart integration work for the exact candidate, but market four-axis and several focus/forward subroutes lack exact Owner bindings. R4-E fault/performance coverage is incomplete.
+- Final disposition: **PARTIAL**. R4-A and R4-B passed for candidate lineage and retrospective accounting. Lane L conservation is repaired and PG-fixture verified; live first capture remains clock-gated. Six entry pages, four observed market axes, historical settlement browsing, and chart integration work for the exact candidate. Focus priority and an authorized validation cohort are not bound; a separate candidate trend review is date-cutoff gated. R4-E fault/performance coverage is incomplete.
 
 ## Contract, evidence, and decision
 
@@ -14,8 +14,8 @@ The latest applicable R4 upgrade/Forward contracts and Phase 0 result (`DEGRADED
 | FR8-R4-01 lineage | **PASS** | 10/19 semantic diff identified; 10/20 rebound to revised predecessor; full 10/21 replay, Owner readback and period oracle passed. | Independent review; no formal admission. |
 | FR8-R4-02 Lane H | **PASS for historical NON_PIT accounting** | 13 daily bundles, 13 settlement bundles, 13 indexes, 39 settlement aggregates; no duplicate collapse or late rows. | Preserve retrospective scope; no return/win-rate interpretation. |
 | FR8-R4-03 Lane L | **PASS with real-clock wait** | Identity conservation code and PG fixture pass; no actual bar invented. | Wait for genuine T0 first capture; do not backfill 10/22. |
-| FR8-R4-04 six-entry integration | **PARTIAL** | All six pages render candidate data; stock search, pagination, detail and charts link correctly. Market four-axis and exact Owner-backed focus/forward subroutes fail closed. | Bind exact candidate Owners and test route/filter/export equality. |
-| FR8-R4-05 incremental/fault/performance | **PARTIAL** | Streaming replay, 610,000 oracle checks and atomic-writer failure test pass. Invalidation, outage/LAST_GOOD and P95 remain untested. | Complete bounded fault and load drills with available source. |
+| FR8-R4-04 six-entry integration | **PARTIAL** | All six pages render candidate data; market breadth/indices/limits/ladders are READY, stock search/pagination/detail/charts work, and historical settlement browsing is READY. Focus priority and formal validation cohort remain without dated Owner bindings; filtered UI-to-PG settlement equality is unverified. | Bind exact candidate Owners and test route/filter/export equality. |
+| FR8-R4-05 incremental/fault/performance | **PARTIAL** | Streaming replay, 610,000 oracle checks and atomic-writer failure test pass. Invalidation, outage/LAST_GOOD and P95 remain untested. | Complete bounded fault and load drills with available source; these drills were not run, rather than blocked by the current development DB/service authorization. |
 
 The `BATCH10_R4_DEV_FUNCTIONAL_SCOPED_PASS_WITH_LIVE_WAIT` gate is **not met** because R4-D is partial and R4-E lacks required fault/performance evidence. This is candidate readiness evidence, not external acceptance or production approval.
 
@@ -43,7 +43,7 @@ The exact 10/21 candidate was served on `127.0.0.1:28766`. Home showed 5,224 sto
 
 After fixing the BFF constructor chart bindings, the stock detail displays the actual-trade candlestick, 10/21 close `13.58`, and candidate/non-PIT notice. Chart APIs return READY for D/W/M × RAW/QFQ (20 requested items; D=427, W=92, M=22; W/M tails are `FORMING_AS_OF`). Exact-candidate PG history index: 5,224 securities, 2,163,300 bars. Candidate R1/R2 read-index counts: 5,224 stocks, 400 sectors, 3,975 focus, and 413 Radar (R2).
 
-Some capabilities remain unavailable because their exact Owners are not bound: market four-axis candidate binding is incomplete; Focus priority returns `NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER`; Forward cohort returns `NO_AUTHORIZED_COHORT_OWNER`; settlement compatibility returns `NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE`. Missing sector lifecycle/health fields remain UNKNOWN. No fallback date, formal regime or fabricated cohort was used. This keeps R4-D partial.
+Correction from a post-closeout readback: the market four-axis facts are available, not missing. `/api/v4/home`, `/market`, `/market/breadth`, `/market/indices`, `/market/limits`, and `/market/ladders` returned READY; axes were WEAK / DETERIORATING / THIN / LOW. The composite regime remains unpublished. A separate R6 candidate trend review is UNKNOWN because the candidate stress rebuild has an explicit 2026-10-14 cutoff and the selected T0 is 2026-10-21 (`R7_MARKET_STRESS_CUTOFF_EXCEEDED`). The Focus priority route returns `NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER`: its dated operational producer/Owner is not bound. The formal Forward validation cohort returns `NO_AUTHORIZED_COHORT_OWNER`: the candidate has no authorized cohort Owner; retrospective Focus/Lane H data cannot stand in for that cohort. The UI settlement endpoint `/api/v4/forward/settlement` currently returns READY with 258 rows; cross-surface filter-to-PG equality remains unverified. Missing sector lifecycle/health fields remain UNKNOWN. No fallback date, formal regime or fabricated cohort was used. R4-D remains partial for the Focus/cohort and cross-surface coverage gaps, not because the four market axes are absent.
 
 ## R4-E — incremental, fault, and performance
 
@@ -54,4 +54,4 @@ The full 10/21 replay and 610,000 period checks pass. The gzip owner writer now 
 - Targeted tests: **14 passed** across BFF constructor bindings, atomic gzip streaming, R8 S2 repairs, lifecycle conservation, and RPS target-coordinate delta.
 - `git diff --check`: passed before this documentation edit; rerun before commit. Full repository test suite/external CI not run.
 - Runtime: dev UI `127.0.0.1:28766`; `28765` not used. Existing development PG `127.0.0.1:5432/market_research`; no permanent fixture objects. Formal Head and scheduler unchanged.
-- Next: push this code/report/evidence for independent audit. Resolve missing exact Owner bindings and complete fault/load coverage before asking for scoped pass. Wait for a true first capture. Git push is not external acceptance.
+- The pushed version is queued for independent audit. Resolve missing Focus-priority and authorized cohort Owner bindings, verify settlement filter-to-PG parity, and complete fault/load coverage before asking for scoped pass. Wait for a true first capture. Git push is not external acceptance.

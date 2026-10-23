@@ -1134,7 +1134,7 @@
     "live_capture_state": "WAIT_REAL_FIRST_CAPTURE; no 10/22 backfill."
   },
   "R4_D": {
-    "disposition": "PARTIAL — six pages and real candidate data render; some routes fail closed due missing exact Owner bindings",
+    "disposition": "PARTIAL — six pages, four observed market axes, settlement browse route and stock/chart paths render; formal candidate review, Focus priority and authorized cohort remain incomplete",
     "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
     "visible_routes": [
       "home",
@@ -1194,13 +1194,41 @@
       "candidate_non_pit_notice": true
     },
     "known_incomplete_subroutes": {
-      "market_four_axis": "exact candidate binding incomplete",
-      "focus_priority": "NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER",
-      "forward_cohort": "NO_AUTHORIZED_COHORT_OWNER",
-      "forward_settlement": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE",
-      "first_capture": "WAIT_REAL_FIRST_CAPTURE"
+      "focus_priority": "NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER; dated operational priority producer/Owner is not bound",
+      "forward_validation_cohort": "NO_AUTHORIZED_COHORT_OWNER; exact candidate has no authorized validation cohort Owner, distinct from retrospective Focus history",
+      "formal_composite_market_regime": "FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED; four primitive fact axes are present but no formal composite regime is published"
     },
-    "semantics": "No substitute date or fabricated cohort/priority; unavailable stays unknown."
+    "semantics": "Observed four-axis values and historical settlement browsing are available; a formal market composite and authorized validation cohort are not. No fallback date or fabricated cohort/priority.",
+    "market_endpoint_readback": {
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "home_status": "READY",
+      "market_status": "READY",
+      "breadth_status": "READY",
+      "indices_status": "READY",
+      "indices_total": 5,
+      "limits_status": "READY",
+      "limits_total": 5224,
+      "ladders_status": "READY",
+      "ladders_total": 50,
+      "observed_axes": {
+        "trend_axis": "WEAK",
+        "breadth_axis": "DETERIORATING",
+        "participation_axis": "THIN",
+        "stress_level": "LOW"
+      },
+      "composite_regime_publication": "FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED",
+      "separate_candidate_trend_review": {
+        "value": "UNKNOWN",
+        "quality": "SOURCE_INCOMPLETE",
+        "cause": "R6 candidate stress rebuild has an explicit T0 cutoff of 2026-10-14; selected T0 2026-10-21 fails R7_MARKET_STRESS_CUTOFF_EXCEEDED and is caught fail-closed. This does not mean the four dated market fact axes are absent."
+      }
+    },
+    "forward_settlement_endpoint_readback": {
+      "route": "/api/v4/forward/settlement",
+      "status": "READY",
+      "total": 258,
+      "cross_surface_filtered_PG_equality": "NOT_VERIFIED"
+    }
   },
   "R4_E": {
     "disposition": "PARTIAL",
@@ -1212,7 +1240,8 @@
       "PG/CAS outage and LAST_GOOD recovery",
       "API P95/load"
     ],
-    "data_integrity": "No 10/22 source invented; NON_PIT and previous owners preserved."
+    "data_integrity": "No 10/22 source invented; NON_PIT and previous owners preserved.",
+    "not_run_note": "These are outstanding verification tasks, not a database/service permission block; the development SOT authorizes scoped PG and 28766 work."
   },
   "code_and_ci": {
     "git_diff_check": "PASS",

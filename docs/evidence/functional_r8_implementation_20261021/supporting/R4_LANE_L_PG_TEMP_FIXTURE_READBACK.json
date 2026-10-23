@@ -1,0 +1,30 @@
+{
+  "contract": "BATCH10_R4_LANE_L_TEMP_PG_FIXTURE_R1",
+  "trade_date": "2026-10-21",
+  "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+  "source_counts": {
+    "lifecycle": 5224,
+    "status": 5224,
+    "profile": 5224,
+    "core": 5224,
+    "raw": 5216,
+    "lifecycle_ids_missing_from_current_status": 0
+  },
+  "pg_temp_fixture": {
+    "scope": "TEMP table only; ON COMMIT DROP; connection closed after readback",
+    "table_rows": 5225,
+    "distinct_ids": 5225,
+    "false_actual_bar_claims": 0,
+    "lifecycle_only_rows": 1,
+    "synthetic_fixture_readback": [
+      "SEC-R4-LIFECYCLE-FIXTURE-ONLY",
+      "DATA_GAP",
+      "DATA_GAP",
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  }
+}

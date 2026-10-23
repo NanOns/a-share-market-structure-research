@@ -41,7 +41,20 @@ def conserve_lifecycle_status_rows(statuses, lifecycle_rows, *, trade_date):
         sid=str(row.get('security_id') or '')
         if not sid or sid in by_id:
             raise ValueError('LIFECYCLE_STATUS_IDENTITY_DUPLICATE_OR_EMPTY')
-        by_id[sid]=row
+        if row.get('trade_date')!=trade_date:
+            raise ValueError('LIFECYCLE_STATUS_DATE_MISMATCH')
+        projected=dict(row)
+        source_status=projected.get('status')
+        if source_status not in {'ACTUAL_TRADED','SUSPENDED','DATA_GAP'}:
+            projected['status']='UNKNOWN'
+            projected['actual_bar_present']=False
+            projected.setdefault('reason','UNSUPPORTED_SOURCE_STATUS')
+        else:
+            # The status code alone must not create a bar claim. Preserve the
+            # separately observed bar bit only for the one compatible status.
+            projected['actual_bar_present']=bool(
+                source_status=='ACTUAL_TRADED' and projected.get('actual_bar_present') is True)
+        by_id[sid]=projected
     lifecycle_by_id={}
     for row in lifecycle_rows:
         sid=str(row.get('security_id') or '')

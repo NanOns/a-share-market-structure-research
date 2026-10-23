@@ -1,3 +1,5 @@
+import pytest
+
 from workbench_analysis.r43_structure_replay import conserve_lifecycle_status_rows
 
 
@@ -34,3 +36,24 @@ def test_lifecycle_projection_rejects_duplicate_source_identities():
         assert str(exc) == "LIFECYCLE_SOURCE_IDENTITY_DUPLICATE_OR_DATE_MISMATCH"
     else:
         raise AssertionError("duplicate security identity must fail closed")
+
+
+def test_lifecycle_projection_rejects_status_from_another_date():
+    with pytest.raises(ValueError, match="LIFECYCLE_STATUS_DATE_MISMATCH"):
+        conserve_lifecycle_status_rows(
+            [{"security_id": "sid-old", "trade_date": "2026-10-21",
+              "status": "ACTUAL_TRADED", "actual_bar_present": True}],
+            [{"security_id": "sid-old", "trade_date": "2026-10-22", "status": "ACTUAL_TRADED"}],
+            trade_date="2026-10-22",
+        )
+
+
+def test_lifecycle_projection_normalizes_unsupported_status_and_clears_bar_claim():
+    projected = conserve_lifecycle_status_rows(
+        [{"security_id": "sid-unknown", "trade_date": "2026-10-22",
+          "status": "UNRECOGNIZED", "actual_bar_present": True}],
+        [{"security_id": "sid-unknown", "trade_date": "2026-10-22", "status": "UNRECOGNIZED"}],
+        trade_date="2026-10-22",
+    )
+    assert projected[0]["status"] == "UNKNOWN"
+    assert projected[0]["actual_bar_present"] is False

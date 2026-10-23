@@ -117,13 +117,25 @@
         "sector_rows": 400,
         "sector_aggregate_facts": 5133,
         "focus_rows": 3975,
-        "period_oracle_securities": 5000,
-        "period_oracle_checks": 610000,
-        "period_oracle_differences": 0
-      }
+        "period_oracle_securities": 5224,
+        "period_oracle_checks": 637268,
+        "period_oracle_differences": 0,
+        "period_raw_rows": 20894,
+        "period_adjusted_rows": 20894
+      },
+      "period_oracle_scope": "The oracle counter is total row-set and per-field comparison operations; it is not 122 periods per security."
     },
-    "candidate_pg_readback": "Old/revised 10/19 tokens present as DEV_ASOF_SOURCE_VERIFIED candidate publications, both row_count 5224, AS_RECORDED=false, PIT_ELIGIBLE=false, production_admission=false. No rebase writes made.",
-    "RPS_delta_lineage_rebased": true
+    "candidate_pg_readback": "Historical pre-rebase audit snapshot: no rebase writes had been made at that time. Superseded by the later candidate lineage and Owner readback records in R4_A.lineage.",
+    "RPS_delta_lineage_rebased": true,
+    "oracle_receipt": {
+      "artifact": "supporting/R4_10_21_PERIOD_ORACLE.json",
+      "checks": 637268,
+      "securities": 5224,
+      "period_raw_rows": 20894,
+      "period_adjusted_rows": 20894,
+      "differences": 0,
+      "checks_definition": "row-set membership plus per-field comparisons; not periods-per-security"
+    }
   },
   "R4_A_5226_5224": {
     "core_rows": 5226,
@@ -1103,7 +1115,7 @@
   },
   "R4_C": {
     "disposition": "PASS_WITH_REAL_CLOCK_WAIT",
-    "code_fix": "conserve_lifecycle_status_rows unions all source-active IDs, validates identity/date conservation, maps unsupported states to UNKNOWN, and only marks ACTUAL_TRADED as an actual bar.",
+    "code_fix": "Validates every incoming status/lifecycle row date against the target date; rejects duplicates/empty IDs; normalizes unsupported statuses to UNKNOWN and clears actual_bar_present; lifecycle-only rows preserve source state without creating OHLC.",
     "source_replay": {
       "trade_date": "2026-10-21",
       "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
@@ -1129,9 +1141,16 @@
         "profile_present": false,
         "raw_present": false,
         "actual_bar_present": false
-      }
+      },
+      "durable_receipt": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_LANE_L_PG_TEMP_FIXTURE_READBACK.json"
     },
-    "live_capture_state": "WAIT_REAL_FIRST_CAPTURE; no 10/22 backfill."
+    "live_capture_state": "WAIT_REAL_FIRST_CAPTURE; no 10/22 backfill.",
+    "independent_audit_followup": {
+      "status": "FIXED_AND_RETESTED",
+      "date_mismatch": "Existing status rows now fail closed unless trade_date equals target.",
+      "unsupported_status": "Normalizes to UNKNOWN and clears actual_bar_present.",
+      "tests": "Added regression tests for cross-date status and unsupported status with stale actual-bar flag."
+    }
   },
   "R4_D": {
     "disposition": "PARTIAL — six pages, four observed market axes, settlement browse route and stock/chart paths render; formal candidate review, Focus priority and authorized cohort remain incomplete",
@@ -1245,7 +1264,7 @@
   },
   "code_and_ci": {
     "git_diff_check": "PASS",
-    "targeted_regression": "PASS 2/2",
+    "targeted_regression": "Initial regression snapshot: PASS 2/2; after independent-audit corrections and expanded tests: PASS 16/16.",
     "full_ci": "NOT_RUN",
     "successful_github_workflow": "NOT_VERIFIED"
   },
@@ -1259,8 +1278,8 @@
   },
   "head_before_final_closeout": "2fc53cd658fdbc4c7b6334353b69d18d046f2311",
   "verification": {
-    "targeted_tests": "14 passed in 0.32s",
-    "git_diff_check": "PASS before final doc edit; rerun before commit",
+    "targeted_tests": "16 passed in 0.47s after independent-audit date/status counterexamples were added",
+    "git_diff_check": "PASS on final pre-commit working tree",
     "full_suite": "not run",
     "dev_ui": "127.0.0.1:28766 candidate preview",
     "production_ui": "127.0.0.1:28765 not used",
@@ -1271,5 +1290,52 @@
   "handoff": {
     "code_and_closeout_report": "to be pushed on codex/v4-unified-development",
     "independent_audit": "requested as next review; no production transition authorized"
+  },
+  "supporting_evidence": {
+    "audit_forward_lane_h_readonly.py": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_forward_lane_h_readonly.py",
+      "sha256": "750ab91420d6d64e13952cdf1dbda16bb00006f6ea56d4ebca35a4c0cf7b4142",
+      "bytes": 4603
+    },
+    "audit_r4_lane_lifecycle_pg_temp.py": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_r4_lane_lifecycle_pg_temp.py",
+      "sha256": "91befa19ec60f2eeecb9ab3a29288f95dc5eb6efaebeecbf8c19ee40d453f6e7",
+      "bytes": 5648
+    },
+    "FORWARD_LANE_H_POSTGRESQL_READ_AUDIT.txt": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/FORWARD_LANE_H_POSTGRESQL_READ_AUDIT.txt",
+      "sha256": "ff7a03b8bb417277c16971e879bb633058c654d73487bedb8e29427982a4c933",
+      "bytes": 14810
+    },
+    "R4_10_19_SEMANTIC_COMPARISON.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_19_SEMANTIC_COMPARISON.json",
+      "sha256": "57827741c6b06c47624929cac675ccf6d9956b150b8816fb1dcda596c6a1350a",
+      "bytes": 5641
+    },
+    "R4_10_20_SUCCESSOR_CANDIDATE_PG_REBOUND.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_20_SUCCESSOR_CANDIDATE_PG_REBOUND.json",
+      "sha256": "a5b169a8cde60cc6ba86f1efbb7714020e578264bfea33634532ab407df70b70",
+      "bytes": 95354
+    },
+    "R4_10_21_PERIOD_ORACLE.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_21_PERIOD_ORACLE.json",
+      "sha256": "8fb47981b8d46d20eaa7fbba30583d473f5fd9027cb6f353ddc6762d813ff10a",
+      "bytes": 1815
+    },
+    "R4_10_21_PG_OWNER_READBACK.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_21_PG_OWNER_READBACK.json",
+      "sha256": "c1b1533e86f036468a077994ff1b30cc057dcdb576aaa1718eb089c5679ee08c",
+      "bytes": 164
+    },
+    "R4_10_21_SUCCESSOR_CANDIDATE.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_21_SUCCESSOR_CANDIDATE.json",
+      "sha256": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "bytes": 102212
+    },
+    "R4_LANE_L_PG_TEMP_FIXTURE_READBACK.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_LANE_L_PG_TEMP_FIXTURE_READBACK.json",
+      "sha256": "496e89725d929f30c67ea769a565d401e5eaac64953633323f00b3600b1f3cdd",
+      "bytes": 786
+    }
   }
 }

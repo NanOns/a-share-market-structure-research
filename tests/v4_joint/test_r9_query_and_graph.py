@@ -147,3 +147,41 @@ vm.runInNewContext(SOURCE,{day,domain:{value:'stocks'},document,fetch:async url=
 setImmediate(()=>{assert.deepEqual(options,['2026-03-03','2026-03-04']);assert.equal(day.value,'2026-03-04');assert.match(calls[1],/trade_date=2026-03-04&context_token=synthetic-token/);});
 '''.replace('SOURCE',json.dumps(script,ensure_ascii=False))
     subprocess.run([node,'-e',harness],check=True,capture_output=True,text=True)
+
+
+def test_period_main_crosses_week_month_and_retains_suspended_target(tmp_path,monkeypatch):
+    import gzip,sys
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from scripts import build_v4_02_formal_periods as module
+    sessions=['2026-01-29','2026-01-30','2026-02-02','2026-02-03','2026-02-04']
+    def write(name,value):
+        path=tmp_path/name;path.write_text(json.dumps(value),encoding='utf8');return path
+    contract=write('contract.json',{'contract_id':'SYN-PERIODS','calendar_acceptance_receipt':'calendar_receipt.json'})
+    write('calendar_receipt.json',{'status':'FORMAL_MARKET_CALENDAR_PASS'})
+    write('calendar.json',{'session_dates':sessions});write('classification.json',{'per_security_scope_counts':{}})
+    universe=[];status=[];raw=[]
+    for sid in ['SYN-A','SYN-B']:
+        for day in sessions:
+            suspended=sid=='SYN-B' and day==sessions[-2]
+            universe.append(dict(source_security_key='SH.'+sid,security_id=sid,board_scope='SH_MAIN',trade_date=day,source_bar_present=not suspended))
+            status.append(dict(source_security_key='SH.'+sid,trade_date=day,status='SUSPENDED' if suspended else 'ACTUAL_TRADED'))
+            if not suspended:raw.append(dict(source_security_key='SH.'+sid,trade_date=int(day.replace('-','')),open_price_raw=1000,high_price_raw=1100,low_price_raw=900,close_price_raw=1050,amount_source_native=1000.,volume_source_native=100,record_quality='VALID'))
+    for name,rows in [('universe.gz',universe),('status.gz',status),('dispositions.gz',[])]:
+        (tmp_path/name).write_bytes(gzip.compress(('\n'.join(json.dumps(r) for r in rows)).encode()))
+    with pq.ParquetWriter(tmp_path/'raw.parquet',pa.Table.from_pylist(raw).schema) as writer:
+        for sid in ['SYN-A','SYN-B']:writer.write_table(pa.Table.from_pylist([r for r in raw if r['source_security_key']=='SH.'+sid]))
+    (tmp_path/'actions').write_bytes(b'');(tmp_path/'map').write_bytes(b'')
+    args=['build','--asof','20260203']
+    for key,value in {'universe':'universe.gz','status':'status.gz','raw':'raw.parquet','classification':'classification.json','dispositions':'dispositions.gz','gbbq':'actions','gbbq-map':'map','calendar-sse':'calendar.json','calendar-szse':'calendar.json','daily-output':'daily.parquet','weekly-output':'weekly.parquet','monthly-output':'monthly.parquet','receipt':'receipt.json'}.items():args.extend(['--'+key,value])
+    monkeypatch.setattr(module,'ROOT',tmp_path);monkeypatch.setattr(module,'CONTRACT',contract);monkeypatch.setattr(sys,'argv',args)
+    monkeypatch.setattr(module,'read_gbbq',lambda p:[])
+    assert module.main()==0
+    daily=pq.read_table(tmp_path/'daily.parquet').to_pylist()
+    assert len(daily)==7 and max(r['trade_date'] for r in daily)==20260203
+    for name in ['weekly.parquet','monthly.parquet']:
+        rows=pq.read_table(tmp_path/name).to_pylist()
+        assert {r['canonical_security_id'] for r in rows}=={'SYN-A','SYN-B'}
+        assert all(r['max_source_trade_date']<=20260203 for r in rows)
+        assert any(r['canonical_security_id']=='SYN-B' and r['suspended_count']==1 for r in rows)
+        assert {r['period_view'] for r in rows}=={'CLOSED_ONLY','AS_OF_PARTIAL'}

@@ -54,14 +54,34 @@ def checked(root, binding):
 
 
 def gzwrite(root, path, rows):
-    raw = b''.join((json.dumps(r, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode() for r in rows)
-    _atomic_write(path, gzip.compress(raw, mtime=0), tdx_root=Path('D:/new_tdx'))
+    from workbench_analysis.daily_source_freeze import ensure_outside_tdx
+    path=Path(path)
+    ensure_outside_tdx(path,Path('D:/new_tdx'))
+    path.parent.mkdir(parents=True,exist_ok=True)
+    fd,name=__import__('tempfile').mkstemp(prefix=path.name+'.',suffix='.tmp',dir=path.parent)
+    try:
+        with os.fdopen(fd,'wb') as stream:
+            with gzip.GzipFile(filename='',fileobj=stream,mode='wb',mtime=0) as compressed:
+                for row in rows:
+                    compressed.write((json.dumps(row,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode())
+            stream.flush();os.fsync(stream.fileno())
+        os.replace(name,path)
+    except Exception:
+        Path(name).unlink(missing_ok=True)
+        raise
     return ref(root, path)
 
 
 def gzrows(path):
+    return list(gziter(path))
+
+
+def gziter(path):
+    """Yield JSONL records from a gzip owner without retaining the full owner."""
     with gzip.open(path, 'rt', encoding='utf8') as stream:
-        return [json.loads(line) for line in stream if line.strip()]
+        for line in stream:
+            if line.strip():
+                yield json.loads(line)
 
 
 def transform_window(raw, events, dispositions, target):
@@ -267,14 +287,14 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
                 unknown_row=unknown_active_core_row(i,target,sessions,basis_namespace)
                 rows.append(unknown_row)
                 if target in dates:
-                    histories[sid]=[]
+                    histories[sid]=None
                     prior_values={k:asdict(v) for k,v in compute_core(
                         [Observation(d,'UNKNOWN',None) for d in sessions if str(i.get('list_date') or target)<=d<=previous],
                         sid,asof=previous).items()} if str(i.get('list_date') or target)<=previous else {}
                     prior_rows.append(dict(security_id=sid,trade_date=previous,coordinate_target=target,
                         price_basis_id=basis_namespace+':NO_PRICE_HISTORY',fields=prior_values))
                 continue
-            code,raw=cache[sid];bs=transform_window(raw,events[code],dispositions,target)
+            code,raw=cache[sid]
             revision=hashlib.sha256(json.dumps(dict(code=code,gbbq=sources['gbbq']['sha256'],
                 events=[(e.event_date,e.category,e.c1,e.c2,e.c3,e.c4) for e in events[code]
                         if e.event_date<=int(target.replace('-','')) and e.category==1]),sort_keys=True).encode()).hexdigest()
@@ -295,7 +315,7 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
                 for h in (5,20):endpoint_returns[(endpoint,h)][sid]=endpoint_values[f'ret{h}'].value
             if sid not in members:continue
             if target not in dates:continue
-            histories[sid]=bs
+            histories[sid]=code
             pv={k:asdict(v) for k,v in compute_core(obs,sid,asof=previous).items()} if obs[0].trade_date<=previous else {}
             prior_rows.append(dict(security_id=sid,trade_date=previous,coordinate_target=target,price_basis_id=basis,fields=pv))
             b=by.get(target)
@@ -336,9 +356,13 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
                 prior=sessions[sessions.index(target)-k];a=rps.get((prior,h),{}).get(sid);b=rps[target,h].get(sid);v=b-a if a is not None and b is not None else None
                 row['fields'][f'rps{h}_delta{k}']=dict(value=v,quality_state='OBSERVED' if v is not None else 'UNKNOWN',unknown_reason=None if v is not None else 'EXACT_DATED_RPS_ENDPOINT_UNKNOWN',prior_endpoint=prior,contract_id='RPS_MIDRANK_V1')
         folder=out/'owners'/target
+        def history_rows():
+            for sid,code in histories.items():
+                bars=transform_window(cache[sid][1],events[code],dispositions,target) if code is not None else []
+                yield dict(security_id=sid,bars=bars)
         receipt=dict(trade_date=target,rows=len(rows),source_digest=source_digest,sources=sources,
              core=gzwrite(root,folder/'core.jsonl.gz',rows),prior_core=gzwrite(root,folder/'prior_core_target_coordinate.jsonl.gz',prior_rows),
-             history=gzwrite(root,folder/'history.jsonl.gz',[dict(security_id=sid,bars=bs) for sid,bs in histories.items()]),
+             history=gzwrite(root,folder/'history.jsonl.gz',history_rows()),
              raw=gzwrite(root,folder/'raw.jsonl.gz',raw_rows),adjusted=gzwrite(root,folder/'adjusted.jsonl.gz',adjusted_rows),
              actual_raw_rows=len(raw_rows),adjustment_current_ready=sum(r['adjustment_readiness']=='READY' for r in adjusted_rows),
              known_fields=dict(Counter(k for r in rows for k,v in r['fields'].items() if v.get('value') is not None)),

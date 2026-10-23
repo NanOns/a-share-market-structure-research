@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 
-from .r43_owner_replay import load, checked, gzrows, gzwrite as base_gzwrite, ref, OUT, CONTRACT, progress_items
+from .r43_owner_replay import load, checked, gzrows, gziter, gzwrite as base_gzwrite, ref, OUT, CONTRACT, progress_items
 from .market_source_acquisition import official_sessions, write
 from .v4_12_structure_io import FrozenContracts, CandidateStore, digest
 from .v4_12_breakout_snapshot import EpisodeBinder, EpisodeSnapshotMaterializer
@@ -72,7 +72,8 @@ class CorrectedBinder(EpisodeBinder):
         self.publications={};self.source_refs={}
         self.core={r['security_id']:r for r in gzrows(checked(self.root,owner['core']))}
         self.previous_core={r['security_id']:r for r in gzrows(checked(self.root,owner['prior_core']))}
-        self.history={r['security_id']:{b['trade_date']:b for b in r['bars']} for r in gzrows(checked(self.root,owner['history']))}
+        self.history={r['security_id']:b for r in gziter(checked(self.root,owner['history']))
+                      for b in r['bars'] if b['trade_date']==self.previous}
         self.adjusted={r['security_id']:r for r in gzrows(checked(self.root,owner['adjusted']))}
         self.profiles={r['security_id']:r for r in profiles};self.status_rows=status_rows
         self.data={'component_artifacts':{'RAW_DAILY':owner['raw'],'ADJUSTED_DAILY':owner['adjusted']}}
@@ -90,7 +91,7 @@ class CorrectedBinder(EpisodeBinder):
     def bind(self, sid, prior_snapshot=None, extra_namespaces=None):
         self.validate_namespaces(extra_namespaces);prior=self.prior(prior_snapshot,sid);self.bound_prior=prior
         facts={};core=self.core.get(sid,{}).get('fields',{});previous=self.previous_core.get(sid,{}).get('fields',{})
-        adjusted=self.adjusted.get(sid,{});bs=self.history.get(sid,{});pb=bs.get(self.previous)
+        adjusted=self.adjusted.get(sid,{});pb=self.history.get(sid)
         mapping={'ATR20':'atr20','CLV':'clv','MA20':'ma20','MA60':'ma60','amount_ratio20':'amount_ratio20',
                  'delta3':'rps5_delta3','prior_high20':'prior_high20','rel_market_1':'rel_market_1','ret1':'ret1','slope20':'slope20'}
         for name,row in self.fields.items():
@@ -177,12 +178,18 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
     cd=digest({p:ref(root,root/p) for p in CONTRACT_FILES})
     for owner in replay['owners']:
         day=owner['trade_date'];folder=out/'owners'/day;factors=gzrows(checked(root,owner['core']))
-        histories={r['security_id']:r['bars'] for r in gzrows(checked(root,owner['history']))}
+        factors_by_id={r['security_id']:r for r in factors}
         builder.CUTOFF=day;profiles=[];statuses=[]
         regime=RegimeUI('UNKNOWN','UNKNOWN',None,0,{'reason':'CORRECTED_MARKET_AXES_NOT_YET_BOUND'},'CORRECTED_MARKET_AXES_NOT_YET_BOUND')
-        for factor in progress_items(factors,progress_counter,coordinate_endpoint=day,phase='PROFILE'):
-            sid=factor['security_id'];bs=histories[sid]
-            actual={b['trade_date'] for b in bs};status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if bs[0]['trade_date']<=d<=day]
+        seen_history_ids=set()
+        history_rows=gziter(checked(root,owner['history']))
+        if progress_counter:progress_counter(dict(total=len(factors),processed=0,unit='securities',coordinate_endpoint=day,phase='PROFILE'))
+        for processed,history_row in enumerate(history_rows,1):
+            sid=history_row['security_id'];factor=factors_by_id.get(sid)
+            if factor is None or sid in seen_history_ids:raise ValueError('PROFILE_HISTORY_CORE_IDENTITY_MISMATCH')
+            seen_history_ids.add(sid);bs=history_row['bars']
+            actual={b['trade_date'] for b in bs};first_date=bs[0]['trade_date'] if bs else day
+            status=[(d,'ACTUAL_TRADED' if d in actual else verified_status.get((sid,d),'UNKNOWN')) for d in sessions if first_date<=d<=day]
             bars=[dict(trade_date=b['trade_date'],qfq_close=b['qfq_ohlc'][3] if b['qfq_ohlc'] else None,
                 qfq_high=b['qfq_ohlc'][1] if b['qfq_ohlc'] else None,qfq_low=b['qfq_ohlc'][2] if b['qfq_ohlc'] else None,
                 amount=b['amount'],adjusted_quality='READY' if b['qfq_ohlc'] else 'UNKNOWN') for b in bs]
@@ -191,6 +198,9 @@ def materialize_profiles_structure(root, *, prior_snapshot=None, prior_security_
             r.update(knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False);profiles.append(r)
             statuses.append(dict(security_id=sid,trade_date=day,actual_bar_present=day in actual,
                                  status='ACTUAL_TRADED' if day in actual else verified_status.get((sid,day),'UNKNOWN'),status_conflict=False))
+            if progress_counter and (processed%200==0 or processed==len(factors)):
+                progress_counter(dict(total=len(factors),processed=processed,unit='securities',coordinate_endpoint=day,phase='PROFILE'))
+        if seen_history_ids!=set(factors_by_id):raise ValueError('PROFILE_HISTORY_CORE_CONSERVATION_FAILED')
         if lifecycle_rows is not None and day==lifecycle_trade_date:
             statuses=conserve_lifecycle_status_rows(statuses,lifecycle_rows,trade_date=day)
         owner=dict(owner,profiles=gzwrite(root,folder/'profiles.jsonl.gz',profiles),status=gzwrite(root,folder/'status.jsonl.gz',statuses))

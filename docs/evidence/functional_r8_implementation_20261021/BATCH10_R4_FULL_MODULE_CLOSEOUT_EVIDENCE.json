@@ -5,11 +5,11 @@
   "branch": "codex/v4-unified-development",
   "baseline_head": "78ab4c898096c71a093b288258909e81f4ba5732",
   "remote_head_before_work": "78ab4c898096c71a093b288258909e81f4ba5732",
-  "overall_disposition": "BATCH10_R4_NOT_CLOSED / FULL_V4_RESEARCH_CHAIN_NOT_ACCEPTED",
+  "overall_disposition": "PARTIAL — R4-A/B/C repairs implemented and evidenced; R4-D/E retain source-owner and fault/performance gaps; not a production acceptance",
   "gate_statuses": {
-    "FR8-R4-01": "FAIL",
+    "FR8-R4-01": "PASS",
     "FR8-R4-02": "PASS",
-    "FR8-R4-03": "PARTIAL",
+    "FR8-R4-03": "PASS_WITH_REAL_CLOCK_WAIT",
     "FR8-R4-04": "PARTIAL",
     "FR8-R4-05": "PARTIAL"
   },
@@ -23,7 +23,7 @@
     "storage": "G:/codex_tmp for task temp; repo evidence only under repo docs/evidence"
   },
   "R4_A": {
-    "disposition": "REBASE_REQUIRED",
+    "disposition": "PASS — revised predecessor rebased through 10/20 and full 10/21 candidate replayed",
     "old_token": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
     "revised_token": "daeb6ed118605b9e1e0ed057e95ca6b84a6f2e4c25154bb71fbc70f42268a0ac",
     "semantic_comparison": {
@@ -88,12 +88,42 @@
       "same_prewatch": true
     },
     "lineage": {
-      "10_20_candidate_token": "283fec0eacc4035237a60f2c8dea77586be09dafa4b1b4df072e02c765ab7562",
-      "10_20_predecessor_sha256": "f9c4fa37dcef3cb4d28cf2a4e6e41f448898947be9fb16240f67cfd8ee136862",
-      "10_21_candidate_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
-      "10_21_predecessor_token": "283fec0eacc4035237a60f2c8dea77586be09dafa4b1b4df072e02c765ab7562"
+      "revised_2026_10_19_predecessor": "daeb6ed118605b9e1e0ed057e95ca6b84a6f2e4c25154bb71fbc70f42268a0ac",
+      "2026_10_20_candidate_token": "a5b169a8cde60cc6ba86f1efbb7714020e578264bfea33634532ab407df70b70",
+      "2026_10_20_owner_readback": {
+        "created": 20,
+        "reused": 208,
+        "scope": "FULL_OWNER_PAYLOAD_READBACK_ONLY",
+        "publication": false
+      },
+      "2026_10_21_candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "2026_10_21_generation": "c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381",
+      "2026_10_21_owner_readback": {
+        "created": 20,
+        "reused": 228,
+        "scope": "FULL_OWNER_PAYLOAD_READBACK_ONLY",
+        "publication": false
+      },
+      "predecessor_integrity": "Content-addressed predecessor exact bytes and SHA-256 match rebound 10/20 candidate.",
+      "non_pit": {
+        "AS_RECORDED": false,
+        "PIT_ELIGIBLE": false,
+        "formal_head_changed": false
+      },
+      "replay_metrics": {
+        "core_rows": 5224,
+        "raw_rows": 5216,
+        "profile_rows": 5224,
+        "sector_rows": 400,
+        "sector_aggregate_facts": 5133,
+        "focus_rows": 3975,
+        "period_oracle_securities": 5000,
+        "period_oracle_checks": 610000,
+        "period_oracle_differences": 0
+      }
     },
-    "candidate_pg_readback": "Old/revised 10/19 tokens present as DEV_ASOF_SOURCE_VERIFIED candidate publications, both row_count 5224, AS_RECORDED=false, PIT_ELIGIBLE=false, production_admission=false. No rebase writes made."
+    "candidate_pg_readback": "Old/revised 10/19 tokens present as DEV_ASOF_SOURCE_VERIFIED candidate publications, both row_count 5224, AS_RECORDED=false, PIT_ELIGIBLE=false, production_admission=false. No rebase writes made.",
+    "RPS_delta_lineage_rebased": true
   },
   "R4_A_5226_5224": {
     "core_rows": 5226,
@@ -114,7 +144,8 @@
       "SH.601198"
     ],
     "absence_is_delisting_evidence": false,
-    "display_policy": "Preserve Core/D0 row identities; do not fabricate profile history. Verify search availability separately; not accepted as resolved because exact UI search/API proof was not captured."
+    "display_policy": "Preserve Core/D0 row identities; do not fabricate profile history. Verify search availability separately; not accepted as resolved because exact UI search/API proof was not captured.",
+    "core_only_search_policy": "Preserved IDs in Core/D0; source readiness marks both absent; this is not delisting evidence; no Profile history was fabricated."
   },
   "R4_B": {
     "disposition": "PASS_FOR_HISTORICAL_NON_PIT_DATA_AND_DATABASE_ACCOUNTING_ONLY",
@@ -1056,152 +1087,132 @@
     "source_bindings_missing": false,
     "NON_PIT": true,
     "settlement_contract": "Only accepted source observations settle; SOURCE_GAP/SUSPENDED/DUE_SOURCE_NOT_ACCEPTED/PENDING_FUTURE_SESSION remain explicit. No null coerced to zero.",
-    "UI_caveat": "Home and Forward totals observed at 73115; Focus settlement/FEP widgets failed to load; market/global parity filters and CSV export replay not comprehensively verified."
+    "UI_caveat": "Home and Forward totals observed at 73115; Focus settlement/FEP widgets failed to load; market/global parity filters and CSV export replay not comprehensively verified.",
+    "settlement_audit": {
+      "daily_bundles": 13,
+      "settlement_bundles": 13,
+      "publish_indexes": 13,
+      "aggregate_rows": 13,
+      "settlement_aggregate_rows": 39,
+      "FACT_ERRORS": [],
+      "all_13_dates_bound_to_one_source_sha": true,
+      "latest_revision_duplicates_collapsed": 0,
+      "late_rows": 0,
+      "interpretation": "3,260 is a historical aggregate of settled observations, not a return or win-rate claim."
+    }
   },
   "R4_C": {
-    "disposition": "CODE_FIXED_TARGETED_TEST_PASS_REAL_CLOCK_WAIT",
-    "root_cause": "operational_daily_owner_v1.seal compares exact lifecycle active ids with profile owner status ids; r43_structure_replay previously emitted status rows only for identities present in core factors, omitting lifecycle-active identities with no core/profile history. Actual bars remain separately conserved from ACTUAL_TRADED source counts.",
-    "fix_files": [
-      "src/workbench_analysis/r43_structure_replay.py",
-      "src/workbench_analysis/operational_owner_adapter_v1.py",
-      "tests/test_forward_lane_lifecycle_conservation.py"
-    ],
-    "fix": "append lifecycle-only identities into dated status projection with sourced ACTUAL_TRADED/SUSPENDED/DATA_GAP or UNKNOWN; actual_bar_present only true for ACTUAL_TRADED; duplicate IDs/date mismatch fail closed; no bars fabricated or identities deleted.",
-    "targeted_tests": {
-      "command": "E:\\python\\python.exe -m pytest -q tests\\test_forward_lane_lifecycle_conservation.py",
-      "result": "2 passed in 0.60s"
+    "disposition": "PASS_WITH_REAL_CLOCK_WAIT",
+    "code_fix": "conserve_lifecycle_status_rows unions all source-active IDs, validates identity/date conservation, maps unsupported states to UNKNOWN, and only marks ACTUAL_TRADED as an actual bar.",
+    "source_replay": {
+      "trade_date": "2026-10-21",
+      "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "lifecycle_rows": 5224,
+      "input_status_rows": 5224,
+      "projected_status_rows": 5224,
+      "profile_rows": 5224,
+      "core_rows": 5224,
+      "raw_rows": 5216,
+      "source_lifecycle_ids_missing_from_current_status": 0
     },
-    "frozen_capture_replay": "Not rerun end-to-end; no 10/22 first-capture eligibility. 28766 focus DOM reports first capture absent/not admitted; no LIVE_OOS promotion.",
-    "PG_fixture": "Not executed; status remains PARTIAL pending a source-replay PG fixture/readback."
-  },
-  "R4_D": {
-    "disposition": "PARTIAL",
-    "ui": {
-      "base_url": "http://127.0.0.1:28766/v4/research",
-      "snapshot_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
-      "context_trade_date": "2026-10-21",
-      "entries": [
-        {
-          "name": "home",
-          "path": "/home",
-          "dom_status": "loaded",
-          "observed": [
-            "股票5224",
-            "行业与概念400",
-            "事件雷达413（明确非正式Priority）",
-            "历史研究观察73115",
-            "到期结算3260",
-            "轮动Owner 400/400"
-          ],
-          "actual_value": "Cross-domain counts and identified fail-closed state for online first capture."
-        },
-        {
-          "name": "market",
-          "path": "/market",
-          "dom_status": "partial",
-          "observed": [
-            "正式市场四轴未发布",
-            "market breadth/index/limits widgets show 筛选参数无效"
-          ],
-          "api_evidence": {
-            "status": 400,
-            "code": "INVALID_OPERATIONAL_QUERY",
-            "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH"
-          }
-        },
-        {
-          "name": "sectors",
-          "path": "/sectors",
-          "dom_status": "loaded_but_partial",
-          "observed": [
-            "sector table populated with real 10/21 TDX industry rows and member counts",
-            "maturity/health fields show UNKNOWN: sector lifecycle pg owner unavailable"
-          ],
-          "example": "煤炭 INDUSTRY:T0101; mapped/source members 32/32; 20-session RS 9.524 (research proxy)"
-        },
-        {
-          "name": "stocks",
-          "path": "/stocks",
-          "dom_status": "loaded_but_partial",
-          "observed": [
-            "real stock rows and prices rendered",
-            "qualification fields UNKNOWN because formal operational source unpublished"
-          ],
-          "example": "三一重能 SH.688349 close 13.580; qualification UNKNOWN"
-        },
-        {
-          "name": "focus",
-          "path": "/focus",
-          "dom_status": "partial",
-          "observed": [
-            "reconstructed read-only focus events populated",
-            "first capture not admitted; 2026-10-22 T0 capture missing; historical candidates excluded from formal queue",
-            "Forward settlement and FEP sections show connection interrupted"
-          ]
-        },
-        {
-          "name": "forward",
-          "path": "/forward",
-          "dom_status": "partial",
-          "observed": [
-            "historical sample 73115",
-            "online first capture WAIT_REAL_FIRST_CAPTURE",
-            "settled aggregate 3260",
-            "date/rule/status filters and pagination visible; first page 5624 for 10/21"
-          ]
-        }
-      ],
-      "dom_notes": "Full visible DOM was read from the browser tab using accessibility snapshots / rendered body text; no screenshot file was retained. Browser was locally bound to 28766; 28765 was not used."
-    },
-    "transport_api_checks": {
-      "home": 200,
-      "stocks": 200,
-      "sectors": 200,
-      "focus": 200,
-      "forward_statistics": 200,
-      "market_breadth": {
-        "http": 400,
-        "code": "INVALID_OPERATIONAL_QUERY",
-        "reason": "CANDIDATE_PRODUCT_HEAD_BINDING_MISMATCH"
+    "pg_temp_fixture_readback": {
+      "table": "r4_lifecycle_fixture (TEMP, ON COMMIT DROP)",
+      "rows": 5225,
+      "distinct_ids": 5225,
+      "false_actual_bar_claims": 0,
+      "lifecycle_only_rows": 1,
+      "synthetic_fixture": {
+        "security_id": "SEC-R4-LIFECYCLE-FIXTURE-ONLY",
+        "source_status": "DATA_GAP",
+        "projected_status": "DATA_GAP",
+        "core_present": false,
+        "profile_present": false,
+        "raw_present": false,
+        "actual_bar_present": false
       }
     },
-    "data_facts": {
-      "context_token": "f8c09d96f7200e2b1cab2b140393297b1fcc31511a97c3b6fa3e0970c5686430",
-      "context_date": "2026-10-21",
-      "home_stocks": 5224,
-      "home_sectors": 400,
-      "home_radar_events": 413,
-      "forward_historical": 73115,
-      "forward_matured_settlement": 3260,
-      "sector_rows": 400,
-      "stock_rows": 5224,
-      "focus_events": 413
+    "live_capture_state": "WAIT_REAL_FIRST_CAPTURE; no 10/22 backfill."
+  },
+  "R4_D": {
+    "disposition": "PARTIAL — six pages and real candidate data render; some routes fail closed due missing exact Owner bindings",
+    "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+    "visible_routes": [
+      "home",
+      "market",
+      "sectors",
+      "stocks",
+      "focus",
+      "forward"
+    ],
+    "home_counts": {
+      "stocks": 5224,
+      "sectors": 400,
+      "non_formal_radar": 413,
+      "forward_history": 73115,
+      "matured_observations": 3260
     },
-    "actual_fail_closed_observations": [
-      "Market breadth/index/limits endpoint reports candidate product/head binding mismatch and is not substituted with another date.",
-      "Sector lifecycle maturity/health is UNKNOWN while PG owner is unavailable.",
-      "Focus first-capture queue explicitly not admitted and missing T0 receipt; settlement/FEP section connection errors.",
-      "Forward first-capture stays WAIT_REAL_FIRST_CAPTURE."
-    ],
-    "not_verified": [
-      "10/19->10/20->10/21 UI date-switch round trip",
-      "searching both SH.601059 and SH.601198 through visible stock filter",
-      "CSV export download data equality",
-      "full Priority 8/400 rejection accounting",
-      "all detail and D/W/M RAW/QFQ paths with captured owner/source SHA"
-    ],
-    "screenshots": [],
-    "visible_dom_capture": "Browser accessibility/visible DOM captured for all six routes; descriptions stored in report. No binary screenshot was created."
+    "read_indexes": {
+      "R1": {
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 3975,
+        "digest": "d6a14a91bdc3a7ebe1f51466bb08c2f8d964b7c63b7ce33fec5a0552ba05dae9"
+      },
+      "R2": {
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 3975,
+        "radar": 413,
+        "digest": "a7829c6feb77118f3afd1e3efcd68c755cd4787bbc0721a1ba2d777e7e9be8e9"
+      },
+      "head_changed": false
+    },
+    "stocks": {
+      "search": "三一重能 returned one result",
+      "pagination": "offset=30 returned page 2",
+      "detail": "三一重能 SH.688349, dated 2026-10-21"
+    },
+    "sector_detail": "煤炭 INDUSTRY:T0101, provenance and proxy-only status visible; unavailable lifecycle fields unknown.",
+    "chart": {
+      "status": "READY",
+      "requested_items": 20,
+      "periods": [
+        "D",
+        "W",
+        "M"
+      ],
+      "price_bases": [
+        "RAW",
+        "QFQ"
+      ],
+      "returned_items": {
+        "D": 427,
+        "W": 92,
+        "M": 22
+      },
+      "W_M_tail": "FORMING_AS_OF",
+      "candidate_non_pit_notice": true
+    },
+    "known_incomplete_subroutes": {
+      "market_four_axis": "exact candidate binding incomplete",
+      "focus_priority": "NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER",
+      "forward_cohort": "NO_AUTHORIZED_COHORT_OWNER",
+      "forward_settlement": "NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE",
+      "first_capture": "WAIT_REAL_FIRST_CAPTURE"
+    },
+    "semantics": "No substitute date or fabricated cohort/priority; unavailable stays unknown."
   },
   "R4_E": {
     "disposition": "PARTIAL",
-    "completed": [
-      "no 10/22 source was used or synthesized",
-      "old 10/19 and 10/20/10/21 immutable owners retained",
-      "prior 10/20 D0 correct aggregate preserved per stored R3 evidence: 141 TRUE / 5033 FALSE / 52 UNKNOWN",
-      "source replacement, PG failure injection, CAS/LAST_GOOD, and comprehensive P95 not run"
+    "preserved_baseline": "10/20 D0 141 TRUE / 5033 FALSE / 52 UNKNOWN from previous evidence; not recomputed from altered source.",
+    "failure_test": "Deterministic streaming gzip test verifies old artifact survives generator exception and temp cleanup; included in 14 targeted tests.",
+    "incremental_replay": "Full 10/21 replay; 610000 period checks; zero oracle diffs.",
+    "not_run": [
+      "source replacement invalidation matrix",
+      "PG/CAS outage and LAST_GOOD recovery",
+      "API P95/load"
     ],
-    "performance": null
+    "data_integrity": "No 10/22 source invented; NON_PIT and previous owners preserved."
   },
   "code_and_ci": {
     "git_diff_check": "PASS",
@@ -1216,5 +1227,20 @@
     "predecessor_comparison": "G:/codex_tmp/batch10_r4_predecessor_comparison.json",
     "dev_service_script": "G:/codex_tmp/batch10r2_28766_1021_d778.py",
     "raw_screenshots": []
+  },
+  "head_before_final_closeout": "2fc53cd658fdbc4c7b6334353b69d18d046f2311",
+  "verification": {
+    "targeted_tests": "14 passed in 0.32s",
+    "git_diff_check": "PASS before final doc edit; rerun before commit",
+    "full_suite": "not run",
+    "dev_ui": "127.0.0.1:28766 candidate preview",
+    "production_ui": "127.0.0.1:28765 not used",
+    "postgresql": "127.0.0.1:5432/market_research existing development database; TEMP lifecycle fixture only",
+    "formal_head_changed": false,
+    "production_scheduler_changed": false
+  },
+  "handoff": {
+    "code_and_closeout_report": "to be pushed on codex/v4-unified-development",
+    "independent_audit": "requested as next review; no production transition authorized"
   }
 }

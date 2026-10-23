@@ -246,6 +246,12 @@ def build_1020(root: Path, base_path: Path, core_binding: dict, adjusted_binding
     folder = root / "data/v4/batch10_r3_rebases/2026-10-20" / f"{label}_{token_hint}"
     _ensure_new(folder)
     candidate = dict(base)
+    # The base may already carry an embedded PG Owner authority.  Rebinding
+    # predecessor owners (or replacing any dated owner below) changes the
+    # candidate source set, so the inherited authority is stale by contract.
+    # Drop only the reference from this new immutable candidate; its old
+    # authority fact remains preserved in PG and the source tree.
+    candidate.pop("native_pg_owner_authority", None)
     owners = dict(base["owners"])
     target = dict(owners[day])
     target.update(raw=owner_manifest["raw"], adjusted=adjusted_binding, core=core_binding,
@@ -349,7 +355,12 @@ def replay_1021(root: Path, predecessor: dict, predecessor_path: Path,
         build_period_oracle(root, candidate, candidate_path, label)
         atomic_json(root, candidate_path, candidate)
         validate(root, candidate)
-        if candidate["predecessor"] != ref(root, predecessor_path):
+        expected_predecessor = ref(root, predecessor_path)
+        # Candidate sealing copies the immutable parent into data/v4/predecessors.
+        # The path is intentionally normalized there; parent identity is its
+        # exact content digest and byte length, not the source file location.
+        if any(candidate["predecessor"].get(key) != expected_predecessor[key]
+               for key in ("sha256", "bytes")):
             raise ValueError("BATCH10_R3_1021_SUCCESSOR_PREDECESSOR_MISMATCH")
         return candidate, candidate_path
     except Exception:

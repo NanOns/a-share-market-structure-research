@@ -320,6 +320,13 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
     isolated_history=None
     def __init__(self,api,legacy,*,isolated_history_authority=None,chart_history_index_root=None,chart_history_extension_binding=None,market_fact_index_root=None):
         super().__init__(api,legacy)
+        self.isolated_history=None
+        self.chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
+        self.chart_history_extension_binding=chart_history_extension_binding
+        self.market_fact_index_root=Path(market_fact_index_root).resolve() if market_fact_index_root is not None else None
+        if isolated_history_authority is not None:
+            from .isolated_history_read_r4 import load
+            self.isolated_history=load(api,isolated_history_authority)
 
     def _candidate_lifecycle(self):
         """Return cached 10/14 lifecycle calculated from this token's dated Owners."""
@@ -442,13 +449,6 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         evidence_scope=result['evidence_scope'],AS_RECORDED=False,PIT_ELIGIBLE=False,
                         production_admission=False))
         return rows
-        self.isolated_history=None
-        self.chart_history_index_root=Path(chart_history_index_root).resolve() if chart_history_index_root is not None else None
-        self.chart_history_extension_binding=chart_history_extension_binding
-        self.market_fact_index_root=Path(market_fact_index_root).resolve() if market_fact_index_root is not None else None
-        if isolated_history_authority is not None:
-            from .isolated_history_read_r4 import load
-            self.isolated_history=load(api,isolated_history_authority)
 
     def _read_index_r2(self,day):
         """Cache only the immutable binding; each PG read still attests its digest and database."""

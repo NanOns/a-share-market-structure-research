@@ -10,11 +10,13 @@ from __future__ import annotations
 import argparse
 import ast
 import hashlib
+import importlib.util
 from collections import deque
 import json
 import re
 import subprocess
 import sys
+import sysconfig
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,6 +91,92 @@ def module_map(files: list[str]) -> dict[str, str]:
     return result
 
 
+def _parents(tree: ast.AST) -> dict[ast.AST, ast.AST]:
+    return {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+
+
+def _scope_nodes(scope: ast.AST):
+    """Walk one lexical scope without borrowing assignments from nested scopes."""
+    stack = [scope]
+    while stack:
+        node = stack.pop()
+        yield node
+        for child in ast.iter_child_nodes(node):
+            if child is not scope and isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef,
+                                                         ast.ClassDef, ast.Lambda)):
+                continue
+            stack.append(child)
+
+
+def _string_values(node: ast.AST) -> tuple[str, ...] | None:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return (node.value,)
+    if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+        values = [item.value for item in node.elts
+                  if isinstance(item, ast.Constant) and isinstance(item.value, str)]
+        if len(values) == len(node.elts) and values:
+            return tuple(values)
+    return None
+
+
+def dynamic_import_targets(call: ast.Call, parents: dict[ast.AST, ast.AST]) -> tuple[str, ...]:
+    """Resolve literal names and simple, finite local import allowlists."""
+    if not call.args:
+        return ()
+    argument = call.args[0]
+    direct = _string_values(argument)
+    if direct is not None:
+        return direct
+    if not isinstance(argument, ast.Name):
+        return ()
+    cursor = parents.get(call)
+    while cursor is not None:
+        iterable = None
+        targets = ()
+        if isinstance(cursor, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+            for generator in cursor.generators:
+                if any(isinstance(target, ast.Name) and target.id == argument.id
+                       for target in ast.walk(generator.target)):
+                    iterable = generator.iter
+                    targets = (generator.target,)
+                    break
+        elif isinstance(cursor, (ast.For, ast.AsyncFor)):
+            targets = (cursor.target,)
+            iterable = cursor.iter
+        if iterable is not None and (any(isinstance(target, ast.Name) and target.id == argument.id
+                                         for target in targets) or
+                                     any(isinstance(item, ast.Name) and item.id == argument.id
+                                         for target in targets for item in ast.walk(target))):
+            values = _string_values(iterable)
+            if values is not None:
+                return values
+            if isinstance(iterable, ast.Name):
+                binding_name = iterable.id
+            else:
+                return ()
+            scope = next((item for item in _ancestor_nodes(cursor, parents)
+                          if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Module))), None)
+            if scope is None:
+                return ()
+            assignments = []
+            for item in _scope_nodes(scope):
+                if isinstance(item, ast.Assign) and any(isinstance(target, ast.Name) and target.id == binding_name
+                                                        for target in item.targets):
+                    assignments.append(item.value)
+                elif isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name) and item.target.id == binding_name:
+                    assignments.append(item.value)
+            return _string_values(assignments[0]) if len(assignments) == 1 else ()
+        cursor = parents.get(cursor)
+    return ()
+
+
+def _ancestor_nodes(node: ast.AST, parents: dict[ast.AST, ast.AST]):
+    cursor = node
+    while cursor in parents:
+        cursor = parents[cursor]
+        yield cursor
+
+
 def imports(path: Path, rel: str, modules: dict[str, str]) -> set[str]:
     try: tree = ast.parse(path.read_text(encoding="utf-8-sig"))
     except (SyntaxError, UnicodeError, OSError): return set()
@@ -96,6 +184,7 @@ def imports(path: Path, rel: str, modules: dict[str, str]) -> set[str]:
     package = rel.split("/")[:-1]
     if package and package[0] == "src": package = package[1:]
     base = ".".join(package)
+    parents = _parents(tree)
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for n in node.names:
@@ -112,11 +201,37 @@ def imports(path: Path, rel: str, modules: dict[str, str]) -> set[str]:
         elif isinstance(node,ast.Call):
             name=ast.unparse(node.func)
             if name in {'__import__','importlib.import_module','runpy.run_module','runpy.run_path'} and node.args:
-                target=node.args[0]
-                if isinstance(target,ast.Constant) and isinstance(target.value,str):
-                    if target.value in modules:found.add(modules[target.value])
-                    elif name=='runpy.run_path' and target.value in modules.values():found.add(target.value)
+                for target in dynamic_import_targets(node,parents):
+                    if target in modules:found.add(modules[target])
+                    elif name=='runpy.run_path' and target in modules.values():found.add(target)
     return found
+
+
+def is_standard_library_module(name: str | None) -> bool:
+    """Recognize literal stdlib imports without treating third-party modules as resolved."""
+    if not name or not isinstance(name, str):
+        return False
+    top_level = name.partition(".")[0]
+    if top_level not in sys.stdlib_module_names:
+        return False
+    try:
+        spec = importlib.util.find_spec(name)
+    except (ImportError, ModuleNotFoundError, ValueError):
+        return False
+    if spec is None:
+        return False
+    if spec.origin in {"built-in", "frozen"}:
+        return True
+    if not spec.origin:
+        return False
+    try:
+        origin = Path(spec.origin).resolve()
+        stdlib_root = Path(sysconfig.get_path("stdlib")).resolve()
+        site_roots = [Path(sysconfig.get_path(key)).resolve()
+                      for key in ("purelib", "platlib") if sysconfig.get_path(key)]
+        return origin.is_relative_to(stdlib_root) and not any(origin.is_relative_to(site) for site in site_roots)
+    except (OSError,TypeError,ValueError):
+        return False
 
 
 def runtime_graph(files: list[str]) -> tuple[set[str], dict[str, list[str]], list[str], dict[str, list[str]]]:
@@ -410,17 +525,24 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
         except (OSError,UnicodeError):continue
         try:tree=ast.parse(body)
         except (SyntaxError,UnicodeError):continue
+        parents=_parents(tree)
         for node in ast.walk(tree):
             if not isinstance(node,ast.Call):continue
             name=ast.unparse(node.func)
             if name not in {'importlib.import_module','__import__','runpy.run_path','runpy.run_module','eval','exec'}:continue
             if rel not in dynamic_sites:dynamic_sites.append(rel)
+            targets=dynamic_import_targets(node,parents)
             literal=bool(node.args and isinstance(node.args[0],ast.Constant) and isinstance(node.args[0].value,str))
             target=node.args[0].value if literal else None
-            resolved=literal and (target in modules or name=='runpy.run_path' and target in modules.values())
+            local_resolved=bool(targets) and all(value in modules or name=='runpy.run_path' and value in modules.values() for value in targets)
+            stdlib_resolved=(bool(targets) and name in {'__import__','importlib.import_module'}
+                             and all(is_standard_library_module(value) for value in targets))
             dynamic_edges.append(dict(file=rel,line=node.lineno,function=name,
-                runtime_reachable=rel in reachable,target=node.args[0].value if literal else None,
-                status='LITERAL_IMPORT_RESOLVED' if resolved else 'UNRESOLVED'))
+                runtime_reachable=rel in reachable,target=target,targets=list(targets) or None,
+                status=('LITERAL_IMPORT_RESOLVED' if local_resolved and literal else
+                        'FINITE_ALLOWLIST_IMPORTS_RESOLVED' if local_resolved else
+                        'LITERAL_STDLIB_IMPORT_RESOLVED' if stdlib_resolved and literal else
+                        'FINITE_STDLIB_IMPORTS_RESOLVED' if stdlib_resolved else 'UNRESOLVED')))
     summary = {"files_scanned": len(files), "source_python": counts["python"], "source_js": counts["javascript"],
         "runtime_scripts": counts["runtime_scripts"], "config": counts["config"], "sql": counts["sql"], "ui": counts["ui"],
         "active_reachable": sum(1 for x in reachable if x in files),

@@ -24,6 +24,8 @@ from workbench_analysis.r8_candidate_append_comparator import _digest, compare_c
 from workbench_analysis.operational_successor_release_v1 import _commit_pointers
 from workbench_db.v4_native import connection
 from workbench_db.v4_r8_publication_bridge_v1 import prepare_schema, publish_candidate
+from workbench_analysis.d0_source_seal_r2 import independent_pg_readback as d0_pg_readback
+from workbench_analysis.d0_source_seal_r2 import publish_candidate as publish_d0_candidate
 from workbench_analysis.r43_owner_replay import checked, ref
 from workbench_analysis.tdx_official_daily_source import _atomic_write
 
@@ -117,7 +119,8 @@ def rollback_drill(root: Path, candidate: dict, candidate_path: Path, schema: st
     joint_before = joint.read_bytes() if joint.is_file() else None
     with connection(schema) as pg:
         rows_before = pg.execute("SELECT count(*) FROM r8_publications WHERE candidate_token=%s", (token,)).fetchone()[0]
-    transaction = candidate_path.parent / "ROLLBACK_DRILL_TRANSACTION.json"
+    transaction = candidate_path.parent / ("ROLLBACK_DRILL_TRANSACTION.json" if rows_before == 0 else
+        f"ROLLBACK_DRILL_TRANSACTION_RETRY_{rows_before}.json")
     try:
         _commit_pointers(root, head, joint, transaction, candidate, before, predecessor_path,
                          {"r8_publication_contract": "V4_R8_REAL_APPEND_PG_RECEIPT_R2"},
@@ -143,7 +146,8 @@ def rollback_drill(root: Path, candidate: dict, candidate_path: Path, schema: st
              "formal_head_modified": False, "production_accepted": False,
              "candidate_only": True, "failed_callback_is_deliberate_test_fault": True,
              "failed_transaction_sha256": _sha(transaction.read_bytes())}
-    path = candidate_path.parent / "R8_CAS_ROLLBACK_DRILL_R1.json"
+    path = candidate_path.parent / ("R8_CAS_ROLLBACK_DRILL_R1.json" if rows_before == 0 else
+        f"R8_CAS_ROLLBACK_DRILL_R1_RETRY_{rows_before}.json")
     if path.exists():
         if json.loads(path.read_bytes()) != value:
             raise ValueError("PRESERVE_EXISTING_R8_ROLLBACK_EVIDENCE")
@@ -181,9 +185,29 @@ def run(root: Path, candidate_path: Path, baseline_path: Path) -> dict:
     os.environ["R4_NATIVE_ISOLATION"] = "1"
     publication = publish_candidate(root, candidate, append_evidence_binding=g123,
                                     rollback_evidence_binding=rollback, readback=http_readback)
+    if candidate.get("AS_RECORDED") is not False or candidate.get("PIT_ELIGIBLE") is not False:
+        raise ValueError("BATCH10_R3_D0_HISTORICAL_FLAGS_MUST_REMAIN_NON_PIT")
+    existing_d0 = d0_pg_readback(candidate["accepted_trade_date"], digest(candidate))
+    if existing_d0.get("status") == "PG_BINDING_PRESENT":
+        d0_publication = {"status": "ALREADY_PRESENT"}
+        d0_readback = existing_d0
+    else:
+        d0_publication = publish_d0_candidate(repository_root=REPO, candidate_root=root,
+            candidate=candidate, trade_date=candidate["accepted_trade_date"],
+            candidate_token=digest(candidate))
+        d0_readback = d0_pg_readback(candidate["accepted_trade_date"], digest(candidate))
+    if d0_readback.get("status") != "PG_BINDING_PRESENT":
+        raise ValueError("BATCH10_R3_D0_RESTRICTED_PG_READBACK_FAILED:" + str(d0_readback.get("status")))
     return {"candidate_token": digest(candidate), "trade_date": candidate["accepted_trade_date"],
             "pg_schema": schema, "pg_database_identity": identity,
-            "r8_publication": publication, "production_accepted": False}
+            "r8_publication": publication,
+            "d0_publication": d0_publication,
+            "d0_readback": {"status": d0_readback.get("status"),
+                "fact_rows": d0_readback.get("fact_rows"),
+                "fact_digest_readback": d0_readback.get("fact_digest_readback"),
+                "production_admission": False, "as_recorded": False,
+                "pit_eligible": False},
+            "production_accepted": False}
 
 
 def main() -> None:

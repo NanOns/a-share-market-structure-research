@@ -205,7 +205,8 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
             or rollback.get("status") != "PASS" or rollback.get("candidate_token") != digest(candidate)
             or rollback.get("head_restored_exactly") is not True
             or rollback.get("last_good_head_sha256") != candidate["predecessor"]["sha256"]
-            or rollback.get("publication_rows_after_failure") != 0):
+            or rollback.get("publication_rows_before_failure") not in (0, 1)
+            or rollback.get("publication_rows_after_failure") != rollback.get("publication_rows_before_failure")):
         raise ValueError("R8_CAS_ROLLBACK_EVIDENCE_REQUIRED")
 
     token = digest(candidate)
@@ -239,6 +240,52 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
         _atomic_write(archive, before, tdx_root=Path("D:/new_tdx"))
         coordination = dict(current_joint=joint_binding, current_joint_predecessor=joint_previous,
             r8_publication_contract=CONTRACT)
+
+        # A failed same-token HTTP readback leaves an append-only PENDING PG
+        # row and an ABORTED event after restoring the exact predecessor. Keep
+        # that attempt in the audit trail and permit a retry only when both
+        # the prior transaction and the still-pending row prove that rollback.
+        # A token rejected by independent G4 remains terminal.
+        retry_after_aborted = None
+        with connection(schema, read_only=True) as pg:
+            prior_row = pg.execute("SELECT candidate_token,trade_date::text,predecessor_head_sha256,candidate_head_sha256,owner_authority_sha256,source_freeze_sha256,readback FROM r8_publications WHERE candidate_token=%s", (token,)).fetchone()
+            prior_event = pg.execute("SELECT event_id,event_type,row_sha256,evidence FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1", (token,)).fetchone()
+        if prior_event is not None:
+            if prior_event[1] != "ABORTED" or prior_event[3].get("reason") != "PUBLISH_CALLBACK_FAILED":
+                raise ValueError("R8_EXISTING_PUBLICATION_EVENT_NOT_RETRYABLE")
+            pending_readback = {"status":"PENDING", "context_token":token, "accepted_trade_date":day,
+                "production_accepted":False, "read_scope":"DEVELOPMENT_CANDIDATE_PREVIEW"}
+            expected_row = (token, day, expected, token, owner_authority["sha256"], source_freeze["sha256"], pending_readback)
+            if prior_row != expected_row:
+                raise ValueError("R8_ABORTED_RETRY_PENDING_ROW_MISMATCH")
+            prior_row_sha = _sha(_canonical([*prior_row[:6], prior_row[6]]))
+            if prior_event[2] != prior_row_sha:
+                raise ValueError("R8_ABORTED_RETRY_EVENT_ROW_MISMATCH")
+            if not transaction.is_file():
+                raise ValueError("R8_ABORTED_RETRY_TRANSACTION_MISSING")
+            prior_transaction_bytes = transaction.read_bytes()
+            prior_transaction = json.loads(prior_transaction_bytes)
+            if (prior_transaction.get("state") != "ROLLED_BACK"
+                    or prior_transaction.get("failed_token") != token
+                    or prior_transaction.get("predecessor", {}).get("sha256") != expected):
+                raise ValueError("R8_ABORTED_RETRY_ROLLBACK_PROOF_REQUIRED")
+            archive_path = root / "runtime/dynamic_daily/publication_attempt_history" / token / (
+                str(prior_event[0]) + "_" + _sha(prior_transaction_bytes) + ".json")
+            archive_value = {"contract_id":"V4_R8_ABORTED_ATTEMPT_ARCHIVE_R1",
+                "candidate_token":token, "event_id":prior_event[0], "event_row_sha256":prior_event[2],
+                "original_transaction_sha256":_sha(prior_transaction_bytes),
+                "original_transaction":prior_transaction}
+            if archive_path.exists():
+                if json.loads(archive_path.read_bytes()) != archive_value:
+                    raise ValueError("PRESERVE_IMMUTABLE_R8_ABORTED_ATTEMPT_ARCHIVE")
+            else:
+                atomic_json(root, archive_path, archive_value)
+            retry_after_aborted = {"previous_event_id":prior_event[0],
+                "previous_event_row_sha256":prior_event[2],
+                "previous_transaction_sha256":_sha(prior_transaction_bytes),
+                "previous_transaction_archive":ref(root, archive_path)}
+        elif prior_row is not None:
+            raise ValueError("R8_EXISTING_UNFINALIZED_PUBLICATION_REQUIRES_ABORT_EVENT")
 
         def verified_readback(current_candidate):
             candidate_head_sha = sha256_file(head)
@@ -298,11 +345,20 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
             if row is None:
                 raise ValueError("R8_PUBLICATION_PG_ROW_MISSING_AFTER_FINALIZE")
             row_sha = _sha(_canonical([*row[:6], row[6]]))
-            existing = pg.execute("SELECT event_type,row_sha256 FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1", (token,)).fetchone()
+            existing = pg.execute("SELECT event_id,event_type,row_sha256,evidence FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1", (token,)).fetchone()
             if existing is None:
                 pg.execute("INSERT INTO r8_publication_events(candidate_token,event_type,row_sha256,evidence) VALUES(%s,'FINALIZED',%s,%s)",
                     (token,row_sha,Jsonb({"transaction_sha256": _sha(transaction.read_bytes()), "readback": finalized_readback})))
-            elif existing != ("FINALIZED", row_sha):
+            elif existing[1] == "FINALIZED" and existing[2] == row_sha:
+                pass
+            elif (existing[1] == "ABORTED" and existing[2] == row_sha
+                    and retry_after_aborted is not None
+                    and existing[0] == retry_after_aborted["previous_event_id"]):
+                pg.execute("INSERT INTO r8_publication_events(candidate_token,event_type,row_sha256,evidence) VALUES(%s,'FINALIZED',%s,%s)",
+                    (token,row_sha,Jsonb({"transaction_sha256": _sha(transaction.read_bytes()),
+                        "readback": finalized_readback,
+                        "retry_after_aborted_attempt":retry_after_aborted})))
+            else:
                 raise ValueError("R8_PUBLICATION_FINALIZATION_CONFLICT")
         receipt_path = root / FOLDER / "receipts" / (token + ".json")
         receipt = dict(contract_id=CONTRACT, version="2.0.0", status="PASS", trade_date=day,
@@ -312,6 +368,7 @@ def publish_candidate(root, candidate, *, append_evidence_binding, rollback_evid
             pg_row_sha256=row_sha, owner_authority=owner_authority, source_freeze=source_freeze,
             publication_transaction=ref(root, transaction), readback=finalized_readback,
             pg_readback_match=True, cas_result="APPLIED", write_count=1, duplicate_write_count=0,
+            retry_after_aborted_attempt=retry_after_aborted,
             last_good_preserved_on_failure=True, rollback_drill=rollback_evidence_binding)
         atomic_json(root, receipt_path, receipt)
         final_comparison = compare_candidate_append(**dict(evidence["comparator_input"],

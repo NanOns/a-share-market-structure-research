@@ -635,5 +635,56 @@
     "page_state": "RENDERED_READ_ONLY",
     "selected_date": "2026-10-21",
     "url": "http://127.0.0.1:28766/v4/research/focus"
+  },
+  "post_design_code_scan": {
+    "cutoff_file": "G:/codex work/大A交易_交付/项目规范与技术数据库设计_评审稿.md",
+    "cutoff_last_write": "2026-10-19T16:01:32+08:00",
+    "scanned_branch_head": "685e32631ef70fc098a2ea29732df91d2222758d",
+    "post_cutoff_commits": {
+      "active_branch": 90,
+      "cleanup_branch_only": 29,
+      "total_across_scanned_refs": 119
+    },
+    "active_branch_diff": {
+      "base": "7ae514d5ab8adc0fe2da0e957799dfd2ac4b8136",
+      "files_changed": 260,
+      "insertions": 477720,
+      "deletions": 7260,
+      "src_files": 51,
+      "scripts_files": 16,
+      "tests_files": 38
+    },
+    "result": "STATIC_SCAN_CONFIRMED_RUNTIME_DATE_LITERALS; FULL_SEMANTIC_REVIEW_NOT_PERFORMED",
+    "confirmed_business_findings": [
+      "corrected_owner_pipeline.py target_date default 2026-10-08",
+      "r6_candidate_market_stress.py cutoff 2026-10-14 and fixed sessions 2026-10-12..2026-10-14",
+      "r7_frozen_invalidation_v2.py cutoff 2026-10-14",
+      "core-product-r1/app.js fixed market_stress key 2026-10-14",
+      "research/app.js fixed date text 2026-10-12"
+    ],
+    "added_prefixed_security_ids_in_changed_src": [],
+    "added_sample_security_ids_in_changed_test_or_evidence_scripts": [
+      "SH.688411 in capture_batch10_r3_api_matrix.py and finalize_batch10_r3_evidence.py",
+      "688349 plus fixed date in evidence_post_r4_runtime.py"
+    ],
+    "removed_one_off_r5_scripts": [
+      "scripts/audit_batch10_r5_lifecycle_pg_fixture.py",
+      "scripts/audit_batch10_r5_publication_readiness.py"
+    ],
+    "scan_report": "docs/evidence/functional_r8_implementation_20261021/POST_DESIGN_CODE_GENERALITY_SCAN_20261023.md",
+    "policy_updates": [
+      "AGENTS.md",
+      "PROJECT_SPEC.md",
+      "G:/codex work/大A交易_交付/项目规范与技术数据库设计_评审稿.md"
+    ],
+    "test_suite_run": false,
+    "scan_date": "2026-10-23",
+    "frontend_locale_check": "MAIN_WORKBENCH_AND_RESEARCH_ENTRY_HTML_DECLARE_ZH_CN; FULL_UI_TEXT_AUDIT_NOT_PERFORMED",
+    "git_human_text_encoding": {
+      "commit_encoding": "UTF-8",
+      "log_output_encoding": "UTF-8",
+      "quote_path": false,
+      "commit_message_language": "简体中文"
+    }
   }
 }

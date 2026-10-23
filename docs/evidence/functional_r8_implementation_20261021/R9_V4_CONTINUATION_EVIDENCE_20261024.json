@@ -1,0 +1,176 @@
+{
+  "contract_id": "V4_R9_CONTINUATION_REPAIR_EVIDENCE_V1",
+  "language": "zh-CN",
+  "recorded_at": "2026-10-23T23:24:11Z",
+  "status": "V4代码续修已提交；运行闭包扫描与历史回放门禁仍阻断",
+  "scope": {
+    "description": "现役V4功能模块及实际调用依赖；V1-V3独立旧功能不纳入重构",
+    "entrypoint_contract": "config/v4_active_runtime_entrypoints_v1.json",
+    "entrypoint_inventory_status": "SOURCE_VERIFIED",
+    "entrypoint_count": 7,
+    "reachable_file_count": 652,
+    "whole_repository_file_count_used_for_static_graph_input": 3973,
+    "whole_repository_count_is_not_v4_defect_count": true
+  },
+  "git": {
+    "branch": "codex/v4-unified-development",
+    "base_before_continuation": "ca7f71b62278cc32c81eca6702fb6fb3ce0fdb04",
+    "code_commit": "e95b3be0d2f35cf731d868dfb3849bb5513c13e1",
+    "remote_before_push": "ca7f71b62278cc32c81eca6702fb6fb3ce0fdb04"
+  },
+  "repairs": [
+    {
+      "path": "src/workbench_analysis/r6_candidate_market_stress.py",
+      "items": [
+        "Skip historical R5 materialization glob when the exact dated limit receipt exists.",
+        "Use the exact predecessor Core Owner identity set before falling back to the bound historical universe."
+      ]
+    },
+    {
+      "path": "src/workbench_analysis/r43_owner_replay.py",
+      "items": [
+        "Bind the exact acquisition receipt into Core Owner source bindings.",
+        "Guard output writes against every configured read-only TDX root and reject a missing root configuration."
+      ]
+    },
+    {
+      "path": "src/workbench_analysis/r43_structure_replay.py",
+      "items": [
+        "Use the acquisition bound to the current Core Owner for provider-status facts.",
+        "Require the query date and derive status dates from the dated source query.",
+        "Accept the current membership snapshot injected by the operational adapter; retain frozen snapshot only in explicit legacy replay."
+      ]
+    },
+    {
+      "paths": [
+        "src/workbench_analysis/operational_owner_adapter_v1.py",
+        "src/workbench_analysis/r43_focus_replay.py",
+        "src/workbench_analysis/corrected_owner_replay.py",
+        "src/workbench_analysis/corrected_focus_replay.py",
+        "src/workbench_analysis/corrected_sector_replay.py"
+      ],
+      "items": [
+        "Resolve TDX read/write protection roots from the configured runtime contract.",
+        "Require one exact date-matched Industry query and fail closed on absent, duplicate, or payload-less query records."
+      ]
+    }
+  ],
+  "verification": {
+    "v4_targeted_command": "pytest -q tests/v4_joint tests/test_corrected_owner_replay_r4.py tests/test_r43_streaming_gzwrite.py tests/test_v4_r6_batch10_defect_repairs.py",
+    "v4_targeted": {
+      "passed": 105,
+      "skipped": 3,
+      "failed": 0,
+      "elapsed_seconds": 2.22
+    },
+    "extended_historical_command": "pytest -q tests/v4_joint tests/v4_dm01_r3 tests/test_corrected_owner_replay_r4.py tests/test_r43_streaming_gzwrite.py tests/test_v4_r6_batch10_defect_repairs.py",
+    "extended_historical": {
+      "passed": 130,
+      "skipped": 3,
+      "failed": 4,
+      "elapsed_seconds": 20.67,
+      "failure_root_cause": "Three parametrized durability cases plus one masked namespace assertion fail at the same frozen runtime source binding for scripts/v4_02_build_raw_selected_v2.py."
+    },
+    "git_diff_check": "PASS",
+    "fixed_identity_date_scan_of_added_business_lines": {
+      "new_security_or_sector_literals": 0,
+      "new_business_date_branches": 0,
+      "retained_literal": {
+        "path": "src/workbench_analysis/r43_structure_replay.py",
+        "literal": "docs/evidence/r4_3_four_session_closeout_20261009/MEMBER_SNAPSHOT_S.json",
+        "reason": "Explicit legacy historical replay fallback; operational adapter supplies the current dated snapshot."
+      }
+    }
+  },
+  "market_candidate_ab": {
+    "input_root": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020",
+    "input_head": "data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json",
+    "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+    "candidate_scope": "V4_R9_CANDIDATE_OWNER_SCOPE_V1",
+    "window": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "order": "continued version first, baseline version second; OS file cache may favor the second run",
+    "continued_version": {
+      "commit": "e95b3be0d2f35cf731d868dfb3849bb5513c13e1",
+      "elapsed_seconds": 43.027,
+      "status": "READY",
+      "production_admission": false
+    },
+    "baseline_version": {
+      "commit": "ca7f71b62278cc32c81eca6702fb6fb3ce0fdb04",
+      "source_sha256": "8f7aab47f9ed95dd49386df562616f1bb97bf7d297975aeff798991849d01aef",
+      "source_bytes": 39147,
+      "elapsed_seconds": 84.966,
+      "status": "READY",
+      "production_admission": false
+    },
+    "elapsed_reduction_percent": 49.36,
+    "cold_p95": "NOT_ESTIMATED_SINGLE_RUN",
+    "trend": "UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0",
+    "composite": "NOT_PUBLISHED_V4_03",
+    "unscoped_archived_head_attempt": {
+      "status": "FAIL_CLOSED",
+      "reason": "R7_MARKET_CORE_CONSUMED_FIELD_REVISION_REQUIRED:2026-10-20",
+      "included_as_performance_sample": false
+    }
+  },
+  "v4_runtime_literal_scan": {
+    "scanner": "scripts/check_v4_business_literals.py",
+    "entrypoints": 7,
+    "entrypoint_inventory": "SOURCE_VERIFIED",
+    "reachable_files": 652,
+    "reachable_unresolved_literal_candidates": 2211,
+    "reachable_active_violations": 0,
+    "reachable_dynamic_unresolved": 25,
+    "reachable_browser_routes_unresolved": 25,
+    "whole_repository_unverified_maintenance_candidates": 5003,
+    "whole_repository_unresolved_dynamic_including_scripts": 58,
+    "scope_note": "The 5003 and 58 counts include non-reachable maintenance scripts and are not presented as V4 runtime defect counts. Literal candidates require review and are not confirmed defects. The V4 runtime closure gate remains blocked by unresolved candidates and edges."
+  },
+  "historical_contract_mismatch": {
+    "test_path": "tests/v4_dm01_r3/test_metadata_durability.py",
+    "bound_source": "scripts/v4_02_build_raw_selected_v2.py",
+    "expected_sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6",
+    "expected_bytes": 25823,
+    "historical_commit_with_exact_bytes": "38d129a1d749d81cb40d2f88ba95d3ac622b04e6",
+    "current_sha256": "fa4e08b425a4d0f536086fe53bca1a5e2bf10198c7e474d8861b9685ec7a0c72",
+    "current_bytes": 26218,
+    "continuation_changed_bound_source": false,
+    "contract_hash_gate_relaxed": false
+  },
+  "runtime_and_data_boundary": {
+    "pg_listener": {
+      "port": 5432,
+      "pid": 8640
+    },
+    "dev_service_listener": {
+      "port": 28766,
+      "pid": 52916
+    },
+    "production_28765": "NO_LISTENER",
+    "pg_writes_this_continuation": 0,
+    "service_or_windows_restart": false,
+    "formal_or_accepted_head_changed": false,
+    "duckdb_used_this_continuation": false,
+    "tdx_source_written": false,
+    "temporary_storage": "G:/codex_tmp"
+  },
+  "open_items": [
+    "V4 runtime closure: 2211 unresolved literal candidates, 25 unresolved dynamic edges, and 25 browser routes remain to classify or resolve.",
+    "D2 frozen invalidation-price contract: deferred to next ChatGPT independent audit by user instruction.",
+    "D0 source cutoff/seal contract remains unresolved.",
+    "Market trend reference is not bound to current publication; breadth formula adjudication remains open; composite remains NOT_PUBLISHED_V4_03.",
+    "Full new-day Source-to-Core-to-derived chain and G1/G3/PG publication/CAS success plus failure recovery were not rerun.",
+    "10/22 same-day Identity/Member authority and 10/23 BaoStock daily facts are missing; external data/source authority needed.",
+    "New API/UI runtime was not loaded; user prohibited service restart in this round.",
+    "Home cold-start P95, chart and concurrent-compute performance remain unverified.",
+    "Focus Priority ordering rule and Forward LIVE first-capture cohort need business definition/data.",
+    "Cross-source Amount differences require independent audit; 10/09 full historical owner replay lacks a new end-to-end recomputation certificate.",
+    "Four historical DM01 R3 tests remain blocked on exact archived source binding; frozen contract was not weakened."
+  ],
+  "prior_full_report": "R9_INDEPENDENT_AUDIT_REPAIR_REPORT.md",
+  "prior_full_machine_evidence": "R9_INDEPENDENT_AUDIT_REPAIR_EVIDENCE.json"
+}

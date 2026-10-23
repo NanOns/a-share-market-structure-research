@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 
 
-CUTOFF = "2026-09-24"
 BOARDS = ("SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR")
 
 
@@ -17,6 +16,7 @@ class AcceptedInput:
     path: Path
     sha256: str
     contract_id: str
+    source_cutoff: str | None = None
 
 
 def _verify(root: Path, relative: str, digest: str) -> Path:
@@ -59,7 +59,8 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
     )
     if any(head.get("contract_id") != contract for head, contract in expected_contracts):
         raise ValueError("accepted upstream contract mismatch")
-    if any(x.get("source_cutoff") != CUTOFF for x in (v401, v402, v403)):
+    cutoff = v401.get("source_cutoff")
+    if not cutoff or any(x.get("source_cutoff") != cutoff for x in (v402, v403)):
         raise ValueError("accepted source cutoff mismatch")
     if v403.get("external_acceptance") != "EXTERNALLY_ACCEPTED" or v402.get("external_acceptance") != "EXTERNALLY_ACCEPTED":
         raise ValueError("upstream external acceptance missing")
@@ -70,7 +71,11 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
     r4_receipt = _json(root, receipt_ref["path"], receipt_ref["sha256"])
     r4_manifest_ref = r4_receipt["evidence"]["manifest"]
     r4_manifest = _json(root, r4_manifest_ref["path"], r4_manifest_ref["sha256"])
-    v403_receipt_ref = v403["evidence_bindings"]["reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json"]
+    receipt_refs = [ref for name, ref in v403["evidence_bindings"].items()
+                    if name.rsplit("/", 1)[-1].startswith("V4_03_FINAL_STAGE_RECEIPT_R1_")]
+    if len(receipt_refs) != 1:
+        raise ValueError("V4-03 final receipt binding must be unique")
+    v403_receipt_ref = receipt_refs[0]
     v403_receipt = _json(root, v403_receipt_ref["path"], v403_receipt_ref["sha256"])
     if v403_receipt["capabilities"]["STOCK_CORE"] != "PASS":
         raise ValueError("V4-03 stock core not accepted")
@@ -87,5 +92,5 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
     items["factors"] = ({"path": full_path, "sha256": v403_receipt["hashes"]["artifacts"][full_path]}, "V4_03_STOCK_CORE")
     regime_path = "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"
     items["market_regime"] = ({"path": regime_path, "sha256": v403_receipt["hashes"]["artifacts"][regime_path]}, "MARKET_REGIME_V1_PRIMITIVES")
-    return {name: AcceptedInput(_verify(root, ref["path"], ref["sha256"]), ref["sha256"], contract)
+    return {name: AcceptedInput(_verify(root, ref["path"], ref["sha256"]), ref["sha256"], contract, cutoff)
             for name, (ref, contract) in items.items()}

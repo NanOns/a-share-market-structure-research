@@ -19,11 +19,6 @@ from workbench_db.repository import SCHEMA_VERSION, WorkbenchRepository
 
 
 VERSION = "unified-workbench-m1-data-foundation-v1.1"
-FIXED_DATE = "20260904"
-HEADS = {
-    "20260904": "695c7ae5affd4abbb3d86eddb4b154e0",
-    "20260907": "452811b8e0c54c029560aae46c6d3081",
-}
 
 
 def _canonical(value: Any) -> bytes:
@@ -117,6 +112,54 @@ def _all_artifact_comparisons(repository: WorkbenchRepository) -> dict[str, dict
     return comparisons
 
 
+def _source_heads(root: Path) -> dict[str, str]:
+    """Resolve dated publications from current pointers, never a baked-in calendar."""
+    directory = root / "reports/current"
+    candidates = [*directory.glob("*.json")]
+    current = directory / "CURRENT_RELEASE.json"
+    if current.is_file():
+        pointer = json.loads(current.read_text(encoding="utf-8"))
+        latest = pointer.get("latest_release")
+        if isinstance(latest, dict):
+            candidates.append(latest)
+    heads: dict[str, str] = {}
+    for candidate in candidates:
+        if isinstance(candidate, Path):
+            if candidate.name == "CURRENT_RELEASE.json":
+                continue
+            try:
+                value = json.loads(candidate.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+        else:
+            value = candidate
+        trade_date = str(value.get("date") or "")
+        try:
+            normalized = datetime.fromisoformat(trade_date[:10]).date().isoformat()
+        except ValueError:
+            continue
+        run_id = str(value.get("run_id") or "")
+        if not run_id:
+            continue
+        release = root / "reports/releases" / normalized.replace("-", "") / run_id
+        if not (release / "manifest.json").is_file():
+            release = root / "reports/releases" / normalized / run_id
+        if not (release / "manifest.json").is_file():
+            continue
+        heads[normalized] = run_id
+    if not heads:
+        raise RuntimeError("NO_PUBLISHED_RELEASE_POINTERS")
+    return dict(sorted(heads.items()))
+
+
+def _release_path(root: Path, trade_date: str, run_id: str) -> Path:
+    for date_key in (trade_date.replace("-", ""), trade_date):
+        path = root / "reports/releases" / date_key / run_id
+        if (path / "manifest.json").is_file():
+            return path
+    raise FileNotFoundError("PUBLISHED_RELEASE_MANIFEST_MISSING:" + run_id)
+
+
 def _markdown(receipt: dict[str, Any]) -> str:
     return "\n".join([
         "# M1 数据底座验收",
@@ -125,7 +168,7 @@ def _markdown(receipt: dict[str, Any]) -> str:
         f"- Schema：`{receipt['schema_version']}`",
         f"- 数据库：`{receipt['database_path']}`",
         f"- 历史发布：{receipt['publication_count']} 个；日期 {', '.join(receipt['publication_dates'])}",
-        f"- 固定日期逐字段一致：`{receipt['acceptance']['fixed_date_field_equality']}`",
+        f"- 最新发布逐字段一致：`{receipt['acceptance']['latest_publication_field_equality']}`",
         f"- 重复导入无重复：`{receipt['acceptance']['repeat_import_idempotent']}`",
         f"- 单所有者互斥：`{receipt['acceptance']['single_owner_exclusive']}`",
         "",
@@ -142,6 +185,7 @@ def run(root: str | Path) -> dict[str, Any]:
     m0 = json.loads((root / "reports/upgrade_m0/M0_RISK_CONVERGENCE_RECEIPT.json").read_text(encoding="utf-8"))
     if m0.get("final_status") != "FULL_PASS" or not m0.get("phase_accepted"):
         raise RuntimeError("M0_FULL_PASS_REQUIRED")
+    heads = _source_heads(root)
     database = root / "data/database/market_research.duckdb"
     candidate_database = database.with_name("market_research.m1_candidate.duckdb")
     candidate_database.unlink(missing_ok=True)
@@ -149,38 +193,39 @@ def run(root: str | Path) -> dict[str, Any]:
     imports = []
     checks: dict[str, Any] = {}
     with WorkbenchRepository(root, candidate_database) as repository:
-        for revision, (date, run_id) in enumerate(sorted(HEADS.items()), start=1):
-            release = root / "reports/releases" / date / run_id
+        for revision, (date, run_id) in enumerate(heads.items(), start=1):
+            release = _release_path(root, date, run_id)
             imports.append(repository.import_publication(release, revision=revision, make_head=True))
         count_tables = ["publications", "publication_heads", "stock_daily", "sector_daily", "candidate_daily", "market_daily", "structure_details", "queue_memberships", "unified_board", "queue_rankings", "membership_entries", "publication_artifacts"]
         before = {table: repository.table_count(table) for table in count_tables}
         repeat_imports = []
-        for revision, (date, run_id) in enumerate(sorted(HEADS.items()), start=1):
-            repeat_imports.append(repository.import_publication(root / "reports/releases" / date / run_id, revision=revision, make_head=True))
+        for revision, (date, run_id) in enumerate(heads.items(), start=1):
+            repeat_imports.append(repository.import_publication(_release_path(root, date, run_id), revision=revision, make_head=True))
         after = {table: repository.table_count(table) for table in count_tables}
         checks["repeat_import_idempotent"] = before == after and all(item.get("reused") for item in repeat_imports)
         checks["repeat_import_results"] = repeat_imports
-        fixed_id = HEADS[FIXED_DATE]
+        latest_date, latest_id = list(heads.items())[-1]
+        fixed_id = latest_id
         comparisons = {}
         for filename, table, key in (("stocks.csv", "stock_daily", ["security_id"]), ("sectors.csv", "sector_daily", ["sector_id"]), ("candidates.csv", "candidate_daily", ["security_id"])):
-            path = root / "reports/releases" / FIXED_DATE / fixed_id / filename
+            path = _release_path(root, latest_date, fixed_id) / filename
             source = _csv_digest(path, key)
             artifact = repository.connection.execute("SELECT columns_json, logical_sha256, row_count FROM publication_artifacts WHERE publication_id=? AND artifact_name=?", [fixed_id, filename]).fetchone()
             columns = json.loads(artifact[0])
             database_digest = _table_digest(repository, table, fixed_id, columns, key)
             comparisons[filename] = {"source_logical_sha256": source["sha256"], "database_logical_sha256": database_digest["sha256"], "artifact_logical_sha256": artifact[1], "source_rows": source["row_count"], "database_rows": database_digest["row_count"], "columns_equal": source["columns"] == columns, "pass": source["sha256"] == database_digest["sha256"] == artifact[1] and source["row_count"] == database_digest["row_count"] == artifact[2]}
-        checks["fixed_date_field_equality"] = all(value["pass"] for value in comparisons.values())
-        checks["fixed_date_comparisons"] = comparisons
+        checks["latest_publication_field_equality"] = all(value["pass"] for value in comparisons.values())
+        checks["latest_publication_comparisons"] = comparisons
         artifact_comparisons = _all_artifact_comparisons(repository)
-        checks["all_artifact_field_equality"] = len(artifact_comparisons) == 26 and all(
+        checks["all_artifact_field_equality"] = len(artifact_comparisons) == len(heads) * 13 and all(
             value["pass"] for value in artifact_comparisons.values()
         )
         checks["artifact_comparisons"] = artifact_comparisons
         checks["primary_key_uniqueness"] = all(repository.connection.execute(f"SELECT count(*)=count(DISTINCT {key}) FROM {table} WHERE publication_id=?", [fixed_id]).fetchone()[0] for table, key in (("stock_daily", "security_id"), ("sector_daily", "sector_id"), ("candidate_daily", "security_id"), ("unified_board", "security_id")))
         checks["head_only_success"] = repository.connection.execute(
-            "SELECT count(*)=2 AND bool_and(p.status='SUCCESS') AND bool_and(h.trade_date=p.trade_date) "
+            "SELECT count(*)=? AND bool_and(p.status='SUCCESS') AND bool_and(h.trade_date=p.trade_date) "
             "FROM publication_heads h JOIN publications p USING(publication_id)"
-        ).fetchone()[0]
+        , [len(heads)]).fetchone()[0]
         checks["single_owner_exclusive"] = False
         probe = "from pathlib import Path; import sys; sys.path.insert(0,str(Path.cwd()/'src')); from workbench_db.owner import DatabaseOwner,DatabaseOwnerBusy;\ntry: DatabaseOwner(Path(r'%s')).acquire(); raise SystemExit(1)\nexcept DatabaseOwnerBusy: raise SystemExit(0)" % str(candidate_database).replace("\\", "\\\\")
         busy = subprocess.run([sys.executable, "-c", probe], cwd=root, capture_output=True, text=True, timeout=30)
@@ -190,7 +235,7 @@ def run(root: str | Path) -> dict[str, Any]:
         migration_versions = [row[0] for row in repository.connection.execute("SELECT version FROM schema_migrations ORDER BY version").fetchall()]
     test_run = subprocess.run([sys.executable, "-m", "pytest", "-q", "tests/upgrade_m1"], cwd=root, capture_output=True, text=True, timeout=120)
     checks["m1_tests"] = test_run.returncode == 0
-    all_pass = all(bool(checks[name]) for name in ("repeat_import_idempotent", "fixed_date_field_equality", "all_artifact_field_equality", "primary_key_uniqueness", "head_only_success", "single_owner_exclusive", "m1_tests"))
+    all_pass = all(bool(checks[name]) for name in ("repeat_import_idempotent", "latest_publication_field_equality", "all_artifact_field_equality", "primary_key_uniqueness", "head_only_success", "single_owner_exclusive", "m1_tests"))
     if all_pass:
         database.parent.mkdir(parents=True, exist_ok=True)
         os.replace(candidate_database, database)
@@ -210,7 +255,7 @@ def run(root: str | Path) -> dict[str, Any]:
         "database_engine": "DuckDB",
         "publication_count": table_counts["publications"],
         "publication_dates": publication_dates,
-        "head_run_ids": HEADS,
+        "head_run_ids": heads,
         "table_counts": table_counts,
         "imports": imports,
         "acceptance": checks,

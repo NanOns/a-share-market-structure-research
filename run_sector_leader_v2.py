@@ -10,7 +10,8 @@ from phase4_runner import memberships,sector_context
 from shadow_v2.diagnostics import quality_percentiles
 from shadow_v2.sector_leader import RULESET_ID,choose_primary,classify,quality_class,semantic_category,support_counts
 from common.paths import resolve_tdx_root
-CUTOFF="20260904";BASE_RUN="4255c2f108ac4cdabca3e212079d8bf8";TDX_ROOT=resolve_tdx_root(ROOT)
+from production.release import current_release_scope
+CUTOFF=None;BASE_RUN=None;TDX_ROOT=resolve_tdx_root(ROOT)
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def atomic(p,b):
  p.parent.mkdir(parents=True,exist_ok=True);fd,t=tempfile.mkstemp(dir=p.parent,prefix="."+p.name,suffix=".tmp")
@@ -31,6 +32,8 @@ def change_reason(v1,v2,row):
  if row.reacceleration:return "REACCELERATION_PREFERRED"
  return "HIGHER_SECTOR_RS_OR_MEMBER_RS"
 def run(requested="latest"):
+ global CUTOFF,BASE_RUN
+ if CUTOFF is None or BASE_RUN is None:CUTOFF,BASE_RUN=current_release_scope(ROOT)
  if requested!="latest":raise ValueError("SHADOW_LATEST_ONLY")
  pointer=ROOT/"reports/current/CURRENT_RELEASE.json";before=pointer.read_bytes();current=json.loads(before);identity=current["latest_release"]["computation_identity"]["sha256"]
  release=ROOT/f"reports/releases/{CUTOFF}/{BASE_RUN}";v1paths=[release/x for x in ("stocks.csv","candidates.csv","manifest.json")]+[pointer];hashes={str(p.relative_to(ROOT)):sha(p) for p in v1paths}

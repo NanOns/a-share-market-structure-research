@@ -16,8 +16,9 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 from shadow_v2.strong_pullback import RULESET_ID, classify, depth_status, segment_status, volume_status
 
-CUTOFF = "20260904"
-BASE_RUN = "4255c2f108ac4cdabca3e212079d8bf8"
+from production.release import current_release_scope
+CUTOFF = None
+BASE_RUN = None
 
 
 def sha(path):
@@ -58,6 +59,9 @@ def distribution(frame):
 
 
 def run(requested="latest"):
+    global CUTOFF, BASE_RUN
+    if CUTOFF is None or BASE_RUN is None:
+        CUTOFF, BASE_RUN = current_release_scope(ROOT)
     if requested != "latest":
         raise ValueError("SHADOW_LATEST_ONLY")
     pointer = ROOT / "reports/current/CURRENT_RELEASE.json"

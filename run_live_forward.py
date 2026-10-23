@@ -19,12 +19,21 @@ from forward.observation import OBSERVATION_SCHEMA_VERSION,OUTCOME_SCHEMA_VERSIO
 TDX=resolve_tdx_root(ROOT);SEALED_MODEL="cb3bdd356f01dfaad5990a393a44d10149cf81f9805c533219124d773aad8c94"
 MODULES=("run_shadow_v2","run_steady_trend_v2","run_strong_pullback_v2","run_breakout_prep_v2","run_sector_leader_v2","run_early_mover_v2","run_priority_v2")
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sealed_model_identity(root):
+    """Find the sealed model by its approved identity, independent of its run date path."""
+    matches=[]
+    for path in (Path(root)/"reports/shadow/v2").glob("*/integrated/R3_INTEGRATED_SHADOW_IDENTITY.json"):
+        try:value=json.loads(path.read_text(encoding="utf-8"))
+        except (OSError,ValueError):continue
+        if value.get("sha256")==SEALED_MODEL:matches.append(value)
+    if len(matches)!=1:raise RuntimeError("SEALED_MODEL_IDENTITY_NOT_UNIQUE")
+    return matches[0]
 def source_snapshot(tdx):
     paths=[tdx/"T0002/hq_cache"/x for x in ("gbbq","gbbq.map","tdxhy.cfg","tdxzs.cfg","infoharbor_block.dat","shs.tnf","szs.tnf","bjs.tnf")];return {str(p):sha(p) for p in paths if p.exists()}
 class ProductionServices:
     def refresh_forward_evaluation(self,root):return refresh_forward_evaluation(root)
     def identity_layers(self,root):
-        root=Path(root);seal=json.loads((root/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SHADOW_IDENTITY.json").read_text())
+        root=Path(root);seal=sealed_model_identity(root)
         approved=self.model_identity(root);economic_root="/".join(("src","shadow_v2",""))
         files={p:sha(root/p) for p in seal["files"] if p.startswith(economic_root) or (p.startswith("docs/") and "R4_" not in p)}
         economic={"version":"v2-economic-model-identity-v1.0","approval_identity":approved,"files":files}
@@ -90,7 +99,7 @@ class ProductionServices:
         atomic_write_json(root/"reports/workbench/CURRENT_WORKBENCH.json",pointer)
         return {"path":pointer["workbench_path"],"sha256":identity["sha256"],"v1_release_id":release_id}
     def model_identity(self,root):
-        root=Path(root);value=json.loads((root/"reports/shadow/v2/20260904/integrated/R3_INTEGRATED_SHADOW_IDENTITY.json").read_text())
+        root=Path(root);value=sealed_model_identity(root)
         # Entry points also contain classification gates, so every file sealed
         # into the integrated model identity must pass this preflight.
         changed=[p for p,h in value["files"].items() if not (root/p).is_file() or sha(root/p)!=h]

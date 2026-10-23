@@ -38,9 +38,9 @@ def atomic_json(path: Path, value: dict) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--universe", default="data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--output", default="data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--receipt", default="reports/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.json")
+    parser.add_argument("--universe", required=True, help="按交易日排序的全市场身份输入")
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--receipt", required=True)
     parser.add_argument("--contract", default="config/v4_02_dated_trading_status_v1.json")
     parser.add_argument("--ledger", default="reports/v4_baostock/request_ledger.json")
     parser.add_argument("--offline-facts", help="Use an already captured normalized status fact file; do not call BaoStock.")

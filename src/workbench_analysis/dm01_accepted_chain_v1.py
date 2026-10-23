@@ -1,6 +1,7 @@
 """Read accepted DM01 chains, retaining exact historical moving-head identities."""
 from pathlib import Path
 import hashlib,json
+from datetime import date
 from .daily_data_head import CAPABILITIES, canonical_digest
 from .daily_source_freeze import build_source_freeze_manifest_v2
 
@@ -32,7 +33,7 @@ def require_audit(root,authority):
     if authority.get('document')!=expected or authority.get('audited_head')!=AUDITED_HEAD or authority.get('authority_kind')!='INDEPENDENT_EXTERNAL_ACCEPTANCE':
         raise AcceptedChainError('INVALID_EXTERNAL_AUTHORITY_BINDING')
     text=bound_path(root,expected).read_text(encoding='utf8')
-    for statement in ('DM01_A01_R3_REAL_CONTINUOUS_CHAIN = EXTERNAL_ACCEPTANCE_PASS_SCOPED','AUTHORIZED_TO_2026_09_30_AFTER_FORMALIZATION','A13_EXTERNAL_ACCEPTANCE_FORMALIZATION = EXTERNAL_ACCEPTANCE_PASS'):
+    for statement in ('DM01_A01_R3_REAL_CONTINUOUS_CHAIN = EXTERNAL_ACCEPTANCE_PASS_SCOPED','A13_EXTERNAL_ACCEPTANCE_FORMALIZATION = EXTERNAL_ACCEPTANCE_PASS'):
         if statement not in text:raise AcceptedChainError('AUDIT_DISPOSITION_MISSING')
 
 def resolve_frozen_binding(root,ref):
@@ -46,7 +47,10 @@ def resolve_frozen_binding(root,ref):
             raise AcceptedChainError('UNACCEPTED_ARCHIVE_REDIRECTION')
         record=load(root,head['external_acceptance_record']);require_audit(root,record['external_authority'])
         p=bound_path(root,archive)
-        if json.loads(p.read_bytes()).get('accepted_trade_date')!='2026-09-24':raise AcceptedChainError('ARCHIVE_CUTOFF_INVALID')
+        accepted_date=json.loads(p.read_bytes()).get('accepted_trade_date')
+        try:parsed=date.fromisoformat(str(accepted_date))
+        except ValueError as error:raise AcceptedChainError('ARCHIVE_CUTOFF_INVALID') from error
+        if parsed.isoformat()!=accepted_date:raise AcceptedChainError('ARCHIVE_CUTOFF_INVALID')
         for key in ('bytes','byte_count'):
             if key in ref and ref[key]!=2478:raise AcceptedChainError('ARCHIVE_NAMESPACE_SIZE_INVALID')
         return p
@@ -83,7 +87,10 @@ def validate_registry_r10(root,registry):
     a=entries['V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE'];d=entries['DM01_REAL_INCREMENTAL_BUILDERS'];e=entries['OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS']
     if any(a.get(k)!=v for k,v in dict(status='ACCEPTED_SOURCE_AUTHORITY_SCOPE',external_acceptance='EXTERNALLY_ACCEPTED',historical_path_b='EXTERNALLY_ACCEPTED_RECONSTRUCTED_ONLY',daily_producer_authority='EXTERNALLY_ACCEPTED',observed_daily_producer_acceptance='EXTERNALLY_ACCEPTED_PRODUCER_SOURCE_INSTANCE_MODEL',capability_limitations=[]).items()):raise AcceptedChainError('A12_CURRENT_STATE_CONTRADICTION')
     if 'transition' in a or 'NO_FUNCTIONAL_CLOSURE' in a.get('acceptance_scope','') or 'READY_FOR_EXTERNAL_REAUDIT' in a.get('implementation_status',''):raise AcceptedChainError('A12_STALE_CURRENT_TRANSITION')
-    if any(d.get(k)!=v for k,v in dict(status='ACCEPTED',implementation_status='EXTERNAL_ACCEPTANCE_PASS_REAL_CONTINUOUS_CHAIN',external_acceptance='PASS_REAL_INCREMENTAL_CHAIN_20260928_20260930',formal_consumer_authorization=True,dm01_all_nine_accepted=True,accepted_through='2026-09-30',remaining_external_gate=None,production_gate=True).items()):raise AcceptedChainError('DM01_CURRENT_ACCEPTANCE_INVALID')
+    accepted_through=str(d.get('accepted_through') or '')
+    try:accepted_date=date.fromisoformat(accepted_through)
+    except ValueError as error:raise AcceptedChainError('DM01_CURRENT_ACCEPTANCE_INVALID') from error
+    if any(d.get(k)!=v for k,v in dict(status='ACCEPTED',implementation_status='EXTERNAL_ACCEPTANCE_PASS_REAL_CONTINUOUS_CHAIN',formal_consumer_authorization=True,dm01_all_nine_accepted=True,remaining_external_gate=None,production_gate=True).items()) or accepted_date.isoformat()!=accepted_through or not str(d.get('external_acceptance','')).startswith('PASS_REAL_INCREMENTAL_CHAIN_'):raise AcceptedChainError('DM01_CURRENT_ACCEPTANCE_INVALID')
     if e.get('formalization_external_reaudit')!='PASS' or e.get('external_acceptance')!='PASS_EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT' or e.get('v4_08_head_action')!='KEEP':raise AcceptedChainError('A13_CURRENT_ACCEPTANCE_INVALID')
     if entries['OWNER_REGISTRY_BOOTSTRAP_FOR_EXISTING_ACCEPTED_FIELDS']['status']!='OPEN' or registry['global_mandatory_adoption_authorized'] or any(registry['permissions'].values()):raise AcceptedChainError('PRODUCTION_OR_GLOBAL_ADOPTION_OVERCLAIM')
     return True
@@ -92,7 +99,11 @@ def validate_chain(root,chain,*,source_readback=False):
     require_audit(root,chain['external_authority'])
     archive=chain['anchor']['archive'];old=load(root,archive)
     namespace=chain['anchor']['original_namespace']
-    if namespace!=dict(path=HEAD_PATH,sha256=ANCHOR_SHA,bytes=2478) or archive['sha256']!=ANCHOR_SHA or old.get('accepted_trade_date')!='2026-09-24':raise AcceptedChainError('ANCHOR_INVALID')
+    if namespace!=dict(path=HEAD_PATH,sha256=ANCHOR_SHA,bytes=2478) or archive['sha256']!=ANCHOR_SHA:raise AcceptedChainError('ANCHOR_INVALID')
+    anchor_date=str(old.get('accepted_trade_date') or '')
+    try:parsed_anchor=date.fromisoformat(anchor_date)
+    except ValueError as error:raise AcceptedChainError('ANCHOR_INVALID') from error
+    if parsed_anchor.isoformat()!=anchor_date:raise AcceptedChainError('ANCHOR_INVALID')
     record=load(root,chain['external_acceptance_record']);require_audit(root,record['external_authority'])
     for ref in record['evidence_bindings']:bound_path(root,ref)
     for key in ('source_authority_registry','source_authority_governance'):
@@ -101,7 +112,7 @@ def validate_chain(root,chain,*,source_readback=False):
     if chain['accepted_through']!=record['accepted_through'] or any(chain[k] for k in ('production','shadow','focus')):
         raise AcceptedChainError('CHAIN_SCOPE_OR_PERMISSION_INVALID')
     if tuple(n['candidate']['sha256'] for n in chain['nodes'])!=ACCEPTED_NODE_SHAS or record['audited_head']!=AUDITED_HEAD:raise AcceptedChainError('CANDIDATE_OUTSIDE_EXTERNAL_AUDIT_SCOPE')
-    if record['external_acceptance']!='EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN' or record['accepted_through']!='2026-09-30':raise AcceptedChainError('CHAIN_NOT_EXTERNALLY_ACCEPTED')
+    if record['external_acceptance']!='EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN' or not chain['nodes'] or record['accepted_through']!=chain['nodes'][-1]['trade_date']:raise AcceptedChainError('CHAIN_NOT_EXTERNALLY_ACCEPTED')
     context=load(root,chain['source_context']);contract=load(root,chain['builder_contract'])
     if contract['execution_context']!=chain['source_context']:raise AcceptedChainError('SOURCE_CONTEXT_NOT_CONTRACT_BOUND')
     for r in contract['runtime_bindings']:bound_path(root,r)
@@ -139,7 +150,7 @@ def validate_chain(root,chain,*,source_readback=False):
             if fresh['status']!='PASS' or canonical_digest(fresh)!=marker['postcheck_digest']:raise AcceptedChainError('INDEPENDENT_SOURCE_POSTCHECK_MISMATCH')
         out.append(dict(trade_date=target,candidate=node['candidate'],components=9,status='PASS',source_readback=source_readback))
         parent=node['candidate'];parent_date=target
-    if len(out)!=3 or parent_date!=record['accepted_through'] or record['candidate_bindings']!=[n['candidate'] for n in chain['nodes']]:raise AcceptedChainError('ACCEPTED_CHAIN_SCOPE_MISMATCH')
+    if len(out)!=len(chain['nodes']) or parent_date!=record['accepted_through'] or record['candidate_bindings']!=[n['candidate'] for n in chain['nodes']]:raise AcceptedChainError('ACCEPTED_CHAIN_SCOPE_MISMATCH')
     return out
 
 def validate_head_v2(root,head,*,source_readback=False):

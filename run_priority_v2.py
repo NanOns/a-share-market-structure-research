@@ -6,7 +6,8 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 ROOT=Path(__file__).resolve().parent;sys.path.insert(0,str(ROOT/"src"))
 from shadow_v2.research_priority import DISPLAY_ORDER_ONLY,MAPPINGS,RULESET_ID,queue_tier,research_band
-CUTOFF="20260904";BASE_RUN="4255c2f108ac4cdabca3e212079d8bf8"
+from production.release import current_release_scope
+CUTOFF=None;BASE_RUN=None
 SOURCES={"STEADY_QUEUE":("steady_trend/STEADY_TREND_V2_SHADOW.parquet","v2_steady_class"),"PULLBACK_QUEUE":("strong_pullback/STRONG_PULLBACK_V2_SHADOW.parquet","v2_pullback_class"),"BREAKOUT_QUEUE":("breakout_prep/BREAKOUT_PREP_V2_SHADOW.parquet","v2_breakout_class"),"LEADER_QUEUE":("sector_leader/SECTOR_LEADER_V2_SHADOW.parquet","v2_leader_class"),"EARLY_QUEUE":("early_mover/EARLY_MOVER_V2_SHADOW.parquet","v2_early_class")}
 RECEIPTS={"R3-01":"steady_trend/R3_01_RECEIPT.json","R3-02":"strong_pullback/R3_02_RECEIPT.json","R3-03":"breakout_prep/R3_03_RECEIPT.json","R3-04":"sector_leader/R3_04_RECEIPT.json","R3-05":"early_mover/R3_05_RECEIPT.json"}
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -23,6 +24,8 @@ def reason(row):
  if any(row[field]=="DATA_INSUFFICIENT" for field in ("v2_steady_class","v2_pullback_class","v2_breakout_class","v2_leader_class","v2_early_class")):x.append("DATA_INSUFFICIENT")
  return "|".join(x) or "V2_ONLY_DIAGNOSTIC_CONTEXT"
 def run(requested="latest"):
+ global CUTOFF,BASE_RUN
+ if CUTOFF is None or BASE_RUN is None:CUTOFF,BASE_RUN=current_release_scope(ROOT)
  if requested!="latest":raise ValueError("SHADOW_LATEST_ONLY")
  pointer=ROOT/"reports/current/CURRENT_RELEASE.json";before=pointer.read_bytes();cur=json.loads(before);v1id=cur["latest_release"]["computation_identity"]["sha256"];release=ROOT/f"reports/releases/{CUTOFF}/{BASE_RUN}";v1p=[release/x for x in ("stocks.csv","candidates.csv","manifest.json")]+[pointer];v1hash={str(p.relative_to(ROOT)):sha(p) for p in v1p}
  shadow=ROOT/f"reports/shadow/v2/{CUTOFF}";bound={};rules={}

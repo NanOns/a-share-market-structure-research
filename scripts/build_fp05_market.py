@@ -20,6 +20,7 @@ from adjustment.tdx_adjustment import build_affine_factors,xrxd_from_gbbq
 from tdx.gbbq_reader import read_gbbq
 from v4.factors.native import market_axis_primitives,market_trend_axis
 from v4.market_regime_ui import project
+from v4.accepted_input import resolve as resolve_accepted_inputs
 
 def verified(binding):
     p=ROOT/binding['path'];assert reference(ROOT,p)['sha256']==binding['sha256'],binding['path'];return p
@@ -64,7 +65,7 @@ def main():
             b['qfq_ohlc']=[str(factor.qfq_price(Decimal(x))) for x in b['raw_ohlc']] if factor else None
             b['adjustment_reason']='UNSUPPORTED_OR_UNKNOWN_PRICE_IMPACT' if blocked else None
     sessions=execution['calendar']['session_dates'];sources['calendar']=head['calendar'];idx=sessions.index(date);prior3=sessions[idx-3]
-    universe_path=ROOT/'data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz';sources['historical_universe']=ref(universe_path)
+    universe_path=resolve_accepted_inputs(ROOT)['universe'].path;sources['historical_universe']=ref(universe_path)
     with gzip.open(universe_path,'rt',encoding='utf8') as f:
         for line in f:
             r=json.loads(line)

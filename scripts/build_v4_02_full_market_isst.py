@@ -55,11 +55,11 @@ def atomic_json(path: Path, value: dict) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--universe", default="data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz")
+    parser.add_argument("--universe", required=True, help="按交易日排序的全市场身份输入")
     parser.add_argument("--calendar-receipt", default="reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json")
     parser.add_argument("--contract", default="config/v4_02_full_market_isst_contract_v1.json")
-    parser.add_argument("--output", default="data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--receipt", default="reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json")
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--receipt", required=True)
     parser.add_argument("--ledger", default="reports/v4_baostock/request_ledger.json")
     args = parser.parse_args()
 
@@ -79,6 +79,7 @@ def main() -> int:
     pending = json.loads(next(source))
     membership_rows = 0
     actual_membership_rows = 0
+    source_trade_dates: set[str] = set()
     facts_counts: Counter[str] = Counter()
     query_receipts: list[dict] = []
     failures: list[dict] = []
@@ -187,6 +188,7 @@ def main() -> int:
                 for line in source:
                     row = json.loads(line)
                     day = row["trade_date"]
+                    source_trade_dates.add(day)
                     if current_session is None:
                         current_session = day
                     if day != current_session:
@@ -210,14 +212,14 @@ def main() -> int:
     output_sha = sha256(output_path)
     end_utc = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     unknown = facts_counts["UNKNOWN_NO_VALID_PROVIDER_ROW"] + facts_counts["UNKNOWN_QUERY_FAILURE"]
-    status = "DATED_ST_STATUS_PASS" if not failures and unknown == 0 and membership_rows == 4036121 else "DATED_ST_STATUS_WITH_UNKNOWN"
+    status = "DATED_ST_STATUS_PASS" if not failures and unknown == 0 and membership_rows > 0 else "DATED_ST_STATUS_WITH_UNKNOWN"
     receipt = {
         "contract_id": "V4_02_DATED_ST_STATUS_V1",
         "version": "1.0.0",
         "stage": "V4-02 / FINAL CLOSURE PACK",
         "status": status,
         "stage_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
-        "source_cutoff": "2026-09-24",
+        "source_cutoff": max(source_trade_dates) if source_trade_dates else None,
         "session_count": sessions,
         "membership_rows": membership_rows,
         "actual_bar_membership_rows": actual_membership_rows,

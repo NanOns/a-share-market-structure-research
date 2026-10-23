@@ -3,7 +3,12 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from phase0_2a_runner import SAMPLE_SELECTOR_CONTRACT, select_sample_securities
+from phase0_2a_runner import (
+    SAMPLE_SELECTOR_CONTRACT,
+    _period,
+    _source_relative_windows,
+    select_sample_securities,
+)
 
 
 def test_phase0_2a_sample_selection_is_current_universe_bounded_and_deterministic():
@@ -36,3 +41,24 @@ def test_phase0_2a_selector_excludes_non_current_ids_and_caps_the_selection():
     assert receipt["eligible_count"] == len(current)
     assert receipt["selected_count"] == SAMPLE_SELECTOR_CONTRACT["sample_security_count"]
     assert receipt["selection_digest_sha256"] == select_sample_securities(current, actual)[1]["selection_digest_sha256"]
+
+
+def test_qfq_sample_windows_follow_available_source_date_range():
+    first_window = _source_relative_windows([20000102, 20100102, 20240102, 20261021])
+    moved_window = _source_relative_windows([20010102, 20110102, 20250102, 20271021])
+
+    assert first_window["RECENT"][1] == 20261021
+    assert moved_window["RECENT"][1] == 20271021
+    assert _period(20251021, first_window) == "RECENT"
+    assert _period(20261021, moved_window) == "RECENT"
+    assert first_window["EARLY"][0] == 20000102
+    assert moved_window["EARLY"][0] == 20010102
+    assert first_window["MID"][1] + 1 == first_window["RECENT"][0]
+
+
+def test_qfq_sample_windows_handle_sparse_and_leap_day_coverage():
+    windows = _source_relative_windows([19800229, 19900228, 20240229])
+
+    assert windows["RECENT"][1] == 20240229
+    assert _period(19800229, windows) == "EARLY"
+    assert _period(20240229, windows) == "RECENT"

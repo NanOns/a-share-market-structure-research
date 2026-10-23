@@ -49,7 +49,7 @@ def make_daily_handler(root,jobs,*,static_root=None):
     class Handler(base):
         def do_GET(self):
             parsed=urlparse(self.path);path=parsed.path
-            if (path.startswith('/api/v4/') and not path.startswith(PREFIX) and not path.startswith('/api/v4/original-0930/')) or path=='/api/operations/status':
+            if (path.startswith('/api/v4/') and not path.startswith(PREFIX) and not path.startswith('/api/v4/original/')) or path=='/api/operations/status':
                 from workbench_analysis.operational_successor_v1 import CONTRACT,accepted_api
                 head=json.loads((root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json').read_bytes())
                 if head.get('contract_id')==CONTRACT:

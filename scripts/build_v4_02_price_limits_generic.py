@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import json
 import os
+import argparse
 import subprocess
 import sys
 import tempfile
@@ -20,16 +21,11 @@ from workbench_analysis import special_price_phases as phase_runtime
 from workbench_analysis.dated_security_alias import DatedSecurityAliasResolver
 from workbench_analysis.special_price_phases import PhasePolicyRegistry, SpecialPhaseEvent, SpecialPhaseEventStore, SpecialPricePhase
 
-BASE_PRICE = ROOT / "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R7_20260927.jsonl.gz"
-DAILY = ROOT / "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
-CALENDAR = ROOT / "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json"
 EVENTS = ROOT / "data/v4/bootstrap/special_price_phase_events_r4.jsonl"
 ALIASES = ROOT / "data/v4/bootstrap/dated_security_alias_r7.jsonl"
 POLICY = ROOT / "config/special_price_phase_policy_r6.json"
 RULES = ROOT / "config/v4_02_price_limit_rules_r3.json"
 R4_RANGE_AUDIT = ROOT / "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json"
-OUT = ROOT / "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz"
-RECEIPT = ROOT / "reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json"
 
 BUSINESS_FIELDS = (
     "security_id", "trade_date", "special_price_phase", "limit_status", "reason", "reference_price",
@@ -209,10 +205,10 @@ def business_payload(row: Mapping[str, object]) -> dict:
     return {field: row.get(field) for field in BUSINESS_FIELDS}
 
 
-def run_builder(*, base_price: Path = BASE_PRICE, daily: Path = DAILY, calendar_path: Path = CALENDAR,
+def run_builder(*, base_price: Path, daily: Path, calendar_path: Path,
                 events_path: Path = EVENTS, aliases_path: Path = ALIASES, policy_path: Path = POLICY,
                 rules_path: Path = RULES, unknown_audit_path: Path = R4_RANGE_AUDIT,
-                output_path: Path = OUT, receipt_path: Path = RECEIPT) -> dict:
+                output_path: Path, receipt_path: Path) -> dict:
     required = (base_price, daily, calendar_path, events_path, aliases_path, policy_path, rules_path, unknown_audit_path)
     if not all(path.is_file() for path in required):
         raise FileNotFoundError("R6_GENERIC_PRICE_LIMIT_INPUT_MISSING")
@@ -278,7 +274,23 @@ def run_builder(*, base_price: Path = BASE_PRICE, daily: Path = DAILY, calendar_
 
 
 def main() -> int:
-    result = run_builder()
+    parser = argparse.ArgumentParser(description="按输入快照生成动态交易日的价格限制候选")
+    parser.add_argument("--base-price", required=True)
+    parser.add_argument("--daily", required=True)
+    parser.add_argument("--calendar", required=True)
+    parser.add_argument("--events", default=str(EVENTS.relative_to(ROOT)).replace("\\", "/"))
+    parser.add_argument("--aliases", default=str(ALIASES.relative_to(ROOT)).replace("\\", "/"))
+    parser.add_argument("--policy", default=str(POLICY.relative_to(ROOT)).replace("\\", "/"))
+    parser.add_argument("--rules", default=str(RULES.relative_to(ROOT)).replace("\\", "/"))
+    parser.add_argument("--unknown-audit", default=str(R4_RANGE_AUDIT.relative_to(ROOT)).replace("\\", "/"))
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--receipt", required=True)
+    args = parser.parse_args()
+    resolve = lambda value: ROOT / value
+    result = run_builder(base_price=resolve(args.base_price), daily=resolve(args.daily),
+        calendar_path=resolve(args.calendar), events_path=resolve(args.events), aliases_path=resolve(args.aliases),
+        policy_path=resolve(args.policy), rules_path=resolve(args.rules), unknown_audit_path=resolve(args.unknown_audit),
+        output_path=resolve(args.output), receipt_path=resolve(args.receipt))
     print(json.dumps({"status": result["status"], "row_count": result["row_count"],
                       "special_phase_counts": result["special_phase_counts"],
                       "apply_phase_event_call_counts": result["apply_phase_event_call_counts"],

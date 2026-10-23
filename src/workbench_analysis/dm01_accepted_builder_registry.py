@@ -211,7 +211,12 @@ def validate_registry(
         v402_head = _read_json(root, "data/v4/V4_02_ACCEPTED_HEAD.json")
         v402_receipt = _read_json(root, "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json")
         v402_external = _read_json(root, "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json")
-        cross_stage = _read_json(root, "reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json")
+        accepted_registry = _read_json(root, "config/v4_dm01_accepted_builder_registry_v1.json")
+        stage_bindings = accepted_registry.get("stage_acceptance_bindings", {})
+        cross_binding = next((value for key, value in stage_bindings.items() if str(key).casefold().startswith("v4_02")), None)
+        if not isinstance(cross_binding, Mapping) or not cross_binding.get("cross_stage_postcheck_path"):
+            raise ValueError("V4_02_CROSS_STAGE_POSTCHECK_BINDING_MISSING")
+        cross_stage = _read_json(root, str(cross_binding["cross_stage_postcheck_path"]))
         if (v402_head.get("status") != "PASS_WITH_BSE_SCOPE_DEGRADED"
                 or v402_head.get("external_acceptance") != "EXTERNALLY_ACCEPTED"):
             errors.append("V4_02_ACCEPTED_HEAD_NOT_EXTERNAL_PASS")
@@ -233,13 +238,14 @@ def validate_registry(
         dev_head = json.loads(dev_path.read_text(encoding="utf-8"))
         if hashlib.sha256(stage_path.read_bytes()).hexdigest() != data_head.get("stage_accepted_head_sha256"):
             errors.append("DATA_HEAD_STAGE_HEAD_BINDING_MISMATCH")
-        if data_head.get("accepted_trade_date") != "2026-09-24" or dev_head.get("accepted_data_cutoff") != "2026-09-24":
+        accepted_cutoff = data_head.get("accepted_trade_date")
+        if not accepted_cutoff or dev_head.get("accepted_data_cutoff") != accepted_cutoff:
             errors.append("ACCEPTED_PARENT_CUTOFF_CHANGED")
         if stage_head.get("bindings", {}).get("v4_01_r8_1", {}).get("sha256") != bindings.get("v4_01_baseline", {}).get("receipt_sha256"):
             errors.append("STAGE_HEAD_V4_01_R8_1_BINDING_CHANGED")
         if stage_head.get("bindings", {}).get("v4_02_accepted_head", {}).get("sha256") != bindings.get("v4_02_baseline", {}).get("accepted_head_sha256"):
             errors.append("STAGE_HEAD_V4_02_BINDING_CHANGED")
-        if any(item.get("cutoff") != "2026-09-24" for item in data_head.get("component_permissions", {}).values()):
+        if any(item.get("cutoff") != accepted_cutoff for item in data_head.get("component_permissions", {}).values()):
             errors.append("DATA_HEAD_COMPONENT_CUTOFF_CHANGED")
     except (OSError, TypeError, ValueError):
         errors.append("ACCEPTED_HEAD_POINTER_UNREADABLE")

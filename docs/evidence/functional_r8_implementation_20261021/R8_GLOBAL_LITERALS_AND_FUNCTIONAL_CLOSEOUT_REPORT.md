@@ -1,81 +1,80 @@
-# V4 R8 全仓字面量与功能闭环阶段报告
+# V4 R8 硬编码实修与功能闭环报告
 
-- 任务：V4_R7_外部独立审计_R8硬编码实修与功能闭环_20261023.md
-- 仓库/分支：NanOns/a-share-market-structure-research / codex/v4-unified-development
-- 远端基线：aaaf641e8495c08939dea788e385795463189b1b；fetch 后本地与远端一致。
-- 本轮代码提交：abb6c63920ebdd0122bbfa828345492edee7e779。
-- 阶段结论：DEGRADED_PASS（仅限现役 V4 静态代码、定向本地回归和开发 PG 只读目录核验）。总体验收 EXTERNAL_REVIEW_BLOCKED；全局硬编码门仍阻断。
+记录日期：2026-10-23（Asia/Shanghai）
+开发分支：`codex/v4-unified-development`
+本轮基线：`df6e312f773500f300d435cd51910961c79f7475`（与抓取时 `origin/codex/v4-unified-development` 一致）
+验收状态：`V4_REPAIR_PARTIAL / EXTERNAL_REVIEW_BLOCKED`
 
-## 执行合同与阶段 0
+## 范围和结论
 
-执行前读取了项目约束、Drive 执行单和 CURRENT 恢复入口；仓库内查阅正式功能合同 docs/plans/V4_FUNCTIONAL_R8_REPAIR_PLAN_R2_FINAL_20261021.md、Forward 合同 docs/upgrade/V4_R7_FORWARD_SIGNAL_SPEC_R1.md、现役来源合同 docs/upgrade/V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015.md。S00–S08 是本轮业务范围依据。
+本轮按用户最新限定只处理 V4 当前代码及模块功能。早于当前 V4 功能链的旧版业务代码和历史无用工具不属于本轮修复范围。目标交易日、证券全集、前态与来源应从当前调用、已接受输入/Owner 和交易日历解析；有日期的来源文件名、规则生效日、哈希绑定及历史合同只作为证据候选，不视作当前交易日计算参数。
 
-阶段 0 为 DEGRADED_PASS：允许现役 V4 源码修改、静态扫描、相关本地回归和现有开发 PG 的受控只读核验；不允许重启服务、写正式 Head、碰生产 28765 或改变数据源权限。沿用最新远端 HEAD，不退回外审冻结旧 SHA。保留原有未跟踪目录 .githooks/、config_back/、script_back/，没有清理或移动任何工作区文件。
+本轮实际修改了 V4-02 输入解析、V4-04 候选运行、前向观察封存、来源/阶段治理、Owner/发布保护、市场基准合同及全局字面量扫描器；增加了回归测试。**代码与回归有实质进展，但没有达到 R8 完整功能闭环，也没有证据证明全部历史 V4 合同字面量都已逐项裁定。**扫描门仍阻断；不得据此报告全局硬编码 PASS。
 
-## 已实施修改
+## 实际改动
 
-| 工作包 | 文件/符号 | 修复前后行为 |
+- V4-02 正式周期、交易状态、价格限制及全市场输入构建器改为显式输入来源路径；价格限制边界由当前接受输入/交易日上下文推导，移除业务默认的冻结路径和交易日。
+- V4-04 全市场候选运行从已接受输入解析 cutoff，并参数化查询；接受输入解析器携带当前来源 cutoff。
+- V4-01/V4-05 相关 Owner、Profile、行情、SourceAuthority 解析和发布校验改为由现行 Head、来源合同及输入参数确定目标范围；V4-02 raw selected 构建要求显式 `--asof`。
+- 前向观察和 R3 集成封存入口要求调用方传入 cutoff；模型和基线按已封存身份/收据绑定读取，不以固定历史目录推断当前业务日。
+- FP05/FP06 从接受输入读取当日 universe 与交易状态；BaoStock 运行接受要求显式日历收据，避免隐式使用旧日期日历。
+- 核心市场产品的指数身份从带版本、SHA 绑定的市场基准合同读取；新增重复基准拒绝和动态合同回归。
+- V4 服务、BFF、桌面 QA 与页面中的目标日/阶段读取使用当前上下文；阶段 0 anchor、Owner 来源及日期范围校验按接受输入解析。
+- Priority 规则分支修正：已知 FALSE 主原因支配必需未知的组合，保留非支配未知场景的 UNKNOWN；补充两类分支回归。
+- 全局字面量扫描器增加源码入口 SHA 绑定、显式入口清单、compact 日期/证券识别中的十六进制摘要边界，以及窄化的语法/证据误报判定。入口合同只证明源码清单，不证明正在运行的进程加载了该源码。
+
+变更矩阵与完整文件清单以本次 Git 提交为准；未纳入提交的工作区文件保留原样。
+
+## 回归与扫描证据
+
+执行环境临时目录：`G:\\codex_tmp\\test_temp`；没有在 TDX 源目录创建或修改文件。
+
+| 回归 | 命令覆盖 | 结果 |
 |---|---|---|
-| P0-A / P0-D | scripts/check_v4_business_literals.py：global_gate、gate_exit_code、date_component_literals、semantic_candidate_key | 旧门只验证候选是否超出现有 baseline，普通扫描即使有可达 unresolved 也以零退出；date(year, month, day) 未召回，candidate key 含行号导致插行伪报新增。现将 baseline 差分和全局门分开，严格全局门默认对可达 unresolved 返回 exit 1；加入 Python AST 日期构造器召回及独立稳定语义 key，inventory 升为 V4-PRODUCTION-LITERAL-INVENTORY/2。 |
-| P0-A / P0-D | tests/v4_policy/test_no_production_hardcoded_identities.py | baseline 继续保持非豁免、未扩大；从只读 R7 原始 inventory 在内存迁移稳定 key，校验旧 unresolved 仍阻断全局门、插行稳定性和 AST 日期构造器。 |
-| S01 | src/workbench_service/core_product_bff_r1.py：_read_index_r2 | ReadIndex authority 缓存签名从 mtime/size 改为 authority 原始字节数与 SHA-256；相同 mtime/size 下内容替换会触发重载。 |
-| S06-P | src/workbench_db/forward_r7_store.py：_matured_count_watermark、read_matured_count | 水位从数据库身份+MAX(ordinal) 改为数据库身份+行数+最大 ordinal。序列低值事务晚提交时，行数变化使缓存失效。无缓存读取不再访问缓存 schema key。 |
-| S01 / S06-P | tests/test_r8_candidate_priority_cache_key.py | 增加同最大 ordinal 行数变化、相同 mtime/size authority 内容替换的回归。 |
+| 功能/策略 | `tests/v4_policy/test_no_production_hardcoded_identities.py`、`tests/v4_joint/test_operational_product_pack_v3.py`、R8 S01/S03、Priority cache、S3 ledger、UX R2 合同 | 102 passed |
+| V4 主链 | `tests/v4_02`、`tests/v4_04`、`tests/v4_05`、`tests/v4_scoped_promotions_r3`、`tests/upgrade_m1`、QFQ、Phase0 动态 anchor、scoped promotion 日期 | 243 passed |
+| 变更 Python 语法 | 62 个变更 Python 文件 AST 解析 | 0 失败 |
+| Git 空白检查 | `git -c core.whitespace=cr-at-eol diff --check`（含暂存差异） | 通过 |
 
-Priority 的缺 close/null、非有限数、坏质量、错日期/坐标 fail-closed 行为已存在于当前源码；本轮相关合同回归通过，没有改变评分、分母或资格规则，也没有将代码回归冒称为真实日数值验收。
+全局扫描命令：
 
-## 分层结果
+```powershell
+python scripts/check_v4_business_literals.py --output G:\\codex_tmp\\R8_GLOBAL_LITERAL_INVENTORY_FINAL.json --allow-incomplete-inventory
+```
 
-| 门 | 状态 | 证据与边界 |
+清单 SHA-256：`cf29f40cdfb3b16faead7d6286b07c6ea061d1d872d9393f3615dce8a2260054`，大小 39,705,056 字节。扫描覆盖 3,962 个跟踪文件（3,266 Python、32 JS/TS、546 配置、100 SQL、44 UI）；Python 入口/依赖图 606 节点、10,348 边、133 个动态执行/导入站点，AST 失败 0。扫描结果为 `GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED`：活动未知候选 2,135、未核验维护候选 5,002、自动确认活动违规 0、活动入口状态 `SOURCE_VERIFIED`。其中活动未知候选主要集中于历史/版本化 V4 配置：`v4_joint_release_authority_v1.json` 828、`v4_replay_compare_authority_v1.json` 802；其余分布于规则有效期、日历事实、历史身份及证据绑定。零自动确认违规不等于逐条独立证明无违规。
+
+V4 当前运行输入相关改动未新增固定股票代码或交易日分支；本轮已修复的目标日、cutoff、as-of 和来源目录均从调用上下文/接受输入读取。全局扫描仍保留大量冻结合同、日历、规则生效日与历史来源路径候选；这些不等同于当前目标日默认值，但仍须独立审查其合同消费者和版本状态。非当前 V4 功能链的旧代码候选按用户限定排除，不以其数量阻断本轮 V4 功能判断。
+
+## 阶段状态（R8 R2）
+
+| 阶段 | 本轮状态 | 证据与未完成项 |
 |---|---|---|
-| CODE | PARTIAL | 三处现役实现改动已提交，只覆盖本报告列出的准入、ReadIndex 缓存和 Forward 水位问题。 |
-| STATIC | PARTIAL / BLOCKED | 3,958 文件、3,264 Python、32 JS/TS、544 配置、100 SQL、44 UI；694 可达节点、38 个入口、10,327 静态依赖边、131 个动态导入/执行候选位点、0 AST 解析失败。召回 39,491 项；可达 unresolved 3,190：日期 2,213、证券身份 965、板块身份 12。确认违规计数 0 仅表示目前没有逐项确认记录，不代表已证明为零；全局门仍为 GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED。严格扫描 exit 1 是预期阻断。 |
-| NO_NEW_LITERAL | PASS（旧规则差分） | 全仓差分测试通过；以 R7 原 inventory 中已存在的逐项证据迁移稳定 key，未重生/扩大 admission baseline。新增 AST 类由全局门独立处理。 |
-| NUMERIC | NOT_VERIFIED | Priority 代码负例回归通过；没有重新取得 10/20、10/21 股票/板块 Owner 全量或市场/D0 数值，旧报告数据不作为今态。 |
-| DEV_PG | PARTIAL | 通过现有配置连接 market_research:5432，事务明确设为 READ ONLY。实际连接角色为 superuser；按开发 Head 日期在 4 个 Forward schema 中发现 2 个匹配，无法唯一绑定当前 Owner，因此停止于目录核验，没有读取业务事实、没有写数据、没有 PG consumer PASS。 |
-| API | NOT_VERIFIED | 现有 28766 的只读 /api/v4/context 返回 READY、T0=2026-10-21；/api/v4/health 和 /api/v4/priority 返回 409。服务未重载本轮代码，旧响应不作为新代码验收。 |
-| UI | NOT_VERIFIED | UI_RUNTIME_NOT_RELOADED；没有重启服务。 |
-| SOURCE | NOT_VERIFIED | 未捕获新来源、未变更 TDX_ONLY 或 SourceIngress 授权，未提升隔离 BaoStock 候选。 |
-| CI | CI_NOT_RUN | 未运行或等待远端 CI。 |
-| PERFORMANCE | NOT_VERIFIED | 未执行 50 样本 P50/P95。 |
+| S00 基线/阶段0 | `DEGRADED_PASS` | 基线为远端 HEAD `df6e312…`; 阶段0限于代码修复、回归和 PG 只读核对。无候选 Head、正式 Head 或生产服务更新。 |
+| S01 来源/摘要/缓存 | `PARTIAL` | 输入绑定与摘要路径有代码/测试覆盖；当前运行进程未加载本轮代码，不能完成真实冷/热 API、来源变更、坏 SHA 和消费者负例读回。 |
+| S02 市场宽度/趋势 | `PARTIAL` | 目标日/来源路径更动态，市场参考有版本化合同；本轮未完成真实全市场独立数值对账及来源权限验收。 |
+| S03 Priority | `PARTIAL` | 规则分支与数值边界回归通过；开发 PG 的 10/20、10/21 Priority Owner 缺失，`/api/v4/priority` 对旧进程返回 409，不能完成全集和真实 API 对账。 |
+| S04 D0 | `PARTIAL` | 来源/日期/权限链检查改动；当前 Head 与开发 PG 无本轮对应 Owner，真实封存链和四场景全集未验证。 |
+| S05-D / S05-I D2 | `BLOCK_CONTRACT` / `NOT_IMPLEMENTED` | R8 合同仍缺适用 D2 阈值生成、冻结时点和价格坐标裁定；不自行选择前低、均线或百分比，875 个历史 episode 未回填。 |
+| S06-P / S06-I 日更 | `NOT_VERIFIED_THIS_ROUND` / `NOT_RUN` | 本轮未执行 G1–G4 独立比较、候选 PG 接续、CAS、故障恢复或日更性能采样；真实来源/Owner 前态不齐。 |
+| S07 六入口 | `UI_RUNTIME_NOT_RELOADED` | 28766 仍运行旧临时脚本；`/api/v4/context` 返回旧 T0 2026-10-21，`/api/v4/health` 和 `/api/v4/priority` 返回 409。没有浏览器 DOM 或新代码页面读回。 |
+| S08 正式发布 | `NOT_RUN / NOT_AUTHORIZED` | 没有 formal Head、生产调度、运行包或 28765 操作。代码推送不构成发布验收。 |
 
-严格扫描临时 inventory：G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY.json，41,104,804 bytes，SHA-256 7d1c90d2a9e03e0ec30e95e7a6924886983f5e500fb9ee3031cfa213856688a。生成命令：python scripts/check_v4_business_literals.py --output G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY.json。未裁定候选令严格命令按设计返回 1。清单留在 G 盘临时目录，不提交 Git。
+## PG、服务和保护边界
 
-## 回归与本地检查
+- PostgreSQL：`127.0.0.1:5432/market_research`。查询使用已有安全配置，首语句 `SET TRANSACTION READ ONLY`；`transaction_read_only=on`。本轮无 DDL/DML、Owner 发布、回填或重算。
+- 只读核对未发现 2026-10-20/21 Priority Owner 或 Sector lifecycle Owner；最近已存在 Priority Owner 为 10-15，Sector lifecycle Owner 为 10-13。当前操作 Head 仍是 2026-10-09；Accepted Data Head 为 2026-09-30。
+- 网页/API：28765 未监听；28766 仍为 PID 52916，命令行为 `E:\\python\\python.exe G:\\codex_tmp\\batch10r4_28766.py`。未停止或重启该进程。5432 的 PostgreSQL 主监听 PID 为 8640。
+- 28766 的旧进程 `/api/v4/context` HTTP 200、状态 READY，但显示旧 T0 2026-10-21；`/api/v4/health` 与 `/api/v4/priority` HTTP 409。它不是本轮代码验证。
+- 未删除或清理工作区文件/目录；未写入 D:/new_tdx 或其它 TDX 只读源目录；未切换正式 Head 或 28765。
 
-命令（TMP/TEMP/TMPDIR 均指向 G 盘）：
+## 剩余问题与下一轮独立验收
 
-    python -m pytest tests/v4_policy/test_no_production_hardcoded_identities.py tests/test_v4_functional_r8_s01_s03.py tests/test_r8_candidate_priority_cache_key.py tests/test_r8_s3_ledger.py tests/test_v4_ux_r2_contract.py -q
+1. 在本轮代码部署/加载至获准的 28766 前，R8 S01、S02、S03、S04、S07 只能以回归覆盖，不可宣称实际服务闭环；下一轮需保持 28765 不动并按已授权的开发槽位流程验证。
+2. 开发 PG 的 10/20、10/21 Owner 前态/来源缺失，Priority、D0、Sector、Focus/Forward 无本轮统一 token，需先判断可用输入和候选生成门，再按 R8 原合同逐日验证。
+3. S05-D 业务合同裁定缺失，阻止 D2 实现和相关整链验收；这是语义门，不以代码选择代替。
+4. S06-P/S06-I 的候选 G1–G4、增量日期范围、CAS/幂等/恢复和性能数据尚未产生。
+5. 全局字面量扫描器仍为阻断。对 V4 当前配置中版本化来源/监管规则/日历事实与历史证据绑定需按消费者逐项核验；本轮没有把扫描器未分类候选列为通过，也不把旧非 V4 代码恢复为本轮目标。
+6. `CI_NOT_RUN`；无全量性能压测；无外部来源调用、权限提升或正式发布验证。
 
-结果：87 passed in 26.31s。修改文件 py_compile 通过，git diff --check 通过。SOT R2 指定的 python tools/git_repository_policy.py --staged 无法运行：仓库没有该文件（rg --files 检查确认），状态为 LOCAL_REPOSITORY_POLICY_SCRIPT_MISSING；没有伪造通过。待恢复脚本后补验。
-
-## PG、监听和运行边界
-
-PG 核验只读，不输出密码或 DSN；目标库 market_research、端口 5432，连接角色实际为 superuser。Forward owner schema 匹配不唯一，未做 Owner 读回。没有 DDL/DML、候选 Owner 发布或 Head/CAS 写入。
-
-监听核对：开发服务 28766 已监听（PID 52916）；生产 28765 未监听；PG 5432 已监听（PID 8640）。这些进程未由本任务重启。没有删除文件、清理工作区、切正式 Head/生产调度、改 TDX 源根或强推 Git。
-
-## S00–S08 增量状态及剩余工作
-
-| 阶段 | 本轮状态 | 尚缺的最小证据/工作 |
-|---|---|---|
-| S00 | PARTIAL | 代码、分支与阶段门已核实；开发 Head 日期对应两个 Forward namespace，Owner 未唯一绑定。 |
-| S01 | CODE PASS / API、PG NOT_VERIFIED | ReadIndex 改为内容 SHA 缓存键；仍需同 token 换源负例、跨日 token 读回及 Focus/生命周期真实消费者验证。 |
-| S02 | NOT_VERIFIED | 趋势 limiter Owner 唯一性/来源错配尚未重新追溯；需绑定来源及独立公式核验市场趋势和 D0 输入。 |
-| S03 | CODE PARTIAL / NUMERIC NOT_VERIFIED | Priority 输入防护 fail-closed；股票/板块正式 Owner、完整分母和 10/20、10/21 数值未读回。 |
-| S04 | NOT_VERIFIED | D0 两候选场景 TRUE/FALSE/UNKNOWN 真实来源和状态仍需验收。 |
-| S05 | CONTRACT_BLOCKED（受限子能力） | Forward 保留 NO_AUTHORIZED_COHORT_OWNER，不补造 first capture；D2 frozen_level 合同仍未裁定。 |
-| S06 | CODE PARTIAL / DEV_PG PARTIAL | Forward 乱序提交缓存水位已修；完整候选链、G1–G4、受控候选 PG 写入及消费者读回未完成。 |
-| S07 | NOT_VERIFIED | 旧 28766 未加载本轮代码；六入口新运行读回待用户允许重载时完成。 |
-| S08 | OUT OF SCOPE / NOT_ACCEPTED | 没有生产包、accepted Head、调度或 28765 操作；开发推送不等于发布验收。 |
-
-## 尚未关闭的问题
-
-1. 全局有 3,190 条可达候选未裁定，不能宣称正常运行逻辑已无硬编码。扫描入口仍把 run_*.py 等旧入口作为静态 seed；活动 launcher 白名单、真实 Windows Scheduler、服务路由与运行动态边闭包未建立。
-2. 动态导入、runpy、Python 字符串拼接、SQL 动态构造、JS/TS AST、配置字段→读取者→默认/分支追踪未闭合。新增日期 AST 只覆盖显式 date/datetime/Timestamp(year,month,day)。
-3. 候选中的真实缺陷、版本化市场参考、不可变历史证据、测试样例和误报仍需按字段及调用链裁定；已有 baseline 不是豁免。
-4. Priority、Sector lifecycle、市场趋势/D0、SourceIngress、Focus、Forward、D2、跨日 ReadIndex 消费者和真实 API/PG 全量数据链尚未完成对账。来源或授权缺失继续按合同关闭相关能力。
-5. PG 使用 superuser 只读目录核验，Forward Head→namespace 匹配不唯一；需合法最小权限 Reader 配置与唯一绑定后再做消费者读回。
-6. tools/git_repository_policy.py 缺失；CI 未运行；新代码尚未加载到 28766。总状态仍是 EXTERNAL_REVIEW_BLOCKED，供 ChatGPT 下一轮独立审计。
-
-代码提交：abb6c63920ebdd0122bbfa828345492edee7e779。本报告与证据提交在其后；推送开发分支不等于独立验收或生产准入。
+本报告是开发修复记录，不是独立审计结论或生产准入。机器证据见同目录 `R8_GLOBAL_LITERALS_AND_FUNCTIONAL_CLOSEOUT_EVIDENCE.json`。

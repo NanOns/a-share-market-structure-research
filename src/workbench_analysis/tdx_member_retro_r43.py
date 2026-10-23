@@ -75,7 +75,8 @@ def validate_snapshot(snapshot, root, *, strict_pit=False):
     observed=datetime.fromisoformat(snapshot['membership_observed_at'])
     if observed.utcoffset()!=timedelta(hours=8) or snapshot['member_set_asof']!=snapshot['membership_observed_at']:
         raise ValueError('ACTUAL_SHANGHAI_OBSERVED_TIME_REQUIRED')
-    if snapshot['membership_snapshot_id']!='TDX_MEMBER_SNAPSHOT_S_20261009_'+snapshot['member_digest']:
+    observed_snapshot_day=observed.strftime('%Y%m%d')
+    if snapshot['membership_snapshot_id']!='TDX_MEMBER_SNAPSHOT_S_'+observed_snapshot_day+'_'+snapshot['member_digest']:
         raise ValueError('SNAPSHOT_ID_DIGEST_MISMATCH')
     if len(snapshot['sources'])!=3:raise ValueError('COMPLETE_TDX_SOURCE_REQUIRED')
     for source in snapshot['sources']:checked(root,source)
@@ -133,7 +134,8 @@ def capture(root):
     root=Path(root).resolve();out=root/EVIDENCE;pointer=out/'MEMBER_SNAPSHOT_S.json'
     if pointer.exists():
         snapshot=load(pointer);validate_snapshot(snapshot,root);return snapshot
-    now=datetime.now(timezone(timedelta(hours=8))).isoformat();tdx=Path('D:/new_tdx')
+    observed_now=datetime.now(timezone(timedelta(hours=8)))
+    now=observed_now.isoformat();tdx=Path('D:/new_tdx')
     sources=[]
     for name in ('tdxhy.cfg','tdxzs.cfg','infoharbor_block.dat'):
         source=tdx/'T0002/hq_cache'/name;raw=source.read_bytes();sha=hashlib.sha256(raw).hexdigest()
@@ -150,7 +152,7 @@ def capture(root):
     rows=normalize_member_rows(frame.to_dict('records'),mapping)
     quarantine=[row for row in rows if row['identity_status']=='UNMAPPED_QUARANTINED']
     sha=digest(rows);snapshot=dict(membership_mode=MODE,taxonomy='TDX_INDUSTRY_CONCEPT',
-        membership_snapshot_id='TDX_MEMBER_SNAPSHOT_S_20261009_'+sha,
+        membership_snapshot_id='TDX_MEMBER_SNAPSHOT_S_'+observed_now.strftime('%Y%m%d')+'_'+sha,
         membership_observed_at=now,member_set_asof=now,knowledge_lineage='RECONSTRUCTED_LATEST_MEMBERSHIP',
         AS_RECORDED=False,PIT_ELIGIBLE=False,HISTORICAL_FIRST_AVAILABLE_PROVEN=False,
         production_eligible_scope='DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY',survivorship_bias_risk=True,

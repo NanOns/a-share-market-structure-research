@@ -161,7 +161,7 @@ def read_a02(root, stage, *, mode, trade_date):
 
 
 def read_a05(root, *, mode, trade_date):
-    if mode != "CURRENT_SNAPSHOT_20260924" or trade_date != "2026-09-24":
+    if mode != "CURRENT_SNAPSHOT_ONLY" or not trade_date:
         raise ValueError("A05_EXPLICIT_CURRENT_SNAPSHOT_ONLY")
     _, payload = read_payload(root, "A05")
     if (payload["trade_date"] != trade_date or payload["scope"] != "CURRENT_SNAPSHOT_ONLY"
@@ -181,8 +181,11 @@ def read_a05(root, *, mode, trade_date):
         bound(root, payload[key])
     for ref in payload["algorithm_parameter_bindings"]:
         bound(root, ref)
+    artifact_rows = rows(root, payload["artifact"])
+    if any(row.get("trade_date") != trade_date for row in artifact_rows):
+        raise ValueError("A05_ARTIFACT_TRADE_DATE_MISMATCH")
     return dict(reader_mode=mode, selected_head=reference(root, Path(root) / HEADS["A05"]),
-                trade_date=trade_date, rows=rows(root, payload["artifact"]))
+                trade_date=trade_date, rows=artifact_rows)
 
 
 def read_a04(root, *, mode):

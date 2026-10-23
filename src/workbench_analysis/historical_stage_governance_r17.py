@@ -49,7 +49,11 @@ def accepted_static_binding(root,ref):
 def current_state(root):
     root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
     if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
-    if d['accepted_trade_date']!='2026-09-30' or any(d['permissions'].values()):raise HistoricalBindingError('CURRENT_DATA_SCOPE_INVALID')
+    try:
+        accepted_date=__import__('datetime').date.fromisoformat(str(d['accepted_trade_date']))
+    except (KeyError,TypeError,ValueError) as error:
+        raise HistoricalBindingError('CURRENT_DATA_DATE_INVALID') from error
+    if accepted_date.isoformat()!=d['accepted_trade_date'] or any(d['permissions'].values()):raise HistoricalBindingError('CURRENT_DATA_SCOPE_INVALID')
     if any(s[k] for k in ('production_permission','shadow_production_permission','focus_cutover_permission','global_mandatory_adoption')):raise HistoricalBindingError('CURRENT_PERMISSION_OVERCLAIM')
     for key,value in s.items():
         if key.endswith('_binding') and isinstance(value,dict) and 'sha256' in value:accepted_static_binding(root,value)

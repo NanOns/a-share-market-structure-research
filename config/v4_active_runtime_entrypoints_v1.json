@@ -1,0 +1,25 @@
+{
+  "contract_id": "V4_ACTIVE_RUNTIME_ENTRYPOINTS_V1",
+  "version": "1.0.0",
+  "basis": "Source-level V4 launcher and service entrypoint inventory. This contract does not prove which source revision a running process has loaded.",
+  "entrypoints": [
+    "OPEN_UNIFIED_WORKBENCH.cmd",
+    "START_WORKBENCH_TRAY.cmd",
+    "scripts/workbench_tray.ps1",
+    "run_workbench_service.py",
+    "src/workbench_service/v4_server.py",
+    "src/workbench_service/v4_control_server_v2.py",
+    "src/workbench_desktop/engine.py"
+  ],
+  "entrypoint_sha256": {
+    "OPEN_UNIFIED_WORKBENCH.cmd": "6cdba9b7b8bcf854dedf7fe968aa8a8699bc60de3d180856b371385d3a03921a",
+    "START_WORKBENCH_TRAY.cmd": "8996351c5b1ec97005863911c1ee9e6d471b924dd14007b7ade5fb8f2f13b98b",
+    "scripts/workbench_tray.ps1": "a974e688b603f0506fd5ae53ee23ef8498e5d0e8e098238e9802c8d62ec614fb",
+    "run_workbench_service.py": "6189aa5c8ec93b0ed500da53194c1b087a3f710af179483ed8b23525f6d447a6",
+    "src/workbench_service/v4_server.py": "111d98fb92e61d4dc20d72fc38bdfa0a66c6ce57af7826f9630b85e76a405ffe",
+    "src/workbench_service/v4_control_server_v2.py": "b04b50763914b45bffb7d0ab1b26356afbfb084e9edb082819a7bc3a735ce2a3",
+    "src/workbench_desktop/engine.py": "d0e0852f7f9de27e8bf2a71147a91b056aef92247398219cff5cae9b6d012588"
+  },
+  "maintenance_entrypoints": "V4 maintenance scripts remain separately scanned; their manual invocation and dynamic dependency closure must be proved before they can be classified inactive.",
+  "unknown_edge_policy": "UNRESOLVED_AND_GATE_BLOCKING"
+}

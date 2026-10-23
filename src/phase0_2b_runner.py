@@ -16,9 +16,6 @@ from validation.external_qfq import (EASTMONEY_ENDPOINT, TENCENT_ENDPOINT, TENCE
 from validation.phase0_2b import (VERSION, FIELDS, FrozenRun, EvidenceClient, encoded, atomic,
     read_frozen, fit_ab, raw_gate, classify, root_gate, connectivity_status)
 
-ANCHOR = 20260904
-
-
 def east_params(sid, date, mode):
     return {'secid': eastmoney_secid(sid), 'beg': str(date), 'end': str(date), 'klt': '101',
             'fqt': str(mode), 'fields1': 'f1,f2,f3,f4,f5,f6',
@@ -62,7 +59,23 @@ def csv_bytes(rows):
     return stream.getvalue().encode('utf-8-sig')
 
 
-def run(root, tdx, network=False):
+def latest_local_trade_date(tdx, security_ids):
+    """Read the latest actual bar date from the source files used by this run."""
+    latest = None
+    for sid in security_ids:
+        path = _day_path(tdx, sid)
+        if not path.is_file():
+            continue
+        rows = _read_day_rows(path)
+        if rows:
+            value = int(rows[-1]["trade_date"])
+            latest = value if latest is None else max(latest, value)
+    if latest is None:
+        raise RuntimeError("SOURCE_TRADE_DATE_UNAVAILABLE")
+    return latest
+
+
+def run(root, tdx, network=False, anchor_date=None):
     base = root / 'reports/phase0_2b'
     evidence = FrozenRun(base, tdx)
     paths = [tdx / 'T0002/hq_cache/gbbq', tdx / 'T0002/hq_cache/gbbq.map']
@@ -73,7 +86,8 @@ def run(root, tdx, network=False):
             by_security.setdefault(record.security_id, []).append(xrxd_from_gbbq(record))
     for events in by_security.values():
         events.sort(key=lambda event: (event.ex_day, event.source_record_index))
-    targets = select_phase0_manual_targets(by_security, tdx, ANCHOR)
+    resolved_anchor = int(anchor_date) if anchor_date is not None else latest_local_trade_date(tdx, by_security)
+    targets = select_phase0_manual_targets(by_security, tdx, resolved_anchor)
     if not targets:
         raise RuntimeError('GENERIC_QFQ_SAMPLE_SELECTION_EMPTY')
     gate_target = targets[0]
@@ -88,7 +102,7 @@ def run(root, tdx, network=False):
     local, chains = [], []
     for target in targets:
         sid, date = target['security_id'], target['date']
-        rows = [r for r in _read_day_rows(_day_path(tdx, sid)) if r['trade_date'] <= ANCHOR]
+        rows = [r for r in _read_day_rows(_day_path(tdx, sid)) if r['trade_date'] <= resolved_anchor]
         raw = next(r for r in rows if r['trade_date'] == date)
         factor = build_affine_factors([r['trade_date'] for r in rows], by_security[sid])[date]
         chain = sorted((e for e in by_security[sid] if date < e.ex_day <= rows[-1]['trade_date']),

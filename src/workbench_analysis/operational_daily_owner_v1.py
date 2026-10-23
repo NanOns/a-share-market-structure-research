@@ -90,12 +90,16 @@ def prepare(root,freeze_binding,*,replay_current=False,adjustment_contract=None,
     atomic_json(root,folder/'INCREMENT_PLAN.json',increment)
     if increment['mode']=='RANGE_REPAIR':
         raise ValueError('RANGE_REPAIR_REQUIRED:'+','.join(revisions))
-    phase_path=root/'reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json'
+    phase_matches=sorted((root/'reports/v4_phase0').glob('V4_PHASE0_STAGE_RECEIPTS_R5_*.json'))
+    if len(phase_matches)!=1:raise ValueError('PHASE0_RECEIPT_BINDING_AMBIGUOUS')
+    phase_path=phase_matches[0]
     phase=load(phase_path)
     if phase['phase0_status'] not in ('FULL_PASS','DEGRADED_PASS'):raise ValueError('PHASE0_GATE_REQUIRED')
+    upgrade_matches=sorted((root/'docs/upgrade').glob('V4_RUNTIME_PERFORMANCE_REPAIR_R1_*.md'))
+    if len(upgrade_matches)!=1:raise ValueError('RUNTIME_UPGRADE_DOCUMENT_BINDING_AMBIGUOUS')
     atomic_json(root,folder/'STAGE_ENTRY.json',dict(contract_id='DYNAMIC_DAILY_OWNER_ENTRY_V1',
         phase0_status=phase['phase0_status'],phase0_evidence=ref(root,phase_path),
-        upgrade_document=ref(root,root/'docs/upgrade/V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013.md'),
+        upgrade_document=ref(root,upgrade_matches[0]),
         task_contract=ref(root,root/'docs/evidence/dynamic_daily_20261009/TASK_CONTRACT_V1_1.md'),
         acceptance='IN_PROGRESS',target_session=day,source_freeze=freeze_binding,
         next_stage='UNCHANGED_KERNEL_REPLAY_AND_FULL_NUMERIC_DAY_QA'))

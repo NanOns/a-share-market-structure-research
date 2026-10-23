@@ -2268,7 +2268,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             return 200,self.envelope(day,status='READY',operations=self.legacy.status(),source='/api/operations/status',scope='REQUEST_TIME_RUNTIME_STATUS; NOT_DATED_FACTOR_OWNER',items=[])
         if p==['diagnostics','legacy']:
             policy=json.loads((self.api.root/'config/v4_legacy_release_scope_v1.json').read_bytes())
-            return 200,self.envelope(day,status='READY',items=[dict(legacy='旧版研究摘要',current='独立历史入口，保留原日期',href='/v4/legacy-summary'),dict(legacy='旧版 V4 历史读域',current='2026-09-30 独立上下文',href='/api/v4/original-0930/context')],scope='NAVIGATION_CATALOG_ONLY; NOT_CURRENT_FACTS',policy=policy,source='config/v4_legacy_release_scope_v1.json')
+            legacy_day=str(policy.get('legacy_trade_date') or '')
+            legacy_href='/api/v4/original/context'+('?trade_date='+legacy_day if legacy_day else '')
+            legacy_label=(legacy_day+' 独立上下文') if legacy_day else '历史日期独立上下文'
+            return 200,self.envelope(day,status='READY',items=[dict(legacy='旧版研究摘要',current='独立历史入口',href='/v4/legacy-summary'),dict(legacy='旧版 V4 历史读域',current=legacy_label,href=legacy_href)],scope='NAVIGATION_CATALOG_ONLY; NOT_CURRENT_FACTS',policy=policy,source='config/v4_legacy_release_scope_v1.json')
         if p==['diagnostics','shadow']:
             policy=json.loads((self.api.root/'config/v4_17_shadow_ui_source_v1.json').read_bytes())
             return 200,self.envelope(day,status='READY',capability_status=policy['status'],items=[],policy=policy,source='config/v4_17_shadow_ui_source_v1.json',href='/v4/shadow',scope='CAPABILITY_DIAGNOSTIC_ONLY; NO_REAL_SHADOW_DATA')

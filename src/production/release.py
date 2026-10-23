@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import tempfile
 from typing import Any, Iterable
+from datetime import date
 
 
 RELEASE_FILES = (
@@ -118,3 +119,20 @@ def read_pointer(pointer: str | Path) -> dict[str, Any] | None:
     if not path.exists():
         return None
     return json.loads(path.read_text("utf-8"))
+
+
+def current_release_scope(root: str | Path) -> tuple[str, str]:
+    """Resolve the latest cutoff and release identity from the published pointer."""
+    status = read_pointer(Path(root) / "reports/current/CURRENT_RELEASE.json")
+    latest = (status or {}).get("latest_release")
+    if not isinstance(latest, dict):
+        raise PublicationValidationError("CURRENT_RELEASE_POINTER_MISSING")
+    cutoff = str(latest.get("date") or "")
+    try:
+        parsed = date.fromisoformat(cutoff[:10])
+    except ValueError as error:
+        raise PublicationValidationError("CURRENT_RELEASE_DATE_INVALID") from error
+    run_id = str(latest.get("run_id") or "")
+    if not run_id:
+        raise PublicationValidationError("CURRENT_RELEASE_ID_MISSING")
+    return parsed.strftime("%Y%m%d"), run_id

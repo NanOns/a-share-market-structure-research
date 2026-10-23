@@ -43,7 +43,7 @@ def _frozen_readers():
 def _scope(result,root,current):
     from .historical_stage_governance_r17 import current_state
     return dict(result,current_accepted_state=current_state(root),validation_scope='ACCEPTED_PUBLICATION_HISTORY_ONLY',
-        historical_data_head_resolution='EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE',
+        historical_data_head_resolution='EXPLICIT_EXACT_HISTORICAL_ORIGINAL_BYTE_ARCHIVE',
         current_data_head=binding(root,HEAD_PATH),current_data_head_date=current['accepted_trade_date'],
         business_reacceptance_performed=False,production_authorization=False)
 

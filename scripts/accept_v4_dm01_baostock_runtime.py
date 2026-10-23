@@ -62,6 +62,8 @@ def _ledger_count(path: Path, target_date: str) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Accept only the bounded, exact-date BaoStock DM-01 DailyUpdates runtime.")
     parser.add_argument("--target-date", required=True)
+    parser.add_argument("--calendar-receipt", type=Path, required=True,
+                        help="由官方来源核验的日历桥接回执路径")
     parser.add_argument("--ledger", type=Path, default=ROOT / "reports/v4_baostock/request_ledger.json")
     args = parser.parse_args()
     try:
@@ -78,7 +80,7 @@ def main() -> int:
                           "request_count": 0}, ensure_ascii=False))
         return 2
 
-    calendar_path = ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json"
+    calendar_path = args.calendar_receipt.resolve()
     if not calendar_path.is_file():
         print(json.dumps({"status": "BLOCKED_OFFICIAL_SESSION_NOT_VERIFIED"}, ensure_ascii=False))
         return 2

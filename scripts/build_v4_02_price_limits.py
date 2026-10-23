@@ -25,9 +25,6 @@ from workbench_analysis.v4_02_closure import ex_right_reference_price  # noqa: E
 from workbench_analysis.price_reference_state import PreviousCloseState  # noqa: E402
 
 
-DEFAULT_GBBQ = ROOT / "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache/gbbq"
-
-
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -72,22 +69,22 @@ def board_rule_key(board_scope: str) -> tuple[str, str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--universe", default="data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--trading-status", default="data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--dated-isst", default="data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz")
-    parser.add_argument("--daily", default="data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet")
-    parser.add_argument("--raw", default="data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet")
-    parser.add_argument("--identity", default="data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json")
+    parser.add_argument("--universe", required=True)
+    parser.add_argument("--trading-status", required=True)
+    parser.add_argument("--dated-isst", required=True)
+    parser.add_argument("--daily", required=True)
+    parser.add_argument("--raw", required=True)
+    parser.add_argument("--identity", required=True)
     parser.add_argument("--calendar", default="config/v4_official_exchange_calendar_v2.json")
-    parser.add_argument("--calendar-sse", default="data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json")
-    parser.add_argument("--calendar-szse", default="data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_szse_20230704_20260924.json")
+    parser.add_argument("--calendar-sse", required=True)
+    parser.add_argument("--calendar-szse", required=True)
     parser.add_argument("--calendar-receipt", default="reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json")
     parser.add_argument("--rule-contract", default="config/v4_02_price_limit_rules_v1.json")
     parser.add_argument("--classification", default="config/v4_02_gbbq_price_impact_classification_v1.json")
-    parser.add_argument("--gbbq", default=str(DEFAULT_GBBQ.relative_to(ROOT)).replace("\\", "/"))
-    parser.add_argument("--gbbq-map", default=str(DEFAULT_GBBQ.with_suffix(".map").relative_to(ROOT)).replace("\\", "/"))
-    parser.add_argument("--output", default="data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_2_20260926.jsonl.gz")
-    parser.add_argument("--receipt", default="reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R1_20260926.json")
+    parser.add_argument("--gbbq", required=True)
+    parser.add_argument("--gbbq-map", required=True)
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--receipt", required=True)
     args = parser.parse_args()
 
     import duckdb
@@ -107,7 +104,7 @@ def main() -> int:
     szse_cal = json.loads(calendar_szse_path.read_text(encoding="utf-8"))
     sessions = [str(value).replace("-", "") for value in sse_cal.get("session_dates", [])]
     szse_sessions = [str(value).replace("-", "") for value in szse_cal.get("session_dates", [])]
-    if not sessions or sessions != szse_sessions or len(sessions) != 786:
+    if not sessions or sessions != szse_sessions or sessions != sorted(set(sessions)):
         raise SystemExit("PRICE_LIMIT_CALENDAR_SESSION_BINDING_FAILED")
     session_index = {day: i for i, day in enumerate(sessions)}
 
@@ -164,7 +161,6 @@ def main() -> int:
         security_id = next(iter(ids))
         events_by_key[(security_id, event_day)].append(Action(record, xrxd_from_gbbq(record) if category == 1 else None, cat_disp.get(category, "UNKNOWN_PRICE_IMPACT")))
 
-    # Prior session close is sourced from the accepted TDX RAW artifact for 2023-07-03.
     raw_sql_path = str(raw_path).replace("'", "''")
     conn = duckdb.connect()
     # The parquet is grouped by security, not by trade_date. Materialize the
@@ -177,8 +173,16 @@ def main() -> int:
         f"from read_parquet('{daily_sql}')"
     )
     conn.execute("create index v4_02_price_bars_day_security on v4_02_price_bars(trade_date, canonical_security_id)")
+    first_session = int(sessions[0])
+    warmup_date = conn.execute(
+        f"select max(trade_date) from read_parquet('{raw_sql_path}') where trade_date < ? and record_quality='SOURCE_FILE_VALIDATED_RECORD'",
+        [first_session],
+    ).fetchone()[0]
+    if warmup_date is None:
+        raise SystemExit("PRICE_LIMIT_PREDECESSOR_CLOSE_UNAVAILABLE")
     warmup = conn.execute(
-        f"select source_security_key, close_price_raw, price_scale from read_parquet('{raw_sql_path}') where trade_date=20230703 and record_quality='SOURCE_FILE_VALIDATED_RECORD'"
+        f"select source_security_key, close_price_raw, price_scale from read_parquet('{raw_sql_path}') where trade_date=? and record_quality='SOURCE_FILE_VALIDATED_RECORD'",
+        [warmup_date],
     ).fetchall()
     previous_close_state: dict[str, PreviousCloseState] = {}
     for source_key, close_raw, scale in warmup:
@@ -198,7 +202,21 @@ def main() -> int:
     current_day = None
     day_members: list[tuple[dict, dict, dict]] = []
     query_count = 0
-    boundary_days = {"20260703", "20260706"}
+    boundary_days = set()
+    for rule in rules:
+        if rule.get("risk_status") != "RISK_WARNING":
+            continue
+        effective = str(rule.get("valid_from") or "").replace("-", "")
+        if effective in session_index:
+            idx = session_index[effective]
+            boundary_days.add(effective)
+            if idx:
+                boundary_days.add(sessions[idx - 1])
+        end = str(rule.get("valid_to") or "").replace("-", "")
+        if end in session_index:
+            idx = session_index[end]
+            if idx + 1 < len(sessions):
+                boundary_days.add(sessions[idx + 1])
 
     def process_day(day: str, members: list[tuple[dict, dict, dict]], target) -> None:
         nonlocal row_count, query_count
@@ -293,7 +311,6 @@ def main() -> int:
                     except Exception as exc:
                         result.update(reference_basis="UNKNOWN", reason="REFERENCE_STATE_UNAVAILABLE:" + type(exc).__name__)
 
-                    # 2026-07-06 is the risk-warning ratio rule boundary.
                     if day in boundary_days and risk_status == "RISK_WARNING":
                         samples.setdefault("RULE_BOUNDARY_" + day + "_" + board, dict(result))
             _write(target, output_digest, result)
@@ -358,7 +375,7 @@ def main() -> int:
         "version": "1.0.0",
         "status": "PRICE_LIMIT_CANDIDATE_PASS_WITH_FAIL_CLOSED_UNKNOWN" if counts["UNKNOWN"] else "PRICE_LIMIT_PASS",
         "stage_contract": "PRICE_LIMIT_RULE_V1",
-        "scope": {"start_date": "2023-07-04", "end_date": "2026-09-24", "session_count": len(sessions), "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"]},
+        "scope": {"start_date": sessions[0], "end_date": sessions[-1], "session_count": len(sessions), "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"]},
         "row_count": row_count,
         "limit_status_counts": dict(counts),
         "unknown_reason_counts": dict(by_reason),

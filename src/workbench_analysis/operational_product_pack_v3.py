@@ -1,5 +1,5 @@
 """Prepare dated native PG read packs before atomic operational publication."""
-import json,gzip,hashlib,zipfile,struct
+import json,gzip,hashlib,zipfile,struct,re
 import sqlite3,tempfile
 from contextlib import closing
 from pathlib import Path
@@ -26,6 +26,19 @@ def canonical_history_rows(path,logical):
             for (payload,) in db.execute('SELECT payload FROM rows ORDER BY security'):
                 logical.update(payload+b'\n');yield json.loads(payload)
 
+def index_benchmark_contract(root):
+    path=Path(root)/'config/core_product_index_benchmark_v1.json'
+    value=json.loads(path.read_bytes())
+    if value.get('contract_id')!='CORE_PRODUCT_INDEX_BENCHMARK_V1' or not value.get('version') or not value.get('benchmarks'):
+        raise ValueError('VERSIONED_INDEX_BENCHMARK_CONTRACT_REQUIRED')
+    seen=set()
+    for benchmark in value['benchmarks']:
+        symbol=benchmark.get('symbol','').lower()
+        if not re.fullmatch(r'(?:sh|sz|bj)\d{6}',symbol) or symbol in seen or not benchmark.get('display_name'):
+            raise ValueError('INDEX_BENCHMARK_CONTRACT_INVALID')
+        seen.add(symbol)
+    return value,dict(path=path.relative_to(root).as_posix(),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+
 def market_facts(root,candidate,day,owner):
     bindings=dict(history=owner['history'],package=owner['sources']['package'],**{name:candidate['owners'][day][name] for name in ('raw','core','market')})
     market=rows(root,bindings['market']);limitrefs=[b for b in market['input_bindings'] if 'daily_price_limits' in b['path']]
@@ -47,10 +60,12 @@ def market_facts(root,candidate,day,owner):
             if value['limit_state']!='LIMIT_UP':exact=True;break
             run+=1
         ladders.append(dict(entity_id=item['security_id'],symbol=item['source_security_key'],consecutive_limit_up_lower_bound=run,exact_streak=run if exact else None,reason=None if exact else 'PREFIX_NOT_BOUND'))
+    index_contract,bindings['index_reference_contract']=index_benchmark_contract(root)
     indices=[]
     with zipfile.ZipFile(checked(root,bindings['package'])) as archive:
         members={name.lower():name for name in archive.namelist()}
-        for symbol,name in [('sh000001','上证指数'),('sz399001','深证成指'),('sz399006','创业板指'),('sh000300','沪深300'),('sh000852','中证1000')]:
+        for benchmark in index_contract['benchmarks']:
+            symbol=benchmark['symbol'].lower();name=benchmark['display_name']
             member=members.get(symbol[:2]+'/lday/'+symbol+'.day')
             if not member:continue
             bars=[]
@@ -58,7 +73,7 @@ def market_facts(root,candidate,day,owner):
                 dt=str(row[0]);dt=dt[:4]+'-'+dt[4:6]+'-'+dt[6:]
                 if dt<=day:bars.append(dict(trade_date=dt,open=row[1]/100,high=row[2]/100,low=row[3]/100,close=row[4]/100,amount=row[5],volume=row[6],quality='KNOWN'))
             if bars and bars[-1]['trade_date']==day:indices.append(dict(symbol=symbol,display_name=name,bars=bars[-120:],price_basis='RAW_INDEX_POINTS',volume_unit='SOURCE_NATIVE_UNVERIFIED',source_member=member))
-    facts=dict(contract_id='CORE_PRODUCT_MARKET_FACT_READ_R1',trade_date=day,breadth=dict(breadth,denominator=len(core),actual_quote_count=len(raw),amount_cny=sum(row['amount'] for row in raw.values()),definition='ret1 in native T0 QFQ coordinate; actual T0 bar required'),indices=indices,
+    facts=dict(contract_id='CORE_PRODUCT_MARKET_FACT_READ_R1',trade_date=day,index_benchmark_contract=dict(contract_id=index_contract['contract_id'],version=index_contract['version'],sha256=bindings['index_reference_contract']['sha256']),breadth=dict(breadth,denominator=len(core),actual_quote_count=len(raw),amount_cny=sum(row['amount'] for row in raw.values()),definition='ret1 in native T0 QFQ coordinate; actual T0 bar required'),indices=indices,
         limits=dict(counts=dict(Counter(row['limit_state'] for row in limits)),rows=limits),ladders=ladders,sources=bindings,AS_RECORDED=False,PIT_ELIGIBLE=False)
     return facts,bindings
 

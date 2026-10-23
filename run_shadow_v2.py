@@ -8,11 +8,15 @@ import pyarrow.parquet as pq
 from shadow_v2.diagnostics import *
 from common.paths import resolve_tdx_root
 
-ROOT=Path(__file__).resolve().parent;TDX_ROOT=resolve_tdx_root(ROOT);BASE_RUN='4255c2f108ac4cdabca3e212079d8bf8';CUTOFF='20260904'
+ROOT=Path(__file__).resolve().parent;TDX_ROOT=resolve_tdx_root(ROOT)
+from production.release import current_release_scope
+BASE_RUN=None;CUTOFF=None
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def atomic(p,b):
  p.parent.mkdir(parents=True,exist_ok=True);fd,t=tempfile.mkstemp(dir=p.parent,prefix='.'+p.name,suffix='.tmp');os.write(fd,b);os.fsync(fd);os.close(fd);os.replace(t,p)
 def run(requested='latest'):
+ global CUTOFF,BASE_RUN
+ if CUTOFF is None or BASE_RUN is None:CUTOFF,BASE_RUN=current_release_scope(ROOT)
  if requested!='latest':raise ValueError('SHADOW_LATEST_ONLY')
  cur=json.loads((ROOT/'reports/current/CURRENT_RELEASE.json').read_text('utf8'));before=(ROOT/'reports/current/CURRENT_RELEASE.json').read_bytes()
  base={'formal_cutoff':CUTOFF,'formal_run_id':BASE_RUN,'manifest_sha256':cur['latest_release']['manifest_sha256'],'computation_identity':cur['latest_release']['computation_identity'],'contracts':cur['current_ruleset_versions'],'immutable':True}

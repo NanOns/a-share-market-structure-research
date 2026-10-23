@@ -25,21 +25,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq  # noqa: E402
 from tdx.gbbq_reader import read_gbbq  # noqa: E402
 
-ASOF = 20260924
-START = 20230704
 CENT = Decimal("0.01")
 SCALE = Decimal("100")
 CONTRACT = ROOT / "config/v4_02_formal_period_contract_v1.json"
-UNIVERSE = ROOT / "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz"
-STATUS = ROOT / "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz"
-RAW = ROOT / "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet"
-CLASSIFICATION = ROOT / "reports/v4_02/V4_02_GBBQ_PRICE_IMPACT_CLASSIFICATION_V1.json"
-DISPOSITIONS = ROOT / "data/v4/artifact_store/v4_02/V4_02_GBBQ_SECURITY_DISPOSITIONS_R6_2_20260926.jsonl.gz"
-GBBQ = ROOT / "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache/gbbq"
-MAP = ROOT / "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache/gbbq.map"
-CAL_ROOT = ROOT / "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2"
-OUT_DIR = ROOT / "data/v4/artifact_store/v4_02"
-RECEIPT = ROOT / "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json"
 
 
 def sha(path: Path) -> str:
@@ -89,12 +77,12 @@ def natural_period_end(key: str, kind: str) -> int:
     return value.year * 10000 + value.month * 100 + value.day
 
 
-def get_calendar(markets: list[str]) -> dict[str, dict[str, dict]]:
+def get_calendar(markets: list[str], calendar_paths: dict[str, Path]) -> dict[str, dict[str, dict]]:
     result = {}
-    for market, fname in (("SH", "calendar_sse_20230704_20260924.json"), ("SZ", "calendar_szse_20230704_20260924.json")):
+    for market, path in calendar_paths.items():
         if market not in markets:
             continue
-        doc = json.loads((CAL_ROOT / fname).read_text(encoding="utf-8"))
+        doc = json.loads(path.read_text(encoding="utf-8"))
         sessions = [int(x.replace("-", "")) for x in doc["session_dates"]]
         data = {"WEEKLY": {}, "MONTHLY": {}}
         for value in sessions:
@@ -140,20 +128,43 @@ def schemas() -> tuple[pa.Schema, pa.Schema]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--asof", type=int, default=ASOF)
+    parser.add_argument("--universe", required=True, help="按交易日排序的全市场身份输入")
+    parser.add_argument("--status", required=True, help="与 universe 绑定的交易状态事实")
+    parser.add_argument("--raw", required=True, help="原始日线 parquet")
+    parser.add_argument("--classification", default="reports/v4_02/V4_02_GBBQ_PRICE_IMPACT_CLASSIFICATION_V1.json")
+    parser.add_argument("--dispositions", required=True, help="公司行为分类事实")
+    parser.add_argument("--gbbq", required=True, help="本地 TDX gbbq 文件")
+    parser.add_argument("--gbbq-map", required=True, help="与 gbbq 配对的 map 文件")
+    parser.add_argument("--calendar-sse", required=True, help="SSE 已接受交易日历")
+    parser.add_argument("--calendar-szse", required=True, help="SZSE 已接受交易日历")
+    parser.add_argument("--daily-output", required=True)
+    parser.add_argument("--weekly-output", required=True)
+    parser.add_argument("--monthly-output", required=True)
+    parser.add_argument("--receipt", required=True)
+    parser.add_argument("--asof", type=int, help="可选目标交易日；省略时取输入日历和 universe 的共同末日")
     args = parser.parse_args()
-    asof = args.asof
-    if not START <= asof <= ASOF:
-        raise SystemExit("ASOF_OUTSIDE_FROZEN_REQUIRED_SCOPE")
+    universe_path, status_path, raw_path = (ROOT / args.universe, ROOT / args.status, ROOT / args.raw)
+    classification_path, dispositions_path = ROOT / args.classification, ROOT / args.dispositions
+    gbbq_path, map_path = ROOT / args.gbbq, ROOT / args.gbbq_map
+    calendar_paths = {"SH": ROOT / args.calendar_sse, "SZ": ROOT / args.calendar_szse}
+    final_paths = [ROOT / args.daily_output, ROOT / args.weekly_output, ROOT / args.monthly_output]
+    receipt_path = ROOT / args.receipt
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
     calendar_receipt = json.loads((ROOT / contract["calendar_acceptance_receipt"]).read_text(encoding="utf-8"))
     if calendar_receipt.get("status") != "FORMAL_MARKET_CALENDAR_PASS":
         raise SystemExit("FORMAL_CALENDAR_GATE_NOT_PASS")
-    calendars = get_calendar(["SH", "SZ"])
+    calendars = get_calendar(["SH", "SZ"], calendar_paths)
+    all_sessions = [value for market in calendars.values() for kind in market.values() for group in kind.values()
+                    for value in (group["first_session"], group["last_session"])]
+    calendar_start, calendar_end = min(all_sessions), max(all_sessions)
+    asof = int(args.asof) if args.asof is not None else calendar_end
+    if not calendar_start <= asof <= calendar_end:
+        raise SystemExit("ASOF_OUTSIDE_INPUT_CALENDAR_SCOPE")
+    source_cutoff = min(asof, calendar_end)
 
     gap_facts = {}
-    status_sha = sha(STATUS)
-    with gzip.open(STATUS, "rt", encoding="utf-8") as f:
+    status_sha = sha(status_path)
+    with gzip.open(status_path, "rt", encoding="utf-8") as f:
         for line in f:
             row = json.loads(line)
             if row["status"] != "ACTUAL_TRADED":
@@ -162,7 +173,7 @@ def main() -> int:
     # Exact membership-session counts and actual bar date lists; uint32 arrays keep the index compact.
     members: dict[str, dict] = {}
     membership_sessions = 0
-    with gzip.open(UNIVERSE, "rt", encoding="utf-8") as f:
+    with gzip.open(universe_path, "rt", encoding="utf-8") as f:
         for line in f:
             row = json.loads(line)
             key, sid, board = row["source_security_key"], row["security_id"], row["board_scope"]
@@ -195,12 +206,12 @@ def main() -> int:
         item["actual_dates"] = sorted(item["actual_dates"])
 
     disposition_by_sid = {}
-    with gzip.open(DISPOSITIONS, "rt", encoding="utf-8") as f:
+    with gzip.open(dispositions_path, "rt", encoding="utf-8") as f:
         for line in f:
             row = json.loads(line)
             disposition_by_sid[row["security_id"]] = row
 
-    records = read_gbbq(GBBQ)
+    records = read_gbbq(gbbq_path)
     events_by_code: dict[str, list] = defaultdict(list)
     categories_by_code: dict[str, set[int]] = defaultdict(set)
     for event in records:
@@ -210,13 +221,8 @@ def main() -> int:
     xrxd_by_code = {key: [xrxd_from_gbbq(event) for event in values if event.category == 1]
                     for key, values in events_by_code.items()}
 
-    raw_file = pq.ParquetFile(RAW)
-    output_names = [
-        "V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
-        "V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
-        "V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet",
-    ]
-    finals = [OUT_DIR / name for name in output_names]
+    raw_file = pq.ParquetFile(raw_path)
+    finals = final_paths
     temps = [atomic_stage(path) for path in finals]
     daily_schema, period_schema = schemas()
     daily_writer = pq.ParquetWriter(temps[0], daily_schema, compression="zstd", version="2.6")
@@ -228,8 +234,8 @@ def main() -> int:
     matched_by_code = Counter()
     daily_columns = ["source_security_key", "trade_date", "open_price_raw", "high_price_raw", "low_price_raw",
                      "close_price_raw", "amount_source_native", "volume_source_native", "record_quality"]
-    raw_sha = sha(RAW)
-    action_sha = sha(GBBQ)
+    raw_sha = sha(raw_path)
+    action_sha = sha(gbbq_path)
     contract_sha = sha(CONTRACT)
     try:
         for group_index in range(raw_file.num_row_groups):
@@ -261,7 +267,7 @@ def main() -> int:
             expected_dates = targets
             for row_index, raw_date in enumerate(date_values):
                 d = int(raw_date)
-                if d < START or d > asof:
+                if d < calendar_start or d > asof:
                     continue
                 while target_pos < len(expected_dates) and expected_dates[target_pos] < d:
                     target_pos += 1
@@ -346,7 +352,7 @@ def main() -> int:
                     data_gap = int(counts.get("data_gap", 0))
                     unknown = int(counts.get("unknown", 0))
                     period_last = int(meta["last_session"])
-                    is_source_edge = asof == ASOF and period_last == ASOF and natural_period_end(pkey, kind) > asof
+                    is_source_edge = asof == calendar_end and period_last == asof and natural_period_end(pkey, kind) > asof
                     view = "AS_OF_PARTIAL" if period_last > asof or is_source_edge else "CLOSED_ONLY"
                     end_date = natural_period_end(pkey, kind) if is_source_edge else period_last
                     period_last_field = None if is_source_edge else period_last
@@ -428,18 +434,18 @@ def main() -> int:
                                     "sha256": sha(final), "bytes": final.stat().st_size,
                                     "row_count": pq.ParquetFile(final).metadata.num_rows}
                        for final in finals}
-    classification = json.loads(CLASSIFICATION.read_text(encoding="utf-8"))
+    classification = json.loads(classification_path.read_text(encoding="utf-8"))
     receipt = {
         "contract_id": contract["contract_id"], "status": "FORMAL_PERIODS_CANDIDATE_PASS",
         "capability": "RAW_QFQ_WEEKLY_MONTHLY_CLOSED_ONLY_AS_OF_EMITTED",
         "stage_status": "BLOCKED_OPEN_ADJUSTMENT_REAL_ACCEPTANCE_AND_TEMPORAL_REPLAY",
         "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
-        "asof_trade_date": asof, "source_cutoff": "2026-09-24",
+        "asof_trade_date": asof, "source_cutoff": source_cutoff,
         "inputs": {"contract_sha256": sha(CONTRACT), "raw_sha256": raw_sha,
-                   "status_sha256": status_sha, "universe_sha256": sha(UNIVERSE),
-                   "gbbq_sha256": action_sha, "gbbq_map_sha256": sha(MAP),
-                   "classification_report_sha256": sha(CLASSIFICATION),
-                   "security_dispositions_sha256": sha(DISPOSITIONS),
+                   "status_sha256": status_sha, "universe_sha256": sha(universe_path),
+                   "gbbq_sha256": action_sha, "gbbq_map_sha256": sha(map_path),
+                   "classification_report_sha256": sha(classification_path),
+                   "security_dispositions_sha256": sha(dispositions_path),
                    "calendar_receipt_sha256": sha(ROOT / contract["calendar_acceptance_receipt"])},
         "scope": {"membership_sessions": membership_sessions,
                   "actual_required_bars": expected_actuals, "actual_adjusted_bars_emitted": daily_count,
@@ -454,7 +460,7 @@ def main() -> int:
         "tdx_root_write_count": 0, "scanner_or_factor_run_count": 0,
         "next_stage": "V4_02_TEMPORAL_LEAKAGE_REPLAY_AFTER_ADJUSTMENT_REAL_ACCEPTANCE",
     }
-    atomic_json(RECEIPT, receipt)
+    atomic_json(receipt_path, receipt)
     print(json.dumps({"status": receipt["status"], "actual_daily": daily_count,
                       "weekly_rows": period_rows["WEEKLY"], "monthly_rows": period_rows["MONTHLY"],
                       "outputs": output_receipts}, ensure_ascii=False))

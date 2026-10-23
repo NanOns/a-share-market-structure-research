@@ -23,7 +23,13 @@ def validate_owner(root, owner, *, field_id, consumer, target_date, historical_m
     if historical_mode != mode or owner.get('historical_mode') != mode:
         raise ValueError('OWNER_HISTORICAL_MODE_OUT_OF_SCOPE')
     scope = owner['effective_scope']
-    if scope != dict(start_date='2026-09-30', end_date='2026-09-30') or not date.fromisoformat(scope['start_date']) <= date.fromisoformat(target_date) <= date.fromisoformat(scope['end_date']):
+    try:
+        start_date = date.fromisoformat(scope['start_date'])
+        end_date = date.fromisoformat(scope['end_date'])
+        requested_date = date.fromisoformat(target_date)
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError('OWNER_DATE_SCOPE_INVALID') from exc
+    if start_date > end_date or not start_date <= requested_date <= end_date:
         raise ValueError('OWNER_DATE_OUT_OF_SCOPE')
     if owner.get('external_acceptance') != 'PENDING_INDEPENDENT_EXTERNAL_REAUDIT' or owner.get('formal_consumer_authorization') is not False:
         raise ValueError('OWNER_CANDIDATE_SELF_PROMOTION')
@@ -45,16 +51,19 @@ def validate_owner(root, owner, *, field_id, consumer, target_date, historical_m
     else:
         component = {'OHLC': 'RAW_DAILY', 'VOLUME': 'RAW_DAILY', 'AMOUNT': 'RAW_DAILY', 'QFQ': 'ADJUSTED_DAILY', 'SECURITY_IDENTITY': 'IDENTITY_UNIVERSE', 'SPECIAL_PHASE': 'SPECIAL_PHASE'}[field_id]
         permission = head['component_permissions'][component]
-        if head['accepted_trade_date'] != '2026-09-30' or owner['artifact'] != permission['artifact'] or owner['degraded_capability'] != dict(status=permission['status'], unknown_reason_counts=permission['unknown_reason_counts']):
+        if head['accepted_trade_date'] != target_date or owner['artifact'] != permission['artifact'] or owner['degraded_capability'] != dict(status=permission['status'], unknown_reason_counts=permission['unknown_reason_counts']):
             raise ValueError('OWNER_ARTIFACT_OR_CAPABILITY_MISMATCH')
         record = load(root, head['external_acceptance_record'])
         if owner['external_acceptance_evidence'] != [record['external_authority']['document']]:
             raise ValueError('OWNER_EXTERNAL_EVIDENCE_OUT_OF_SCOPE')
         chain = load(root, head['accepted_chain'])
         context = load(root, chain['source_context'])
-        inputs = context['inputs']['2026-09-30']['inputs']
+        dated_context = context['inputs'].get(target_date)
+        if not isinstance(dated_context, dict):
+            raise ValueError('OWNER_SOURCE_CONTEXT_DATE_MISSING')
+        inputs = dated_context['inputs']
         keys = {'OHLC':['TDX_PACKAGE_DELTA'], 'VOLUME':['TDX_PACKAGE_DELTA'], 'AMOUNT':['TDX_PACKAGE_DELTA'], 'QFQ':['GBBQ','GBBQ_DISPOSITIONS','TDX_PACKAGE_DELTA'], 'SPECIAL_PHASE':['SPECIAL_PRICE_PHASE','PRICE_RULES']}.get(field_id)
-        expected_sources = [inputs[k] for k in keys] if keys else [context['inputs']['2026-09-30']['families']['IDENTITY_LIFECYCLE'],head['identity'],binding(root,'reports/audits/A11_STAGE_CLOSURE_R1.json')]
+        expected_sources = [inputs[k] for k in keys] if keys else [dated_context['families']['IDENTITY_LIFECYCLE'],head['identity'],binding(root,'reports/audits/A11_STAGE_CLOSURE_R1.json')]
         if owner['source_bindings'] != expected_sources or owner['current_accepted_contract'] != chain['builder_contract']:
             raise ValueError('OWNER_SOURCE_OR_CONTRACT_OUT_OF_SCOPE')
     if field_id == 'AMOUNT' and owner.get('amount_a_formal_authority') is not False:
@@ -66,7 +75,7 @@ def validate_owner(root, owner, *, field_id, consumer, target_date, historical_m
     return dict(status='PASS_SCOPED_CANDIDATE_ONLY', formal_consumer_authorization=False)
 
 
-def validate_registry(root, registry):
+def validate_registry(root, registry, *, target_date=None):
     if registry.get('contract_id') != 'V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R4_CANDIDATE' or registry.get('version') != 4:
         raise ValueError('OWNER_CANDIDATE_REGISTRY_VERSION_INVALID')
     if registry.get('active_global_trust_root') is not False or registry.get('global_mandatory_adoption') is not False:
@@ -74,6 +83,13 @@ def validate_registry(root, registry):
     owners = registry['owners']
     if len(owners) != len(RULES) or {x['field_id'] for x in owners} != set(RULES):
         raise ValueError('OWNER_FIELDS_DUPLICATE_OR_MISSING')
+    scope_dates = {owner.get('effective_scope', {}).get('start_date')
+                   for owner in owners if owner.get('effective_scope', {}).get('start_date')
+                   == owner.get('effective_scope', {}).get('end_date')}
+    if target_date is None:
+        if len(scope_dates) != 1:
+            raise ValueError('OWNER_REGISTRY_TARGET_DATE_REQUIRED')
+        target_date = next(iter(scope_dates))
     for owner in owners:
-        validate_owner(root, owner, field_id=owner['field_id'], consumer=owner['allowed_consumers'][0], target_date='2026-09-30', historical_mode=owner['historical_mode'])
+        validate_owner(root, owner, field_id=owner['field_id'], consumer=owner['allowed_consumers'][0], target_date=target_date, historical_mode=owner['historical_mode'])
     return dict(status='PASS_SCOPED_CANDIDATE_ONLY', fields=len(owners), active_global_trust_root=False)

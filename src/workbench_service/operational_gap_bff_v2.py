@@ -9,7 +9,7 @@ def gap_contract(path):
              'market': 'FP09', 'diagnostics': 'FP11', 'replay': 'FP12', 'compare': 'FP12'}.get(domain, 'FP03')
     return dict(contract_id='V4_OPERATIONAL_ROUTE_GAP_V2', task_stage=stage,
                 missing_owner='DATED_OPERATIONAL_' + path.replace('/', '_').upper() + '_OWNER',
-                owner_scope='2026-10-08 operational research',
+                owner_scope='按请求交易日绑定来源与研究上下文',
                 ui_presentation='来源尚未接入；显示缺失 Owner 与修复阶段，保留当前已接受日期',
                 next_task='Bind real dated producer, verify source QA and token, then browser acceptance under ' + stage)
 

@@ -350,9 +350,9 @@ def build_snapshot(root, *, expected_pointer=None, fail_readback=False, publish=
         expected_stocks=len(legacy._source(contract,'RAW_DAILY')['rows'])
         expected_sectors=len({r['sector_id'] for r in legacy._source(contract,'membership')})
         if counts['stocks'] != expected_stocks or counts['sectors'] != expected_sectors: raise SourceInvalid('UNIVERSE_COUNT_GATE')
-        gaps=[dict(domain='market',state='ENGINEERING_NOT_READY',reason='ACCEPTED_MARKET_OWNER_OUTPUT_NOT_BOUND_TO_20260930',next='FP05_TARGETED_CURRENT_FOUR_AXIS_RECOMPUTE'),
+        gaps=[dict(domain='market',state='ENGINEERING_NOT_READY',reason='ACCEPTED_MARKET_OWNER_OUTPUT_NOT_BOUND_TO_CURRENT_TRADE_DATE',next='FP05_TARGETED_CURRENT_FOUR_AXIS_RECOMPUTE'),
               dict(domain='focus',state='ENGINEERING_NOT_READY',reason='EPISODE_PROJECTION_NOT_PUBLISHED_IN_CURRENT_OWNER_CONTEXT',next='FP08_PUBLISH_REAL_EPISODES'),
-              dict(domain='stocks',state='SOURCE_INCOMPLETE',reason='CURRENT_CORE_OWNER_PROFILE_IS_20260928_NOT_20260930',next='FP07_CURRENT_CORE_RECOMPUTE'),
+              dict(domain='stocks',state='SOURCE_INCOMPLETE',reason='CURRENT_CORE_OWNER_PROFILE_NOT_BOUND_TO_CURRENT_TRADE_DATE',next='FP07_CURRENT_CORE_RECOMPUTE'),
               dict(domain='profile_identity',state='SOURCE_INCOMPLETE',reason='ADVANCED_ROWS_OUTSIDE_CURRENT_RAW_UNIVERSE',count=unmatched)]
         if 'market' in domain_features:gaps=[g for g in gaps if g['domain']!='market']
         if 'stocks' in domain_features:gaps=[g for g in gaps if g['domain']!='stocks']

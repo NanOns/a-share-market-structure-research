@@ -87,7 +87,7 @@ def injected_validators(root):
 
 def _scope(result, resolver):
     return dict(result, validation_scope='ACCEPTED_PUBLICATION_HISTORY_ONLY',
-        historical_data_head_resolution='EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE',
+        historical_data_head_resolution='EXPLICIT_EXACT_HISTORICAL_ORIGINAL_BYTE_ARCHIVE',
         current_data_head=binding(resolver.root, HEAD_PATH),
         current_data_head_date=resolver.current['accepted_trade_date'],
         business_reacceptance_performed=False, production_authorization=False)

@@ -1,94 +1,136 @@
 {
-  "contract_id": "V4-R8-GLOBAL-LITERALS-AND-FUNCTIONAL-CLOSEOUT/R1",
-  "status": "EXTERNAL_REVIEW_BLOCKED",
+  "contract_id": "V4_R8_GLOBAL_LITERAL_AND_FUNCTIONAL_CLOSEOUT_EVIDENCE_V1",
+  "version": "1.0.0",
+  "recorded_at": "2026-10-23",
   "branch": "codex/v4-unified-development",
-  "remote_base_head": "aaaf641e8495c08939dea788e385795463189b1b",
-  "implementation_commit": "abb6c63920ebdd0122bbfa828345492edee7e779",
-  "phase0": {
-    "status": "DEGRADED_PASS",
-    "scope": ["V4源码修改", "静态扫描与定向本地回归", "开发PG受控只读核验"],
-    "blocked_actions": ["28766/28765服务重启", "生产Head/调度", "TDX源根写入", "工作空间清理和文件删除"]
+  "base_commit": "df6e312f773500f300d435cd51910961c79f7475",
+  "base_equals_fetched_remote_head": true,
+  "overall_status": "V4_REPAIR_PARTIAL",
+  "external_review_status": "BLOCKED",
+  "scope": {
+    "included": "当前 V4 代码与模块功能",
+    "excluded_by_user_direction": "早于当前 V4 功能链的旧版业务代码及历史无用工具",
+    "stage0": "DEGRADED_PASS",
+    "formal_head_or_production_change": false
   },
-  "changes": [
-    {"id": "P0-A-P0-D", "files": ["scripts/check_v4_business_literals.py", "tests/v4_policy/test_no_production_hardcoded_identities.py"], "status": "CODE_PASS_STATIC_PARTIAL", "result": "严格全局门默认对可达unresolved返回exit 1；baseline差分独立；稳定语义key；新增Python日期构造器召回。"},
-    {"id": "S01", "files": ["src/workbench_service/core_product_bff_r1.py", "tests/test_r8_candidate_priority_cache_key.py"], "status": "CODE_PASS", "result": "ReadIndex authority缓存签名改为原始字节数与SHA-256；相同mtime/size替换内容时重载。"},
-    {"id": "S06-P", "files": ["src/workbench_db/forward_r7_store.py", "tests/test_r8_candidate_priority_cache_key.py"], "status": "CODE_PASS_DEV_PG_CONSUMER_NOT_VERIFIED", "result": "Forward matured-count水位改为数据库身份、行数、最大ordinal；覆盖低ordinal晚提交。"}
+  "changes": {
+    "v4_02_dynamic_inputs": [
+      "日期、周期、交易状态、价格限制构建器改用显式输入路径与接受输入 cutoff",
+      "raw selected 构建要求显式 --asof",
+      "V4-04 候选 cutoff 从已接受输入推导并绑定 SQL 参数"
+    ],
+    "v4_pipeline_and_authority": [
+      "FP05/FP06 从接受输入读取 universe 和交易状态",
+      "BaoStock runtime acceptance 要求显式日历收据",
+      "阶段、Owner、发布及回放校验改为按当前 Head、收据和调用上下文确定目标范围"
+    ],
+    "functional_and_contract": [
+      "Priority 规则的 FALSE 与 UNKNOWN 支配关系得到分支修正与回归",
+      "核心市场指数身份通过版本化、SHA 绑定基准合同读取",
+      "硬编码扫描增加源码入口哈希绑定、摘要边界识别及精确误报测试"
+    ]
+  },
+  "tests": [
+    {
+      "command": "python -m pytest tests/v4_policy/test_no_production_hardcoded_identities.py tests/v4_joint/test_operational_product_pack_v3.py tests/test_v4_functional_r8_s01_s03.py tests/test_r8_candidate_priority_cache_key.py tests/test_r8_s3_ledger.py tests/test_v4_ux_r2_contract.py -q",
+      "result": "PASS",
+      "passed": 102
+    },
+    {
+      "command": "python -m pytest tests/v4_02 tests/v4_04 tests/v4_05 tests/v4_scoped_promotions_r3 tests/upgrade_m1 tests/test_fixed_qfq_samples.py tests/test_phase0_2b_dynamic_anchor.py tests/test_scoped_promotion_dynamic_dates.py -q",
+      "result": "PASS",
+      "passed": 243
+    },
+    {
+      "check": "Changed Python AST parse",
+      "files": 62,
+      "failures": 0
+    },
+    {
+      "check": "git diff --check with CRLF-aware whitespace",
+      "result": "PASS"
+    }
   ],
-  "literal_gate": {
-    "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED",
-    "scanner_schema": "V4-PRODUCTION-LITERAL-INVENTORY/2",
-    "files_scanned": 3958,
-    "python": 3264,
-    "javascript_typescript": 32,
-    "config": 544,
-    "sql": 100,
-    "ui": 44,
-    "reachable_files": 694,
-    "entrypoints": 38,
-    "static_edges": 10327,
-    "dynamic_import_execution_sites": 131,
+  "scanner": {
+    "command": "python scripts/check_v4_business_literals.py --output G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY_FINAL.json --allow-incomplete-inventory",
+    "inventory_path": "G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY_FINAL.json",
+    "inventory_sha256": "cf29f40cdfb3b16faead7d6286b07c6ea061d1d872d9393f3615dce8a2260054",
+    "inventory_bytes": 39705056,
+    "gate_status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED",
+    "files_scanned": 3962,
+    "source_python": 3266,
+    "config_files": 546,
+    "active_graph_nodes": 606,
+    "import_edges": 10348,
+    "dynamic_import_sites": 133,
     "python_ast_parse_failures": 0,
-    "literal_candidates": 39491,
-    "candidate_categories": {"CONSTANT_DATE": 35534, "CONSTANT_SECURITY_ID": 3327, "CONSTANT_SECTOR_ID": 316, "CONSTANT_DATE_COMPONENTS": 314},
-    "active_violations_confirmed": 0,
-    "active_unknown": 3190,
-    "active_unknown_categories": {"CONSTANT_DATE": 2213, "CONSTANT_SECURITY_ID": 965, "CONSTANT_SECTOR_ID": 12},
-    "strict_exit_code": 1,
-    "no_new_legacy_literal_candidates": "PASS"
+    "active_unknown_candidates": 2135,
+    "active_violations_auto_confirmed": 0,
+    "unverified_maintenance_candidates": 5002,
+    "source_entrypoint_inventory_status": "SOURCE_VERIFIED",
+    "important_limit": "0 自动确认违规不等同于逐项人工确认全局无违规；清单保留冻结配置、日历、规则生效日期和历史证据引用候选。"
   },
-  "regression": {
-    "command": "python -m pytest tests/v4_policy/test_no_production_hardcoded_identities.py tests/test_v4_functional_r8_s01_s03.py tests/test_r8_candidate_priority_cache_key.py tests/test_r8_s3_ledger.py tests/test_v4_ux_r2_contract.py -q",
-    "result": "87 passed in 26.31s",
-    "py_compile": "PASS",
-    "git_diff_check": "PASS",
-    "repository_policy_script": "LOCAL_REPOSITORY_POLICY_SCRIPT_MISSING"
+  "stage_status": {
+    "S00": "DEGRADED_PASS",
+    "S01": "PARTIAL",
+    "S02": "PARTIAL",
+    "S03": "PARTIAL",
+    "S04": "PARTIAL",
+    "S05_D": "BLOCK_CONTRACT",
+    "S05_I": "NOT_IMPLEMENTED",
+    "S06_P": "NOT_VERIFIED_THIS_ROUND",
+    "S06_I": "NOT_RUN",
+    "S07": "UI_RUNTIME_NOT_RELOADED",
+    "S08": "NOT_RUN_NOT_AUTHORIZED"
   },
-  "development_pg": {
-    "status": "PARTIAL",
+  "postgres": {
     "database": "market_research",
+    "host": "127.0.0.1",
     "port": 5432,
-    "transaction": "READ ONLY",
-    "role_is_superuser": true,
-    "forward_schemas_found": 4,
-    "schemas_matching_head_date": 2,
-    "business_fact_readback": "NOT_PERFORMED_AMBIGUOUS_OWNER",
-    "ddl_dml": "NONE"
+    "read_only_transaction": true,
+    "writes": false,
+    "observed_current_operational_head_trade_date": "2026-10-09",
+    "observed_accepted_data_head_trade_date": "2026-09-30",
+    "priority_owner_2026_10_20_or_21_found": false,
+    "sector_lifecycle_owner_2026_10_20_or_21_found": false,
+    "latest_observed_priority_owner_date": "2026-10-15",
+    "latest_observed_sector_lifecycle_owner_date": "2026-10-13"
   },
-  "runtime": {
-    "development_port": 28766,
-    "development_pid": 52916,
-    "development_runtime_reloaded": false,
-    "existing_context": "READY at 2026-10-21; not evidence for this code",
-    "priority_endpoint": 409,
-    "production_port_28765_listening": false,
-    "postgres_port": 5432,
+  "services": {
+    "28765_listening": false,
+    "28766": {
+      "listening": true,
+      "pid": 52916,
+      "command": "E:\\python\\python.exe G:\\codex_tmp\\batch10r4_28766.py",
+      "restarted": false,
+      "loaded_current_checkout_code": false
+    },
     "postgres_pid": 8640,
-    "service_restarted": false
+    "api_readback": {
+      "context_http": 200,
+      "context_status": "READY_OLD_PROCESS",
+      "context_trade_date": "2026-10-21",
+      "health_http": 409,
+      "priority_http": 409
+    }
   },
-  "acceptance": {
-    "CODE": "PARTIAL",
-    "STATIC": "PARTIAL_BLOCKED",
-    "NUMERIC": "NOT_VERIFIED",
-    "DEV_PG": "PARTIAL",
-    "SOURCE": "NOT_VERIFIED",
-    "API": "NOT_VERIFIED",
-    "UI": "UI_RUNTIME_NOT_RELOADED",
-    "CI": "CI_NOT_RUN",
-    "PERFORMANCE": "NOT_VERIFIED",
-    "PRODUCTION": "NOT_ACCEPTED"
-  },
-  "temporary_inventory": {
-    "path": "G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY.json",
-    "bytes": 41104804,
-    "sha256": "7d1c90d2a9e03e0ec30e95e7a6924886983f5e500fb9ee3031cfa213856688a5",
-    "command": "python scripts/check_v4_business_literals.py --output G:/codex_tmp/R8_GLOBAL_LITERAL_INVENTORY.json"
+  "protected_actions": {
+    "tdx_source_write": false,
+    "service_restart": false,
+    "production_head_switch": false,
+    "production_28765_touch": false,
+    "workspace_cleanup_or_deletion": false,
+    "external_source_call": false
   },
   "remaining": [
-    "3,190 reachable unresolved literal candidates; no global pass",
-    "active launcher and runtime dynamic-edge closure incomplete",
-    "Priority/Sector/Market/D0/D2/SourceIngress/Focus/Forward full business and numeric closure incomplete",
-    "Forward PG owner namespace ambiguous; least-privilege reader unavailable in this session",
-    "local repository policy script missing",
-    "28766 runtime not reloaded"
-  ]
+    "V4 current-process API/UI readback not possible without loading the new checkout on the already occupied 28766 slot.",
+    "10/20 and 10/21 Owner inputs are absent in development PG, so real Priority/D0/Sector/Focus/Forward same-token verification remains open.",
+    "S05-D requires an applicable D2 threshold/freeze/coordinate contract ruling before implementation.",
+    "S06 G1-G4 candidate chain, CAS, failure recovery, and performance sampling were not run.",
+    "Global literal scanner remains blocked and does not provide a PASS for versioned/historical V4 contract candidates.",
+    "CI and production release checks were not run."
+  ],
+  "report_path": "docs/evidence/functional_r8_implementation_20261021/R8_GLOBAL_LITERALS_AND_FUNCTIONAL_CLOSEOUT_REPORT.md",
+  "commit": null,
+  "push": null
 }

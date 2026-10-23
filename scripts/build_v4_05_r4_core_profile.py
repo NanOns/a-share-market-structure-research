@@ -20,7 +20,7 @@ from src.v4.r4_replay_paths import replay_report_path
 
 OUT = replay_report_path(ROOT, "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz")
 RECEIPT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_CORE_PROFILE_REPLAY.json")
-TARGET = "2026-09-28"
+TARGET = None
 CONTRACTS = ("config/v4_04_field_registry_v2.json", "config/v4_04_output_schema_v2.json", "config/v4_04_algorithm_contracts_v3.json", "config/v4_04_parameter_set_v1.json", "config/v4_04_field_window_mapping_v1.json")
 
 
@@ -43,6 +43,7 @@ def groups(path):
 
 
 def main():
+    global TARGET
     accepted = json.loads((ROOT / "data/v4/V4_04_ACCEPTED_HEAD.json").read_text(encoding="utf-8"))
     for name in CONTRACTS:
         if sha(ROOT / name) != accepted["contract_bindings"][name]["sha256"]:
@@ -50,10 +51,14 @@ def main():
     spec = importlib.util.spec_from_file_location("accepted_v4_04_builder", ROOT / "scripts/run_v4_04_full_market_candidate_r4.py")
     builder = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(builder)
-    builder.CUTOFF = TARGET
     history = json.loads((ROOT / "reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json").read_text(encoding="utf-8"))
     period = json.loads(replay_report_path(ROOT, "reports/v4_05/V4_05_R4_PERIOD_ASOF.json").read_text(encoding="utf-8"))
     factor = json.loads(replay_report_path(ROOT, "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json").read_text(encoding="utf-8"))
+    TARGET = date_string(int(history["target_trade_date"]))
+    target_date_number = int(history["target_trade_date"])
+    if int(factor["max_source_trade_date"]) != target_date_number:
+        raise ValueError("FACTOR_TARGET_DATE_MISMATCH")
+    builder.CUTOFF = TARGET
     regime_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REGIME.json")
     regime = json.loads(regime_path.read_text(encoding="utf-8"))
     calendar_receipt = json.loads((ROOT / "reports/v4_05/V4_05_R4_CALENDAR_RECEIPT.json").read_text(encoding="utf-8"))
@@ -84,7 +89,7 @@ def main():
             f = factor_rows[key]
             sid = f["security_id"]
             formal = daily[0]["formal_publication_at"]
-            require_factor_visibility(f["fields"], formal)
+            require_factor_visibility(f["fields"], formal, TARGET)
             market = "SSE" if f["board_scope"] in ("SH_MAIN", "STAR") else "SZSE"
             bars = [{"source_security_key": key, "board_scope": f["board_scope"], "trade_date": date_string(row["trade_date"]),
                      "qfq_close": float(row["qfq_ohlc"][3]) if row["qfq_ohlc"] else None,
@@ -105,7 +110,7 @@ def main():
                                         {"source_security_key": key}, source_digest, contract_digest, calendars[market], regime_ui)
             payload.update({"publication_id": "V4_05_R4_T0_CURRENT_COORDINATE", "coordinate_basis": "T0_CURRENT_COORDINATE",
                             "historical_as_recorded_claim": False, "formal_publication_at": daily[0]["formal_publication_at"],
-                            "max_source_trade_date": 20260928, "evidence_origin": "V4_05_R4_REPLAY_ONLY"})
+                            "max_source_trade_date": target_date_number, "evidence_origin": "V4_05_R4_REPLAY_ONLY"})
             payload["output_digest"] = builder.digest({k: v for k, v in payload.items() if k != "output_digest"})
             line = (json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
             zipped.write(line)
@@ -125,7 +130,7 @@ def main():
                "row_count": sum(boards.values()), "board_counts": dict(boards), "quality_counts": dict(quality),
                "upstream_adjusted_unavailable_entities": unknown["upstream_adjusted_unavailable"], "state_unknown_reasons": dict(state_unknown),
                "source_digest": source_digest, "contract_digest": contract_digest, "accepted_contracts": {name: sha(ROOT / name) for name in CONTRACTS},
-               "max_source_trade_date": 20260928, "formal_publication_at": daily[0]["formal_publication_at"], "historical_as_recorded_claim": False}
+               "max_source_trade_date": target_date_number, "formal_publication_at": daily[0]["formal_publication_at"], "historical_as_recorded_claim": False}
     temp = RECEIPT.with_suffix(".tmp")
     temp.write_bytes((json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode())
     os.replace(temp, RECEIPT)

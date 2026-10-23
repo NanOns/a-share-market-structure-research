@@ -1,5 +1,5 @@
 """Actual archived-input full daily pipeline under an explicit replay contract."""
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import copy
 import hashlib
@@ -101,12 +101,14 @@ def run(root):
                 # Durable original retry classifier/limit; only source transport
                 # and clock are controlled. The main head is checked throughout.
                 from workbench_analysis import operational_daily_jobs_v1 as jobs_module
-                from datetime import timedelta
+                target_day=datetime.fromisoformat(str(request['target_session'])).date()
+                predecessor_day=json.loads(original_head).get('accepted_trade_date')
+                if not predecessor_day:raise ValueError('REPLAY_PREDECESSOR_TRADE_DATE_REQUIRED')
                 plan=dict(status='TIME_ELIGIBLE',requested_through_date=request['target_session'],
                     missing_sessions=[request['target_session']],eligible_sessions=[request['target_session']],
-                    last_good_trade_date='2026-10-08')
+                    last_good_trade_date=str(predecessor_day))
                 Job=private_scope(jobs_module,dict(gap_plan=lambda *a,**k:dict(plan)))['DailyJobs']
-                now=[datetime.fromisoformat('2026-10-10T22:10+08:00')]
+                now=[datetime.fromisoformat(f"{target_day.isoformat()}T22:10:00+08:00")]
                 injection['mode']='TIMEOUT'
                 worker=Job(root/'fault_source_timeout',executor=lambda *_:scope['execute_sources'](root,request['target_session'],'CATCH_UP',capture_only=True),clock=lambda:now[0])
                 worker.settings(False);job=worker.enqueue()

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+from datetime import date, timedelta
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -27,7 +28,11 @@ def save(name, value):
 def verify_a04_sources():
     observations = [reference(ROOT, p) for p in sorted((ROOT / "data/v4/a04_go_forward_r3/observations").glob("*.json"))]
     items = read_verified_observations(ROOT, observations)
-    candidate = compute_ledger_candidate(ROOT, observations, target="2026-09-30")
+    target_dates={json.loads(bound(ROOT,ref)).get("target_trade_date") for ref in observations}
+    target_dates.discard(None)
+    if len(target_dates)!=1:raise ValueError("A04_OBSERVATION_TARGET_NOT_UNIQUE")
+    target=next(iter(target_dates))
+    candidate = compute_ledger_candidate(ROOT, observations, target=target)
     path = ROOT / "reports/audits/a04_r3/candidates" / (candidate["publication_id"].split(":")[1] + ".json")
     assert path.read_bytes() == canonical(candidate)
     rows = candidate["rows"]
@@ -53,26 +58,29 @@ def post_readback():
     verify_protected()
     proofs = {}
     for stage in ("V4_05", "V4_07", "V4_09"):
-        original = read_a02(ROOT, stage, mode="ORIGINAL_ACCEPTED", trade_date="2026-09-28")
-        corrected = read_a02(ROOT, stage, mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date="2026-09-28")
+        _,stage_payload=read_payload(ROOT,stage);target=stage_payload["trade_date"]
+        original = read_a02(ROOT, stage, mode="ORIGINAL_ACCEPTED", trade_date=target)
+        corrected = read_a02(ROOT, stage, mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date=target)
         assert len(original["rows"]) == len(corrected["rows"]) == 5222
         assert original["selected_head"] != corrected["selected_head"]
         _, payload = read_payload(ROOT, stage)
         if stage == "V4_09":
-            seeds = read_a02(ROOT, "V4_07", mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date="2026-09-28")
+            _,seed_payload=read_payload(ROOT,"V4_07")
+            seeds = read_a02(ROOT, "V4_07", mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date=seed_payload["trade_date"])
             assert all(payload["exact_seed_binding"][k] == seeds["artifact"][k] for k in ("path", "sha256", "bytes"))
         proofs[stage] = dict(status="PASS", old_rows=len(original["rows"]), new_rows=len(corrected["rows"]),
                              recorded_reader_modes=[original["reader_mode"], corrected["reader_mode"]],
                              knowledge_lineage=corrected["knowledge_lineage"], AS_RECORDED=False,
-                             invalid_mode=reject(lambda: read_a02(ROOT, stage, mode="AUTO", trade_date="2026-09-28")),
-                             future_date=reject(lambda: read_a02(ROOT, stage, mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date="2026-09-30")))
-    snapshot = read_a05(ROOT, mode="CURRENT_SNAPSHOT_20260924", trade_date="2026-09-24")
+                             invalid_mode=reject(lambda: read_a02(ROOT, stage, mode="AUTO", trade_date=target)),
+                             out_of_scope_date=reject(lambda: read_a02(ROOT, stage, mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date=(date.fromisoformat(target)+timedelta(days=1)).isoformat())))
+    _,snapshot_payload=read_payload(ROOT,"A05");snapshot_date=snapshot_payload["trade_date"]
+    snapshot = read_a05(ROOT, mode="CURRENT_SNAPSHOT_ONLY", trade_date=snapshot_date)
     assert len(snapshot["rows"]) == 541
     assert Counter(r["new"]["confirmed_raw"] for r in snapshot["rows"]) == Counter(FALSE=535, TRUE=2, UNKNOWN=4)
     assert all(r["new"]["warm_raw"] == "UNKNOWN" for r in snapshot["rows"])
     proofs["A05"] = dict(status="PASS", sector_rows=541, states=dict(Counter(r["new"]["confirmed_raw"] for r in snapshot["rows"])),
-        invalid_mode=reject(lambda: read_a05(ROOT, mode="AUTO", trade_date="2026-09-24")),
-        no_9_30_injection=reject(lambda: read_a05(ROOT, mode="CURRENT_SNAPSHOT_20260924", trade_date="2026-09-30")))
+        invalid_mode=reject(lambda: read_a05(ROOT, mode="AUTO", trade_date=snapshot_date)),
+        out_of_scope_date=reject(lambda: read_a05(ROOT, mode="CURRENT_SNAPSHOT_ONLY", trade_date=(date.fromisoformat(snapshot_date)+timedelta(days=1)).isoformat())))
     engineering = read_a04(ROOT, mode="GO_FORWARD_PRODUCER_ENGINEERING_ONLY")
     assert engineering["formal_consumer_enabled"] is False
     proofs["A04"] = dict(status="PASS", formal_consumer_enabled=False,

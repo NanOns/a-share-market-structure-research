@@ -98,12 +98,18 @@ def test_relative_branches(delta, rps, rel, comp, ma, expected):
 @pytest.mark.parametrize("bias,ret5,amount,ret1,expected", [
     (4, None, None, None, "EXTREME"), (3, None, None, None, "HIGH"),
     (1, .4, 2, 0, "HIGH"), (2, 0, 1, 0, "MEDIUM"),
-    (1, 0, 1, 0, "LOW"), (1, None, 1, 0, "UNKNOWN"),
+    (1, 0, 1, 0, "LOW"), (1, None, 1, 0, "LOW"),
 ])
 def test_extension_branches(bias, ret5, amount, ret1, expected):
     row = dict(bias20_atr=bias, ret5=ret5, atr20=1, close=10,
                amount_ratio20=amount, ret1=ret1)
     assert extension_risk(row).value == expected
+
+
+def test_extension_risk_remains_unknown_when_missing_term_cannot_be_dominated():
+    row = dict(bias20_atr=1, ret5=None, atr20=1, close=10,
+               amount_ratio20=2, ret1=0)
+    assert extension_risk(row).value == "UNKNOWN"
 
 
 @pytest.mark.parametrize("close,expected_near,expected_draw", [

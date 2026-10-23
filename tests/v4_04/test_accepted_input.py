@@ -38,3 +38,20 @@ def test_cutoff_mismatch_fails_before_data_reads(monkeypatch):
     monkeypatch.setattr(accepted_input, "_json", altered)
     with pytest.raises(ValueError, match="cutoff mismatch"):
         accepted_input.resolve(ROOT)
+
+
+def test_matching_cutoff_is_read_from_accepted_head_contract(monkeypatch):
+    original = accepted_input._json
+
+    def changed_together(root, relative, digest=None):
+        payload = original(root, relative, digest)
+        if relative in {
+            "data/v4/V4_01_ACCEPTED_HEAD.json",
+            "data/v4/V4_02_ACCEPTED_HEAD.json",
+            "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        }:
+            payload = dict(payload, source_cutoff="2099-12-31")
+        return payload
+
+    monkeypatch.setattr(accepted_input, "_json", changed_together)
+    accepted_input.resolve(ROOT)

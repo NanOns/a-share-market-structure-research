@@ -1,5 +1,5 @@
 """Frozen runtime/lifecycle/transaction QA. Not a numeric daily E2E certificate."""
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import hashlib
@@ -91,11 +91,12 @@ def run(root):
         from workbench_analysis.tdx_official_daily_source import sha256_file
         scope = private_scope(release, dict(validate=lambda *a: True, verify_policy=lambda *a: True))
         head = root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-        atomic(head, dict(accepted_trade_date='2026-10-08', simulation=True))
+        accepted_day=date.today()
+        atomic(head, dict(accepted_trade_date=accepted_day.isoformat(), simulation=True))
         before = head.read_bytes()
         archive = root/'data/v4/predecessors'/(sha256_file(head)+'.json')
         archive.parent.mkdir(parents=True, exist_ok=True); archive.write_bytes(before)
-        candidate = dict(accepted_trade_date='2026-10-09', predecessor=ref(root,archive), simulation=True)
+        candidate = dict(accepted_trade_date=(accepted_day+timedelta(days=1)).isoformat(), predecessor=ref(root,archive), simulation=True)
         try:
             scope['promote'](root,candidate,'0'*64,lambda _:None)
         except ValueError as exc:

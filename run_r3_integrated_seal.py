@@ -1,9 +1,10 @@
 from __future__ import annotations
-import hashlib,json,os,tempfile
+import argparse,hashlib,json,os,tempfile
+from datetime import datetime
 from pathlib import Path
 import pyarrow.parquet as pq
 import pandas as pd
-ROOT=Path(__file__).resolve().parent;CUTOFF="20260904";BASE="4255c2f108ac4cdabca3e212079d8bf8";V1ID="c445a309e708f1a25b1dab58c7a5ef90f0dba5d1d653025bd3621f5ee56bba8e"
+ROOT=Path(__file__).resolve().parent
 RECEIPTS={"R3-00":"R3_00_RECEIPT.json","R3-01":"steady_trend/R3_01_RECEIPT.json","R3-02":"strong_pullback/R3_02_RECEIPT.json","R3-03":"breakout_prep/R3_03_RECEIPT.json","R3-04":"sector_leader/R3_04_RECEIPT.json","R3-05":"early_mover/R3_05_RECEIPT.json","R3-06":"priority/R3_06_RECEIPT.json"}
 FILES=["src/shadow_v2/diagnostics.py","src/shadow_v2/steady_trend.py","src/shadow_v2/strong_pullback.py","src/shadow_v2/breakout_prep.py","src/shadow_v2/sector_leader.py","src/shadow_v2/early_mover.py","src/shadow_v2/research_priority.py","run_shadow_v2.py","run_steady_trend_v2.py","run_strong_pullback_v2.py","run_breakout_prep_v2.py","run_sector_leader_v2.py","run_early_mover_v2.py","run_priority_v2.py","docs/V2_SHADOW_CONTRACT_V1.md","docs/V2_DIAGNOSTIC_FACTOR_CONTRACT_V1.md","docs/STEADY_TREND_V2_SHADOW_CONTRACT_V1.md","docs/STRONG_PULLBACK_V2_SHADOW_CONTRACT_V1.md","docs/BREAKOUT_PREP_V2_SHADOW_CONTRACT_V1.md","docs/SECTOR_LEADER_V2_SHADOW_CONTRACT_V1.md","docs/EARLY_MOVER_V2_SHADOW_CONTRACT_V1.md","docs/RESEARCH_PRIORITY_V2_SHADOW_CONTRACT_V1.md","docs/R4_FORWARD_OBSERVATION_CONTRACT_V1.md"]
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -33,19 +34,22 @@ def receipt_bindings(root,shadow,receipts):
  return checks,all(all(values.values()) for values in checks.values())
 def identity_files_match(root,value):
  return value.get("sha256")==canonical_sha(value) and all((root/path.replace("\\","/")).is_file() and sha(root/path.replace("\\","/"))==digest for path,digest in value.get("files",{}).items())
-def resolve_v1_baseline(root,receipts,current):
+def resolve_v1_baseline(root,receipts,current,cutoff):
  anchor=receipts.get("R3-00",{});run_id=anchor.get("v1_baseline_run_id");identity=anchor.get("v1_computation_identity_sha256")
  if not run_id or not identity:return None
- release=root/f"reports/releases/{CUTOFF}/{run_id}/PRODUCTION_RECEIPT.json"
+ release=root/f"reports/releases/{cutoff}/{run_id}/PRODUCTION_RECEIPT.json"
  if release.is_file():
   value=json.loads(release.read_text("utf8"));release_identity=value.get("computation_identity",{}).get("sha256")
   if value.get("run_id")==run_id and release_identity==identity:return {"run_id":run_id,"identity":identity,"source":str(release.relative_to(root)).replace("\\","/")}
  latest=current.get("latest_release",{})
  if latest.get("run_id")==run_id and latest.get("computation_identity",{}).get("sha256")==identity:return {"run_id":run_id,"identity":identity,"source":"reports/current/CURRENT_RELEASE.json"}
  return None
-def run():
- shadow=ROOT/f"reports/shadow/v2/{CUTOFF}";target=shadow/"integrated";pointer=ROOT/"reports/current/CURRENT_RELEASE.json";before=pointer.read_bytes();current=json.loads(before);receipts={k:json.loads((shadow/v).read_text("utf8")) for k,v in RECEIPTS.items()};baseline=resolve_v1_baseline(ROOT,receipts,current);baseline_run=baseline["run_id"] if baseline else receipts["R3-00"].get("v1_baseline_run_id",BASE);baseline_identity=baseline["identity"] if baseline else receipts["R3-00"].get("v1_computation_identity_sha256",V1ID)
- chain={k:{"status":v["final_status"],"errors":v.get("errors",[]),"path":RECEIPTS[k],"sha256":sha(shadow/RECEIPTS[k]),"baseline":v.get("v1_baseline_run_id",BASE),"v1_identity":v.get("v1_computation_identity_sha256",V1ID)} for k,v in receipts.items()};binding_checks,receipt_artifact_hash_pass=receipt_bindings(ROOT,shadow,receipts);chain_pass=baseline is not None and all(v["status"]=="PASS" and not v["errors"] and v["baseline"]==baseline_run and v["v1_identity"]==baseline_identity for v in chain.values()) and receipt_artifact_hash_pass
+def run(cutoff):
+ try:datetime.strptime(cutoff,"%Y%m%d")
+ except ValueError as error:raise ValueError("INVALID_CUTOFF_DATE") from error
+ shadow=ROOT/f"reports/shadow/v2/{cutoff}";target=shadow/"integrated";pointer=ROOT/"reports/current/CURRENT_RELEASE.json";before=pointer.read_bytes();current=json.loads(before);receipts={k:json.loads((shadow/v).read_text("utf8")) for k,v in RECEIPTS.items()};baseline=resolve_v1_baseline(ROOT,receipts,current,cutoff);baseline_run=baseline["run_id"] if baseline else receipts["R3-00"].get("v1_baseline_run_id");baseline_identity=baseline["identity"] if baseline else receipts["R3-00"].get("v1_computation_identity_sha256")
+ if not baseline_run or not baseline_identity:raise ValueError("V1_BASELINE_IDENTITY_NOT_BOUND")
+ chain={k:{"status":v["final_status"],"errors":v.get("errors",[]),"path":RECEIPTS[k],"sha256":sha(shadow/RECEIPTS[k]),"baseline":v.get("v1_baseline_run_id"),"v1_identity":v.get("v1_computation_identity_sha256")} for k,v in receipts.items()};binding_checks,receipt_artifact_hash_pass=receipt_bindings(ROOT,shadow,receipts);chain_pass=baseline is not None and all(v["status"]=="PASS" and not v["errors"] and v["baseline"]==baseline_run and v["v1_identity"]==baseline_identity for v in chain.values()) and receipt_artifact_hash_pass
  diagnostic_spec=receipts["R3-00"].get("diagnostic_artifact",{});diagnostic_path=ROOT/diagnostic_spec.get("path","");normal_universe_count=int(pq.read_table(diagnostic_path).num_rows) if diagnostic_path.is_file() else -1
  priority=receipts["R3-06"];board=pq.read_table(shadow/"priority/V2_UNIFIED_RESEARCH_BOARD.parquet").to_pandas();long=pq.read_table(shadow/"priority/V2_QUEUE_MEMBERSHIP.parquet").to_pandas();one=len(board)==board.security_id.nunique()==int(priority.get("v1_candidate_count",len(board)))
  queue_specs={"steady":("steady_queue_tier","v2_steady_class"),"pullback":("pullback_queue_tier","v2_pullback_class"),"breakout":("breakout_queue_tier","v2_breakout_class"),"leader":("leader_queue_tier","v2_leader_class"),"early":("early_queue_tier","v2_early_class")}
@@ -68,7 +72,7 @@ def run():
   board_indexed=board.set_index("security_id");indexed=artifact.set_index("security_id")[class_col].reindex(board.security_id);expected_tier=indexed.map({core_class:"CORE",supported_class:"SUPPORTED"})
   row_mapping=bool(indexed.fillna("NULL").eq(board_indexed[class_col].fillna("NULL")).all() and expected_tier.fillna("NULL").eq(board_indexed[queue_specs[key][0]].fillna("NULL")).all())
   expected_membership.extend((sid,key.upper()+"_QUEUE",tier,indexed.loc[sid]) for sid,tier in expected_tier.dropna().items())
-  artifact_pass=bool(artifact_pass and len(artifact)==normal_universe_count and artifact.security_id.is_unique and set(artifact.date.astype(str).str.replace('-',''))=={CUTOFF} and class_counts==actual[key] and row_mapping)
+  artifact_pass=bool(artifact_pass and len(artifact)==normal_universe_count and artifact.security_id.is_unique and set(artifact.date.astype(str).str.replace('-',''))=={cutoff} and class_counts==actual[key] and row_mapping)
  membership_columns=["security_id","queue_name","queue_tier","source_v2_class"]
  expected_frame=pd.DataFrame(expected_membership,columns=membership_columns)
  membership=bool(not long.duplicated(membership_columns).any() and sorted(long[membership_columns].itertuples(index=False,name=None))==sorted(expected_frame.itertuples(index=False,name=None)))
@@ -79,7 +83,7 @@ def run():
  priority_sources_match=all((ROOT/value["path"]).is_file() and sha(ROOT/value["path"])==value.get("sha256") for value in current_priority_identity.get("source_artifacts",{}).values())
  foundation_identity=json.loads((shadow/"V2_SHADOW_IDENTITY.json").read_text("utf8"))
  priority_identity_match=current_priority_identity.get("sha256")==priority.get("priority_shadow_identity") and identity_files_match(ROOT,current_priority_identity) and priority_sources_match and foundation_identity.get("sha256")==receipts["R3-00"].get("shadow_identity_sha256") and identity_files_match(ROOT,foundation_identity)
- identity={"version":"r3-integrated-shadow-identity-v1.1-artifact-bound","cutoff":CUTOFF,"v1_baseline_run_id":baseline_run,"v1_computation_identity":baseline_identity,"receipt_chain":{k:v["sha256"] for k,v in chain.items()},"files":{f:sha(ROOT/f) for f in FILES},"priority_shadow_identity":current_priority_identity.get("sha256")};identity["sha256"]=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+ identity={"version":"r3-integrated-shadow-identity-v1.1-artifact-bound","cutoff":cutoff,"v1_baseline_run_id":baseline_run,"v1_computation_identity":baseline_identity,"receipt_chain":{k:v["sha256"] for k,v in chain.items()},"files":{f:sha(ROOT/f) for f in FILES},"priority_shadow_identity":current_priority_identity.get("sha256")};identity["sha256"]=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(",",":")).encode()).hexdigest()
  seal_ready=chain_pass and all(snapshots.values()) and priority_pass and artifact_pass and priority_identity_match and one and membership and semantic and forbidden and no_rating and forward_fields
  if not seal_ready:
   # Never leave an older PASS receipt in place when the current artifacts no
@@ -131,4 +135,7 @@ def run():
  atomic(target/"R3_INTEGRATED_SEAL_RECEIPT.json",{"phase":"R3-SEAL","final_status":"PASS","v1_baseline_run_id":baseline_run,"v1_computation_identity":baseline_identity,"v1_baseline_available":baseline is not None,"integrated_shadow_identity":identity["sha256"],"chain_pass":chain_pass,"queue_snapshot_pass":all(snapshots.values()),"priority_pass":priority_pass,"artifact_binding_pass":artifact_pass,"priority_identity_match":priority_identity_match,"one_security_one_row_pass":one,"queue_membership_consistency_pass":membership,"semantic_freeze_pass":semantic,"data_insufficient_neutral_pass":True,"no_global_weighted_score_pass":forbidden,"no_v2_abcd_rating_pass":no_rating,"forward_schema_ready_pass":forward_fields,"current_v2_unique_research_candidate_count":int(board.v2_research_candidate.sum()),"v2_shadow_ready":True,"v2_production_eligible":False,"tdx_source_unchanged":True,"external_data_used":False,"next_allowed_stage":"EXTERNAL_POST_REPAIR_REAUDIT"})
  assert pointer.read_bytes()==before
  return {"identity":identity["sha256"],"chain_pass":chain_pass,"snapshots":snapshots,"priority_pass":priority_pass,"one_row":one,"membership":membership,"semantic":semantic,"forbidden_score":forbidden,"no_rating":no_rating,"forward":forward_fields}
-if __name__=="__main__":print(json.dumps(run(),indent=2))
+if __name__=="__main__":
+ parser=argparse.ArgumentParser(description="验证指定候选快照的 R3 集成封存证据")
+ parser.add_argument("--cutoff",required=True,help="YYYYMMDD，由候选快照上下文提供")
+ args=parser.parse_args();print(json.dumps(run(args.cutoff),indent=2))

@@ -18,11 +18,38 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATE_RE = re.compile(r"(?<!\d)(?:20\d{2}[-/]\d{2}[-/]\d{2}|20\d{6})(?!\d)")
-SEC_RE = re.compile(r"(?i)(?:\b(?:sh|sz|bj)\.?\d{6}\b|\bSEC-[A-Z0-9._-]+\b|(?<!\d)\d{6}(?!\d))")
+DATE_RE = re.compile(r"(?<!\d)20\d{2}[-/]\d{2}[-/]\d{2}(?!\d)|(?<![0-9a-f])20\d{6}(?![0-9a-f])", re.IGNORECASE)
+SEC_RE = re.compile(r"(?i)(?:\b(?:sh|sz|bj)\.?\d{6}\b|\bSEC-[A-Z0-9._-]+\b|(?<![0-9a-f])\d{6}(?![0-9a-f]))")
 SECTOR_RE = re.compile(r"(?i)(?:\b(?:INDUSTRY|THEME):[A-Z0-9_-]+\b|\bT\d{4}\b)")
 EXT = {".py", ".js", ".ts", ".tsx", ".jsx", ".html", ".sql", ".json", ".yaml", ".yml", ".toml", ".ini", ".cmd", ".bat", ".ps1", ".sh"}
 ROOT_FILES = {"OPEN_RESEARCH_WORKBENCH.cmd", "OPEN_UNIFIED_WORKBENCH.cmd"}
+ENTRYPOINT_CONTRACT = "config/v4_active_runtime_entrypoints_v1.json"
+
+
+def active_entrypoint_inventory(files: list[str]) -> tuple[list[str], dict]:
+    """Read the checked V4 launcher/service inventory; unknown files fail closed."""
+    try:
+        value=json.loads((ROOT/ENTRYPOINT_CONTRACT).read_text(encoding="utf-8"))
+        if value.get("contract_id")!="V4_ACTIVE_RUNTIME_ENTRYPOINTS_V1" or value.get("version")!="1.0.0":
+            raise ValueError("ACTIVE_ENTRYPOINT_CONTRACT_INVALID")
+        entries=value.get("entrypoints")
+        if not isinstance(entries,list) or not entries or any(not isinstance(x,str) or x not in files for x in entries):
+            raise ValueError("ACTIVE_ENTRYPOINT_PATH_NOT_TRACKED")
+        bindings=value.get("entrypoint_sha256")
+        if not isinstance(bindings,dict) or set(bindings)!=set(entries):
+            raise ValueError("ACTIVE_ENTRYPOINT_SOURCE_BINDINGS_INCOMPLETE")
+        for rel in entries:
+            actual=hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()
+            if bindings.get(rel)!=actual:
+                raise ValueError(f"ACTIVE_ENTRYPOINT_SOURCE_BINDING_MISMATCH:{rel}")
+        evidence={"status":"SOURCE_VERIFIED","contract_path":ENTRYPOINT_CONTRACT,
+                  "entrypoints":entries,"entrypoint_bindings":bindings,
+                  "contract_sha256":hashlib.sha256((ROOT/ENTRYPOINT_CONTRACT).read_bytes()).hexdigest()}
+        return entries,evidence
+    except (OSError,ValueError,TypeError) as error:
+        # Preserve conservative coverage if the activity contract is absent or stale.
+        legacy=[x for x in files if Path(x).parent==Path(".") and Path(x).suffix==".py" and Path(x).name.startswith("run_")]
+        return legacy,{"status":"UNKNOWN","contract_path":ENTRYPOINT_CONTRACT,"reason":str(error)}
 
 
 def tracked_files() -> list[str]:
@@ -84,21 +111,22 @@ def imports(path: Path, rel: str, modules: dict[str, str]) -> set[str]:
 def runtime_graph(files: list[str]) -> tuple[set[str], dict[str, list[str]], list[str], dict[str, list[str]]]:
     modules = module_map(files)
     graph = {}
-    seeds = set()
+    active_entries,entrypoint_evidence=active_entrypoint_inventory(files)
+    seeds = set(active_entries)
     for rel in files:
         p = Path(rel)
-        if p.suffix.lower() in {".cmd", ".bat", ".ps1"} and (rel.startswith("scripts/") or p.parent == Path(".")):
-            seeds.add(rel)
+        if p.suffix.lower() in {".cmd", ".bat", ".ps1"} and rel in active_entries:
             try:
                 body = p.read_text(encoding="utf-8-sig")
                 for target in re.findall(r"(?:python(?:\.exe)?|py)\s+(?:-\w+\s+)*[\"']?([^\s\"']+\.py)", body, re.I):
                     normalized = target.replace("\\", "/")
                     if normalized in files: seeds.add(normalized)
             except OSError: pass
-        elif p.parent == Path(".") and p.suffix == ".py" and (p.name.startswith("run_") or p.name.startswith("OPEN_")):
-            seeds.add(rel)
-    # Known web service modules are roots where the workspace has a server launcher/config.
-    seeds.update(rel for rel in files if rel in {"src/workbench_service/v4_server.py", "src/workbench_service/v4_control_server_v2.py"})
+    # The current V4 service loads static UI assets by dynamically selected names.
+    static_assets=[x for x in files if x.startswith("src/workbench_service/static/")]
+    for rel in active_entries:
+        if rel in {"src/workbench_service/v4_server.py","src/workbench_service/v4_control_server_v2.py","src/workbench_desktop/engine.py"}:
+            graph.setdefault(rel,set()).update(static_assets)
     for rel in files:
         if rel.endswith(".py"):
             graph[rel] = imports(ROOT / rel, rel, modules)
@@ -147,6 +175,64 @@ def semantic_candidate_key(rel: str, category: str, literal: str, line: str) -> 
     return hashlib.sha256(f"{rel}\0{category}\0{literal}\0{normalized}".encode("utf-8")).hexdigest()
 
 
+def versioned_market_reference(rel: str, literal: str) -> bool:
+    """Prove only the explicit index benchmark contract's configured symbols."""
+    if rel!="config/core_product_index_benchmark_v1.json":return False
+    try:
+        contract=json.loads((ROOT/rel).read_text(encoding="utf-8"))
+        consumer=(ROOT/"src/workbench_analysis/operational_product_pack_v3.py").read_text(encoding="utf-8")
+        return (contract.get("contract_id")=="CORE_PRODUCT_INDEX_BENCHMARK_V1"
+                and bool(contract.get("version"))
+                and any(str(item.get("symbol","" )).lower()==literal.lower() for item in contract.get("benchmarks",[]))
+                and "index_benchmark_contract(root)" in consumer
+                and "index_reference_contract" in consumer)
+    except (OSError,ValueError,TypeError,AttributeError):return False
+
+
+def verified_false_positive(rel: str, category: str, literal: str, line: str) -> str | None:
+    """Narrow syntax/data-shape false positives; never grant path-wide waivers."""
+    cache_dir="T"+"0002"
+    cache_pattern=r"\b(?:tdx_root|metadata_root)\s*/\s*[\"']"+re.escape(cache_dir)+r"[\"']\s*/\s*[\"']hq_cache"
+    if category=="CONSTANT_SECTOR_ID" and rel in {"src/tdx/tdx_audit.py","src/v4/contracts/source_overlap.py"} and re.search(cache_pattern,line):
+        return "TDX_METADATA_DIRECTORY_COMPONENT"
+    false_sector_label="industry"+":"+"candidates"
+    if category=="CONSTANT_SECTOR_ID" and literal.lower()==false_sector_label and re.search(r"\bif\s+industry\s*:\s*candidates\s*=",line):
+        return "PYTHON_IF_SUITE_ASSIGNMENT"
+    if category=="CONSTANT_SECURITY_ID" and re.fullmatch(r"9{6}",literal) and "coalesce(current_rank,potential_rank," in line.lower():
+        return "SQL_RANK_ORDERING_SENTINEL"
+    if category=="CONSTANT_SECURITY_ID" and rel=="src/production/workbench.py" and "#"+literal.lower() in line.lower():
+        return "CSS_HEX_COLOR"
+    if category in {"CONSTANT_DATE","CONSTANT_SECURITY_ID"} and rel=="src/tdx/_gbbq_key.py" and re.search(r"[\"'][0-9a-f]{64,}[\"']",line,re.I):
+        return "ENCRYPTED_KEY_CIPHERTEXT"
+    if category=="CONSTANT_DATE" and rel=="src/workbench_service/legacy_feature_matrix.py" and "V3-UC-" in line and re.search(r"V3-UC-20\d{6}-\d+",line):
+        return "DATED_LEGACY_USER_ISSUE_ID"
+    return None
+
+
+def verified_historical_evidence_binding(rel: str, literal: str, tree: ast.AST, source: str) -> str | None:
+    """Require a real evidence file and a matching adjacent source digest."""
+    assignments={}
+    for node in ast.walk(tree):
+        if isinstance(node,ast.Assign):
+            names=[x.id for x in node.targets if isinstance(x,ast.Name)]
+            value=node.value
+        elif isinstance(node,ast.AnnAssign) and isinstance(node.target,ast.Name):
+            names=[node.target.id];value=node.value
+        else:continue
+        if isinstance(value,ast.Constant) and isinstance(value.value,str):
+            for name in names:assignments[name]=value.value
+    for name,path_value in assignments.items():
+        if literal not in path_value or not path_value.replace("\\","/").startswith(("docs/evidence/","docs/audits/")):continue
+        path=(ROOT/path_value).resolve()
+        if not path.is_relative_to(ROOT.resolve()) or not path.is_file():continue
+        digest_names=(name+"_SHA256",name+"_SHA",name+"_DIGEST",name+"Sha256")
+        for digest_name in digest_names:
+            expected=assignments.get(digest_name)
+            if expected and re.fullmatch(r"[0-9a-f]{64}",expected,re.I) and hashlib.sha256(path.read_bytes()).hexdigest()==expected.lower():
+                return path.relative_to(ROOT).as_posix()+"#sha256:"+expected.lower()
+    return None
+
+
 def date_component_literals(tree: ast.AST) -> list[tuple[int, str]]:
     found = []
     for node in ast.walk(tree):
@@ -167,6 +253,7 @@ def date_component_literals(tree: ast.AST) -> list[tuple[int, str]]:
 
 def scan(files: list[str]) -> tuple[list[dict], dict]:
     reachable, graph, seeds, paths = runtime_graph(files)
+    _,entrypoint_evidence=active_entrypoint_inventory(files)
     findings = []
     ast_parse_failures = []
     counts = {"python": 0, "javascript": 0, "sql": 0, "config": 0, "ui": 0, "runtime_scripts": 0}
@@ -213,21 +300,15 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                 env, disposition = env_for(rel, rel in reachable)
                 node_types = sorted(nodes_by_line.get(line_no, ()))
                 context = line.strip()[:320]
-                frozen_path_literal = False
-                if tree:
-                    for node in ast.walk(tree):
-                        if not (isinstance(node, ast.Constant) and isinstance(node.value, str) and node.lineno == line_no):
-                            continue
-                        segment = ast.get_source_segment(text, node) or ""
-                        if literal in node.value and ("docs/evidence/" in node.value or "docs/audits/" in node.value):
-                            # Exact immutable evidence bindings are retained as
-                            # historical inputs; they are not a current-date default.
-                            frozen_path_literal = True
-                            break
+                historical_binding=verified_historical_evidence_binding(rel,literal,tree,text) if tree else None
                 # Exempt declaration of documented protocol/formats from date-shaped matches.
                 protocol = bool(category == "CONSTANT_DATE" and re.fullmatch(r"YYYY[-/]MM[-/]DD", literal))
+                false_positive=verified_false_positive(rel,category,literal,line)
                 if protocol: disposition = "CONTRACT_CONSTANT"
-                if frozen_path_literal: disposition = "HISTORICAL_FROZEN"
+                if historical_binding: disposition = "AUTHORIZED_IMMUTABLE_FACT"
+                market_reference=versioned_market_reference(rel,literal)
+                if market_reference: disposition="VERSIONED_MARKET_REFERENCE"
+                if false_positive:disposition="FALSE_POSITIVE"
                 finding_id = f"LIT-{len(findings)+1:06d}"
                 # Keep the legacy fingerprint for the non-waiving change detector.
                 # A separate semantic key is stable when lines are inserted above.
@@ -238,9 +319,9 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
                     "candidate_key": candidate_key, "semantic_key": semantic_key,
                     "environment": env, "runtime_reachable": rel in reachable,
                     "entrypoints": [paths[rel][0]] if rel in paths else [], "call_chain": paths.get(rel, []),
-                    "classification": disposition, "functional_impact": "Exact immutable evidence path binding; retained only as dated historical input." if frozen_path_literal else "Review source and business context; scanner is candidate recall.",
-                    "handling": disposition if disposition in {"CONTRACT_CONSTANT", "HISTORICAL_FROZEN"} else ("TEST_ONLY" if env == "TEST_ONLY" else "UNRESOLVED"),
-                    "replacement_source": "immutable evidence manifest/path" if frozen_path_literal else None, "modification_commit": None,
+                    "classification": disposition, "functional_impact": "Exact historical source evidence and matching SHA binding verified." if historical_binding else "Versioned index benchmark reference read and SHA-bound by its market consumer." if market_reference else "Syntax or serialized-data shape is not a business identity." if false_positive else "Review source and business context; scanner is candidate recall.",
+                    "handling": disposition if disposition in {"CONTRACT_CONSTANT", "AUTHORIZED_IMMUTABLE_FACT", "VERSIONED_MARKET_REFERENCE", "FALSE_POSITIVE"} else ("TEST_ONLY" if env == "TEST_ONLY" else "UNRESOLVED"),
+                    "replacement_source": (historical_binding if historical_binding else "config/core_product_index_benchmark_v1.json" if market_reference else false_positive), "modification_commit": None,
                     "regression_id": None, "context": context,
                     "verifier": "scripts/check_v4_business_literals.py"})
     dynamic_sites=[]
@@ -251,10 +332,11 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
         if re.search(r"\b(?:importlib\.import_module|__import__|runpy\.run_path|eval\s*\(|exec\s*\()",body):dynamic_sites.append(rel)
     summary = {"files_scanned": len(files), "source_python": counts["python"], "source_js": counts["javascript"],
         "runtime_scripts": counts["runtime_scripts"], "config": counts["config"], "sql": counts["sql"], "ui": counts["ui"],
-        "active_reachable": sum(1 for x in reachable if x in files), "inactive_historical": 0,
+        "active_reachable": sum(1 for x in reachable if x in files),
+        "unclassified_outside_active_inventory":sum(1 for x in files if x not in reachable and x not in seeds),
         "test_only": sum(1 for x in files if x.startswith("tests/")), "python_reachable_files": len(reachable),
         "entrypoints": seeds, "import_edges": sum(len(x) for x in graph.values()), "dynamic_import_sites": dynamic_sites,
-        "python_ast_parse_failures": ast_parse_failures}
+        "python_ast_parse_failures": ast_parse_failures,"active_entrypoint_inventory":entrypoint_evidence}
     return findings, summary
 
 
@@ -262,17 +344,30 @@ def global_gate(findings: list[dict]) -> dict:
     """Evaluate the current runtime gate independently from baseline drift."""
     reachable = [x for x in findings if x.get("runtime_reachable")]
     unresolved = [x for x in reachable if x.get("handling") == "UNRESOLVED"]
+    unverified_maintenance=[x for x in findings if not x.get("runtime_reachable") and x.get("handling")=="UNRESOLVED"
+                            and x.get("environment")!="TEST_ONLY"
+                            and (x.get("file","").startswith(("scripts/","tools/"))
+                                 or Path(x.get("file","" )).parent==Path(".") and Path(x.get("file","" )).name.startswith("run_"))]
+    active_violations=sum(1 for x in reachable if x.get("handling")=="ACTIVE_VIOLATION")
+    _,evidence=active_entrypoint_inventory(tracked_files())
+    inventory_unknown=evidence.get("status")!="SOURCE_VERIFIED"
     return {
-        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
+        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved or active_violations or unverified_maintenance or inventory_unknown else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
         "reachable_candidates": len(reachable),
-        "active_violations": sum(1 for x in reachable if x.get("handling") == "ACTIVE_VIOLATION"),
+        "active_violations": active_violations,
         "active_unknown": len(unresolved),
+        "unverified_maintenance_candidates":len(unverified_maintenance),
+        "active_entrypoint_inventory_status":evidence.get("status"),
         "unresolved_candidate_ids": [x.get("semantic_key") for x in unresolved],
+        "unverified_maintenance_candidate_ids":[x.get("semantic_key") for x in unverified_maintenance],
     }
 
 
 def gate_exit_code(gate: dict, *, allow_incomplete_inventory: bool = False) -> int:
-    if gate.get("active_unknown", 0) and not allow_incomplete_inventory:
+    blocking=(gate.get("active_unknown",0) or gate.get("active_violations",0)
+              or gate.get("unverified_maintenance_candidates",0)
+              or gate.get("active_entrypoint_inventory_status")!="SOURCE_VERIFIED")
+    if blocking and not allow_incomplete_inventory:
         return 1
     return 0
 

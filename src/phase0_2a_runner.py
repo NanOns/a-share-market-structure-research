@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 import hashlib
 import csv
@@ -30,11 +30,7 @@ SAMPLE_SELECTOR_CONTRACT = {
     "sample_security_count": 32,
     "minimum_history_bars": 120,
 }
-WINDOWS = {
-    "RECENT_2024_2026": (20240101, 20261231),
-    "MID_2010_2023": (20100101, 20231231),
-    "EARLY_1990_2009": (19900101, 20091231),
-}
+WINDOW_LOOKBACK_YEARS = {"recent": 2, "mid": 14}
 CSV_FIELDS = [
     "security_id", "date", "sample_type",
     "local_open", "local_high", "local_low", "local_close",
@@ -56,12 +52,35 @@ def _event_type(event) -> str:
     return "OTHER_XRXD"
 
 
-def _period(trade_date: int) -> str:
-    if trade_date >= 20240101:
-        return "RECENT_2024_2026"
-    if trade_date >= 20100101:
-        return "MID_2010_2023"
-    return "EARLY_1990_2009"
+def _subtract_years(value: date, years: int) -> date:
+    """Return a bounded calendar-relative cut, including leap-day inputs."""
+    try:
+        return value.replace(year=value.year - years)
+    except ValueError:
+        return value.replace(year=value.year - years, day=28)
+
+
+def _period(trade_date: int, windows: dict[str, tuple[int, int]]) -> str:
+    for name, (begin, end) in windows.items():
+        if begin <= trade_date <= end:
+            return name.upper()
+    return "OUTSIDE_SOURCE_COVERAGE"
+
+
+def _source_relative_windows(dates: list[int]) -> dict[str, tuple[int, int]]:
+    """Partition observed history relative to the newest available source bar."""
+    if not dates:
+        return {}
+    first, latest = min(dates), max(dates)
+    latest_day = datetime.strptime(str(latest), "%Y%m%d").date()
+    recent_start = max(first, int(_subtract_years(latest_day, WINDOW_LOOKBACK_YEARS["recent"]).strftime("%Y%m%d")))
+    mid_start = max(first, int(_subtract_years(latest_day, WINDOW_LOOKBACK_YEARS["mid"]).strftime("%Y%m%d")))
+    result = {"RECENT": (recent_start, latest)}
+    if mid_start < recent_start:
+        result["MID"] = (mid_start, recent_start - 1)
+    if first < mid_start:
+        result["EARLY"] = (first, mid_start - 1)
+    return result
 
 
 def _previous_trade_date(dates: list[int], ex_day: int) -> int | None:
@@ -138,6 +157,9 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
         item["path"] = day_paths[item["security_id"]]
     selected: dict[tuple[str, int], dict] = {}
     day_rows: dict[str, list[dict]] = {}
+    available_dates = [row["trade_date"] for candidate in chosen
+                      for row in _read_day_rows(candidate["path"])]
+    windows = _source_relative_windows(available_dates)
     for candidate in chosen:
         security_id = candidate["security_id"]
         rows = _read_day_rows(candidate["path"])
@@ -147,7 +169,7 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
         dates = [row["trade_date"] for row in rows]
         effective = [event for event in by_security.get(security_id, []) if event.ex_day <= dates[-1]]
         per_security = [key for key in selected if key[0] == security_id]
-        for window_name, (begin, end) in WINDOWS.items():
+        for window_name, (begin, end) in windows.items():
             candidates = [event for event in effective if begin <= event.ex_day <= end]
             if not candidates:
                 continue
@@ -158,7 +180,7 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                     2 if item.rights_ratio_per_10 > 0 and item.rights_price > 0 else 1 if item.bonus_transfer_per_10 > 0 else 0,
                     item.ex_day,
                 ),
-            ) if window_name == "EARLY_1990_2009" else candidates[-1]
+            ) if window_name == "EARLY" else candidates[-1]
             trade_date = _previous_trade_date(dates, event.ex_day)
             if trade_date is None or (security_id, trade_date) in selected:
                 continue
@@ -188,7 +210,7 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "security_id": security_id,
                 "date": trade_date,
                 "sample_type": "COMPOUND_SUSPENSION",
-                "period": _period(trade_date),
+                "period": _period(trade_date, windows),
                 "contract_sample": False,
                 "board": candidate["board"],
                 "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
@@ -203,7 +225,7 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "security_id": security_id,
                 "date": latest,
                 "sample_type": "NO_ACTION_ANCHOR_CONTROL",
-                "period": "RECENT_2024_2026",
+                "period": _period(latest, windows),
                 "contract_sample": False,
                 "board": candidate["board"],
                 "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
@@ -223,7 +245,7 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "security_id": security_id,
                 "date": row["trade_date"],
                 "sample_type": "STRATIFIED_NO_EVENT_CONTROL",
-                "period": _period(row["trade_date"]),
+                "period": _period(row["trade_date"], windows),
                 "contract_sample": False,
                 "board": candidate["board"],
                 "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],

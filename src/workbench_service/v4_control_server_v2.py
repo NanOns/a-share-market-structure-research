@@ -65,10 +65,10 @@ def make_v4_handler(root, *, static_root=None):
             parsed=urlparse(self.path)
             if parsed.path=='/v4/operational-preview':
                 return self.send(200,(static/'r43-operational-preview.html').read_bytes(),'text/html; charset=utf-8')
-            if parsed.path.startswith('/api/v4/original-0930/'):
+            if parsed.path.startswith('/api/v4/original/'):
                 values=parse_qs(parsed.query,keep_blank_values=True)
                 if any(len(v)!=1 for v in values.values()):return self.send(400,dict(code='DUPLICATE_PARAMETER'))
-                code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original-0930/'),{k:v[0] for k,v in values.items()})
+                code,payload=bff.get('/api/v4/'+parsed.path.removeprefix('/api/v4/original/'),{k:v[0] for k,v in values.items()})
                 return self.send(code,payload)
             if parsed.path.startswith('/api/v4/') and not parsed.path.startswith('/api/v4/shadow/'):
                 from workbench_analysis.r43_operational_publication import accepted_api

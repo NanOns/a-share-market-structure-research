@@ -161,7 +161,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                 if name in ('app.js','api.js','components.js','stock.js','replay.js','labels.js','rotation-auto-acceptance.js'):
                     asset=static/'core-product-r1'/name
                     return self.send(200,asset.read_bytes(),'application/javascript; charset=utf-8')
-            if path.startswith('/api/v4/') and not path.startswith((PREFIX,'/api/v4/original-0930/','/api/v4/shadow/')):
+            if path.startswith('/api/v4/') and not path.startswith((PREFIX,'/api/v4/original/','/api/v4/shadow/')):
                 try:
                     params=parse_qs(parsed.query,keep_blank_values=True)
                     if any(len(v)!=1 for v in params.values()):raise ValueError('DUPLICATE_PARAMETER')

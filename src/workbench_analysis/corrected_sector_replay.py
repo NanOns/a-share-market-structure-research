@@ -124,7 +124,7 @@ def materialize_sectors(root):
              relative_sector=gzwrite(root,folder/'csrc_relative_sector_loo.jsonl.gz',loo),
              known_fields=dict(Counter(k for r in native for k,v in r['fields'].items() if v.get('value') is not None)),
              relative_sector_known=sum(r['quality']=='KNOWN' for r in loo),oracle=oracle,
-             original_tdx_concept_membership='ACCEPTED_20260930_ONLY; OTHER_DATES_UNPROVEN',
+        original_tdx_concept_membership='ACCEPTED_SNAPSHOT_DATE_ONLY; OTHER_DATES_UNPROVEN',
              source_taxonomy_substitution=False,production_admission=False)
         receipt['relative_only_optimization']='Original per-group kernel; rs1/rs5 and eligibility checked against full exclusion cross-section on first 30 identities; cross-section percentiles are not consumed by relative_sector.'
         write(folder/'SECTOR_OWNER.json',receipt);receipts.append(receipt)

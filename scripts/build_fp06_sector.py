@@ -17,6 +17,7 @@ from workbench_service.current_v4_context import canonical,digest
 from v4.factors.core import Bar,Observation,compute_core,rps_midrank,market_reference
 from v4.market_regime_ui import RegimeUI
 from sector.native_r5 import build_native
+from v4.accepted_input import resolve as resolve_accepted_inputs
 
 def compress(path,rows):
     path.parent.mkdir(parents=True,exist_ok=True);tmp=path.with_suffix('.tmp')
@@ -45,7 +46,7 @@ def main():
     sessions=json.loads(verified(market['sources']['calendar']).read_bytes())['session_dates'];sessions=[s for s in sessions if s<=target]
     identity=json.loads(verified(market['sources'][target+':IDENTITY_UNIVERSE']).read_bytes())['rows'];universe={x['security_id']:x for x in identity}
     statuses=defaultdict(dict)
-    statuspath=ROOT/'data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz';sources['historical_status']=ref(statuspath)
+    statuspath=resolve_accepted_inputs(ROOT)['trading_status'].path;sources['historical_status']=ref(statuspath)
     with gzip.open(statuspath,'rt',encoding='utf8') as f:
         for line in f:
             x=json.loads(line)

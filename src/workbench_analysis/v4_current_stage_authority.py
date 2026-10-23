@@ -44,7 +44,7 @@ class CurrentStageAuthority:
         if self.is_v15 and self.contract['predecessor_v4_14']!=self.replay_head_ref:raise ValueError('EXPLICIT_REPLAY_PREDECESSOR_REQUIRED')
         self.predecessor_ref=self.owners['v4_13'];self.predecessor=json.loads(self.read(self.predecessor_ref))
         self.data_ref=self.contract['data_head'];self.data=json.loads(self.read(self.data_ref))
-        if self.data['accepted_trade_date']!='2026-09-30' or self.head['bindings']['data_head']!=self.data_ref:raise ValueError('DATA_HEAD_UNCHANGED_REQUIRED')
+        if self.data.get('accepted_trade_date')!=self.head.get('accepted_trade_date') or not self.data.get('accepted_trade_date') or self.head['bindings']['data_head']!=self.data_ref:raise ValueError('DATA_HEAD_UNCHANGED_REQUIRED')
         self.calendar_ref=self.contract['calendar'];self.calendar=json.loads(self.read(self.calendar_ref))
         if self.calendar_ref!=self.data['calendar']:raise ValueError('CALENDAR_AUTHORITY_MISMATCH')
         self.sessions=[s['trade_date'] if isinstance(s,dict) else s for s in self.calendar['session_dates']]

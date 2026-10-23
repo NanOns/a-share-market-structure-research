@@ -62,17 +62,17 @@ def test_later_gbbq_revision_cannot_replace_accepted_snapshot():
 
 def test_late_provider_is_excluded():
     with pytest.raises(ValueError, match="PROVIDER_AFTER_FORMAL_PUBLICATION"):
-        require_factor_visibility({"late": {"available_at": "2026-09-30T00:00:00Z"}}, "2026-09-29T06:53:52Z")
+        require_factor_visibility({"late": {"available_at": "2026-09-30T00:00:00Z"}}, "2026-09-29T06:53:52Z", 20260928)
 
 
 def test_future_factor_source_is_hard_blocked():
     with pytest.raises(ValueError, match="FUTURE_FACTOR_SOURCE"):
-        require_factor_visibility({"future": {"max_source_trade_date": 20260929}}, "2026-09-29T06:53:52Z")
+        require_factor_visibility({"future": {"max_source_trade_date": 20260929}}, "2026-09-29T06:53:52Z", 20260928)
 
 
 def test_future_market_regime_input_is_hard_blocked():
     with pytest.raises(ValueError, match="FUTURE_MARKET_REGIME_INPUT"):
-        require_market_dates([{"trade_date": "2026-09-28"}, {"trade_date": "2026-09-29"}])
+        require_market_dates([{"trade_date": "2026-09-28"}, {"trade_date": "2026-09-29"}], 20260928)
 
 
 def test_target_profile_preserves_row_set_and_unknowns():

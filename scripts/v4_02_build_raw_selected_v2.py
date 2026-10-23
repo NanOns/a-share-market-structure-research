@@ -93,6 +93,14 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def resolve_report_by_sha(directory: Path, expected_sha256: str) -> Path:
+    """Resolve a dated evidence artifact from its accepted digest, not its filename date."""
+    matches = [path for path in directory.rglob("*.json") if sha256_file(path) == expected_sha256]
+    if len(matches) != 1:
+        raise ValueError("ACCEPTED_REPORT_DIGEST_NOT_UNIQUE")
+    return matches[0]
+
+
 def atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
@@ -196,7 +204,7 @@ def check_raw_quality(values: tuple) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--asof", default="20260924", help="YYYYMMDD; must be no later than the frozen source cutoff")
+    parser.add_argument("--asof", required=True, help="YYYYMMDD; must not exceed the accepted source cutoff")
     args = parser.parse_args()
     if not re.fullmatch(r"\d{8}", args.asof):
         raise ValueError("INVALID_ASOF_DATE")
@@ -214,7 +222,9 @@ def main() -> int:
         raise ValueError("ENTRY_GATE_CONTRACT_HASH_STALE")
     v4_01_receipt_path = ROOT / contract["inputs"]["v4_01_final_receipt"]
     universe_receipt_path = ROOT / contract["inputs"]["v4_01_required_universe_receipt"]
-    selection_receipt_path = ROOT / "reports/v4_01/v4_01_source_selection_receipt_R4_20260925.json"
+    selection_receipt_path = resolve_report_by_sha(
+        ROOT / "reports/v4_01", gate.get("evidence", {}).get("v4_01_source_selection_receipt_sha256", "")
+    )
     for key, path in (
         ("v4_01_final_receipt_sha256", v4_01_receipt_path),
         ("v4_01_historical_universe_receipt_sha256", universe_receipt_path),
@@ -260,13 +270,12 @@ def main() -> int:
     if snapshot_check.get("status") != "PASS" or local_snapshot_check.get("status") != "PASS":
         raise ValueError("SOURCE_SNAPSHOT_VERIFICATION_FAILED")
 
-    r6_materialization = json.loads(
-        (ROOT / "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json").read_text(encoding="utf-8")
-    )
     v4_01_receipt = json.loads(v4_01_receipt_path.read_text(encoding="utf-8"))
-    materialization_path = ROOT / "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json"
-    if v4_01_receipt.get("evidence", {}).get("R6_2_append_only_lifecycle_materialization", {}).get("sha256") != sha256_file(materialization_path):
+    materialization_ref = v4_01_receipt.get("evidence", {}).get("R6_2_append_only_lifecycle_materialization", {})
+    materialization_path = ROOT / materialization_ref.get("path", "")
+    if not materialization_path.is_file() or materialization_ref.get("sha256") != sha256_file(materialization_path):
         raise ValueError("R6_2_MATERIALIZATION_RECEIPT_HASH_MISMATCH")
+    r6_materialization = json.loads(materialization_path.read_text(encoding="utf-8"))
     identity_path = ROOT / r6_materialization["intervals"]["current_interval_artifact_path"]
     identity_map = load_membership_identity(identity_path, r6_materialization["intervals"]["current_interval_artifact_sha256"])
     universe_receipt = json.loads(universe_receipt_path.read_text(encoding="utf-8"))

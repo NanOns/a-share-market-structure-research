@@ -8,7 +8,8 @@ import pyarrow.parquet as pq
 
 ROOT=Path(__file__).resolve().parent;sys.path.insert(0,str(ROOT/"src"))
 from shadow_v2.breakout_prep import RULESET_ID,classify,range_status,vol_status
-CUTOFF="20260904";BASE_RUN="4255c2f108ac4cdabca3e212079d8bf8"
+from production.release import current_release_scope
+CUTOFF=None;BASE_RUN=None
 
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def atomic(path,body):
@@ -25,6 +26,8 @@ def distribution(frame):
   result[column]={"valid_count":int(series.notna().sum()),"null_count":int(series.isna().sum()),**{name:(None if pd.isna(value) else float(value)) for name,value in zip(("p10","p25","median","p75","p90"),q)}}
  return result
 def run(requested="latest"):
+ global CUTOFF,BASE_RUN
+ if CUTOFF is None or BASE_RUN is None:CUTOFF,BASE_RUN=current_release_scope(ROOT)
  if requested!="latest": raise ValueError("SHADOW_LATEST_ONLY")
  pointer=ROOT/"reports/current/CURRENT_RELEASE.json";pointer_before=pointer.read_bytes();current=json.loads(pointer_before);identity=current["latest_release"]["computation_identity"]["sha256"]
  release=ROOT/f"reports/releases/{CUTOFF}/{BASE_RUN}";v1paths=[release/name for name in ("stocks.csv","candidates.csv","manifest.json")]+[pointer];hashes={str(p.relative_to(ROOT)):sha(p) for p in v1paths}

@@ -16,7 +16,7 @@ import duckdb
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.v4.accepted_input import BOARDS, CUTOFF, resolve  # noqa: E402
+from src.v4.accepted_input import BOARDS, resolve  # noqa: E402
 from src.v4.profile_core import (closed_period_trend, compression, drawdown, extension_risk,
                                  ma_structure, near_high, participation, position, ratio_state,
                                  relative, severe_extension, trend, P)  # noqa: E402
@@ -41,17 +41,17 @@ def digest(value: object) -> str:
     return sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
 
 
-def _periods(connection: duckdb.DuckDBPyConnection, path: Path, limit: int) -> dict[str, list[dict]]:
+def _periods(connection: duckdb.DuckDBPyConnection, path: Path, limit: int, cutoff: int) -> dict[str, list[dict]]:
     query = f"""
       SELECT canonical_security_id, period_last_session, period_view, period_status,
              price_basis, close, source_daily_digest
       FROM read_parquet(?)
-      WHERE price_basis='QFQ' AND period_view='CLOSED_ONLY' AND period_last_session <= 20260924
+      WHERE price_basis='QFQ' AND period_view='CLOSED_ONLY' AND period_last_session <= ?
       QUALIFY row_number() OVER (PARTITION BY canonical_security_id ORDER BY period_last_session DESC) <= {limit}
       ORDER BY canonical_security_id, period_last_session
     """
     rows = defaultdict(list)
-    cur = connection.execute(query, [str(path)])
+    cur = connection.execute(query, [cutoff, str(path)])
     for sid, date, view, status, basis, close, source_digest in cur.fetchall():
         rows[sid].append({"period_last_session": iso_date(date), "period_view": view,
                           "period_status": status, "price_basis": basis,
@@ -60,17 +60,17 @@ def _periods(connection: duckdb.DuckDBPyConnection, path: Path, limit: int) -> d
     return rows
 
 
-def _daily(connection: duckdb.DuckDBPyConnection, path: Path) -> dict[str, list[dict]]:
+def _daily(connection: duckdb.DuckDBPyConnection, path: Path, cutoff: int) -> dict[str, list[dict]]:
     query = f"""
       SELECT canonical_security_id, source_security_key, board_scope, trade_date,
              qfq_close, qfq_high, qfq_low, amount, adjusted_quality
       FROM read_parquet(?)
-      WHERE trade_date <= 20260924 AND trading_status='ACTUAL_TRADED'
+      WHERE trade_date <= ? AND trading_status='ACTUAL_TRADED'
       QUALIFY row_number() OVER (PARTITION BY canonical_security_id ORDER BY trade_date DESC) <= {int(P['POS250_WINDOW']) + 1}
       ORDER BY canonical_security_id, trade_date
     """
     rows = defaultdict(list)
-    cur = connection.execute(query, [str(path)])
+    cur = connection.execute(query, [cutoff, str(path)])
     while batch := cur.fetchmany(20000):
         for sid, symbol, board, date, close, high, low, amount, quality in batch:
             rows[sid].append({"source_security_key": symbol, "board_scope": board,
@@ -81,12 +81,12 @@ def _daily(connection: duckdb.DuckDBPyConnection, path: Path) -> dict[str, list[
     return rows
 
 
-def _cutoff_universe(path: Path) -> dict[str, dict]:
+def _cutoff_universe(path: Path, cutoff: str) -> dict[str, dict]:
     rows = {}
     with gzip.open(path, "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
-            if row["trade_date"] == CUTOFF:
+            if row["trade_date"] == cutoff:
                 sid = row["security_id"]
                 if sid in rows:
                     raise ValueError("duplicate cutoff universe identity")
@@ -94,14 +94,14 @@ def _cutoff_universe(path: Path) -> dict[str, dict]:
     return rows
 
 
-def _statuses(path: Path, starts: dict[str, str]) -> dict[str, list[tuple[str, str]]]:
+def _statuses(path: Path, starts: dict[str, str], cutoff: str) -> dict[str, list[tuple[str, str]]]:
     result: dict[str, list[tuple[str, str]]] = defaultdict(list)
     with gzip.open(path, "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
             sid = row["security_id"]
             start = starts.get(sid)
-            if start is not None and start <= row["trade_date"] <= CUTOFF:
+            if start is not None and start <= row["trade_date"] <= cutoff:
                 result[sid].append((row["trade_date"], row["status"]))
     for value in result.values():
         value.sort()
@@ -124,17 +124,20 @@ def _state_payload(state, source_digest: str, contract_digest: str) -> dict:
 
 def build_row(factor_row: dict, bars: list[dict], weekly: list[dict], monthly: list[dict],
               statuses: list[tuple[str, str]], universe: dict, source_digest: str, contract_digest: str,
-              calendar: list[str], regime_ui) -> dict:
+              calendar: list[str], regime_ui, cutoff: str | None = None) -> dict:
+    cutoff = cutoff or factor_row.get("trade_date")
+    if not cutoff:
+        raise ValueError("V4_04_TARGET_TRADE_DATE_REQUIRED")
     fields = factor_row["fields"]
     primitives = _factor_values(fields)
-    derived = derive_daily(bars, fields, statuses, CUTOFF, calendar)
+    derived = derive_daily(bars, fields, statuses, cutoff, calendar)
     primitives.update({name: value.value for name, value in derived.items()})
-    close = bars[-1]["qfq_close"] if bars and bars[-1]["trade_date"] == CUTOFF and bars[-1]["adjusted_quality"] == "READY" else None
+    close = bars[-1]["qfq_close"] if bars and bars[-1]["trade_date"] == cutoff and bars[-1]["adjusted_quality"] == "READY" else None
     primitives["close"] = close
     primitives["ma10"] = derived["ma10"].value
     primitives["minimum_liquidity"] = derived["minimum_liquidity"].value
-    wk = derive_closed_period(weekly, int(P["WEEKLY_MA_WINDOW"]), CUTOFF)
-    mo = derive_closed_period(monthly, int(P["MONTHLY_MA_WINDOW"]), CUTOFF)
+    wk = derive_closed_period(weekly, int(P["WEEKLY_MA_WINDOW"]), cutoff)
+    mo = derive_closed_period(monthly, int(P["MONTHLY_MA_WINDOW"]), cutoff)
     comp = compression(primitives)
     ma = ma_structure(primitives)
     risk = extension_risk(primitives)
@@ -158,7 +161,7 @@ def build_row(factor_row: dict, bars: list[dict], weekly: list[dict], monthly: l
     }
     states["regime_ui"] = regime_ui
     identity = {"security_id": factor_row["security_id"], "symbol": universe["source_security_key"],
-                "trade_date": CUTOFF, "board": factor_row["board_scope"], "source_cutoff": CUTOFF,
+                "trade_date": cutoff, "board": factor_row["board_scope"], "source_cutoff": cutoff,
                 "publication_id": "V4_04_STAGING_R4"}
     state_rows = {key: _state_payload(value, source_digest, contract_digest) for key, value in states.items()}
     derived_rows = {}
@@ -184,19 +187,22 @@ def build_row(factor_row: dict, bars: list[dict], weekly: list[dict], monthly: l
                                      for key, value in fields.items()},
                "profile_component_status": component_status(state_count - required_unknown, state_count),
                "profile_quality": "COMPLETE" if required_unknown == 0 else "PARTIAL_UNKNOWN",
-               "source_asof": CUTOFF, "technical_window_identity": digest([value.window_identity for value in derived.values()]),
+               "source_asof": cutoff, "technical_window_identity": digest([value.window_identity for value in derived.values()]),
                "field_window_mapping_id": mapping["contract_id"],
                "field_window_mapping_digest": sha256(mapping_path.read_bytes()).hexdigest(),
                "accepted_v4_03_field_window_mapping_digest": upstream_mapping_digest,
                "period_lineage": period_lineage,
                "source_digest": source_digest, "contract_digest": contract_digest,
-               "trading_status": statuses[-1][1] if statuses and statuses[-1][0] == CUTOFF else "UNKNOWN"}
+               "trading_status": statuses[-1][1] if statuses and statuses[-1][0] == cutoff else "UNKNOWN"}
     payload["output_digest"] = digest(payload)
     return payload
 
 
 def main() -> None:
     sources = resolve(ROOT)
+    cutoff = str(sources["daily"].source_cutoff or "")
+    if not cutoff:
+        raise ValueError("V4_04_ACCEPTED_SOURCE_CUTOFF_MISSING")
     calendars = {
         "SH": json.loads(sources["calendar"].path.read_text(encoding="utf-8"))["session_dates"],
         "SZ": json.loads(sources["calendar_szse"].path.read_text(encoding="utf-8"))["session_dates"],
@@ -207,27 +213,28 @@ def main() -> None:
     if algorithm.get("parameter_set_id") != "V4_04_CORE_PROFILE_PARAMETER_SET_V1" or len(algorithm.get("rules", {})) < 8:
         raise ValueError("V4-04 machine contract incomplete")
     connection = duckdb.connect()
-    daily = _daily(connection, sources["daily"].path)
-    weekly = _periods(connection, sources["weekly"].path, int(P["WEEKLY_MA_WINDOW"]) + 1)
-    monthly = _periods(connection, sources["monthly"].path, int(P["MONTHLY_MA_WINDOW"]) + 1)
-    universe = _cutoff_universe(sources["universe"].path)
+    cutoff_number = int(cutoff.replace("-", ""))
+    daily = _daily(connection, sources["daily"].path, cutoff_number)
+    weekly = _periods(connection, sources["weekly"].path, int(P["WEEKLY_MA_WINDOW"]) + 1, cutoff_number)
+    monthly = _periods(connection, sources["monthly"].path, int(P["MONTHLY_MA_WINDOW"]) + 1, cutoff_number)
+    universe = _cutoff_universe(sources["universe"].path, cutoff)
     with gzip.open(sources["factors"].path, "rt", encoding="utf-8") as stream:
         factor_rows = [json.loads(line) for line in stream]
     with gzip.open(sources["market_regime"].path, "rt", encoding="utf-8") as stream:
         regime_path = [json.loads(line) for line in stream]
     regime_by_date = project_regime_ui(regime_path)
-    if CUTOFF not in regime_by_date or len(regime_by_date) != len(regime_path):
+    if cutoff not in regime_by_date or len(regime_by_date) != len(regime_path):
         raise ValueError("accepted market regime cutoff/path identity mismatch")
     if len(factor_rows) != len({x["security_id"] for x in factor_rows}):
         raise ValueError("duplicate factor identity")
     if set(x["board_scope"] for x in factor_rows) != set(BOARDS):
         raise ValueError("required board coverage mismatch")
-    if any(x["trade_date"] != CUTOFF or x["security_id"] not in universe or
+    if any(x["trade_date"] != cutoff or x["security_id"] not in universe or
            x["board_scope"] != universe[x["security_id"]]["board_scope"] for x in factor_rows):
         raise ValueError("factor/universe cutoff identity mismatch")
     starts = {sid: (rows[-int(P["POS250_WINDOW"])] if len(rows) >= P["POS250_WINDOW"] else rows[0])["trade_date"]
               for sid, rows in daily.items() if rows}
-    statuses = _statuses(sources["trading_status"].path, starts)
+    statuses = _statuses(sources["trading_status"].path, starts, cutoff)
     source_digest = digest({key: value.sha256 for key, value in sorted(sources.items())})
     OUT.parent.mkdir(parents=True, exist_ok=True)
     tmp = OUT.with_suffix(OUT.suffix + ".tmp")
@@ -240,14 +247,14 @@ def main() -> None:
                     row = build_row(factor, daily.get(sid, []), weekly.get(sid, []), monthly.get(sid, []),
                                     statuses.get(sid, []), universe[sid], source_digest, contract_digest,
                                     calendars["SH" if factor["board_scope"] in ("SH_MAIN", "STAR") else "SZ"],
-                                    regime_by_date[CUTOFF])
+                                    regime_by_date[cutoff], cutoff)
                     text.write(json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n")
                     boards[row["board"]] += 1
                     quality[row["profile_quality"]] += 1
     os.replace(tmp, OUT)
     h = sha256(OUT.read_bytes()).hexdigest()
     receipt = {"contract_id": "V4_04_FULL_MARKET_CANDIDATE_RECEIPT_R4", "status": "STAGING_ONLY_NOT_ACCEPTED",
-               "cutoff": CUTOFF, "required_boards": list(BOARDS), "board_count": dict(boards),
+               "cutoff": cutoff, "required_boards": list(BOARDS), "board_count": dict(boards),
                "row_count": sum(boards.values()), "quality_count": dict(quality),
                "contract_files": contracts, "contract_digest": contract_digest,
                "sources": {key: {"path": str(value.path.relative_to(ROOT)).replace("\\", "/"),

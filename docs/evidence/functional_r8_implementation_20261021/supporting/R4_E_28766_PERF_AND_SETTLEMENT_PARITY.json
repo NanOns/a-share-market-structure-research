@@ -1,0 +1,765 @@
+{
+  "contract_id": "BATCH10_R4_E_LIVE_API_PERF_AND_SETTLEMENT_PARITY_R1",
+  "captured_at_utc": "2026-10-23T01:36:35.942887+00:00",
+  "candidate": {
+    "trade_date": "2026-10-21",
+    "snapshot_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+    "available_dates": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "evidence_class": "NON_PIT",
+    "production_head_changed": false
+  },
+  "database": {
+    "endpoint": "127.0.0.1:5432/market_research",
+    "read_contract": "ForwardR7Store.read_settlement",
+    "fresh_pg_readback": true,
+    "matured_settlement_count_api": 3260,
+    "matured_settlement_count_pg": 3260,
+    "matured_count_equal": true
+  },
+  "cross_date_routes": [
+    {
+      "date": "2026-10-19",
+      "domain": "home",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 32664.753,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-19",
+      "domain": "market",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 2885.769,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-19",
+      "domain": "sectors",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 400,
+      "elapsed_ms": 4638.005,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-19",
+      "domain": "stocks",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 5224,
+      "elapsed_ms": 12738.204,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-19",
+      "domain": "focus",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 3673,
+      "elapsed_ms": 23174.576,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-19",
+      "domain": "forward_settlement",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-19",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 324,
+      "elapsed_ms": 2551.333,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "home",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 30150.17,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "market",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 2874.974,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "sectors",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 400,
+      "elapsed_ms": 4560.869,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "stocks",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 5224,
+      "elapsed_ms": 12261.041,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "focus",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 679,
+      "elapsed_ms": 18597.569,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-20",
+      "domain": "forward_settlement",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-20",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 219,
+      "elapsed_ms": 2504.237,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "home",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 4518.088,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "market",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": null,
+      "elapsed_ms": 2319.689,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "sectors",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 400,
+      "elapsed_ms": 2098.465,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "stocks",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 5224,
+      "elapsed_ms": 2304.453,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "focus",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 3975,
+      "elapsed_ms": 8457.959,
+      "valid": true,
+      "reason": null
+    },
+    {
+      "date": "2026-10-21",
+      "domain": "forward_settlement",
+      "http_status": 200,
+      "status": "READY",
+      "data_trade_date": "2026-10-21",
+      "context_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+      "total": 258,
+      "elapsed_ms": 2765.292,
+      "valid": true,
+      "reason": null
+    }
+  ],
+  "priority_400_sector_audit": {
+    "status": 200,
+    "rankable": 8,
+    "excluded": 392,
+    "denominator": 400,
+    "excluded_rows_returned": 392,
+    "excluded_unique_ids": 392,
+    "exclusion_reason_counts": {
+      "health": 391,
+      "maturity": 386,
+      "rotation": 156,
+      "sector_rs20": 10,
+      "sector_rs5": 10
+    },
+    "unexplained_or_invalid": [],
+    "candidate_only": true,
+    "source_bindings": {
+      "sector": {
+        "bytes": 1711923,
+        "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+        "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455"
+      },
+      "stock": {
+        "bytes": 19755700,
+        "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/core.jsonl.gz",
+        "sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"
+      }
+    },
+    "rankable_examples": [
+      {
+        "display_name": "钢加工",
+        "entity_id": "INDUSTRY:T020103",
+        "facts": {
+          "health": "WATCH",
+          "maturity": "NONE",
+          "rotation": "ROTATION_PULSE",
+          "sector_rs20": 71.15384615384616,
+          "sector_rs5": 70.1923076923077
+        },
+        "href": "/v4/research/sectors/INDUSTRY:T020103",
+        "priority_state": "RANKABLE",
+        "rank": 1,
+        "reasons": [
+          "ROTATION_ROTATION_PULSE",
+          "MATURITY_NONE",
+          "HEALTH_WATCH",
+          "RS5_POSITIVE",
+          "RS20_POSITIVE"
+        ],
+        "score": 5,
+        "sector_id": "INDUSTRY:T020103",
+        "source": {
+          "bytes": 1711923,
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+          "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455"
+        },
+        "symbol": "INDUSTRY:T020103",
+        "unknown_inputs": []
+      },
+      {
+        "display_name": "公共交通",
+        "entity_id": "INDUSTRY:T0802",
+        "facts": {
+          "health": "WEAKENING",
+          "maturity": "NONE",
+          "rotation": "ROTATION_PULSE",
+          "sector_rs20": 70.1923076923077,
+          "sector_rs5": 95.1923076923077
+        },
+        "href": "/v4/research/sectors/INDUSTRY:T0802",
+        "priority_state": "RANKABLE",
+        "rank": 2,
+        "reasons": [
+          "ROTATION_ROTATION_PULSE",
+          "MATURITY_NONE",
+          "HEALTH_WEAKENING",
+          "RS5_POSITIVE",
+          "RS20_POSITIVE"
+        ],
+        "score": 4,
+        "sector_id": "INDUSTRY:T0802",
+        "source": {
+          "bytes": 1711923,
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+          "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455"
+        },
+        "symbol": "INDUSTRY:T0802",
+        "unknown_inputs": []
+      },
+      {
+        "display_name": "火力发电",
+        "entity_id": "INDUSTRY:T010202",
+        "facts": {
+          "health": "DAMAGED",
+          "maturity": "NONE",
+          "rotation": "ROTATION_IN",
+          "sector_rs20": 21.153846153846153,
+          "sector_rs5": 58.65384615384615
+        },
+        "href": "/v4/research/sectors/INDUSTRY:T010202",
+        "priority_state": "RANKABLE",
+        "rank": 3,
+        "reasons": [
+          "ROTATION_ROTATION_IN",
+          "MATURITY_NONE",
+          "HEALTH_DAMAGED",
+          "RS5_POSITIVE",
+          "RS20_POSITIVE"
+        ],
+        "score": 3,
+        "sector_id": "INDUSTRY:T010202",
+        "source": {
+          "bytes": 1711923,
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+          "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455"
+        },
+        "symbol": "INDUSTRY:T010202",
+        "unknown_inputs": []
+      }
+    ],
+    "excluded_examples": [
+      {
+        "entity_id": "INDUSTRY:T0101",
+        "priority_state": "NOT_RANKABLE",
+        "rank": null,
+        "score": null,
+        "unknown_inputs": [
+          "maturity",
+          "health"
+        ]
+      },
+      {
+        "entity_id": "INDUSTRY:T010101",
+        "priority_state": "NOT_RANKABLE",
+        "rank": null,
+        "score": null,
+        "unknown_inputs": [
+          "maturity",
+          "health"
+        ]
+      },
+      {
+        "entity_id": "INDUSTRY:T010102",
+        "priority_state": "NOT_RANKABLE",
+        "rank": null,
+        "score": null,
+        "unknown_inputs": [
+          "maturity",
+          "health"
+        ]
+      }
+    ]
+  },
+  "settlement_filter_parity": [
+    {
+      "filters": {},
+      "http_status": 200,
+      "http_total": 258,
+      "pg_total": 258,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2331.378,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "status": "DUE_SOURCE_NOT_ACCEPTED",
+          "count": 86
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "lane": "historical"
+      },
+      "http_status": 200,
+      "http_total": 258,
+      "pg_total": 258,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2026.046,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "status": "DUE_SOURCE_NOT_ACCEPTED",
+          "count": 86
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "horizon": 1
+      },
+      "http_status": 200,
+      "http_total": 86,
+      "pg_total": 86,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2261.322,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "status": "DUE_SOURCE_NOT_ACCEPTED",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "status": "PENDING_FUTURE_SESSION"
+      },
+      "http_status": 200,
+      "http_total": 172,
+      "pg_total": 172,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2051.785,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 3,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        },
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "lane": "historical",
+        "horizon": 5,
+        "status": "PENDING_FUTURE_SESSION"
+      },
+      "http_status": 200,
+      "http_total": 86,
+      "pg_total": 86,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2042.033,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "trade_date": "2026-10-21",
+        "horizon": 1
+      },
+      "http_status": 200,
+      "http_total": 86,
+      "pg_total": 86,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2135.635,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "status": "DUE_SOURCE_NOT_ACCEPTED",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 1,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    },
+    {
+      "filters": {
+        "trade_date": "2026-10-21",
+        "horizon": 5,
+        "settlement_revision": 1
+      },
+      "http_status": 200,
+      "http_total": 86,
+      "pg_total": 86,
+      "page_count": 17,
+      "api_equals_fresh_pg_projection": true,
+      "elapsed_ms": 2724.949,
+      "status_counts": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "status": "PENDING_FUTURE_SESSION",
+          "count": 86
+        }
+      ],
+      "aggregates": [
+        {
+          "lane": "RETROSPECTIVE_RESEARCH",
+          "horizon_sessions": 5,
+          "sample_count": 86,
+          "settled_count": 0,
+          "return_denominator": 0,
+          "mean_return": null,
+          "median_return": null,
+          "price_basis": "NOMINAL_UNADJUSTED_CLOSE",
+          "corporate_action_adjustment": "NOT_APPLIED"
+        }
+      ]
+    }
+  ],
+  "api_latency": {
+    "endpoint": "127.0.0.1:28766",
+    "sample_size_per_route": 8,
+    "max_concurrency": 4,
+    "scope": "read_only candidate preview",
+    "routes": {
+      "home": {
+        "n": 2,
+        "p50_ms": 6034.54,
+        "p95_ms": 7100.054,
+        "max_ms": 7100.054,
+        "failures": 0
+      },
+      "market": {
+        "n": 2,
+        "p50_ms": 3813.434,
+        "p95_ms": 5047.193,
+        "max_ms": 5047.193,
+        "failures": 0
+      },
+      "sectors": {
+        "n": 2,
+        "p50_ms": 4606.262,
+        "p95_ms": 5486.301,
+        "max_ms": 5486.301,
+        "failures": 0
+      },
+      "stocks": {
+        "n": 2,
+        "p50_ms": 3915.829,
+        "p95_ms": 5100.542,
+        "max_ms": 5100.542,
+        "failures": 0
+      },
+      "focus": {
+        "n": 2,
+        "p50_ms": 8747.792,
+        "p95_ms": 8837.32,
+        "max_ms": 8837.32,
+        "failures": 0
+      },
+      "forward_settlement": {
+        "n": 2,
+        "p50_ms": 3094.372,
+        "p95_ms": 3256.279,
+        "max_ms": 3256.279,
+        "failures": 0
+      }
+    },
+    "status": "SUPERSEDED_EXPLORATORY_SAMPLE",
+    "note": "The initial bounded-concurrency attempt completed only two samples per route and is not accepted as P95 evidence. Use R4_E_28766_IDLE_WARM_P95.json for the fixed 50-sample idle warm measurement."
+  },
+  "limitations": [
+    "No 2026-10-22 source directory exists in the configured TDX dynamic source root; this audit does not fabricate an incremental production date.",
+    "P95 is a bounded dev preview sample, not a sustained production SLO or acceptance test.",
+    "Formal validation cohort and operational Focus-priority Owners are still not bound."
+  ]
+}

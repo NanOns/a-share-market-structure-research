@@ -671,7 +671,34 @@ class ForwardR7Store:
         return dict(status="READY" if rows else "EMPTY_VALID",items=rows,total=len(rows))
 
 
-    def read_matured_count(self):
+    def _matured_count_watermark(self):
+        """Return an append-only facts watermark for safe derived-count reuse."""
+        from .v4_forward_pg_r1 import ForwardFactStore
+        with self._connect() as pg:
+            pg.execute("SET TRANSACTION READ ONLY")
+            identity=ForwardFactStore._database_identity(pg)
+            ordinal=pg.execute(sql.SQL("SELECT COALESCE(MAX(ordinal),0) FROM {}.forward_facts").format(
+                sql.Identifier(self.schema))).fetchone()[0]
+        return identity,int(ordinal)
+
+    def read_matured_count(self, *, cache=None):
+        # Reuse only when the immutable fact append watermark is unchanged.
+        # Check once more after a cache miss so a concurrent append can never
+        # publish a stale count into the shared request cache.
+        cache_key=("forward-r7-matured-count-v1",self.schema)
+        before=self._matured_count_watermark() if cache is not None else None
+        if cache is not None:
+            cached=cache.get(cache_key)
+            if cached and cached.get("watermark")==before:
+                return cached["count"]
+        count=self._read_matured_count_exact()
+        if cache is not None:
+            after=self._matured_count_watermark()
+            if before==after:
+                cache[cache_key]={"watermark":after,"count":count}
+        return count
+
+    def _read_matured_count_exact(self):
         # Derive this value from the same latest observation/settlement revisions
         # as the paged API. Aggregate facts remain audit evidence, not a second
         # potentially stale source for the home-page count.

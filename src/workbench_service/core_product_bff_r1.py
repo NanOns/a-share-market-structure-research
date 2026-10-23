@@ -33,6 +33,16 @@ def _candidate_focus_reason_cache_key(token,candidate,day,focus_ids):
             hashlib.sha256('\n'.join(ids).encode('utf-8')).hexdigest())
 
 
+def _candidate_priority_cache_key(token,day,stock_source,sector_source,parameter_sha,
+                                  producer_sha,lifecycle):
+    """Bind a candidate ranking cache entry to every owner and rule input."""
+    lineage=[stock_source,sector_source,parameter_sha,producer_sha,
+             lifecycle['candidate_digest'],lifecycle['producer_sha256'],
+             lifecycle['parameter_sha256']]
+    return ('candidate-priority-preview-v2',token,day,
+            json.dumps(lineage,sort_keys=True,separators=(',',':')))
+
+
 def _exact_price_coordinate(core_row,adjusted_row):
     """Resolve an exact per-security T0 coordinate from both bound Owners."""
     core_basis=(core_row or {}).get('price_basis_id')
@@ -422,11 +432,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             binding=self.api.candidate.get('owners',{}).get(session,{}).get(domain)
             if not binding:raise ValueError('R6_FOCUS_REASON_SOURCE_NOT_BOUND:'+session+':'+domain)
             checked(self.api.root,binding)
-        if key not in self.api.cache:
-            self.api.cache[key]=candidate_d0_reason_attribution(
+        # Request handlers get a private mutable API cache. Keep this immutable,
+        # source-verified derivation in the separately shared cache when the
+        # server provides one; exact Owner bytes are still checked above on
+        # every request before a cached result may be used.
+        shared_cache=hasattr(self.api,'derived_cache')
+        cache=getattr(self.api,'derived_cache',self.api.cache)
+        if key not in cache:
+            cache[key]=candidate_d0_reason_attribution(
                 self.api.root,self.api.candidate,day,focus_security_ids=ids,
                 candidate_token=self.api.token)
-        return self.api.cache[key]
+        return deepcopy(cache[key]) if shared_cache else cache[key]
 
     def _attach_candidate_lifecycle(self,rows,lifecycle):
         """Replace unavailable PG lifecycle placeholders with computed candidate facts."""
@@ -849,7 +865,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 from workbench_db.forward_r7_store import ForwardR7Store
                 store=ForwardR7Store(self.api.root)
                 counts=store.read_counts()
-                matured_count=store.read_matured_count()
+                matured_count=store.read_matured_count(
+                    cache=getattr(self.api,'derived_cache',self.api.cache))
                 historical=store.read_universe(lane='RETROSPECTIVE_RESEARCH',trade_date=q.get('trade_date',day),
                     rule=q.get('rule'),status=q.get('status'),limit=min(30,int(q.get('limit',30))),
                     offset=int(q.get('offset',0)))
@@ -1008,10 +1025,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 # without decompressing or rescanning those histories.
                 phase=time.perf_counter();self._verify_candidate_priority_bindings(day)
                 priority_timing['source_sha_verification_ms']=round((time.perf_counter()-phase)*1000,3)
-                cache_key=('candidate-priority-preview-v2',self.api.token,day,
-                    json.dumps([stock_source,sector_source,parameter_digest,producer_sha256,
-                        lifecycle['candidate_digest'],lifecycle['producer_sha256'],lifecycle['parameter_sha256']],
-                        sort_keys=True,separators=(',',':')))
+                cache_key=_candidate_priority_cache_key(self.api.token,day,stock_source,sector_source,
+                    parameter_digest,producer_sha256,lifecycle)
                 priority=self.api.cache.get(cache_key)
                 priority_snapshot_identity=dict(contract='R8_CANDIDATE_PRIORITY_PRECOMPUTE_R1',
                     token=self.api.token,T0=day,
@@ -1174,7 +1189,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         from workbench_db.forward_r7_store import ForwardR7Store
                         forward_store=ForwardR7Store(self.api.root)
                         forward_counts=forward_store.read_counts()
-                        settled_count=forward_store.read_matured_count()
+                        settled_count=forward_store.read_matured_count(
+                            cache=getattr(self.api,'derived_cache',self.api.cache))
                         history=forward_counts.get('historical')
                         live=forward_counts.get('live')
                         response.setdefault('counts',{})['forward']=dict(

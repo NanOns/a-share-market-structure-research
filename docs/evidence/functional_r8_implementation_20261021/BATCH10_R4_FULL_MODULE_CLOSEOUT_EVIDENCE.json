@@ -5,7 +5,7 @@
   "branch": "codex/v4-unified-development",
   "baseline_head": "78ab4c898096c71a093b288258909e81f4ba5732",
   "remote_head_before_work": "78ab4c898096c71a093b288258909e81f4ba5732",
-  "overall_disposition": "PARTIAL — R4-A/B/C repairs implemented and evidenced; R4-D/E retain source-owner and fault/performance gaps; not a production acceptance",
+  "overall_disposition": "PARTIAL — lineage/Lane H/Lane L candidate gates pass; six routes and settlement parity verified; formal Focus-priority/cohort Owners and compute-phase/live-PG-fault evidence remain open; not production acceptance",
   "gate_statuses": {
     "FR8-R4-01": "PASS",
     "FR8-R4-02": "PASS",
@@ -1153,7 +1153,7 @@
     }
   },
   "R4_D": {
-    "disposition": "PARTIAL — six pages, four observed market axes, settlement browse route and stock/chart paths render; formal candidate review, Focus priority and authorized cohort remain incomplete",
+    "disposition": "PARTIAL — six pages and four observed market axes render; cross-date and seven settlement-to-PG parity cases pass; formal operational Focus-priority and authorized cohort Owners remain unbound",
     "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
     "visible_routes": [
       "home",
@@ -1246,25 +1246,110 @@
       "route": "/api/v4/forward/settlement",
       "status": "READY",
       "total": 258,
-      "cross_surface_filtered_PG_equality": "NOT_VERIFIED"
+      "cross_surface_filtered_PG_equality": "PASS: 7/7 filtered page responses exactly equal fresh ForwardR7Store.read_settlement projections",
+      "matured_count_API_PG": 3260,
+      "matured_count_equal": true
+    },
+    "cross_date_route_audit": {
+      "artifact": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_E_28766_PERF_AND_SETTLEMENT_PARITY.json",
+      "candidate_dates": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "routes_per_date": 6,
+      "valid_http_200_reads": 18,
+      "failures": 0
     }
   },
   "R4_E": {
-    "disposition": "PARTIAL",
+    "disposition": "PARTIAL — source invalidation, fail-closed PG handling, CAS/LAST_GOOD tests and idle warm P95 pass; compute-phase P95 and live PG disconnect/recovery remain unverified",
     "preserved_baseline": "10/20 D0 141 TRUE / 5033 FALSE / 52 UNKNOWN from previous evidence; not recomputed from altered source.",
-    "failure_test": "Deterministic streaming gzip test verifies old artifact survives generator exception and temp cleanup; included in 14 targeted tests.",
-    "incremental_replay": "Full 10/21 replay; 610000 period checks; zero oracle diffs.",
+    "failure_test": "Injected psycopg OperationalError returns Forward settlement ERROR with items/total null and no zero counts/aggregates; atomic gzip failure keeps prior artifact and removes temp.",
+    "source_replacement_invalidation": "Candidate priority cache key includes source Owner SHA, rule and lifecycle producer/parameter digests; same-binding source byte replacement fails CORRECTED_INPUT_DIGEST_MISMATCH. Focus reason cache verifies exact dependent Owner bytes before reuse and returns a deep copy.",
+    "matured_count_cache": "Exact schedule-derived count is reused only while PostgreSQL identity and append-only forward_facts max ordinal are unchanged. Before/after watermark mismatch suppresses cache write. Current exact PG recomputation and API count both equal 3260.",
+    "incremental_replay": "Full 10/21 replay; 637268 period-oracle comparison operations; zero oracle diffs.",
+    "idle_warm_latency": {
+      "artifact": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_E_28766_IDLE_WARM_P95.json",
+      "method": {
+        "state": "IDLE_NO_DAILY_COMPUTE",
+        "sample_size_per_route": 50,
+        "max_concurrency": 1,
+        "timeout_seconds": 15,
+        "warmup_excluded_from_percentiles": true,
+        "percentile_method": "nearest_rank_ceil_qN"
+      },
+      "routes": {
+        "context": {
+          "n": 50,
+          "p50_ms": 33.718,
+          "p95_ms": 147.203,
+          "max_ms": 154.04,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "home": {
+          "n": 50,
+          "p50_ms": 778.724,
+          "p95_ms": 1076.507,
+          "max_ms": 1102.206,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "market": {
+          "n": 50,
+          "p50_ms": 35.559,
+          "p95_ms": 153.006,
+          "max_ms": 165.428,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "sectors": {
+          "n": 50,
+          "p50_ms": 522.879,
+          "p95_ms": 640.112,
+          "max_ms": 751.411,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "stocks": {
+          "n": 50,
+          "p50_ms": 174.203,
+          "p95_ms": 291.6,
+          "max_ms": 309.989,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "focus": {
+          "n": 50,
+          "p50_ms": 1119.448,
+          "p95_ms": 1348.761,
+          "max_ms": 1497.255,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        },
+        "forward_settlement": {
+          "n": 50,
+          "p50_ms": 274.47,
+          "p95_ms": 409.837,
+          "max_ms": 821.57,
+          "failures": 0,
+          "within_2s_candidate_budget": true
+        }
+      },
+      "disposition": "PASS_IDLE_WARM_BUDGETS"
+    },
+    "known_performance_hotspot_repaired": "Home P95 decreased from the pre-fix warm sample 2742.914 ms to 1076.507 ms by watermark-safe caching of the exact latest-revision settlement count. Candidate harness full-chain validation moved to startup; exact source reads remain bound and checked.",
     "not_run": [
-      "source replacement invalidation matrix",
-      "PG/CAS outage and LAST_GOOD recovery",
-      "API P95/load"
+      "API P95 during an actual candidate daily compute process at three concurrent readers",
+      "Live PG disconnect/recovery drill against the shared development database; injected PG failure and candidate CAS/LAST_GOOD regression tests pass"
     ],
     "data_integrity": "No 10/22 source invented; NON_PIT and previous owners preserved.",
-    "not_run_note": "These are outstanding verification tasks, not a database/service permission block; the development SOT authorizes scoped PG and 28766 work."
+    "not_run_note": "Compute-phase load was not fabricated because no new source-complete candidate compute was run; stopping the shared development PG to create an outage was avoided. These gaps are not missing design; they require an actual compute window and a separately controlled DB-fault window."
   },
   "code_and_ci": {
     "git_diff_check": "PASS",
-    "targeted_regression": "Initial regression snapshot: PASS 2/2; after independent-audit corrections and expanded tests: PASS 16/16.",
+    "targeted_regression": "PASS 55/55 across R4-E cache/failure, Lane L lifecycle conservation, atomic writer, RPS target coordinates, chart binding, functional R8, CAS rollback/crash recovery and LAST_GOOD tests.",
     "full_ci": "NOT_RUN",
     "successful_github_workflow": "NOT_VERIFIED"
   },
@@ -1273,17 +1358,18 @@
     "forward_audit_output": "G:/codex_tmp/batch10_r4_forward_audit_output.txt",
     "semantic_comparison": "G:/codex_tmp/batch10_r4_semantic_comparison.txt",
     "predecessor_comparison": "G:/codex_tmp/batch10_r4_predecessor_comparison.json",
-    "dev_service_script": "G:/codex_tmp/batch10r2_28766_1021_d778.py",
-    "raw_screenshots": []
+    "dev_service_script": "G:/codex_tmp/batch10r4_28766.py",
+    "raw_screenshots": [],
+    "idle_warm_p95_artifact": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_E_28766_IDLE_WARM_P95.json"
   },
-  "head_before_final_closeout": "2fc53cd658fdbc4c7b6334353b69d18d046f2311",
+  "head_before_final_closeout": "6eb5ae7edc9275d0d8e28e4879a237323ce2f534",
   "verification": {
-    "targeted_tests": "16 passed in 0.47s after independent-audit date/status counterexamples were added",
+    "targeted_tests": "55 passed in 1.59s; fixed-cache-key failure regression also rerun in this aggregate.",
     "git_diff_check": "PASS on final pre-commit working tree",
     "full_suite": "not run",
-    "dev_ui": "127.0.0.1:28766 candidate preview",
+    "dev_ui": "127.0.0.1:28766 candidate preview; latest six-route smoke all HTTP 200 READY on 2026-10-21; idle warm P95 50/50 per route, zero failures.",
     "production_ui": "127.0.0.1:28765 not used",
-    "postgresql": "127.0.0.1:5432/market_research existing development database; TEMP lifecycle fixture only",
+    "postgresql": "127.0.0.1:5432/market_research existing development database; read-only exact matured settlement recomputation 3260 equals Home API 3260; no permanent test fixtures.",
     "formal_head_changed": false,
     "production_scheduler_changed": false
   },
@@ -1294,8 +1380,8 @@
   "supporting_evidence": {
     "audit_forward_lane_h_readonly.py": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_forward_lane_h_readonly.py",
-      "sha256": "750ab91420d6d64e13952cdf1dbda16bb00006f6ea56d4ebca35a4c0cf7b4142",
-      "bytes": 4603
+      "sha256": "7bc83a076e0c44f62c36cd5a69aa15fb103d0fd9ad3b840d9197cc05cae91476",
+      "bytes": 4544
     },
     "audit_r4_lane_lifecycle_pg_temp.py": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_r4_lane_lifecycle_pg_temp.py",
@@ -1304,13 +1390,13 @@
     },
     "FORWARD_LANE_H_POSTGRESQL_READ_AUDIT.txt": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/FORWARD_LANE_H_POSTGRESQL_READ_AUDIT.txt",
-      "sha256": "ff7a03b8bb417277c16971e879bb633058c654d73487bedb8e29427982a4c933",
-      "bytes": 14810
+      "sha256": "03fad1c1b56e934922e601d762feb08571e5fae9ca207d78260d95cd54a82eaf",
+      "bytes": 14804
     },
     "R4_10_19_SEMANTIC_COMPARISON.json": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_19_SEMANTIC_COMPARISON.json",
-      "sha256": "57827741c6b06c47624929cac675ccf6d9956b150b8816fb1dcda596c6a1350a",
-      "bytes": 5641
+      "sha256": "324c7c8de98f56a1f29a9fd172fb4b031c92cd6c52e67a3d627b1de5bbf0e967",
+      "bytes": 5461
     },
     "R4_10_20_SUCCESSOR_CANDIDATE_PG_REBOUND.json": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_10_20_SUCCESSOR_CANDIDATE_PG_REBOUND.json",
@@ -1334,8 +1420,48 @@
     },
     "R4_LANE_L_PG_TEMP_FIXTURE_READBACK.json": {
       "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_LANE_L_PG_TEMP_FIXTURE_READBACK.json",
-      "sha256": "496e89725d929f30c67ea769a565d401e5eaac64953633323f00b3600b1f3cdd",
-      "bytes": 786
+      "sha256": "dab6669b98c978a2ea4809681cfd05b212ce04329f0642901f62a8491abdebc6",
+      "bytes": 756
+    },
+    "audit_r4e_28766_warm_p95.py": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_r4e_28766_warm_p95.py",
+      "sha256": "5da9d90daad2caa8c55f68d12e1a6a1b1fd464ea95e585a0f5e16ffb46c00660",
+      "bytes": 7315
+    },
+    "R4_E_28766_IDLE_WARM_P95.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_E_28766_IDLE_WARM_P95.json",
+      "sha256": "e6ffbce6a311bd4cbd364038ea82dbef41e30431d9d72f42a5b72ac1f0b1cda3",
+      "bytes": 9384
+    },
+    "audit_r4e_live_api_perf_and_settlement_parity.py": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/audit_r4e_live_api_perf_and_settlement_parity.py",
+      "sha256": "0d62220a4284b042de768b944c3128832c5753dbf29ad687795c1de0413447eb",
+      "bytes": 13360
+    },
+    "R4_E_28766_PERF_AND_SETTLEMENT_PARITY.json": {
+      "path": "docs/evidence/functional_r8_implementation_20261021/supporting/R4_E_28766_PERF_AND_SETTLEMENT_PARITY.json",
+      "sha256": "f1536ca544d47d39ab09ffa8b045e4eef4d7304bd4020677da2f1e8039890d42",
+      "bytes": 22155
+    },
+    "src/workbench_service/core_product_bff_r1.py": {
+      "path": "src/workbench_service/core_product_bff_r1.py",
+      "sha256": "b2c5c3731ae92604f39e459a8e22cc7f452c6b03a0713aa0359ba4d2941c1c26",
+      "bytes": 170723
+    },
+    "src/workbench_service/core_product_server_r1.py": {
+      "path": "src/workbench_service/core_product_server_r1.py",
+      "sha256": "628783bbb0c5930ac18c2f2125f37cce9a08f7f0e0acb054407b127ffe05ae5c",
+      "bytes": 18566
+    },
+    "src/workbench_db/forward_r7_store.py": {
+      "path": "src/workbench_db/forward_r7_store.py",
+      "sha256": "03b67e6a6bbea801c0fed063534918ea3e04d2f84cbc003668dc68e932d26aa3",
+      "bytes": 63561
+    },
+    "tests/test_r8_candidate_priority_cache_key.py": {
+      "path": "tests/test_r8_candidate_priority_cache_key.py",
+      "sha256": "d1a13389465741565b17bc26095d8cef406dad08dc2c6b9e248f5357eb491a42",
+      "bytes": 7441
     }
   }
 }

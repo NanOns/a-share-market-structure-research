@@ -73,6 +73,10 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
         cache=dict(signature=signature,bff=CoreProductBFFR1(api,jobs,isolated_history_authority=isolated_history_authority,
             chart_history_index_root=chart_history_index_root,market_fact_index_root=market_fact_index_root),
             sources={p:(p.stat().st_size,p.stat().st_mtime_ns) for p in paths})
+        # Immutable candidate derivations may be shared across request-local
+        # BFF copies. Rebuilding this cache with the signed service generation
+        # prevents values from crossing candidate/signature changes.
+        cache['derived_candidate']={}
         cache['sources'].update({p:(p.stat().st_size,p.stat().st_mtime_ns) for p in external_paths})
         native=getattr(api,'pg_owner_authority',None)
         if native is not None:
@@ -180,6 +184,7 @@ def make_product_handler(root,jobs,*,isolated_history_authority=None,chart_histo
                     # Each request owns its date snapshot/cache container. Immutable
                     # cached values may be shared; dated readers never share mutable state.
                     bff=copy(cache['bff']);api=copy(bff.api);api.cache=dict(getattr(api,"cache",{}));bff.api=api
+                    api.derived_cache=cache.setdefault('derived_candidate',{})
                     if path!='/api/v4/context' and hasattr(api,'token') and params.get('context_token',[''])[0]!=api.token:
                         raise ValueError('CONTEXT_TOKEN_MISMATCH')
                     current_joint=cache.get('joint')

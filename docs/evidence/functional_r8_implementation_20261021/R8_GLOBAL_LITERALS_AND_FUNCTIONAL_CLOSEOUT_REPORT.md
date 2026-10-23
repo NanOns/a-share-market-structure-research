@@ -3,6 +3,7 @@
 记录日期：2026-10-23（Asia/Shanghai）
 开发分支：`codex/v4-unified-development`
 本轮基线：`df6e312f773500f300d435cd51910961c79f7475`（与抓取时 `origin/codex/v4-unified-development` 一致）
+实现提交：`e33e3243a`（已推送至 `origin/codex/v4-unified-development`）
 验收状态：`V4_REPAIR_PARTIAL / EXTERNAL_REVIEW_BLOCKED`
 
 ## 范围和结论

@@ -1,0 +1,66 @@
+{
+  "contract_id": "V4_R9_SCANNER_RESOLUTION_EVIDENCE_V1",
+  "language": "zh-CN",
+  "recorded_at": "2026-10-23T23:36:24Z",
+  "git": {
+    "branch": "codex/v4-unified-development",
+    "previous_pushed_head": "41f2b8a241fe1f7fc3b67673b1100b2fae7f39c6",
+    "scanner_fix_commit": "11aee18be8c357db984a0e02045ec5ee4df80e68"
+  },
+  "scope": "现役V4入口及真实依赖闭包；不把V1-V3独立旧功能纳入重构",
+  "scanner_change": {
+    "path": "scripts/check_v4_business_literals.py",
+    "stdlib_resolution": "Resolve literal imports only when find_spec origin is inside the configured Python stdlib path and outside purelib/platlib.",
+    "finite_allowlist_resolution": "Resolve simple lexical tuple/list/set literal string allowlists used by importlib.import_module and add every source target to the graph.",
+    "still_unresolved": [
+      "Unknown standard-library module names",
+      "site-packages imports",
+      "Non-literal imports without a finite local constant allowlist",
+      "exec code-loading sites"
+    ],
+    "verified_finite_allowlist_edge": {
+      "file": "src/workbench_analysis/dm01_publication_history_reader_v2.py",
+      "line": 65,
+      "targets": [
+        "scripts.promote_v4_09_accepted_head",
+        "scripts.validate_v4_10_promotion_r1"
+      ],
+      "status": "FINITE_ALLOWLIST_IMPORTS_RESOLVED"
+    }
+  },
+  "scan": {
+    "tracked_files_used_as_parser_input": 3974,
+    "verified_v4_entrypoints": 7,
+    "entrypoint_inventory": "SOURCE_VERIFIED",
+    "reachable_files": 652,
+    "reachable_unresolved_literal_candidates": 2211,
+    "reachable_confirmed_violations": 0,
+    "reachable_dynamic_unresolved": 11,
+    "reachable_browser_routes_unresolved": 25,
+    "unresolved_dynamic_in_nonreachable_maintenance_scripts": 25,
+    "whole_repository_unverified_maintenance_candidates": 5003,
+    "strict_gate": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED",
+    "strict_gate_global_dynamic_unresolved": 36,
+    "candidate_note": "Literal candidates require review and do not imply confirmed defects; non-reachable maintenance counts are not V4 runtime defect counts."
+  },
+  "tests": {
+    "command": "pytest -q tests/v4_policy/test_no_production_hardcoded_identities.py tests/v4_joint/test_r9_scanner_resolution.py tests/v4_joint/test_r9_source_context.py tests/v4_joint/test_r9_market_cache_scope.py tests/test_r43_streaming_gzwrite.py",
+    "passed": 36,
+    "failed": 0,
+    "database_imported_by_this_test_group": false,
+    "database_connected": false
+  },
+  "environment": {
+    "duckdb_used_this_scanner_repair": false,
+    "postgres_writes": 0,
+    "service_or_windows_restart": false,
+    "accepted_or_formal_head_changed": false,
+    "temporary_storage": "G:/codex_tmp"
+  },
+  "open_items": [
+    "The V4 runtime literal gate remains blocked by 2211 candidates, 11 dynamic edges, and 25 browser routes.",
+    "The 25 unresolved dynamic edges and 5003 unverified maintenance candidates outside the current V4 runtime closure require separate path-based scope review.",
+    "D2, D0 source seal, market trend/composite publication, full daily G1/G3/G4, live UI reload, cold Home capacity and business/source adjudications remain open as detailed in R9_V4_CONTINUATION_REPAIR_20261024.md."
+  ],
+  "prior_report": "R9_V4_CONTINUATION_REPAIR_20261024.md"
+}

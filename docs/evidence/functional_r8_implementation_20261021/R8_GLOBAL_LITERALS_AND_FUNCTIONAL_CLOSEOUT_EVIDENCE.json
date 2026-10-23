@@ -91,8 +91,107 @@
       "fixed_target_date_branch_found": false,
       "status": "UNRESOLVED_REQUIRES_REFACTOR_FROM_CURRENT_HEAD_AND_CALL_INPUTS"
     },
+    "remaining_security_shaped_literals": [
+      {
+        "values": ["000001", "399001", "399006", "SH.000001", "SZ.399001", "SZ.399006"],
+        "files": ["config/v4_market_reference_instruments_v1.json"],
+        "meaning": "Explicitly typed MARKET_INDEX reference instruments and roles, not ordinary-stock branches.",
+        "reason_not_removed": "Versioned market benchmark identity; changing it requires coordinated contract, digest, and consumer migration. These remain fixed security identities, so the scan does not claim that all security-code literals are gone."
+      },
+      {
+        "values": ["sh000001", "sz399001", "bj899050"],
+        "files": ["config/v4_02_canonical_daily_pit_contract_v1.json"],
+        "meaning": "Index-bar paths and canonical market-reference inputs.",
+        "reason_not_removed": "Historical canonical PIT input identities remain pinned; a dynamic index-source contract migration has not been done."
+      },
+      {
+        "values": ["621404"],
+        "files": ["config/v4_02_price_limit_rules_r3.json", "config/v4_02_price_limit_rules_v1.json"],
+        "meaning": "Official-source URL document identifier.",
+        "reason_not_removed": "Provenance citation, not security selection."
+      },
+      {
+        "values": ["152128", "182128", "846023"],
+        "files": ["config/v4_joint_release_authority_v1.json"],
+        "meaning": "Byte-size and timestamp-millisecond numeric fields misread as securities.",
+        "reason_not_removed": "Scanner false positives; they do not drive securities or business branches."
+      },
+      {
+        "values": ["646711"],
+        "files": ["config/v4_read_index_authority_r1.json", "config/v4_read_index_authority_r2.json"],
+        "meaning": "PostgreSQL database_oid.",
+        "reason_not_removed": "Database-object identity metadata, not a security."
+      },
+      {
+        "values": ["999999"],
+        "files": ["src/workbench_db/postgres_repository.py"],
+        "meaning": "SQL ordering/null-rank sentinel.",
+        "reason_not_removed": "Internal sentinel, not a security identity or branch."
+      }
+    ],
+    "remaining_sector_shaped_literals": [
+      {
+        "value": "T0002",
+        "file": "src/v4/contracts/source_overlap.py",
+        "meaning": "TDX metadata directory path component.",
+        "reason_not_removed": "Filesystem metadata locator, not an industry/theme/sector code."
+      },
+      {
+        "value": "industry:candidates",
+        "file": "src/workbench_analysis/v4_15_settlement.py",
+        "meaning": "Scanner misparse of Python conditional syntax; runtime industry is dynamic input.",
+        "reason_not_removed": "False positive; no fixed sector identity exists there."
+      }
+    ],
+    "remaining_date_candidate_clusters": [
+      {"file": "config/v4_joint_release_authority_v1.json", "count": 823, "reason_not_removed": "Historical joint-release snapshot, Owner, source, and UI bindings; downstream validation uses exact manifest identity. Not a current target-date default; consumers still need review."},
+      {"file": "config/v4_replay_compare_authority_v1.json", "count": 802, "reason_not_removed": "Historical replay dataset/as_of identity; replay validates trade_date and input Head."},
+      {"file": "config/v4_02_price_limit_rules_r3.json", "count": 44, "reason_not_removed": "Versioned rule identifiers, official sources, validity ranges, and regulatory facts; target-date selection must choose applicable facts dynamically."},
+      {"file": "config/v4_02_price_limit_rules_v1.json", "count": 32, "reason_not_removed": "Older versioned regulatory rule/source facts; not current target-date defaults."},
+      {"file": "config/v4_official_exchange_calendar_v2.json", "count": 32, "reason_not_removed": "Actual exchange session calendar facts; dynamic behavior selects from calendar by requested date."},
+      {"file": "config/v4_dm01_bridge_calendar_v1.json", "count": 17, "reason_not_removed": "Accepted bridge calendar session facts."},
+      {"file": "config/v4_11_*_candidate_d2_contract_v1.json and related R3/R4/R5 contracts", "count_range_per_file": "5-14", "reason_not_removed": "Historical candidate windows and source anchors pinned for reproducibility; must not silently substitute for the active call date."},
+      {"file": "config/v4_current_accepted_read_contract_v1.json and config/v4_read_index_authority_r1/r2.json", "count": 6, "reason_not_removed": "Versioned accepted-read fallback anchors and historical as_of identities; current calls must prefer current runtime authority."},
+      {"file": "config/v4_02_canonical_daily_pit_contract_v1.json and V4-02 accepted contracts", "count_range_per_file": "7-10", "reason_not_removed": "Frozen canonical inputs, source cutoffs, and artifact identities; any continuing runtime use as an implicit default remains subject to repair."}
+    ],
+    "unresolved_non_test_v4_date_dependencies": [
+      {
+        "file": "src/workbench_analysis/operational_daily_owner_v1.py",
+        "status": "CONFIRMED_UNRESOLVED_RUNTIME_DEPENDENCY",
+        "reason_not_removed": "Reachable Daily Owner preparation still reads BASE/ACQUISITION, a dated task contract, and replay/core/seed paths under 2026-10-09; not yet derived from current Head and call inputs."
+      },
+      {
+        "files": ["src/workbench_analysis/r43_owner_replay.py", "src/workbench_analysis/r43_structure_replay.py", "src/workbench_analysis/r43_focus_replay.py", "src/workbench_analysis/corrected_owner_replay.py", "src/workbench_analysis/corrected_focus_replay.py", "src/workbench_analysis/corrected_sector_replay.py", "src/workbench_analysis/producer_bootstrap_v1.py", "src/workbench_analysis/tdx_member_retro_r43.py"],
+        "status": "NOT_FULLY_REVIEWED_OR_GENERICIZED",
+        "reason_not_removed": "Date-pinned R4.3 acquisition/replay/snapshot evidence is preserved for historical reproducibility; some modules also contain replay logic, so historical labeling alone does not prove the operational paths are harmless."
+      },
+      {
+        "file": "scripts/run_dm01_a01_r3_chain.py",
+        "status": "NOT_PROVEN_REUSABLE_OR_GENERICIZED",
+        "reason_not_removed": "Target session/cutoff can derive from accepted Head/calendar, but input artifact paths remain pinned to historical V4-02 R7 outputs. If still a formal recurring builder, those paths need contract-driven resolution."
+      },
+      {
+        "file": "scripts/build_v4_08_r2_membership_evidence.py",
+        "status": "FROZEN_EVIDENCE_BUILDER_REQUIRES_ENTRYPOINT_SEPARATION_REVIEW",
+        "reason_not_removed": "Contains fixed R7 source/cutoff and stale/asof validation vectors; these preserve frozen evidence and negative examples, but the script is outside tests/ and must be separated from any reusable generic builder."
+      },
+      {
+        "files": ["scripts/fp01_evidence.py", "scripts/forward_final_bootstrap.py", "scripts/next_round_bundle_r1.py", "scripts/promote_dm01_a01_r3_data_head.py", "scripts/promote_v4_09_accepted_head.py", "scripts/v4_production_cutover_evidence.py"],
+        "status": "NOT_INDIVIDUALLY_CLASSIFIED",
+        "reason_not_removed": "Date-pinned evidence, promotion, or accepted-snapshot paths appear in non-test scripts; retained to preserve historical transaction identities, but recurring formal-entrypoint use has not been proven absent."
+      },
+      {
+        "files": ["src/workbench_analysis/source_authority_producers_r4.py", "src/workbench_analysis/dm01_accepted_chain_v1.py", "src/v4/a02_a05_external_acceptance_r1.py", "src/v4/scoped_promotions_r3.py", "src/workbench_analysis/parallel_scoped_acceptance_r1.py", "src/v4/stock_prewatch.py"],
+        "status": "CONSUMER_LEVEL_REVIEW_INCOMPLETE",
+        "reason_not_removed": "Dates identify audit/task documents and hash-bound source evidence in most reviewed hits; not every consumer was proven to use them only for provenance rather than business-input selection."
+      }
+    ],
+    "other_scope_candidate": {
+      "file": "src/workbench_service/legacy_feature_matrix.py",
+      "interpretation": "Date-shaped token appears to be a V3 ticket identifier, not a trade date; module is outside current V4 functional repair scope."
+    },
     "security_and_sector_source_review": "No active Python candidate was confirmed as a branch for an individual ordinary stock or a specific industry/theme identity. Remaining matches are typed index references, SQL sentinels, TDX metadata directory names, dynamic industry values or historical evidence.",
-    "completion_claim": "V4 hard-coded identities and dates have not all been removed; no full-flow correctness claim is made."
+    "completion_claim": "V4 business code has not been proven fully dynamic and date-independent. A reachable Daily Owner source-path dependency is confirmed unresolved; several replay/maintenance entrypoints remain unclassified or not genericized. No full-flow correctness claim is made."
   },
   "stage_status": {
     "S00": "DEGRADED_PASS",

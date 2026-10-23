@@ -70,6 +70,30 @@
     "source_entrypoint_inventory_status": "SOURCE_VERIFIED",
     "important_limit": "0 自动确认违规不等同于逐项人工确认全局无违规；清单保留冻结配置、日历、规则生效日期和历史证据引用候选。"
   },
+  "v4_non_test_scope_scan": {
+    "inventory_path": "G:/codex_tmp/V4_NONTEST_BUSINESS_LITERAL_INVENTORY.json",
+    "inventory_sha256": "e92353ab3f3f83be9154afbdbe71381aaf18e2180e96bbc2e84084838dc45866",
+    "inventory_bytes": 39745402,
+    "scope": "V4 source/config/formal maintenance-script path set; excludes tests/ and scripts whose filenames identify test/verify/audit/check/probe/reproduce/characterize work",
+    "candidate_findings": 25337,
+    "reachable_candidate_findings": 1971,
+    "candidate_categories": {
+      "CONSTANT_DATE": 25177,
+      "CONSTANT_SECURITY_ID": 151,
+      "CONSTANT_SECTOR_ID": 6,
+      "CONSTANT_DATE_COMPONENTS": 3
+    },
+    "interpretation": "Recall candidates include serialized historical datasets, immutable evidence paths, rule validity facts, calendars, sentinels, metadata paths and index references. Counts are not confirmed defects; candidate review is incomplete.",
+    "confirmed_unresolved_business_dependency": {
+      "file": "src/workbench_analysis/operational_daily_owner_v1.py",
+      "fixed_path_constants": ["BASE", "ACQUISITION"],
+      "impact": "Daily Owner preparation still reads fixed 2026-10-09 historical evidence directories and a dated task-contract path; dynamic successor source derivation is incomplete.",
+      "fixed_target_date_branch_found": false,
+      "status": "UNRESOLVED_REQUIRES_REFACTOR_FROM_CURRENT_HEAD_AND_CALL_INPUTS"
+    },
+    "security_and_sector_source_review": "No active Python candidate was confirmed as a branch for an individual ordinary stock or a specific industry/theme identity. Remaining matches are typed index references, SQL sentinels, TDX metadata directory names, dynamic industry values or historical evidence.",
+    "completion_claim": "V4 hard-coded identities and dates have not all been removed; no full-flow correctness claim is made."
+  },
   "stage_status": {
     "S00": "DEGRADED_PASS",
     "S01": "PARTIAL",
@@ -128,6 +152,7 @@
     "S05-D requires an applicable D2 threshold/freeze/coordinate contract ruling before implementation.",
     "S06 G1-G4 candidate chain, CAS, failure recovery, and performance sampling were not run.",
     "Global literal scanner remains blocked and does not provide a PASS for versioned/historical V4 contract candidates.",
+    "V4 non-test scan found an unresolved fixed historical source-path dependency in operational_daily_owner_v1.py; dynamic Daily Owner source derivation remains incomplete.",
     "CI and production release checks were not run."
   ],
   "report_path": "docs/evidence/functional_r8_implementation_20261021/R8_GLOBAL_LITERALS_AND_FUNCTIONAL_CLOSEOUT_REPORT.md",

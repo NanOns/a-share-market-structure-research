@@ -1,0 +1,221 @@
+{
+  "contract_id": "BATCH10_R6_CODE_DEFECT_FIX_EVIDENCE_R1",
+  "generated_at": "2026-10-23T14:12:32+08:00",
+  "task": {
+    "drive_task": "V4_R5_独立代码复核与R6纯功能实修任务_R2_20261023.md",
+    "branch": "codex/v4-unified-development",
+    "review_base_head": "3878768c592d657e0a84ace24fee944ea753eb0a",
+    "source_commit": "f34d89385688798e099a411202b96aa47dfd7f93",
+    "source_commit_message": "修复 R6 十项源码缺陷",
+    "code_scope": "业务代码、算法、因子、数据源、PG消费者和页面",
+    "r5_assets_preserved": [
+      "R8 candidate publication state machine and append-only FINALIZED/ABORTED event history",
+      "D0 exact-token publication and three-state counts",
+      "ReadIndex R2 exact-token PG readback",
+      "Lifecycle actual-bar boundary and R5 negative proof"
+    ]
+  },
+  "phase0": {
+    "status": "BLOCKED",
+    "reason": "未找到覆盖 V4-00A–H 的当前聚合 Phase 0 门禁记录。",
+    "work_started_after_status": true,
+    "scan_scope": "仅静态审查本轮变更文件的一般性字面量；未启动业务扫描器。",
+    "changed_business_code_date_literals": [],
+    "changed_business_code_security_or_sector_literals": [],
+    "versioned_historical_scope_literal": {
+      "file": "config/v4_r7_frozen_invalidation_scope_r1.json",
+      "through_trade_date": "2026-10-14",
+      "disposition": "仅保留历史 R2 冻结作用域；后续日期由未裁定 successor 合同阻断。"
+    },
+    "test_only_fixed_fixtures": {
+      "dates": ["2026-10-08", "2026-10-09", "2026-10-21", "2026-10-22", "2026-10-23"],
+      "synthetic_security_id": "sh.999999",
+      "disposition": "仅测试夹具；不进入运行配置或业务分支。"
+    }
+  },
+  "source_changes": [
+    {"file": "src/workbench_analysis/corrected_owner_pipeline.py", "change": "要求显式动态 target_date；合同外交易日保持 fail-closed。"},
+    {"file": "src/workbench_analysis/r6_candidate_market_stress.py", "change": "真实 R8/PG 权限链验证；按发布日和官方日历选择窗口；来源缺失 fail-closed。"},
+    {"file": "src/workbench_analysis/r7_frozen_invalidation_v2.py", "change": "历史范围版本化；successor 合同未证时返回 UNKNOWN。"},
+    {"file": "src/workbench_analysis/baostock_daily_update_source.py", "change": "因子 schema 版本升级并严格使用源代码 SHA 固定的 adapter；同时记录 raw/normalized 摘要。"},
+    {"file": "src/workbench_service/core_product_bff_r1.py", "change": "精确价格坐标、旧 Priority 路由归一、Lifecycle PG provenance 映射、Focus 排序合同阻断。"},
+    {"file": "src/workbench_service/static/core-product-r1/app.js", "change": "市场压力日期取当前 context；显示趋势质量和 Focus Priority 合同状态。"},
+    {"file": "src/workbench_service/static/research/app.js", "change": "研究雷达文案改为动态日期及 RECONSTRUCTED_NON_PIT。"},
+    {"file": "config/v4_r7_frozen_invalidation_scope_r1.json", "change": "固定、可审计的历史 R2 scope；successor 尚未获合同裁定。"},
+    {"file": "tests/test_v4_r6_batch10_defect_repairs.py", "change": "新增 13 项 R6 回归，包括权限链、错误终态、接口路由和来源 schema。"},
+    {"file": "tests/test_v4_functional_r8_third_batch.py", "change": "负例使用合法 KNOWN_BY_CUTOFF 时间角色，以验证拒绝权限链分支。"}
+  ],
+  "bug_statuses": [
+    {"id": "BUG-01", "status": "CODE_PASS", "evidence": "省略 T0 抛 CORRECTED_TARGET_DATE_REQUIRED；合同内历史日进入 core 阶段；合同外日期抛 CORRECTED_SESSION_OUTSIDE_VERSIONED_CONTRACT。", "pg_or_runtime": "未运行日更；不需要为默认参数修复写 PG。"},
+    {"id": "BUG-02", "status": "CODE_PASS_REAL_SOURCE_WAIT_PG_WAIT", "evidence": "合成完整权限链正例通过；将 latest PG event 改为 ABORTED 后拒绝。真实 10/21 候选函数按动态窗口执行，缺 2026-10-19 限涨跌 Owner，返回 SOURCE_INCOMPLETE。", "unclosed": "未取得与 R8 FINALIZED 实际发布行绑定的真实同日趋势正例。"},
+    {"id": "BUG-03", "status": "CODE_PASS_CONTRACT_BLOCKED", "evidence": "历史 R2 继续到 2026-10-14；后续交易日无 frozen-level producer contract 时返回 FROZEN_LEVEL_OR_PRODUCER_CONTRACT_NOT_PROVEN。", "unclosed": "successor 冻结价位生成规则尚无裁定。"},
+    {"id": "BUG-04", "status": "CODE_PASS_UI_WAIT_RUNTIME_RELOAD", "evidence": "新增页面按 context.context.trade_date 取值；JS 语法检查通过；改动生产行无固定日期字面量。", "unclosed": "28766 未重启，未在修复版页面做可见 UI 验收。"},
+    {"id": "BUG-05", "status": "CODE_PASS_UI_WAIT_RUNTIME_RELOAD", "evidence": "现役 /v4/research 入口文案改为动态 trade_date 与 RECONSTRUCTED_NON_PIT。", "unclosed": "修复版服务端静态资源未载入。"},
+    {"id": "BUG-06", "status": "CODE_PASS_LIVE_BASELINE_FAIL", "evidence": "旧路径归一单测通过；Focus 子路由返回空 items、ranked=false、两条版本化未选选项。现进程 /api/v4/priority 仍 HTTP 400 UNKNOWN_PARAMETER；正式 radar/priority 可读 PG Owner。", "unclosed": "未重启现有 28766；Focus 方案待用户裁定。"},
+    {"id": "BUG-07", "status": "CODE_PASS_SOURCE_COORDINATE_AUDIT_PG_WAIT", "evidence": "10/20 的 5,217 个 Core/adjusted 行在修订 SHA 相同条件下精确匹配 legacy coordinate；原映射不接受该坐标族。", "unclosed": "无新 10/20 Priority 全量重算或新 PG Owner digest；不可声称 rankable 已变化。"},
+    {"id": "BUG-08", "status": "CODE_PASS_PG_OWNER_SOURCE_INCOMPLETE", "evidence": "Lifecycle provenance 投影已映射 parameter_digest→parameter_sha256 并保留 input_digest/source_bindings。当前 10/21 候选重建 rankable=8/400；formal PG Owner=0/400；当前 token 的 Lifecycle Owner authority 缺失。", "unclosed": "没有当前 token 的 sector lifecycle PG Owner 可供重新发布；未知字段继续 UNKNOWN。"},
+    {"id": "BUG-09", "status": "REAL_SOURCE_PASS_SUPPLEMENTAL_CANONICAL_SOURCE_WAIT", "evidence": "BaoStock retry smoke PASS，5,225 日线、38 因子；10/10 request budget 内生成 G 盘候选快照。", "unclosed": "原始 OHLC authority=TDX_ONLY；adapter pending external review；规范 SourceIngress/Owner/PG 未生成。"},
+    {"id": "BUG-10", "status": "CODE_PASS_PG_UI_PERF_SCOPE_LIMITED", "evidence": "128 targeted tests pass；R8/D0/ReadIndex/Lifecycle 已通过资产不重做；warm-cache 三并发 API P95 0.375 s。", "unclosed": "该性能读数不是修复版进程或完整 10/22 日增量性能验收。"}
+  ],
+  "stock_price_coordinate_audit": {
+    "implementation": "_exact_price_coordinate accepts only TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE or TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE with exact 64-hex revision equality to Core price_basis_id.",
+    "2026-10-20": {
+      "core_owner": {"path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6/owners/2026-10-20/core.jsonl.gz", "bytes": 19756712, "sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83"},
+      "adjusted_owner": {"path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6/owners/2026-10-20/adjusted.jsonl.gz", "bytes": 410874, "sha256": "e70edd8874f0b493a5564471a8936949b33dc096041b886659183477a7c9ea62"},
+      "core_rows": 5226,
+      "adjusted_rows": 5217,
+      "core_coordinate_family": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE",
+      "exact_revision_matches": 5217,
+      "adjusted_missing_from_core_rows": 9,
+      "pg_priority_baseline": {"rankable": 0, "total": 5224, "invalid_input": 5217, "missing_input": 7, "owner_digest": "0bf916036870f767d8b4020fef4ca70bc310e6a1c3862b01afec299077d157e0", "payload_sha256": "8399d654b1ad476e0c03c4d3d8c386ed338060f78195ade434d4f942f5f285c2"},
+      "new_priority_pg_result": "NOT_RECOMPUTED"
+    },
+    "2026-10-21": {
+      "core_owner": {"path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/core.jsonl.gz", "bytes": 19755700, "sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"},
+      "adjusted_owner": {"path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/adjusted.jsonl.gz", "bytes": 410616, "sha256": "9611cdfbe29f6ce74d77e29f42d08fae226c5a9bf4591ef02c405b26b1d62745"},
+      "core_rows": 5224,
+      "adjusted_rows": 5216,
+      "core_coordinate_family": "TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE",
+      "exact_revision_matches": 5216,
+      "pg_priority_baseline": {"rankable": 936, "total": 5224, "not_rankable": 4288, "owner_digest": "762b37bfdbde0b5e10e7c2e81698c42ee893f400f704a4c0dc3e9b407f8628ec", "payload_sha256": "47254bc75e6434634ebbc9292ceb3958c5ee6dca45c63ac0ebfc635c9db6457f"},
+      "new_priority_pg_result": "NOT_RECOMPUTED"
+    },
+    "representative_rows": [
+      {"T0": "2026-10-20", "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9", "core_coordinate": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE:a14e343fd4e58a8c156e26dedc77c7216035bccdcdc6ad5580545748468bc038", "adjusted_coordinate": "TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE", "adjustment_source_revision": "a14e343fd4e58a8c156e26dedc77c7216035bccdcdc6ad5580545748468bc038", "exact_match": true},
+      {"T0": "2026-10-21", "entity_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912", "candidate_exclusion_reasons": ["RELATIVE_STRENGTH_NOT_IMPROVING", "FIVE_SESSION_RETURN_NOT_POSITIVE"], "disposition": "rule-based exclusion remains; do not alter due coordinate fix"},
+      {"T0": "2026-10-21", "entity_id": "INDUSTRY:T0101", "sector_owner_sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455", "maturity": "UNKNOWN", "health": "UNKNOWN", "reason": "SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE"}
+    ]
+  },
+  "pg_readback": {
+    "prior_r5_evidence_file": "docs/evidence/functional_r8_implementation_20261021/BATCH10_R5_OWNER_PUBLICATION_AND_DAILY_INCREMENT_EVIDENCE.json",
+    "prior_r5_evidence_contract": "BATCH10_R5_OWNER_PUBLICATION_AND_DAILY_INCREMENT_EVIDENCE_R2",
+    "readback_database_identity": {"database": "market_research", "database_oid": 646711, "host": "127.0.0.1/32", "port": 5432, "transaction_read_only": "on"},
+    "10_20": {"token": "a5b169a8cde60cc6ba86f1efbb7714020e578264bfea33634532ab407df70b70", "R8": "PUBLISHED", "D0": "PUBLISHED_DEV_ASOF_SOURCE_VERIFIED", "d0_counts": {"TRUE": 141, "FALSE": 5033, "UNKNOWN": 52}, "read_index_r2": "REAL_PG_PASS", "priority_owner_readback": "PASS_WITH_RANKABILITY_GAPS"},
+    "10_21": {"token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378", "R8": "PUBLISHED", "D0": "PUBLISHED_DEV_ASOF_SOURCE_VERIFIED", "d0_scenarios": {"LAUNCH_CONFIRM": {"TRUE": 78, "FALSE": 5098, "UNKNOWN": 48}, "RECOVERY_TURN": {"TRUE": 28, "FALSE": 5147, "UNKNOWN": 49}}, "read_index_r2": "REAL_PG_PASS", "priority_owner_readback": "PASS_WITH_RANKABILITY_GAPS"},
+    "this_turn_pg_writes": "NONE",
+    "new_priority_owner_publication": "WAITING_FOR_UPDATED_RUNTIME_AND_CURRENT_SECTOR_LIFECYCLE_OWNER",
+    "production_head_or_schedule_changed": false
+  },
+  "api_readback_28766": {
+    "runtime": {"pid": 52916, "served_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378", "patched_source_loaded": false, "restart_performed": false},
+    "context": {"http_status": 200, "response_sha256": "9a24404811a6e3a94865b717dccd414a7755c3e4db114548233d31e38338d71b"},
+    "formal_priority_owner": {
+      "contract_id": "V4_RESEARCH_PRIORITY_PG_OWNER_R1",
+      "schema": "v4_c14297f7f2c474ce645644225312be20d146228b25895d2a87003679",
+      "digest": "762b37bfdbde0b5e10e7c2e81698c42ee893f400f704a4c0dc3e9b407f8628ec",
+      "payload_sha256": "47254bc75e6434634ebbc9292ceb3958c5ee6dca45c63ac0ebfc635c9db6457f",
+      "database_identity": {"database": "market_research", "database_oid": 646711, "host": "127.0.0.1/32", "port": 5432},
+      "stocks": {"http_status": 200, "rankable": 936, "total": 5224, "not_rankable": 4288, "response_sha256": "1deaae1f9231527e6bbd821a8c09e62c588eee992fc504b337efbc58eb9a5fd8"},
+      "sectors": {"http_status": 200, "rankable": 0, "total": 400, "not_rankable": 400, "response_sha256": "9079aff561ffcf0b665d2429817dfabddac57e3659347f1bc5b96d2857637594"}
+    },
+    "legacy_priority_route": {"path": "/api/v4/priority", "http_status": 400, "reason": "UNKNOWN_PARAMETER", "response_sha256": "f07faa87daab166356c051f9855b340e454c06800d202b94eb9e93423a9acb7c"},
+    "candidate_preview": {
+      "stocks": {"T0": "2026-10-21", "rankable": 936, "total": 5224, "not_rankable": 4288, "response_sha256": "dab26dd394c13a72195b619eea66b8b5896b0b23481ab2c3fd308b823f1e2c07"},
+      "sectors": {"T0": "2026-10-21", "rankable": 8, "total": 400, "not_rankable": 392, "candidate_payload_sha256": "4a7a1c6754d3f6d68646b42e77de8a74a84652b3cc68089c976fea73ec903eca", "response_sha256": "f6ca915ba6a313f437f9058aa245873110f11f6e8cfac527fa0a7a5c22483756", "lifecycle_maturity_known": 14, "lifecycle_health_known": 9, "lifecycle_owner_authority_current_token": false, "sector_source_sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455", "stock_source_sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"}
+    },
+    "focus_priority": {"http_status": 200, "status": "SOURCE_INCOMPLETE", "reason": "NO_OPERATIONAL_FOCUS_SUBPAGE_OWNER | DATED_OPERATIONAL_FOCUS_PRIORITY_OWNER | FP08", "response_sha256": "46e12401bfdb0b4f56be815625664bcf14f85a7289df6f5e4d21f8c67accc61f"},
+    "sector_detail": {"path": "/api/v4/sectors/INDUSTRY:T0101", "http_status": 200, "status": "READY", "maturity": "UNKNOWN", "health": "UNKNOWN", "lifecycle_reason": "SECTOR_LIFECYCLE_PG_OWNER_UNAVAILABLE", "response_sha256": "26a9d74e0685e2633b700fae32609f73632997cdfb97dce339eb124d6a3593d4"},
+    "six_entry_reads": [
+      {"path": "/api/v4/home", "http_status": 200, "status": "READY", "response_sha256": "ec6f424d7d65b021103d541a0be7686257f82319fd5cd4539f482187e01bc492"},
+      {"path": "/api/v4/sectors", "http_status": 200, "status": "READY", "total": 400, "response_sha256": "8b1952b687299035493482160307e97402568b7f3763194585ef7f8e2896d583"},
+      {"path": "/api/v4/stocks", "http_status": 200, "status": "READY", "total": 5224, "response_sha256": "135b44cb373711abc3fef5e6c274844a0c89420575b601ef4d0babdb46ef19d9"},
+      {"path": "/api/v4/radar/priority?view=candidate&scope=stocks", "http_status": 200, "status": "READY", "T0": "2026-10-21", "rankable": 936, "response_sha256": "2613261a29ab4406af707faf604eb017508968206ce9d77aa63632c49fdd5b6e"},
+      {"path": "/api/v4/focus", "http_status": 200, "status": "READY", "total": 3975, "response_sha256": "3d66f55d241c4ee1ffaf50313e287a0580c980a715090c8222ce03f9797a701c"},
+      {"path": "/api/v4/forward", "http_status": 200, "status": "SOURCE_INCOMPLETE", "reason": "NO_AUTHORIZED_COHORT_OWNER", "response_sha256": "b900d2bb6256f688230b7873eb08c68339cd456f7ece10c41b9498e2247b4adb"}
+    ],
+    "focus_priority_rule_adjudication": {
+      "selected": null,
+      "options": [
+        {"contract_id": "FOCUS_PRIORITY_D0_STATE_BUCKETS_R1", "version": "1.0.0", "impact": "按正式 D0 状态分组并优先确认状态；TRUE/FALSE/UNKNOWN 边界待业务裁定。"},
+        {"contract_id": "FOCUS_PRIORITY_EVIDENCE_RECENCY_R1", "version": "1.0.0", "impact": "优先最新且证据较完整对象；不表达 D0 强弱，依赖事件时间和完整性口径。"}
+      ]
+    }
+  },
+  "market_stress_real_candidate_run": {
+    "trade_date": "2026-10-21",
+    "candidate_root": "G:/codex_tmp/v4_daily_candidate_chain_20261020",
+    "code_commit": "f34d89385688798e099a411202b96aa47dfd7f93",
+    "status": "SOURCE_INCOMPLETE",
+    "error": "R7_MARKET_STRESS_LIMIT_OWNER_NOT_UNIQUE_OR_SOURCE_MISMATCH:2026-10-19",
+    "read_only": true,
+    "pg_query_reached": false,
+    "reason": "首个动态压力窗口日缺合格 dated limit receipt；不以旧日限额 Owner 顶替。",
+    "old_runtime_api_baseline": {"T0": "2026-10-21", "status": "SOURCE_INCOMPLETE", "reason": "R7_MARKET_STRESS_CUTOFF_EXCEEDED", "runtime_loaded_old_source": true}
+  },
+  "baostock_2026_10_22_capture": {
+    "status": "BAOSTOCK_DAILY_SNAPSHOT_READY",
+    "smoke_status": "PASS",
+    "first_attempt": {"request_count": 4, "status": "FAILED_OR_BLOCKED", "reason": "BAOSTOCK_FACTOR_REQUIRED_FIELDS_MISSING"},
+    "authorized_retry": {"request_count": 6, "status": "COMPLETE"},
+    "cumulative_request_count": 10,
+    "request_budget": {"soft_limit": 10, "hard_limit": 10},
+    "trade_date": "2026-10-22",
+    "observed_at": "2026-10-23T13:51:13.221422+08:00",
+    "daily_rows": 5225,
+    "factor_rows": 38,
+    "tdx_prior_scan": {"root": "D:/new_tdx/vipdoc/{sh,sz}/lday", "day_files": 11884, "latest_last_record_trade_date": "2026-10-08", "source_ingress_receipts": 0, "alternate_tdx_root_confirmed": false},
+    "daily_query_fields_include": ["date", "code", "open", "high", "low", "close", "preclose", "volume", "amount", "turn", "tradestatus", "isST"],
+    "explicit_free_float_shares_observed": false,
+    "daily_response_sha256": "45ae16c2aee19b576222dd44f93ee853e379e574c655eeb36eda93b1c5527492",
+    "factor_raw_response_sha256": "233ca455e1a4bb7e197ac6a38d77208751260fc1538f3fdb2b62824cfd71fc20",
+    "factor_normalized_rows_sha256": "9190381d83f612587638bfc32633f803ad3b55a745dc6a90427c656e6d4bae99",
+    "snapshot_id": "sha256-3cc3d9a897ae7c464c32291021a82d82dbfacd3c4eb9e45581fb1d78bd53b020",
+    "snapshot_file_sha256": "2a3a95bb0ffa844ee7dbe1464a7a0c9e0c208963f503b264b6564c1947a7f037",
+    "snapshot_path": "G:/codex_tmp/v4_r6_source_capture_20261022_7f02cfc99e80/snapshot/baostock/20261022/sha256-3cc3d9a897ae7c464c32291021a82d82dbfacd3c4eb9e45581fb1d78bd53b020/daily_update.json",
+    "sdk_version": "0.9.3",
+    "sdk_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "adapter_contract": "BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2",
+    "adapter_sha256": "c4ce07bf9626201228044f931155208336ff2c303b9b2ea6299f36f36ab82513",
+    "adapter_status": "CANDIDATE_SCHEMA_ADAPTER_PENDING_EXTERNAL_REVIEW",
+    "raw_daily_ohlc_authority": "TDX_ONLY",
+    "tdx_root_write_count": 0,
+    "canonical_source_ingress_or_pg_owner": "NOT_CREATED"
+  },
+  "performance": {
+    "measurement_scope": "28766 existing process, warm-cache candidate Priority read-only baseline; patched source not loaded",
+    "concurrency": 3,
+    "request_elapsed_ms": [277.077, 373.519, 374.525],
+    "p95_nearest_rank_ms": 374.525,
+    "target_ms": 3000,
+    "within_target": true,
+    "classification": "PERF_PASS_SCOPE_LIMITED",
+    "stage_timing_ms": {
+      "read_index_context": 0.04,
+      "sector_lifecycle": 31.685,
+      "source_sha_verification": 62.356,
+      "projection_rank_compute": 0.0,
+      "market_stress": 0.017,
+      "digest_and_page": 15.343
+    },
+    "pipeline_stages_not_measured": ["source_wait", "ingress", "core", "profile", "sector", "market", "D0", "D2", "focus", "forward", "period", "PG"],
+    "complete_daily_increment": "REAL_INCREMENT_WAIT"
+  },
+  "runtime_and_safety": {
+    "listeners": [
+      {"port": 28766, "pid": 52916, "role": "development HTTP"},
+      {"port": 5432, "pid": 8640, "role": "shared PostgreSQL"}
+    ],
+    "port_28765_listening": false,
+    "service_or_windows_restart": false,
+    "production_switch_or_head_change": false,
+    "workspace_cleanup_or_file_deletion": false,
+    "temporary_outputs_location": "G:/codex_tmp"
+  },
+  "tests": {
+    "command": "pytest -p no:cacheprovider --basetemp=G:/codex_tmp/test_temp/r6_batch10_20261023_final7 tests/test_v4_r6_batch10_defect_repairs.py tests/test_v4_functional_r8_s01_s03.py tests/test_v4_functional_r8_third_batch.py tests/test_v4_r6_risk_priority.py tests/v4_dm01/test_official_daily_sources_v2.py tests/v4_dm01_r2/test_runtime_capture_and_supplemental_gate.py",
+    "result": "128 passed in 3.44s",
+    "python_ast": "PASS",
+    "javascript_syntax": "PASS",
+    "git_diff_check": "PASS",
+    "test_temp_root": "G:/codex_tmp/test_temp/r6_batch10_20261023_final7"
+  },
+  "remaining_statuses": {
+    "new_priority_pg_owner": "PG_WAIT",
+    "updated_browser_ui": "UI_WAIT_RUNTIME_RELOAD",
+    "market_trend_real_r8_pg_positive": "REAL_SOURCE_WAIT",
+    "focus_priority": "CONTRACT_BLOCKED_USER_ADJUDICATION_REQUIRED",
+    "new_d2_frozen_level_contract": "CONTRACT_BLOCKED",
+    "forward_live_first_capture": "WAIT_FIRST_CAPTURE",
+    "canonical_2026_10_22_increment": "SOURCE_WAIT"
+  }
+}

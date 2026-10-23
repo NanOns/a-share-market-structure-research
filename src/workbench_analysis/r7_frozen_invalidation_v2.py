@@ -5,10 +5,12 @@ import hashlib
 import json
 import math
 from pathlib import Path
+from datetime import date
 
 
 CONTRACT_ID='FROZEN_INVALIDATION_CONTRACT_R2'
 ROOT=Path(__file__).resolve().parents[2]
+SCOPE_CONTRACT_ID='R7_FROZEN_INVALIDATION_SCOPE_R1'
 
 
 def _number(value):
@@ -26,8 +28,17 @@ def evaluate_frozen_invalidation(*,prior_episode,current_close,frozen_invalidati
         return dict(value='UNKNOWN',status='UNKNOWN',reason='PRIOR_INVALIDATION_CONTRACT_MISSING_OR_UNSUPPORTED',contract_id=CONTRACT_ID)
     if current_bar_status!='ACTUAL':
         return dict(value='UNKNOWN',status='UNKNOWN',reason='CURRENT_ACTUAL_BAR_UNAVAILABLE',contract_id=CONTRACT_ID)
-    if trade_date!=source_trade_date or not isinstance(trade_date,str) or trade_date>'2026-10-14':
-        return dict(value='UNKNOWN',status='UNKNOWN',reason='T0_SOURCE_DATE_MISMATCH_OR_CUTOFF_EXCEEDED',contract_id=CONTRACT_ID)
+    if trade_date!=source_trade_date or not isinstance(trade_date,str):
+        return dict(value='UNKNOWN',status='UNKNOWN',reason='T0_SOURCE_DATE_MISMATCH',contract_id=CONTRACT_ID)
+    try:
+        date.fromisoformat(trade_date)
+    except ValueError:
+        return dict(value='UNKNOWN',status='UNKNOWN',reason='T0_SOURCE_DATE_INVALID',contract_id=CONTRACT_ID)
+    scope,scope_sha256=load_scope()
+    if trade_date>scope['legacy_r2_scope']['through_trade_date']:
+        return dict(value='UNKNOWN',status='UNKNOWN',
+            reason='FROZEN_LEVEL_OR_PRODUCER_CONTRACT_NOT_PROVEN',contract_id=CONTRACT_ID,
+            scope_contract_id=SCOPE_CONTRACT_ID,scope_contract_sha256=scope_sha256)
     if not _number(current_close) or not _number(frozen_invalidation_level):
         return dict(value='UNKNOWN',status='UNKNOWN',reason='CLOSE_OR_FROZEN_LEVEL_MISSING_OR_INVALID',contract_id=CONTRACT_ID)
     if not isinstance(current_price_basis_id,str) or not current_price_basis_id or current_price_basis_id!=frozen_price_basis_id:
@@ -48,3 +59,13 @@ def load_contract():
     if contract.get('contract_id')!=CONTRACT_ID or len(contract.get('vector_set',[]))<12:
         raise ValueError('R7_FROZEN_INVALIDATION_CONTRACT_INVALID')
     return contract,hashlib.sha256(raw).hexdigest()
+
+
+def load_scope():
+    path=ROOT/'config/v4_r7_frozen_invalidation_scope_r1.json'
+    raw=path.read_bytes();scope=json.loads(raw)
+    if (scope.get('contract_id')!=SCOPE_CONTRACT_ID or scope.get('version')!='1.0.0'
+            or scope.get('legacy_r2_scope',{}).get('contract_id')!=CONTRACT_ID
+            or scope.get('successor_scope',{}).get('status')!='CONTRACT_NOT_PROVEN'):
+        raise ValueError('R7_FROZEN_INVALIDATION_SCOPE_CONTRACT_INVALID')
+    return scope,hashlib.sha256(raw).hexdigest()

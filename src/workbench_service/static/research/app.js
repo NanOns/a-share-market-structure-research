@@ -21,7 +21,7 @@ async function render(){controller?.abort();controller=new AbortController();con
  else if(route==='sectors'){main.append(C.el('h2','板块研究 · '+context.context.trade_date),notice('按当前候选板块 Owner 展示；UNKNOWN 与 NONE 保留原始状态。数据完整可展示不代表轮动数值独立验收或正式发布。'));await tablePage('sectors',['sector_rs5','output_state','prior_rotation_state','maturity','health'],signal);}
  else if(route==='radar'){
  const data=await read('radar',{limit:100},signal);
- main.append(notice('2026-10-12 已接受关注变化的去重研究视图 · '+(data.scope||'')),C.el('h2','研究雷达 · '+data.total+' 条可读记录'),notice('覆盖状态：'+(data.producer_status||'未提供')+'。这是关注变化视图，不代表完整轮动雷达。'));
+ main.append(notice('RECONSTRUCTED_NON_PIT · '+context.context.trade_date+' 关注变化的去重研究视图（非已接受） · '+(data.scope||'')),C.el('h2','研究雷达 · '+data.total+' 条可读记录'),notice('覆盖状态：'+(data.producer_status||'未提供')+'。这是关注变化视图，不代表完整轮动雷达。'));
  main.append(data.total?C.DataTable(data,['effective_event','trade_date','scenario','final_eligibility'],'radar'):C.EmptyState(data.status==='ERROR'||!Number.isFinite(data.total)?'雷达读取不可用：'+(data.reason||data.error_code||data.status||'缺少状态说明'):'当前日期候选没有符合雷达范围的已接受关注变化。'),C.Pagination(data,offset=>{const url=new URL(location.href);url.searchParams.set('offset',offset);history.pushState({},'',url);render();}));
  const section=C.el('section');section.append(C.el('h2','研究优先级候选'),notice('按当前候选日期和版本读取解释性研究排序；晚采、非 PIT、非正式权限，不是概率或交易信号。'));
  const controls=C.el('div',undefined,'filters'),scope=C.el('select'),rankability=C.el('select'),results=C.el('div');

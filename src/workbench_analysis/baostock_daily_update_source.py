@@ -22,7 +22,7 @@ from workbench_analysis.baostock_runtime_acceptance import runtime_acceptance_er
 
 
 CONTRACT_ID = "BAOSTOCK_DAILY_UPDATE_SOURCE_V1"
-CONTRACT_VERSION = "1.0.0"
+CONTRACT_VERSION = "1.1.0"
 DAILY_OPERATION = "query_daily_history_k_AStock"
 FACTOR_OPERATION = "query_daily_adjust_factor"
 DAILY_METHOD = "query_daily_history_k_AStock"
@@ -125,6 +125,45 @@ def _validate_factor_rows(rows: list[dict[str, str]], trade_date: str) -> None:
                 raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_VALUE_INVALID") from exc
             if not math.isfinite(value) or not (value > 0):
                 raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_VALUE_INVALID")
+
+
+def _normalize_factor_schema(rows, fields, *, sdk, adapter_path=None):
+    """Normalize the one hash-pinned BaoStock 0.9.3 factor header alias."""
+    raw_fields=list(fields or [])
+    if len(raw_fields)!=len(set(raw_fields)):
+        raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_SCHEMA_DUPLICATE_FIELD")
+    if not rows and not raw_fields:
+        return [],dict(raw_fields=[],normalized_fields=[],adapter_status='EMPTY_RESPONSE_SCHEMA_NOT_OBSERVED',
+            adapter_contract_id=None,adapter_version=None,adapter_sha256=None,field_map={})
+    if set(raw_fields)==FACTOR_REQUIRED_FIELDS:
+        return list(rows),dict(raw_fields=raw_fields,normalized_fields=raw_fields,
+            adapter_status='NATIVE_REQUIRED_SCHEMA',adapter_contract_id=None,adapter_version=None,
+            adapter_sha256=None,field_map={})
+    path=Path(adapter_path) if adapter_path is not None else Path(__file__).resolve().parents[2]/'config/baostock_dm01_sdk_schema_adapter_v2.json'
+    try:
+        raw=path.read_bytes();adapter=json.loads(raw)
+    except (OSError,ValueError) as exc:
+        raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_SCHEMA_ADAPTER_UNAVAILABLE") from exc
+    alias=adapter.get('factor_header_alias')
+    raw_schema=adapter.get('factor_raw_schema')
+    if (adapter.get('contract_id')!='BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2'
+            or adapter.get('version')!='2.0.0' or adapter.get('sdk_version')!=sdk.get('version')
+            or adapter.get('sdk_python_sources_sha256')!=sdk.get('installed_python_sources_sha256')
+            or not isinstance(raw_schema,list) or not isinstance(alias,dict)
+            or alias!={'adjustFacto':'adjustFactor'} or set(raw_fields)!=set(raw_schema)):
+        raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_SCHEMA_ADAPTER_BINDING_MISMATCH")
+    normalized_fields=[alias.get(name,name) for name in raw_fields]
+    if set(normalized_fields)!=FACTOR_REQUIRED_FIELDS or len(normalized_fields)!=len(FACTOR_REQUIRED_FIELDS):
+        raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_SCHEMA_UNSUPPORTED")
+    normalized=[]
+    for row in rows:
+        if 'adjustFacto' not in row or 'adjustFactor' in row:
+            raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_SCHEMA_ROW_ALIAS_MISMATCH")
+        normalized.append({alias.get(name,name):value for name,value in row.items()})
+    return normalized,dict(raw_fields=raw_fields,normalized_fields=normalized_fields,
+        adapter_status=adapter.get('status'),adapter_contract_id=adapter['contract_id'],
+        adapter_version=adapter['version'],adapter_sha256=hashlib.sha256(raw).hexdigest(),
+        field_map=alias,sdk_version=sdk['version'],sdk_sources_sha256=sdk['installed_python_sources_sha256'])
 
 
 def crosscheck_tdx_with_baostock(
@@ -240,9 +279,12 @@ def capture_baostock_daily_update(
             "request_count": 1,
             "api_operations": [DAILY_OPERATION],
         }
-    factor_rows, factor_meta = client.query_rows(
+    raw_factor_rows, raw_factor_meta = client.query_rows(
         FACTOR_OPERATION, FACTOR_METHOD, date=trade_date, max_rows=MAX_FACTOR_ROWS, max_pages=1
     )
+    factor_rows,factor_schema=_normalize_factor_schema(raw_factor_rows,raw_factor_meta.get('fields'),sdk=sdk)
+    factor_meta=dict(raw_factor_meta,fields=factor_schema['normalized_fields'],raw_fields=factor_schema['raw_fields'],
+        schema_adaptation={k:v for k,v in factor_schema.items() if k not in ('raw_fields','normalized_fields')})
     _validate_factor_rows(factor_rows, trade_date)
     if factor_meta.get("page_count") != 1:
         raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_BATCH_PAGINATION_UNEXPECTED")
@@ -250,7 +292,9 @@ def capture_baostock_daily_update(
         raise BaoStockDailyUpdateError("BAOSTOCK_FACTOR_PROVIDER_DATE_MISMATCH")
     daily_digest = _canonical_rows_digest(daily_rows)
     factor_digest = _canonical_rows_digest(factor_rows)
-    composite = hashlib.sha256(f"{trade_date}\0{daily_digest}\0{factor_digest}".encode()).hexdigest()
+    raw_factor_digest = _canonical_rows_digest(raw_factor_rows)
+    adapter_digest=factor_schema.get('adapter_sha256') or hashlib.sha256(b'BAOSTOCK_FACTOR_NATIVE_REQUIRED_SCHEMA_V1').hexdigest()
+    composite = hashlib.sha256(f"{trade_date}\0{daily_digest}\0{raw_factor_digest}\0{factor_digest}\0{adapter_digest}".encode()).hexdigest()
     snapshot_id = "sha256-" + composite
     folder = snapshot_root / "baostock" / trade_date.replace("-", "") / snapshot_id
     ensure_outside_tdx(folder, tdx_root)
@@ -287,8 +331,10 @@ def capture_baostock_daily_update(
             {"method": DAILY_METHOD, "params": {"date": trade_date}, "metadata": daily_meta,
              "row_count": len(daily_rows), "response_sha256": daily_digest},
             {"method": FACTOR_METHOD, "params": {"date": trade_date}, "metadata": factor_meta,
-             "row_count": len(factor_rows), "response_sha256": factor_digest},
+             "row_count": len(raw_factor_rows), "response_sha256": raw_factor_digest,
+             "normalized_rows_sha256": factor_digest},
         ],
+        "schema_adaptations": {"adjustment_factor": factor_schema},
         "daily_rows": daily_rows,
         "adjustment_factor_rows": factor_rows,
         "raw_daily_ohlc_authority": "TDX_ONLY",

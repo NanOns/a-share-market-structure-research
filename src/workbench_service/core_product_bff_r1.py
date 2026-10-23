@@ -48,13 +48,44 @@ def _exact_price_coordinate(core_row,adjusted_row):
     core_basis=(core_row or {}).get('price_basis_id')
     base=(adjusted_row or {}).get('price_basis')
     revision=(adjusted_row or {}).get('adjustment_source_revision')
+    coordinate_prefixes=(
+        'TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE',
+        'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE',
+    )
     if (not isinstance(core_basis,str) or not isinstance(base,str) or not isinstance(revision,str)
-            or not core_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:')
-            or not base=='TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'
+            or base not in coordinate_prefixes
             or len(revision)!=64 or any(c not in '0123456789abcdef' for c in revision.lower())):
         return None
     derived=base+':'+revision
     return derived if derived==core_basis else None
+
+
+def _normalize_priority_route(path):
+    """Keep the historical Priority URL on the same dated PG Owner consumer."""
+    return '/api/v4/radar/priority' if path=='/api/v4/priority' else path
+
+
+def _pg_lifecycle_source(pg_binding,lifecycle,day):
+    """Project the PG Owner's producer and input provenance without renaming loss."""
+    return dict(contract_id=pg_binding['contract_id'],engine='postgresql',schema=pg_binding['schema'],
+        digest=pg_binding['digest'],producer_sha256=pg_binding['producer_sha256'],
+        parameter_sha256=pg_binding['parameter_digest'],input_digest=lifecycle['input_digest'],
+        source_bindings=lifecycle.get('source_bindings'),T0=day)
+
+
+def _focus_priority_contract_block(day):
+    """Keep the unsupported Focus sort route explicit and non-ranking."""
+    return dict(status='CONTRACT_BLOCKED',contract_id='FOCUS_PRIORITY_ADJUDICATION_GATE_R1',
+        version='1.0.0',T0=day,reason='FOCUS_PRIORITY_SORT_RULE_REQUIRES_USER_DECISION',
+        selected_rule=None,ranked=False,items=[],total=None,
+        rule_options=[
+            dict(contract_id='FOCUS_PRIORITY_D0_STATE_BUCKETS_R1',version='1.0.0',
+                rule='按已发布 D0 confirmation_status 分组，组内按 entity_id 稳定排序。',
+                impact='不增加权重；排序显式优先正式确认状态，但 TRUE/FALSE/UNKNOWN 分组边界由业务裁定。'),
+            dict(contract_id='FOCUS_PRIORITY_EVIDENCE_RECENCY_R1',version='1.0.0',
+                rule='按当前 Focus Owner 最新可验证事件日期倒序，再按已知证据字段数和 entity_id 稳定排序。',
+                impact='优先近期与证据较完整对象；不表达 D0 确认强弱，依赖事件日期与完整性口径裁定。'),
+        ],AS_RECORDED=False,PIT_ELIGIBLE=False,production_accepted=False)
 
 
 def _product_projection_config_digest(root):
@@ -339,7 +370,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             self.isolated_history=load(api,isolated_history_authority)
 
     def _candidate_lifecycle(self):
-        """Return cached 10/14 lifecycle calculated from this token's dated Owners."""
+        """Return the current-token lifecycle derived from its dated Owners."""
         from pathlib import Path
         import hashlib
         from sector.candidate_lifecycle_v1 import build_candidate_lifecycle
@@ -968,12 +999,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def _get_dated_product(self,path,query):
         import time
+        path=_normalize_priority_route(path)
         request_started=time.perf_counter();priority_timing={}
         from workbench_db.v4_read_index_r2 import validate_query
         from workbench_db.v4_read_index_r1 import load as load_index_r1
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability','view')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
+        if path=='/api/v4/focus/priority':
+            return 200,self.envelope(day,**_focus_priority_contract_block(day))
         forward_response=self._forward_r7_read(path,query,day)
         if forward_response is not None:return forward_response
         if path=='/api/v4/sectors' and query.get('view')=='candidate':
@@ -1546,8 +1580,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     # Core's prior-low was calculated in its T0 exact target
                     # coordinate. Bind that coordinate explicitly; the field's
                     # window_end_trade_date remains the prior session.
-                    valid_core_basis=(isinstance(core_basis,str) and
-                        core_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE:') and
+                    valid_core_basis=(isinstance(core_basis,str) and ':' in core_basis and
+                        core_basis.rsplit(':',1)[0] in (
+                            'TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE',
+                            'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE') and
                         len(core_basis.rsplit(':',1)[-1])==64 and
                         all(c in '0123456789abcdef' for c in core_basis.rsplit(':',1)[-1].lower()))
                     low_cell['as_of']=day if valid_core_basis else None
@@ -1567,7 +1603,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['fields']['close']['adjustment_basis']=(
                         exact_adjusted_basis if adjusted_row.get('adjustment_readiness')=='READY'
                         and isinstance(price_basis,str)
-                        and price_basis.startswith('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE')
+                        and price_basis in ('TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE',
+                                            'TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE')
                         and exact_adjusted_basis==core_basis else None)
                     row['fields']['close']['source']=dict(domain='adjusted',owner=self.api.candidate['owners'][day]['adjusted'],
                         field='close',price_basis_id=exact_adjusted_basis) if row['fields']['close']['adjustment_basis'] else None
@@ -1586,9 +1623,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 lifecycle=sector_lifecycle.get(row['entity_id'])
                 if lifecycle:
                     pg_binding=loaded[0]
-                    lifecycle_source=dict(contract_id=pg_binding['contract_id'],engine='postgresql',schema=pg_binding['schema'],
-                        digest=pg_binding['digest'],producer_sha256=pg_binding['producer_sha256'],parameter_digest=pg_binding['parameter_digest'],
-                        input_digest=lifecycle['input_digest'],T0=day)
+                    lifecycle_source=_pg_lifecycle_source(pg_binding,lifecycle,day)
                     for key in ('maturity','health'):
                         value=lifecycle[key]
                         row['fields'][key]=dict(value=value['current'],quality='KNOWN' if value['current'] not in ('UNKNOWN',None) else 'SOURCE_INCOMPLETE',

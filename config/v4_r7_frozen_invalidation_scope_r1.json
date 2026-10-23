@@ -1,0 +1,24 @@
+{
+  "contract_id": "R7_FROZEN_INVALIDATION_SCOPE_R1",
+  "version": "1.0.0",
+  "status": "CANDIDATE_LOCAL_SCOPE",
+  "legacy_r2_scope": {
+    "contract_id": "FROZEN_INVALIDATION_CONTRACT_R2",
+    "through_trade_date": "2026-10-14",
+    "historical_replay": "PRESERVE_EXISTING_RESULTS"
+  },
+  "successor_scope": {
+    "contract_id": null,
+    "status": "CONTRACT_NOT_PROVEN",
+    "required_evidence": [
+      "immutable_prior_episode_frozen_level",
+      "frozen_price_basis_identity",
+      "source_producer_contract_and_version",
+      "freeze_timestamp_and_input_digest",
+      "same_coordinate_actual_current_bar"
+    ],
+    "evaluation": "UNKNOWN_UNTIL_PRODUCER_CONTRACT_IS_ACCEPTED"
+  },
+  "production_admission": false,
+  "historical_backfill_admission": false
+}

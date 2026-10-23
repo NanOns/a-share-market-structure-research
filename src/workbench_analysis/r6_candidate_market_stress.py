@@ -63,10 +63,116 @@ def _valid_sha(value):
 
 
 def _permission_chain_proven(chain, source_sha256, publication_id):
-    # Fields and a caller-provided digest are not an authority proof. A future
-    # implementation must read and validate the actual PG Owner/Publication
-    # permission binding before allowing a source-backed trend value.
-    return False
+    """Read the exact candidate publication and verify its bound reference bytes.
+
+    A caller-supplied permission flag or digest is never sufficient. The candidate
+    Head, R8 receipt, source Owner, reference bytes, PG publication row and latest
+    append-only FINALIZED event must all agree.
+    """
+    try:
+        if not isinstance(chain,dict) or not isinstance(publication_id,str) or not _valid_sha(publication_id):
+            return False
+        root=Path(chain.get('candidate_root','')).resolve()
+        day=chain.get('trade_date')
+        if not day or not _valid_sha(source_sha256):return False
+        head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+        head_raw=head_path.read_bytes()
+        if hashlib.sha256(head_raw).hexdigest()!=publication_id:return False
+        head=json.loads(head_raw)
+        if head.get('accepted_trade_date')!=day:return False
+        receipt_path=root/'data/v4/r8_publication_bridge_v1/receipts'/f'{publication_id}.json'
+        receipt=json.loads(receipt_path.read_bytes())
+        if (receipt.get('contract_id')!='V4_R8_REAL_APPEND_PG_RECEIPT_R2'
+                or receipt.get('status')!='PASS' or receipt.get('candidate_token')!=publication_id
+                or receipt.get('trade_date')!=day or receipt.get('production_accepted') is not False
+                or receipt.get('formal_head_modified') is not False
+                or hashlib.sha256(head_raw).hexdigest()!=receipt.get('candidate_head_sha256')):
+            return False
+
+        def checked_ref(ref):
+            if not isinstance(ref,dict):raise ValueError('REFERENCE_BINDING_MISSING')
+            path=_checked(root,ref)
+            return path
+
+        owner_authority=receipt.get('owner_authority') or {}
+        source_freeze=receipt.get('source_freeze') or {}
+        transaction=receipt.get('publication_transaction') or {}
+        if (not _valid_sha(owner_authority.get('sha256')) or not _valid_sha(source_freeze.get('sha256'))
+                or not _valid_sha(transaction.get('sha256'))):return False
+        checked_ref(owner_authority);checked_ref(source_freeze)
+        transaction_path=checked_ref(transaction)
+        tx=json.loads(transaction_path.read_bytes())
+        if tx.get('state')!='COMMITTED' or tx.get('candidate_token')!=publication_id:return False
+
+        market_binding=(head.get('owners',{}).get(day) or {}).get('market')
+        if not isinstance(market_binding,dict):return False
+        market=json.loads(_checked(root,market_binding).read_bytes())
+        if market.get('trade_date')!=day:return False
+        ref_bindings=[item for item in market.get('input_bindings',[])
+            if Path(item.get('path','')).name.startswith('V4_03_MARKET_REFERENCE_PATH_CANDIDATE')]
+        if len(ref_bindings)!=1:return False
+        ref_binding=ref_bindings[0]
+        if ref_binding.get('sha256')!=source_sha256:return False
+        reference_path=_checked(root,ref_binding)
+        with gzip.open(reference_path,'rt',encoding='utf-8') as stream:
+            rows=[json.loads(line) for line in stream if line.strip()]
+        from workbench_analysis.market_source_acquisition import official_sessions
+        sessions=[session for session in official_sessions(root) if session<=day]
+        if len(sessions)<25:return False
+        window=sessions[-25:]
+        by_day={}
+        for row in rows:
+            if row.get('trade_date') in window:
+                if row['trade_date'] in by_day:return False
+                by_day[row['trade_date']]=row
+        if list(sorted(by_day))!=window:return False
+        chosen=[by_day[session] for session in window]
+        identity_keys=('series_version','path_identity','market_calendar_id')
+        first=chosen[0]
+        if (not first.get('adjustment_basis_id') or any(
+                any(row.get(key)!=first.get(key) for key in identity_keys)
+                or not row.get('adjustment_basis_id')
+                or row.get('quality_state')!='OBSERVED'
+                or not isinstance(row.get('level'),(int,float))
+                or isinstance(row.get('level'),bool) or not math.isfinite(row.get('level'))
+                or row.get('level')<=0 for row in chosen)):
+            return False
+        values=[float(row['level']) for row in chosen]
+        expected=dict(trade_date=day,series_id=first['path_identity']+':'+first['series_version'],
+            price_basis_id=chosen[-1]['adjustment_basis_id'],market_calendar_id=first['market_calendar_id'],
+            index_close=values[-1],index_ma20=sum(values[-20:])/20,
+            index_ma20_t_minus_5=sum(values[:20])/20)
+        if any(chain.get(key)!=value for key,value in expected.items()):return False
+
+        from workbench_db.v4_native import connection,workspace_schema
+        from workbench_db.v4_forward_pg_r1 import ForwardFactStore
+        schema=receipt.get('pg_schema')
+        expected_schema=workspace_schema(root/'data/v4/r8_publication_bridge_v1','r8pub')
+        if schema!=expected_schema:return False
+        with connection(schema,read_only=True) as pg:
+            if ForwardFactStore._database_identity(pg)!=receipt.get('pg_database_identity'):return False
+            row=pg.execute('SELECT candidate_token,trade_date::text,predecessor_head_sha256,candidate_head_sha256,owner_authority_sha256,source_freeze_sha256,readback,inserted_at::text FROM r8_publications WHERE candidate_token=%s AND trade_date=%s',
+                (publication_id,day)).fetchone()
+            event=pg.execute('SELECT event_type,row_sha256,evidence,inserted_at::text FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1',
+                (publication_id,)).fetchone()
+        if row is None or event is None:return False
+        row_sha=hashlib.sha256(_canonical([*row[:6],row[6]])).hexdigest()
+        if (row[0]!=publication_id or row[1]!=day or row[2]!=receipt.get('predecessor_head_sha256')
+                or row[3]!=receipt.get('candidate_head_sha256')
+                or row[4]!=owner_authority['sha256'] or row[5]!=source_freeze['sha256']
+                or row[6]!=dict(status='PENDING',context_token=publication_id,accepted_trade_date=day,
+                    production_accepted=False,read_scope='DEVELOPMENT_CANDIDATE_PREVIEW')
+                or row_sha!=receipt.get('pg_row_sha256') or event[0]!='FINALIZED'
+                or event[1]!=row_sha):return False
+        evidence=event[2] or {}
+        if (evidence.get('transaction_sha256')!=transaction['sha256']
+                or evidence.get('readback')!=receipt.get('readback')):return False
+        pg_time=datetime.fromisoformat(str(event[3]).replace('Z','+00:00'))
+        supplied_cutoff=datetime.fromisoformat(str(chain.get('knowledge_cutoff','')).replace('Z','+00:00'))
+        supplied_available=datetime.fromisoformat(str(chain.get('source_available_at','')).replace('Z','+00:00'))
+        return supplied_cutoff==pg_time and supplied_available==pg_time
+    except Exception:
+        return False
 
 
 def adapt_candidate_trend_reference(reference, *, t0, knowledge_cutoff):
@@ -98,10 +204,16 @@ def adapt_candidate_trend_reference(reference, *, t0, knowledge_cutoff):
         reason='TREND_REFERENCE_DATE_MISMATCH'
     elif reference['trade_date'] > knowledge_cutoff:
         reason='TREND_REFERENCE_FUTURE_INPUT'
-    elif reference['time_role'] not in ('AS_OF_T0','KNOWN_BY_CUTOFF'):
+    elif reference['time_role']!='KNOWN_BY_CUTOFF':
         reason='TREND_REFERENCE_TIME_ROLE_NOT_ADMISSIBLE'
-    elif not _permission_chain_proven(reference.get('permission_chain'),reference.get('source_sha256'),
-                                      reference.get('input_publication_id')):
+    elif not _permission_chain_proven({**reference['permission_chain'],
+            'knowledge_cutoff':reference['knowledge_cutoff'],
+            'source_available_at':reference['source_available_at'],
+            'trade_date':reference['trade_date'],'series_id':reference['series_id'],
+            'price_basis_id':reference['price_basis_id'],'market_calendar_id':reference['market_calendar_id'],
+            'index_close':reference['index_close'],'index_ma20':reference['index_ma20'],
+            'index_ma20_t_minus_5':reference['index_ma20_t_minus_5']},
+            reference.get('source_sha256'),reference.get('input_publication_id')):
         reason='TREND_REFERENCE_PERMISSION_NOT_PROVEN'
     elif not isinstance(reference['source_sha256'],str) or not re.fullmatch(r'[0-9a-fA-F]{64}',reference['source_sha256']):
         reason='TREND_REFERENCE_SOURCE_DIGEST_INVALID'
@@ -131,12 +243,27 @@ def _limit_owner(root,candidate,day):
     matches=[]
     for receipt_path in Path(root).glob('r5_daily_limit_materialization_*/'+day+'/DAILY_PRICE_LIMIT_REPLAY.json'):
         receipt_bytes=receipt_path.read_bytes();receipt=json.loads(receipt_bytes)
+        if receipt.get('production_admission') is not False or not receipt.get('contract'):
+            continue
+        _checked(root,receipt['contract'])
         for row in receipt.get('owners',[]):
             source=row.get('baostock_source') or {}
             if (row.get('trade_date')!=day or source.get('trade_date')!=day or
                     source.get('candidate_owner_id')!=candidate_owner_id):
                 continue
-            _checked(root,source)
+            source_path=_checked(root,source)
+            source_payload=json.loads(source_path.read_bytes())
+            observed_at=source_payload.get('observed_at')
+            if not isinstance(observed_at,str) or source.get('capture_observed_at')!=observed_at:
+                continue
+            try:
+                capture_time=datetime.fromisoformat(observed_at.replace('Z','+00:00'))
+                if capture_time.tzinfo is None:continue
+            except ValueError:
+                continue
+            raw_dir=Path(raw_ref['path']).parent
+            try:(Path(source['path'])).relative_to(raw_dir)
+            except ValueError:continue
             binding=row.get('artifact') or {}
             _checked(root,binding)
             matches.append((binding,row,receipt_path,hashlib.sha256(receipt_bytes).hexdigest()))
@@ -149,13 +276,86 @@ def _limit_owner(root,candidate,day):
     return selected
 
 
+def _stress_window_days(candidate):
+    t0=candidate.get('accepted_trade_date')
+    sessions=candidate.get('published_sessions')
+    if not isinstance(t0,str) or not isinstance(sessions,list):
+        raise ValueError('R7_MARKET_STRESS_PUBLISHED_SESSION_BINDING_MISSING')
+    ordered=sorted({session for session in sessions if isinstance(session,str) and session<=t0})
+    if not ordered or ordered[-1]!=t0:
+        raise ValueError('R7_MARKET_STRESS_T0_NOT_IN_PUBLISHED_SESSIONS')
+    return ordered[-3:]
+
+
+def _candidate_trend_reference(root,candidate,day):
+    """Derive the current trend inputs from the bound R8 market reference path."""
+    root=Path(root).resolve()
+    head_path=root/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
+    head_raw=head_path.read_bytes()
+    token=hashlib.sha256(head_raw).hexdigest()
+    head=json.loads(head_raw)
+    if (head.get('accepted_trade_date')!=day or candidate.get('accepted_trade_date')!=day
+            or head.get('owners')!=candidate.get('owners')):
+        return None
+    market_binding=(head.get('owners',{}).get(day) or {}).get('market')
+    if not isinstance(market_binding,dict):return None
+    market=json.loads(_checked(root,market_binding).read_bytes())
+    bindings=[item for item in market.get('input_bindings',[])
+        if Path(item.get('path','')).name.startswith('V4_03_MARKET_REFERENCE_PATH_CANDIDATE')]
+    if len(bindings)!=1:return None
+    binding=bindings[0];path=_checked(root,binding)
+    with gzip.open(path,'rt',encoding='utf-8') as stream:
+        rows=[json.loads(line) for line in stream if line.strip()]
+    sessions=head.get('published_sessions')
+    if not isinstance(sessions,list):return None
+    ordered=sorted({session for session in sessions if isinstance(session,str) and session<=day})
+    if len(ordered)<25 or ordered[-1]!=day:return None
+    window=ordered[-25:]
+    by_day={}
+    for row in rows:
+        if row.get('trade_date') in window:
+            if row['trade_date'] in by_day:return None
+            by_day[row['trade_date']]=row
+    if list(sorted(by_day))!=window:return None
+    chosen=[by_day[session] for session in window]
+    first,last=chosen[0],chosen[-1]
+    if any(row.get('quality_state')!='OBSERVED' or not isinstance(row.get('level'),(int,float))
+            or isinstance(row.get('level'),bool) or not math.isfinite(row.get('level'))
+            or row.get('level')<=0 or not row.get('adjustment_basis_id')
+            or any(row.get(key)!=first.get(key) for key in
+                ('series_version','path_identity','market_calendar_id')) for row in chosen):
+        return None
+    receipt_path=root/'data/v4/r8_publication_bridge_v1/receipts'/f'{token}.json'
+    try:receipt=json.loads(receipt_path.read_bytes())
+    except (OSError,ValueError):return None
+    pg_schema=receipt.get('pg_schema')
+    if not isinstance(pg_schema,str):return None
+    from workbench_db.v4_native import connection
+    try:
+        with connection(pg_schema,read_only=True) as pg:
+            row=pg.execute('SELECT event_type,inserted_at::text FROM r8_publication_events WHERE candidate_token=%s ORDER BY event_id DESC LIMIT 1',
+                (token,)).fetchone()
+        if row is None or row[0]!='FINALIZED':return None
+        cutoff=datetime.fromisoformat(str(row[1]).replace('Z','+00:00')).isoformat()
+    except Exception:
+        return None
+    values=[float(row['level']) for row in chosen]
+    return dict(trade_date=day,series_id=last['path_identity']+':'+last['series_version'],
+        price_basis_id=last['adjustment_basis_id'],source_sha256=binding['sha256'],
+        market_calendar_id=last['market_calendar_id'],index_close=values[-1],
+        index_ma20=sum(values[-20:])/20,index_ma20_t_minus_5=sum(values[:20])/20,
+        source_available_at=cutoff,knowledge_cutoff=cutoff,
+        permission_chain=dict(candidate_root=str(root),trade_date=day),
+        input_publication_id=token,time_role='KNOWN_BY_CUTOFF')
+
+
 def candidate_market_stress_identity(root,candidate):
     """Content-verify cached inputs so same-token candidate replacement misses cache."""
     root=Path(root);t0=candidate['accepted_trade_date']
-    if t0>'2026-10-14':raise ValueError('R7_MARKET_STRESS_CUTOFF_EXCEEDED')
     rows=[]
-    for day in ('2026-10-12','2026-10-13','2026-10-14'):
-        if day not in candidate.get('owners',{}) or day>t0:continue
+    for day in _stress_window_days(candidate):
+        if day not in candidate.get('owners',{}):
+            raise ValueError('R7_MARKET_STRESS_DATED_OWNER_MISSING:'+day)
         owner=candidate['owners'][day];market=_checked(root,owner['market'])
         limit,receipt,_,_=_limit_owner(root,candidate,day);limit_path=_checked(root,limit)
         core_path=_checked(root,owner['core'])
@@ -246,8 +446,7 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
 def build_candidate_market_stress(root,candidate):
     """Recalculate available market axes from verified date-bound candidate inputs."""
     root=Path(root);t0=candidate['accepted_trade_date']
-    if t0>'2026-10-14':raise ValueError('R7_MARKET_STRESS_CUTOFF_EXCEEDED')
-    dates=[d for d in ('2026-10-12','2026-10-13','2026-10-14') if d in candidate.get('owners',{}) and d<=t0]
+    dates=_stress_window_days(candidate)
     outputs={};owners={}
     references=candidate.get('market_trend_references') or {}
     if not isinstance(references,dict):references={}
@@ -263,7 +462,7 @@ def build_candidate_market_stress(root,candidate):
         stress=sum(valid[sid]=='LIMIT_DOWN' for sid in common)/len(common) if common else None
         index=candidate['published_sessions'].index(day)
         prior_day=candidate['published_sessions'][index-1] if index>0 else None;prior_valid=None
-        if prior_day and prior_day in ('2026-10-12','2026-10-13','2026-10-14'):
+        if prior_day and prior_day in dates:
             prior_binding,prior_owner,_,_=_limit_owner(root,candidate,prior_day)
             prior_rows=_read_rows(_checked(root,prior_binding));prior_states={r['security_id']:r['limit_state'] for r in prior_rows}
             comparable=common&{sid for sid,state in prior_states.items() if state in ('NOT_LIMIT','LIMIT_UP','LIMIT_DOWN')}
@@ -285,8 +484,15 @@ def build_candidate_market_stress(root,candidate):
                 axis_inputs['recorded_participation_axis']!=axes['participation_axis']):
             raise ValueError('R7_MARKET_AXIS_RECALCULATION_MISMATCH:'+day)
         trend_reference=references.get(day)
-        trend=adapt_candidate_trend_reference(trend_reference,t0=day,
-            knowledge_cutoff=(trend_reference or {}).get('knowledge_cutoff',candidate.get('knowledge_cutoff',day)))
+        if day==t0 and trend_reference is None:
+            trend_reference=_candidate_trend_reference(root,candidate,day)
+        if day==t0 and isinstance(trend_reference,dict):
+            cutoff=trend_reference.get('knowledge_cutoff')
+            trend=adapt_candidate_trend_reference(trend_reference,t0=day,knowledge_cutoff=cutoff)
+        else:
+            trend=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',
+                reason='TREND_REFERENCE_NOT_BOUND_TO_CURRENT_PUBLICATION',
+                contract_id='MARKET_REGIME_TREND_WEAK_ERRATUM_V1')
         outputs[day]=dict(T0=day,stress_level=axes['stress_level'],stress_change=axes['stress_change'],
             breadth_axis=axes['breadth_axis'],participation_axis=axes['participation_axis'],
             trend_axis=trend,

@@ -22,7 +22,7 @@ def test_s02_trend_adapter_requires_same_date_time_permission_and_series_identit
     ref = dict(trade_date='2026-10-21', series_id='IDX-A', price_basis_id='QFQ-T0',
         source_sha256='a'*64, market_calendar_id='CAL-1', index_close=12,
         index_ma20=11, index_ma20_t_minus_5=10, source_available_at='2026-10-21T15:01:00+08:00',
-        knowledge_cutoff='2026-10-21T15:05:00+08:00', time_role='AS_OF_T0',input_publication_id='PUB-1',
+        knowledge_cutoff='2026-10-21T15:05:00+08:00', time_role='KNOWN_BY_CUTOFF',input_publication_id='PUB-1',
         permission_chain=dict(permission_id='PERM-1',owner_id='OWNER-1',role='candidate_reader',
             permission='READ_CANDIDATE',source_binding_sha256='a'*64,input_publication_id='PUB-1',chain_sha256='c'*64))
     result=adapt_candidate_trend_reference(ref,t0='2026-10-21',knowledge_cutoff='2026-10-21T15:10:00+08:00')

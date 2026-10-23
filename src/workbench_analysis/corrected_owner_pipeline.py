@@ -4,8 +4,10 @@ from .corrected_owner_replay import load, checked, ref, OUT, CONTRACT, materiali
 from .market_source_acquisition import write, official_sessions
 
 
-def run_corrected_owner_pipeline(root, *, target_date='2026-10-08', stage='all',
+def run_corrected_owner_pipeline(root, *, target_date=None, stage='all',
                                  exact_membership_candidates=None):
+    if target_date is None:
+        raise ValueError('CORRECTED_TARGET_DATE_REQUIRED')
     root=Path(root).resolve();out=root/OUT;policy=load(root/CONTRACT)
     seal=out/'OWNER_STAGE_SEAL_V1.json'
     if seal.exists():

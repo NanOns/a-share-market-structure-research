@@ -36,14 +36,14 @@ class OperationalResearchBFF:
                 workspace_root=getattr(self.api,'pg_owner_workspace_root',None))
         return rows(self.api.root,self.api.snapshot['identity_source'])
     def envelope(self,day,**payload):
-        c=self.api.context();c.update(trade_date=day,accepted_trade_date='2026-10-08',release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':'2026-09-28'}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)
+        c=self.api.context();c.update(trade_date=day,accepted_trade_date=self.api.candidate.get('accepted_trade_date',max(self.api.candidate['dates'])),release_id=self.api.token,model_namespace='TDX_INDUSTRY_CONCEPT',data_updated_at=self.api.candidate['membership_observed_at'],scoped_release=True,operational_release_scope=['stocks_daily','sectors_current_facts','market_current','focus_read_corrected','diagnostics'],domain_readiness={'focus':{'earliest_valid_date':min(self.api.candidate['dates'])}},read_source_label='通达信最新成员回算；非历史当日成员',bff_contract_id=CONTRACT)
         return dict(context=c,context_token=self.api.token,production_accepted=c.get('production_accepted',False),**payload)
     def counts(self,day):
         admitted=getattr(self.api,'domain_disposition',None)
         return {d:(None if admitted is not None and admitted.get({'stocks':'profile','sectors':'sector','focus':'forward'}[d])!='ACCEPTED' and not getattr(self.api,'user_authorized_cutover',False) else len(self.project(d,day))) for d in ('stocks','sectors','focus')}
     def source(self,domain,day):return self.api.read(domain,day,self.api.token).get('rows')
     def missing(self,day,path,reason='NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE'):
-        return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason=reason,code=reason,domain=path,gap=dict(domain=path,state='SOURCE_INCOMPLETE',reason=reason),items=[],total=0,offset=0,limit=30,has_next=False,legacy_diagnostic='/api/v4/original-0930/'+path,legacy_trade_date='2026-09-30',mixed_date_fallback=False)
+        return 200,self.envelope(day,status='SOURCE_INCOMPLETE',reason=reason,code=reason,domain=path,gap=dict(domain=path,state='SOURCE_INCOMPLETE',reason=reason),items=[],total=0,offset=0,limit=30,has_next=False,mixed_date_fallback=False)
     def project(self,domain,day):
         cache_key=('bff',day,domain)
         if cache_key in self.api.cache:return self.api.cache[cache_key]
@@ -135,7 +135,7 @@ class OperationalResearchBFF:
         selected=data[offset:offset+limit]
         return self.envelope(day,domain=domain,status='READY' if data else 'EMPTY_VALID',items=selected,total=len(data),offset=offset,limit=limit,has_next=offset+limit<len(data),gap=None)
     def get(self,path,q):
-        parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p];day=q.get('trade_date','2026-10-08')
+        parts=[unquote(p) for p in path.removeprefix('/api/v4/').split('/') if p];day=q.get('trade_date',max(self.api.candidate['dates']))
         if day not in self.api.candidate['dates']:raise ValueError('TARGET_DATE_NOT_GRANTED')
         if parts not in (['context'],['current','context']) and q.get('context_token')!=self.api.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
         allowed={'q','state','limit','offset','sort','context_token','trade_date','release_id','model_namespace','type','maturity','health','rotation','quality','eligibility','period','price_basis','as_of','view','left','right','mode','snapshot_token','followup'}

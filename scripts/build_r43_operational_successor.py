@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,json,sys,tempfile,shutil
 from concurrent.futures import ThreadPoolExecutor
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
-from workbench_analysis.r43_operational_sources import run_sources,ref,checked,DATES
+from workbench_analysis.r43_operational_sources import run_sources,ref,checked
 from workbench_analysis.r43_operational_publication import POLICY,cas,digest,CandidateReadV2,rollback_staging
 from workbench_analysis.scoped_successor_r421 import atomic,canonical,sha
 OUT=ROOT/'docs/evidence/r4_3_four_session_closeout_20261009'
@@ -11,14 +11,25 @@ OUT=ROOT/'docs/evidence/r4_3_four_session_closeout_20261009'
 def write(name,x):atomic(OUT/name,canonical(x));return ref(ROOT,OUT/name)
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--sources-only',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser(description='基于明确来源清单和前态构建日期限定的 R43 候选')
+    parser.add_argument('--source-manifest',type=Path,required=True,help='含日期回执和依赖绑定的不可变来源清单')
+    parser.add_argument('--trade-date',required=True,help='候选研究日期，必须存在于来源清单')
+    parser.add_argument('--predecessor-head',type=Path,required=True,help='只读读取的候选前态 Head JSON')
+    parser.add_argument('--sources-only',action='store_true');args=parser.parse_args()
+    source_manifest=args.source_manifest if args.source_manifest.is_absolute() else ROOT/args.source_manifest
+    source_data=json.loads(source_manifest.read_bytes())
+    dates=sorted({q.get('params',{}).get('date') for q in source_data.get('query_receipts',[])
+                  if q.get('method')=='query_daily_history_k_AStock' and q.get('params',{}).get('date')})
+    if len(dates)!=4 or args.trade_date not in dates:raise ValueError('TRADE_DATE_OUTSIDE_SOURCE_MANIFEST_SCOPE')
+    predecessor_path=args.predecessor_head if args.predecessor_head.is_absolute() else ROOT/args.predecessor_head
+    predecessor_data=json.loads(predecessor_path.read_bytes())
     protected={p:sha(ROOT/p) for p in ['data/v4/V4_DATA_ACCEPTED_HEAD.json','data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json','config/dm01_go_forward_runtime_contract_r4r1.json']}
     write('W2_W6_STAGE_ENTRY.json',dict(contract_id='R43_W2_W6_EXECUTION_V1',task=ref(ROOT,OUT/'R4_3_TASK_CONTRACT.md'),protected=protected,scope=['actual GBBQ binary adapter','date-valid lifecycle and special phase','operational successor policy','same-token candidate API','atomic isolated CAS and rollback'],next_stage='independent external review before live cutover'))
-    trace=run_sources(ROOT,OUT)
+    trace=run_sources(ROOT,OUT,dates,source_manifest_path=source_manifest)
     if args.sources_only:print(json.dumps(dict(status='FOUR_DAY_SOURCE_ADAPTER_READY',gbbq_events=trace['GBBQ']['record_count'])));return
     snapshot=ref(ROOT,OUT/'MEMBER_SNAPSHOT_S.json');s=json.loads(checked(ROOT,snapshot).read_bytes())
     owners={};unavailable=[]
-    for day in DATES:
+    for day in dates:
         folder=OUT/'owner_v3/owners'/day
         if not folder.exists():folder=OUT/'owner_v3'/day
         domains={}
@@ -60,11 +71,11 @@ def main():
     for name in ['src/tdx/gbbq_reader.py','src/adjustment/tdx_adjustment.py','src/v4/factors/core.py','src/sector/native_r5.py','src/sector/rotation_r5.py','src/workbench_analysis/v4_13_loo_runtime.py','config/v4_02_gbbq_price_impact_classification_v1.json']:
         code.append(ref(ROOT,ROOT/name))
     registry=write('R43_BUILDER_REGISTRY_SUCCESSOR_V1.json',dict(contract_id='R43_OPERATIONAL_BUILDER_REGISTRY_V1',status='CANDIDATE_REQUIRES_INDEPENDENT_ADMISSION',predecessor=ref(ROOT,ROOT/'config/dm01_go_forward_runtime_contract_r4r1.json'),bindings=code,input_snapshot=snapshot,source_adapter_trace=ref(ROOT,OUT/'04_TDX_BAOSTOCK_GBBQ_LIFECYCLE_AND_DELTA_SOURCE_TRACE.json'),owner_bindings=owners,historical_PIT_permission=False))
-    candidate=dict(contract_id=POLICY,dates=DATES,accepted_trade_date='2026-10-08',membership_mode=s['membership_mode'],taxonomy=s['taxonomy'],membership_snapshot=snapshot,membership_snapshot_id=s['membership_snapshot_id'],membership_observed_at=s['membership_observed_at'],AS_RECORDED=False,historical_PIT_permission=False,production_eligible_scope='DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY',owners=owners,registry=registry,old_last_good=ref(ROOT,ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json'))
+    candidate=dict(contract_id=POLICY,dates=dates,accepted_trade_date=args.trade_date,membership_mode=s['membership_mode'],taxonomy=s['taxonomy'],membership_snapshot=snapshot,membership_snapshot_id=s['membership_snapshot_id'],membership_observed_at=s['membership_observed_at'],AS_RECORDED=False,historical_PIT_permission=False,production_eligible_scope='DATED_OPERATIONAL_RESEARCH_REPROJECTION_ONLY',owners=owners,registry=registry,old_last_good=ref(ROOT,predecessor_path))
     candidate['accepted_product_scope']=dict(required_boards=['SH_MAIN','SZ_MAIN','CHINEXT','STAR'],optional_degraded_boards=['BSE'],inherited_not_new_scope_reduction=True,all_market_claim=False,contracts=[ref(ROOT,ROOT/'config/v4_02_final_closure_contract_v1.json'),ref(ROOT,ROOT/'config/v4_01_historical_code_change_alias_completeness_v1.json')])
     binding=write('R43_OPERATIONAL_SUCCESSOR_CANDIDATE.json',candidate)
     api=CandidateReadV2(ROOT,candidate);context=api.context();readback=[]
-    for day in DATES:
+    for day in dates:
         for domain in ['raw','core','profile','sector','relative_sector','rotation','market','focus','forward','events','diagnostic','lifecycle','special_phase']:
             response=api.read(domain,day,context['context_token'])
             assert response['status']=='READY'
@@ -74,7 +85,7 @@ def main():
             if isinstance(sample,dict):sample={k:v[:1] if isinstance(v,list) else v for k,v in sample.items()}
             readback.append(dict(trade_date=day,domain=domain,context_token=response['context_token'],row_count=len(contents),empty_valid=domain=='events' and not contents,sample=sample))
     write('W6_CANDIDATE_API_SAME_CONTEXT_READBACK.json',dict(context=context,responses=readback,production_readback=False))
-    Path('E:/r43_publication_qa').mkdir(parents=True,exist_ok=True);store=Path(tempfile.mkdtemp(dir='E:/r43_publication_qa'))
+    qa_root=Path('G:/codex_tmp/r43_publication_qa');qa_root.mkdir(parents=True,exist_ok=True);store=Path(tempfile.mkdtemp(prefix='r43_publication_',dir=qa_root))
     # Actual immutable bytes copied into isolated project, not mocks.
     refs=[snapshot,registry,candidate['old_last_good']]+[b for domains in owners.values() for b in domains.values()]
     refs.extend([s['memberships'],s['identity_source']]+s['sources'])
@@ -82,7 +93,7 @@ def main():
     for b in refs:
         source=checked(ROOT,b);destination=store/b['path'];destination.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,destination)
     head=store/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json'
-    original=canonical(dict(candidate,accepted_trade_date='2026-09-30',revision='original_isolated_predecessor'));atomic(head,original);oldsha=sha(head)
+    original=canonical(dict(predecessor_data,revision=predecessor_data.get('revision','existing_predecessor')));atomic(head,original);oldsha=sha(head)
     checks=[]
     for name,action,error in [('stale',lambda:cas(store,head,candidate,'0'*64,staging=True),'STALE_OPERATIONAL_HEAD_CAS'),('crash',lambda:cas(store,head,candidate,oldsha,staging=True,inject_failure=True),'INJECTED_BEFORE_ATOMIC_REPLACE'),('bad_source',lambda:cas(store,head,dict(candidate,membership_snapshot=dict(snapshot,sha256='0'*64)),oldsha,staging=True),'R43_SOURCE_DIGEST_MISMATCH'),('wrong_taxonomy',lambda:cas(store,head,dict(candidate,taxonomy='BAO_CSRC'),oldsha,staging=True),'TDX_LATEST_PRIMARY_MEMBERSHIP_REQUIRED'),('PIT',lambda:cas(store,head,dict(candidate,historical_PIT_permission=True),oldsha,staging=True),'PIT_ESCALATION_FORBIDDEN'),('missing_external',lambda:cas(ROOT,ROOT/'data/v4/V4_OPERATIONAL_RESEARCH_HEAD.json',candidate,None),'INDEPENDENT_EXTERNAL_ACCEPTANCE_REQUIRED')]:
         try:action();raise AssertionError('negative accepted:'+name)
@@ -105,7 +116,7 @@ def main():
     rollback_staging(store,head,sha(head),oldsha)
     assert all(sha(ROOT/p)==h for p,h in protected.items())
     write('10_SUCCESSOR_ATOMIC_CAS_BAD_SOURCE_ROLLBACK_QA.json',dict(candidate=binding,negative_cases=checks,actual_CAS=first,repeat=noop,rollback=rollback_result,test_store=str(store),production_data_head_moved=False,protected_unchanged=protected,scope='Actual candidate source bytes and disk pointers; isolated store only'))
-    write('08_CANONICAL_IDENTITY_AND_CORRECTED_OWNER_ADMISSION.json',dict(candidate=binding,registry=registry,status='SCOPED_PRODUCTION_SUCCESSOR_READY_FOR_INDEPENDENT_REVIEW',date_scope=DATES,operational_scope='RECONSTRUCTED_CURRENT_RESEARCH',historical_PIT_permission=False,production_external_acceptance='NOT_PRESENT_NO_LIVE_CUTOVER',unsupported_identity='Explicit lifecycle unknown rows retained; no prefix-only admission'))
+    write('08_CANONICAL_IDENTITY_AND_CORRECTED_OWNER_ADMISSION.json',dict(candidate=binding,registry=registry,status='SCOPED_PRODUCTION_SUCCESSOR_READY_FOR_INDEPENDENT_REVIEW',date_scope=dates,operational_scope='RECONSTRUCTED_CURRENT_RESEARCH',historical_PIT_permission=False,production_external_acceptance='NOT_PRESENT_NO_LIVE_CUTOVER',unsupported_identity='Explicit lifecycle unknown rows retained; no prefix-only admission'))
     atomic(OUT/'09_NEW_OPERATIONAL_PUBLICATION_POLICY_AND_OLD_PIT_MIGRATION.md',('# R4.3 operational publication policy\n\nThe executable `r43_operational_publication.py` accepts date-bounded reconstructed operational owners with one TDX latest-member snapshot S. It preserves AS_RECORDED=false and historical_PIT_permission=false.\n\nProduction CAS requires an independently supplied EXTERNALLY_ACCEPTED_R43_OPERATIONAL record bound to the exact candidate digest; this build does not create that authority. Legacy 9/30 accepted head and strict PIT contracts remain unchanged. Current-read V2 supplies one context token across four dates and real RAW/Core/Profile/TDX sector rows.\n\nIsolated disk CAS tests cover stale predecessor, bad SHA, namespace/PIT rejection, injected failure, duplicate no-op and byte-exact predecessor rollback. A successful candidate read is not live cutover.\n').encode())
     print(json.dumps(dict(status='SCOPED_PRODUCTION_SUCCESSOR_READY',publication_id=api.token,live_cutover=False)))
 

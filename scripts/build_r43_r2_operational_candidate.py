@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
-from workbench_analysis.r43_operational_sources import checked,ref,DATES
+from workbench_analysis.r43_operational_sources import checked,ref
 from workbench_analysis.r43_operational_publication import cas,digest,validate,CandidateReadV2,rollback_staging
 from workbench_analysis.scoped_successor_r421 import atomic,canonical,sha
 OLD=ROOT/'docs/evidence/r4_3_r1_targeted_repair_20261009'
@@ -29,7 +29,7 @@ def main():
     binding=write('R43_OPERATIONAL_SUCCESSOR_CANDIDATE_V3.json',candidate)
     validate(ROOT,candidate)
     api=CandidateReadV2(ROOT,candidate);reads=[]
-    for day in DATES:
+    for day in candidate['dates']:
         for domain in ['raw','core','profile','sector','relative_sector','rotation','market','focus','forward','events','diagnostic','lifecycle','special_phase']:
             value=api.read(domain,day,api.token)
             assert value['status']=='READY' and value['trade_date']==day and value['context_token']==api.token

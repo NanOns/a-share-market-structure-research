@@ -13,7 +13,7 @@ def test_existing_context_envelope_and_no_cross_date_fallback():
     code,data=bff.get('/api/v4/forward/statistics',{'context_token':'exact-token'})
     assert code==200 and data['status']=='SOURCE_INCOMPLETE'
     assert data['reason']=='NO_OPERATIONAL_COMPATIBILITY_OWNER_FOR_ROUTE'
-    assert data['mixed_date_fallback'] is False and data['legacy_trade_date']=='2026-09-30'
+    assert data['mixed_date_fallback'] is False and 'legacy_trade_date' not in data
     assert data['context']['accepted_trade_date']=='2026-10-08' and data['context_token']=='exact-token'
     assert data['context']['PIT_ELIGIBLE'] is False
 

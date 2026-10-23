@@ -342,7 +342,7 @@ def main() -> int:
     if len(inventory) != expected_files:
         raise ValueError("V4_01_INVENTORY_COUNT_MISMATCH")
 
-    calendar_inputs = {"SH": "sh/lday/sh000001.day", "SZ": "sz/lday/sz399001.day", "BJ": "bj/lday/bj899050.day"}
+    calendar_inputs = contract["periods"]["calendar_sources"]
     calendars = {}
     calendar_evidence = {}
     for market, relative in calendar_inputs.items():
@@ -424,7 +424,7 @@ def main() -> int:
         "stage_contract": "V4.2.2 REV2 §§3B.6, 3C.1-3C.4, 5.2-5.3, 6A, 10N, 78; V4_CANONICAL_DAILY_PIT_PERIODS_V1",
         "consulted_upgrade": {"document": contract["consulted_upgrade"]["document"], "sha256": contract["consulted_upgrade"]["sha256"], "sections": contract["consulted_upgrade"]["sections"]},
         "entry_gate": {"phase0": "DEGRADED_PASS", "v4_01": "DEGRADED_PASS", "raw_archive_sha256": PACKAGE_SHA},
-        "source_cutoff": "2026-09-24",
+        "source_cutoff": contract["inputs"]["source_cutoff"],
         "asof_trade_date": asof,
         "observed_at_utc": run_at,
         "status": "BLOCKED",

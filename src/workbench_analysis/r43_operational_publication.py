@@ -6,7 +6,7 @@ import json
 import os
 import re
 from .scoped_successor_r421 import sha,canonical,atomic
-from .r43_operational_sources import checked,DATES
+from .r43_operational_sources import checked
 from .tdx_member_retro_r43 import validate_snapshot,metadata
 
 POLICY='V4_DATED_OPERATIONAL_RECONSTRUCTED_OWNER_V1'
@@ -15,7 +15,10 @@ def digest(value):return hashlib.sha256(canonical(value)).hexdigest()
 
 def validate(root,candidate):
     if candidate.get('contract_id')!=POLICY:raise ValueError('WRONG_OPERATIONAL_CONTRACT')
-    if candidate.get('dates')!=DATES:raise ValueError('FOUR_SESSION_DATE_SCOPE_REQUIRED')
+    dates=candidate.get('dates')
+    if (not isinstance(dates,list) or len(dates)!=4 or dates!=sorted(set(dates)) or
+            any(not isinstance(day,str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}',day) for day in dates)):
+        raise ValueError('FOUR_SESSION_DATE_SCOPE_REQUIRED')
     if candidate.get('historical_PIT_permission') is not False or candidate.get('AS_RECORDED') is not False:raise ValueError('PIT_ESCALATION_FORBIDDEN')
     if candidate.get('membership_mode')!='TDX_LATEST_MEMBER_RETRO_V1' or candidate.get('taxonomy')!='TDX_INDUSTRY_CONCEPT':raise ValueError('TDX_LATEST_PRIMARY_MEMBERSHIP_REQUIRED')
     snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
@@ -26,7 +29,8 @@ def validate(root,candidate):
     for binding in registry['bindings']:checked(root,binding)
     if registry.get('owner_bindings')!=candidate['owners'] or registry.get('input_snapshot')!=candidate['membership_snapshot']:raise ValueError('REGISTRY_OWNER_INPUT_MISMATCH')
     for binding in candidate['accepted_product_scope']['contracts']:checked(root,binding)
-    for day in DATES:
+    if set(candidate.get('owners',{}))!=set(dates):raise ValueError('OWNER_DATE_SCOPE_MISMATCH')
+    for day in dates:
         if not {'raw','core','profile','sector','relative_sector','rotation','lifecycle','special_phase'}<=set(candidate['owners'][day]):raise ValueError('REQUIRED_OPERATIONAL_OWNER_MISSING')
         for binding in candidate['owners'][day].values():checked(root,binding)
         receipt=json.loads(checked(root,candidate['owners'][day]['sector_receipt']).read_bytes())
@@ -106,10 +110,11 @@ class CandidateReadV2:
         self.token=digest(candidate);self.cache={};self.snapshot=json.loads(checked(root,candidate['membership_snapshot']).read_bytes())
     def context(self):
         rotation_state=('INDEPENDENTLY_ACCEPTED_FULL_ROTATION' if getattr(self,'domain_disposition',{}).get('rotation')=='ACCEPTED' else 'VALIDATION_ONGOING') if self.candidate.get('external_review_contract') else 'ENGINEERING_REPORTED_NOT_EXTERNAL_FULL_VALIDATION'
-        return dict(metadata(self.snapshot,'2026-10-08'),contract_id='V4_CURRENT_ACCEPTED_READ_V2',context_token=self.token,publication_id=self.token,accepted_trade_date='2026-10-08',available_trade_dates=DATES,read_scope='OPERATIONAL_CANDIDATE_NOT_LIVE',membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,member_label='通达信最新成员回算；非历史当日成员',field_lineage='RECONSTRUCTED_LATEST_MEMBERSHIP',external_domain_disposition=getattr(self,'domain_disposition',{}),rotation_validation_state=rotation_state)
+        latest=max(self.candidate['dates'])
+        return dict(metadata(self.snapshot,latest),contract_id='V4_CURRENT_ACCEPTED_READ_V2',context_token=self.token,publication_id=self.token,accepted_trade_date=self.candidate.get('accepted_trade_date',latest),available_trade_dates=self.candidate['dates'],read_scope='OPERATIONAL_CANDIDATE_NOT_LIVE',membership_snapshot=self.candidate['membership_snapshot'],historical_PIT_permission=False,member_label='通达信最新成员回算；非历史当日成员',field_lineage='RECONSTRUCTED_LATEST_MEMBERSHIP',external_domain_disposition=getattr(self,'domain_disposition',{}),rotation_validation_state=rotation_state)
     def read(self,domain,day,token):
         if token!=self.token:raise ValueError('CONTEXT_TOKEN_MISMATCH')
-        if day not in DATES:raise ValueError('TARGET_DATE_NOT_GRANTED')
+        if day not in self.candidate['dates']:raise ValueError('TARGET_DATE_NOT_GRANTED')
         if hasattr(self,'domain_disposition') and self.domain_disposition.get(domain)!='ACCEPTED' and not getattr(self,'user_authorized_cutover',False):
             return dict(metadata(self.snapshot,day),context_token=token,publication_id=token,domain=domain,status='SOURCE_INCOMPLETE',validation_state=self.domain_disposition.get(domain,'NOT_VERIFIABLE'),reason='DOMAIN_NOT_INDEPENDENTLY_ACCEPTED',rows=[],total=0)
         binding=self.candidate['owners'][day].get(domain)
@@ -142,7 +147,7 @@ class CandidateReadV2:
         if parsed.path=='/api/v4/context':return self.context()
         parts=parsed.path.removeprefix('/api/v4/').split('/');domain=parts[0]
         aliases={'stocks':'profile','sectors':'sector','diagnostics':'diagnostic'}
-        response=self.read(aliases.get(domain,domain),params.get('trade_date',['2026-10-08'])[0],token or params.get('context_token',[''])[0])
+        response=self.read(aliases.get(domain,domain),params.get('trade_date',[max(self.candidate['dates'])])[0],token or params.get('context_token',[''])[0])
         offset=int(params.get('offset',['0'])[0]);limit=int(params.get('limit',['100'])[0])
         if offset<0 or not 1<=limit<=500:raise ValueError('PAGINATION_BOUND')
         if isinstance(response.get('rows'),list):

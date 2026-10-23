@@ -4,7 +4,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
+import re
 import struct
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,9 +35,27 @@ def digest(data):
 
 def write(path, value):
     raw=(json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode()
+    project_root=Path(__file__).resolve().parents[2]
+    contract_path=project_root/'config/dm01_go_forward_runtime_contract_r4.json'
+    roots=[]
+    if contract_path.is_file():
+        roots=json.loads(contract_path.read_bytes()).get('read_only_tdx_roots',[])
+    target=Path(path)
     for attempt in range(4):
         try:
-            _atomic_write(Path(path), raw, tdx_root=Path('D:/new_tdx'))
+            if roots:
+                for source_root in roots:ensure_outside_tdx(target,Path(source_root))
+                _atomic_write(target,raw,tdx_root=Path(roots[0]))
+            else:
+                target.parent.mkdir(parents=True,exist_ok=True)
+                fd,name=tempfile.mkstemp(prefix=target.name+'.',suffix='.tmp',dir=target.parent)
+                try:
+                    with os.fdopen(fd,'wb') as stream:
+                        stream.write(raw);stream.flush();os.fsync(stream.fileno())
+                    os.replace(name,target)
+                except Exception:
+                    Path(name).unlink(missing_ok=True)
+                    raise
             return
         except PermissionError:
             if attempt==3:raise
@@ -91,6 +112,22 @@ def corrected_candidate(tdx, bao, *, identity_verified, session_verified, overla
                 lineage='RECONSTRUCTED_CORRECTED', AS_RECORDED=False, production_admission=False)
 
 
+def earliest_required_factor_session(client, code, query):
+    """Use the source identity's IPO date to include all possible prior actions.
+
+    Adjustment-factor coverage is an identity-history requirement, not a
+    research-window shortcut. Missing or malformed source identity fails
+    closed; it never falls back to a fixed calendar date.
+    """
+    rows = query(client, 'query_stock_basic', code=code)
+    if not rows:
+        raise ValueError('ADJUSTMENT_IDENTITY_SOURCE_MISSING')
+    ipo_date = rows[0].get('ipoDate') or rows[0].get('list_date')
+    if not isinstance(ipo_date, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', ipo_date):
+        raise ValueError('ADJUSTMENT_IDENTITY_LIST_DATE_MISSING')
+    return ipo_date
+
+
 def freeze_membership_observation(root, folder, dates, roots):
     files = []
     for source_root in roots:
@@ -131,13 +168,12 @@ def acquire(root, dates, folder, gap_codes=()):
     root, folder = Path(root), Path(folder)
     if not dates or any(d not in official_sessions(root) for d in dates):
         raise ValueError('OFFICIAL_SESSION_REQUIRED')
-    ensure_outside_tdx(folder, Path('D:/new_tdx'))
     policy = json.loads((root / 'config/v4_market_source_fallback_policy_v1.json').read_bytes())
     if policy['contract_id'] != CONTRACT or policy['production_admission']:
         raise ValueError('ACQUISITION_STAGING_POLICY_REQUIRED')
     folder.mkdir(parents=True, exist_ok=True)
     receipt = dict(contract_id=CONTRACT, requested_at=now(), dates=dates, sdk=package_metadata(),
-                   local={}, official={}, queries=[], session_attempts=[], production_admission=False)
+                   local={}, official={}, queries=[], adjustment_coverage=[], session_attempts=[], production_admission=False)
     if (folder / 'acquisition.json').exists():
         receipt = json.loads((folder / 'acquisition.json').read_bytes())
         if receipt['dates'] != dates or receipt['contract_id'] != CONTRACT:
@@ -147,6 +183,8 @@ def acquire(root, dates, folder, gap_codes=()):
     checkpoint()
     # Every configured TDX root is a read-only input.
     roots = json.loads((root / 'config/dm01_go_forward_runtime_contract_r4.json').read_bytes())['read_only_tdx_roots']
+    for source_root in roots:
+        ensure_outside_tdx(folder, Path(source_root))
     receipt['membership'] = freeze_membership_observation(root, folder, dates, roots)
     for source_root in roots:
         for market in ('sh', 'sz', 'bj'):
@@ -215,6 +253,15 @@ def acquire(root, dates, folder, gap_codes=()):
             receipt['queries'].append({k: v for k, v in record.items() if k != 'rows'} | dict(path=str(revision_path)))
             checkpoint(); return rows
         return []
+    def query_adjustment(client, code):
+        try:
+            factor_start = earliest_required_factor_session(client, code, query)
+            result = query(client, 'query_adjust_factor', code=code, start_date=factor_start, end_date=max(dates))
+            receipt['adjustment_coverage'].append(dict(code=code, start_date=factor_start,
+                end_date=max(dates), status='SOURCE_ROWS_FOUND' if result else 'SOURCE_ROWS_UNAVAILABLE'))
+        except ValueError as exc:
+            receipt['adjustment_coverage'].append(dict(code=code, status='SOURCE_INCOMPLETE', reason=str(exc)))
+        checkpoint()
     for attempt in range(2):
         client = BaoStockClient(budget, auth_mode='PUBLIC_ANONYMOUS', timeout=30)
         session = dict(attempt=attempt, requested_at=now())
@@ -240,7 +287,7 @@ def acquire(root, dates, folder, gap_codes=()):
                     for flag in ('3', '2'):
                         smoke_ok &= bool(query(client, 'query_history_k_data_plus', code=code, fields=FIELDS,
                             start_date=min(dates), end_date=max(dates), frequency='d', adjustflag=flag))
-                    query(client, 'query_adjust_factor', code=code, start_date='2026-01-01', end_date=max(dates))
+                    query_adjustment(client, code)
                 if smoke_ok:
                     # Full date batch remains distinct; per-stock fallback covers available Oct08 identities if batch absent.
                     latest = max(dates)
@@ -252,7 +299,7 @@ def acquire(root, dates, folder, gap_codes=()):
                         for flag in ('3', '2'):
                             query(client, 'query_history_k_data_plus', code=code, fields=FIELDS,
                                   start_date=min(dates), end_date=max(dates), frequency='d', adjustflag=flag)
-                        query(client, 'query_adjust_factor', code=code, start_date='2026-01-01', end_date=max(dates))
+                        query_adjustment(client, code)
                 for day in dates:
                     query(client, 'query_stock_industry', date=day)
             session['logout'] = client.logout_result

@@ -1,0 +1,3376 @@
+{
+  "contract_id": "V4_R10_ALL_DATES_RECONCILIATION_EVIDENCE_V1",
+  "recorded_at": "2026-10-24",
+  "status": "PARTIAL_REPAIR_NOT_ACCEPTED",
+  "source_candidate_head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+  "source_candidate_head_sha256": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+  "date_count": 13,
+  "dates": [
+    {
+      "trade_date": "2026-09-28",
+      "owners": {
+        "base_profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/profiles.jsonl.gz",
+          "sha256": "ddf76f07f47ed2dc89337ac1f2bba19c92d11dab0d986ac881a0e792fd20d566",
+          "bytes": 43553133,
+          "rows": 5222
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/core.jsonl.gz",
+          "sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+          "bytes": 19774972,
+          "rows": 5222
+        },
+        "diagnostic": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "43055913a11f990ba74ea73a17ad78d6938c075365c37f658be4ad94a9ae79b3",
+          "bytes": 7028,
+          "rows": null
+        },
+        "events": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/structure/events.jsonl",
+          "sha256": "f53a9c1ec4007c27d5c0d9079f1a596a6cdb4bb9fc0fb8a5687a1d88a8d5422b",
+          "bytes": 157048,
+          "rows": 182
+        },
+        "focus": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/corrected_d2.json.gz",
+          "sha256": "bcda8942d5ef3e4cda1487b9a77543fbea51e988a6fdd1600af0e63695f6cd2b",
+          "bytes": 1563194,
+          "rows": null
+        },
+        "forward": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "c0eeb0290d208ef63aebc4ad8c6fa605ba4b6d652bc364aa1006f348add194d2",
+          "bytes": 5222917,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-28/lifecycle.json",
+          "sha256": "a5d2726e0a0c3fd1023cd0ce853156e8488bc4550f6a7b9204a406a1bb3c2312",
+          "bytes": 1468368,
+          "rows": null
+        },
+        "market": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/market_owner_candidate_v2.json",
+          "sha256": "6b3dd183d0b73415b298b64f52337ff489eb76434b5051531b78fe15e58cd793",
+          "bytes": 4681,
+          "rows": null
+        },
+        "prewatch": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "784331407a0fb899cbc5e3ff36324c65e7fe82379af5fa2977036be481ce15b3",
+          "bytes": 3273200,
+          "rows": 5222
+        },
+        "profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "99a68fafe53f182616f4faff785d977d20051a009e0c5d3c8cb6f77661a80c69",
+          "bytes": 48097596,
+          "rows": 5222
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/raw.jsonl.gz",
+          "sha256": "ca66d601903947b83a185fd14ed798fa250247ccdbcba140746da504cb68c3eb",
+          "bytes": 242415,
+          "rows": 5210
+        },
+        "relative_sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/relative_sector_loo.jsonl.gz",
+          "sha256": "d1c8c3690f6897650b8debd693e02238079d47dbbdcbc4002302a17c4678102b",
+          "bytes": 2212445,
+          "rows": 5222
+        },
+        "rotation": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/rotation.jsonl.gz",
+          "sha256": "1945edfe1fb4c81ceb989623019048af312c4fbc32929b7fa7311da80beb20d1",
+          "bytes": 2766381,
+          "rows": 400
+        },
+        "sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/native.jsonl.gz",
+          "sha256": "4f636f2f0774f921e48fe260f00611aaf556204e96f59c0f06ad346393f0d8a1",
+          "bytes": 1674056,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "f8018ed18c1f72f4b6d9a74406082f664e5b978e56b81724485b08d1a222b30b",
+          "bytes": 58508,
+          "rows": null
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-28/base_seed.jsonl.gz",
+          "sha256": "37af9c37b3d9a22d6220ca28294fea940fe893a9fee58970871feef81e3270b9",
+          "bytes": 149377,
+          "rows": 5222
+        },
+        "special_phase": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-28/special_phase.json",
+          "sha256": "4769a992fc2149a8d30269de9278314dfb2629798eb22be5793f0eda4716b458",
+          "bytes": 1624,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5222,
+        "core": 5222,
+        "profile": 5222,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5108,
+          "TRUE": 114
+        }
+      },
+      "d2": {
+        "rows": 5222,
+        "unique_ids": 5222,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 2477,
+        "PIT_eligible": 0,
+        "T0_date_count": 4,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 182,
+      "market_candidate": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-28/market_owner_candidate_v2.json",
+        "sha256": "6b3dd183d0b73415b298b64f52337ff489eb76434b5051531b78fe15e58cd793",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-22",
+        "breadth_common_count": 5222,
+        "breadth_evaluable": 5206,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "NORMAL",
+          "stress_level": "ELEVATED",
+          "stress_change": null
+        },
+        "trend": "NEUTRAL",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "UNKNOWN",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN"
+      },
+      "readindex_r2": {
+        "T0": "2026-09-28",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 1178,
+          "radar": 1045,
+          "sectors": 400,
+          "stocks": 5222
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "24053f6b6fc4b8f15bc193ad3b55f22509651dbe3dc86f5cdf385730dc900f40",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_0569a1c8773a4c198a93f2d7ead843c60fd8906e60438b16b187abab"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-09-28",
+        "home_rendered": true,
+        "stocks": 5222,
+        "sectors": 400,
+        "focus": 1178,
+        "radar": 1045,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-09-29",
+      "owners": {
+        "base_profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/profiles.jsonl.gz",
+          "sha256": "1f2dfb7d5856ea064744e8e81a0f5341bc10364b6cc67b24e8f529bc59fa1b21",
+          "bytes": 43570978,
+          "rows": 5223
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/core.jsonl.gz",
+          "sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+          "bytes": 19780365,
+          "rows": 5223
+        },
+        "diagnostic": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "897f688acd84396fab0f15492bda6e1f0c9af96112d49485eb1b39b296dbc506",
+          "bytes": 7031,
+          "rows": null
+        },
+        "events": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/structure/events.jsonl",
+          "sha256": "b371cb0226c33e4ef4afb186e93a8c3f88ca163af3197eb1102031b0c6c32b6c",
+          "bytes": 339144,
+          "rows": 393
+        },
+        "focus": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/corrected_d2.json.gz",
+          "sha256": "851b427b690dbd0e1b769a2d38d868739488234bd937adf13484f75e3b280393",
+          "bytes": 2031899,
+          "rows": null
+        },
+        "forward": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "c0eeb0290d208ef63aebc4ad8c6fa605ba4b6d652bc364aa1006f348add194d2",
+          "bytes": 5222917,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-29/lifecycle.json",
+          "sha256": "25c535cafebe107f327c5bcba9209ed38479dc7197e1e32f1610f2b309b7c076",
+          "bytes": 1468649,
+          "rows": null
+        },
+        "market": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/market_owner_candidate_v2.json",
+          "sha256": "1de0923c03ecf8e98bbab242c24e76867d02ec604331bcd9b9376d80f8632134",
+          "bytes": 5081,
+          "rows": null
+        },
+        "prewatch": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "eb6d2b706b7eab23251120fb59a1d338955a3298c498837cdea886e974a4197d",
+          "bytes": 3276247,
+          "rows": 5223
+        },
+        "profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "bd38398c7029c5dedef2e284b52ba347d1a63c326d8636418503cbfb906d52ba",
+          "bytes": 48091165,
+          "rows": 5223
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/raw.jsonl.gz",
+          "sha256": "6d69f34b598196aff7d4a3552e9cf7c6f626e66cb40b81869c417dd63a2cef43",
+          "bytes": 241245,
+          "rows": 5211
+        },
+        "relative_sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/relative_sector_loo.jsonl.gz",
+          "sha256": "00fb289d388307faf790658cc9f6e2815e11fcad5462068c211d44ef63efcab7",
+          "bytes": 2204500,
+          "rows": 5223
+        },
+        "rotation": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/rotation.jsonl.gz",
+          "sha256": "592b4565c14a4525d3d393d2c33802fc8d0181742f8f09e49bf5858ec75e6882",
+          "bytes": 3193734,
+          "rows": 400
+        },
+        "sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/native.jsonl.gz",
+          "sha256": "125ff505e372d355e9c7b0185a153b8c9b8b2b395d6f92ab48c9e0047c6b9479",
+          "bytes": 1679056,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "f8018ed18c1f72f4b6d9a74406082f664e5b978e56b81724485b08d1a222b30b",
+          "bytes": 58508,
+          "rows": null
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-29/base_seed.jsonl.gz",
+          "sha256": "e80ab0cac7178a42deb722472f2d6e0a28500ece22d711e0263a371e5700a8f7",
+          "bytes": 148888,
+          "rows": 5223
+        },
+        "special_phase": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-29/special_phase.json",
+          "sha256": "859b4d706a147937025de856315ffc8479cf29c5e8788fd749fe1e98326d916b",
+          "bytes": 1624,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5223,
+        "core": 5223,
+        "profile": 5223,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5033,
+          "TRUE": 190
+        }
+      },
+      "d2": {
+        "rows": 5223,
+        "unique_ids": 5223,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 2477,
+        "PIT_eligible": 0,
+        "T0_date_count": 4,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 393,
+      "market_candidate": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-29/market_owner_candidate_v2.json",
+        "sha256": "1de0923c03ecf8e98bbab242c24e76867d02ec604331bcd9b9376d80f8632134",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-23",
+        "breadth_common_count": 5222,
+        "breadth_evaluable": 5205,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "THIN",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "NEUTRAL",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "NEUTRAL",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "HYSTERESIS_PENDING_NO_ACCEPTED_LABEL"
+      },
+      "readindex_r2": {
+        "T0": "2026-09-29",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 1717,
+          "radar": 556,
+          "sectors": 400,
+          "stocks": 5223
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "d9cab4c896cf0b78e9ac8a32cc3b489d25b5738834d63f777f98c54d10c8fbb7",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_9193aa047cbb0679fea29d4d17779f2e90b935ec84b213bdd6b6a5c1"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-09-29",
+        "home_rendered": true,
+        "stocks": 5223,
+        "sectors": 400,
+        "focus": 1717,
+        "radar": 556,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-09-30",
+      "owners": {
+        "base_profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/profiles.jsonl.gz",
+          "sha256": "2ae6e3938d569105737450a0d596b17f65e4fb9f7db72a973f6a23b5c3fae4fe",
+          "bytes": 43603917,
+          "rows": 5224
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/core.jsonl.gz",
+          "sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+          "bytes": 19794746,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "0a0b7069c6170a1174e2111af192c3fd54efb8fbaa85f29b8c1880d0316eca01",
+          "bytes": 7031,
+          "rows": null
+        },
+        "events": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/structure/events.jsonl",
+          "sha256": "b8f2eb904cd219b4bcce4559f6daa63f53216988366188d4204036bd4b9024fb",
+          "bytes": 339124,
+          "rows": 393
+        },
+        "focus": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/corrected_d2.json.gz",
+          "sha256": "604bc3ee6c9e2e6ab88778ffd96579d0131e7a493696cdbb3f73801d394ff5ee",
+          "bytes": 2037718,
+          "rows": null
+        },
+        "forward": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "c0eeb0290d208ef63aebc4ad8c6fa605ba4b6d652bc364aa1006f348add194d2",
+          "bytes": 5222917,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-30/lifecycle.json",
+          "sha256": "32d1eb215d23edc4285c2f70e7ec07991542160b803b10221c0622f4c4ee4f04",
+          "bytes": 1468929,
+          "rows": null
+        },
+        "market": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/market_owner_candidate_v2.json",
+          "sha256": "acc482aad53ac54a6352ed7c0f0c01854c652c57bd3310c93aa862db13d50f82",
+          "bytes": 5307,
+          "rows": null
+        },
+        "prewatch": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "bb0737da548828569c3be0e774fb26925ea873eda1e1e7a101ce6f481911c4fc",
+          "bytes": 3278422,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "73982508306b6388c290cab38322e9cb1ebc0212dac77a2c6e3de4fc75b18c6d",
+          "bytes": 48142712,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/raw.jsonl.gz",
+          "sha256": "87f6876854dcae42f4dfaed7c2258a91b2c563846caa92076f0dd30ca199991b",
+          "bytes": 241684,
+          "rows": 5213
+        },
+        "relative_sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/relative_sector_loo.jsonl.gz",
+          "sha256": "6a42e363a4b577a09dc2fcd83f84da3ede92f16fe53ab85fa1ae6f80f78d82aa",
+          "bytes": 2210633,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/rotation.jsonl.gz",
+          "sha256": "c4e0aeb4c5c1a03ad402fa23fa4d215db4a67ec41ae1a22127be18a7e8c305ff",
+          "bytes": 3147584,
+          "rows": 400
+        },
+        "sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/native.jsonl.gz",
+          "sha256": "8065e6d5fb45c7c6927645bd49ce8e33c4cf3d52e35ec3815a9df78c5dd55596",
+          "bytes": 1677860,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "f8018ed18c1f72f4b6d9a74406082f664e5b978e56b81724485b08d1a222b30b",
+          "bytes": 58508,
+          "rows": null
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-09-30/base_seed.jsonl.gz",
+          "sha256": "e4879db2c5a8a7d9297ce2f889f7d45fac655866d4e057f3e90bb7443671e77b",
+          "bytes": 149064,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-09-30/special_phase.json",
+          "sha256": "f1f153d9e06ef0b4c7c7f86eb0b365ad6130f913c08fd5659939fbf6afb4010b",
+          "bytes": 1624,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5049,
+          "TRUE": 175
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 2477,
+        "PIT_eligible": 0,
+        "T0_date_count": 4,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 393,
+      "market_candidate": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-09-30/market_owner_candidate_v2.json",
+        "sha256": "acc482aad53ac54a6352ed7c0f0c01854c652c57bd3310c93aa862db13d50f82",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-24",
+        "breadth_common_count": 5222,
+        "breadth_evaluable": 5203,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "THIN",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RECOVERY_ATTEMPT",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "HYSTERESIS_PENDING_NO_ACCEPTED_LABEL"
+      },
+      "readindex_r2": {
+        "T0": "2026-09-30",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2152,
+          "radar": 442,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "ac0002e100bd86c485423056cbb51688bb05b6a285e8ba184cf3e4ad73cc80ec",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_eef887acb5502494ace6e9112122fa3f630c0ac10877ec484a559f7d"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-09-30",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 2152,
+        "radar": 442,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-08",
+      "owners": {
+        "base_profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/profiles.jsonl.gz",
+          "sha256": "f9f01d74ae6e271b2cece5a4e4e0af11dee67fe615e40af7bf45fc137b5a1156",
+          "bytes": 43507388,
+          "rows": 5224
+        },
+        "core": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/core.jsonl.gz",
+          "sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+          "bytes": 19803337,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "79c772397e12ddb9b45c979269693dca9ef386f4c66f77ca15615188af447db6",
+          "bytes": 7032,
+          "rows": null
+        },
+        "events": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/structure/events.jsonl",
+          "sha256": "af29fa4d798be35216f31cfa815342fd0797795d1177d9bc2f746e2258a7ce7d",
+          "bytes": 352912,
+          "rows": 409
+        },
+        "focus": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/corrected_d2.json.gz",
+          "sha256": "4bd79354f3c8e450141ce47aebc63ce70e2f87e069f02fec55790675f64729dc",
+          "bytes": 2040443,
+          "rows": null
+        },
+        "forward": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "c0eeb0290d208ef63aebc4ad8c6fa605ba4b6d652bc364aa1006f348add194d2",
+          "bytes": 5222917,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-10-08/lifecycle.json",
+          "sha256": "d284b23901d267ef4bd5e7baa60b30dd8eb6d0c101feba40e82fdc6861be85c0",
+          "bytes": 1468933,
+          "rows": null
+        },
+        "market": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/market_owner_candidate_v2.json",
+          "sha256": "ba5118077140f3257692f09a68fdf24e8369e6562413872737bc818562a98444",
+          "bytes": 5502,
+          "rows": null
+        },
+        "prewatch": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "e1bfbc0dbfbfd4ed7dbe71f61a84b4b2b6db9e6f6eff88f16cea5ed04f6be019",
+          "bytes": 3275945,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "179ee9527dc26bdf436706e381d8b740e6a99d3e779e640e0ca6e4ab02827e4c",
+          "bytes": 48056445,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/raw.jsonl.gz",
+          "sha256": "3414cbed04795b985c072104c0a8aa1433f0d9969f8a8570b50fbb7b98f80121",
+          "bytes": 241820,
+          "rows": 5209
+        },
+        "relative_sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/relative_sector_loo.jsonl.gz",
+          "sha256": "d5729445430deda4bb5056a6b1ce11b2dd3fda32eb5cd06ad20be3932d0afcd5",
+          "bytes": 2210682,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/rotation.jsonl.gz",
+          "sha256": "133d8584698afe00b5b96feef4fe9f3935b996b06f11e5db47c99282cc9523fc",
+          "bytes": 3116152,
+          "rows": 400
+        },
+        "sector": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/native.jsonl.gz",
+          "sha256": "ebccf89ddabcd362b2c7845276a8968a6e6768a84529f550d4fb32570678e01d",
+          "bytes": 1675681,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "f8018ed18c1f72f4b6d9a74406082f664e5b978e56b81724485b08d1a222b30b",
+          "bytes": 58508,
+          "rows": null
+        },
+        "seed": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sector_v3/2026-10-08/base_seed.jsonl.gz",
+          "sha256": "bff7f8fb5297e4c823fc75b3bb7a9d8039f1707fcc8c72882623ab9ce2bc4d81",
+          "bytes": 149541,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "docs/evidence/r4_3_four_session_closeout_20261009/sources/2026-10-08/special_phase.json",
+          "sha256": "13a3dbe7a3e9ce6cef34921119492f0bfa51eacf68ef685f29555e7457d639d5",
+          "bytes": 1624,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5074,
+          "TRUE": 150
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 2477,
+        "PIT_eligible": 0,
+        "T0_date_count": 4,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 409,
+      "market_candidate": {
+        "path": "docs/evidence/r4_3_four_session_closeout_20261009/owner_v3/owners/2026-10-08/market_owner_candidate_v2.json",
+        "sha256": "ba5118077140f3257692f09a68fdf24e8369e6562413872737bc818562a98444",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-28",
+        "breadth_common_count": 5222,
+        "breadth_evaluable": 5201,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "NORMAL",
+          "stress_level": "LOW",
+          "stress_change": "RISING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "HYSTERESIS_PENDING_NO_ACCEPTED_LABEL"
+      },
+      "readindex_r2": {
+        "T0": "2026-10-08",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2477,
+          "radar": 393,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "2fb81aca131ee1d336db83eaa68fcebbb60e6675c8f73925b1a2941e21d86a65",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_7abfcb7c4068e5269457899793dd9136174d28a79519fddb70b1421e"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-08",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 2477,
+        "radar": 393,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-09",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/adjusted.jsonl.gz",
+          "sha256": "47a22ea9e98f78e3ecfa0eec328c589851a62bc7ce15fa51124ccc967590df9c",
+          "bytes": 410628,
+          "rows": 5210
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/profiles.jsonl.gz",
+          "sha256": "a05e55312744aa79340d09165bc7c39ab70c57720a7c7ff133ee7a7529acd57e",
+          "bytes": 43509662,
+          "rows": 5224
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/core.jsonl.gz",
+          "sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+          "bytes": 19792536,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "778fd4bfbeabc2c322152c8576e1dfbda809b2a0b68947d5408c1143bb6fe4f2",
+          "bytes": 7666,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/structure/events.jsonl",
+          "sha256": "ccd2b8f561cb9d5158f162f28520ed21b50ceee3c008da20ca480ac637f70bb5",
+          "bytes": 781507,
+          "rows": 913
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d2.json.gz",
+          "sha256": "46bac7b6c641dd00125988d1f59d5b04f321c7dde57eb9c3e90f9f6616911fc5",
+          "bytes": 2063437,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "70906072fc9e1a6816af665943a4da22e7b209c4dd0dc1d58b08d3ea9fee9128",
+          "bytes": 7651845,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/lifecycle.json",
+          "sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd",
+          "bytes": 1666820,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+          "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146",
+          "bytes": 5925,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "280769e2627098cdd2a2f24079bf95b88c7b6905024151fca0bd8d93cfc3df03",
+          "bytes": 1030765,
+          "rows": 10448
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/PERIOD_RAW.jsonl.gz",
+          "sha256": "dcec79aa9ccae8124750194eb75e3104b54d016d6a5cd1d7a073a6e8e6edc4af",
+          "bytes": 1029920,
+          "rows": 10448
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "3db666950577c1ad6adc112b2a196d8a89c49a85eaad580083a16a1b618b32ef",
+          "bytes": 3314452,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "f5de1f924d222ac591f2f95059f2bec78c84541c72b18c1a328973311d1d2c00",
+          "bytes": 48046983,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/raw.jsonl.gz",
+          "sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+          "bytes": 242313,
+          "rows": 5210
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/relative_sector_loo.jsonl.gz",
+          "sha256": "2aa20444dcf82aed5bd61c55a76a0950722cf76168f838f4ccb62ceb974cbb2b",
+          "bytes": 2196363,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/rotation.jsonl.gz",
+          "sha256": "f0860807edc9fe85d85c2259a375d99e8bc2c1cc3c6c03c63f2f47eecb9551f6",
+          "bytes": 3477077,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/native.jsonl.gz",
+          "sha256": "800cad98b92d81da758b5abe0d7c073136f43c82a9cdf239f8de1c55d02c8d85",
+          "bytes": 1710140,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cf4322d06a1dd34fb576eb145c942d855a2fc84c0c565743ebf2230f84d4dd55",
+          "bytes": 1301835,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sector_v3/2026-10-09/base_seed.jsonl.gz",
+          "sha256": "8c3b13742f1a1a615faaccfa511fa2b8adc4c7d16c2bab6c17af57fe912a0c17",
+          "bytes": 149819,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/sources/2026-10-09/special_phase.json",
+          "sha256": "3d27119e64c6ca8653ba593a743eb5da61736200612b2a21abcf2e96c05c8517",
+          "bytes": 1580,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "TRUE": 274,
+          "UNKNOWN": 4950
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 2805,
+        "PIT_eligible": 0,
+        "T0_date_count": 5,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 913,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-09/6c04ca70243fb34e33adef9e472fa229fab57aa8968a1b93db70d72105021917/owner_v3/owners/2026-10-09/market_owner_candidate_v2.json",
+        "sha256": "327c4d3dfbdf6a20219a14a86c507d413933da3ebaba39bc708f1bfcdb7a8146",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-29",
+        "breadth_common_count": 5223,
+        "breadth_evaluable": 5200,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "NORMAL",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-09",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2805,
+          "radar": 365,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "325b6e186b12d62291b03464780f0f7747dcc2c39d80cfaf7499338ade9e951c",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_dd4e887c8a06d26da415bbe20d6e3f255584df9c3b5affa0fb30799b"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-09",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 2805,
+        "radar": 365,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-12",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/adjusted.jsonl.gz",
+          "sha256": "b4a871fb70432c7aefa9788b67b173e91273234cd882d44078f1c6801384e54c",
+          "bytes": 410689,
+          "rows": 5212
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/profiles.jsonl.gz",
+          "sha256": "600c919d92931300ab24874bb0f61be87c5d0f65ed8963f06b94152e3a63e12c",
+          "bytes": 43584745,
+          "rows": 5224
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/core.jsonl.gz",
+          "sha256": "9cc9191b1f79dbbad6d936faf15e0802989f9545accccb98ed57d7ee97481182",
+          "bytes": 19783992,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "4398d8ea3e2717db36f100a2f1a2ff70ec6ea6b18fb7c50d5f1e9def2488e68f",
+          "bytes": 7671,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/structure/events.jsonl",
+          "sha256": "deb599ede409566b912a88e6b411658d59a1320cb02aa7ab5cc2a396e9737e1a",
+          "bytes": 293378,
+          "rows": 340
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/corrected_d2.json.gz",
+          "sha256": "cd7bdaa05b1c733f0a286428e69804a391da28dc35a79e9fdae645dcfabbe19e",
+          "bytes": 2043781,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "4c6d4b43042e787b499cbd34a02deaf0702878df0b1855923d8e21a2eb4da6d0",
+          "bytes": 10222531,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sources/2026-10-12/lifecycle.json",
+          "sha256": "cb970f61bc3aa381bb0f1f9770ba2f0f0226b027f17872a6f51890f120082b63",
+          "bytes": 1666843,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/market_owner_candidate_v2.json",
+          "sha256": "477f37b1199d005ad2d8d7c28bee75d6748ad82aece3def80063cc92001b6976",
+          "bytes": 6182,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "92aab8fa98c45df168334679824086c99f5b0a48a0ef581d9113e89c3da192a4",
+          "bytes": 2235530,
+          "rows": 15672
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/PERIOD_RAW.jsonl.gz",
+          "sha256": "73f39a9c17dfd8bcd3cd0b754fc5aaf393cb31329b265c5b7b7a8817354f38c4",
+          "bytes": 2232996,
+          "rows": 15672
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "90956855e90d0cb96ace274f4f70aac5915c720506cf7b9a42762a0325ada6f6",
+          "bytes": 3305711,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/2026-10-12/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "8cc6f535f075098065e00ce223f1734f5919e90730484d8687e62fd6e2f54de9",
+          "bytes": 48132448,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/raw.jsonl.gz",
+          "sha256": "a7acbc95848b8bc3eccbfb04b0cf945b65b82dfc9843cff6a52201636f3232e9",
+          "bytes": 241536,
+          "rows": 5212
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/2026-10-12/relative_sector_loo.jsonl.gz",
+          "sha256": "8843e9cb5fcc3b07f49ea1eb62242f11580ab9ad66f771e2724c8860f9cae12d",
+          "bytes": 2208464,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/2026-10-12/rotation.jsonl.gz",
+          "sha256": "a91563543dc6668cb6f76d19cd9652d2c900954be65c7c4809705731358a8e37",
+          "bytes": 3493811,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/2026-10-12/native.jsonl.gz",
+          "sha256": "4a97a03909f843184db582951ca1af71d391ef7a47c614ceaec6df20b9e5375d",
+          "bytes": 1708044,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "5c7d95955b36c3171b01e36492b1d0b87e7a9f6cf4f846392cf2188e908e829b",
+          "bytes": 1241009,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sector_v3/2026-10-12/base_seed.jsonl.gz",
+          "sha256": "d4d4bf3a2204d91ccc8cde2b95fc6f8bc2908564e3856063d94ce02c29eaa22e",
+          "bytes": 147959,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/sources/2026-10-12/special_phase.json",
+          "sha256": "70373db82ab8de06e777848cca88728286519d36537c65d896ce3398837ce9c4",
+          "bytes": 1594,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5060,
+          "TRUE": 164
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 3025,
+        "PIT_eligible": 0,
+        "T0_date_count": 6,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 340,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-12/54ed1b92bce0aceda7783f761c5003774a84c7114b8f76e372ad835dba23d290/owner_v3/owners/2026-10-12/market_owner_candidate_v2.json",
+        "sha256": "477f37b1199d005ad2d8d7c28bee75d6748ad82aece3def80063cc92001b6976",
+        "accepted": false,
+        "comparison_trade_date": "2026-09-30",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5204,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "NORMAL",
+          "stress_level": null,
+          "stress_change": "STABLE"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "UNKNOWN",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN"
+      },
+      "readindex_r2": {
+        "T0": "2026-10-12",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3025,
+          "radar": 311,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "697e0d4f715418abd2cf53778e4a6f760b62b2bb4d8d68210daad8f0216a7f51",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_680e12c1712ed717e6e990d95b92cbfa5610a1764dbc56df42496841"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-12",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 3025,
+        "radar": 311,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-13",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/adjusted.jsonl.gz",
+          "sha256": "b5cdb765f054a9489cfdfc376b1d0542a31d7e2cd40c795ec65ba47a7fc38670",
+          "bytes": 410366,
+          "rows": 5212
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/profiles.jsonl.gz",
+          "sha256": "1bf2d0e99154ebed39443fdc74f0791d1c899535228d0d0158e8968f9a09e6f1",
+          "bytes": 43580331,
+          "rows": 5225
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/core.jsonl.gz",
+          "sha256": "aeae5514746f30f6c034ce6e64597f3a52ed4ba1f838d49f5007de20de99ac78",
+          "bytes": 19787320,
+          "rows": 5225
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "e321d5b6b0084b14630d211ba0c961f72402fb06ea8cf2621076a85a5f8c43d6",
+          "bytes": 7675,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/structure/events.jsonl",
+          "sha256": "f1e6d33df47f6b23a0dfdcf42578855c50de473ab508ecd4dd17704eb9a02c93",
+          "bytes": 483270,
+          "rows": 560
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/corrected_d2.json.gz",
+          "sha256": "3b754d31fe8da1dfed18841e5434aa9d1b33d7a18860fab0bbd9ab93f9fe58c9",
+          "bytes": 2038330,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "7880a2551b55bbd28abc001b30e21307ed90781a19171fbcf695a8899cd5a8ff",
+          "bytes": 12856805,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sources/2026-10-13/lifecycle.json",
+          "sha256": "1b4e41626e67b244bd806fc4bb3614e7e228cc8f46dc171c5e5be0756393d02e",
+          "bytes": 1667158,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/market_owner_candidate_v2.json",
+          "sha256": "e7eb334f35e25f710f53f7f0498f5d3f2d345c70b3a1a1b14bb6fcdfd7299b48",
+          "bytes": 6386,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "5e527d6824b1714113f154c59505ceb427e117e9a3cee8d70d811d747c9f65bb",
+          "bytes": 2235215,
+          "rows": 15674
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/PERIOD_RAW.jsonl.gz",
+          "sha256": "3a5bcf6ecbf8f88e947554f44ca370761860626f66614e224963e0a024475566",
+          "bytes": 2232048,
+          "rows": 15674
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "a8e9aaed577d8bd262636e28dd85fc3810bb569ed66a4e708a19e6f3ba072ca5",
+          "bytes": 3307969,
+          "rows": 5225
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/2026-10-13/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "4eccea7f98031edc4135f44e0325506f195a27ba0e56a945f5b56187607a59b4",
+          "bytes": 48082189,
+          "rows": 5225
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/raw.jsonl.gz",
+          "sha256": "198ef37c4220f457dc4165d35f2a312f056cb1bc261966e5188b7bb638e6ddd5",
+          "bytes": 241641,
+          "rows": 5212
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/2026-10-13/relative_sector_loo.jsonl.gz",
+          "sha256": "aa73a8553c098f322a0817bb07358db19ba0438633f18d1b04bf77253676ce09",
+          "bytes": 2193784,
+          "rows": 5225
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/2026-10-13/rotation.jsonl.gz",
+          "sha256": "72171f10cb32983ca6969e8ced369ccb4862591681397fc939915c8e0d7f5829",
+          "bytes": 3697360,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/2026-10-13/native.jsonl.gz",
+          "sha256": "dbaf80a85cda33647f06b3bd2e4c3266a56544a7340299187d2fa07dcbe757ba",
+          "bytes": 1707877,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "abacac80c3e5c301f663b66eaac3022a71c4687ed2b4fccbf992c2ab3cc6af8d",
+          "bytes": 1240197,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sector_v3/2026-10-13/base_seed.jsonl.gz",
+          "sha256": "e4e7de47cbf3c1fa6a3c92ee3a00189f4e800e0dced820ae159c99ff833adcdb",
+          "bytes": 148967,
+          "rows": 5225
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/sources/2026-10-13/special_phase.json",
+          "sha256": "03eb803b99880e7810c0208a627ab89ae83b6de53a5957fb88f8f33097e3f9c6",
+          "bytes": 1594,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5225,
+        "core": 5225,
+        "profile": 5225,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5045,
+          "TRUE": 180
+        }
+      },
+      "d2": {
+        "rows": 5225,
+        "unique_ids": 5225,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 3151,
+        "PIT_eligible": 0,
+        "T0_date_count": 7,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 560,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-13/e137824cf5243c5d3af081299a5b25f7e5725ff17d36fdde932bf1561904ac47/owner_v3/owners/2026-10-13/market_owner_candidate_v2.json",
+        "sha256": "e7eb334f35e25f710f53f7f0498f5d3f2d345c70b3a1a1b14bb6fcdfd7299b48",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-08",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5206,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "NORMAL",
+          "stress_level": null,
+          "stress_change": "STABLE"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "UNKNOWN",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN"
+      },
+      "readindex_r2": {
+        "T0": "2026-10-13",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3151,
+          "radar": 163,
+          "sectors": 400,
+          "stocks": 5225
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "ed2af867213c6686e9aa5b42445b2088f9b354561a06d920c0bce1a7f9cc62b7",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_8fe3ab5f9d83e56fa00c64c7036f665543576e9ca51ae40e752621ce"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-13",
+        "home_rendered": true,
+        "stocks": 5225,
+        "sectors": 400,
+        "focus": 3151,
+        "radar": 163,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-14",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/adjusted.jsonl.gz",
+          "sha256": "0d517ad79193b2637682a90ed0382fb8d98a3e75a8611f131f91fcce5844057e",
+          "bytes": 410565,
+          "rows": 5214
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/profiles.jsonl.gz",
+          "sha256": "043652b6799f3f881480d8accfe3a8da80f961d690be526ce78961cb8a859977",
+          "bytes": 43581223,
+          "rows": 5225
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/core.jsonl.gz",
+          "sha256": "021c0e6fbcb3684d0fc8a2aa6f3f7b40353c22a2b7391264911aa2493ccdfcce",
+          "bytes": 19778919,
+          "rows": 5225
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "d54904f7664b18838342192d72a64c1726c3ff5b7c21a442018893a3a248f56b",
+          "bytes": 7675,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/structure/events.jsonl",
+          "sha256": "e4f0750b98653c8260b2603cd78f35c847e7d053e510141df3c27275c77e3440",
+          "bytes": 239880,
+          "rows": 278
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/corrected_d2.json.gz",
+          "sha256": "5e466ef0bcb3fab050fdedea4c94a12943e0503c825c8961e16f2f85cb09a8bc",
+          "bytes": 2032533,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "f2b605272845cc9835eb422f4a804c3adbe744abf198841029a1b38c68b31dfd",
+          "bytes": 15712244,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sources/2026-10-14/lifecycle.json",
+          "sha256": "a7c58eb16b0266d3f744d8e62830084ecdd2936d704d3653501038262551391e",
+          "bytes": 1667174,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/market_owner_candidate_v2.json",
+          "sha256": "9cab0076ccda39767ba82d6a2f8d0ca22994ae6c4bc7133c1887a361bc198741",
+          "bytes": 6599,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "cd376dce31ce4baaf79066b42d93d366b48645fbbcb1abec5e95b369204cf6a4",
+          "bytes": 2241951,
+          "rows": 15674
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/PERIOD_RAW.jsonl.gz",
+          "sha256": "1ea93e748f8021ca481b574b2f80c245e006b86cde958a5a1a596e1d2a962756",
+          "bytes": 2238836,
+          "rows": 15674
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "c267064c94fea087c52e21381de1bdef3076ac21077e47f41f4bf149a28d48c3",
+          "bytes": 3280429,
+          "rows": 5225
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/2026-10-14/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "e205cfdaaf0d092b596913a014ac2cfcbb045ac95f227a71d69a4b9893fb436c",
+          "bytes": 48132554,
+          "rows": 5225
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/raw.jsonl.gz",
+          "sha256": "c871e5970ad1bd853e92b6e243fa6c559cf2414334fdbcd4a56a0575c64622d4",
+          "bytes": 240933,
+          "rows": 5214
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/2026-10-14/relative_sector_loo.jsonl.gz",
+          "sha256": "cf2608d04a3c5f960866cb604d50607ce9ec5da6364bc1eab400f7538fba3103",
+          "bytes": 2212484,
+          "rows": 5225
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/2026-10-14/rotation.jsonl.gz",
+          "sha256": "4a5037ad83b2a2f430ab8547b35df6c99754ac07484cd0141111873c7fccc15a",
+          "bytes": 3735336,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/2026-10-14/native.jsonl.gz",
+          "sha256": "048518d767292950b1638851444bc0a44b4833cbb2073dce67e0cce88c50edff",
+          "bytes": 1709640,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "cd3937bbb586cae9e46bfa0fd9a399603e2b2fe225d2f560dc7ebdc32ca878d9",
+          "bytes": 1240408,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sector_v3/2026-10-14/base_seed.jsonl.gz",
+          "sha256": "2d1fe47982feddb067687c77f1c556ff9b015acdf04b079ee21c5af87ed1ab09",
+          "bytes": 148397,
+          "rows": 5225
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/sources/2026-10-14/special_phase.json",
+          "sha256": "c7c983118108567562af59479dd660a605b9a50135fb8140cd84b2a3d59e397b",
+          "bytes": 1594,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5225,
+        "core": 5225,
+        "profile": 5225,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5080,
+          "TRUE": 145
+        }
+      },
+      "d2": {
+        "rows": 5225,
+        "unique_ids": 5225,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 3247,
+        "PIT_eligible": 0,
+        "T0_date_count": 8,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 278,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-14/727b8c2e04b1b84d190da7da1bdae5338c3b575f94ebac4ab4f8314e624c1157/owner_v3/owners/2026-10-14/market_owner_candidate_v2.json",
+        "sha256": "9cab0076ccda39767ba82d6a2f8d0ca22994ae6c4bc7133c1887a361bc198741",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-09",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5206,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "THIN",
+          "stress_level": null,
+          "stress_change": "STABLE"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "UNKNOWN",
+        "regime_value": "UNKNOWN",
+        "regime_unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN"
+      },
+      "readindex_r2": {
+        "T0": "2026-10-14",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3247,
+          "radar": 177,
+          "sectors": 400,
+          "stocks": 5225
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "7f9d475145d5d5a91ed1eec4183a7f859cdd8d1930385a43235ce1319e9c85a9",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_d1d1f1437d6eadf7a1900fa04cd45743e236626079735a4f5667746c"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-14",
+        "home_rendered": true,
+        "stocks": 5225,
+        "sectors": 400,
+        "focus": 3247,
+        "radar": 177,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-15",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/adjusted.jsonl.gz",
+          "sha256": "1b857b62c0456b0b567b0858266a1a7e490fdadae7d62f66c10f134f7bcf95e1",
+          "bytes": 410237,
+          "rows": 5215
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/profiles.jsonl.gz",
+          "sha256": "060dd3b8c33e1d531659acb83b9f1f1c2d8b7225193850cebdf39d5b493571a0",
+          "bytes": 43602991,
+          "rows": 5226
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/core.jsonl.gz",
+          "sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+          "bytes": 19773541,
+          "rows": 5226
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "3f5a0399c581391fbbf05a5681007656cc3199611dcbc8dc6d6f48d75b6080d8",
+          "bytes": 8049,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/structure/events.jsonl",
+          "sha256": "0a537e00bfa1a334155ba8f5b636387ae4862832817f50ff45c5c51fdbddc155",
+          "bytes": 173759,
+          "rows": 203
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d2.json.gz",
+          "sha256": "11aa9e3972caeec0be963770cc8e560ecd117195825214140906a37eafbc7f12",
+          "bytes": 1575994,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "b5dc6bc52cb5af332dcf516915e3f50b94ddd340db54529511d5f3197e0103c3",
+          "bytes": 241444,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sources/2026-10-15/lifecycle.json",
+          "sha256": "9f1c837800c61733944fb3b58b89b21395899927c28954fe7fd55e67177c5319",
+          "bytes": 1667486,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/market_owner_candidate_v2.json",
+          "sha256": "2b0f0374a2b2c009eb4494fae4fc0b96a719a5d6fca326c5ed7595abf602ee8d",
+          "bytes": 6768,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "8d091e22f906603640bfb8eec696299b0e446a12cf123fcd0ac29184b49f2759",
+          "bytes": 2242721,
+          "rows": 15676
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/PERIOD_RAW.jsonl.gz",
+          "sha256": "1f30214f5c407e2374cb24e6d47587999e55abc99124e0d119a368344cc856ba",
+          "bytes": 2239621,
+          "rows": 15676
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3_d0_formal_r2/owners/2026-10-15/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "570f68d3cc90cb68ef6a1102d91d535795ea46920c4ded2a9c6f6b23b574fb99",
+          "bytes": 2892297,
+          "rows": 5226
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/2026-10-15/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "808f0f841ad0175d3bfa8e03f45f36a6260fce93122af8817796e1427b02ad05",
+          "bytes": 48142605,
+          "rows": 5226
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/raw.jsonl.gz",
+          "sha256": "47fcb456f599697239da07757e26ee7e5f40550f3a3f3e84d2bb7b51bf1bcfd8",
+          "bytes": 241266,
+          "rows": 5215
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/2026-10-15/relative_sector_loo.jsonl.gz",
+          "sha256": "a785f6a83ff9810283418ea6c1e658c599baeb92e2ea03839be0f9a7d4eff9da",
+          "bytes": 2211317,
+          "rows": 5226
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/2026-10-15/rotation.jsonl.gz",
+          "sha256": "1bac59fd26fc24b02ffa081676389d02c70a16daf26f37dcc7fddd02967f06d7",
+          "bytes": 3746194,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/2026-10-15/native.jsonl.gz",
+          "sha256": "0433726f7617bce180a70f18f7922d02589d4b77c4d3166c7f9b2494e0be48df",
+          "bytes": 1705481,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "3c5e284550a348256c5b39f34098b7513578a4d8e040c809ef3bf2d5d7338004",
+          "bytes": 1240399,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sector_v3/2026-10-15/base_seed.jsonl.gz",
+          "sha256": "b1409bfe25dd21aa2cd46371e2a2c942d894e091c68e095da22e9efa623c28e9",
+          "bytes": 148158,
+          "rows": 5226
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/sources/2026-10-15/special_phase.json",
+          "sha256": "982d566800b4a3edeba5c1beaf31ea8705969b3dcad34c3b25691b808b03ed98",
+          "bytes": 1580,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5226,
+        "core": 5226,
+        "profile": 5226,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "FALSE": 5111,
+          "TRUE": 64,
+          "UNKNOWN": 51
+        }
+      },
+      "d2": {
+        "rows": 5226,
+        "unique_ids": 5226,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 404,
+        "PIT_eligible": 0,
+        "T0_date_count": 1,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 203,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-15/f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0/owner_v3/owners/2026-10-15/market_owner_candidate_v2.json",
+        "sha256": "2b0f0374a2b2c009eb4494fae4fc0b96a719a5d6fca326c5ed7595abf602ee8d",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-12",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5207,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "NORMAL",
+          "stress_level": "LOW",
+          "stress_change": "STABLE"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-15",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 404,
+          "radar": 367,
+          "sectors": 400,
+          "stocks": 5226
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "199ee023b7135297ed476e70ffd34257765343b970c13b2b141427301db5094b",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_0c32b4ec2e0c5311302356f35695210f8d92adc1e05cf2ee5cce2309"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-15",
+        "home_rendered": true,
+        "stocks": 5226,
+        "sectors": 400,
+        "focus": 404,
+        "radar": 367,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-16",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/adjusted.jsonl.gz",
+          "sha256": "76a9599b4bc986e13e5718c4806f20adcb4eb4ad0c4e9e521c572fc66dbfd656",
+          "bytes": 410524,
+          "rows": 5216
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/profiles.jsonl.gz",
+          "sha256": "b1ecca87e2e081696c35ffae3762f800eadba3b3299a4f9cc40b5be13becf7b3",
+          "bytes": 43653872,
+          "rows": 5226
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/core.jsonl.gz",
+          "sha256": "2b6c61af288488110cbe4ea161d0d08a56518c43a01f88b701cefc13ff5daa49",
+          "bytes": 19823096,
+          "rows": 5226
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "ca5f616ff33a13dd9d547d7c886497f50d72480182bac19cae8f17e694fef41b",
+          "bytes": 8049,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/structure/events.jsonl",
+          "sha256": "0b6760465f9ebf796dae86591c965ed1c9a8e59627c0204b6b3d7ab034e5f76d",
+          "bytes": 203650,
+          "rows": 236
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/corrected_d2.json.gz",
+          "sha256": "cdd2693965a8263a02cc74c98b08acc963e778dce3b1f9e3993ac1834e1546ed",
+          "bytes": 2005183,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "f0f6935e15fe06bc5f5f55cf7b627a7a13775ecd7ba6e077d8891a176e09d27a",
+          "bytes": 15517001,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sources/2026-10-16/lifecycle.json",
+          "sha256": "590442b71dcb62e508021d5c567185047dfe245bb7fb7495f1fa45c2f7cef290",
+          "bytes": 1667501,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/market_owner_candidate_v2.json",
+          "sha256": "9fd062f48501a3126d735d8c897be293cbbbb8001e85a554c33a13a82232d3d1",
+          "bytes": 6976,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "38cbb8a78f6f8a27c81e132b109762f5c5a11d29fb872b02ee76a29edec81a10",
+          "bytes": 2243748,
+          "rows": 15676
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/PERIOD_RAW.jsonl.gz",
+          "sha256": "4879d2d76aece61e077ea3e53feb6a8df50eb45e985a5afb6b1a6d8e4c2a41b5",
+          "bytes": 2240551,
+          "rows": 15676
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/d0_formal_aggregation_r2/73dc094a9bc0a6d3310bc74880c8e5f7ae117b6eca618dd1b230bfecb2371da9/D0_PREDICATE_OWNER.jsonl.gz",
+          "sha256": "73dc094a9bc0a6d3310bc74880c8e5f7ae117b6eca618dd1b230bfecb2371da9",
+          "bytes": 3465254,
+          "rows": 5226
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/2026-10-16/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "b7b00f46832ef268d883292eee26195f1450279df6a939da33f65d75fba145de",
+          "bytes": 48195924,
+          "rows": 5226
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/raw.jsonl.gz",
+          "sha256": "cd000389748ec8616ce5d5e4ee97d01707921984b6ef2354caa8faad3ebe284e",
+          "bytes": 241474,
+          "rows": 5216
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/2026-10-16/relative_sector_loo.jsonl.gz",
+          "sha256": "7f56975f34a7ae68e0705ccc4e600fc582267b9a7e2568893a6248271cfcc46c",
+          "bytes": 2205034,
+          "rows": 5226
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/2026-10-16/rotation.jsonl.gz",
+          "sha256": "5ac59a254686ec98cd76726ee3e49a654588a4209b08376ed8e314f55239a453",
+          "bytes": 4790809,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/2026-10-16/native.jsonl.gz",
+          "sha256": "d8704a6eb4fdab2e11ce5d3af7d1f953229c1eb13767717d5e6ff8a24089ae00",
+          "bytes": 1706704,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "ed4900cbb256b7d9de3a41991d1e1b54c5964d44b8c5ac9dd28793243a5d323c",
+          "bytes": 1240170,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sector_v3/2026-10-16/base_seed.jsonl.gz",
+          "sha256": "788d74640c97fef653fed9f328df595d45b0f643acbdb30a33e19f7294becd09",
+          "bytes": 146882,
+          "rows": 5226
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/sources/2026-10-16/special_phase.json",
+          "sha256": "d63a6cb2ad3a454f668b0acbae016a1c620d3c615a932b3142772f3f566630fd",
+          "bytes": 1594,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5226,
+        "core": 5226,
+        "profile": 5226,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": false,
+        "readindex_binding": null
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "FALSE": 5084,
+          "TRUE": 90,
+          "UNKNOWN": 52
+        }
+      },
+      "d2": {
+        "rows": 5226,
+        "unique_ids": 5226,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 3823,
+        "PIT_eligible": 0,
+        "T0_date_count": 10,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 236,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-16/2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b/owner_v3/owners/2026-10-16/market_owner_candidate_v2.json",
+        "sha256": "9fd062f48501a3126d735d8c897be293cbbbb8001e85a554c33a13a82232d3d1",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-13",
+        "breadth_common_count": 5225,
+        "breadth_evaluable": 5209,
+        "axes": {
+          "breadth_axis": "STABLE",
+          "participation_axis": "NORMAL",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-16",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3575,
+          "radar": 416,
+          "sectors": 400,
+          "stocks": 5226
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "895cc072844548c9d0bbc337b030ee328168ebb9d26ab3d65b17166ed452afda",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_68bd38e3f85df372446c93b0a1be692d25a819e11025a47813bf145b"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-16",
+        "home_rendered": true,
+        "stocks": 5226,
+        "sectors": 400,
+        "focus": 3575,
+        "radar": 416,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-19",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/adjusted.jsonl.gz",
+          "sha256": "e8630b3996469d32233250ff9998dcf3ff8beb7ca70ed475bb7e8366e680a254",
+          "bytes": 410281,
+          "rows": 5213
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/profiles.jsonl.gz",
+          "sha256": "5cd1239eb8194d00fac00c2a5c7ab4fed8db51ff726c10fdc0cb62cdfdf1cb10",
+          "bytes": 43582102,
+          "rows": 5224
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/core.jsonl.gz",
+          "sha256": "a71a5aeffdfe13374f4afafb21de33be5662bef0f606aba285cac9fd50416bd2",
+          "bytes": 19763976,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "42ccb76e9054989ad7221f9c121c65cb807fb6a96189b977a835425edb454332",
+          "bytes": 8049,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/structure/events.jsonl",
+          "sha256": "2d39cd1a7286580ab814ecb75c7e547b2aeecef79e378dc2dbb5d0972fd0ffd9",
+          "bytes": 436656,
+          "rows": 506
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/corrected_d2.json.gz",
+          "sha256": "1b216fbc27c5c3a5b64aab7fdc00bb40a6b9d8cbf3bf50996d79b79a763acd6a",
+          "bytes": 2022490,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "a9363674ae2021cda52623799a1396930e821034af9279e7adeb4bfb2144a946",
+          "bytes": 17385351,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sources/2026-10-19/lifecycle.json",
+          "sha256": "2b930d0e4678e3101c86c505ab3a3c5a4596155fe35ad469b3e2ecf3d5eb756c",
+          "bytes": 1666855,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/market_owner_candidate_v2.json",
+          "sha256": "4ca02b5649b4718f2b61716a21a970a7c689333a4451f411dde1a2ce1775294c",
+          "bytes": 7189,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "991a141efd6a571044984048906452d06e109bfabe1e530b7584fc0c03da167e",
+          "bytes": 3108245,
+          "rows": 20894
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/PERIOD_RAW.jsonl.gz",
+          "sha256": "4507ac9263a0b04e2ba29f33262a166f853cd84ed16459351242595af81561b0",
+          "bytes": 3105214,
+          "rows": 20894
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/d0_formal_aggregation_r2/363f1d186fc2969211d89957bcf4a7a4adadff957f0420693efb18ddee1af792/D0_PREDICATE_OWNER.jsonl.gz",
+          "sha256": "363f1d186fc2969211d89957bcf4a7a4adadff957f0420693efb18ddee1af792",
+          "bytes": 3471888,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/2026-10-19/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "5727cba9f174acf8f82e48fff432dc18e99ab48a0f0b150c124ae0521280702d",
+          "bytes": 48070227,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/raw.jsonl.gz",
+          "sha256": "a8fecbfd4bc8e1c89171501561572c914e43f2436eb628bcc4446fd17933f1c9",
+          "bytes": 240909,
+          "rows": 5213
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/2026-10-19/relative_sector_loo.jsonl.gz",
+          "sha256": "1faeba7744975f289ff3065a6e9c9dc8671d049ced7de996a21bd5b6eaf417fd",
+          "bytes": 2167085,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/2026-10-19/rotation.jsonl.gz",
+          "sha256": "4e42c5904bf7222c5a453b7acb01d6a49e710573092056fd303687b572d3c7d1",
+          "bytes": 4832345,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/2026-10-19/native.jsonl.gz",
+          "sha256": "0691087e9ae4915e2ac2361ce0ffaffbbe55ccf31f9160717fd857f9c60002d0",
+          "bytes": 1706981,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "20f9f6d231275bbd00f4dea1e51f9b805e50c930ff333a878575681f64c0ba93",
+          "bytes": 1238769,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sector_v3/2026-10-19/base_seed.jsonl.gz",
+          "sha256": "bc5115f58fc57def9fcb5a55a80b8973e3d11f757a3bb6c2108e711a96eff1ce",
+          "bytes": 146381,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/sources/2026-10-19/special_phase.json",
+          "sha256": "e64095b15159266dc53aee35ee20b8d88b12825707dba817a66a9b65a13d7762",
+          "bytes": 1594,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": true,
+        "readindex_binding": {
+          "T0": "2026-10-19",
+          "contract_id": "V4_READ_INDEX_R2",
+          "counts": {
+            "focus": 3673,
+            "radar": 318,
+            "sectors": 400,
+            "stocks": 5224
+          },
+          "database_identity": {
+            "database": "market_research",
+            "database_oid": 646711,
+            "host": "127.0.0.1/32",
+            "port": 5432
+          },
+          "digest": "f3de2c87ccfd49c4faa5862c0c34be6a5bcce2878ad737efa2dbbdde45bd0ac4",
+          "engine": "postgresql",
+          "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+          "schema": "v4_c94ffc1071e8bf4c7d526524de1a1ac1eee38912c76a3e55c5ae2853"
+        }
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "FALSE": 5018,
+          "TRUE": 152,
+          "UNKNOWN": 54
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 4134,
+        "PIT_eligible": 0,
+        "T0_date_count": 11,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 506,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/market_owner_candidate_v2.json",
+        "sha256": "4ca02b5649b4718f2b61716a21a970a7c689333a4451f411dde1a2ce1775294c",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-14",
+        "breadth_common_count": 5223,
+        "breadth_evaluable": 5208,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "NORMAL",
+          "stress_level": "LOW",
+          "stress_change": "RISING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-19",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3673,
+          "radar": 318,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "f3de2c87ccfd49c4faa5862c0c34be6a5bcce2878ad737efa2dbbdde45bd0ac4",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_c94ffc1071e8bf4c7d526524de1a1ac1eee38912c76a3e55c5ae2853"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-19",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 3673,
+        "radar": 318,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-20",
+      "owners": {
+        "adjusted": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6/owners/2026-10-20/adjusted.jsonl.gz",
+          "sha256": "e70edd8874f0b493a5564471a8936949b33dc096041b886659183477a7c9ea62",
+          "bytes": 410874,
+          "rows": 5217
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/profiles.jsonl.gz",
+          "sha256": "1b2186d221850a3f2bcd1ae145e835e20aff636f6971769a08fe02f292ebf455",
+          "bytes": 43596600,
+          "rows": 5224
+        },
+        "core": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6/owners/2026-10-20/core.jsonl.gz",
+          "sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83",
+          "bytes": 19756712,
+          "rows": 5226
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "274405f6085eea44636c89ff239b051daebc5394ffe5fd8ab85b56988d5a8826",
+          "bytes": 8051,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/structure/events.jsonl",
+          "sha256": "36807e599adb08f42ee4a394fd4fb1502f1306761fd812d4acf7f57e046d8b4a",
+          "bytes": 439954,
+          "rows": 514
+        },
+        "focus": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6_focus/owners/2026-10-20/corrected_d2.json.gz",
+          "sha256": "d6849802fce2e51c01f2400a4e3202b988666b7002621e93e435fb9a3be0f4d0",
+          "bytes": 1598098,
+          "rows": null
+        },
+        "forward": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6_focus/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "050456abb20f4d77752132f3bc492247f30239c8fb5b2b1daa2b903e8d601558",
+          "bytes": 403122,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sources/2026-10-20/lifecycle.json",
+          "sha256": "1c6a04a5c8d0c7c0c4151ef5792bb558ccf297056e21a1e8fd6daa47c35bba6d",
+          "bytes": 1666880,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/market_owner_candidate_v2.json",
+          "sha256": "b8ab77aca85ff3e4c4a676eac003c86da9303f0187965575a1a7d96028d013e6",
+          "bytes": 7420,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "6f8ddfeb87f8f750e14a926f25118fb573c7b27355c5f9205b11f02cc172fdd9",
+          "bytes": 3113499,
+          "rows": 20894
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/PERIOD_RAW.jsonl.gz",
+          "sha256": "2a8a2f599ddc213bfcdc550c8c6d5cd817bdda4ba0490e131e46097a13b0cfc0",
+          "bytes": 3108847,
+          "rows": 20894
+        },
+        "prewatch": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6_focus/owners/2026-10-20/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "e42078311d79651a87c0133ef5e90816d84e039fcbff483138fdb660bfce6d53",
+          "bytes": 4264679,
+          "rows": 5226
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/2026-10-20/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "39d63415503546d42d8011d5093866dfcad6a19ebf046c065cbd0026d074c703",
+          "bytes": 48165648,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "docs/evidence/functional_r8_annotation_followup_20261022/rps_endpoint_recompute_r6/owners/2026-10-20/raw.jsonl.gz",
+          "sha256": "6c0d521bd47aa25d2c3be2580000f11f9e20d638b03cb2f0af421c5129b6a14a",
+          "bytes": 241005,
+          "rows": 5217
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/2026-10-20/relative_sector_loo.jsonl.gz",
+          "sha256": "56403734bbb584af7b4d0e5e8fa3cd8297458b42f2d496f18b91355228acc507",
+          "bytes": 2173866,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/2026-10-20/rotation.jsonl.gz",
+          "sha256": "898673856deb95e1d29ee50a824e1a41fa833a1e42b659a71ffd81a4944dbc81",
+          "bytes": 5093245,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/2026-10-20/native.jsonl.gz",
+          "sha256": "2840a3657eff4fd3abda18e1e5423e376ec8e374a4cb47c1265d70a9fa2785f7",
+          "bytes": 1711218,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "795e0a9c2970736b9cc84a03526830af1ca8ab71a9eaa42d525de77ffb41fd60",
+          "bytes": 1080737,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sector_v3/2026-10-20/base_seed.jsonl.gz",
+          "sha256": "61874f1d83c3620dedda8635ce1f76edd39b48eab16cb5c2a4ed1096516d5568",
+          "bytes": 150105,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/sources/2026-10-20/special_phase.json",
+          "sha256": "082a505d3a7aa1bbb33738d6f9967807d18e23b86c589120defa1328d29430ce",
+          "bytes": 1580,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5226,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 2,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": true,
+        "readindex_binding": {
+          "T0": "2026-10-20",
+          "contract_id": "V4_READ_INDEX_R2",
+          "counts": {
+            "focus": 679,
+            "radar": 607,
+            "sectors": 400,
+            "stocks": 5224
+          },
+          "database_identity": {
+            "database": "market_research",
+            "database_oid": 646711,
+            "host": "127.0.0.1/32",
+            "port": 5432
+          },
+          "digest": "0fe56436b670a9c8ee868e89d43fcdcc8ee6b1e9f606f64e470466ab4d1c31f8",
+          "engine": "postgresql",
+          "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+          "schema": "v4_4d792b71062e1cd883c20208ad4d1467a7bab76ecb87c88bb831dfa3"
+        }
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "TRUE": 141,
+          "FALSE": 5033,
+          "UNKNOWN": 52
+        }
+      },
+      "d2": {
+        "rows": 5226,
+        "unique_ids": 5226,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 679,
+        "PIT_eligible": 0,
+        "T0_date_count": 1,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 514,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/market_owner_candidate_v2.json",
+        "sha256": "b8ab77aca85ff3e4c4a676eac003c86da9303f0187965575a1a7d96028d013e6",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-15",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5210,
+        "axes": {
+          "breadth_axis": "IMPROVING",
+          "participation_axis": "THIN",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RECOVERY_ATTEMPT",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-20",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 679,
+          "radar": 607,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "0fe56436b670a9c8ee868e89d43fcdcc8ee6b1e9f606f64e470466ab4d1c31f8",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_4d792b71062e1cd883c20208ad4d1467a7bab76ecb87c88bb831dfa3"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-20",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 679,
+        "radar": 607,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    },
+    {
+      "trade_date": "2026-10-21",
+      "owners": {
+        "adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/adjusted.jsonl.gz",
+          "sha256": "9611cdfbe29f6ce74d77e29f42d08fae226c5a9bf4591ef02c405b26b1d62745",
+          "bytes": 410616,
+          "rows": 5216
+        },
+        "base_profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/profiles.jsonl.gz",
+          "sha256": "c44d052278628487eb172aa26b37cbf4165766ab07769d8a48f24f8c2963896a",
+          "bytes": 43572289,
+          "rows": 5224
+        },
+        "core": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/core.jsonl.gz",
+          "sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801",
+          "bytes": 19755700,
+          "rows": 5224
+        },
+        "diagnostic": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PROFILE_STRUCTURE_OWNER.json",
+          "sha256": "b5f51dc47cfd42824f85a9052d89c54d9c15f4582686500b52ba6f657e2d6bb4",
+          "bytes": 8049,
+          "rows": null
+        },
+        "events": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/structure/events.jsonl",
+          "sha256": "01bd5131aa1b6efe1f46aa5b70af280a5951a7aa7bd751823c5e9cde2df7913f",
+          "bytes": 226757,
+          "rows": 265
+        },
+        "focus": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/corrected_d2.json.gz",
+          "sha256": "2320b768f5690d5c056693e0311a30f296d62915a35820aba1096c045a699911",
+          "bytes": 2030582,
+          "rows": null
+        },
+        "forward": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/CORRECTED_FOCUS_FORWARD.json.gz",
+          "sha256": "ef57471ccc4d2c5a66205767164646ec818df7d75f9d0e5e58aad4c7f00191a0",
+          "bytes": 19945104,
+          "rows": null
+        },
+        "lifecycle": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sources/2026-10-21/lifecycle.json",
+          "sha256": "cfedfc2d338ca6c1340d6693a87e5761600505163404b9e4a647f8aa101f1a08",
+          "bytes": 1666872,
+          "rows": null
+        },
+        "market": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "cf98bb746fcb0a342200e87b6794d0b02b25a8366ea48a683a58a61e9466fed4",
+          "bytes": 7623,
+          "rows": null
+        },
+        "period_adjusted": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PERIOD_ADJUSTED.jsonl.gz",
+          "sha256": "92b5ac56f6b027604bf49c611874c19705ca6c87aa1b49ec2e36ca75ae9176fa",
+          "bytes": 3119503,
+          "rows": 20894
+        },
+        "period_raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/PERIOD_RAW.jsonl.gz",
+          "sha256": "1d21ed373b58b6a0eefc0dc2e639e2f023280809e3516d02c8d67072326f0ffe",
+          "bytes": 3114838,
+          "rows": 20894
+        },
+        "prewatch": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/corrected_d0_prewatch.jsonl.gz",
+          "sha256": "a3c78bb405be0661e5570ca773dfb42ac625d6ca5440f6947ef808eeafa16c27",
+          "bytes": 3285257,
+          "rows": 5224
+        },
+        "profile": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/profiles_with_tdx_relative.jsonl.gz",
+          "sha256": "5feb39ac104c494dcaeaa49187ad44779cbbc3d4e9e69c971f63405dd7fb64ec",
+          "bytes": 48068288,
+          "rows": 5224
+        },
+        "raw": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/raw.jsonl.gz",
+          "sha256": "59e8f1055a69de96ec210c1e610a1d4595606eaed591f52f2f1bfe067303bb08",
+          "bytes": 240788,
+          "rows": 5216
+        },
+        "relative_sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/relative_sector_loo.jsonl.gz",
+          "sha256": "9164982c1cac07bafb99feaa83c5ff23b4ea75116b88739d82b02353885e01bb",
+          "bytes": 2187405,
+          "rows": 5224
+        },
+        "rotation": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/rotation.jsonl.gz",
+          "sha256": "cf1512e4097c05c543eaa06947581644886053f1e34695dcda1f14f6fbb23a3e",
+          "bytes": 5133785,
+          "rows": 400
+        },
+        "sector": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/native.jsonl.gz",
+          "sha256": "af1b64a4467a15ff7700133549b44b9872b1f98696f2690eda7f5a80650c6455",
+          "bytes": 1711923,
+          "rows": 400
+        },
+        "sector_receipt": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/SECTOR_REPLAY.json",
+          "sha256": "00be6892a1ba0bed3f2083f259c6bc0d692187964c885ae0c6669c1a4bbfa55a",
+          "bytes": 1239319,
+          "rows": null
+        },
+        "seed": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sector_v3/2026-10-21/base_seed.jsonl.gz",
+          "sha256": "4b7dafc4b255fe8636d5000997ba02f3edc0abd831b1f5d56ce6fdd75c557d8b",
+          "bytes": 144869,
+          "rows": 5224
+        },
+        "special_phase": {
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/sources/2026-10-21/special_phase.json",
+          "sha256": "e5806dfe436d6cc9ab99be274a720641cb8d99dfa995fdd73ef6273087a8a0d7",
+          "bytes": 1580,
+          "rows": null
+        }
+      },
+      "identity_reconciliation": {
+        "lifecycle_active": 5224,
+        "core": 5224,
+        "profile": 5224,
+        "core_duplicate_ids": 0,
+        "profile_duplicate_ids": 0,
+        "core_only_vs_lifecycle": 0,
+        "profile_only_vs_lifecycle": 0,
+        "core_missing_from_lifecycle": 0,
+        "profile_missing_from_lifecycle": 0,
+        "sector": 400,
+        "rotation": 400,
+        "sector_rotation_set_equal": true,
+        "readindex_binding_present": true,
+        "readindex_binding": {
+          "T0": "2026-10-21",
+          "contract_id": "V4_READ_INDEX_R2",
+          "counts": {
+            "focus": 3975,
+            "radar": 413,
+            "sectors": 400,
+            "stocks": 5224
+          },
+          "database_identity": {
+            "database": "market_research",
+            "database_oid": 646711,
+            "host": "127.0.0.1/32",
+            "port": 5432
+          },
+          "digest": "6d754f92607f02760eabc04bb0585bdd17b0e3adec344200c7407d3a0352fa2f",
+          "engine": "postgresql",
+          "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+          "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+          "schema": "v4_36b669df3ca8764b591d83d06cc6ce53482f35eff3cb1e87ee86092c"
+        }
+      },
+      "d0": {
+        "confirmation_status_counts": {
+          "UNKNOWN": 5125,
+          "TRUE": 99
+        }
+      },
+      "d2": {
+        "rows": 5224,
+        "unique_ids": 5224,
+        "duplicate_ids": 0,
+        "pit_eligible_rows": 0,
+        "accepted_rows": 0
+      },
+      "forward": {
+        "episodes": 4965,
+        "PIT_eligible": 0,
+        "T0_date_count": 13,
+        "all_T0_in_candidate_dates": true
+      },
+      "event_rows": 265,
+      "market_candidate": {
+        "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+        "sha256": "cf98bb746fcb0a342200e87b6794d0b02b25a8366ea48a683a58a61e9466fed4",
+        "accepted": false,
+        "comparison_trade_date": "2026-10-16",
+        "breadth_common_count": 5224,
+        "breadth_evaluable": 5213,
+        "axes": {
+          "breadth_axis": "DETERIORATING",
+          "participation_axis": "THIN",
+          "stress_level": "LOW",
+          "stress_change": "DECLINING"
+        },
+        "trend": "WEAK",
+        "trend_quality": "OBSERVED",
+        "trend_contract": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+        "regime_candidate": "RISK_OFF",
+        "regime_value": "RISK_OFF",
+        "regime_unknown_reason": null
+      },
+      "readindex_r2": {
+        "T0": "2026-10-21",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3975,
+          "radar": 413,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "6d754f92607f02760eabc04bb0585bdd17b0e3adec344200c7407d3a0352fa2f",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_36b669df3ca8764b591d83d06cc6ce53482f35eff3cb1e87ee86092c"
+      },
+      "browser_page_readback": {
+        "browser": "Codex in-app browser",
+        "selected_date": "2026-10-21",
+        "home_rendered": true,
+        "stocks": 5224,
+        "sectors": 400,
+        "focus": 3975,
+        "radar": 413,
+        "counts_match_pg_readindex": true,
+        "market_four_axes": [
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "market_quality": "SOURCE_INCOMPLETE",
+        "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+      }
+    }
+  ],
+  "priority": {
+    "canonical_owner_dates": [
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15"
+    ],
+    "sealed_versions": 3,
+    "rows_by_date": {
+      "2026-10-13": 5625,
+      "2026-10-14": 5625,
+      "2026-10-15": 5626
+    },
+    "contract_id": "V4_DAILY_RESEARCH_PRIORITY_R1",
+    "PIT_ELIGIBLE": false,
+    "market_permission": "FACT_ONLY_NO_FORMAL_PERMISSION",
+    "other_published_candidate_dates": "no canonical Priority Owner in v4.owner_versions_priority_r1",
+    "candidate_priority_historical_api": "INVALID_OPERATIONAL_QUERY:CANDIDATE_PRIORITY_CURRENT_TOKEN_DATE_REQUIRED"
+  },
+  "cross_date_results": {
+    "core_profile_lifecycle_exact_identity_set_dates": 12,
+    "core_profile_lifecycle_total_dates": 13,
+    "sole_mismatch": "2026-10-20 Core has 2 IDs beyond Lifecycle active scope; Profile exact; no duplicates; consumer projection scoped, immutable owner retained",
+    "sector_rotation_identity_set_equal_dates": 13,
+    "sector_rotation_total_dates": 13,
+    "sector_and_rotation_rows_each_date": 400,
+    "d2_all_dates": {
+      "rows_match_lifecycle_active_scope": true,
+      "duplicate_ids": 0,
+      "pit_eligible_rows": 0,
+      "accepted_rows": 0
+    },
+    "forward_all_dates": {
+      "episodes_present": true,
+      "PIT_eligible_episodes": 0,
+      "contract_acceptance": "not granted"
+    },
+    "d0_contract": "D0 status counts are recorded, but D0 cutoff/source-seal contract is missing; statuses are not accepted as sealed business outcome",
+    "readindex_current_token": {
+      "bound_dates": 13,
+      "published_dates": 13,
+      "exact_date_set_match": true,
+      "read_responses_per_date": 3,
+      "sealed_version_per_date": 1,
+      "read_items_rows_pg": 534364
+    }
+  },
+  "readindex_final": {
+    "authority_sha256": "ae890a826b5547cb8ea6d193bd2e9ef8cfc2c0a57f5e1c4882c7f04f2c115ea8",
+    "token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+    "bound_dates": {
+      "2026-09-28": {
+        "T0": "2026-09-28",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 1178,
+          "radar": 1045,
+          "sectors": 400,
+          "stocks": 5222
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "24053f6b6fc4b8f15bc193ad3b55f22509651dbe3dc86f5cdf385730dc900f40",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_0569a1c8773a4c198a93f2d7ead843c60fd8906e60438b16b187abab"
+      },
+      "2026-09-29": {
+        "T0": "2026-09-29",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 1717,
+          "radar": 556,
+          "sectors": 400,
+          "stocks": 5223
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "d9cab4c896cf0b78e9ac8a32cc3b489d25b5738834d63f777f98c54d10c8fbb7",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_9193aa047cbb0679fea29d4d17779f2e90b935ec84b213bdd6b6a5c1"
+      },
+      "2026-09-30": {
+        "T0": "2026-09-30",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2152,
+          "radar": 442,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "ac0002e100bd86c485423056cbb51688bb05b6a285e8ba184cf3e4ad73cc80ec",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_eef887acb5502494ace6e9112122fa3f630c0ac10877ec484a559f7d"
+      },
+      "2026-10-08": {
+        "T0": "2026-10-08",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2477,
+          "radar": 393,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "2fb81aca131ee1d336db83eaa68fcebbb60e6675c8f73925b1a2941e21d86a65",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_7abfcb7c4068e5269457899793dd9136174d28a79519fddb70b1421e"
+      },
+      "2026-10-09": {
+        "T0": "2026-10-09",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 2805,
+          "radar": 365,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "325b6e186b12d62291b03464780f0f7747dcc2c39d80cfaf7499338ade9e951c",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_dd4e887c8a06d26da415bbe20d6e3f255584df9c3b5affa0fb30799b"
+      },
+      "2026-10-12": {
+        "T0": "2026-10-12",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3025,
+          "radar": 311,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "697e0d4f715418abd2cf53778e4a6f760b62b2bb4d8d68210daad8f0216a7f51",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_680e12c1712ed717e6e990d95b92cbfa5610a1764dbc56df42496841"
+      },
+      "2026-10-13": {
+        "T0": "2026-10-13",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3151,
+          "radar": 163,
+          "sectors": 400,
+          "stocks": 5225
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "ed2af867213c6686e9aa5b42445b2088f9b354561a06d920c0bce1a7f9cc62b7",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_8fe3ab5f9d83e56fa00c64c7036f665543576e9ca51ae40e752621ce"
+      },
+      "2026-10-14": {
+        "T0": "2026-10-14",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3247,
+          "radar": 177,
+          "sectors": 400,
+          "stocks": 5225
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "7f9d475145d5d5a91ed1eec4183a7f859cdd8d1930385a43235ce1319e9c85a9",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_d1d1f1437d6eadf7a1900fa04cd45743e236626079735a4f5667746c"
+      },
+      "2026-10-15": {
+        "T0": "2026-10-15",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 404,
+          "radar": 367,
+          "sectors": 400,
+          "stocks": 5226
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "199ee023b7135297ed476e70ffd34257765343b970c13b2b141427301db5094b",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_0c32b4ec2e0c5311302356f35695210f8d92adc1e05cf2ee5cce2309"
+      },
+      "2026-10-16": {
+        "T0": "2026-10-16",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3575,
+          "radar": 416,
+          "sectors": 400,
+          "stocks": 5226
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "895cc072844548c9d0bbc337b030ee328168ebb9d26ab3d65b17166ed452afda",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_68bd38e3f85df372446c93b0a1be692d25a819e11025a47813bf145b"
+      },
+      "2026-10-19": {
+        "T0": "2026-10-19",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3673,
+          "radar": 318,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "f3de2c87ccfd49c4faa5862c0c34be6a5bcce2878ad737efa2dbbdde45bd0ac4",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_c94ffc1071e8bf4c7d526524de1a1ac1eee38912c76a3e55c5ae2853"
+      },
+      "2026-10-20": {
+        "T0": "2026-10-20",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 679,
+          "radar": 607,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "0fe56436b670a9c8ee868e89d43fcdcc8ee6b1e9f606f64e470466ab4d1c31f8",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_4d792b71062e1cd883c20208ad4d1467a7bab76ecb87c88bb831dfa3"
+      },
+      "2026-10-21": {
+        "T0": "2026-10-21",
+        "contract_id": "V4_READ_INDEX_R2",
+        "counts": {
+          "focus": 3975,
+          "radar": 413,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "database_identity": {
+          "database": "market_research",
+          "database_oid": 646711,
+          "host": "127.0.0.1/32",
+          "port": 5432
+        },
+        "digest": "6d754f92607f02760eabc04bb0585bdd17b0e3adec344200c7407d3a0352fa2f",
+        "engine": "postgresql",
+        "head_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984",
+        "schema": "v4_36b669df3ca8764b591d83d06cc6ce53482f35eff3cb1e87ee86092c"
+      }
+    },
+    "bound_date_count": 13,
+    "matches_published_sessions": true,
+    "2026-10-20_close_quality": {
+      "KNOWN": 5217,
+      "SOURCE_INCOMPLETE": 7,
+      "reason": "DATED_ADJUSTED_SECURITY_ROW_MISSING"
+    },
+    "historical_bindings_retained": true,
+    "old_2026_10_20_digest": "9e98a746ef17e35a75776fe09765d24ecf4e8cd0806cf7d1f0968d44dc1ebdb8",
+    "final_2026_10_20_digest": "0fe56436b670a9c8ee868e89d43fcdcc8ee6b1e9f606f64e470466ab4d1c31f8",
+    "authority_pre_all_date_build_backup": {
+      "path": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PRE_ALL_DATE_BUILD_20261024.json",
+      "sha256": "812f4451890f438e12aef3fdbffc4432bb0abe6a9a74f52863444f85ca3ab04e"
+    }
+  },
+  "pg_after_writes": {
+    "database": "market_research",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "v4_schemas": 125,
+    "v4_tables": 523,
+    "exact_rows": 4998994,
+    "readindex_rows": 534364,
+    "previous_after_10_20_rebuild": {
+      "schemas": 115,
+      "tables": 493,
+      "exact_rows": 4914745,
+      "readindex_rows": 450155
+    },
+    "delta_from_10_additional_dates": {
+      "schemas": 10,
+      "tables": 30,
+      "exact_rows": 84249,
+      "readindex_rows": 84209
+    },
+    "business_data_physically_deleted": false
+  },
+  "browser_acceptance": {
+    "browser": "Codex in-app browser",
+    "url": "http://127.0.0.1:28766/v4?trade_date=2026-10-20&offset=0",
+    "selected_date": "2026-10-20",
+    "visible_counts": {
+      "stocks": 5224,
+      "sectors": 400,
+      "radar": 607
+    },
+    "market_axes": [
+      "来源不足",
+      "来源不足",
+      "来源不足",
+      "来源不足"
+    ],
+    "market_heading": "市场四轴事实 · 综合环境候选未接受",
+    "screenshot_observed": true,
+    "local_browser_used": false,
+    "all_home_dates": {
+      "dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "count": 13,
+      "all_selected_and_rendered": true,
+      "per_date_counts": {
+        "2026-09-28": {
+          "stocks": 5222,
+          "sectors": 400,
+          "focus": 1178,
+          "radar": 1045
+        },
+        "2026-09-29": {
+          "stocks": 5223,
+          "sectors": 400,
+          "focus": 1717,
+          "radar": 556
+        },
+        "2026-09-30": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 2152,
+          "radar": 442
+        },
+        "2026-10-08": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 2477,
+          "radar": 393
+        },
+        "2026-10-09": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 2805,
+          "radar": 365
+        },
+        "2026-10-12": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 3025,
+          "radar": 311
+        },
+        "2026-10-13": {
+          "stocks": 5225,
+          "sectors": 400,
+          "focus": 3151,
+          "radar": 163
+        },
+        "2026-10-14": {
+          "stocks": 5225,
+          "sectors": 400,
+          "focus": 3247,
+          "radar": 177
+        },
+        "2026-10-15": {
+          "stocks": 5226,
+          "sectors": 400,
+          "focus": 404,
+          "radar": 367
+        },
+        "2026-10-16": {
+          "stocks": 5226,
+          "sectors": 400,
+          "focus": 3575,
+          "radar": 416
+        },
+        "2026-10-19": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 3673,
+          "radar": 318
+        },
+        "2026-10-20": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 679,
+          "radar": 607
+        },
+        "2026-10-21": {
+          "stocks": 5224,
+          "sectors": 400,
+          "focus": 3975,
+          "radar": 413
+        }
+      },
+      "pg_readindex_api_page_counts_equal": true,
+      "all_market_axes_unknown": true,
+      "all_market_quality": "SOURCE_INCOMPLETE"
+    },
+    "entrypoint_checks_2026_10_20": {
+      "stocks": "RENDERED",
+      "sectors": "RENDERED",
+      "focus": "RENDERED",
+      "market": "RENDERED",
+      "diagnostics": "RENDERED",
+      "forward": "LOADING_UNRESOLVED",
+      "priority_api": "INVALID_OPERATIONAL_QUERY:CANDIDATE_PRIORITY_CURRENT_TOKEN_DATE_REQUIRED"
+    }
+  },
+  "core_numeric_reconciliation": {
+    "evidence_file": "R10_CORE_NUMERIC_RECONCILIATION_20261024.json",
+    "same_day_clv_formula": "(close-low)/(high-low)",
+    "dates": 13,
+    "recalculated_rows": 67698,
+    "mismatches": 0,
+    "other_core_fields": "NOT_COMPLETE: exact QFQ historical price coordinate is not bound into the per-day raw Owner for all dates",
+    "source_cause": "SOURCE_BASIS_MISSING_FOR_CROSS_DATE_RECALCULATION",
+    "2026-10-21_oracle": {
+      "evidence_file": "R10_CORE_MARKET_ORACLE_20261021.json",
+      "status": "SCOPED_NUMERIC_PASS",
+      "ret1_comparisons": 5216,
+      "unknown_ret1": 8,
+      "breadth_denominator": 5224,
+      "raw_quotes": 5216,
+      "exact_amount_sum": "5716687389023/4",
+      "index_numeric_comparisons": 3600,
+      "limit_rows": 5224,
+      "known_limit_rows": 5198,
+      "limit_numeric_comparisons": 25990,
+      "differences": 0
+    }
+  }
+}

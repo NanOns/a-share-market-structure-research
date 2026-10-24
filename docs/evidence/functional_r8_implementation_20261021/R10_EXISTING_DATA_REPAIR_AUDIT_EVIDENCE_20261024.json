@@ -6,7 +6,7 @@
   "recorded_at": "2026-10-24",
   "git": {
     "branch": "codex/v4-unified-development",
-    "starting_remote_head": "283a26414609d47004adbec318eb5b4846b6d7c7"
+    "starting_remote_head": "2b08972c3727f6cd9358ad9833794f66f351cc8f"
   },
   "read_contracts": [
     "V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015",
@@ -38,12 +38,12 @@
     "new_trade_date_generated": false,
     "formal_head_modified": false,
     "pg_write_performed": true,
-    "pg_write_scope": "Append three immutable ReadIndex R2 versions for existing T0 2026-10-19, 2026-10-20, 2026-10-21 under the current development token; no Owner, Core, Head, SourceIngress, or canonical publication writes",
+    "pg_write_scope": "Append-only R2 ReadIndex projections now cover all 13 existing candidate sessions under the current development token; 10/20 received an additional corrected revision for 7 absent adjusted-close rows. No Owner/Core/Head/SourceIngress/canonical publication writes.",
     "pg_write_rollback": {
-      "authority_backup": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PREWRITE_20261024.json",
-      "authority_backup_sha256": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
+      "authority_backup": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PRE_ALL_DATE_BUILD_20261024.json",
+      "authority_backup_sha256": "812f4451890f438e12aef3fdbffc4432bb0abe6a9a74f52863444f85ca3ab04e",
       "authority_before_sha256": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
-      "authority_after_sha256": "b3d4528d8eb737f66cca5b00969cf246db282e24f64ce2a85a8a7f492ca1ae4b",
+      "authority_after_sha256": "ae890a826b5547cb8ea6d193bd2e9ef8cfc2c0a57f5e1c4882c7f04f2c115ea8",
       "old_pg_versions_retained": true,
       "new_pg_schemas_deleted": false
     },
@@ -102,6 +102,28 @@
       "market_universe_snapshot_rows": 0,
       "publications": 0,
       "publication_heads": 0
+    },
+    "latest_after_followup": {
+      "database": "market_research",
+      "host": "127.0.0.1",
+      "port": 5432,
+      "v4_schemas": 125,
+      "v4_tables": 523,
+      "exact_rows": 4998994,
+      "readindex_rows": 534364,
+      "previous_after_10_20_rebuild": {
+        "schemas": 115,
+        "tables": 493,
+        "exact_rows": 4914745,
+        "readindex_rows": 450155
+      },
+      "delta_from_10_additional_dates": {
+        "schemas": 10,
+        "tables": 30,
+        "exact_rows": 84249,
+        "readindex_rows": 84209
+      },
+      "business_data_physically_deleted": false
     }
   },
   "available_trade_dates": [
@@ -182,14 +204,15 @@
   },
   "source_changes": {
     "file": "src/workbench_service/core_product_bff_r1.py",
-    "behavior": "validate same-day derived Market candidate bindings, nonempty counts and exact row-axis equality; quarantine all Home axes and raw numeric values on failure in ReadIndex and live fallback paths",
-    "immutable_pg_snapshots_changed": false
+    "behavior": "validate same-day derived Market candidate bindings, nonempty counts and exact row-axis equality; quarantine all Home axes and raw numeric values on failure in ReadIndex and live fallback paths; scope security Owners to dated Lifecycle identities; report absent adjusted Owner rows as SOURCE_INCOMPLETE without borrowing values; enforce exact lifecycle/Core/Profile conservation before candidate admission; quarantine candidate Market risk in Priority consumer.",
+    "immutable_pg_snapshots_changed": false,
+    "forward_cache_fix": "R7 late-forward preview is now cached on the shared per-reader cache across request-local BFF instances, keyed by token/date and exact binding lineage; source bytes are rechecked before cache reuse."
   },
   "readindex_repair": {
     "contract_id": "V4_READ_INDEX_R2",
     "token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
     "authority_file_sha256_before": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
-    "authority_file_sha256_after": "b3d4528d8eb737f66cca5b00969cf246db282e24f64ce2a85a8a7f492ca1ae4b",
+    "authority_file_sha256_after": "ae890a826b5547cb8ea6d193bd2e9ef8cfc2c0a57f5e1c4882c7f04f2c115ea8",
     "dates": [
       {
         "T0": "2026-10-19",
@@ -202,21 +225,29 @@
           "sectors": 400,
           "stocks": 5224
         },
-        "read_item_rows": 9615
+        "read_item_rows": 9615,
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984"
       },
       {
         "T0": "2026-10-20",
         "old_binding_retained_in_revision_history": true,
         "old_schema": "v4_9064e898d2e2da5a991404f960b93acc19a8c8bc4093688af29a8c37",
-        "new_schema": "v4_2d9e9ce6c601c0d196a2f80a395300a3ff1d61d40934420652ba7aeb",
-        "new_digest": "9e98a746ef17e35a75776fe09765d24ecf4e8cd0806cf7d1f0968d44dc1ebdb8",
+        "new_schema": "v4_4d792b71062e1cd883c20208ad4d1467a7bab76ecb87c88bb831dfa3",
+        "new_digest": "0fe56436b670a9c8ee868e89d43fcdcc8ee6b1e9f606f64e470466ab4d1c31f8",
         "counts": {
           "focus": 679,
           "radar": 607,
           "sectors": 400,
           "stocks": 5224
         },
-        "read_item_rows": 6910
+        "read_item_rows": 6910,
+        "superseded_intermediate_digest": "9e98a746ef17e35a75776fe09765d24ecf4e8cd0806cf7d1f0968d44dc1ebdb8",
+        "adjusted_close_quality": {
+          "KNOWN": 5217,
+          "SOURCE_INCOMPLETE": 7,
+          "reason": "DATED_ADJUSTED_SECURITY_ROW_MISSING"
+        },
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984"
       },
       {
         "T0": "2026-10-21",
@@ -230,7 +261,8 @@
           "sectors": 400,
           "stocks": 5224
         },
-        "read_item_rows": 10012
+        "read_item_rows": 10012,
+        "producer_sha256": "6caebcb57eefdf1a63bcb484d9333cc11060db3f13c1e8de047af80bc7163984"
       }
     ],
     "read_responses": 9,
@@ -240,7 +272,18 @@
     "all_market_reason": "R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14",
     "old_versions_physically_deleted": false,
     "owner_generation_performed": false,
-    "formal_head_modified": false
+    "formal_head_modified": false,
+    "authority_backup_before_adjusted_gap_fix": {
+      "path": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PRE_ADJUSTED_GAP_FIX_20261024.json",
+      "sha256": "b715e5e986d354f42a2b4d31069b8eeea7b30ef3e66917ba35424f16ee4de12c"
+    },
+    "latest_authority_digest": "812f4451890f438e12aef3fdbffc4432bb0abe6a9a74f52863444f85ca3ab04e",
+    "bound_date_count": 13,
+    "all_published_candidate_dates_bound": true,
+    "authority_backup_pre_all_date_build": {
+      "path": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PRE_ALL_DATE_BUILD_20261024.json",
+      "sha256": "812f4451890f438e12aef3fdbffc4432bb0abe6a9a74f52863444f85ca3ab04e"
+    }
   },
   "runtime_pg_api_ui_readback": {
     "dev_port": 28766,
@@ -310,12 +353,50 @@
       "asset": "/v4/assets/app.js",
       "asset_http": 200,
       "observed_binding": "d.market.row[k]",
-      "screenshot_verified": false,
-      "computer_use_result": "拒绝操作：无法以足够置信度确定 Windows Chrome 当前 URL，停止 UI 操作"
-    }
+      "screenshot_verified": true,
+      "browser": "Codex in-app browser",
+      "local_browser_used": false
+    },
+    "in_app_browser": {
+      "browser": "Codex in-app browser",
+      "url": "http://127.0.0.1:28766/v4?trade_date=2026-10-20&offset=0",
+      "selected_date": "2026-10-20",
+      "visible_counts": {
+        "stocks": 5224,
+        "sectors": 400,
+        "radar": 607
+      },
+      "four_market_axes": "来源不足",
+      "heading": "市场四轴事实 · 综合环境候选未接受",
+      "screenshot_verified": true,
+      "local_browser_used": false,
+      "all_13_home_dates_rendered_and_counts_match_pg": true,
+      "dates": [
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ]
+    },
+    "priority_historical_query": "INVALID_OPERATIONAL_QUERY:CANDIDATE_PRIORITY_CURRENT_TOKEN_DATE_REQUIRED",
+    "forward_page": "STUCK_LOADING_ON_2026-10-20; source cache repair added but runtime code not reloaded because service restart is prohibited"
   },
   "verification": {
     "pytest_suites": [
+      "tests/test_r43_operational_sources.py",
+      "tests/test_r43_release_control.py",
+      "tests/test_operational_successor_release_v1.py",
+      "tests/test_operational_successor_membership_scope.py",
+      "tests/test_operational_successor_control_v1.py",
       "tests/test_v4_functional_r8_s01_s03.py",
       "tests/test_core_product_home_cache_closeout.py",
       "tests/test_v4_ux_r2_contract.py",
@@ -323,16 +404,71 @@
       "tests/test_v4_functional_r8_third_batch.py",
       "tests/v4_joint/test_r9_market_cache_scope.py"
     ],
-    "pytest_result": "94 passed",
+    "pytest_result": "128 passed",
     "git_diff_check": "PASS",
-    "transaction_recovery_or_idempotency_test": "NOT_RUN",
-    "all_dates_all_domains_numerical_reconciliation": "NOT_COMPLETE"
+    "transaction_recovery_or_idempotency_test": "PASS: synthetic same-token/same-T0 R2 prepare failure rolled back schema/version; corrected retry sealed; exact repeat returned same binding; test schema cleaned.",
+    "all_dates_all_domains_numerical_reconciliation": "NOT_COMPLETE",
+    "all_dates_inventory": "13 dates: stream-hash and counts for bound Owners; Core/Profile/Lifecycle and Sector/Rotation identity reconciliation; D0 status/D2 identity/Forward episode and Event counts; complete per-date Market candidate binding and current-token ReadIndex presence. Formula-level numeric reconciliation remains incomplete.",
+    "all_dates_evidence_file": "R10_ALL_DATES_RECONCILIATION_EVIDENCE_20261024.json",
+    "forward_late_preview_cache_regression": "PASS: shared cache survives request-local shallow Reader copies and changes when bound source SHA changes.",
+    "pg_api_ui_all_dates": "PASS for 13/13 Home counts (stocks/sectors/focus/radar) via PG R2 authority and Codex in-app browser; all Market axes remained isolated. Other routes: stocks/sectors/focus/market/diagnostics rendered for 10/20; Forward remained loading in stale process; historical Priority API rejected by its current-token contract.",
+    "core_numeric_reconciliation": {
+      "same_day_clv_dates": 13,
+      "recalculated_rows": 67698,
+      "mismatches": 0,
+      "2026-10-21_independent_oracle": "SCOPED_NUMERIC_PASS; ret1=5216 comparisons, 8 unknown; breadth denominator=5224; exact amount=5716687389023/4; index=3600 numeric comparisons; limits=5224 rows and 25990 price/extrema comparisons; differences=0",
+      "remaining_dates_fields": "Ret1/TR/rolling fields not fully recalculated because exact QFQ historical basis is absent from each dated raw Owner; classified as source-basis gap."
+    },
+    "core_numeric_evidence_files": [
+      "R10_CORE_NUMERIC_RECONCILIATION_20261024.json",
+      "R10_CORE_MARKET_ORACLE_20261021.json"
+    ]
   },
   "acceptance": {
     "source_code_consumer_gate": "BFF_REPAIRED_AND_UNIT_TESTED; R2_READINDEX_REPAIRED_FOR_2026-10-19_TO_2026-10-21; LIVE_API_READBACK_CONFIRMED",
     "pg_data_correctness_all_existing_dates": "NOT_ACCEPTED",
-    "api_and_page_runtime_readback": "API_READBACK_PASSED_FOR_THREE_REPAIRED_DATES; PAGE_ASSET_READ_CONFIRMED; SCREENSHOT_NOT_VERIFIED; ALL_DOMAIN_DATE_ACCEPTANCE_INCOMPLETE",
-    "all_business_domains_independent_reconciliation": "NOT_COMPLETE",
-    "restore_data_updates": false
+    "api_and_page_runtime_readback": "PASS for 13/13 Home pages and PG ReadIndex count parity; 10/20 stocks/sectors/focus/market/diagnostics pages rendered. Forward route runtime unresolved; historical Priority query rejected under current-token contract.",
+    "all_business_domains_independent_reconciliation": "PARTIAL: all 13 Owner presence/SHA/counts, identity coverage, API and Home-page projection parity recorded; formula-level numerical reconciliation across Core/Profile/Sector/D0/D2/Priority/Focus/Market/Forward remains incomplete.",
+    "restore_data_updates": false,
+    "transaction_failure_recovery_idempotency": "PASS for synthetic same-T0 R2 transaction failure rollback, corrected retry, identical repeat and precise test schema cleanup."
+  },
+  "all_dates_reconciliation": {
+    "evidence_file": "R10_ALL_DATES_RECONCILIATION_EVIDENCE_20261024.json",
+    "date_count": 13,
+    "core_profile_lifecycle_exact_identity_set_dates": 12,
+    "sole_mismatch": "2026-10-20: Core 5226 versus lifecycle/profile 5224; no duplicates; BFF consumer scope filters 2 excess IDs; candidate admission rejects mismatch",
+    "sector_rotation_set_equal_dates": 13,
+    "sector_rotation_rows_each_date": 400,
+    "d2_dates": 13,
+    "d2_all_pit_eligible_false": true,
+    "d2_all_accepted_false": true,
+    "d0_by_date_status_counts_recorded": true,
+    "forward_episodes_by_date_recorded": true,
+    "all_forward_pit_eligible_false": true,
+    "r2_bound_dates_for_current_token": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "canonical_priority_dates": [
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15"
+    ],
+    "all_domain_numeric_reconciliation": "NOT_COMPLETE",
+    "current_token_r2_bound_dates": 13,
+    "published_candidate_dates": 13,
+    "current_token_readindex_dates_match_published_sessions": true
+  },
+  "continued_consumer_isolation": {
+    "market_risk_route": "/api/v4/radar/priority?view=candidate",
+    "before": "market_stress cleared but sibling trend_reference could retain index_close and moving-average values",
+    "after": "whitelist projection retains contract/input authority/source_owner bindings and failure reason; market_stress and trend_reference are null",
+    "original_owner_and_pg_candidate_rows_modified": false,
+    "regression_test": "tests/test_v4_functional_r8_s01_s03.py::test_unverified_candidate_market_risk_is_removed_from_priority_consumer_payload",
+    "targeted_test_result": "51 passed in 3.95s",
+    "source_sha256_recorded_in_closeout_evidence": true,
+    "data_updates_remain_paused": true,
+    "runtime_process_loaded_fix": false
   }
 }

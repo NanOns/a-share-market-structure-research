@@ -70,3 +70,27 @@
 审计过程曾把一条仓库根 Lifecycle 绑定误判为临时链目录缺失；Schema 身份计算确认 R9 绑定属于仓库根后，已从原字节备份将临时目录恢复至原 SHA-256 `dc6015bcfafe0354062b4089a4042cef2bf7a97dce6ae4fe64e5cc419cc48722`。随后仓库根 Priority/Lifecycle 两日只读 loader 全部通过。无 PG 写入或遗留候选根改动。机器记录见 `existing_data_repair_audit`。
 
 本轮结论：**没有发现 SourceIngress 或已绑定 Priority/Lifecycle Owner 的可确证数值损坏；没有应当立即覆盖的 PG 行。** 已有源码修复负责阻止错误 breadth 分母复用；仍待权威历史成员数据和业务合同的项目明确列为阻断，不报告为全部数据问题已清零。
+
+## 继续执行：13 日期存量消费者闭环及分层验收（2026-10-24）
+
+本次继续施工的基线为远端 `codex/v4-unified-development` HEAD `2b08972c3727f6cd9358ad9833794f66f351cc8f`。新增代码发现：Priority 响应原隔离逻辑虽然清除了 `market_stress`，仍会把同一失败对象中的 `trend_reference` 原样回传，其中含指数收盘与均线数值。现将失败的候选市场对象改为白名单投影，只保留合同标识、候选来源绑定、T0、失败原因和非发布状态；`market_stress`、`trend_reference` 均置空，不返回其它候选数值字段。证据仍可由不可变来源 Owner SHA 追溯。新增测试用合成异常对象验证指数值不能穿过 Priority 消费边界。
+
+修复前：失败 breadth 候选的 `market_stress` 被清空，但 `trend_reference.index_close/index_ma20` 可以残留。修复后：候选市场消费者只得到 `SOURCE_INCOMPLETE`、精确失败原因与保留的来源绑定，所有市场派生值为空；原始候选文件和 PG 版本未改写。回归测试 `tests/test_v4_functional_r8_s01_s03.py`、`tests/test_core_product_home_cache_closeout.py`、`tests/v4_joint/test_r9_market_cache_scope.py` 共 **51 passed**。
+
+### S00–S08 分层验收矩阵
+
+| 阶段 | CODE | NUMERIC | SOURCE | DEV_PG | API | UI | CI | PRODUCTION |
+|---|---|---|---|---|---|---|---|---|
+| S00 基线/阶段 0 | PASS | N/A | PASS（按原阶段回执） | PASS（身份只读核验） | PASS（既有日期上下文） | PASS（内置浏览器） | CI_NOT_RUN | NOT_AUTHORIZED |
+| S01 运行范围门 | PARTIAL（严格运行门保留阻断） | N/A | PARTIAL（活动闭包尚有未裁定项） | PASS（只读盘点） | N/A | N/A | CI_NOT_RUN | NOT_AUTHORIZED |
+| S02 Market/13 份异常候选 | PASS（breadth 分母与消费者失败关闭） | PARTIAL（Core/10-21 scoped oracle 已复算；历史 breadth 因分母来源缺失不可算） | BLOCKED（10/14–16 权威历史成员集为空） | PASS（13 日期 R2 projection 封存回读） | PASS（Home 13 日期值隔离；其它域不代表发布） | PASS（内置浏览器 13 日期首页计数一致） | CI_NOT_RUN | NOT_AUTHORIZED |
+| S03 Priority | PARTIAL（候选值隔离；旧 Owner 保留） | PARTIAL（已有 Priority Owner 摘要通过，缺失输入行仍不可重算） | PARTIAL（非空/无效字段的替代来源未证明） | PASS（只读版本/digest/行摘要核验） | PARTIAL（仅当前 token 日期允许候选查询；历史候选返回明确合同错误） | PARTIAL（内置浏览器验证页面入口，非完整数值页验收） | CI_NOT_RUN | NOT_AUTHORIZED |
+| S04 Focus/Forward | PARTIAL（跨请求共享缓存已修；保留 LIVE 未授权） | PARTIAL（D2 身份完整性通过；公式/成熟度独立对账未全） | BLOCKED（LIVE 首捕获无样本，历史来源身份/完整 PIT 不充分） | PARTIAL（Forward 历史 PG 只读计数；实时版本并发恢复未演练） | PARTIAL（Home/Focus 可读；Forward 旧进程加载态） | UI_RUNTIME_NOT_RELOADED（禁止重启 28766） | CI_NOT_RUN | NOT_AUTHORIZED |
+| S05 D0/D2/综合 Market | PARTIAL（可执行分支 fail-closed） | PARTIAL（D0 状态和 D2 身份审计；不能凭空算 seal/锚点） | BLOCKED（cutoff/seal、失效结构锚点、趋势许可合同缺失） | PARTIAL（只读现存 Owner） | PARTIAL（缺合同能力明确不可接受） | PARTIAL（旧运行时仅可见已标注限制） | CI_NOT_RUN | NOT_AUTHORIZED |
+| S06 现存日更链/G1–G4 | PARTIAL（流程门与事务原子性修复/合成演练通过） | PARTIAL（13 日 CLV、10/21 Oracle；其它数值域未全） | BLOCKED（不追加来源；10/22–23 Identity/Member 与 10/23 因子缺口仍在） | PARTIAL（R2 恢复/幂等演练通过；不构造新日完整链） | PARTIAL（13 日 Home readback；非完整 G1–G4 publication/CAS） | N/A | CI_NOT_RUN | NOT_AUTHORIZED |
+| S07 性能与运行时 | PARTIAL（Market/Forward 缓存身份修复） | N/A | PASS（缓存来源 SHA 绑定） | PASS（同一 PG 身份；未写新 Owner） | PARTIAL（旧 28766 返回旧代码，未测新版冷样本） | UI_RUNTIME_NOT_RELOADED | CI_NOT_RUN | NOT_AUTHORIZED |
+| S08 独立审计与生产 | PARTIAL（源码/测试/报告可供复审） | PARTIAL（明确剩余逐域复算） | BLOCKED（来源/合同限制待外部事实） | PARTIAL（开发库结果已留证） | PARTIAL（旧运行态边界） | PARTIAL（新版未加载） | CI_NOT_RUN | NOT_AUTHORIZED |
+
+内置浏览器现场读回 2026-10-20：首页显示 stocks=5,224、sectors=400、radar=607；Market 四轴均显示“来源不足”，标题为“市场四轴事实 · 综合环境候选未接受”。13 个已绑定日期的 Home 页面计数与 PG R2 projection 一一相等。现场还显示 Forward 历史研究观察 73,115、已到期结算 3,260；这两项仅为历史研究/结算统计，不构成 LIVE cohort。当前运行服务 PID 52916 仍未加载本次源码，故 Forward 当前页面仍处旧进程读取态；未重启 28766，未启用 28765。
+
+**最终状态仍为 `PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED`，数据更新保持暂停。** 未完成项不是以 UNKNOWN 代替修复：10/14–16 历史 universe 的合法成员来源为空；余下 12 日 Core RET1/TR/rolling 的 QFQ 价源绑定、Sector/D0/D2/Priority/Focus/Forward 的所有字段级独立复算、D0/D2/Focus Priority/Market trend/LIVE Forward 业务合同、完整相邻日 G1–G4、性能样本预算和新版 API/UI 运行时读回仍未验收。原因分别按来源缺失、业务合同缺失和本轮运行边界区分；各原始 Owner 与失败证据均保留。详细逐日数量与 SHA 见 `R10_ALL_DATES_RECONCILIATION_EVIDENCE_20261024.json`、`R10_CORE_NUMERIC_RECONCILIATION_20261024.json`；存量修复和 PG/API/UI 读回见 `R10_EXISTING_DATA_REPAIR_AUDIT_20261024.md` 与同名 Evidence。

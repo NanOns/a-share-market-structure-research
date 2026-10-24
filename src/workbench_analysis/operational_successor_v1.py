@@ -88,6 +88,11 @@ def validate(root, candidate):
     if not REQUIRED<=set(owners):
         raise ValueError('SUCCESSOR_REQUIRED_OWNER_MISSING')
     for binding in owners.values():checked(root,binding)
+    # The newly admitted date must conserve the exact security set declared by
+    # its dated lifecycle Owner across Core and Profile before it can extend the
+    # frozen history chain.
+    from .r43_operational_publication import _validate_owner_identity_conservation
+    _validate_owner_identity_conservation(root,day,owners)
     for binding in candidate['source_registry'][day].values():checked(root,binding)
     qa=json.loads(checked(root,candidate['day_receipt']).read_bytes())
     if qa.get('target_session')!=day or qa.get('acceptance')!='DERIVED_READY' or qa.get('owners')!=owners:

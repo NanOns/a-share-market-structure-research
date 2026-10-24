@@ -1,0 +1,150 @@
+{
+  "contract_id": "V4_R10_CORE_NUMERIC_RECONCILIATION_V1",
+  "recorded_at": "2026-10-24",
+  "date_count": 13,
+  "same_day_clv": {
+    "formula": "(close-low)/(high-low)",
+    "price_basis": "same-day native OHLC ratio; invariant to a uniform positive affine price coordinate within the day",
+    "dates": [
+      {
+        "trade_date": "2026-09-28",
+        "raw_rows": 5210,
+        "core_rows": 5222,
+        "clv_recalculated": 5207,
+        "clv_matches": 5207,
+        "clv_mismatches": 0,
+        "raw_sha256": "ca66d601903947b83a185fd14ed798fa250247ccdbcba140746da504cb68c3eb",
+        "core_sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841"
+      },
+      {
+        "trade_date": "2026-09-29",
+        "raw_rows": 5211,
+        "core_rows": 5223,
+        "clv_recalculated": 5203,
+        "clv_matches": 5203,
+        "clv_mismatches": 0,
+        "raw_sha256": "6d69f34b598196aff7d4a3552e9cf7c6f626e66cb40b81869c417dd63a2cef43",
+        "core_sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2"
+      },
+      {
+        "trade_date": "2026-09-30",
+        "raw_rows": 5213,
+        "core_rows": 5224,
+        "clv_recalculated": 5206,
+        "clv_matches": 5206,
+        "clv_mismatches": 0,
+        "raw_sha256": "87f6876854dcae42f4dfaed7c2258a91b2c563846caa92076f0dd30ca199991b",
+        "core_sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d"
+      },
+      {
+        "trade_date": "2026-10-08",
+        "raw_rows": 5209,
+        "core_rows": 5224,
+        "clv_recalculated": 5205,
+        "clv_matches": 5205,
+        "clv_mismatches": 0,
+        "raw_sha256": "3414cbed04795b985c072104c0a8aa1433f0d9969f8a8570b50fbb7b98f80121",
+        "core_sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944"
+      },
+      {
+        "trade_date": "2026-10-09",
+        "raw_rows": 5210,
+        "core_rows": 5224,
+        "clv_recalculated": 5206,
+        "clv_matches": 5206,
+        "clv_mismatches": 0,
+        "raw_sha256": "bbc7f2505d752f2294ea48500808a961d646b0df8504be4d642e1269620c3eb5",
+        "core_sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270"
+      },
+      {
+        "trade_date": "2026-10-12",
+        "raw_rows": 5212,
+        "core_rows": 5224,
+        "clv_recalculated": 5204,
+        "clv_matches": 5204,
+        "clv_mismatches": 0,
+        "raw_sha256": "a7acbc95848b8bc3eccbfb04b0cf945b65b82dfc9843cff6a52201636f3232e9",
+        "core_sha256": "9cc9191b1f79dbbad6d936faf15e0802989f9545accccb98ed57d7ee97481182"
+      },
+      {
+        "trade_date": "2026-10-13",
+        "raw_rows": 5212,
+        "core_rows": 5225,
+        "clv_recalculated": 5207,
+        "clv_matches": 5207,
+        "clv_mismatches": 0,
+        "raw_sha256": "198ef37c4220f457dc4165d35f2a312f056cb1bc261966e5188b7bb638e6ddd5",
+        "core_sha256": "aeae5514746f30f6c034ce6e64597f3a52ed4ba1f838d49f5007de20de99ac78"
+      },
+      {
+        "trade_date": "2026-10-14",
+        "raw_rows": 5214,
+        "core_rows": 5225,
+        "clv_recalculated": 5208,
+        "clv_matches": 5208,
+        "clv_mismatches": 0,
+        "raw_sha256": "c871e5970ad1bd853e92b6e243fa6c559cf2414334fdbcd4a56a0575c64622d4",
+        "core_sha256": "021c0e6fbcb3684d0fc8a2aa6f3f7b40353c22a2b7391264911aa2493ccdfcce"
+      },
+      {
+        "trade_date": "2026-10-15",
+        "raw_rows": 5215,
+        "core_rows": 5226,
+        "clv_recalculated": 5212,
+        "clv_matches": 5212,
+        "clv_mismatches": 0,
+        "raw_sha256": "47fcb456f599697239da07757e26ee7e5f40550f3a3f3e84d2bb7b51bf1bcfd8",
+        "core_sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2"
+      },
+      {
+        "trade_date": "2026-10-16",
+        "raw_rows": 5216,
+        "core_rows": 5226,
+        "clv_recalculated": 5210,
+        "clv_matches": 5210,
+        "clv_mismatches": 0,
+        "raw_sha256": "cd000389748ec8616ce5d5e4ee97d01707921984b6ef2354caa8faad3ebe284e",
+        "core_sha256": "2b6c61af288488110cbe4ea161d0d08a56518c43a01f88b701cefc13ff5daa49"
+      },
+      {
+        "trade_date": "2026-10-19",
+        "raw_rows": 5213,
+        "core_rows": 5224,
+        "clv_recalculated": 5207,
+        "clv_matches": 5207,
+        "clv_mismatches": 0,
+        "raw_sha256": "a8fecbfd4bc8e1c89171501561572c914e43f2436eb628bcc4446fd17933f1c9",
+        "core_sha256": "a71a5aeffdfe13374f4afafb21de33be5662bef0f606aba285cac9fd50416bd2"
+      },
+      {
+        "trade_date": "2026-10-20",
+        "raw_rows": 5217,
+        "core_rows": 5226,
+        "clv_recalculated": 5212,
+        "clv_matches": 5212,
+        "clv_mismatches": 0,
+        "raw_sha256": "6c0d521bd47aa25d2c3be2580000f11f9e20d638b03cb2f0af421c5129b6a14a",
+        "core_sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83"
+      },
+      {
+        "trade_date": "2026-10-21",
+        "raw_rows": 5216,
+        "core_rows": 5224,
+        "clv_recalculated": 5211,
+        "clv_matches": 5211,
+        "clv_mismatches": 0,
+        "raw_sha256": "59e8f1055a69de96ec210c1e610a1d4595606eaed591f52f2f1bfe067303bb08",
+        "core_sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"
+      }
+    ],
+    "total_recalculated": 67698,
+    "total_mismatches": 0
+  },
+  "ret1_tr_and_rolling_fields": {
+    "scope": "not independently recomputed for all 13 dates from the per-day raw Owner because raw Owner does not bind the exact QFQ historical price basis needed by Core contract; no cross-basis differences are classified as formula defects",
+    "cause_class": "SOURCE_BASIS_MISSING_FOR_CROSS_DATE_RECALCULATION"
+  },
+  "2026-10-21_independent_oracle": "R10_CORE_MARKET_ORACLE_20261021.json",
+  "2026-10-21_independent_oracle_status": "SCOPED_NUMERIC_PASS",
+  "other_dates_full_core_numeric_formula_reconciliation": "NOT_COMPLETE"
+}

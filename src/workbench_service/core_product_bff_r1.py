@@ -43,6 +43,19 @@ def _candidate_priority_cache_key(token,day,stock_source,sector_source,parameter
             json.dumps(lineage,sort_keys=True,separators=(',',':')))
 
 
+def _forward_candidate_late_preview_key(token,day,bindings):
+    lineage=sorted((scope,ref.get('path'),ref.get('sha256')) for scope,ref in bindings.items())
+    digest=hashlib.sha256(json.dumps(lineage,ensure_ascii=False,separators=(',',':')).encode('utf-8')).hexdigest()
+    return ('forward-candidate-late-preview-v1',token,day,digest)
+
+
+def _missing_adjusted_close(day,owner_bound):
+    """Represent absent dated adjustment evidence without borrowing another field source."""
+    return dict(value=None,quality='SOURCE_INCOMPLETE',
+        reason='DATED_ADJUSTED_SECURITY_ROW_MISSING' if owner_bound else 'DATED_ADJUSTED_OWNER_MISSING',
+        as_of=day,adjustment_basis=None,source=None)
+
+
 def _retained_price_coordinate(value):
     """保留两代已声明的原生仿射坐标，完整摘要不可降为展示别名。"""
     if not isinstance(value,str) or ':' not in value:return None
@@ -190,6 +203,24 @@ def market_candidate_failure(candidate_market, day, market=None):
         if any(market['row'].get(key)!=value for key,value in expected.items()):
             return 'MARKET_RECORDED_AXIS_RECOMPUTATION_MISMATCH'
     return None
+
+
+def quarantine_candidate_market_risk(candidate_market, *, day, reason):
+    """Remove an unverified dated Market result from the candidate consumer payload."""
+    source=candidate_market if isinstance(candidate_market,dict) else {}
+    # A failed breadth replay must not leak values through sibling fields such
+    # as trend_reference (which can carry index closes and moving averages).
+    # Keep only traceable source bindings and contract identity at this boundary.
+    result={key:deepcopy(source[key]) for key in (
+        'contract_id','input_authority','source_owners') if key in source}
+    result.update(status='SOURCE_INCOMPLETE',T0=day,reason=reason,
+        market_stress=None,trend_reference=None,
+        trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
+        composite_regime_status='NOT_PUBLISHED_V4_03',
+        consumer_disposition='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE',
+        candidate_market_status='SOURCE_INCOMPLETE',production_admission=False,
+        AS_RECORDED=False,PIT_ELIGIBLE=False)
+    return result
 
 def home_summary(row, fields):
     """Keep only the identity and explicitly rendered evidence needed by home cards."""
@@ -727,15 +758,54 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 if key not in self.api.cache:self.api.cache[key]=read(self.api.root,binding,day,domain,fact_token)
                 return self.api.cache[key]
         pack=self.focus_projection(day) if domain=='forward' else None
-        if not pack:return super().source(domain,day)
-        key=('focus-dated-forward',self.api.token,day,pack[0]['projection']['sha256'])
+        if not pack:
+            result=super().source(domain,day)
+        else:
+            key=('focus-dated-forward',self.api.token,day,pack[0]['projection']['sha256'])
+            if key not in self.api.cache:
+                # Bound immutable source objects are never modified by readers.
+                # Copy the container and dated event selection, not every episode
+                # observation and settlement path on every read/count request.
+                projection=dict(pack[1]);projection['events']=[e for e in projection['events'] if e['trade_date']==day]
+                self.api.cache[key]=projection
+            result=self.api.cache[key]
+        return self._scope_security_owner_rows(domain,day,result)
+
+    def _scope_security_owner_rows(self,domain,day,content):
+        """Keep security-scoped consumers inside the same dated lifecycle universe.
+
+        Source Owner bytes remain immutable. This read boundary prevents a stale or
+        over-broad Core/Focus/D0 Owner from leaking identities outside its own
+        authoritative lifecycle set; malformed inputs fail closed.
+        """
+        if domain not in {'core','adjusted','profile','focus','prewatch'} or not isinstance(content,list):
+            return content
+        key=('lifecycle-identity-scope-v1',self.api.token,day)
         if key not in self.api.cache:
-            # Bound immutable source objects are never modified by readers.
-            # Copy the container and dated event selection, not every episode
-            # observation and settlement path on every read/count request.
-            projection=dict(pack[1]);projection['events']=[e for e in projection['events'] if e['trade_date']==day]
-            self.api.cache[key]=projection
-        return self.api.cache[key]
+            from workbench_analysis.r43_owner_replay import checked
+            binding=self.api.candidate.get('owners',{}).get(day,{}).get('lifecycle')
+            if not binding:raise ValueError('OWNER_LIFECYCLE_SCOPE_MISSING:'+day)
+            lifecycle=json.loads(checked(self.api.root,binding).read_bytes())
+            if lifecycle.get('trade_date')!=day:
+                raise ValueError('OWNER_LIFECYCLE_TRADE_DATE_MISMATCH:'+day)
+            active=lifecycle.get('active_security_ids')
+            if not isinstance(active,list) or not active or any(not isinstance(value,str) or not value for value in active):
+                raise ValueError('OWNER_LIFECYCLE_ACTIVE_SCOPE_INVALID:'+day)
+            expected=set(active)
+            if len(expected)!=len(active):raise ValueError('OWNER_LIFECYCLE_ACTIVE_SCOPE_DUPLICATE:'+day)
+            self.api.cache[key]=expected
+        expected=self.api.cache[key]
+        identity_key='security_id' if domain in {'core','adjusted','profile'} else 'entity_id'
+        seen=set();selected=[]
+        for row in content:
+            identity=row.get(identity_key)
+            if not identity or identity in seen:
+                raise ValueError('OWNER_IDENTITY_DUPLICATE_OR_MISSING:'+domain+':'+day)
+            seen.add(identity)
+            if row.get('trade_date') and row['trade_date']!=day:
+                raise ValueError('OWNER_IDENTITY_TRADE_DATE_MISMATCH:'+domain+':'+day)
+            if identity in expected:selected.append(row)
+        return selected
 
     def _r2_stock_profile(self,index,day,key):
         """Build stock detail from the immutable R2 row without reopening PG owners."""
@@ -854,12 +924,9 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
 
     def _forward_candidate_late_preview(self):
         """Read-only R7 preview over the current candidate's late-captured Owners."""
-        cached=getattr(self,"_forward_candidate_late_preview_cache",None)
         candidate=self.api.candidate
         day=candidate.get('accepted_trade_date')
         token=self.api.token
-        cache_key=(token,day)
-        if isinstance(cached,dict) and cache_key in cached:return cached[cache_key]
         from collections import Counter
         from workbench_analysis.r43_owner_replay import checked,load
         from workbench_analysis.r43_operational_publication import digest
@@ -888,6 +955,19 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if candidate_index<1:
             raise ValueError('FORWARD_CANDIDATE_PREDECESSOR_REQUIRED')
         previous=candidate_dates[candidate_index-1]
+        bound={}
+        for target in (day,previous):
+            for domain in ('raw','core','sector','lifecycle'):
+                binding=(candidate.get('owners',{}).get(target) or {}).get(domain)
+                if not binding:raise ValueError('FORWARD_CANDIDATE_OWNER_BINDING_MISSING:'+target+':'+domain)
+                checked(root,binding)
+                bound[target+':'+domain]=binding
+        bound['freeze']=freeze_binding
+        cache=getattr(self.api,'cache',None)
+        if not isinstance(cache,dict):
+            cache={};self.api.cache=cache
+        cache_key=_forward_candidate_late_preview_key(token,day,bound)
+        if cache_key in cache:return cache[cache_key]
         read=lambda domain,target:self.api.read(domain,target,token)
         current={name:read(name,day)['rows'] for name in ('raw','core','sector','lifecycle')}
         prior={name:read(name,previous)['rows'] for name in ('raw','core','sector','lifecycle')}
@@ -938,9 +1018,7 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             settlement_source_state='DUE_SESSIONS_NOT_ACCEPTED_BY_FORMAL_HEAD',
             items=preview,limit=30,offset=0,has_next=len(rows)>30,
             status_scope='CANDIDATE_OBSERVATION_ONLY; NOT_FORMALLY_PUBLISHED; NOT_PIT')
-        if not isinstance(cached,dict):cached={}
-        cached[cache_key]=result
-        self._forward_candidate_late_preview_cache=cached
+        cache[cache_key]=result
         return result
 
     def _forward_r7_read(self,path,q,day):
@@ -1192,6 +1270,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         composite_regime_status='NOT_PUBLISHED_V4_03',
                         AS_RECORDED=False,PIT_ELIGIBLE=False,production_admission=False)
                     market_cache_diagnostics=dict(status='SOURCE_INCOMPLETE',reason=type(exc).__name__)
+                market_failure=market_candidate_failure(priority['candidate_market_risk'],day)
+                if market_failure:
+                    priority['candidate_market_risk']=quarantine_candidate_market_risk(
+                        priority['candidate_market_risk'],day=day,reason=market_failure)
                 phase=time.perf_counter()
                 priority_sha256=hashlib.sha256(json.dumps(priority,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
                 scope=query.get('scope','stocks')
@@ -1605,7 +1687,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         authority=json.loads((self.api.root/'config/v4_display_names_authority_v1.json').read_bytes())
         name_source=authority['source'];names=json.loads(checked(self.api.root,name_source).read_bytes())
         cores={r['security_id']:r for r in self.source('core',day)} if domain=='stocks' else {}
-        adjusted={r['security_id']:r for r in self.source('adjusted',day)} if domain=='stocks' else {}
+        has_adjusted_owner=bool(self.api.candidate.get('owners',{}).get(day,{}).get('adjusted'))
+        adjusted={r['security_id']:r for r in (self.source('adjusted',day) or [])} if domain=='stocks' and has_adjusted_owner else {}
         d2={r['entity_id']:r for r in self.source('focus',day)} if domain=='stocks' else {}
         profiles={r['security_id']:r for r in self.source('profile',day)} if domain=='stocks' else {}
         sector_native={r['sector_id']:r for r in self.source('sector',day)} if domain=='sectors' else {}
@@ -1697,6 +1780,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                     row['fields']['close']['source']=dict(domain='adjusted',owner=self.api.candidate['owners'][day]['adjusted'],
                         field='close',price_basis_id=exact_adjusted_basis) if row['fields']['close']['adjustment_basis'] else None
                     row['fields']['close']['source_price_basis']=price_basis
+                else:
+                    # Core/Profile values cannot stand in for a missing row in
+                    # the dated adjustment Owner. Preserve the identity while
+                    # making the adjusted close unusable with the exact gap.
+                    row['fields']['close']=_missing_adjusted_close(day,has_adjusted_owner)
                 state=d2.get(row['entity_id'],{})
                 for k in ('effective_event','scenario_status','raw_qualification','matched_predicates','unknown_predicates',
                           'transition_reasons','detector_statuses','prewatch_status','input_provenance'):

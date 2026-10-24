@@ -33,6 +33,7 @@ def validate(root,candidate):
     for day in dates:
         if not {'raw','core','profile','sector','relative_sector','rotation','lifecycle','special_phase'}<=set(candidate['owners'][day]):raise ValueError('REQUIRED_OPERATIONAL_OWNER_MISSING')
         for binding in candidate['owners'][day].values():checked(root,binding)
+        _validate_owner_identity_conservation(root,day,candidate['owners'][day])
         receipt=json.loads(checked(root,candidate['owners'][day]['sector_receipt']).read_bytes())
         item=next(r for r in receipt['owners'] if r['trade_date']==day)
         if item['membership_snapshot_id']!=snapshot['membership_snapshot_id'] or item['source_bindings']['membership_snapshot']!=candidate['membership_snapshot']:
@@ -91,6 +92,40 @@ def rows(root,binding):
     for key in ('rows','target_bars','sectors'):
         if isinstance(x.get(key),list):return x[key]
     return x
+
+def _validate_owner_identity_conservation(root,day,owners):
+    """Reject a dated candidate that mixes Core/Profile with another lifecycle scope."""
+    lifecycle=json.loads(checked(root,owners['lifecycle']).read_bytes())
+    if lifecycle.get('trade_date')!=day:
+        raise ValueError('OWNER_LIFECYCLE_TRADE_DATE_MISMATCH:'+day)
+    active=lifecycle.get('active_security_ids')
+    if not isinstance(active,list) or not active:
+        raise ValueError('OWNER_LIFECYCLE_ACTIVE_SCOPE_MISSING:'+day)
+    active_ids=[str(value) for value in active if value]
+    if len(active_ids)!=len(active) or len(set(active_ids))!=len(active_ids):
+        raise ValueError('OWNER_LIFECYCLE_ACTIVE_SCOPE_DUPLICATE:'+day)
+    expected=set(active_ids)
+    actual={}
+    for domain in ('core','profile'):
+        source=rows(root,owners[domain]);seen=set();duplicates=0;wrong_date=0
+        for row in source:
+            security_id=row.get('security_id')
+            if not security_id or security_id in seen:
+                duplicates+=1
+            else:
+                seen.add(security_id)
+            if row.get('trade_date') and row['trade_date']!=day:
+                wrong_date+=1
+        if duplicates:
+            raise ValueError('OWNER_IDENTITY_DUPLICATE:'+domain+':'+day)
+        if wrong_date:
+            raise ValueError('OWNER_IDENTITY_TRADE_DATE_MISMATCH:'+domain+':'+day)
+        actual[domain]=seen
+        if seen!=expected:
+            raise ValueError('OWNER_LIFECYCLE_IDENTITY_SET_MISMATCH:'+domain+':'+day+
+                ':active='+str(len(expected))+':owner='+str(len(seen)))
+    if actual['core']!=actual['profile']:
+        raise ValueError('OWNER_CORE_PROFILE_IDENTITY_SET_MISMATCH:'+day)
 
 def rollback_staging(root,head_path,current_sha,predecessor_sha):
     root=Path(root).resolve();head_path=Path(head_path).resolve()

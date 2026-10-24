@@ -1013,6 +1013,35 @@
         }
       ],
       "disposition": "Preserve original candidate bytes and use R10 fail-closed result; do not consume old Core-derived breadth values. Not accepted or AS_RECORDED; no canonical publication points to these."
+    },
+    "continued_existing_data_repair": {
+      "baseline_remote_head": "2b08972c3727f6cd9358ad9833794f66f351cc8f",
+      "priority_market_consumer_fix": {
+        "before": "quarantine_candidate_market_risk cleared market_stress but preserved trend_reference numeric fields",
+        "after": "whitelist projection retains contract/input authority/source-owner bindings and reason; market_stress and trend_reference are null; no candidate numeric siblings returned",
+        "original_candidate_and_pg_rows_modified": false,
+        "source_file": "src/workbench_service/core_product_bff_r1.py",
+        "regression_test": "tests/test_v4_functional_r8_s01_s03.py::test_unverified_candidate_market_risk_is_removed_from_priority_consumer_payload",
+        "result": "PASS"
+      },
+      "targeted_tests": {
+        "command": "pytest -q tests/test_v4_functional_r8_s01_s03.py tests/test_core_product_home_cache_closeout.py tests/v4_joint/test_r9_market_cache_scope.py",
+        "result": "51 passed in 3.95s"
+      },
+      "s00_s08_layer_matrix": {
+        "S00": {"CODE":"PASS","NUMERIC":"N/A","SOURCE":"PASS","DEV_PG":"PASS_READ_ONLY","API":"PASS_EXISTING_CONTEXT","UI":"PASS_IN_APP_BROWSER","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S01": {"CODE":"PARTIAL","NUMERIC":"N/A","SOURCE":"PARTIAL_ACTIVE_CLOSURE_UNRESOLVED","DEV_PG":"PASS_READ_ONLY","API":"N/A","UI":"N/A","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S02": {"CODE":"PASS","NUMERIC":"PARTIAL","SOURCE":"BLOCKED_HISTORICAL_UNIVERSE_EMPTY_2026_10_14_TO_16","DEV_PG":"PASS_13_R2_PROJECTIONS","API":"PASS_HOME_MARKET_QUARANTINE","UI":"PASS_13_HOME_COUNT_PARITY_IN_APP_BROWSER","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S03": {"CODE":"PARTIAL","NUMERIC":"PARTIAL","SOURCE":"PARTIAL_INVALID_INPUT_ROWS_UNRESOLVED","DEV_PG":"PASS_READ_ONLY_OWNER_DIGESTS","API":"PARTIAL_CURRENT_TOKEN_DATE_ONLY","UI":"PARTIAL","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S04": {"CODE":"PARTIAL_FORWARD_CACHE_FIXED","NUMERIC":"PARTIAL","SOURCE":"BLOCKED_LIVE_CAPTURE_ABSENT","DEV_PG":"PARTIAL_HISTORICAL_COUNTS","API":"PARTIAL","UI":"UI_RUNTIME_NOT_RELOADED","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S05": {"CODE":"PARTIAL_FAIL_CLOSED_BRANCHES","NUMERIC":"PARTIAL_IDENTITY_ONLY","SOURCE":"BLOCKED_D0_D2_TREND_CONTRACTS","DEV_PG":"PARTIAL_READ_ONLY_OWNERS","API":"PARTIAL_CONTRACT_BLOCKED","UI":"PARTIAL_OLD_RUNTIME","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S06": {"CODE":"PARTIAL","NUMERIC":"PARTIAL_CLV_AND_2026_10_21_ORACLE","SOURCE":"BLOCKED_NO_NEW_COLLECTION_AND_MISSING_IDENTITY_FACTOR","DEV_PG":"PARTIAL_R2_ROLLBACK_IDEMPOTENCY_PASS","API":"PARTIAL_HOME_READBACK","UI":"N/A","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S07": {"CODE":"PARTIAL_CACHE_IDENTITY_FIXES","NUMERIC":"N/A","SOURCE":"PASS_CACHE_SHA_RECHECK","DEV_PG":"PASS_EXISTING_INSTANCE","API":"PARTIAL_OLD_PID_ONLY","UI":"UI_RUNTIME_NOT_RELOADED","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},
+        "S08": {"CODE":"PARTIAL","NUMERIC":"PARTIAL","SOURCE":"BLOCKED_EXTERNAL_FACTS_AND_CONTRACTS","DEV_PG":"PARTIAL","API":"PARTIAL","UI":"PARTIAL","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"}
+      },
+      "acceptance": "PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED",
+      "data_updates_remain_paused": true,
+      "browser_acceptance": {"browser":"Codex in-app browser","local_browser_used":false,"dev_pid":52916,"dev_port":28766,"restarted":false,"production_port_28765_started":false}
     }
   }
 }

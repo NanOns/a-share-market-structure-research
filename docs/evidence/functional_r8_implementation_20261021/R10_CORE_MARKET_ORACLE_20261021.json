@@ -1,0 +1,56 @@
+{
+  "contract_id": "CORE_MARKET_INDEPENDENT_NUMERIC_ORACLE_R2",
+  "status": "SCOPED_NUMERIC_PASS",
+  "T0": "2026-10-21",
+  "ret1_comparisons": 5216,
+  "unknown_ret1": 8,
+  "breadth_source_denominator": 5224,
+  "raw_actual_quote_count": 5216,
+  "exact_amount_sum": "5716687389023/4",
+  "index_numeric_comparisons": 3600,
+  "limits_full_denominator": 5224,
+  "known_limit_rows": 5198,
+  "limit_price_and_extrema_comparisons": 25990,
+  "differences": [],
+  "source_bindings": {
+    "core": {
+      "bytes": 19755700,
+      "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/core.jsonl.gz",
+      "sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801"
+    },
+    "history": {
+      "bytes": 88715016,
+      "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/history.jsonl.gz",
+      "sha256": "de3b85d2ad1cca69598713c19453cc105cc460488fddb87fa2df873c0d7e0221"
+    },
+    "limits_0": {
+      "bytes": 255141,
+      "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/daily_price_limits_v1.jsonl.gz",
+      "sha256": "adbeb55d82e4f872608b7d5b3e5b24c275743b6dd896f6a262edf42cd95f9ef6"
+    },
+    "limits_1": {
+      "bytes": 255354,
+      "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/daily_price_limits_v1.jsonl.gz",
+      "sha256": "debc72bac58ff8d666fa1b91160803132c734a1c0ef6498f64e4854834b4e6e6"
+    },
+    "market": {
+      "bytes": 7623,
+      "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+      "sha256": "cf98bb746fcb0a342200e87b6794d0b02b25a8366ea48a683a58a61e9466fed4"
+    },
+    "package": {
+      "bytes": 549730276,
+      "path": "data/v4/dynamic_daily_sources/tdx/20261021/sha256-0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede/hsjday.zip",
+      "sha256": "0404bbaeb985b2409a99dfcfe2c67b00e5dd574378105c408486183e9e058ede"
+    },
+    "raw": {
+      "bytes": 240788,
+      "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/raw.jsonl.gz",
+      "sha256": "59e8f1055a69de96ec210c1e610a1d4595606eaed591f52f2f1bfe067303bb08"
+    }
+  },
+  "limitations": [
+    "Unknown limit lifecycle/reference admission and streak semantics require separate acceptance",
+    "Exact source equivalence does not grant cohort PIT or external acceptance"
+  ]
+}

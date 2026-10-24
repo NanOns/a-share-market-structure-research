@@ -252,6 +252,50 @@ def test_market_candidate_must_be_same_day_complete_nonempty_post_hoc():
     assert market_candidate_failure({'status':'READY','market_stress':{'test-day':dated}},'test-day',market)=='MARKET_RECORDED_AXIS_RECOMPUTATION_MISMATCH'
 
 
+def test_unverified_candidate_market_risk_is_removed_from_priority_consumer_payload():
+    from workbench_service.core_product_bff_r1 import (
+        market_candidate_failure,quarantine_candidate_market_risk)
+
+    candidate={'status':'SOURCE_INCOMPLETE','T0':'test-day',
+        'reason':'HISTORICAL_MEMBER_SOURCE_MISSING',
+        'market_stress':{'test-day':{'breadth_axis':'IMPROVING','breadth_value':0.25}},
+        'trend_reference':{'index_close':123.4,'index_ma20':120.0},
+        'source_owners':{'test-day':{'core':{'sha256':'core'}}},
+        'AS_RECORDED':False,'PIT_ELIGIBLE':False,'production_admission':False}
+    reason=market_candidate_failure(candidate,'test-day')
+    result=quarantine_candidate_market_risk(candidate,day='test-day',reason=reason)
+
+    assert reason=='HISTORICAL_MEMBER_SOURCE_MISSING'
+    assert result['status']=='SOURCE_INCOMPLETE'
+    assert result['reason']=='HISTORICAL_MEMBER_SOURCE_MISSING'
+    assert result['market_stress'] is None
+    assert result['trend_reference'] is None
+    assert 'index_close' not in result
+    assert result['source_owners']==candidate['source_owners']
+    assert result['consumer_disposition']=='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'
+    assert result['production_admission'] is False
+    assert candidate['market_stress']['test-day']['breadth_axis']=='IMPROVING'
+
+
+def test_forward_late_preview_cache_is_shared_across_request_bff_instances():
+    from copy import copy
+    from types import SimpleNamespace
+    from workbench_service.core_product_bff_r1 import _forward_candidate_late_preview_key
+
+    api=SimpleNamespace(token='candidate-token',cache={})
+    first=SimpleNamespace(api=api)
+    second=SimpleNamespace(api=copy(api))
+    bindings={'test-day:core':{'path':'core.jsonl.gz','sha256':'a'*64},
+        'test-day:freeze':{'path':'freeze.json','sha256':'b'*64}}
+    key=_forward_candidate_late_preview_key(api.token,'test-day',bindings)
+    first.api.cache[key]={'status':'CANDIDATE_ONLY_LATE_OBSERVED'}
+    assert second.api.cache is first.api.cache
+    assert second.api.cache[_forward_candidate_late_preview_key(
+        second.api.token,'test-day',bindings)]['status']=='CANDIDATE_ONLY_LATE_OBSERVED'
+    changed={**bindings,'test-day:core':dict(bindings['test-day:core'],sha256='c'*64)}
+    assert _forward_candidate_late_preview_key(api.token,'test-day',changed)!=key
+
+
 def test_source_bytes_changed_without_binding_revision_fails_closed(tmp_path):
     import hashlib
     from workbench_analysis.r6_candidate_market_stress import _checked

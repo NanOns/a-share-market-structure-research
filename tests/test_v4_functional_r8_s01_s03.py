@@ -213,6 +213,43 @@ def test_market_cache_hit_is_diagnostic_not_business_payload(monkeypatch):
     assert 'cache_hit' not in cold and 'cache_hit' not in hot
 
 
+def test_unverified_market_candidate_quarantines_every_axis_from_consumer():
+    from workbench_service.core_product_bff_r1 import (
+        market_candidate_failure,quarantine_unverified_market_axes)
+
+    market={'row':dict(trend_axis='WEAK',breadth_axis='IMPROVING',
+        participation_axis='HIGH',stress_level='LOW',stress_change='EASING'),
+        'raw':{'breadth_value':0.125,'stress_ratio':0.01},
+        'regime':{'value':'RISK_ON','candidate':'RISK_ON'},
+        'regime_publication_status':'FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED',
+        'sources':[{'path':'retained-historical-evidence'}]}
+    failure=market_candidate_failure({'status':'SOURCE_INCOMPLETE','reason':'SOURCE_DATE_MISSING'},'test-day')
+    assert failure=='SOURCE_DATE_MISSING'
+    result=quarantine_unverified_market_axes(market,day='test-day',reason=failure)
+    assert set(result['row'][key] for key in (
+        'trend_axis','breadth_axis','participation_axis','stress_level','stress_change'))=={'UNKNOWN'}
+    assert result['raw']['status']=='SOURCE_INCOMPLETE'
+    assert result['regime']['value']=='UNKNOWN'
+    assert result['regime_publication_status']=='SOURCE_INCOMPLETE'
+    assert result['consumer_disposition']=='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'
+    assert result['sources']==market['sources']
+    assert market['row']['breadth_axis']=='IMPROVING'
+
+
+def test_market_candidate_must_be_same_day_complete_nonempty_post_hoc():
+    from workbench_service.core_product_bff_r1 import market_candidate_failure
+
+    dated={'T0':'test-day','status':'CANDIDATE_POST_HOC','AS_RECORDED':False,
+        'production_admission':False,'source_digest':'digest','core_owner':{'sha256':'core'},
+        'limit_owner':{'sha256':'limits'},'known_count':1,'universe_count':1}
+    assert market_candidate_failure({'status':'READY','market_stress':{'test-day':dated}},'test-day') is None
+    assert market_candidate_failure({'status':'READY','market_stress':{'other-day':dated}},'test-day')=='MARKET_CANDIDATE_DATE_NOT_VERIFIED'
+    assert market_candidate_failure({'status':'READY','market_stress':{'test-day':{**dated,'known_count':0}}},'test-day')=='MARKET_CANDIDATE_BINDINGS_OR_COUNTS_INCOMPLETE'
+    market={'row':{'trend_axis':'WEAK','breadth_axis':'DETERIORATING',
+        'participation_axis':'LOW','stress_level':'LOW','stress_change':'STABLE'}}
+    assert market_candidate_failure({'status':'READY','market_stress':{'test-day':dated}},'test-day',market)=='MARKET_RECORDED_AXIS_RECOMPUTATION_MISMATCH'
+
+
 def test_source_bytes_changed_without_binding_revision_fails_closed(tmp_path):
     import hashlib
     from workbench_analysis.r6_candidate_market_stress import _checked

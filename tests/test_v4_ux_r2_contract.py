@@ -241,7 +241,10 @@ class UXR2RouteContractTests(unittest.TestCase):
         bff._rotation_owner_summary=lambda _day:{}
         code,result=bff.get('/api/v4/home',{'trade_date':day,'context_token':token})
         self.assertEqual(code,200)
-        self.assertEqual(result['market']['regime_publication_status'],'ACCEPTED')
+        self.assertEqual(result['market']['regime_publication_status'],'SOURCE_INCOMPLETE')
+        self.assertEqual(result['market']['row']['stress_level'],'UNKNOWN')
+        self.assertEqual(result['market']['consumer_disposition'],
+            'QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE')
         self.assertEqual(result['risks'],[])
         self.assertEqual(len(result['focus_risk_events']),1)
         self.assertIsNone(result['counts']['forward']['value'])

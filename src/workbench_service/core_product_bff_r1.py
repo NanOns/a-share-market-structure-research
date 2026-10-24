@@ -142,6 +142,50 @@ def annotate_home_readiness(payload, *, cohort_authorized=False):
             reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')
     return result
 
+def quarantine_unverified_market_axes(market, *, day, reason):
+    """Hide recorded market values unless the dated candidate derivation verifies them."""
+    if not isinstance(market,dict):
+        return market
+    result=deepcopy(market)
+    row=result.setdefault('row',{})
+    if isinstance(row,dict):
+        for key in ('trend_axis','breadth_axis','participation_axis','stress_level','stress_change'):
+            row[key]='UNKNOWN'
+    result['raw']={
+        'status':'SOURCE_INCOMPLETE','as_of':day,
+        'reason':'同日市场来源或独立复算证据不完整；原始候选数值已从消费者响应中隔离。',
+        'reason_code':reason,
+    }
+    result['regime']={'value':'UNKNOWN','candidate':'UNKNOWN','quality':'SOURCE_INCOMPLETE',
+        'reason_code':reason}
+    result['regime_publication_status']='SOURCE_INCOMPLETE'
+    result['formal_risk_status']='SOURCE_INCOMPLETE'
+    result['formal_risk_reason']=reason
+    result['four_axis_scope']='SOURCE_INCOMPLETE; RECORDED_MARKET_VALUES_QUARANTINED'
+    result['consumer_disposition']='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'
+    result['candidate_market_status']='SOURCE_INCOMPLETE'
+    return result
+
+def market_candidate_failure(candidate_market, day, market=None):
+    """Return a stable failure code unless a complete same-day derivation is present."""
+    if not isinstance(candidate_market,dict) or candidate_market.get('status')!='READY':
+        return (candidate_market or {}).get('reason','MARKET_CANDIDATE_RECOMPUTE_UNAVAILABLE')
+    dated=(candidate_market.get('market_stress') or {}).get(day)
+    if not isinstance(dated,dict) or dated.get('T0')!=day:
+        return 'MARKET_CANDIDATE_DATE_NOT_VERIFIED'
+    if (dated.get('status')!='CANDIDATE_POST_HOC' or dated.get('AS_RECORDED') is not False
+            or dated.get('production_admission') is not False or not dated.get('source_digest')
+            or not dated.get('core_owner') or not dated.get('limit_owner')
+            or not dated.get('known_count') or not dated.get('universe_count')):
+        return 'MARKET_CANDIDATE_BINDINGS_OR_COUNTS_INCOMPLETE'
+    if isinstance(market,dict) and isinstance(market.get('row'),dict):
+        expected={'trend_axis':(dated.get('trend_axis') or {}).get('value'),
+            'breadth_axis':dated.get('breadth_axis'),'participation_axis':dated.get('participation_axis'),
+            'stress_level':dated.get('stress_level'),'stress_change':dated.get('stress_change')}
+        if any(market['row'].get(key)!=value for key,value in expected.items()):
+            return 'MARKET_RECORDED_AXIS_RECOMPUTATION_MISMATCH'
+    return None
+
 def home_summary(row, fields):
     """Keep only the identity and explicitly rendered evidence needed by home cards."""
     result={key:row[key] for key in HOME_IDENTITY_FIELDS if key in row}
@@ -1225,10 +1269,17 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         try:
                             candidate_market,_=self._candidate_market_stress()
                             dated=(candidate_market.get('market_stress') or {}).get(day) or {}
+                            market_failure=market_candidate_failure(candidate_market,day,response['market'])
+                            if market_failure:
+                                response['market']=quarantine_unverified_market_axes(
+                                    response['market'],day=day,reason=market_failure)
+                                dated={}
                             response['market']['candidate_trend_review']=dict(dated.get('trend_axis') or
                                 dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',reason='TREND_REFERENCE_NOT_BOUND_TO_REQUEST_DATE'),
                                 as_of=day)
                         except (OSError,ValueError,KeyError,TypeError) as exc:
+                            response['market']=quarantine_unverified_market_axes(
+                                response['market'],day=day,reason='MARKET_CANDIDATE_AUDIT_FAILED_CLOSED')
                             response['market']['candidate_trend_review']=dict(value='UNKNOWN',quality='SOURCE_INCOMPLETE',
                                 reason='TREND_REFERENCE_AUDIT_FAILED_CLOSED',error=type(exc).__name__)
                     try:
@@ -1245,9 +1296,10 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                             for family_name,family in families.items() for item in family.get('changes',[])][:30]
                         if isinstance(response.get('market'),dict):
                             market_family=families.get('MARKET_PRESSURE_RISK',{})
-                            response['market']['regime_publication_status']='FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED'
-                            response['market']['formal_risk_status']=market_family.get('status','SOURCE_INCOMPLETE')
-                            response['market']['four_axis_scope']='OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED'
+                            quarantined=response['market'].get('consumer_disposition')=='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'
+                            response['market']['regime_publication_status']=('SOURCE_INCOMPLETE' if quarantined else 'FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED')
+                            response['market']['formal_risk_status']=('SOURCE_INCOMPLETE' if quarantined else market_family.get('status','SOURCE_INCOMPLETE'))
+                            response['market']['four_axis_scope']=('SOURCE_INCOMPLETE; RECORDED_MARKET_VALUES_QUARANTINED' if quarantined else 'OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED')
                     except (OSError,ValueError,KeyError,TypeError):
                         response['risk_owner_source']={'status':'SOURCE_INCOMPLETE','reason':'IMMUTABLE_PG_RISK_OWNER_NOT_BOUND'}
                     try:
@@ -2189,6 +2241,15 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                 return code,data
         if path=='/api/v4/home':
             code,data=super().get(path,self._base_query(q));fw=self.source('forward',day);events=fw['events'];stocks={r['entity_id']:r for r in self.project('stocks',day)}
+            if isinstance(data.get('market'),dict):
+                try:
+                    candidate_market,_=self._candidate_market_stress()
+                    market_failure=market_candidate_failure(candidate_market,day,data['market'])
+                except (OSError,ValueError,KeyError,TypeError):
+                    market_failure='MARKET_CANDIDATE_AUDIT_FAILED_CLOSED'
+                if market_failure:
+                    data['market']=quarantine_unverified_market_axes(
+                        data['market'],day=day,reason=market_failure)
             # Explicit owner events only. NEW maps to Focus NEW, not PREWATCH/confirmation.
             # Select before copying the large stock field projection. This is the
             # same stable priority/entity order as prioritize_home_changes.
@@ -2268,10 +2329,11 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             data['focus_risk_events']=data.get('risks') or []
             data['focus_risk_scope']='FOCUS_OWNER_RISK_EVENTS_ONLY; NOT_COMPLETE_RISK_FAMILIES'
             if isinstance(data.get('market'),dict):
-                data['market']['regime_publication_status']='FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED'
-                data['market']['formal_risk_status']=risk_market['status']
-                data['market']['formal_risk_reason']=risk_market.get('reason')
-                data['market']['four_axis_scope']='OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED'
+                quarantined=data['market'].get('consumer_disposition')=='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'
+                data['market']['regime_publication_status']=('SOURCE_INCOMPLETE' if quarantined else 'FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED')
+                data['market']['formal_risk_status']=('SOURCE_INCOMPLETE' if quarantined else risk_market['status'])
+                if not quarantined:data['market']['formal_risk_reason']=risk_market.get('reason')
+                data['market']['four_axis_scope']=('SOURCE_INCOMPLETE; RECORDED_MARKET_VALUES_QUARANTINED' if quarantined else 'OBSERVED_V4_FACT_AXES; COMPOSITE_REGIME_CANDIDATE_UNACCEPTED')
             data['counts']['radar']=dict(value=len(independent),quality='KNOWN',status='PARTIAL',scope='ACCEPTED_FOCUS_CHANGE_EVENTS_WITHOUT_TOP_ROTATION_COVERAGE',source=self.api.candidate['owners'][day].get('forward'),reason='FORMAL_RADAR_PRIORITY_NOT_PUBLISHED',href='/v4/research/radar')
             data['counts']['forward']=dict(value=None,quality='SOURCE_INCOMPLETE',status='NOT_GRANTED',scope='FORMAL_VALIDATION_COHORT',source=self.api.candidate['owners'][day].get('validation_cohort'),reason='NO_AUTHORIZED_COHORT_OWNER',href='/v4/research/focus#forward-cohort')
             data['gaps']=[g for g in data['gaps'] if g['domain'] not in ('home/changes','home/risks','home/net-information')]

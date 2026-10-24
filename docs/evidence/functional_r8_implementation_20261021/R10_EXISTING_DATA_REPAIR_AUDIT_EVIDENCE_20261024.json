@@ -1,0 +1,167 @@
+{
+  "contract_id": "V4_R10_EXISTING_DATA_REPAIR_AUDIT_EVIDENCE_V1",
+  "version": "1.0.0",
+  "language": "zh-CN",
+  "status": "PARTIAL_REPAIR_NOT_ACCEPTED",
+  "recorded_at": "2026-10-24",
+  "git": {
+    "branch": "codex/v4-unified-development",
+    "starting_remote_head": "283a26414609d47004adbec318eb5b4846b6d7c7"
+  },
+  "read_contracts": [
+    "V4_R8_UNIFIED_SOURCE_REPAIR_SPEC_R1_20261015",
+    "V4_RUNTIME_PERFORMANCE_REPAIR_R1_20261013",
+    "V4_FULL_CLOSEOUT_CONTINUATION_TASK_R2_20261013",
+    "PROJECT_SPEC.md",
+    "Drive R10 task card 1SqPW4Y64s85EzSJwY7wwoptnQKe_YVbL",
+    "latest GitHub R10_V4_REAL_FUNCTIONAL_CLOSEOUT_REPORT.md and paired Evidence"
+  ],
+  "phase0": {
+    "status": "FULL_PASS",
+    "basis": "latest R10 evidence; scanner was not run in this task"
+  },
+  "stop_state": {
+    "new_source_collection": "PAUSED",
+    "source_ingress_append": "PAUSED",
+    "new_trade_date_core_owner_generation": "PAUSED",
+    "automated_daily": "PAUSED",
+    "scheduled_task": {
+      "name": "Codex-V4-OperationalDaily-28765",
+      "enabled": false,
+      "state": "Disabled",
+      "next_run_time": null,
+      "last_run_time": "2026-10-14T08:25:56+08:00",
+      "last_task_result": 15,
+      "change_by_this_task": false
+    },
+    "external_acquisition_performed": false,
+    "new_trade_date_generated": false,
+    "formal_head_modified": false,
+    "pg_write_performed": false,
+    "business_data_deleted": false,
+    "service_restart_performed": false
+  },
+  "database_inventory": {
+    "database": "market_research",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "transaction_mode": "READ ONLY",
+    "schemas": 108,
+    "tables": 472,
+    "exact_rows": 4858619,
+    "families": {
+      "canonical_v4": {"tables": 125, "rows": 3494748},
+      "research_snapshots": {"schemas": 23, "tables": 138, "rows": 516134},
+      "readindex_all": {"candidate_namespaces": 42, "rows": 394237},
+      "source_ingress": {"tables": 2, "rows": 38981, "tdx_bar_rows": 38974, "receipt_rows": 7},
+      "history_forward_additional_schemas": {"tables": 4, "rows": 21859},
+      "other_candidate_and_operations": {"rows": 392660}
+    },
+    "readindex_candidate_tables": 126,
+    "owner_versions": 31,
+    "owner_payloads": 18,
+    "owner_rows_groups": 13,
+    "canonical_market_publication_rows": {
+      "market_universe_snapshots": 0,
+      "market_universe_snapshot_rows": 0,
+      "publications": 0,
+      "publication_heads": 0
+    }
+  },
+  "available_trade_dates": [
+    "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-08", "2026-10-09",
+    "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16",
+    "2026-10-19", "2026-10-20", "2026-10-21"
+  ],
+  "source_ingress_dates": {
+    "2026-10-15": 5565,
+    "2026-10-16": 5567,
+    "2026-10-19": 5564,
+    "2026-10-20": 5568,
+    "2026-10-21": 5568,
+    "2026-10-22": 5570,
+    "2026-10-23": 5572
+  },
+  "bad_market_candidates": {
+    "count": 13,
+    "prior_quarantine_status": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION",
+    "by_date": {
+      "2026-10-19": {"count": 3, "recorded_breadth_common_count": 5223, "comparison_date": "2026-10-14", "verified_four_board_historical_universe_count": 0},
+      "2026-10-20": {"count": 3, "recorded_breadth_common_count": 5224, "comparison_date": "2026-10-15", "verified_four_board_historical_universe_count": 0},
+      "2026-10-21": {"count": 7, "recorded_breadth_common_count": 5224, "comparison_date": "2026-10-16", "verified_four_board_historical_universe_count": 0}
+    },
+    "recomputation_result": "BLOCKED_SOURCE_MISSING",
+    "r10_numeric_evidence_class": "NON_PIT_CANDIDATE_REPLAY",
+    "old_2026_10_19_core_based_diagnostic": {
+      "universe_count": 5225,
+      "current_intersection": 5223,
+      "evaluable_denominator": 5208,
+      "positive_indicator_mean": 0.2465437788018433,
+      "sign_mean": 0.5057603686635944,
+      "accepted_as_correct_historical_value": false
+    }
+  },
+  "root_cause_classification": {
+    "source_missing_or_coverage_inadequate": [
+      "2026-10-14 to 2026-10-16 four-board comparison identities missing from bound historical universe",
+      "2026-10-22 to 2026-10-23 same-date Identity/Member authority missing",
+      "2026-10-23 BaoStock daily bars and factors missing"
+    ],
+    "calculation_or_process_defect": [
+      "13 old Market candidates used a comparison denominator with no valid historical universe",
+      "Home API R2 ReadIndex path exposed stored Market values without requiring a complete same-day recomputation"
+    ],
+    "business_contract_missing": [
+      "D0 cutoff/source seal",
+      "D2 frozen invalidation anchor",
+      "Focus Priority ordering",
+      "Market current-publication trend reference and composite acceptance",
+      "authorized LIVE Forward cohort"
+    ]
+  },
+  "source_changes": {
+    "file": "src/workbench_service/core_product_bff_r1.py",
+    "behavior": "validate same-day derived Market candidate bindings, nonempty counts and exact row-axis equality; quarantine all Home axes and raw numeric values on failure in ReadIndex and live fallback paths",
+    "immutable_pg_snapshots_changed": false
+  },
+  "runtime_pg_api_ui_readback": {
+    "dev_port": 28766,
+    "dev_pid": 52916,
+    "production_port": 28765,
+    "production_listener_present": false,
+    "postgres_pid": 8640,
+    "source_process_loaded_fix": false,
+    "observed_pre_fix_2026_10_21": {
+      "home_status": "READY",
+      "formal_risk_status": "READY",
+      "regime_publication_status": "FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED",
+      "breadth_axis": "DETERIORATING",
+      "participation_axis": "THIN",
+      "stress_level": "LOW",
+      "quarantine_marker": null
+    },
+    "historical_home_reads_2026_10_19_2026_10_20": "CLIENT_TIMEOUT_30_SECONDS",
+    "service_restart_allowed_this_round": false
+  },
+  "verification": {
+    "pytest_suites": [
+      "tests/test_v4_functional_r8_s01_s03.py",
+      "tests/test_core_product_home_cache_closeout.py",
+      "tests/test_v4_ux_r2_contract.py",
+      "tests/test_v4_r6_batch10_defect_repairs.py",
+      "tests/test_v4_functional_r8_third_batch.py",
+      "tests/v4_joint/test_r9_market_cache_scope.py"
+    ],
+    "pytest_result": "94 passed",
+    "git_diff_check": "PASS",
+    "transaction_recovery_or_idempotency_test": "NOT_RUN",
+    "all_dates_all_domains_numerical_reconciliation": "NOT_COMPLETE"
+  },
+  "acceptance": {
+    "source_code_consumer_gate": "REPAIRED_AND_UNIT_TESTED",
+    "pg_data_correctness_all_existing_dates": "NOT_ACCEPTED",
+    "api_and_page_runtime_readback": "NOT_ACCEPTED_OLD_PROCESS_STILL_SERVES_STALE_VALUES",
+    "all_business_domains_independent_reconciliation": "NOT_COMPLETE",
+    "restore_data_updates": false
+  }
+}

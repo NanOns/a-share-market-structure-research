@@ -125,3 +125,34 @@ PG 写后只读清点按时间顺序为：初始三日投影后 111 schemas/481 
 R2 13 日 PG→Home API→首页计数和市场隔离已逐日对齐，10/20 五个业务页面已实际加载；仍未验收的工作是 Core 已有 13 日 CLV 与 10/21 scoped oracle 证据之外的数值字段：其余日期 Core QFQ rolling/ret1/tr 及 Sector、D0/D2、Priority、Forward 逐字段独立复算仍未完成；Forward 页面源码修复的运行时读回、Priority 生产/历史访问合同，以及所有页面的逐域逐日 PG→API→页面数据行对账。28766 本轮不重启，运行态继续标 `UI_RUNTIME_NOT_RELOADED`；若要验收新进程，需另行安排允许的开发服务运行窗口。Priority/Market/D0/D2/Forward 缺失业务合同和 10/14–16 historical universe 来源缺口保持明确分类。来源缺失期间不生成虚假数值、不新增采集。所有输出继续标为开发候选。
 
 只有在全存量日期逐项数值对账通过、错误候选无可达消费者、API 与页面读回一致、事务失败/恢复闭环有证据、未授权合同保持阻断并由独立验收签收后，才能讨论恢复数据更新。**本报告不构成该验收，自动日更继续停用。**
+
+## 2026-10-24 后续续修：增量完成语义与 RPS 复核口径
+
+### 为什么过去的“增量完成”与交易日业务链缺口同时存在
+
+已追到当前 R8 SourceIngress 入口 `scripts/r8_batch04_ingest_tdx_source.py::ingest`：它的实际终点是把原始 TDX 日线与 receipt 写入开发 PG，并对 receipt、OHLCV、来源 SHA 和证据类别逐项读回；它明确不生成 Core、Profile、Sector、Market、D0、D2、Priority、Focus、Forward、ReadIndex，也不更新任何 Head。10/22 与 10/23 的 `SOURCE_INGRESS_READBACK_PASS` 因此只证明该入口自己的来源入库步骤完成，不能证明“交易日增量完成”。先前把该结果向用户概括成“增量跑完”是错误报告，业务日期链确实没有闭合。
+
+入口回执现在增加机器可读字段：`completion_scope=SOURCE_INGRESS_ONLY`、`business_chain_status=NOT_RUN`、`business_chain_complete=false`，并列出后续需完成的域与 API/页面读回范围；原 `SOURCE_INGRESS_READBACK_PASS` 保留为兼容字段。回归测试防止以后把来源入库误读为整日业务链完成。未追加来源、未创建 10/22 或 10/23 的 Core/Owner、未改 Head。
+
+### 本次独立数值复核修正
+
+先前审计把相邻日期各自在自身价格坐标中的 Core RPS 直接相减，作为跨日期 delta oracle；这个算法错误，因为复权坐标跨日不同。改用 10/20 当日 Owner 的 `prior_core_target_coordinate.jsonl.gz`，该文件保存 10/19 在 10/20 当前坐标内的 return 输入，再分别按精确 Lifecycle 成员做独立 midrank 重排：
+
+| 10/20 字段 | 有效观察 | 独立复算 | 不一致 |
+|---|---:|---:|---:|
+| `rps5_delta1` | 5,205 | 5,205 | 0 |
+
+10/20 lag1 的逐源 SHA、行数和复算方法记录在 [RPS5 delta1 独立对账证据](R10_RPS5_DELTA1_INDEPENDENT_ORACLE_R1_20261024.json)。对全部 13 个日期做相同 lag1 重排后，完整结果见 [13 日 RPS5 delta1 对账](R10_RPS5_DELTA1_INDEPENDENT_ORACLE_R2_20261024.json)：65,266 个已观察值中，60,061 个可对账，56,197 匹配、3,864 不匹配；09/28 的 5,205 行缺前一交易日 Lifecycle 精确成员，不能独立验证。10/16 为主要异常日：2,825 个 delta 已观察行全部只有 1 行匹配，其余 2,824 行与 10/15 精确 Lifecycle 端点排序不一致。该批结果是对现存 Owner 的反证，不能据此把 Owner 宣称通过。
+
+10/20 lag3 的历史端点分数必须在 10/20 坐标下由同一日历史输入重算；本轮没有把不在同一坐标的历史 Core 分数用作替代，也不把尚未重算的 lag3 宣称为通过。lag1 多日异常首先需结合生产时实际 `dated_identity` 来源绑定，逐日确认是成员来源错配还是上游 return 输入问题；随后按精确日成员重算受影响的候选 Core 和消费者投影。该修复及重建尚未完成，专项仍失败。
+
+### 本次验证与页面回读
+
+- `tests/v4_joint/test_r9_source_ingress.py`：10 passed。
+- Market / Home cache 与候选 Priority 缓存回归：21 passed。
+- 前端候选标签回归：9 passed。
+- 仅通过 Codex 内置浏览器查看 `127.0.0.1:28766`。刷新后页面明确显示“当前候选数据日期 2026-10-21”与“候选快照记录时间 2026/10/23 08:40:33”；业务日期和文件/快照记录时间不再混为一项。28766 未重启；28765 未使用。
+
+### 专项结论仍为未验收
+
+上述语义修正不补齐数据。现有 10/22、10/23 仍只有 SourceIngress 原始来源，没有 Core/Owner 和后继业务链；本轮原冻结要求暂停这两个日期的 Core/Owner 生成，因此它们没有被推进。13 个候选日的 Core 同日公式复算（2,733,787 项、0 数值差异）和横截面 RPS5/RPS20 检查也不能替代跨日期与跨域闭环：RPS delta1 已发现 3,864 个差异，lag3 尚未完成；10/16 `rel_market_1` 的成员基准（Core 引用计数 2,834，与可见 10/15 Lifecycle 5,226 不一致）；其余日期 Sector/D0/D2/Priority/Focus/Forward 数值独立复算及每域逐行 API/页面对账仍未完成或合同/来源不充分。不得将此状态描述为全存量修复通过；自动日更继续关闭。

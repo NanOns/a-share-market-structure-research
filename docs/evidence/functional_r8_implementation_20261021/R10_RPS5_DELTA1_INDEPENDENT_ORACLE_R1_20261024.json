@@ -1,0 +1,34 @@
+{
+  "contract_id": "R10_RPS5_DELTA1_INDEPENDENT_ORACLE_R1",
+  "trade_date": "2026-10-20",
+  "prior_endpoint": "2026-10-19",
+  "method": "Re-rank ret5 observations from current Core and prior_core_target_coordinate (the previous session values are already transformed into the current target coordinate) using exact Lifecycle active_security_ids for the prior endpoint. Python midrank is independent of producer implementation. Delta = current rank - prior endpoint rank.",
+  "sources": {
+    "core": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\docs\\evidence\\functional_r8_annotation_followup_20261022\\rps_endpoint_recompute_r6\\owners\\2026-10-20\\core.jsonl.gz",
+      "sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83",
+      "rows": 5226
+    },
+    "prior_core_target_coordinate": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\docs\\evidence\\functional_r8_annotation_followup_20261022\\rps_endpoint_recompute_r6\\owners\\2026-10-20\\prior_core_target_coordinate.jsonl.gz",
+      "sha256": "91a774314265da4dbd1ae007e46c72718bca5634e10f20634ee9a8afe51b3fcd",
+      "rows": 5226
+    },
+    "prior_endpoint_lifecycle": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\dynamic_daily_owners\\2026-10-19\\73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e\\sources\\2026-10-19\\lifecycle.json",
+      "sha256": "2b930d0e4678e3101c86c505ab3a3c5a4596155fe35ad469b3e2ecf3d5eb756c",
+      "active_security_ids": 5224
+    }
+  },
+  "result": {
+    "observed": 5205,
+    "recomputed": 5205,
+    "matched": 5205,
+    "mismatch": 0,
+    "unverified": 0,
+    "current_rank_denominator": 5208,
+    "prior_rank_denominator": 5205,
+    "examples": []
+  },
+  "status": "PASS_SCOPED"
+}

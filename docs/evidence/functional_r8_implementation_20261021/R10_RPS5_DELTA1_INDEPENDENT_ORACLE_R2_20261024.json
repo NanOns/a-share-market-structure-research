@@ -1,0 +1,280 @@
+{
+  "contract_id": "R10_RPS5_DELTA1_INDEPENDENT_ORACLE_R2",
+  "method": "For each current candidate date, independently midrank persisted ret5 in current Core and prior_core_target_coordinate in the current target coordinate using exact current and prior Lifecycle active_security_ids; compare stored delta. First date without exact predecessor Lifecycle remains unverified. No producer function imported.",
+  "dates": [
+    {
+      "trade_date": "2026-09-28",
+      "core_sha256": "1d4dc8dfd74361f02a1eefe002e74f4838a37e54b1a1de04ab57adcf92e68841",
+      "prior_core_sha256": "c4e1ee4e113641dd0aa1c2c8d8f8fc0285ea9ebf6ce2b5e9ebb130d8ee3a1d3c",
+      "prior_endpoint": "2026-09-24",
+      "status": "UNVERIFIED_EXACT_PRIOR_LIFECYCLE_NOT_BOUND",
+      "observed": 5205,
+      "recomputed": 0,
+      "matched": 0,
+      "mismatch": 0,
+      "unverified": 5205
+    },
+    {
+      "trade_date": "2026-09-29",
+      "core_sha256": "b880b389c65b9b1dcfe716ff0a9bda5933f2708e4e51c438ad85456a2c3cbea2",
+      "prior_core_sha256": "b8de3d2bb1d011fe205a9ef404717ceaece5c7dccefb70d54e563631c188e01f",
+      "prior_endpoint": "2026-09-28",
+      "prior_lifecycle_sha256": "a5d2726e0a0c3fd1023cd0ce853156e8488bc4550f6a7b9204a406a1bb3c2312",
+      "prior_lifecycle_count": 5222,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5202,
+      "recomputed": 5202,
+      "matched": 5029,
+      "mismatch": 173,
+      "unverified": 0,
+      "current_rank_denominator": 5205,
+      "prior_rank_denominator": 5206
+    },
+    {
+      "trade_date": "2026-09-30",
+      "core_sha256": "a6d4bd42de00003095e1a65fae29cdbbfad5ab8e04f0983c5df4d99a8822bc7d",
+      "prior_core_sha256": "48ed40e1cdeccbe8a32ff36e600876157c625794b3df376cc27bfbf8c5d7448c",
+      "prior_endpoint": "2026-09-29",
+      "prior_lifecycle_sha256": "25c535cafebe107f327c5bcba9209ed38479dc7197e1e32f1610f2b309b7c076",
+      "prior_lifecycle_count": 5223,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5202,
+      "recomputed": 5202,
+      "matched": 4880,
+      "mismatch": 322,
+      "unverified": 0,
+      "current_rank_denominator": 5205,
+      "prior_rank_denominator": 5205
+    },
+    {
+      "trade_date": "2026-10-08",
+      "core_sha256": "0bc8413c7f64c72547609e78cfef4410e19d1d3b07bd54957b6bbb6eb11fb944",
+      "prior_core_sha256": "dff5f79b1916b74e557862f540e63e0af03409af4fdd63c0c3e14146553fb259",
+      "prior_endpoint": "2026-09-30",
+      "prior_lifecycle_sha256": "32d1eb215d23edc4285c2f70e7ec07991542160b803b10221c0622f4c4ee4f04",
+      "prior_lifecycle_count": 5224,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5201,
+      "recomputed": 5201,
+      "matched": 5170,
+      "mismatch": 31,
+      "unverified": 0,
+      "current_rank_denominator": 5202,
+      "prior_rank_denominator": 5205
+    },
+    {
+      "trade_date": "2026-10-09",
+      "core_sha256": "0cb20f7a403fd80cd499c3d7c7eeaabbdb10d95024c696a196ea5560fc37e270",
+      "prior_core_sha256": "c9f4559844ef84686ca7e21d581392aaedb454679e0ddcf1362196929d1a52a3",
+      "prior_endpoint": "2026-10-08",
+      "prior_lifecycle_sha256": "d284b23901d267ef4bd5e7baa60b30dd8eb6d0c101feba40e82fdc6861be85c0",
+      "prior_lifecycle_count": 5224,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5201,
+      "recomputed": 5201,
+      "matched": 5128,
+      "mismatch": 73,
+      "unverified": 0,
+      "current_rank_denominator": 5203,
+      "prior_rank_denominator": 5202
+    },
+    {
+      "trade_date": "2026-10-12",
+      "core_sha256": "9cc9191b1f79dbbad6d936faf15e0802989f9545accccb98ed57d7ee97481182",
+      "prior_core_sha256": "7bc11b758ca7f6346d9aa644b8b779894e86d54953f72afc9088fe2b6cdae1c9",
+      "prior_endpoint": "2026-10-09",
+      "prior_lifecycle_sha256": "3df8cb50dce3771db1b8605cb8aeabadb0076eebcd05d6eb7454ae260155e9cd",
+      "prior_lifecycle_count": 5224,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5202,
+      "recomputed": 5202,
+      "matched": 5091,
+      "mismatch": 111,
+      "unverified": 0,
+      "current_rank_denominator": 5205,
+      "prior_rank_denominator": 5203
+    },
+    {
+      "trade_date": "2026-10-13",
+      "core_sha256": "aeae5514746f30f6c034ce6e64597f3a52ed4ba1f838d49f5007de20de99ac78",
+      "prior_core_sha256": "521a9b56a5fc0900e070dba5465e6760ee0ef0cff51492c567d39d5d1d65be50",
+      "prior_endpoint": "2026-10-12",
+      "prior_lifecycle_sha256": "cb970f61bc3aa381bb0f1f9770ba2f0f0226b027f17872a6f51890f120082b63",
+      "prior_lifecycle_count": 5224,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5200,
+      "recomputed": 5200,
+      "matched": 5087,
+      "mismatch": 113,
+      "unverified": 0,
+      "current_rank_denominator": 5205,
+      "prior_rank_denominator": 5205
+    },
+    {
+      "trade_date": "2026-10-14",
+      "core_sha256": "021c0e6fbcb3684d0fc8a2aa6f3f7b40353c22a2b7391264911aa2493ccdfcce",
+      "prior_core_sha256": "0974911667af388314524d72639be111a7632f2c69be29929d7a283044ab50bb",
+      "prior_endpoint": "2026-10-13",
+      "prior_lifecycle_sha256": "1b4e41626e67b244bd806fc4bb3614e7e228cc8f46dc171c5e5be0756393d02e",
+      "prior_lifecycle_count": 5225,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5203,
+      "recomputed": 5203,
+      "matched": 5057,
+      "mismatch": 146,
+      "unverified": 0,
+      "current_rank_denominator": 5208,
+      "prior_rank_denominator": 5205
+    },
+    {
+      "trade_date": "2026-10-15",
+      "core_sha256": "9e96d78f6b72c31661b96077892c9e20fc4f9f4c6f6ee2afad02258af0023bc2",
+      "prior_core_sha256": "d932b1f4b4c39e39b93244d180187f90d314437238744e44d4faf3035df4f9c9",
+      "prior_endpoint": "2026-10-14",
+      "prior_lifecycle_sha256": "a7c58eb16b0266d3f744d8e62830084ecdd2936d704d3653501038262551391e",
+      "prior_lifecycle_count": 5225,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 5206,
+      "recomputed": 5206,
+      "matched": 5135,
+      "mismatch": 71,
+      "unverified": 0,
+      "current_rank_denominator": 5206,
+      "prior_rank_denominator": 5208
+    },
+    {
+      "trade_date": "2026-10-16",
+      "core_sha256": "2b6c61af288488110cbe4ea161d0d08a56518c43a01f88b701cefc13ff5daa49",
+      "prior_core_sha256": "db0cfa401b537790cc3d5cd7bb93a555273e52fc015d4ac7a945bfe2d5f47784",
+      "prior_endpoint": "2026-10-15",
+      "prior_lifecycle_sha256": "9f1c837800c61733944fb3b58b89b21395899927c28954fe7fd55e67177c5319",
+      "prior_lifecycle_count": 5226,
+      "status": "PARTIAL_OR_MISMATCH",
+      "observed": 2825,
+      "recomputed": 2825,
+      "matched": 1,
+      "mismatch": 2824,
+      "unverified": 0,
+      "current_rank_denominator": 5208,
+      "prior_rank_denominator": 5206
+    },
+    {
+      "trade_date": "2026-10-19",
+      "core_sha256": "a71a5aeffdfe13374f4afafb21de33be5662bef0f606aba285cac9fd50416bd2",
+      "prior_core_sha256": "66a2ea4b691407f6fc31067d99c976edb875d8a57a606d0237baed78ef863d0e",
+      "prior_endpoint": "2026-10-16",
+      "prior_lifecycle_sha256": "590442b71dcb62e508021d5c567185047dfe245bb7fb7495f1fa45c2f7cef290",
+      "prior_lifecycle_count": 5226,
+      "status": "PASS_SCOPED",
+      "observed": 5204,
+      "recomputed": 5204,
+      "matched": 5204,
+      "mismatch": 0,
+      "unverified": 0,
+      "current_rank_denominator": 5206,
+      "prior_rank_denominator": 5208
+    },
+    {
+      "trade_date": "2026-10-20",
+      "core_sha256": "123111b8b6cd95e10cd538e8052b344dc2b0377a3b711589c040ccfd3e75aa83",
+      "prior_core_sha256": "91a774314265da4dbd1ae007e46c72718bca5634e10f20634ee9a8afe51b3fcd",
+      "prior_endpoint": "2026-10-19",
+      "prior_lifecycle_sha256": "2b930d0e4678e3101c86c505ab3a3c5a4596155fe35ad469b3e2ecf3d5eb756c",
+      "prior_lifecycle_count": 5224,
+      "status": "PASS_SCOPED",
+      "observed": 5205,
+      "recomputed": 5205,
+      "matched": 5205,
+      "mismatch": 0,
+      "unverified": 0,
+      "current_rank_denominator": 5208,
+      "prior_rank_denominator": 5205
+    },
+    {
+      "trade_date": "2026-10-21",
+      "core_sha256": "a85dfa622b072a582521203124aa71647b103efe8dda3be43aacdd95b1c33801",
+      "prior_core_sha256": "a00bcc36caec2ce4a664d23ae258ed733816132e55bc7b530520e91d6eaf884e",
+      "prior_endpoint": "2026-10-20",
+      "prior_lifecycle_sha256": "1c6a04a5c8d0c7c0c4151ef5792bb558ccf297056e21a1e8fd6daa47c35bba6d",
+      "prior_lifecycle_count": 5224,
+      "status": "PASS_SCOPED",
+      "observed": 5210,
+      "recomputed": 5210,
+      "matched": 5210,
+      "mismatch": 0,
+      "unverified": 0,
+      "current_rank_denominator": 5212,
+      "prior_rank_denominator": 5211
+    }
+  ],
+  "summary": {
+    "observed": 65266,
+    "recomputed": 60061,
+    "matched": 56197,
+    "mismatch": 3864,
+    "unverified": 5205
+  },
+  "mismatch_examples": [
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+      "actual": 2.5565828694545942,
+      "expected": 2.5373705735852354
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-01C85C8E5695D64550AAD9C8210F3614",
+      "actual": -16.496447349670433,
+      "expected": -16.534871941409143
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-03523A6B58C445E3003D75CADF1D83E7",
+      "actual": 1.4584620859886854,
+      "expected": 1.4776743818580371
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-058D71375E70BC979E0DB716FF4967A3",
+      "actual": -31.800410679437455,
+      "expected": -31.81001682737213
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-06B265774D1097539C6752C646E0EB5C",
+      "actual": -4.373551417257545,
+      "expected": -4.354339121388179
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-08651F5DCDBF9780FBAE77228E794B6B",
+      "actual": 2.6882594560749453,
+      "expected": 2.707471751944297
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-08AA9F859BA9444E1FE8E3A5B3D51895",
+      "actual": -15.605320225851543,
+      "expected": -15.586107929982177
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-093DBEFBF9965D1107FF8019DD46CA11",
+      "actual": -9.340945153399332,
+      "expected": -9.32173285752998
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-0A125E1D8772CCA3EC446DD0D0F4C7AC",
+      "actual": 2.8124563902296416,
+      "expected": 2.7932440943602828
+    },
+    {
+      "trade_date": "2026-09-29",
+      "security_id": "SEC-0B602B556016FE7235FF4486BF139B6D",
+      "actual": -35.39507406185001,
+      "expected": -35.41428635771936
+    }
+  ],
+  "status": "PARTIAL_UNVERIFIED_OR_MISMATCH"
+}

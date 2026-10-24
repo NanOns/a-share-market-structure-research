@@ -1,6 +1,6 @@
 import { after, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { FilterPanel, Kline, StatCard } from '../src/workbench_service/static/core-product-r1/components.js';
+import { FilterPanel, Kline, SourceBadge, StatCard } from '../src/workbench_service/static/core-product-r1/components.js';
 import { rotationAutoAcceptanceComplete, rotationAutoAcceptance } from '../src/workbench_service/static/core-product-r1/rotation-auto-acceptance.js';
 import { ResearchHeader } from '../src/workbench_service/static/research/components.js';
 
@@ -18,6 +18,15 @@ after(() => { delete globalThis.document; });
 
 test('research UI components module parses and exports its snapshot header', () => {
   assert.equal(typeof ResearchHeader, 'function');
+});
+
+test('candidate snapshot badge does not claim production publication', () => {
+  const context = { scoped_release: true, operational_release_scope: ['stocks_daily'] };
+  const candidate = SourceBadge(context);
+  assert.match(candidate.textContent, /开发候选域/);
+  assert.doesNotMatch(candidate.textContent, /已发布/);
+  const accepted = SourceBadge(context, true);
+  assert.match(accepted.textContent, /生产已接受分域/);
 });
 
 test('unverified index volume is absent from chart bars and hover text', () => {

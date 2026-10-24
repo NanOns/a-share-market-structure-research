@@ -6,7 +6,18 @@ import zipfile
 
 import pytest
 
-from scripts.r8_batch04_ingest_tdx_source import _load_days
+from scripts.r8_batch04_ingest_tdx_source import _completion_scope, _load_days
+
+
+def test_source_ingress_success_is_not_reported_as_business_day_completion():
+    scope = _completion_scope()
+    assert scope["completion_scope"] == "SOURCE_INGRESS_ONLY"
+    assert scope["business_chain_status"] == "NOT_RUN"
+    assert scope["business_chain_complete"] is False
+    assert set(scope["required_downstream_domains"]) == {
+        "CORE", "PROFILE", "SECTOR", "MARKET", "D0", "D2", "PRIORITY",
+        "FOCUS", "FORWARD", "READ_INDEX", "API_PAGE_READBACK",
+    }
 
 
 def _binding(path):

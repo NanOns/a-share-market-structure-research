@@ -32,6 +32,19 @@ def _sha(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
+def _completion_scope() -> dict:
+    """Make it impossible to interpret source admission as a completed V4 day."""
+    return dict(
+        completion_scope="SOURCE_INGRESS_ONLY",
+        business_chain_status="NOT_RUN",
+        business_chain_complete=False,
+        required_downstream_domains=(
+            "CORE", "PROFILE", "SECTOR", "MARKET", "D0", "D2",
+            "PRIORITY", "FOCUS", "FORWARD", "READ_INDEX", "API_PAGE_READBACK",
+        ),
+    )
+
+
 def _dsn() -> str:
     values = {}
     for line in (ROOT / "config/.env").read_text(encoding="utf-8-sig").splitlines():
@@ -247,6 +260,7 @@ def ingest(artifact_root: Path, days: tuple[str, ...], *, source_manifest: Path)
             raise ValueError("R8_BATCH04_FORMAL_HEAD_BYTES_CHANGED")
         connection.commit()
         return dict(contract_id=CONTRACT, status="SOURCE_INGRESS_READBACK_PASS",
+            **_completion_scope(),
             source_manifest=dict(path=str(Path(source_manifest).resolve()),sha256=_sha(Path(source_manifest).read_bytes())),
             database=dict(database=identity[0], database_oid=identity[2], server_version_num=identity[3],
                           write_role=identity[1], session_read_only=identity[4]),

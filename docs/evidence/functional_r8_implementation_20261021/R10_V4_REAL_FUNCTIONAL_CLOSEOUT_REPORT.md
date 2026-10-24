@@ -98,3 +98,7 @@
 内置浏览器现场读回 2026-10-20：首页显示 stocks=5,224、sectors=400、radar=607；Market 四轴均显示“来源不足”，标题为“市场四轴事实 · 综合环境候选未接受”。13 个已绑定日期的 Home 页面计数与 PG R2 projection 一一相等。现场还显示 Forward 历史研究观察 73,115、已到期结算 3,260；这两项仅为历史研究/结算统计，不构成 LIVE cohort。当前运行服务 PID 52916 仍未加载本次源码，故 Forward 当前页面仍处旧进程读取态；未重启 28766，未启用 28765。
 
 **最终状态仍为 `PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED`，数据更新保持暂停。** 未完成项不是以 UNKNOWN 代替修复：10/14–16 历史 universe 的合法成员来源为空；余下 12 日 Core RET1/TR/rolling 的 QFQ 价源绑定、Sector/D0/D2/Priority/Focus/Forward 的所有字段级独立复算、D0/D2/Focus Priority/Market trend/LIVE Forward 业务合同、完整相邻日 G1–G4、性能样本预算和新版 API/UI 运行时读回仍未验收。原因分别按来源缺失、业务合同缺失和本轮运行边界区分；各原始 Owner 与失败证据均保留。详细逐日数量与 SHA 见 `R10_ALL_DATES_RECONCILIATION_EVIDENCE_20261024.json`、`R10_CORE_NUMERIC_RECONCILIATION_20261024.json`；存量修复和 PG/API/UI 读回见 `R10_EXISTING_DATA_REPAIR_AUDIT_20261024.md` 与同名 Evidence。
+
+### Git 交付回执
+
+存量消费者修复与数值证据提交 `8a543e4dc05ac4519f62c1d4df9a922d83d073ac` 已推送；Market 历史输入流式校验修复提交 `32d33db646109a8573c55a4e0758fc09de019507` 已推送。推送后核验 `origin/codex/v4-unified-development` 指向 `32d33db646109a8573c55a4e0758fc09de019507`。本交付回执只记录代码/证据提交，不代表外部独立验收或准许恢复数据更新。

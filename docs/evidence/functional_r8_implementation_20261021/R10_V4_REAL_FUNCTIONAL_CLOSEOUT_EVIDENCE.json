@@ -1054,6 +1054,17 @@
       "acceptance": "PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED",
       "data_updates_remain_paused": true,
       "browser_acceptance": {"browser":"Codex in-app browser","local_browser_used":false,"dev_pid":52916,"dev_port":28766,"restarted":false,"production_port_28765_started":false}
+    },
+    "delivery_receipt": {
+      "branch":"codex/v4-unified-development",
+      "commits":[
+        {"sha":"8a543e4dc05ac4519f62c1d4df9a922d83d073ac","scope":"Market/Home/Priority consumer isolation, dated owner conservation, read-index reconciliation and evidence","pushed":true},
+        {"sha":"32d33db646109a8573c55a4e0758fc09de019507","scope":"Market history stream validation, duplicate rejection, regression coverage and updated closeout evidence","pushed":true}
+      ],
+      "verified_remote_head_after_code_push":"32d33db646109a8573c55a4e0758fc09de019507",
+      "formal_head_modified":false,
+      "data_updates_remain_paused":true,
+      "independent_external_acceptance":"NOT_RUN"
     }
   }
 }

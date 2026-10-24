@@ -37,7 +37,16 @@
     "external_acquisition_performed": false,
     "new_trade_date_generated": false,
     "formal_head_modified": false,
-    "pg_write_performed": false,
+    "pg_write_performed": true,
+    "pg_write_scope": "Append three immutable ReadIndex R2 versions for existing T0 2026-10-19, 2026-10-20, 2026-10-21 under the current development token; no Owner, Core, Head, SourceIngress, or canonical publication writes",
+    "pg_write_rollback": {
+      "authority_backup": "G:\\codex_tmp\\R10_READINDEX_AUTHORITY_R2_PREWRITE_20261024.json",
+      "authority_backup_sha256": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
+      "authority_before_sha256": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
+      "authority_after_sha256": "b3d4528d8eb737f66cca5b00969cf246db282e24f64ce2a85a8a7f492ca1ae4b",
+      "old_pg_versions_retained": true,
+      "new_pg_schemas_deleted": false
+    },
     "business_data_deleted": false,
     "service_restart_performed": false
   },
@@ -49,13 +58,40 @@
     "schemas": 108,
     "tables": 472,
     "exact_rows": 4858619,
+    "post_append": {
+      "schemas": 111,
+      "tables": 481,
+      "exact_rows": 4885168,
+      "append_rows": 26549,
+      "new_readindex_schemas": 3
+    },
     "families": {
-      "canonical_v4": {"tables": 125, "rows": 3494748},
-      "research_snapshots": {"schemas": 23, "tables": 138, "rows": 516134},
-      "readindex_all": {"candidate_namespaces": 42, "rows": 394237},
-      "source_ingress": {"tables": 2, "rows": 38981, "tdx_bar_rows": 38974, "receipt_rows": 7},
-      "history_forward_additional_schemas": {"tables": 4, "rows": 21859},
-      "other_candidate_and_operations": {"rows": 392660}
+      "canonical_v4": {
+        "tables": 125,
+        "rows": 3494748
+      },
+      "research_snapshots": {
+        "schemas": 23,
+        "tables": 138,
+        "rows": 516134
+      },
+      "readindex_all": {
+        "candidate_namespaces": 42,
+        "rows": 394237
+      },
+      "source_ingress": {
+        "tables": 2,
+        "rows": 38981,
+        "tdx_bar_rows": 38974,
+        "receipt_rows": 7
+      },
+      "history_forward_additional_schemas": {
+        "tables": 4,
+        "rows": 21859
+      },
+      "other_candidate_and_operations": {
+        "rows": 392660
+      }
     },
     "readindex_candidate_tables": 126,
     "owner_versions": 31,
@@ -69,9 +105,19 @@
     }
   },
   "available_trade_dates": [
-    "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-08", "2026-10-09",
-    "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16",
-    "2026-10-19", "2026-10-20", "2026-10-21"
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-08",
+    "2026-10-09",
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16",
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21"
   ],
   "source_ingress_dates": {
     "2026-10-15": 5565,
@@ -86,9 +132,24 @@
     "count": 13,
     "prior_quarantine_status": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION",
     "by_date": {
-      "2026-10-19": {"count": 3, "recorded_breadth_common_count": 5223, "comparison_date": "2026-10-14", "verified_four_board_historical_universe_count": 0},
-      "2026-10-20": {"count": 3, "recorded_breadth_common_count": 5224, "comparison_date": "2026-10-15", "verified_four_board_historical_universe_count": 0},
-      "2026-10-21": {"count": 7, "recorded_breadth_common_count": 5224, "comparison_date": "2026-10-16", "verified_four_board_historical_universe_count": 0}
+      "2026-10-19": {
+        "count": 3,
+        "recorded_breadth_common_count": 5223,
+        "comparison_date": "2026-10-14",
+        "verified_four_board_historical_universe_count": 0
+      },
+      "2026-10-20": {
+        "count": 3,
+        "recorded_breadth_common_count": 5224,
+        "comparison_date": "2026-10-15",
+        "verified_four_board_historical_universe_count": 0
+      },
+      "2026-10-21": {
+        "count": 7,
+        "recorded_breadth_common_count": 5224,
+        "comparison_date": "2026-10-16",
+        "verified_four_board_historical_universe_count": 0
+      }
     },
     "recomputation_result": "BLOCKED_SOURCE_MISSING",
     "r10_numeric_evidence_class": "NON_PIT_CANDIDATE_REPLAY",
@@ -124,6 +185,63 @@
     "behavior": "validate same-day derived Market candidate bindings, nonempty counts and exact row-axis equality; quarantine all Home axes and raw numeric values on failure in ReadIndex and live fallback paths",
     "immutable_pg_snapshots_changed": false
   },
+  "readindex_repair": {
+    "contract_id": "V4_READ_INDEX_R2",
+    "token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+    "authority_file_sha256_before": "38c8f9e79c2239513dffdc8c94f73d26acacaa695061e794d3ad8f52ac8b20e2",
+    "authority_file_sha256_after": "b3d4528d8eb737f66cca5b00969cf246db282e24f64ce2a85a8a7f492ca1ae4b",
+    "dates": [
+      {
+        "T0": "2026-10-19",
+        "old_binding": null,
+        "new_schema": "v4_c94ffc1071e8bf4c7d526524de1a1ac1eee38912c76a3e55c5ae2853",
+        "new_digest": "f3de2c87ccfd49c4faa5862c0c34be6a5bcce2878ad737efa2dbbdde45bd0ac4",
+        "counts": {
+          "focus": 3673,
+          "radar": 318,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "read_item_rows": 9615
+      },
+      {
+        "T0": "2026-10-20",
+        "old_binding_retained_in_revision_history": true,
+        "old_schema": "v4_9064e898d2e2da5a991404f960b93acc19a8c8bc4093688af29a8c37",
+        "new_schema": "v4_2d9e9ce6c601c0d196a2f80a395300a3ff1d61d40934420652ba7aeb",
+        "new_digest": "9e98a746ef17e35a75776fe09765d24ecf4e8cd0806cf7d1f0968d44dc1ebdb8",
+        "counts": {
+          "focus": 679,
+          "radar": 607,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "read_item_rows": 6910
+      },
+      {
+        "T0": "2026-10-21",
+        "old_binding_retained_in_revision_history": true,
+        "old_schema": "v4_cc517a681acfa1408d27fe3cad1900a321ee7cb9953edf33fbf80695",
+        "new_schema": "v4_36b669df3ca8764b591d83d06cc6ce53482f35eff3cb1e87ee86092c",
+        "new_digest": "6d754f92607f02760eabc04bb0585bdd17b0e3adec344200c7407d3a0352fa2f",
+        "counts": {
+          "focus": 3975,
+          "radar": 413,
+          "sectors": 400,
+          "stocks": 5224
+        },
+        "read_item_rows": 10012
+      }
+    ],
+    "read_responses": 9,
+    "read_versions": 3,
+    "all_home_axis_values": "UNKNOWN",
+    "all_home_axis_quality": "SOURCE_INCOMPLETE",
+    "all_market_reason": "R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14",
+    "old_versions_physically_deleted": false,
+    "owner_generation_performed": false,
+    "formal_head_modified": false
+  },
   "runtime_pg_api_ui_readback": {
     "dev_port": 28766,
     "dev_pid": 52916,
@@ -132,13 +250,25 @@
     "postgres_pid": 8640,
     "source_process_loaded_fix": false,
     "fixed_source_in_process_pg_api_readback": {
-      "dates": ["2026-10-19", "2026-10-20", "2026-10-21"],
-      "http_codes": [200, 200, 200],
+      "dates": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "http_codes": [
+        200,
+        200,
+        200
+      ],
       "market_axis_values": "UNKNOWN",
       "market_axis_quality": "SOURCE_INCOMPLETE",
       "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE",
       "reason_code": "R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14",
-      "elapsed_seconds_same_process": [30.234, 4.156, 1.107],
+      "elapsed_seconds_same_process": [
+        30.234,
+        4.156,
+        1.107
+      ],
       "cold_latency_budget_accepted": false
     },
     "observed_pre_fix_2026_10_21": {
@@ -151,7 +281,38 @@
       "quarantine_marker": null
     },
     "historical_home_reads_2026_10_19_2026_10_20": "CLIENT_TIMEOUT_30_SECONDS",
-    "service_restart_allowed_this_round": false
+    "service_restart_allowed_this_round": false,
+    "source_process_reads_repaired_readindex": true,
+    "live_api_readback_after_readindex_append": {
+      "dates": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "http_codes": [
+        200,
+        200,
+        200
+      ],
+      "home_status": "SOURCE_INCOMPLETE",
+      "formal_risk_status": "SOURCE_INCOMPLETE",
+      "market_axis_values": "UNKNOWN",
+      "market_axis_quality": "SOURCE_INCOMPLETE",
+      "regime_publication_status": "SOURCE_INCOMPLETE",
+      "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE",
+      "reason_code": "R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14",
+      "same_batch_elapsed_seconds": 3.8,
+      "batch_latency_is_p95": false
+    },
+    "page_asset_readback": {
+      "page": "/v4",
+      "page_http": 200,
+      "asset": "/v4/assets/app.js",
+      "asset_http": 200,
+      "observed_binding": "d.market.row[k]",
+      "screenshot_verified": false,
+      "computer_use_result": "拒绝操作：无法以足够置信度确定 Windows Chrome 当前 URL，停止 UI 操作"
+    }
   },
   "verification": {
     "pytest_suites": [
@@ -168,9 +329,9 @@
     "all_dates_all_domains_numerical_reconciliation": "NOT_COMPLETE"
   },
   "acceptance": {
-    "source_code_consumer_gate": "REPAIRED_AND_UNIT_TESTED",
+    "source_code_consumer_gate": "BFF_REPAIRED_AND_UNIT_TESTED; R2_READINDEX_REPAIRED_FOR_2026-10-19_TO_2026-10-21; LIVE_API_READBACK_CONFIRMED",
     "pg_data_correctness_all_existing_dates": "NOT_ACCEPTED",
-    "api_and_page_runtime_readback": "NOT_ACCEPTED_OLD_PROCESS_STILL_SERVES_STALE_VALUES",
+    "api_and_page_runtime_readback": "API_READBACK_PASSED_FOR_THREE_REPAIRED_DATES; PAGE_ASSET_READ_CONFIRMED; SCREENSHOT_NOT_VERIFIED; ALL_DOMAIN_DATE_ACCEPTANCE_INCOMPLETE",
     "all_business_domains_independent_reconciliation": "NOT_COMPLETE",
     "restore_data_updates": false
   }

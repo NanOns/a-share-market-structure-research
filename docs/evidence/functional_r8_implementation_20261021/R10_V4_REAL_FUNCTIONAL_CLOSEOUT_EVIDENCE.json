@@ -1,7 +1,7 @@
 {
   "contract_id": "V4_R10_REAL_FUNCTIONAL_CLOSEOUT_EVIDENCE_V1",
   "language": "zh-CN",
-  "recorded_at": "2026-10-24T08:49:51+08:00",
+  "recorded_at": "2026-10-24T08:51:45+08:00",
   "status": "PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED",
   "task_card": {
     "name": "V4_R9_独立外审_R10业务闭环与新增缺陷修复任务_R1_20261024.md",
@@ -660,7 +660,8 @@
     "严格扫描被活动 V4 闭包未裁定项阻断",
     "绑定历史 universe 在比较日 2026-10-14 至 2026-10-16 无四板块成员，市场能力必须为 SOURCE_INCOMPLETE",
     "早期市场诊断尝试的日期类型/集合解析假设出错；修正输出取代其结论，失败材料保留在 G:/codex_tmp",
-    "R9 已记录 4 个冻结 DM01 R3 精确源码绑定测试失败；本轮没有放宽合同"
+    "R9 已记录 4 个冻结 DM01 R3 精确源码绑定测试失败；本轮没有放宽合同",
+    "候选 Market Owner 首次清点按预期 12 条设置断言，实际枚举出 13 条后在写入前失败；重新核对 3/3/7 个交易日变体并逐项 SHA 绑定，期间未改任何候选文件。"
   ],
   "prior_evidence_reused": [
     "docs/evidence/functional_r8_implementation_20261021/R9_V4_CONTINUATION_EVIDENCE_20261024.json",
@@ -676,7 +677,7 @@
     "按本轮新增存量数据证据继续处理；缺权威历史成员、BaoStock、D0/D2/Focus合同项保持隔离，不得补造。"
   ],
   "existing_data_repair_audit": {
-    "recorded_at": "2026-10-24T08:49:51+08:00",
+    "recorded_at": "2026-10-24T08:51:35+08:00",
     "user_directive": "STOP_INCREMENTAL_SOURCE_ACCUMULATION_REPAIR_EXISTING_DATA_FIRST",
     "incremental_accumulation": "STOPPED_FOR_THIS_TURN_NO_SOURCE_FETCH_OR_INGRESS_WRITE",
     "scheduled_task": {
@@ -796,6 +797,10 @@
     },
     "known_data_gaps_not_repairable_from_existing_authority": [
       {
+        "issue": "13 preserved market_owner_candidate_v2 files (3/3/7 for 2026-10-19/20/21) carry breadth_common_count 5223/5224 based on Core identities while their bound historical universe has zero four-board members on comparison dates.",
+        "handling": "Quarantine by exact path and SHA in stale_candidate_market_artifacts; keep original bytes as evidence; R10 code returns SOURCE_INCOMPLETE and BFF cache identity refuses stale reuse. 28766 remains unreloaded by instruction."
+      },
+      {
         "issue": "Historical four-board universe has zero members for comparison dates 2026-10-14 through 2026-10-16",
         "handling": "R10 implementation fails SOURCE_INCOMPLETE; no Core-derived replacement written."
       },
@@ -822,6 +827,192 @@
       "temporary_root_authority_sha_after_restore": "dc6015bcfafe0354062b4089a4042cef2bf7a97dce6ae4fe64e5cc419cc48722",
       "pg_written": false,
       "repo_root_priority_and_lifecycle_loaders": "PASS"
+    },
+    "stale_candidate_market_artifacts": {
+      "count": 13,
+      "by_trade_date": {
+        "2026-10-19": 3,
+        "2026-10-20": 3,
+        "2026-10-21": 7
+      },
+      "comparison_dates_missing_from_bound_historical_universe": [
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16"
+      ],
+      "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+      "artifacts": [
+        {
+          "trade_date": "2026-10-19",
+          "token": "73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e",
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/market_owner_candidate_v2.json",
+          "sha256": "4ca02b5649b4718f2b61716a21a970a7c689333a4451f411dde1a2ce1775294c",
+          "comparison_trade_date": "2026-10-14",
+          "breadth_common_count": 5223,
+          "breadth_evaluable": 5208,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-19",
+          "token": "979b9b7e0084cfb0ca805b99842be36aa836d63f4e2d00ae9f700894b7be9aea",
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/979b9b7e0084cfb0ca805b99842be36aa836d63f4e2d00ae9f700894b7be9aea/owner_v3/owners/2026-10-19/market_owner_candidate_v2.json",
+          "sha256": "88703c6fd8eed251c478d69740035a9c75f2ee0159174708e9de46382e81fa53",
+          "comparison_trade_date": "2026-10-14",
+          "breadth_common_count": 5223,
+          "breadth_evaluable": 5208,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-19",
+          "token": "9d9e5f314a0be91ed6ba394194c329c7d3ff87d2a0624ac92566e19f47703e4c",
+          "path": "data/v4/dynamic_daily_owners/2026-10-19/9d9e5f314a0be91ed6ba394194c329c7d3ff87d2a0624ac92566e19f47703e4c/owner_v3/owners/2026-10-19/market_owner_candidate_v2.json",
+          "sha256": "f3ae24d8186c71b747d05e4dab09afe98ac7401a09a371286b4afbaaf723c0b1",
+          "comparison_trade_date": "2026-10-14",
+          "breadth_common_count": 5223,
+          "breadth_evaluable": 5208,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-20",
+          "token": "10c4e47294add828f36791443c06a1802fcec5d122a473d3cc70a0b594f6e9da",
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/10c4e47294add828f36791443c06a1802fcec5d122a473d3cc70a0b594f6e9da/owner_v3/owners/2026-10-20/market_owner_candidate_v2.json",
+          "sha256": "fce446e82e142dcb465b259bf738d0e9dcdf19870b8394c6dc4a5eb17aeb96e9",
+          "comparison_trade_date": "2026-10-15",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5210,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-20",
+          "token": "6f3ad8e3f60ce746448465b944a428240c95d2bf27c4f4501d780fb23e5f15da",
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/6f3ad8e3f60ce746448465b944a428240c95d2bf27c4f4501d780fb23e5f15da/owner_v3/owners/2026-10-20/market_owner_candidate_v2.json",
+          "sha256": "aadda47d8dbaab1336b1e28e263b22deb02b239d189c97f03a9c6492a0acffa6",
+          "comparison_trade_date": "2026-10-15",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5210,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-20",
+          "token": "a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3",
+          "path": "data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/market_owner_candidate_v2.json",
+          "sha256": "b8ab77aca85ff3e4c4a676eac003c86da9303f0187965575a1a7d96028d013e6",
+          "comparison_trade_date": "2026-10-15",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5210,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "0a60d3525e2012bace9c4326dea9f5e345822a239d293a6f5351c302e17727fa",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/0a60d3525e2012bace9c4326dea9f5e345822a239d293a6f5351c302e17727fa/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "cff115e96af73287a2b1ab17999ed2e2cd78c791109fc8d6266058bbb7affa34",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "51498bf6ee737d419336c1ca72f13bb7013606cba8861d70405dfd01df3c22b6",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/51498bf6ee737d419336c1ca72f13bb7013606cba8861d70405dfd01df3c22b6/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "e048991cdf006e555d973ef07033914eea6ca23ca043b9b3360b7dd793c0a2bc",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "5ca9e16e461f83cfcb06c7c6870654919f5a8c47fb238cc7f49406488f7ac20e",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/5ca9e16e461f83cfcb06c7c6870654919f5a8c47fb238cc7f49406488f7ac20e/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "307f120b65967d2d8b08907d3bd058b02e6056a0051b3b84db4cc877f3658ec8",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "a4b62a281ed36382d09c116b91d7f2902c0719642db7ab424f799eae345ff986",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/a4b62a281ed36382d09c116b91d7f2902c0719642db7ab424f799eae345ff986/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "e8ae9392e143a7eac41bc971f35523eb29b91f18a547c44077050360000c78b3",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "b6b939285d40a4cadf3b4d76c521c9461fb9af9d905c7e34e7e97b18e1c67915",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/b6b939285d40a4cadf3b4d76c521c9461fb9af9d905c7e34e7e97b18e1c67915/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "3bbe93a533d2d9667d9af6799f516980861232c641f1754ecc86cae7e2ec2993",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "cf98bb746fcb0a342200e87b6794d0b02b25a8366ea48a683a58a61e9466fed4",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        },
+        {
+          "trade_date": "2026-10-21",
+          "token": "caaf16939bc06974fc749285de0e52c77d548189c4f8ecd98e28e21f4928d6e0",
+          "path": "data/v4/dynamic_daily_owners/2026-10-21/caaf16939bc06974fc749285de0e52c77d548189c4f8ecd98e28e21f4928d6e0/owner_v3/owners/2026-10-21/market_owner_candidate_v2.json",
+          "sha256": "7ba8c74808062a0a8cb4a75062fdb5aed286579e1f2f1cbda219bb58af377bfd",
+          "comparison_trade_date": "2026-10-16",
+          "breadth_common_count": 5224,
+          "breadth_evaluable": 5213,
+          "as_recorded": false,
+          "accepted": false,
+          "historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+          "disposition": "QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION"
+        }
+      ],
+      "disposition": "Preserve original candidate bytes and use R10 fail-closed result; do not consume old Core-derived breadth values. Not accepted or AS_RECORDED; no canonical publication points to these."
     }
   }
 }

@@ -58,7 +58,7 @@
 
 用现存 `config/.env` 的安全配置，在 `market_research` / `127.0.0.1:5432` 执行只读审计。SourceIngress 7 个日期合计 38,974 行，逐日与其已保存的 `bars.json` 按完整证券集合及 open/high/low/close/amount/volume 六字段比较：缺行、额外行、数值字段差异、重复证券身份、空字段、非正价格、OHLC 区间错误、负 amount/volume 均为 0；每份源文件 SHA、字节数和行数均与收据一致。所有收据均仍是 `candidate_only=true`、`production_accepted=false`，故修复目标不是把这些非 PIT 样本改标成正式来源。
 
-以生产只读 loader 从仓库根验证 R9 已有 10/20、10/21 Priority 与 Lifecycle Owner：两日 Priority 均为 5,224 股票 + 400 板块；Lifecycle 各 400 行；版本封存、Owner digest、payload/逐行 digest、日期/token/PG 身份一致。此次只读校验未修改 PG。canonical V4 的 `market_universe_snapshots`、`market_universe_snapshot_rows`、`publications`、`publication_heads` 目前均为 0 行，没有需要回写的已发布错误 breadth/Publication。
+以生产只读 loader 从仓库根验证 R9 已有 10/20、10/21 Priority 与 Lifecycle Owner：两日 Priority 均为 5,224 股票 + 400 板块；Lifecycle 各 400 行；版本封存、Owner digest、payload/逐行 digest、日期/token/PG 身份一致。此次只读校验未修改 PG。canonical V4 的 `market_universe_snapshots`、`market_universe_snapshot_rows`、`publications`、`publication_heads` 目前均为 0 行，没有需要回写的已发布错误 breadth/Publication。 但本地 R9 候选根确有 13 份旧 `market_owner_candidate_v2.json`：10/19 三份 `breadth_common_count=5223`，10/20 三份和 10/21 七份为 5224；绑定 universe 对比较日 10/14–16 都无四板块成员。这些非 AS_RECORDED、未接受文件仍呈现完整数值，现正式按精确路径与 SHA 标记 `QUARANTINED_UNUSABLE_FOR_BREADTH_CONSUMPTION`，保留原始字节作为失败证据，不覆写。R10 新计算/缓存路径应以 `SOURCE_INCOMPLETE` 阻止复用；当前 28766 未重载，故此代码态尚未在该旧进程生效。逐文件清单在机器证据 `existing_data_repair_audit.stale_candidate_market_artifacts`。 首次清点按 12 条预期断言失败并在写入前退出；完整重数为 13 条，随后逐项 SHA 对账通过，原文件未变。
 
 已确认且不可用现有数据修成真值的边界：
 

@@ -1,7 +1,7 @@
 {
   "contract_id": "V4_R10_REAL_FUNCTIONAL_CLOSEOUT_EVIDENCE_V1",
   "language": "zh-CN",
-  "recorded_at": "2026-10-24T00:00:00+08:00",
+  "recorded_at": "2026-10-24T08:49:51+08:00",
   "status": "PARTIAL_CLOSEOUT_RELEASE_NOT_ACCEPTED",
   "task_card": {
     "name": "V4_R9_独立外审_R10业务闭环与新增缺陷修复任务_R1_20261024.md",
@@ -633,7 +633,7 @@
     "S00": "FULL_PASS",
     "S01": "PARTIAL_GATE_BLOCKED",
     "S02": "CODE_PASS_SOURCE_BLOCKED",
-    "S03": "R9_EVIDENCE_REUSED_R10_PG_NOT_RUN",
+    "S03": "OWNER_READBACK_PASS_API_CONSUMER_NOT_RERUN",
     "S04": "PARTIAL_CONTRACT_AND_LIVE_COHORT_GAPS",
     "S05_D0": "BLOCK_CONTRACT",
     "S05_D2": "BLOCK_CONTRACT_SAFE_UNKNOWN_IMPLEMENTED",
@@ -648,12 +648,13 @@
     "production_port_28765": "NO_LISTENER",
     "pg_port": 5432,
     "pg_pid": 8640,
-    "pg_secure_dsn": "UNAVAILABLE_V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK",
+    "pg_secure_dsn": "AVAILABLE_FROM_CONFIG_ENV_MASKED",
     "pg_writes": 0,
     "service_restart": false,
     "windows_restart": false,
     "formal_head_change": false,
-    "tdx_source_writes": 0
+    "tdx_source_writes": 0,
+    "pg_reads": "READ_ONLY_OWNER_AND_SOURCE_INGRESS_AUDIT"
   },
   "failed_evidence": [
     "严格扫描被活动 V4 闭包未裁定项阻断",
@@ -669,9 +670,158 @@
   "next_blockers": [
     "2026-10-22/23 权威 Identity/Member 来源",
     "2026-10-23 BaoStock 日线及因子",
-    "项目安全 PG DSN 配置",
     "D0 cutoff/seal 与 D2 冻结失效价生成合同",
     "Focus Priority 排序与 Forward LIVE 首捕获合同/样本",
-    "本轮未重启 28766，新版 UI 验收待后续运行窗口"
-  ]
+    "本轮未重启 28766，新版 UI 验收待后续运行窗口",
+    "按本轮新增存量数据证据继续处理；缺权威历史成员、BaoStock、D0/D2/Focus合同项保持隔离，不得补造。"
+  ],
+  "existing_data_repair_audit": {
+    "recorded_at": "2026-10-24T08:49:51+08:00",
+    "user_directive": "STOP_INCREMENTAL_SOURCE_ACCUMULATION_REPAIR_EXISTING_DATA_FIRST",
+    "incremental_accumulation": "STOPPED_FOR_THIS_TURN_NO_SOURCE_FETCH_OR_INGRESS_WRITE",
+    "scheduled_task": {
+      "name": "Codex-V4-OperationalDaily-28765",
+      "state": "Disabled",
+      "enabled": false,
+      "last_run": "2026-10-14T08:25:56+08:00",
+      "next_run": null,
+      "changed": false
+    },
+    "database": {
+      "database": "market_research",
+      "host": "127.0.0.1/32",
+      "port": 5432,
+      "server_version": "PostgreSQL 18.6",
+      "connection_source": "config/.env WORKBENCH_PG_DSN; value masked",
+      "transaction_mode": "READ ONLY",
+      "writes": 0
+    },
+    "source_ingress": {
+      "schema": "v4_r8_batch04_source_ingress",
+      "latest_trade_date": "2026-10-23",
+      "row_count_total": 38974,
+      "receipt_count": 7,
+      "all_candidate_only": true,
+      "all_production_accepted_false": true,
+      "full_artifact_and_six_numeric_field_reconciliation": "PASS",
+      "duplicate_ids": 0,
+      "missing_rows": 0,
+      "extra_rows": 0,
+      "numeric_field_mismatches": 0,
+      "null_fields": 0,
+      "invalid_ohlc_or_negative_amount_volume": 0,
+      "dates": [
+        {
+          "trade_date": "2026-10-15",
+          "rows": 5565,
+          "evidence_class": "RECONSTRUCTED_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-16",
+          "rows": 5567,
+          "evidence_class": "RECONSTRUCTED_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-19",
+          "rows": 5564,
+          "evidence_class": "RECONSTRUCTED_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-20",
+          "rows": 5568,
+          "evidence_class": "RECONSTRUCTED_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-21",
+          "rows": 5568,
+          "evidence_class": "CAPTURED_AFTER_CLOSE_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-22",
+          "rows": 5570,
+          "evidence_class": "RECONSTRUCTED_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        },
+        {
+          "trade_date": "2026-10-23",
+          "rows": 5572,
+          "evidence_class": "CAPTURED_AFTER_CLOSE_NON_PIT",
+          "candidate_only": true,
+          "production_accepted": false
+        }
+      ]
+    },
+    "candidate_owner_readback": [
+      {
+        "trade_date": "2026-10-20",
+        "token": "a5b169a8cde60cc6ba86f1efbb7714020e578264bfea33634532ab407df70b70",
+        "priority_schema": "v4_5d9f0c28c3519a64569394f89a407f7a9f2ef5aff55ebc297e1be6ac",
+        "priority_digest": "5e5ce6a3db1c7cce0bbc919f2071c412c6de4231155f11e9085f5398e6bca6f7",
+        "stock_rows": 5224,
+        "sector_rows": 400,
+        "lifecycle_schema": "v4_9f72c446a87402a5ca102be010ede92dd687deef0853edb4db0cc2a0",
+        "lifecycle_digest": "69c7b3cb069506a6cfa4befa5d03763673733a0c593fb6b1e9ea80a362f65e23",
+        "lifecycle_rows": 400,
+        "loader_readback": "PASS"
+      },
+      {
+        "trade_date": "2026-10-21",
+        "token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+        "priority_schema": "v4_a965aae01f702d76487e8d9da9d9145fc3e3cf86a712073a07e123c6",
+        "priority_digest": "e665702a852a85358a548b564ba569410955dbf9beb93c2b168d1db4de19c30e",
+        "stock_rows": 5224,
+        "sector_rows": 400,
+        "lifecycle_schema": "v4_d156f679e4dff1b0f4e9f81547acc9e50e5ddc08dbf9c0c979b403db",
+        "lifecycle_digest": "ae8482b36a7fda205458bc7f7ac66427243498a93d86e3f84927783fb37be3d2",
+        "lifecycle_rows": 400,
+        "loader_readback": "PASS"
+      }
+    ],
+    "canonical_publication_counts": {
+      "market_universe_snapshots": 0,
+      "market_universe_snapshot_rows": 0,
+      "publications": 0,
+      "publication_heads": 0
+    },
+    "known_data_gaps_not_repairable_from_existing_authority": [
+      {
+        "issue": "Historical four-board universe has zero members for comparison dates 2026-10-14 through 2026-10-16",
+        "handling": "R10 implementation fails SOURCE_INCOMPLETE; no Core-derived replacement written."
+      },
+      {
+        "issue": "Priority INVALID_INPUT counts: 2026-10-20 stocks 49/sectors 5; 2026-10-21 stocks 42/sectors 5",
+        "handling": "Keep NOT_RANKABLE/UNKNOWN absent authoritative replacement facts."
+      },
+      {
+        "issue": "2026-10-22 cross-source amount disagreements: 4789; provider-generation unproven samples:139",
+        "handling": "TDX remains raw amount authority; BaoStock audit-only; no overwrite."
+      },
+      {
+        "issue": "10/22-23 Identity/Member authority and 10/23 BaoStock bars/factors absent",
+        "handling": "No new fetch under user stop-accumulation direction."
+      },
+      {
+        "issue": "D0 cutoff/seal, D2 frozen invalidation generation, Focus Priority order contracts absent",
+        "handling": "No historical data fabrication or contract bypass."
+      }
+    ],
+    "path_precondition_failure": {
+      "cause": "Temporary candidate-chain root was first tested for a repository-root Lifecycle schema binding.",
+      "temporary_root_authority_sha_before": "dc6015bcfafe0354062b4089a4042cef2bf7a97dce6ae4fe64e5cc419cc48722",
+      "temporary_root_authority_sha_after_restore": "dc6015bcfafe0354062b4089a4042cef2bf7a97dce6ae4fe64e5cc419cc48722",
+      "pg_written": false,
+      "repo_root_priority_and_lifecycle_loaders": "PASS"
+    }
+  }
 }

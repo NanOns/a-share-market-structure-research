@@ -13,7 +13,7 @@
 | S00 基线与阶段 0 | `V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json` SHA-256 `fb15e8131405921375c93f277ebdcc1d39ea518399e03f6e55d18bba0003e583`；任务卡基线 HEAD | `FULL_PASS` / `CODE_PASS` | 允许继续现役扫描器工作；保留 `G:/codex_tmp`、现有 repo 与固定服务/PG。 |
 | S01 运行范围扫描 | `V4_RUNTIME_GATE_V1`、活动入口合同 `config/v4_active_runtime_entrypoints_v1.json` | `PARTIAL / GATE_BLOCKED` | 非现役维护脚本不再进入 V4 准入判定；活动闭包仍有未裁定项。逐项裁定 2,198 候选、11 动态边、9 路由后再复扫。 |
 | S02 Market / breadth | `R10_MARKET_COMPARISON_UNIVERSE_V1`；候选数值 A/B `R10_MARKET_UNIVERSE_NUMERIC_A_B_V1` | `CODE_PASS / NUMERIC_PARTIAL / SOURCE_BLOCKED` | Core 分母仅在“交易日 + 四板块”投影与 SHA 绑定历史 universe 身份集合完全相等时可作加速；不等即取历史集合，历史集合缺少日期则 `SOURCE_INCOMPLETE`。非 PIT 样本的 10/14–16 历史 universe 计数为 0，因此不能做新业务数值验收。 |
-| S03 Priority | R9 `S03_PRIORITY_API_RECONCILIATION_R7.json`、PG/ReadIndex 已有证据 | `R9_EVIDENCE_REUSED / R10_NOT_RERUN` | 本轮未获得安全 PG DSN，未声称新 PG 消费者读回；继续沿用已审计的能力门禁与字段合同，待具备连接后执行真实 PG 读回及消费者检查。 |
+| S03 Priority | R9 `S03_PRIORITY_API_RECONCILIATION_R7.json`、本轮 PG 只读 Owner loader | `OWNER_READBACK_PASS / API_CONSUMER_NOT_RERUN` | 从现有 `config/.env` 安全配置建立只读事务；10/20、10/21 Priority 与 Lifecycle 版本、摘要、行数及 Owner 行摘要通过。未写 PG；新版 HTTP/API 消费者读回仍待 28766 运行窗口。 |
 | S04 Focus / Forward | R9 Focus/D2 与 Forward 报告和源样本 | `PARTIAL` | 普通 Focus 仍可用；Focus Priority 排序合同缺失，子页能力单独受限。Forward 历史成熟样本 3,260 / 73,115 可供复核，LIVE 首次捕获为 `WAIT_FIRST_CAPTURE`，不能用历史样本替代。 |
 | S05 D0 / D2 | D0 cutoff seal `CUTOFF_CONTRACT_UNRESOLVED`；`FROZEN_INVALIDATION_CONTRACT_R2` 只定义比较器、不定义冻结价生成 | `BLOCK_CONTRACT` | D0 未形成新的来源封口/正式 publication。D2 可实施边界是保留 UNKNOWN/fail-closed；没有入场冻结价合同与字段，不能补写 875 个历史 episode 或生成冻结价。 |
 | S06 G1–G4 / 真正新增交易日 | R9 Daily Source、Owner 和增量证据；当前可复用候选至 2026-10-21 | `SOURCE_WAIT / PG_NOT_RUN` | 无同日完整 Identity/Member authority：10/22 缺该来源，10/23 缺 BaoStock 日线/因子。不能构造新真实交易日链、G1–G4 全量对照、publication/CAS 或失败恢复结果。拿到权威数据后从真实前态连续增量重演，不跳过日期。 |
@@ -40,7 +40,7 @@
 - `python -m compileall -q` 覆盖本轮 4 个修改的 Python 模块：通过。`git diff --check`：通过。
 - 最终严格扫描：3983 个仓库文件作为图输入；7 个入口 SHA 校验通过，V4 可达闭包 639 个文件；`active_violations=0`，`active_unknown=2198`，`dynamic_unresolved=11`，`browser_route_unresolved=9`；非活动维护项 5,003 个字面量候选、25 个动态位点，在独立 `NOT_PROVEN` 清单内。严格扫描返回阻断状态，不能当作发布门通过。完整 41,652,994 字节扫描 JSON 放在 G 临时盘，报告仅保留摘要。
 - 修改的业务代码没有新增具体证券/板块身份或固定交易日分支。新增测试的日期、合成证券身份仅用于测试范围；未新增正常业务默认证券、板块、日期。
-- 当前 PowerShell 无项目安全 PG DSN：应用 `configured_dsn()` 明确报 `V4_NATIVE_PG_DSN_REQUIRED_NO_FALLBACK`。没有猜测凭据、没有 PG 写入、没有声称本轮真实 PG E2E。只读监听：开发服务 `127.0.0.1:28766` PID 52916；生产 `127.0.0.1:28765` 无监听；PG `5432` PID 8640。服务/Windows 未重启，正式 Head 未变，未写 TDX 源根。
+- 本轮发现应用安全 PG DSN 原先未注入当前 PowerShell 进程；按项目现有 `config/.env` 装载 `WORKBENCH_PG_DSN` 后，以 `SET TRANSACTION READ ONLY` 读取 PG，未输出 DSN、未写 PG。旧报告中“本轮无安全 DSN”的陈述已由此更正。只读监听：开发服务 `127.0.0.1:28766` PID 52916；生产 `127.0.0.1:28765` 无监听；PG `5432` PID 8640。服务/Windows 未重启，正式 Head 未变，未写 TDX 源根。
 - 失败证据保留：最终严格扫描非零是活动闭包门禁未决；市场历史 universe 日期范围空；早期市场诊断错误尝试；R9 已有 DM01 精确历史源码合同测试的 4 个失败仍在旧报告，不由本轮放宽合同或掩盖。
 
 ## 后续顺序
@@ -50,3 +50,23 @@
 3. 完成活动 V4 动态边、浏览器路由和字面量逐项裁定；维护清单另按实际入口证明状态。
 4. 在业务方提供 D0 cutoff/seal、D2 冻结价生成、Focus Priority 排序和 Forward LIVE 首捕获合同/样本后再关闭对应能力。
 5. 跨源 Amount A 继续作为独立审计项跟踪；不把它混作本阶段已通过。
+
+
+## 存量数据停增量核查（2026-10-24）
+
+按用户要求，本轮停止新增日线/因子采集、追加和累计。计划任务 `Codex-V4-OperationalDaily-28765` 核实为 Disabled（最近执行 2026-10-14，NextRun 为空）；没有对计划任务或任何服务作更改。PG 只读核对显示 SourceIngress 最新日期为 2026-10-23。
+
+用现存 `config/.env` 的安全配置，在 `market_research` / `127.0.0.1:5432` 执行只读审计。SourceIngress 7 个日期合计 38,974 行，逐日与其已保存的 `bars.json` 按完整证券集合及 open/high/low/close/amount/volume 六字段比较：缺行、额外行、数值字段差异、重复证券身份、空字段、非正价格、OHLC 区间错误、负 amount/volume 均为 0；每份源文件 SHA、字节数和行数均与收据一致。所有收据均仍是 `candidate_only=true`、`production_accepted=false`，故修复目标不是把这些非 PIT 样本改标成正式来源。
+
+以生产只读 loader 从仓库根验证 R9 已有 10/20、10/21 Priority 与 Lifecycle Owner：两日 Priority 均为 5,224 股票 + 400 板块；Lifecycle 各 400 行；版本封存、Owner digest、payload/逐行 digest、日期/token/PG 身份一致。此次只读校验未修改 PG。canonical V4 的 `market_universe_snapshots`、`market_universe_snapshot_rows`、`publications`、`publication_heads` 目前均为 0 行，没有需要回写的已发布错误 breadth/Publication。
+
+已确认且不可用现有数据修成真值的边界：
+
+- 绑定历史 universe 在比较日 2026-10-14、15、16 没有四板块成员；而 Core 投影存在约 5,225/5,226 个身份。旧 Core 分母结果不能继续消费；R10 源码现已在该缺口下返回 `SOURCE_INCOMPLETE`，不从 Core 伪造历史 denominator。没有权威 PIT 成员源前不写值。
+- 10/20、10/21 Priority 中 `INVALID_INPUT` 记录分别为股票 49/42、板块 5/5；另有缺字段记录按合同 `NOT_RANKABLE`。这些记录来自现存重建输入缺失/不可用字段，现阶段没有可证明的正确替代事实，保持 fail-closed，不能补中性值。
+- 10/22 BaoStock 与 TDX 的 4,789 个 amount 表示差异及 139 个未证明 provider-generation 的共同样本继续隔离审计；TDX 为 raw amount 权威，BaoStock 是 audit-only。差异本身不证明任一来源损坏，未覆盖写入。10/23 BaoStock 日线/因子和 10/22–23 Identity/Member 权威来源缺失；按停止累计要求不再请求新来源。
+- D0 cutoff/seal、D2 冻结失效价生成和 Focus Priority 排序合同仍缺。它们属于缺业务合同，不是允许通过重算或改历史行“修复”的数据。
+
+审计过程曾把一条仓库根 Lifecycle 绑定误判为临时链目录缺失；Schema 身份计算确认 R9 绑定属于仓库根后，已从原字节备份将临时目录恢复至原 SHA-256 `dc6015bcfafe0354062b4089a4042cef2bf7a97dce6ae4fe64e5cc419cc48722`。随后仓库根 Priority/Lifecycle 两日只读 loader 全部通过。无 PG 写入或遗留候选根改动。机器记录见 `existing_data_repair_audit`。
+
+本轮结论：**没有发现 SourceIngress 或已绑定 Priority/Lifecycle Owner 的可确证数值损坏；没有应当立即覆盖的 PG 行。** 已有源码修复负责阻止错误 breadth 分母复用；仍待权威历史成员数据和业务合同的项目明确列为阻断，不报告为全部数据问题已清零。

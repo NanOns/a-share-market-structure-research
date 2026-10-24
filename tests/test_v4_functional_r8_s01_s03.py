@@ -229,6 +229,8 @@ def test_unverified_market_candidate_quarantines_every_axis_from_consumer():
     assert set(result['row'][key] for key in (
         'trend_axis','breadth_axis','participation_axis','stress_level','stress_change'))=={'UNKNOWN'}
     assert result['raw']['status']=='SOURCE_INCOMPLETE'
+    assert result['row']['field_quality']['breadth_axis']['quality_state']=='SOURCE_INCOMPLETE'
+    assert result['row']['regime_ui_publication']=='SOURCE_INCOMPLETE'
     assert result['regime']['value']=='UNKNOWN'
     assert result['regime_publication_status']=='SOURCE_INCOMPLETE'
     assert result['consumer_disposition']=='QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE'

@@ -16,6 +16,8 @@ R10 机器证据逐项列出 13 份 `market_owner_candidate_v2.json` 及 SHA-256
 
 本轮在 BFF 增加同日 Market 衍生检查：必须为 `READY`、日期吻合、有 Core 与限价 Owner、非空分母/可计算数、来源 digest 完整，并且响应四轴值与独立衍生值一致。任一条件不满足，或复算异常时，API 将四轴、压力方向、原始数值及综合状态全部标成 `SOURCE_INCOMPLETE/UNKNOWN`，保留 `sources` 供追溯并明确标记 `QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE`。R2 ReadIndex 路径与 BFF 现场构造回退路径都执行该门禁；风险族结果不会在后续覆盖隔离状态。修复不改 PG 原始快照，避免破坏历史证据。
 
+以现存 10/21 候选根和同一只读 PG 连接，在新 Python 进程内运行修复后 BFF `/api/v4/home` 读回 10/19、10/20、10/21，三日均返回 HTTP 200、所有 Market 轴及轴质量均为 `UNKNOWN/SOURCE_INCOMPLETE`，并给出 `R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14`。冷首请求 30.234 秒，随后同一进程的 10/20 为 4.156 秒、10/21 为 1.107 秒；后两次命中同一进程的派生缓存，不能当作冷启动延迟预算。发现轴隔离后 `field_quality` 仍保留旧 `OBSERVED` 的元数据矛盾，已在同一修复中改为 `SOURCE_INCOMPLETE`，并加入回归断言。研究 UI Home 渲染的正是 BFF `market.row` 四轴字段；因此当前代码返回值将显示未知。浏览器页面没有在旧进程上宣称已验证。
+
 **修复前 → 修复后（源码）**：无同日复算证据时，快照轴值仍可能作为 `FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED` 返回 → BFF 不再将未验证的轴值送到 Home 消费者；完整复算缺失、绑定不全或数值不相等时，四轴一并隔离。**运行态仍未修复**：只读请求 `28766` 返回 10/21 `formal_risk_status=READY`、`regime_publication_status=FACT_AXES_OBSERVED_COMPOSITE_UNACCEPTED`、宽度 `DETERIORATING`、参与度 `THIN`、压力 `LOW`，无隔离标记；这是旧进程在源码修复前的实证。依用户要求未重启 28766，故不能声称运行 API 或浏览器已经应用修复。
 
 正确重算条件是获得可验证、日期匹配且覆盖既定四板块的历史身份集；以该集合与当日/比较日行情和涨跌停 Owner 逐身份交集复算；合同参数、阈值与公式版本一致；记录输入绑定、覆盖分母、缺失/未知分类、时间角色和输出 digest，并由独立数值对账确认。当前历史集合为空、10/22–23 同日身份/成员 Owner 缺失、10/23 日线及因子缺失，故这些候选只可隔离，不能重算为已接受值。
@@ -50,7 +52,7 @@ canonical `market_universe_snapshots`、`market_universe_snapshot_rows`、`publi
 
 ### 4. API、页面与事务/恢复
 
-只读核验：28766 `/api/v4/context` 可返回 T0=2026-10-21 和 13 个可读日期；首页读取 10/21 成功但仍返回旧 Market 值。逐读 10/19、10/20 Home 时至少一次请求超过客户端 30 秒超时，显示历史读路径存在明显延迟/不稳定证据；未继续压测。PG 在 5432，28766 为 Python PID 52916；28765 无监听。`Codex-V4-OperationalDaily-28765` 计划任务操作前已是 Disabled（`Settings.Enabled=false`、`NextRunTime=null`）；本轮禁用调用为 no-op。未启动或重启服务。
+只读核验：28766 `/api/v4/context` 可返回 T0=2026-10-21 和 13 个可读日期；线上进程首页读取 10/21 成功但仍返回旧 Market 值。线上逐读 10/19、10/20 时客户端等待 30 秒超时；独立进程内当前源码 BFF 对 10/19 冷读也耗时 30.234 秒，显示历史读路径存在明显延迟，未继续压力测试。PG 在 5432，28766 为 Python PID 52916；28765 无监听。`Codex-V4-OperationalDaily-28765` 计划任务操作前已是 Disabled（`Settings.Enabled=false`、`NextRunTime=null`）；本轮禁用调用为 no-op。未启动或重启服务。
 
 本轮未执行事务故障注入、重复写入、数据恢复演练或业务表修复，因为没有安全可回滚的错误 canonical 对象可写，且不可物理删除不可再生历史证据。此类流程尚未验收。当前代码修复只影响部署新代码后的 BFF 响应；运行旧进程的代码/响应缓存尚未切换，须在专项允许的维护窗口按分支槽位规则重新验证后才能确认 PG→API→页面闭环。
 

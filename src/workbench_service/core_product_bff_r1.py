@@ -151,6 +151,11 @@ def quarantine_unverified_market_axes(market, *, day, reason):
     if isinstance(row,dict):
         for key in ('trend_axis','breadth_axis','participation_axis','stress_level','stress_change'):
             row[key]='UNKNOWN'
+        qualities=row.setdefault('field_quality',{})
+        if isinstance(qualities,dict):
+            for key in ('trend_axis','breadth_axis','participation_axis','stress_level','stress_change'):
+                qualities[key]={'quality_state':'SOURCE_INCOMPLETE','unknown_reason':reason}
+        row['regime_ui_publication']='SOURCE_INCOMPLETE'
     result['raw']={
         'status':'SOURCE_INCOMPLETE','as_of':day,
         'reason':'同日市场来源或独立复算证据不完整；原始候选数值已从消费者响应中隔离。',

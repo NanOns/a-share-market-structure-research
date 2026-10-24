@@ -131,6 +131,16 @@
     "production_listener_present": false,
     "postgres_pid": 8640,
     "source_process_loaded_fix": false,
+    "fixed_source_in_process_pg_api_readback": {
+      "dates": ["2026-10-19", "2026-10-20", "2026-10-21"],
+      "http_codes": [200, 200, 200],
+      "market_axis_values": "UNKNOWN",
+      "market_axis_quality": "SOURCE_INCOMPLETE",
+      "consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE",
+      "reason_code": "R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:2026-10-14",
+      "elapsed_seconds_same_process": [30.234, 4.156, 1.107],
+      "cold_latency_budget_accepted": false
+    },
     "observed_pre_fix_2026_10_21": {
       "home_status": "READY",
       "formal_risk_status": "READY",

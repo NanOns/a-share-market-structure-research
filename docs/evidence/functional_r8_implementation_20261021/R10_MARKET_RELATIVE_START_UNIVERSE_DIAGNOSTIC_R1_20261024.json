@@ -1,0 +1,49 @@
+{
+  "contract_id": "R10_MARKET_RELATIVE_START_UNIVERSE_DIAGNOSTIC_R1",
+  "trade_date": "2026-10-16",
+  "start_universe_date": "2026-10-15",
+  "method": "Recompute the stored rel_market_1 reference independently from current Core ret1 over exact start-date Lifecycle active_security_ids; infer producer reference from each observed stock ret1-rel_market_1 row. Values use the stored target-coordinate returns.",
+  "sources": {
+    "core": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\dynamic_daily_owners\\2026-10-16\\2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b\\owner_v3\\owners\\2026-10-16\\core.jsonl.gz",
+      "sha256": "2b6c61af288488110cbe4ea161d0d08a56518c43a01f88b701cefc13ff5daa49",
+      "rows": 5226
+    },
+    "target_lifecycle": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\dynamic_daily_owners\\2026-10-16\\2f8a56e04aebe8dc87def2a0ed0e46f020a15f59ad999377ecfed8549849e98b\\sources\\2026-10-16\\lifecycle.json",
+      "sha256": "590442b71dcb62e508021d5c567185047dfe245bb7fb7495f1fa45c2f7cef290",
+      "active_security_ids": 5226
+    },
+    "start_lifecycle": {
+      "path": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020\\data\\v4\\dynamic_daily_owners\\2026-10-15\\f0f5107b2512a87b29abcb8b6367c4fb100c636ae5d837ee1e686bb6a7136bd0\\sources\\2026-10-15\\lifecycle.json",
+      "sha256": "9f1c837800c61733944fb3b58b89b21395899927c28954fe7fd55e67177c5319",
+      "active_security_ids": 5226
+    }
+  },
+  "stored_reference_metadata": {
+    "contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+    "coverage": 0.9978828510938603,
+    "evaluable_count": 2828,
+    "evaluable_set_identity": "16a8d66785d5d5b647948dc8e0f76d363f7773df0515b303116892079d196698",
+    "missing_count": 6,
+    "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+    "universe_count": 2834,
+    "unknown_reason": null
+  },
+  "recomputed_from_exact_start_lifecycle": {
+    "universe_count": 5226,
+    "evaluable_count": 5215,
+    "missing_count": 11,
+    "equal_weight_mean_ret1": 0.004473007070493926
+  },
+  "inferred_from_observed_rel_market_rows": {
+    "observed_rows": 5215,
+    "mean_implied_reference": 0.005177546570648808,
+    "min_implied_reference": 0.005177546570648783,
+    "max_implied_reference": 0.005177546570648811,
+    "observed_in_exact_start_lifecycle": 5215,
+    "observed_outside_exact_start_lifecycle": 0
+  },
+  "difference_expected_minus_implied": -0.0007045395001548816,
+  "status": "MISMATCH_SOURCE_UNIVERSE_OR_BINDING"
+}

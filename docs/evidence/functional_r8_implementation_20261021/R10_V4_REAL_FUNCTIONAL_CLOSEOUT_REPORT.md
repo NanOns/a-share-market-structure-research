@@ -77,6 +77,10 @@
 
 修复前：失败 breadth 候选的 `market_stress` 被清空，但 `trend_reference.index_close/index_ma20` 可以残留。修复后：候选市场消费者只得到 `SOURCE_INCOMPLETE`、精确失败原因与保留的来源绑定，所有市场派生值为空；原始候选文件和 PG 版本未改写。回归测试 `tests/test_v4_functional_r8_s01_s03.py`、`tests/test_core_product_home_cache_closeout.py`、`tests/v4_joint/test_r9_market_cache_scope.py` 共 **51 passed**。
 
+同轮对 Market历史行情读取又修复了一项确定的输入缺陷：旧代码先完整读取 gzip 文件，再以字典推导构建证券/日期索引，重复证券行或重复日期会被后写覆盖。现改为逐行流式解析，检查证券身份、bars 类型、证券重复和同证券同日重复，只保留 `T/T-1/T-3/T-4` 公式所需日期。三份已绑定历史行情 Owner 的只读复核均为 5,224 个证券行，目标日期条目分别 20,855、20,859、20,864，无重复；10/19、10/20 SHA 与候选绑定完全一致，10/21 SHA 为 `de3b85d2ad1cca69598713c19453cc105cc460488fddb87fa2df873c0d7e0221`。该检查只证明输入结构可读且唯一，不补足缺失历史 universe，也不把旧候选改成可消费数值。
+
+新增两项流式读取回归后，本次 11 组专项测试全量复跑为 **130 passed**；编译检查和 `git diff --check` 通过。相关机器明细记录在 Closeout Evidence 的 `market_history_streaming_fix`。
+
 ### S00–S08 分层验收矩阵
 
 | 阶段 | CODE | NUMERIC | SOURCE | DEV_PG | API | UI | CI | PRODUCTION |

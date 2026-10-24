@@ -42,6 +42,36 @@ def _iter_rows(path):
             if line.strip():yield json.loads(line)
 
 
+def _selected_history_bars(path,required_sessions):
+    """Stream the bound history and retain only dates needed by the T/T-3 formula.
+
+    Duplicate security rows or duplicate bars in the calculation window must
+    fail explicitly; dictionary construction must never silently choose the
+    last source record.
+    """
+    required=set(required_sessions);selected={}
+    for row in _iter_rows(path):
+        sid=row.get('security_id')
+        if not isinstance(sid,str) or not sid:
+            raise ValueError('R7_MARKET_HISTORY_SECURITY_ID_MISSING')
+        if sid in selected:
+            raise ValueError('R7_MARKET_HISTORY_DUPLICATE_SECURITY_ID:'+sid)
+        bars={}
+        dated_bars=row.get('bars')
+        if not isinstance(dated_bars,list):
+            raise ValueError('R7_MARKET_HISTORY_BARS_INVALID:'+sid)
+        for bar in dated_bars:
+            if not isinstance(bar,dict):
+                raise ValueError('R7_MARKET_HISTORY_BAR_INVALID:'+sid)
+            day=bar.get('trade_date')
+            if day not in required:continue
+            if day in bars:
+                raise ValueError('R7_MARKET_HISTORY_DUPLICATE_SECURITY_DATE:'+sid+':'+str(day))
+            bars[day]=bar.get('qfq_ohlc')
+        selected[sid]=bars
+    return selected
+
+
 def _comparison_universe(root,candidate,prior3,membership_ref):
     """Use the frozen four-board historical universe as the denominator.
 
@@ -532,8 +562,11 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
     # Validate the full comparison denominator before inflating the much larger
     # multi-year quote history. Missing membership evidence is a fast,
     # capability-scoped failure and does not spend a cold Home load on quotes.
-    history_rows=_read_rows(_checked(root,history_ref))
-    history={r['security_id']:{b['trade_date']:b for b in r.get('bars',[])} for r in history_rows}
+    required_history_sessions=set()
+    for return_day in (day,prior3):
+        position=sessions.index(return_day)
+        if position>0:required_history_sessions.update((return_day,sessions[position-1]))
+    history=_selected_history_bars(_checked(root,history_ref),required_history_sessions)
     current={r['security_id']:r for r in core_rows if r.get('security_id') in universe}
     comparison=[]
     for sid in current:
@@ -541,7 +574,7 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
         def ret(d):
             pos=sessions.index(d)
             if pos<1:return None
-            today=bars.get(d,{}).get('qfq_ohlc');previous=bars.get(sessions[pos-1],{}).get('qfq_ohlc')
+            today=bars.get(d);previous=bars.get(sessions[pos-1])
             if not today or not previous or len(today)<4 or len(previous)<4:return None
             close,prior_close=today[3],previous[3]
             if (not isinstance(close,(int,float)) or isinstance(close,bool) or

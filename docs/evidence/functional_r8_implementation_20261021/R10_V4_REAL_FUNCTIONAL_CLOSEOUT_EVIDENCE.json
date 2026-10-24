@@ -1025,8 +1025,20 @@
         "result": "PASS"
       },
       "targeted_tests": {
-        "command": "pytest -q tests/test_v4_functional_r8_s01_s03.py tests/test_core_product_home_cache_closeout.py tests/v4_joint/test_r9_market_cache_scope.py",
-        "result": "51 passed in 3.95s"
+        "command": "pytest -q tests/test_v4_functional_r8_s01_s03.py tests/test_v4_functional_r8_third_batch.py tests/v4_joint/test_r9_market_cache_scope.py",
+        "result": "53 passed in 0.72s"
+      },
+      "market_history_streaming_fix": {
+        "source_file": "src/workbench_analysis/r6_candidate_market_stress.py",
+        "before": "gzip history fully materialized; dict comprehensions silently overwrote duplicate security rows and duplicate dates",
+        "after": "stream JSONL; validate security ID/bars shape and duplicate security/date; retain only T/T-1/T-3/T-4 bars",
+        "source_files": [
+          {"T0":"2026-10-19","path":"data/v4/dynamic_daily_owners/2026-10-19/73b3b8879f6e9484b880fbdbeb4f7bd9be8a1f4495c8618f4edeec36d70a4e7e/owner_v3/owners/2026-10-19/history.jsonl.gz","bytes":88732338,"sha256":"213fbf275a0836ae454c9e88b907d8913fd00981daee4e43be04c1a3b18a6647","binding_sha_match":true,"security_rows":5224,"retained_bar_cells":20855,"duplicate_security_or_date":0},
+          {"T0":"2026-10-20","path":"data/v4/dynamic_daily_owners/2026-10-20/a7a0f5941a97b9d1fc3f2e150a16761b45e574bf99b3b78cb2a5e316935975a3/owner_v3/owners/2026-10-20/history.jsonl.gz","bytes":88724369,"sha256":"56b76b9afd3bf5388ff8f754fd3e0f51f553fca17c39ca0b352327f0f208b16c","binding_sha_match":true,"security_rows":5224,"retained_bar_cells":20859,"duplicate_security_or_date":0},
+          {"T0":"2026-10-21","path":"data/v4/dynamic_daily_owners/2026-10-21/c5b78de8646af0db95c444cfe00f1e940cadffbe59ec45592e632484b930c381/owner_v3/owners/2026-10-21/history.jsonl.gz","bytes":88715016,"sha256":"de3b85d2ad1cca69598713c19453cc105cc460488fddb87fa2df873c0d7e0221","binding_sha_match":true,"security_rows":5224,"retained_bar_cells":20864,"duplicate_security_or_date":0}
+        ],
+        "deduplication_result":"PASS",
+        "numeric_breadth_recompute":"BLOCKED_HISTORICAL_UNIVERSE_SOURCE_EMPTY"
       },
       "s00_s08_layer_matrix": {
         "S00": {"CODE":"PASS","NUMERIC":"N/A","SOURCE":"PASS","DEV_PG":"PASS_READ_ONLY","API":"PASS_EXISTING_CONTEXT","UI":"PASS_IN_APP_BROWSER","CI":"CI_NOT_RUN","PRODUCTION":"NOT_AUTHORIZED"},

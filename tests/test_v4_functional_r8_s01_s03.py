@@ -277,6 +277,43 @@ def test_unverified_candidate_market_risk_is_removed_from_priority_consumer_payl
     assert candidate['market_stress']['test-day']['breadth_axis']=='IMPROVING'
 
 
+def test_market_history_stream_retains_only_requested_sessions_and_rejects_duplicate_security(tmp_path):
+    import gzip
+    import json
+    from workbench_analysis.r6_candidate_market_stress import _selected_history_bars
+
+    path=tmp_path/'history.jsonl.gz'
+    rows=[
+        {'security_id':'SEC-A','bars':[
+            {'trade_date':'old-day','qfq_ohlc':[1,2,1,2]},
+            {'trade_date':'comparison-day','qfq_ohlc':[2,3,2,3]},
+            {'trade_date':'current-day','qfq_ohlc':[3,4,3,4]}]},
+        {'security_id':'SEC-B','bars':[]},
+    ]
+    with gzip.open(path,'wt',encoding='utf-8') as stream:
+        for row in rows:stream.write(json.dumps(row)+'\n')
+    selected=_selected_history_bars(path,{'comparison-day','current-day'})
+    assert selected=={'SEC-A':{'comparison-day':[2,3,2,3],'current-day':[3,4,3,4]},'SEC-B':{}}
+    with gzip.open(path,'at',encoding='utf-8') as stream:
+        stream.write(json.dumps({'security_id':'SEC-A','bars':[]})+'\n')
+    with pytest.raises(ValueError,match='R7_MARKET_HISTORY_DUPLICATE_SECURITY_ID'):
+        _selected_history_bars(path,{'comparison-day','current-day'})
+
+
+def test_market_history_stream_rejects_duplicate_security_date(tmp_path):
+    import gzip
+    import json
+    from workbench_analysis.r6_candidate_market_stress import _selected_history_bars
+
+    path=tmp_path/'history.jsonl.gz'
+    row={'security_id':'SEC-A','bars':[
+        {'trade_date':'current-day','qfq_ohlc':[1,2,1,2]},
+        {'trade_date':'current-day','qfq_ohlc':[1,2,1,2]}]}
+    with gzip.open(path,'wt',encoding='utf-8') as stream:stream.write(json.dumps(row)+'\n')
+    with pytest.raises(ValueError,match='R7_MARKET_HISTORY_DUPLICATE_SECURITY_DATE'):
+        _selected_history_bars(path,{'current-day'})
+
+
 def test_forward_late_preview_cache_is_shared_across_request_bff_instances():
     from copy import copy
     from types import SimpleNamespace

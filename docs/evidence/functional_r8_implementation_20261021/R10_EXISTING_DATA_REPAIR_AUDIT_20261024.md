@@ -118,6 +118,7 @@ PG 写后只读清点按时间顺序为：初始三日投影后 111 schemas/481 
 - 对 13 个 R2 schema 做了第二次只读 PG 逐表核验：日期与候选 Head 一一对应，version digest/contract/sealed、各域精确行数、三条响应及 response SHA 均通过。
 - PG 新版本写入范围为现存 13 个日期的候选 ReadIndex；Owner、Core、正式 Head、SourceIngress、旧 ReadIndex、历史来源及所有既存工作区未跟踪文件均保留。
 - 后续继续审计 Priority 候选 Market 出口时发现，先前隔离逻辑虽清空 `market_stress`，但未清掉同对象 `trend_reference` 的指数收盘/均线数值。现改为只返回合同、来源绑定和失败诊断，`market_stress` 与 `trend_reference` 均置空；回归加入趋势数值不可泄漏断言。相关三组测试 `51 passed`。该修复不改原始 Owner 或 PG 候选数据。
+- Market 历史行情按 10/19、10/20、10/21 三份现存 gzip Owner 作流式输入复核，证券行数均 5,224，公式需要的四个交易日条目数分别 20,855、20,859、20,864；重复证券与重复证券日期均为 0。读取路径不再完整物化所有历史 bars，遇到重复输入会明确拒绝，不再由字典最后写入值覆盖。SHA 与 10/19、10/20 绑定匹配；10/21 实测 SHA `de3b85d2ad1cca69598713c19453cc105cc460488fddb87fa2df873c0d7e0221`。详情见 R10 Closeout Evidence `market_history_streaming_fix`。
 
 ## 下一阶段与恢复门槛
 

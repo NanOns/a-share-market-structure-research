@@ -1,0 +1,344 @@
+{
+  "contract_id": "R10_TDX_LATEST_MEMBERSHIP_READINDEX_PG_API_RECONCILIATION_R1",
+  "candidate_root": "G:\\codex_tmp\\v4_daily_candidate_chain_20261020",
+  "candidate_token": "14ee0cf87a46f810b52295a8d42c4bbda391fd0fe49f4cb3457a1620067ad378",
+  "authority_sha256": "ddf369a6ba7b5e9509abffd003961b337b572d94e4c829eaaae424ea27a92d71",
+  "authority_backup_sha256": "96a6e5f045526e3e31f69b2d634b737a0c270b622ec0431238981301030f2b2a",
+  "candidate_head_unchanged": true,
+  "formal_head_modified": false,
+  "production_head_modified": false,
+  "source_ingress_appended": false,
+  "frozen_dates": [
+    "2026-10-22",
+    "2026-10-23"
+  ],
+  "pg_identity": "127.0.0.1:5432/market_research",
+  "verified_dates": [
+    {
+      "trade_date": "2026-09-28",
+      "schema": "v4_16a9d2fcb1a69769dc897b00182129bcfdb8ff2c31b1d1b7f77e7bcf",
+      "read_version_digest": "03fc02916c59d345c42ba258b4baa18bed555309c2e62b33e3c3674dbe918ed7",
+      "sealed": true,
+      "item_counts": {
+        "focus": 1178,
+        "radar": 1045,
+        "sectors": 400,
+        "stocks": 5222
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "58ed52b672f111e80823e9770cd27a78025402151fca24891234af6fdf432278",
+        "/api/v4/home": "27b7d379359e4dfe2c39e0c9678d9f860efc0a0765cf999452848cce6b44080b",
+        "/api/v4/sectors-meta": "dd44926cf6507ec34e58b8c0a071b95330c9e4721b3ffa7e2555c553954e57ad"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52900,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-09-29",
+      "schema": "v4_fd0db794068d51bbe5d0a2cc124af5297997fa1b2d16757a8556b23c",
+      "read_version_digest": "caf31577d6b60408fe8b02832e1b3dc728d235c196ca915e87fbf2235500290c",
+      "sealed": true,
+      "item_counts": {
+        "focus": 1717,
+        "radar": 556,
+        "sectors": 400,
+        "stocks": 5223
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "664d257ce74c44746292f229fbf7669494fc87a29e89c727a314ec31ed00223f",
+        "/api/v4/home": "e972e36ebc6b83a3012491da19539f842f8932bf20690309a54c98595bc97c3d",
+        "/api/v4/sectors-meta": "c93d31b446e08d2706d46ca947dc25497f21bb95becb18e375c186d90ba0fd9c"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52905,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-09-30",
+      "schema": "v4_0318071f3bbe7ccbf0f902c696e6de1f85b1f7e292992ed11a063e6b",
+      "read_version_digest": "554279238b902227a8ef564fa9ee7ca1971b1910eac4ef8f1a975ed33b788422",
+      "sealed": true,
+      "item_counts": {
+        "focus": 2152,
+        "radar": 442,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "4a88ec372f7b2b95cb75dec294a85b12740ccd6e8ac9ba641dd387e170ffc0ce",
+        "/api/v4/home": "026b844aedd6bc0d1d430b923e671dca67754f544e0079d95bbc7e0b6d95c7df",
+        "/api/v4/sectors-meta": "174eabef06da9203ba9104abd4d80351622caa4e85f4b4f34abce8334180d47a"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-08",
+      "schema": "v4_e0d8918ebebd8f0222206c21813fd7f1ab5cf2f2f19b0016e8ec37e5",
+      "read_version_digest": "1b9c0d0bc5889afdc347ab4eaee1c1ee16c8d875057a8486a2edd4a4f9e0f047",
+      "sealed": true,
+      "item_counts": {
+        "focus": 2477,
+        "radar": 393,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "6a90d1330ed2be7edccc9323b3c3987a58554b4076a7019caff88e8b840de611",
+        "/api/v4/home": "433ed6e3f36ff7dfffc174e3f22f521dd48a98a9e5e021569aa21e615dd897bc",
+        "/api/v4/sectors-meta": "65891e57abe8725483801c64ab882cd8d15f9ace2202a76aad31fe839104e8e3"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-09",
+      "schema": "v4_75f4e5d69302d12f9eed432208b5bbfb32f26df234204405ef5d8e22",
+      "read_version_digest": "1911eeeaa3c668357e12f32f562b1b656c6d4a8e0129b71e7f958e3c16bf5616",
+      "sealed": true,
+      "item_counts": {
+        "focus": 2805,
+        "radar": 365,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "f9664eca5d7f8d2e826bc683b27680828b2505ad93f96c042c73651989eb6192",
+        "/api/v4/home": "c49f7cc9080fdfce30360e8d28d026a5a6f08384470e4ebe4c4fcd971998e730",
+        "/api/v4/sectors-meta": "95a9f5e21ff6e8791626831504fdaf035460037446f18bd595d2e43b7f6c9a04"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-12",
+      "schema": "v4_b90a637673f9def5efd4f6f3bd431db954363f9ea9789ba11a5a3c3c",
+      "read_version_digest": "cc558b099d3850a3c0e3e52a5d3c6c2d9367b34584c8b7e2f02e7942f0147a4e",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3025,
+        "radar": 311,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "23b8c5e66daac4c59ad71b510829ea37059956ad31d29475ef77c83ba51ea19d",
+        "/api/v4/home": "e0a71926d1ead73b0f9ac6c3c70db3282e0a94d3afc806400cc013e1cbe43e08",
+        "/api/v4/sectors-meta": "13b0fcd64ca28b8d71fdb0f511e5c6262ebcd167d66d4de781a52a76dcb432f2"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-13",
+      "schema": "v4_90b957c410416bb0250e7fc56b2a03b8749d356e8b7c6cddfe65fea6",
+      "read_version_digest": "0036d50a31169c8ab823dba79a1e1c5b061ef1846393cebb78a4c8b332541276",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3151,
+        "radar": 163,
+        "sectors": 400,
+        "stocks": 5225
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "35c838c21a2c7363ac4f419c091d8abedfb701c31062f0cb7636991b3d26192a",
+        "/api/v4/home": "90a59cbd3344f3f7330edf1eaf1fee86ca8936ce91b9bbf4cd83ca1f3c0951cb",
+        "/api/v4/sectors-meta": "792f8caa3584afc5f6dd768e72bd131192208686d62deb5d3e4f75c674701639"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-14",
+      "schema": "v4_e1eb1b59a4dd9f540a7e7e998c1aedfda1a8ba4c6079906731574747",
+      "read_version_digest": "03d89c63de60df4b838fd2080c244fad90cfffac3cecb8da4e08f08fbe1c639f",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3247,
+        "radar": 177,
+        "sectors": 400,
+        "stocks": 5225
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "7c7ac42d2e2ea48d29cb9fa8a61ff40b031b0d2f8eae9b6fdac4655f2e4362e3",
+        "/api/v4/home": "9bbd3f3d072c41f6d864c7af2cbb3121404e6dc3701d47b023b38f0362b2b4b5",
+        "/api/v4/sectors-meta": "dbe0bc671b16bdcdd87cb7545e0cf5ad1cecb5ee3be41a76ac125b58cc1f57e0"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-15",
+      "schema": "v4_69f4c8210967411fdf654a656d4bf0d0debfefc7a8198bc9cdb0d328",
+      "read_version_digest": "d881e347f4008497134a97530f31e4383c862906c6614ad4d16b9eff3919f39a",
+      "sealed": true,
+      "item_counts": {
+        "focus": 404,
+        "radar": 367,
+        "sectors": 400,
+        "stocks": 5226
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "bd540b7a11228ccf5999fd075c9c6e03bed779b17d5a004f9ea64d668bb1b700",
+        "/api/v4/home": "25e7dc9ac086b0e1c97be600efb273e072f8d02768081214a7a65b95064fe8bb",
+        "/api/v4/sectors-meta": "66d2a328c86b72142c8feb85a071282734c71d0e061e2680fa7de09d6ba59c15"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-16",
+      "schema": "v4_22d042926f75313650f3d29facd0f1387428ee65055fe28f281d6756",
+      "read_version_digest": "41a3a4c92465d51541bef66e04a6081672852d365db8722ec79f09c89e4bd963",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3575,
+        "radar": 416,
+        "sectors": 400,
+        "stocks": 5226
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "fa1e2e3b23bf4bfb41def9877f93cee394dd86d13b553ac246a2dd386821c5f2",
+        "/api/v4/home": "2ab9f752cb91349fca8784a15c0389ba66f73f133a9e0fd7e56a769fc18a533c",
+        "/api/v4/sectors-meta": "acd694e3df9a2423d61c0b729d65cd37cf0d2e9b41813ef9dd21fb03a0f2faa9"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52912,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-19",
+      "schema": "v4_0268f132c1d5954ca7d250d1190f88cba9d7fb593287cac916feecf8",
+      "read_version_digest": "ff21cc5fee842e04e4e431c052b0cef303dd6c6d25eb552e990af6a5f94ecc0f",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3673,
+        "radar": 318,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "4e719eca7462968b7752d05065ae39e17bb018cf2813209523a79df334f1d597",
+        "/api/v4/home": "437991e188c2470e4d37861d8005abab242feee7f285d3b42f89139a2b03219a",
+        "/api/v4/sectors-meta": "a4a7e4a4fe767ea17fc81b0d74548ccf8c1957f32a14f5018c1c6c72dca5bdaf"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52910,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-20",
+      "schema": "v4_8c67ccc0e73d5a3f17a6a4dd4a6bba8e4cc83c19f1cd137d9987503d",
+      "read_version_digest": "ee9b79f7e58d3b6d62c78d435bb205439618b097beeef1b0c709feaf39bcd3af",
+      "sealed": true,
+      "item_counts": {
+        "focus": 679,
+        "radar": 607,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "e43acd5e18a0a9fbf3e23a6cfb3e9c7f12cf4b6d2fdab529870fe789f199be97",
+        "/api/v4/home": "0b65bf0c58ad5acb625d62dd81aa513c12bcaa62362e75102e18ee30bd051ad4",
+        "/api/v4/sectors-meta": "55272dbd732cad6fb8f35e218c2ecde05d544f9cc5a56b36b5b377d5587d4d42"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52910,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    },
+    {
+      "trade_date": "2026-10-21",
+      "schema": "v4_21de88c54fc90a415af300d353ec641a40cf9d0269f117222edd07e6",
+      "read_version_digest": "98fa29707f7e8b91b79625e1a980a579d71f805ac6bce2aca8af1256f1ef92bb",
+      "sealed": true,
+      "item_counts": {
+        "focus": 3975,
+        "radar": 413,
+        "sectors": 400,
+        "stocks": 5224
+      },
+      "response_count": 3,
+      "response_sha256": {
+        "/api/v4/context": "13b285c0213e0ba8792213a772ce32abba771bc2c5b477e0194323a4c18f03d0",
+        "/api/v4/home": "c28b8510aacf6ad6cce19d0136e69a8e350aa84829f8957dab3236ef8f6be6d4",
+        "/api/v4/sectors-meta": "163b50e1f3a7b41b015090560840b85744a3ce14ab933f30545f331047ab7301"
+      },
+      "sector_source_status": "READY_WITH_NON_PIT_FALLBACK",
+      "sector_count": 400,
+      "mapped_relation_count": 52910,
+      "member_set_asof": "2026-10-09T09:44:01.158745+08:00",
+      "PIT_ELIGIBLE": false,
+      "market_status": null,
+      "market_consumer_disposition": "QUARANTINED_PENDING_DATED_SOURCE_AND_RECOMPUTE"
+    }
+  ],
+  "all_13_dates_verified": true
+}

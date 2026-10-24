@@ -222,6 +222,78 @@ def quarantine_incomplete_sector_home(home, sector_meta):
         'required_source':source_gap.get('required_source')})
     return result
 
+
+def reconcile_latest_tdx_membership(day, snapshot, membership_rows, sector_rows, active_security_ids, *,
+                                    membership_source, sector_owner, core_owner):
+    """Prove a non-PIT TDX latest-map fallback against the dated sector Owner.
+
+    The fallback is a usable reconstructed research mapping only when every
+    mapped source relation that belongs to the dated Core universe appears in
+    the sector Owner with the exact same sector/security pair.  This does not
+    turn the snapshot into historical PIT evidence.
+    """
+    from collections import defaultdict
+
+    if (not isinstance(snapshot,dict)
+            or snapshot.get('membership_mode')!='TDX_LATEST_MEMBER_RETRO_V1'
+            or snapshot.get('taxonomy')!='TDX_INDUSTRY_CONCEPT'
+            or snapshot.get('PIT_ELIGIBLE') is not False
+            or snapshot.get('AS_RECORDED') is not False
+            or snapshot.get('HISTORICAL_FIRST_AVAILABLE_PROVEN') is not False
+            or snapshot.get('knowledge_lineage')!='RECONSTRUCTED_LATEST_MEMBERSHIP'
+            or not snapshot.get('survivorship_bias_risk')):
+        raise ValueError('LATEST_TDX_MEMBERSHIP_FALLBACK_CONTRACT_INVALID')
+    if not all(isinstance(ref,dict) and ref.get('sha256') for ref in
+               (membership_source,sector_owner,core_owner)):
+        raise ValueError('LATEST_TDX_MEMBERSHIP_FALLBACK_BINDING_MISSING')
+    active=set(active_security_ids)
+    expected=defaultdict(set)
+    if not isinstance(membership_rows,list):
+        raise ValueError('LATEST_TDX_MEMBERSHIP_ROWS_NOT_VALIDATED')
+    for row in membership_rows:
+        security_id=row.get('security_id')
+        if row.get('identity_status')=='MAPPED':
+            members=expected[row['sector_id']]
+            if security_id in active:members.add(security_id)
+    actual={}
+    for row in sector_rows:
+        sector_id=row.get('sector_id')
+        member_ids=row.get('member_ids')
+        if (not sector_id or not isinstance(member_ids,list)
+                or len(member_ids)!=len(set(member_ids)) or sector_id in actual):
+            raise ValueError('LATEST_TDX_SECTOR_OWNER_ROW_INVALID')
+        if (row.get('membership_snapshot_id')!=snapshot.get('membership_snapshot_id')
+                or row.get('membership_mode')!='TDX_LATEST_MEMBER_RETRO_V1'
+                or row.get('member_set_asof')!=snapshot.get('member_set_asof')
+                or row.get('PIT_ELIGIBLE') is not False):
+            raise ValueError('LATEST_TDX_SECTOR_OWNER_SNAPSHOT_MISMATCH')
+        actual[sector_id]=set(member_ids)&active
+    if expected!=actual:
+        raise ValueError('LATEST_TDX_SECTOR_OWNER_MEMBER_PARITY_FAILED')
+    return dict(contract_id='V4_SECTOR_MEMBERSHIP_FALLBACK_R1',status='READY_WITH_NON_PIT_FALLBACK',
+        trade_date=day,domain='sectors',classification='LATEST_TDX_MAPPING_FALLBACK',
+        membership_mode=snapshot['membership_mode'],taxonomy=snapshot['taxonomy'],
+        membership_snapshot_id=snapshot['membership_snapshot_id'],
+        membership_observed_at=snapshot['membership_observed_at'],
+        member_set_asof=snapshot['member_set_asof'],knowledge_lineage=snapshot['knowledge_lineage'],
+        sector_count=len(actual),mapped_relation_count=sum(map(len,actual.values())),
+        core_universe_count=len(active),membership_source=membership_source,
+        sector_owner=sector_owner,core_owner=core_owner,AS_RECORDED=False,PIT_ELIGIBLE=False,
+        HISTORICAL_FIRST_AVAILABLE_PROVEN=False,survivorship_bias_risk=True,
+        interpretation='使用已核验的最新通达信行业与概念映射重建该交易日研究视图；不代表该日历史成员关系或 PIT。')
+
+
+def apply_sector_membership_meta(home, sector_meta):
+    """Bind Home sector values to the same dated membership basis as list pages."""
+    if isinstance(sector_meta,dict) and sector_meta.get('status')=='READY_WITH_NON_PIT_FALLBACK':
+        result=deepcopy(home)
+        result['sector_source_status']='READY_WITH_NON_PIT_FALLBACK'
+        result['sector_membership_basis']={key:sector_meta.get(key) for key in
+            ('classification','membership_mode','membership_snapshot_id','membership_observed_at',
+             'member_set_asof','sector_count','mapped_relation_count','PIT_ELIGIBLE','survivorship_bias_risk')}
+        return result
+    return quarantine_incomplete_sector_home(home,sector_meta)
+
 def market_candidate_failure(candidate_market, day, market=None):
     """Return a stable failure code unless a complete same-day derivation is present."""
     if not isinstance(candidate_market,dict) or candidate_market.get('status')!='READY':
@@ -662,6 +734,46 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         if self.api.token not in versions:return 'R2_TOKEN_NOT_PREPARED'
         if day not in versions[self.api.token]:return 'R2_DATE_NOT_PREPARED'
         return 'R2_AUTHORITY_BOUND'
+
+    def _candidate_sector_membership_meta(self,day):
+        """Expose the verified latest-TDX fallback used by the dated sector Owner."""
+        from workbench_analysis.r43_owner_replay import checked
+        from workbench_analysis.tdx_member_retro_r43 import validate_snapshot
+        candidate=self.api.candidate
+        snapshot_ref=candidate.get('membership_snapshot')
+        owners=candidate.get('owners',{}).get(day,{})
+        sector_owner=owners.get('sector');core_owner=owners.get('core')
+        if not all(isinstance(value,dict) for value in (snapshot_ref,sector_owner,core_owner)):
+            return 200,self.envelope(day,status='SOURCE_INCOMPLETE',domain='sectors-meta',
+                reason='LATEST_TDX_MEMBERSHIP_FALLBACK_BINDING_MISSING',items=[],total=None,
+                source_gap=dict(classification='SOURCE_MISSING',reason_code='LATEST_TDX_MEMBERSHIP_FALLBACK_BINDING_MISSING',
+                    required_source='CANDIDATE_BOUND_TDX_MEMBERSHIP_SNAPSHOT_AND_DATED_CORE_SECTOR_OWNERS'))
+        # Content hashes are checked on every read, including warm-cache hits.
+        for binding in (snapshot_ref,sector_owner,core_owner):
+            checked(self.api.root,binding)
+        cache=getattr(self.api,'derived_cache',self.api.cache)
+        membership_cache_key=('validated-latest-tdx-membership-v1',self.api.token,snapshot_ref['sha256'])
+        membership_source=cache.get(membership_cache_key)
+        if membership_source is None:
+            snapshot=json.loads(checked(self.api.root,snapshot_ref).read_bytes())
+            membership_rows=validate_snapshot(snapshot,self.api.root,strict_pit=False)
+            membership_source=(snapshot,membership_rows)
+            cache[membership_cache_key]=membership_source
+        else:
+            snapshot,membership_rows=membership_source
+            for binding in [snapshot.get('memberships'),snapshot.get('identity_source'),*(snapshot.get('sources') or [])]:
+                if isinstance(binding,dict):checked(self.api.root,binding)
+        cache_key=('latest-tdx-sector-membership-meta-v1',self.api.token,day,
+            snapshot_ref['sha256'],sector_owner['sha256'],core_owner['sha256'])
+        result=cache.get(cache_key)
+        if result is None:
+            core_rows=self.source('core',day) or []
+            sector_rows=self.source('sector',day) or []
+            result=reconcile_latest_tdx_membership(day,snapshot,membership_rows,sector_rows,
+                (row.get('security_id') for row in core_rows),membership_source=snapshot_ref,
+                sector_owner=sector_owner,core_owner=core_owner)
+            cache[cache_key]=result
+        return 200,self.envelope(day,**result,source_gap=None)
 
     def _rotation_owner_summary(self,day):
         rows=self.source('rotation',day)
@@ -1200,6 +1312,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
         day=validate_query({k:v for k,v in query.items() if k not in ('event_state','events_offset','scope','rankability','view')},
                            self.api.token,self.api.candidate['published_sessions'],
                            self.api.candidate['accepted_trade_date'],path)
+        if path=='/api/v4/sectors-meta':
+            return self._candidate_sector_membership_meta(day)
         if path=='/api/v4/focus/priority':
             return 200,self.envelope(day,**_focus_priority_contract_block(day))
         forward_response=self._forward_r7_read(path,query,day)
@@ -1450,8 +1564,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                             historical_research_count=None,live_frozen_count=None,
                             matured_settlement_count=None,reason=type(exc).__name__,
                             updated_at=response.get('updated_at'),href='/v4/research/forward')
-                    response=quarantine_incomplete_sector_home(
-                        response,index.response('/api/v4/sectors-meta'))
+                    sector_meta=index.response('/api/v4/sectors-meta')
+                    response=apply_sector_membership_meta(response,sector_meta)
                 return 200,self._bind_live_head_scope(response)
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')

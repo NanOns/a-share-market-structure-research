@@ -400,7 +400,7 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
     """Producer/migration entrypoint, never invoked from an HTTP request."""
     from workbench_analysis.operational_successor_v1 import OperationalSuccessorReaderV1
     from workbench_analysis.operational_daily_storage_v1 import atomic_json
-    from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+    from workbench_service.core_product_bff_r1 import CoreProductBFFR1, apply_sector_membership_meta
     root=Path(root)
     api=OperationalSuccessorReaderV1(root,candidate)
     bff=CoreProductBFFR1(api,jobs);bff.building_read_index=True
@@ -411,7 +411,10 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
         # Build the exact dated full response once, then only SQL pages serve it.
         query=dict(trade_date=day,context_token=api.token)
         collections={domain:bff.project(domain,day) for domain in ('stocks','sectors','focus')}
-        responses={path:bff.get(path,query)[1] for path in ('/api/v4/context','/api/v4/home')}
+        responses={'/api/v4/context':bff.get('/api/v4/context',query)[1],
+            '/api/v4/sectors-meta':bff.get('/api/v4/sectors-meta',query)[1]}
+        home=bff.get('/api/v4/home',query)[1]
+        responses['/api/v4/home']=apply_sector_membership_meta(home,responses['/api/v4/sectors-meta'])
         validate_home_response(responses['/api/v4/home'])
         stocks={row['entity_id']:row for row in collections['stocks']}
         memberships_by_sector={row['sector_id']:set(row.get('member_ids',[])) for row in bff.source('sector',day)}

@@ -309,6 +309,39 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertEqual(result['risks'],[])
         self.assertEqual(home['counts']['sectors'],400)
 
+    def test_latest_tdx_membership_fallback_requires_exact_dated_core_pair_reconciliation(self):
+        from workbench_service.core_product_bff_r1 import reconcile_latest_tdx_membership, apply_sector_membership_meta
+        snapshot={'membership_mode':'TDX_LATEST_MEMBER_RETRO_V1','taxonomy':'TDX_INDUSTRY_CONCEPT',
+            'PIT_ELIGIBLE':False,'AS_RECORDED':False,'HISTORICAL_FIRST_AVAILABLE_PROVEN':False,
+            'knowledge_lineage':'RECONSTRUCTED_LATEST_MEMBERSHIP','survivorship_bias_risk':True,
+            'membership_snapshot_id':'snapshot-derived-from-input','membership_observed_at':'observed-at',
+            'member_set_asof':'observed-at'}
+        members=[{'sector_id':'INDUSTRY:EXAMPLE','security_id':'SEC-A','identity_status':'MAPPED'},
+            {'sector_id':'INDUSTRY:EXAMPLE','security_id':'SEC-OUTSIDE','identity_status':'MAPPED'},
+            {'sector_id':'THEME:EXAMPLE','security_id':'SEC-B','identity_status':'MAPPED'}]
+        sectors=[{'sector_id':'INDUSTRY:EXAMPLE','member_ids':['SEC-A'],
+            'membership_snapshot_id':'snapshot-derived-from-input','membership_mode':'TDX_LATEST_MEMBER_RETRO_V1',
+            'member_set_asof':'observed-at','PIT_ELIGIBLE':False},
+            {'sector_id':'THEME:EXAMPLE','member_ids':['SEC-B'],
+            'membership_snapshot_id':'snapshot-derived-from-input','membership_mode':'TDX_LATEST_MEMBER_RETRO_V1',
+            'member_set_asof':'observed-at','PIT_ELIGIBLE':False}]
+        bindings=[{'sha256':'a'*64} for _ in range(3)]
+        result=reconcile_latest_tdx_membership('input-day',snapshot,members,sectors,
+            ['SEC-A','SEC-B'],membership_source=bindings[0],sector_owner=bindings[1],core_owner=bindings[2])
+        self.assertEqual(result['status'],'READY_WITH_NON_PIT_FALLBACK')
+        self.assertEqual(result['trade_date'],'input-day')
+        self.assertEqual(result['sector_count'],2)
+        self.assertEqual(result['mapped_relation_count'],2)
+        self.assertFalse(result['PIT_ELIGIBLE'])
+        self.assertFalse(result['AS_RECORDED'])
+        home=apply_sector_membership_meta({'counts':{'sectors':2}},result)
+        self.assertEqual(home['sector_source_status'],'READY_WITH_NON_PIT_FALLBACK')
+        self.assertEqual(home['sector_membership_basis']['member_set_asof'],'observed-at')
+        self.assertEqual(home['counts']['sectors'],2)
+        with self.assertRaisesRegex(ValueError,'LATEST_TDX_SECTOR_OWNER_MEMBER_PARITY_FAILED'):
+            reconcile_latest_tdx_membership('input-day',snapshot,members,sectors[:1],
+                ['SEC-A','SEC-B'],membership_source=bindings[0],sector_owner=bindings[1],core_owner=bindings[2])
+
     def test_indexed_response_binds_current_formal_head_scope_without_mutating_source(self):
         from workbench_service.core_product_bff_r1 import CoreProductBFFR1
         bff=object.__new__(CoreProductBFFR1)

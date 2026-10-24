@@ -41,12 +41,12 @@ def test_real_parquet_queries_bind_path_before_cutoff(tmp_path, module_name):
 
 def test_service_static_edges_survive_import_graph_and_follow_jsx(tmp_path, monkeypatch):
     service = 'src/workbench_service/v4_server.py'
-    ui = 'src/workbench_service/static/app.html'
-    js = 'src/workbench_service/static/app.js'
+    ui = 'src/workbench_service/static/v4-workbench.html'
+    js = 'src/workbench_service/static/v4-workbench.js'
     jsx = 'src/components/chart.jsx'
     bodies = {service: 'from workbench_service import helper\n',
               'src/workbench_service/helper.py': 'VALUE = 1\n',
-              ui: '<script src="app.js"></script>',
+              ui: '<script src="v4-workbench.js"></script>',
               js: 'import Chart from "../../components/chart.jsx";\nconst stock="sh600001";',
               jsx: 'const date = "2026-03-03";'}
     for rel, body in bodies.items():
@@ -104,6 +104,7 @@ def test_package_preparation_stops_before_writes_on_strict_gate(monkeypatch):
     monkeypatch.setattr(package.subprocess,'run',refuse)
     with pytest.raises(Exception):package.prepare()
     assert len(calls)==1 and 'check_v4_business_literals.py' in ' '.join(map(str,calls[0]))
+    assert '--strict-runtime' in calls[0]
     assert '--allow-incomplete-inventory' not in calls[0]
 
 

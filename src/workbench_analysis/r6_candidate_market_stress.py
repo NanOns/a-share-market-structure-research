@@ -21,8 +21,13 @@ def _canonical(value):
 def _checked(root, ref):
     root=Path(root).resolve();path=(root/ref['path']).resolve()
     if root not in path.parents:raise ValueError('R7_MARKET_STRESS_OWNER_PATH_ESCAPES_ROOT')
-    raw=path.read_bytes()
-    if len(raw)!=ref.get('bytes',len(raw)) or hashlib.sha256(raw).hexdigest()!=ref['sha256']:
+    size=path.stat().st_size
+    if size!=ref.get('bytes',size):
+        raise ValueError('R7_MARKET_STRESS_OWNER_BYTES_OR_SHA_MISMATCH')
+    digest=hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda:stream.read(1024*1024),b''):digest.update(chunk)
+    if digest.hexdigest()!=ref['sha256']:
         raise ValueError('R7_MARKET_STRESS_OWNER_BYTES_OR_SHA_MISMATCH')
     return path
 
@@ -31,23 +36,54 @@ def _read_rows(path):
     with gzip.open(path,'rt',encoding='utf-8') as stream:return [json.loads(line) for line in stream]
 
 
-def _comparison_universe(root,candidate,prior3,membership_ref):
-    """Use the exact predecessor Core Owner as denominator when available.
+def _iter_rows(path):
+    with gzip.open(path,'rt',encoding='utf-8') as stream:
+        for line in stream:
+            if line.strip():yield json.loads(line)
 
-    The historical-universe binding is a fallback for old candidates that do
-    not carry a dated Core Owner. Reading and inflating that multi-year source
-    on every Home request when the exact dated Core is already bound was both
-    redundant and the dominant avoidable cold-start cost.
+
+def _comparison_universe(root,candidate,prior3,membership_ref):
+    """Use the frozen four-board historical universe as the denominator.
+
+    A predecessor Core is only a safe acceleration when its row-level date and
+    board projection is exactly the same identity set as the bound historical
+    universe.  A Core Owner is not itself a membership contract.
     """
+    authoritative=set()
+    for row in _iter_rows(_checked(root,membership_ref)):
+        sid=row.get('security_id')
+        if not sid or row.get('trade_date')!=prior3 or row.get('board_scope') not in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
+            continue
+        if sid in authoritative:raise ValueError('R10_MARKET_HISTORICAL_UNIVERSE_DUPLICATE_ID:'+str(sid))
+        authoritative.add(sid)
+    if not authoritative:
+        raise ValueError('R10_MARKET_HISTORICAL_UNIVERSE_DATE_SCOPE_EMPTY:'+str(prior3))
     predecessor=candidate.get('owners',{}).get(prior3,{}).get('core')
     if predecessor:
-        rows=_read_rows(_checked(root,predecessor))
-        universe={row['security_id'] for row in rows if row.get('security_id')}
-        return universe,predecessor
-    rows=_read_rows(_checked(root,membership_ref))
-    universe={row['security_id'] for row in rows if row.get('trade_date')==prior3 and
-              row.get('board_scope') in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT')}
-    return universe,membership_ref
+        core_universe=set()
+        for row in _iter_rows(_checked(root,predecessor)):
+            sid=row.get('security_id')
+            if not sid or row.get('trade_date')!=prior3 or row.get('board_scope') not in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
+                continue
+            if sid in core_universe:raise ValueError('R10_MARKET_CORE_UNIVERSE_DUPLICATE_ID:'+str(sid))
+            core_universe.add(sid)
+        if core_universe==authoritative:
+            return core_universe,dict(contract_id='R10_MARKET_COMPARISON_UNIVERSE_V1',
+                source='EXACT_CORE_PROJECTION',core=predecessor,historical_universe=membership_ref,
+                trade_date=prior3,board_scope=['SH_MAIN','SZ_MAIN','STAR','CHINEXT'],
+                identity_count=len(authoritative),identity_digest=hashlib.sha256(
+                    _canonical(sorted(authoritative))).hexdigest(),membership_match=True)
+        return authoritative,dict(contract_id='R10_MARKET_COMPARISON_UNIVERSE_V1',
+            source='BOUND_HISTORICAL_UNIVERSE_CORE_MISMATCH',core=predecessor,
+            historical_universe=membership_ref,trade_date=prior3,
+            board_scope=['SH_MAIN','SZ_MAIN','STAR','CHINEXT'],identity_count=len(authoritative),
+            identity_digest=hashlib.sha256(_canonical(sorted(authoritative))).hexdigest(),
+            membership_match=False,core_only=sorted(core_universe-authoritative),
+            historical_only=sorted(authoritative-core_universe))
+    return authoritative,dict(contract_id='R10_MARKET_COMPARISON_UNIVERSE_V1',
+        source='BOUND_HISTORICAL_UNIVERSE',historical_universe=membership_ref,trade_date=prior3,
+        board_scope=['SH_MAIN','SZ_MAIN','STAR','CHINEXT'],identity_count=len(authoritative),
+        identity_digest=hashlib.sha256(_canonical(sorted(authoritative))).hexdigest(),membership_match=None)
 
 
 def candidate_breadth_formula_comparison(comparison, *, boundary):
@@ -418,16 +454,28 @@ def _candidate_trend_reference(root,candidate,day):
 def candidate_market_stress_identity(root,candidate):
     """Content-verify cached inputs so same-token candidate replacement misses cache."""
     root=Path(root);t0=candidate['accepted_trade_date']
-    rows=[]
+    rows=[];verified_historical={}
     for day in _stress_window_days(candidate):
         if day not in candidate.get('owners',{}):
             raise ValueError('R7_MARKET_STRESS_DATED_OWNER_MISSING:'+day)
         owner=candidate['owners'][day];market=_checked(root,owner['market'])
+        market_doc=json.loads(market.read_bytes())
+        historical_refs=[ref for ref in market_doc.get('input_bindings',[])
+                         if 'historical_universe' in Path(ref.get('path','')).name]
+        if len(historical_refs)!=1:
+            raise ValueError('R10_MARKET_HISTORICAL_UNIVERSE_BINDING_AMBIGUOUS:'+day)
+        historical_ref=historical_refs[0]
+        historical_key=(historical_ref['path'],historical_ref['sha256'],historical_ref.get('bytes'))
+        if historical_key not in verified_historical:
+            verified_historical[historical_key]=_checked(root,historical_ref)
+        historical_path=verified_historical[historical_key]
         limit,receipt,_,_=_limit_owner(root,candidate,day);limit_path=_checked(root,limit)
         core_path=_checked(root,owner['core'])
         stat=lambda path:(path.stat().st_size,path.stat().st_mtime_ns)
         rows.append(dict(day=day,core_sha256=owner['core']['sha256'],core_stat=stat(core_path),
             market_sha256=owner['market']['sha256'],market_stat=stat(market),
+            historical_universe_sha256=historical_refs[0]['sha256'],
+            historical_universe_stat=stat(historical_path),
             limit_sha256=limit['sha256'],limit_stat=stat(limit_path),
             raw_source_sha256=receipt['baostock_source']['sha256'],receipt_sha256s=receipt['_receipt_sha256s']))
     source=dict(contract='R7_CANDIDATE_MARKET_STRESS_V2',T0=t0,
@@ -475,14 +523,17 @@ def _market_axes_from_owner(root,candidate,day,core_binding,market_binding,core_
             removed_identities=sorted(set(old_consumed)-set(new_consumed)),
             changed_envelopes=sum(old_consumed[sid]!=new_consumed[sid] for sid in set(old_consumed)&set(new_consumed)),
             status='PROVEN_EQUAL' if equal else 'NEW_NON_PIT_DERIVATION_REQUIRED_AND_CALCULATED',production_admission=False)
-    history_rows=_read_rows(_checked(root,history_ref))
-    history={r['security_id']:{b['trade_date']:b for b in r.get('bars',[])} for r in history_rows}
     from workbench_analysis.market_source_acquisition import official_sessions
     sessions=[session for session in official_sessions(Path(root)) if session<=day]
     index=sessions.index(day);prior3=sessions[index-3] if index>=3 else None
     if prior3 is None or market.get('comparison_trade_date')!=prior3:
         raise ValueError('R7_MARKET_BREADTH_COMPARISON_SESSION_MISMATCH:'+day)
     universe,comparison_membership_binding=_comparison_universe(root,candidate,prior3,membership_ref)
+    # Validate the full comparison denominator before inflating the much larger
+    # multi-year quote history. Missing membership evidence is a fast,
+    # capability-scoped failure and does not spend a cold Home load on quotes.
+    history_rows=_read_rows(_checked(root,history_ref))
+    history={r['security_id']:{b['trade_date']:b for b in r.get('bars',[])} for r in history_rows}
     current={r['security_id']:r for r in core_rows if r.get('security_id') in universe}
     comparison=[]
     for sid in current:

@@ -658,7 +658,7 @@ def scan(files: list[str]) -> tuple[list[dict], dict]:
 
 
 def global_gate(findings: list[dict], summary: dict | None = None) -> dict:
-    """Evaluate the current runtime gate independently from baseline drift."""
+    """Evaluate the V4 runtime gate and inventory inactive maintenance separately."""
     reachable = [x for x in findings if x.get("runtime_reachable")]
     unresolved = [x for x in reachable if x.get("handling") == "UNRESOLVED"]
     unverified_maintenance=[x for x in findings if not x.get("runtime_reachable") and x.get("handling")=="UNRESOLVED"
@@ -669,10 +669,22 @@ def global_gate(findings: list[dict], summary: dict | None = None) -> dict:
     _,evidence=active_entrypoint_inventory(tracked_files())
     inventory_unknown=evidence.get("status")!="SOURCE_VERIFIED"
     dynamic_unknown=[row for row in (summary or {}).get('dynamic_edges',[]) if row['status']=='UNRESOLVED'
-                     and (row['runtime_reachable'] or row['file'].startswith(('scripts/','tools/')))]
+                     and row['runtime_reachable']]
     browser_unknown=[row for row in (summary or {}).get('browser_routes',[]) if row['runtime_reachable']]
+    maintenance_dynamic=[row for row in (summary or {}).get('dynamic_edges',[]) if row['status']=='UNRESOLVED'
+                         and not row['runtime_reachable'] and row['file'].startswith(('scripts/','tools/'))]
+    maintenance_files=sorted({x.get('file') for x in unverified_maintenance if x.get('file')})
+    maintenance_inventory={
+        "contract_id":"REPOSITORY_MAINTENANCE_INVENTORY_V1",
+        "status":"NOT_PROVEN" if unverified_maintenance or maintenance_dynamic else "INVENTORIED_WITHOUT_UNRESOLVED_CANDIDATES",
+        "unverified_literal_candidates":len(unverified_maintenance),
+        "unresolved_dynamic_sites":len(maintenance_dynamic),
+        "unverified_files":maintenance_files,
+        "classification_policy":"LEGACY_RETIRED_OR_LEGACY_REQUIRED_REQUIRES_EVIDENCE; otherwise NOT_PROVEN",
+    }
     return {
-        "status": "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED" if unresolved or active_violations or unverified_maintenance or inventory_unknown or dynamic_unknown or browser_unknown else "GLOBAL_RUNTIME_LITERAL_GATE_PASS",
+        "status": "V4_RUNTIME_GATE_BLOCKED" if unresolved or active_violations or inventory_unknown or dynamic_unknown or browser_unknown else "V4_RUNTIME_GATE_PASS",
+        "contract_id":"V4_RUNTIME_GATE_V1",
         "reachable_candidates": len(reachable),
         "active_violations": active_violations,
         "active_unknown": len(unresolved),
@@ -680,6 +692,7 @@ def global_gate(findings: list[dict], summary: dict | None = None) -> dict:
         "active_entrypoint_inventory_status":evidence.get("status"),
         "dynamic_unresolved":len(dynamic_unknown),
         "browser_route_unresolved":len(browser_unknown),
+        "maintenance_inventory":maintenance_inventory,
         "unresolved_candidate_ids": [x.get("semantic_key") for x in unresolved],
         "unverified_maintenance_candidate_ids":[x.get("semantic_key") for x in unverified_maintenance],
     }
@@ -687,7 +700,6 @@ def global_gate(findings: list[dict], summary: dict | None = None) -> dict:
 
 def gate_exit_code(gate: dict, *, allow_incomplete_inventory: bool = False) -> int:
     blocking=(gate.get("active_unknown",0) or gate.get("active_violations",0)
-              or gate.get("unverified_maintenance_candidates",0)
               or gate.get("dynamic_unresolved",0)
               or gate.get("browser_route_unresolved",0)
               or gate.get("active_entrypoint_inventory_status")!="SOURCE_VERIFIED")
@@ -700,14 +712,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="扫描 V4 正常运行路径中的固定交易日、证券和板块身份")
     parser.add_argument("--output", type=Path, required=True, help="机器可读清单输出路径")
     parser.add_argument("--fail-on-reachable", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--allow-incomplete-inventory", action="store_true",
-                        help="仅生成诊断清单时允许未裁定的可达候选以零退出；不得作为准入")
+    admission=parser.add_mutually_exclusive_group()
+    admission.add_argument("--strict-runtime",dest="strict_runtime",action="store_true",
+                           help="严格执行 V4 运行准入门（默认）")
+    admission.add_argument("--allow-incomplete-inventory",dest="strict_runtime",action="store_false",
+                           help="仅生成诊断清单时允许运行门未决项以零退出；不得作为准入")
+    parser.set_defaults(strict_runtime=True)
     args = parser.parse_args()
     files = tracked_files(); findings, summary = scan(files)
     reachable, graph, seeds, _ = runtime_graph(files)
     gate = global_gate(findings,summary)
     reachable_hits = gate["active_unknown"]
-    payload = {"schema_version": "V4-PRODUCTION-LITERAL-INVENTORY/2", **gate,
+    payload = {"schema_version": "V4-PRODUCTION-LITERAL-INVENTORY/3", **gate,
         "summary": summary, "runtime_graph": {"entrypoints":seeds,"edges":graph,"dynamic_import_sites":summary["dynamic_import_sites"]}, "findings": findings}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temp = args.output.with_suffix(args.output.suffix + ".tmp")
@@ -717,7 +733,7 @@ def main() -> int:
     compact_summary.update(entrypoint_count=len(seeds),dynamic_import_site_count=len(summary["dynamic_import_sites"]),python_ast_parse_failure_count=len(summary["python_ast_parse_failures"]))
     print(json.dumps({"output": args.output.as_posix(), "summary": compact_summary, "literal_candidates": len(findings),
                       "reachable_unresolved_candidates": reachable_hits}, ensure_ascii=False))
-    return gate_exit_code(gate, allow_incomplete_inventory=args.allow_incomplete_inventory)
+    return gate_exit_code(gate, allow_incomplete_inventory=not args.strict_runtime)
 
 
 if __name__ == "__main__":

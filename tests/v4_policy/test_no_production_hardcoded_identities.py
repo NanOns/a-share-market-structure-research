@@ -71,19 +71,37 @@ def test_change_baseline_does_not_waive_existing_runtime_candidates():
         "semantic_key": "existing-candidate",
     }
     gate = global_gate([prior_candidate])
-    assert gate["status"] == "GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED"
+    assert gate["status"] == "V4_RUNTIME_GATE_BLOCKED"
     assert gate["active_unknown"] == 1
     assert gate["active_violations"] == 0
     assert gate_exit_code(gate) == 1
     assert gate_exit_code(gate, allow_incomplete_inventory=True) == 0
 
 
-def test_unverified_maintenance_literal_blocks_global_gate():
+def test_unverified_inactive_maintenance_is_reported_without_blocking_v4_runtime_gate():
     gate=global_gate([{"file":"scripts/manual_builder.py","runtime_reachable":False,
                        "handling":"UNRESOLVED","semantic_key":"manual-script-candidate"}])
-    assert gate["status"]=="GLOBAL_RUNTIME_LITERAL_GATE_BLOCKED"
+    assert gate["status"]=="V4_RUNTIME_GATE_PASS"
     assert gate["unverified_maintenance_candidates"]==1
+    assert gate["maintenance_inventory"]["contract_id"]=="REPOSITORY_MAINTENANCE_INVENTORY_V1"
+    assert gate["maintenance_inventory"]["status"]=="NOT_PROVEN"
+    assert gate_exit_code(gate)==0
+
+
+def test_v4_reachable_maintenance_script_literal_still_blocks_runtime_gate():
+    gate=global_gate([{"file":"scripts/used_by_v4.py","runtime_reachable":True,
+                       "handling":"UNRESOLVED","semantic_key":"reachable-maintenance-candidate"}])
+    assert gate["status"]=="V4_RUNTIME_GATE_BLOCKED"
+    assert gate["active_unknown"]==1
     assert gate_exit_code(gate)==1
+
+
+def test_v4_runtime_gate_ignores_unreachable_maintenance_dynamic_site_but_inventory_retains_it():
+    summary={"dynamic_edges":[{"file":"tools/retired_loader.py","status":"UNRESOLVED",
+                               "runtime_reachable":False}]}
+    gate=global_gate([],summary)
+    assert gate["status"]=="V4_RUNTIME_GATE_PASS"
+    assert gate["maintenance_inventory"]["unresolved_dynamic_sites"]==1
 
 
 def test_v4_runtime_entrypoint_inventory_is_explicit_and_tracked():

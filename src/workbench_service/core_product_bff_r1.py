@@ -454,7 +454,20 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
             derived=read_snapshot(path,identity) if path else None
             cache_hit=derived is not None
             if derived is None:
-                derived=build_candidate_market_stress(self.api.root,self.api.candidate)
+                try:
+                    derived=build_candidate_market_stress(self.api.root,self.api.candidate)
+                except (OSError,ValueError,KeyError,TypeError) as exc:
+                    # Negative results are cached against the same byte-verified
+                    # Owner/source identity. This prevents every Home request
+                    # from reparsing a large historical source known to lack the
+                    # required comparison date; a repaired source or producer
+                    # changes the identity and invalidates the snapshot.
+                    derived=dict(contract_id='R7_CANDIDATE_MARKET_STRESS_PREVIEW_V2',
+                        status='SOURCE_INCOMPLETE',T0=self.api.candidate.get('accepted_trade_date'),
+                        reason=str(exc),market_stress={},input_authority='EXPLICIT_SUCCESSOR_CANDIDATE',
+                        trend_axis_status='UNKNOWN_REFERENCE_PATH_NOT_COMPLETE_AT_T0',
+                        composite_regime_status='NOT_PUBLISHED_V4_03',AS_RECORDED=False,
+                        PIT_ELIGIBLE=False,production_admission=False)
                 if path:write_snapshot(path,identity,derived)
             self.api.cache[cache_key]=derived
         # Cache diagnostics are returned separately so transient hit state can

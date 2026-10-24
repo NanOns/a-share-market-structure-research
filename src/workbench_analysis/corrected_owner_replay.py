@@ -140,6 +140,14 @@ def _apply_dated_membership_overrides(dated_identity, overrides, required):
     return dated_identity
 
 
+def _required_rps_membership_dates(targets, sessions):
+    required = set(targets)
+    for target in targets:
+        position = sessions.index(target)
+        required.update(sessions[position - lag] for lag in (1, 3))
+    return required
+
+
 def materialize_core(root, dates=None, *, exact_membership_candidates=None):
     root = Path(root).resolve(); policy = load(root/CONTRACT)
     dates = dates or policy['target_sessions']; out = root/OUT; out.mkdir(parents=True, exist_ok=True)
@@ -206,22 +214,38 @@ def materialize_core(root, dates=None, *, exact_membership_candidates=None):
     for r in gzrows(checked(root,historical)):
         if r['status']=='SUSPENDED':status[r['security_id']][r['trade_date']]='SUSPENDED'
     chain=load(checked(root,head['accepted_chain']))
-    dated_identity={}
+    dated_identity={}; trusted_membership_sources={}
     for node in chain['nodes']:
         d=node['trade_date']; rs=load(root/node['components']['IDENTITY_UNIVERSE']['artifact_path'])['rows']
         dated_identity[d]={r['security_id'] for r in rs}
+        trusted_membership_sources[d]={'kind':'ACCEPTED_IDENTITY_UNIVERSE',
+            'artifact':node['components']['IDENTITY_UNIVERSE']}
         for r in load(root/node['components']['TRADING_STATUS']['artifact_path'])['rows']:status[r['security_id']][d]=r['status']
     historical_universe=load(checked(root,load(root/'config/v4_market_operational_authority_v1.json')['market']))['sources']['historical_universe']
     for r in gzrows(checked(root,historical_universe)):
         if r['trade_date'] in required and r['board_scope'] in ('SH_MAIN','SZ_MAIN','STAR','CHINEXT'):
             dated_identity.setdefault(r['trade_date'],set()).add(r['security_id'])
+            trusted_membership_sources.setdefault(r['trade_date'],{
+                'kind':'VERSION_BOUND_HISTORICAL_UNIVERSE',
+                'binding':historical_universe,
+                'board_scope':['SH_MAIN','SZ_MAIN','STAR','CHINEXT']})
     for day,rows in batches.items():
         for code,r in rows.items():
             if code in ids:status[ids[code]['security_id']][day]='SUSPENDED' if r.get('tradestatus')=='0' else 'ACTUAL_TRADED'
-    for day,rows in universes.items():dated_identity[day]={ids[c]['security_id'] for c in rows if c in ids}
+    for day,rows in universes.items():
+        provider_members={ids[c]['security_id'] for c in rows if c in ids}
+        if day not in trusted_membership_sources:
+            dated_identity[day]=provider_members
     # Exact candidate PG authorities take precedence over same-day provider
     # rosters and historical universe snapshots for their own T0 only.
     _apply_dated_membership_overrides(dated_identity,membership_overrides,required)
+    for day,binding in membership_bindings.items():
+        trusted_membership_sources[day]={'kind':'EXACT_DATED_CANDIDATE_MEMBERSHIP',
+            'binding':binding}
+    missing_rps_membership=sorted(
+        _required_rps_membership_dates(dates,sessions)-set(trusted_membership_sources))
+    if missing_rps_membership:
+        raise ValueError('RPS_ENDPOINT_MEMBERSHIP_AUTHORITY_MISSING:'+','.join(missing_rps_membership))
     cache={}; unknown_codes=[]
     with zipfile.ZipFile(package) as z:
         for name in z.namelist():

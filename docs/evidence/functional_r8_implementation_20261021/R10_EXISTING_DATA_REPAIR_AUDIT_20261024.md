@@ -156,3 +156,15 @@ R2 13 日 PG→Home API→首页计数和市场隔离已逐日对齐，10/20 五
 ### 专项结论仍为未验收
 
 上述语义修正不补齐数据。现有 10/22、10/23 仍只有 SourceIngress 原始来源，没有 Core/Owner 和后继业务链；本轮原冻结要求暂停这两个日期的 Core/Owner 生成，因此它们没有被推进。13 个候选日的 Core 同日公式复算（2,733,787 项、0 数值差异）和横截面 RPS5/RPS20 检查也不能替代跨日期与跨域闭环：RPS delta1 已发现 3,864 个差异，lag3 尚未完成；10/16 `rel_market_1` 的存储基准是 2,834/2,828 行，10/15 精确 Lifecycle 基准是 5,226/5,215 行。由每条已观察 `ret1-rel_market_1` 反推的旧基准为 0.0051775465706488，精确 Lifecycle 复算为 0.0044730070704939，差 0.0007045395001549。逐源 SHA 和值已在 [10/16 Market 相对基准复算证据](R10_MARKET_RELATIVE_START_UNIVERSE_DIAGNOSTIC_R1_20261024.json) 固定。其余日期 Sector/D0/D2/Priority/Focus/Forward 数值独立复算及每域逐行 API/页面对账仍未完成或合同/来源不充分。不得将此状态描述为全存量修复通过；自动日更继续关闭。
+
+## 2026-10-24 用户反馈后的续修：增量完成语义与板块消费者隔离
+
+用户指出历史交易日仍显示缺数据，要求解释先前增量运行报告与当前缺口的矛盾。原因已从入口源码追到 `scripts/r8_batch04_ingest_tdx_source.py::ingest`：此入口的成功边界是 SourceIngress 原始行和 receipt 的持久化与逐项回读，既不生成 Core/Owner，也不构建后继业务域或 ReadIndex。先前将 SourceIngress 成功口头表述为“交易日增量完成”，把入口局部成功误报成了业务日闭环。该口径错误由我承担。
+
+入口现在把完成范围固定为 `SOURCE_INGRESS_ONLY`，并返回 `business_chain_status=NOT_RUN`、`business_chain_complete=false` 及全部后续域名称。兼容的 `SOURCE_INGRESS_READBACK_PASS` 只代表原始来源已入库并读回，不再表示全日完成。冻结日期 10/22、10/23 没有生成 Core/Owner，本轮没有采集或追加来源。
+
+第二个可见缺陷是 Sector/Home 消费不一致：10/13 的 ReadIndex `/api/v4/home` 板块计数为 0，而独立 `/api/v4/sectors-meta` 已返回按日来源缺失；当时 28766 页面仍显示 400 个板块与“0/400”板块生态风险。页面头部同时披露该成员源实际来自 10/09，且 `PIT_ELIGIBLE=false`，所以该 400 分母不能作为 10/13 历史板块证据。直接在 Core Product BFF 修复：Home 对齐日期源门禁，计数、轮动、板块变化及板块风险改为来源不完整；列表页空 ReadIndex 响应继续携带精确 gap。`core-product-r1` 与研究页面都加了同样提示，避免拿空列表展示成“没有变化”。
+
+该修复已通过 84 项目标 pytest、`git diff --check`、两个前端文件 Node 语法检查。新增机器证据见 [R10_EXISTING_DAY_CHAIN_CONSUMER_REPAIR_R1_20261024.json](../v4_existing_data_closure_20261024/R10_EXISTING_DAY_CHAIN_CONSUMER_REPAIR_R1_20261024.json)。仅使用 Codex 内置浏览器做可见验收；浏览器现场仍由未重启的 28766 进程提供旧响应，刷新后仍可见 400/0-of-400，因此 UI 运行态尚不能验收通过。没有重启 28766 来规避冻结要求。
+
+本续修未把专项状态改为通过。10/09 与 10/12—10/21 共九个日期仍缺精确日期行业关系来源；TDX 现有成员快照止于 10/09，不足以证明其后 PIT 成员。13 日 RPS5 delta 独立 oracle 仍有 3,864 个可比较差异，正确候选 Core 及下游消费者重算尚未完成。此外，各域逐字段对账、完整 API/页面行对账及事务故障恢复演练仍有未完成项。详见 R10 续修证据的 `remaining_blockers`。自动日更和新交易日更新保持冻结。

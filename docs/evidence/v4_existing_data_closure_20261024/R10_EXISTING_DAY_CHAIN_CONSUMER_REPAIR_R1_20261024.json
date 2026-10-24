@@ -1,0 +1,108 @@
+{
+  "contract_id": "R10_EXISTING_DAY_CHAIN_CONSUMER_REPAIR_R1",
+  "recorded_at": "2026-10-24",
+  "status": "PARTIAL_REPAIR_NOT_ACCEPTED",
+  "branch": "codex/v4-unified-development",
+  "baseline_head": "14c836b06c553c5c21421cabca4a18978287ede1",
+  "scope": {
+    "materialized_candidate_dates": [
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "frozen_dates": [
+      "2026-10-22",
+      "2026-10-23"
+    ],
+    "new_data_collected": false,
+    "source_ingress_appended": false,
+    "core_or_owner_generated_for_frozen_dates": false,
+    "formal_head_modified": false,
+    "database_written_this_turn": false,
+    "production_port_28765_started": false,
+    "development_port_28766_restarted": false
+  },
+  "root_cause_of_false_incremental_completion": {
+    "entrypoint": "scripts/r8_batch04_ingest_tdx_source.py::ingest",
+    "before": "SOURCE_INGRESS_READBACK_PASS could be described as a completed trading-day increment even though the entrypoint stopped after raw source and receipt persistence.",
+    "after": {
+      "completion_scope": "SOURCE_INGRESS_ONLY",
+      "business_chain_status": "NOT_RUN",
+      "business_chain_complete": false,
+      "downstream_domains": [
+        "Core",
+        "Profile",
+        "Sector",
+        "Market",
+        "D0",
+        "D2",
+        "Priority",
+        "Focus",
+        "Forward",
+        "ReadIndex",
+        "API",
+        "page"
+      ]
+    },
+    "verification": "tests/v4_joint/test_r9_source_ingress.py: 10 passed"
+  },
+  "sector_read_chain": {
+    "before": {
+      "api_home": "ReadIndex had zero exact-date sector rows while the separate sectors-meta response reported SOURCE_INCOMPLETE; old candidate Home and the currently running 28766 UI could still expose 400 rows from a 2026-10-09 membership snapshot.",
+      "browser_observed": {
+        "browser": "Codex in-app browser",
+        "url": "http://127.0.0.1:28766/v4?trade_date=2026-10-13&offset=0",
+        "sector_count": 400,
+        "sector_ecology_risk": "0 / 400",
+        "membership_snapshot_as_of": "2026-10-09",
+        "pit_eligible": false
+      }
+    },
+    "after_code": {
+      "api_home": "SOURCE_INCOMPLETE sets counts.sectors, rotation_total, sector_change_total, sector ecology numerator/denominator/coverage/value to null; clears derived sector cards and attaches the exact source-gap reason.",
+      "sector_list_api": "An empty R2 page preserves SOURCE_INCOMPLETE and source_gap rather than returning NOT_FOUND or EMPTY_VALID.",
+      "home_ui": "Displays 来源不足 and the dated reason, does not fetch sector pages or run rotation acceptance, and does not display 0/0 as a measured risk value.",
+      "runtime_acceptance": "NOT_RELOADED_BY_USER_CONSTRAINT"
+    },
+    "missing_exact_dated_membership_source_dates": [
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "required_source": "EXACT_DATE_BAO_STOCK_INDUSTRY_QUERY",
+    "classification": "SOURCE_MISSING",
+    "external_or_new_source_fetch_performed": false
+  },
+  "verification": {
+    "pytest_command": "tests/test_corrected_owner_replay_r4.py tests/test_r43_target_coordinate_rps_delta.py tests/test_v4_functional_r8_s01_s03.py tests/test_v4_ux_r2_contract.py tests/v4_joint/test_r9_source_ingress.py",
+    "pytest_result": "94 passed",
+    "git_diff_check": "PASS",
+    "node_check_core_product_r1_app_js": "PASS",
+    "node_check_research_app_js": "PASS",
+    "pg_api_page_runtime_parity": "NOT_ACCEPTED; running 28766 process was not restarted and in-app browser still renders the pre-fix page",
+    "python_compile": "PASS",
+    "frontend_gap_contract_assertions": "PASS"
+  },
+  "remaining_blockers": [
+    "Exact historical industry membership is absent for the nine listed dates; the 2026-10-09 TDX snapshot cannot prove later-date membership.",
+    "The 13-date RPS5 delta independent reconciliation reports 3,864 mismatches among 60,061 comparable rows; source-bound candidate recomputation and descendant repair remain incomplete.",
+    "Other Core historical coordinates, Priority, D0/D2, Focus, Forward, Market historical denominators, failure rollback/recovery, and per-row browser parity are not all independently accepted.",
+    "2026-10-22 and 2026-10-23 remain frozen with SourceIngress only and have no Core/Owner chain by explicit user instruction."
+  ]
+}

@@ -95,11 +95,16 @@ class CorrectedEpisodeEngine(BreakoutEpisodeEngine):
         self.engineering_empty_seed=False
 
 
-def materialize_profiles_structure(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'CORE_REPLAY.json')
+def materialize_profiles_structure(root, *, input_namespace=None, output_namespace=None):
+    root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
+    if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
+        raise ValueError('STRUCTURE_REPLAY_NAMESPACE_OUTSIDE_ROOT')
+    replay=load(inputs/'CORE_REPLAY.json')
+    if output_namespace:
+        out.mkdir(parents=True,exist_ok=False)
     if replay['acceptance']!='PASS_CORRECTED_CORE_NUMERIC_ORACLE':raise ValueError('CORRECTED_CORE_GATE_REQUIRED')
     write(out/'STRUCTURE_STAGE_ENTRY.json',dict(contract=ref(root,root/CONTRACT),upgrade_document='R4.1',
-          prior_gate=ref(root,out/'CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
+          prior_gate=ref(root,inputs/'CORE_REPLAY.json'),acceptance='IN_PROGRESS',next_stage='SECTOR_FOCUS_FORWARD_AND_RELEASE_QA'))
     from scripts.run_v4_04_full_market_candidate_r4 import build_row, CONTRACT_FILES
     from scripts import run_v4_04_full_market_candidate_r4 as builder
     from scripts.build_fp06_sector import periods

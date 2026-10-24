@@ -98,11 +98,14 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     cal['publication_id']='R4_CALENDAR:'+digest(cal);write(out/'FOCUS_CALENDAR.json',cal)
     from .r43_owner_replay import ref as owner_ref
     calendar_binding=owner_ref(root,out/'FOCUS_CALENDAR.json')
-    sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={}
+    sources=load(inputs/'SOURCE_BINDINGS.json')['sources'];pathstatus={};allbars={};native={};sources_by_date={};identity_by_date={}
     from focus_tracker.v4_exact_identity_adapter_r4 import security_symbols, AcceptedPaths, CONTRACT
-    symbols = security_symbols(root, focus_identity_source_binding(sources))
     for item,sector in zip(replay['owners'],sectors['owners']):
         owner=item['owner'];day=owner['trade_date'];folder=out/'owners'/day
+        day_sources=owner.get('sources') or sources
+        symbols=security_symbols(root,focus_identity_source_binding(day_sources))
+        sources_by_date[day]=day_sources
+        identity_by_date[day]=focus_identity_source_binding(day_sources)
         from .d0_source_seal_r1 import build_scenario_lineage
         source_lineage=build_scenario_lineage(root,trade_date=day,owner=owner,
             parameters_path='config/research_attention_v3.yaml',observed_at=cutoff,
@@ -202,11 +205,12 @@ def materialize_focus(root, *, input_namespace=None, output_namespace=None, sect
     series=out/'focus_actual_bars.pg.json'
     from workbench_db.v4_series_pg_r1 import build
     from workbench_service.current_v4_context import canonical,digest as content_digest
-    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),source_digest=content_digest(canonical(sources)))
+    build(root,series,((sid,day,b) for (sid,day),b in allbars.items()),t0=max(days),
+          source_digest=content_digest(canonical(sources_by_date)))
     for owner in native.values():owner['series']=ref(root,series)
     bindings=dict(series=ref(root,series),calendar=ref(root,out/'FOCUS_CALENDAR.json'),gbbq=sources['gbbq'],
           classification=ref(root,root/'config/v4_02_gbbq_price_impact_classification_v1.json'),status=pathstatus,native_core=native)
-    bindings.update(security_identity=sources['identity'], path_contract=CONTRACT)
+    bindings.update(security_identity=sources['identity'],security_identity_by_date=identity_by_date,path_contract=CONTRACT)
     from focus_tracker.v4_native_core_adapter import enriched_project
     from workbench_db.v4_series_pg_r1 import verified_series_scope
     with verified_series_scope():

@@ -11,7 +11,7 @@ from workbench_db.v4_read_index_r2 import (
 )
 from workbench_service.core_product_bff_r1 import (
     annotate_home_readiness, code_status_presentation, current_identity_presentation, home_summary,
-    is_legacy_r1_home_fallback, normalize_indexed_code_status,
+    is_legacy_r1_home_fallback, normalize_indexed_code_status, quarantine_incomplete_sector_home,
 )
 
 
@@ -230,10 +230,17 @@ class UXR2RouteContractTests(unittest.TestCase):
              {'effective_event':{'value':'WEAKENED','quality':'KNOWN'}}}
         payload={'context':{},'context_token':token,'production_accepted':True,
             'market':{'regime_publication_status':'ACCEPTED','row':{'stress_level':'LOW'}},
-            'risks':[row],'counts':{'forward':{'value':12},'radar':{'value':1}},
-            'changes':[],'rotations':[],'sector_changes':[]}
+            'risks':[row],'counts':{'forward':{'value':12},'radar':{'value':1},'sectors':400},
+            'changes':[],'rotations':[{'entity_id':'INDUSTRY:TEST'}],
+            'rotation_total':2,'sector_changes':[{'item':{'entity_id':'INDUSTRY:TEST'}}],
+            'sector_change_total':2}
         class Index:
-            def response(self,path):return payload
+            def response(self,path):
+                if path=='/api/v4/sectors-meta':
+                    return {'status':'SOURCE_INCOMPLETE','source_gap':{'classification':'SOURCE_MISSING',
+                        'reason_code':'DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS:2026-10-13',
+                        'required_source':'EXACT_DATE_BAO_STOCK_INDUSTRY_QUERY'}}
+                return payload
         api=SimpleNamespace(root=Path('G:/codex_tmp/test_temp'),token=token,cache={},
             candidate={'published_sessions':[day],'accepted_trade_date':day,'owners':{day:{'validation_cohort':None}}})
         bff=CoreProductBFFR1(api,None)
@@ -248,7 +255,59 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertEqual(result['risks'],[])
         self.assertEqual(len(result['focus_risk_events']),1)
         self.assertIsNone(result['counts']['forward']['value'])
+        self.assertIsNone(result['counts']['sectors'])
+        self.assertEqual(result['sector_source_status'],'SOURCE_INCOMPLETE')
+        self.assertEqual(result['sector_source_gap']['reason_code'],
+            'DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS:2026-10-13')
+        self.assertEqual(result['rotations'],[])
+        self.assertEqual(result['sector_changes'],[])
         self.assertGreater(validate_home_response(result),0)
+
+    def test_indexed_empty_sector_page_preserves_exact_source_gap(self):
+        from workbench_service.core_product_bff_r1 import CoreProductBFFR1
+        day='2026-10-20'; token='b'*64
+        gap={'status':'SOURCE_INCOMPLETE','gap':'DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS',
+             'source_gap':{'classification':'SOURCE_MISSING',
+                           'reason_code':'DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS:2026-10-20'}}
+        class Index:
+            def response(self,path):
+                if path=='/api/v4/context':
+                    return {'context':{'trade_date':day},'context_token':token,
+                            'production_accepted':False}
+                if path=='/api/v4/sectors-meta': return gap
+                return None
+            def page(self,domain,query,entity=None,sector=None):
+                return {'status':'EMPTY_VALID','items':[],'total':0,'offset':0,
+                        'limit':30,'has_next':False,'domain':domain,'gap':None}
+        api=SimpleNamespace(token=token,candidate={'published_sessions':[day]})
+        bff=CoreProductBFFR1.__new__(CoreProductBFFR1)
+        bff.api=api; bff._read_index_r2=lambda _day:Index()
+        bff._apply_rotation_auto_acceptance=lambda response,_day:response
+        result=bff.page('sectors',day,{'trade_date':day,'context_token':token})
+        self.assertEqual(result['status'],'SOURCE_INCOMPLETE')
+        self.assertEqual(result['source_gap'],gap['source_gap'])
+        self.assertEqual(result['items'],[])
+
+    def test_home_quarantines_numeric_sector_cards_when_dated_membership_is_missing(self):
+        reason='DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS:2026-10-13'
+        home={'counts':{'stocks':5225,'sectors':400},'rotation_total':27,
+            'rotations':[{'entity_id':'INDUSTRY:TEST','fields':{'sector_rs5':{'value':88.0}}}],
+            'sector_change_total':27,'sector_changes':[{'item':{'entity_id':'INDUSTRY:TEST'}}],
+            'rotation_owner_summary':{'owner_bound':True,'total':400},
+            'risk_families':{'SECTOR_ECOLOGY_RISK':{'status':'PARTIAL','value':0.2}},
+            'risks':[{'fields':{'risk_family':{'value':'SECTOR_ECOLOGY_RISK'}}}],'gaps':[]}
+        meta={'status':'SOURCE_INCOMPLETE','source_gap':{'classification':'SOURCE_MISSING',
+            'reason_code':reason,'required_source':'EXACT_DATE_BAO_STOCK_INDUSTRY_QUERY'}}
+        result=quarantine_incomplete_sector_home(home,meta)
+        self.assertIsNone(result['counts']['sectors'])
+        self.assertIsNone(result['rotation_total'])
+        self.assertIsNone(result['sector_change_total'])
+        self.assertEqual(result['rotations'],[])
+        self.assertEqual(result['sector_changes'],[])
+        self.assertEqual(result['sector_source_gap']['reason_code'],reason)
+        self.assertEqual(result['risk_families']['SECTOR_ECOLOGY_RISK']['status'],'SOURCE_INCOMPLETE')
+        self.assertEqual(result['risks'],[])
+        self.assertEqual(home['counts']['sectors'],400)
 
     def test_indexed_response_binds_current_formal_head_scope_without_mutating_source(self):
         from workbench_service.core_product_bff_r1 import CoreProductBFFR1
@@ -472,6 +531,11 @@ class UXR2RouteContractTests(unittest.TestCase):
         self.assertIn("const stateFilterParam=domain==='sectors'?'rotation':'state'", ui)
         self.assertIn("params.get(stateFilterParam)", ui)
         self.assertIn("if(domain==='sectors')params.delete('state')", ui)
+        self.assertIn("sectorSourceIncomplete=d.sector_source_status==='SOURCE_INCOMPLETE'", ui)
+        self.assertIn("domain==='sectors'&&sectorSourceIncomplete?'来源不足'", ui)
+        self.assertIn("sectorSourceIncomplete?[]:await Promise.all", ui)
+        self.assertIn("按日板块来源不足，轮动数据已隔离。", ui)
+        self.assertIn("fact.status==='SOURCE_INCOMPLETE'?'来源不足'", ui)
 
 
 if __name__ == '__main__':

@@ -39,8 +39,13 @@ def dated_industry_memberships(root, day, universe):
     return result, query
 
 
-def materialize_sectors(root):
-    root=Path(root).resolve();out=root/OUT;replay=load(out/'PROFILE_STRUCTURE_REPLAY.json');receipts=[];history={}
+def materialize_sectors(root, *, input_namespace=None, output_namespace=None):
+    root=Path(root).resolve();inputs=root/(input_namespace or OUT);out=root/(output_namespace or OUT)
+    if not inputs.resolve().is_relative_to(root) or not out.resolve().is_relative_to(root):
+        raise ValueError('SECTOR_REPLAY_NAMESPACE_OUTSIDE_ROOT')
+    replay=load(inputs/'PROFILE_STRUCTURE_REPLAY.json');receipts=[];history={}
+    if output_namespace:
+        out.mkdir(parents=True,exist_ok=False)
     write(out/'SECTOR_STAGE_ENTRY.json',dict(contract=ref(root,root/'config/v4_dated_membership_source_policy_v1.json'),
           upgrade_document='R4.1',acceptance='IN_PROGRESS',next_stage='LOO_FOCUS_FORWARD_INDEPENDENT_QA'))
     import baostock
@@ -79,7 +84,31 @@ def materialize_sectors(root):
             fields['mdd20']=dict(value=mdd.get('value'),quality='ACCEPTED' if mdd.get('quality')=='OBSERVED' else 'UNKNOWN',max_source_date=day)
             current[sid]=dict(trade_date=day,fields=fields,price_basis_id=f['price_basis_id'])
         universe={r['source_security_key'].lower():r['security_id'] for r in factors}
-        memberships,query=dated_industry_memberships(root,day,universe)
+        try:
+            memberships,query=dated_industry_memberships(root,day,universe)
+        except ValueError as exc:
+            # A date without its bound industry query cannot produce native
+            # sector values. Preserve the independently derived stock seed,
+            # record the exact source gap, and continue auditing later dates.
+            # Calculation and payload errors still fail the batch.
+            if str(exc).split(':',1)[0] not in {
+                    'DATED_INDUSTRY_QUERY_MISSING_OR_AMBIGUOUS',
+                    'DATED_INDUSTRY_QUERY_PAYLOAD_MISSING'}:
+                raise
+            seed_binding=gzwrite(root,folder/'base_seed.jsonl.gz',seedrows)
+            receipt=dict(trade_date=day,taxonomy='BAOSTOCK_CSRC_INDUSTRY',
+                membership=None,membership_count=0,sector_count=0,query=None,
+                native=None,seed=seed_binding,relative_sector=None,
+                known_fields={},relative_sector_known=0,oracle=[],
+                source_gap=dict(classification='SOURCE_MISSING',reason_code=str(exc),
+                    required_source='EXACT_DATE_BAO_STOCK_INDUSTRY_QUERY'),
+                original_tdx_concept_membership='ACCEPTED_SNAPSHOT_DATE_ONLY; OTHER_DATES_UNPROVEN',
+                source_taxonomy_substitution=False,production_admission=False,
+                acceptance='BLOCKED_SOURCE_MISSING')
+            write(folder/'SECTOR_OWNER.json',receipt);receipts.append(receipt)
+            print(json.dumps(dict(stage='SECTOR_SOURCE_GAP',date=day,reason=str(exc),
+                seed_rows=len(seedrows))),flush=True)
+            continue
         binding=gzwrite(root,folder/'dated_csrc_memberships.jsonl.gz',memberships)
         sources=dict(core=owner['core'],profiles=owner['profiles'],membership=binding,policy=ref(root,root/'config/v4_dated_membership_source_policy_v1.json'))
         prior={};prior_members={};prior_date={};prior_native={};prior_seed={}
@@ -141,5 +170,8 @@ def materialize_sectors(root):
         write(folder/'SECTOR_OWNER.json',receipt);receipts.append(receipt)
         history[day]=dict(current=current,groups=dict(groups),native={r['sector_id']:r for r in native},seed=seed)
         print(json.dumps(dict(stage='SECTOR_LOO',date=day,sectors=len(native),members=len(memberships),known=receipt['relative_sector_known'])),flush=True)
-    write(out/'SECTOR_REPLAY.json',dict(owners=receipts,acceptance='CORRECTED_CSRC_TAXONOMY_ONLY',next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE'))
+    gaps=sum(bool(r.get('source_gap')) for r in receipts)
+    write(out/'SECTOR_REPLAY.json',dict(owners=receipts,
+          acceptance='PARTIAL_SOURCE_BLOCKED' if gaps else 'CORRECTED_CSRC_TAXONOMY_ONLY',
+          source_gap_count=gaps,next_stage='INDEPENDENT_QA_AND_SCOPED_RELEASE_GATE'))
     return receipts

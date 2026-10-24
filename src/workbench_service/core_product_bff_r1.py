@@ -184,6 +184,44 @@ def quarantine_unverified_market_axes(market, *, day, reason):
     result['candidate_market_status']='SOURCE_INCOMPLETE'
     return result
 
+
+def quarantine_incomplete_sector_home(home, sector_meta):
+    """Keep Home counts and sector-derived cards consistent with the dated sector source gate."""
+    if not isinstance(sector_meta,dict) or sector_meta.get('status')!='SOURCE_INCOMPLETE':
+        return home
+    result=deepcopy(home)
+    source_gap=sector_meta.get('source_gap') or {}
+    reason=(source_gap.get('reason_code') or sector_meta.get('gap') or
+            'DATED_SECTOR_SOURCE_NOT_COMPLETE')
+    result['sector_source_status']='SOURCE_INCOMPLETE'
+    result['sector_source_gap']=dict(status='SOURCE_INCOMPLETE',
+        classification=source_gap.get('classification','SOURCE_MISSING'),
+        reason_code=reason,required_source=source_gap.get('required_source'))
+    result.setdefault('counts',{})['sectors']=None
+    # The prebuilt sector cards and rotation counts use the same absent dated
+    # member source. An empty ReadIndex page must not coexist with those values.
+    result['rotations']=[]
+    result['rotation_total']=None
+    result['sector_changes']=[]
+    result['sector_change_total']=None
+    result['rotation_owner_summary']={
+        'status':'SOURCE_INCOMPLETE','owner_bound':False,'total':None,'expected_total':None,
+        'reason':reason,'source_gap':result['sector_source_gap']}
+    result['rotation_validation']={'status':'SOURCE_INCOMPLETE','reason':reason}
+    families=result.get('risk_families')
+    if isinstance(families,dict):
+        families=dict(families)
+        families['SECTOR_ECOLOGY_RISK']={'family':'SECTOR_ECOLOGY_RISK','status':'SOURCE_INCOMPLETE',
+            'numerator':None,'denominator':None,'coverage':None,'value':None,'reason':reason}
+        result['risk_families']=families
+    result['risks']=[row for row in result.get('risks',[])
+        if row.get('risk_family')!='SECTOR_ECOLOGY_RISK' and
+        row.get('fields',{}).get('risk_family',{}).get('value')!='SECTOR_ECOLOGY_RISK']
+    result['gaps']=[gap for gap in result.get('gaps',[]) if gap.get('domain')!='sectors']
+    result['gaps'].append({'domain':'sectors','status':'SOURCE_INCOMPLETE','reason':reason,
+        'required_source':source_gap.get('required_source')})
+    return result
+
 def market_candidate_failure(candidate_market, day, market=None):
     """Return a stable failure code unless a complete same-day derivation is present."""
     if not isinstance(candidate_market,dict) or candidate_market.get('status')!='READY':
@@ -1412,6 +1450,8 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                             historical_research_count=None,live_frozen_count=None,
                             matured_settlement_count=None,reason=type(exc).__name__,
                             updated_at=response.get('updated_at'),href='/v4/research/forward')
+                    response=quarantine_incomplete_sector_home(
+                        response,index.response('/api/v4/sectors-meta'))
                 return 200,self._bind_live_head_scope(response)
             response=index.response('/api/v4/context')
             if response is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
@@ -1893,14 +1933,25 @@ class CoreProductBFFR1(OperationalSuccessorBFFV1):
                         '/api/v4/context',domain,str(entity).strip().upper())
                     if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                     base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
-                    if item is None:return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
+                    if item is None:
+                        gap=index.response('/api/v4/sectors-meta') if domain=='sectors' else None
+                        if isinstance(gap,dict) and gap.get('status')=='SOURCE_INCOMPLETE':
+                            return {**base,'status':'SOURCE_INCOMPLETE','items':[],'total':0,'offset':int(q.get('offset',0)),
+                                'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,
+                                'gap':gap.get('gap'),'source_gap':gap.get('source_gap')}
+                        return {**base,'status':'NOT_FOUND','items':[],'total':0,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
                     response={**base,'status':'READY','items':[item],'item':item,'total':1,'offset':int(q.get('offset',0)),'limit':int(q.get('limit',30)),'has_next':False,'domain':domain,'gap':None}
                     response=normalize_indexed_code_status(response,day) if domain=='stocks' else response
                     return self._apply_rotation_auto_acceptance(response,day) if domain=='sectors' else response
                 context=index.response('/api/v4/context')
                 if context is None:raise ValueError('READ_INDEX_RESPONSE_NOT_PREPARED')
                 base={k:v for k,v in context.items() if k in ('context','context_token','production_accepted','source_quality')}
-                response={**base,**index.page(domain,q,entity=entity,sector=sector)}
+                indexed=index.page(domain,q,entity=entity,sector=sector)
+                if domain=='sectors' and indexed.get('total')==0:
+                    gap=index.response('/api/v4/sectors-meta')
+                    if isinstance(gap,dict) and gap.get('status')=='SOURCE_INCOMPLETE':
+                        indexed.update(status='SOURCE_INCOMPLETE',gap=gap.get('gap'),source_gap=gap.get('source_gap'))
+                response={**base,**indexed}
                 response=normalize_indexed_code_status(response,day) if domain=='stocks' else response
                 return self._apply_rotation_auto_acceptance(response,day) if domain=='sectors' else response
             from workbench_db.v4_read_index_r1 import load as load_index

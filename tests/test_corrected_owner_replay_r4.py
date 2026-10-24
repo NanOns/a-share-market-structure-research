@@ -6,6 +6,7 @@ import pytest
 from tdx.gbbq_reader import GbbqRecord
 from workbench_analysis.corrected_owner_replay import (
     transform_window, independent_affine, midrank, _apply_dated_membership_overrides,
+    _required_rps_membership_dates,
 )
 from v4.factors.core import rps_midrank
 
@@ -49,6 +50,13 @@ def test_exact_candidate_membership_overrides_same_day_provider_roster_only_for_
         '2026-10-15':{'CANDIDATE_15'},
         '2026-10-19':{'CANDIDATE_19'},
         '2026-10-20':{'OTHER_PROVIDER'},
+    }
+
+
+def test_rps_membership_authority_requires_current_and_both_endpoint_dates():
+    sessions=['2026-10-08','2026-10-09','2026-10-12','2026-10-13','2026-10-14']
+    assert _required_rps_membership_dates(['2026-10-14'],sessions)=={
+        '2026-10-14','2026-10-13','2026-10-09',
     }
 
 

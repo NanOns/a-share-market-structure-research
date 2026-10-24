@@ -137,6 +137,53 @@ def rank_exact_endpoint_rps(returns, endpoint_members):
     return midrank(returns, set(endpoint_members))
 
 
+def apply_exact_dated_membership_authorities(dated_identity, authorities, *, root,
+                                             required_dates=()):
+    """Prefer byte-verified, date-bound Lifecycle membership over fallback sets."""
+    resolved = dict(dated_identity)
+    bindings = {}
+    root = Path(root).resolve()
+    authorities = authorities or {}
+    missing = sorted(set(required_dates) - set(authorities))
+    if missing:
+        raise ValueError('EXACT_DATED_MEMBERSHIP_AUTHORITY_REQUIRED:' + ','.join(missing))
+    for day, authority in (authorities or {}).items():
+        if not isinstance(day, str) or not isinstance(authority, dict):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_INVALID')
+        if authority.get('trade_date') != day:
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_DATE_MISMATCH:' + day)
+        ids = authority.get('active_security_ids')
+        source = authority.get('source')
+        if not isinstance(ids, list) or not ids or any(not isinstance(sid, str) or not sid for sid in ids):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_IDS_INVALID:' + day)
+        if len(ids) != len(set(ids)):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_DUPLICATE_ID:' + day)
+        if (not isinstance(source, dict) or not isinstance(source.get('path'), str) or
+                not isinstance(source.get('sha256'), str) or len(source['sha256']) != 64):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_SOURCE_REQUIRED:' + day)
+        source_path = (root / source['path']).resolve()
+        try:
+            source_path.relative_to(root)
+        except ValueError as exc:
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_PATH_OUTSIDE_ROOT:' + day) from exc
+        if not source_path.is_file():
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_FILE_MISSING:' + day)
+        payload_bytes = source_path.read_bytes()
+        actual_sha = hashlib.sha256(payload_bytes).hexdigest()
+        if actual_sha != source['sha256']:
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_DIGEST_MISMATCH:' + day)
+        payload = json.loads(payload_bytes)
+        payload_ids = payload.get('active_security_ids')
+        if payload.get('trade_date') != day or not isinstance(payload_ids, list):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_PAYLOAD_INVALID:' + day)
+        if len(payload_ids) != len(set(payload_ids)) or set(payload_ids) != set(ids):
+            raise ValueError('DATED_MEMBERSHIP_AUTHORITY_PAYLOAD_MEMBERS_MISMATCH:' + day)
+        resolved[day] = set(ids)
+        bindings[day] = dict(source=source, member_count=len(ids),
+            member_set_sha256=hashlib.sha256('\n'.join(sorted(ids)).encode()).hexdigest())
+    return resolved, bindings
+
+
 def progress_items(rows, callback, *, coordinate_endpoint=None, phase=None, clock=None):
     """Report completed loop work in bounded batches; never alter numeric rows."""
     if callback is None:
@@ -177,7 +224,8 @@ def unknown_active_core_row(identity_row, target, sessions, basis_namespace):
 
 
 def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE', accepted_history=None, progress_counter=None,
-                     identity_binding=None, identity_rows=None, required_active_ids=None, source_inputs=None):
+                     identity_binding=None, identity_rows=None, required_active_ids=None, source_inputs=None,
+                     exact_membership_snapshots=None):
     if not source_inputs:raise ValueError('SOURCE_CORE_INPUT_CONTEXT_REQUIRED')
     if basis_namespace not in ('TDX_NATIVE_AFFINE_QFQ_TARGET_COORDINATE','TDX_NATIVE_AFFINE_QFQ_V0_3_EXACT_TARGET_COORDINATE'):
         raise ValueError('UNSUPPORTED_CORE_BASIS_NAMESPACE')
@@ -245,6 +293,19 @@ def materialize_core(root, dates=None, *, basis_namespace='TDX_NATIVE_AFFINE_QFQ
         for code,r in rows.items():
             if code in ids:status[ids[code]['security_id']][day]='SUSPENDED' if r.get('tradestatus')=='0' else 'ACTUAL_TRADED'
     for day,rows in universes.items():dated_identity[day]={ids[c]['security_id'] for c in rows if c in ids}
+    # Broad provider/history universes are fallback inputs. For RPS endpoints
+    # and Market-relative start cohorts, a bound date-specific Lifecycle set
+    # is authoritative and must not be silently replaced by query_all_stock.
+    required_membership_dates = set(dates)
+    for target in dates:
+        position = sessions.index(target)
+        required_membership_dates.update(sessions[position-k] for k in (1, 3))
+    dated_identity,membership_bindings=apply_exact_dated_membership_authorities(
+        dated_identity, exact_membership_snapshots, root=root,
+        required_dates=required_membership_dates if exact_membership_snapshots is not None else ())
+    if membership_bindings:
+        sources['exact_dated_membership_authorities']=membership_bindings
+        source_digest=hashlib.sha256(json.dumps(sources,sort_keys=True).encode()).hexdigest()
     # The target-dated lifecycle is complete; older snapshots cannot exclude a new listing.
     if required_active_ids:dated_identity[max(dates)]=complete_target_universe(dated_identity.get(max(dates)),required_active_ids)
     cache={}; unknown_codes=[]

@@ -43,13 +43,20 @@ class AcceptedPaths(NativePaths):
         if bindings.get('path_contract') != CONTRACT:
             raise SourceInvalid('FOCUS_EXACT_IDENTITY_CONTRACT_REQUIRED')
         self.symbols = security_symbols(root, bindings['security_identity'])
+        dated=bindings.get('security_identity_by_date',{})
+        if not isinstance(dated,dict):
+            raise SourceInvalid('FOCUS_DATED_SECURITY_IDENTITY_INVALID')
+        self.symbols_by_date={day:security_symbols(root,binding) for day,binding in dated.items()}
         super().__init__(root, bindings)
+
+    def symbol_for_date(self,sid,observation_date):
+        return getattr(self,'symbols_by_date',{}).get(observation_date,self.symbols).get(sid)
 
     def path(self, sid, start, end):
         key = sid, start, end
         if key in self.cache:
             return self.cache[key]
-        symbol = self.symbols.get(sid)
+        symbol = self.symbol_for_date(sid,end)
         if symbol is None:
             raise SourceInvalid('FOCUS_SOURCE_SECURITY_IDENTITY_MISSING')
         sessions = [day for day in self.calendar if start <= day <= end]

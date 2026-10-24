@@ -5,6 +5,7 @@ Scalar values retain existing contracts; evidence stays in per-object details.
 """
 import hashlib
 import json
+import gc
 from pathlib import Path
 from psycopg import sql
 from psycopg.types.json import Jsonb
@@ -424,6 +425,13 @@ def prepare_bff(root, candidate, *, days=None, jobs=None):
         for sector in bff.source('sector',day):
             for sid in set(sector.get('member_ids',[])): memberships.setdefault(sid,[]).append(sector['sector_id'])
         prepared[day]=prepare(root,api.token,day,collections,responses,memberships)
+        # Each dated projection is sealed before its owner rows are released.
+        # Keeping every day in the shared BFF cache makes a multi-date rebuild
+        # retain several million detailed rows and can exhaust the producer
+        # process before the authority pointer is switched.
+        api.cache.clear()
+        del collections,responses,memberships,stocks,events,focus,query
+        gc.collect()
     path=root/AUTHORITY
     authority=json.loads(path.read_bytes()) if path.exists() else dict(contract_id=CONTRACT,versions={})
     if authority.get('contract_id')!=CONTRACT: raise ValueError('READ_INDEX_AUTHORITY_CONTRACT_MISMATCH')

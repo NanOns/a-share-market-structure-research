@@ -98,3 +98,11 @@ def test_producer_and_consumer_share_hash_bound_mapping(tmp_path):
     path.write_text('{}')
     with pytest.raises(SourceInvalid, match='DIGEST_OR_PATH_INVALID'):
         security_symbols(tmp_path, binding)
+
+
+def test_observation_date_uses_its_bound_identity_snapshot():
+    paths = AcceptedPaths.__new__(AcceptedPaths)
+    paths.symbols = {'SEC-A': 'SZ.000062'}
+    paths.symbols_by_date = {'2026-10-21': {'SEC-A': 'SZ.000063'}}
+    assert paths.symbol_for_date('SEC-A', '2026-10-20') == 'SZ.000062'
+    assert paths.symbol_for_date('SEC-A', '2026-10-21') == 'SZ.000063'
